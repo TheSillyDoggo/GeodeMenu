@@ -13,9 +13,6 @@ jobs:
         - name: Windows
           os: windows-latest
           
-        - name: macOS
-          os: macos-latest
-          
         - name: android
           os: ubuntu-latest
 
