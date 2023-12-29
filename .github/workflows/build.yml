@@ -26,7 +26,7 @@ jobs:
         uses: cvolton/build-geode-mod@main
         with:
           combine: true
-          sdk: 'nightly'
+          sdk: '2.0.0'
       
   package:
     name: Package builds
