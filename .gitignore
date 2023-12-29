@@ -1,0 +1,70 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Macos be like
+**/.DS_Store
+
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Ignore build folders
+**/build
+**/vs/
+**/.vs/
+**/out/
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# ILY vscode
+**/.vscode
+.idea/
+
+# clangd
+.cache/
+
+CMakeSettings.json
+.gitattributes
+.vs/CheatClient/v17/ipch/AutoPCH/ccc1fe8dfb25e054/PLATFORM.ipch
+.vs/CheatClient/v17/ipch/AutoPCH/22adbe334519116b/IMGUI.ipch
+.vs/CheatClient/v17/ipch/8405bb0fa2cec37.ipch
+.vs/CheatClient/v17/ipch/2e3de34d6565f18f.ipch
+.vs/CheatClient/v17/Browse.VC.db
+.vs/CheatClient/v17/.wsuo
+.vs/CheatClient/FileContentIndex/read.lock
+.vs/CheatClient/FileContentIndex/c4c7bfa5-ec26-48e8-b0cc-61aea03b1cb4.vsidx
+.vs/CheatClient/FileContentIndex/b42a57bd-6166-45c1-b594-c57e3e48aaca.vsidx
+.vs/CheatClient/FileContentIndex/76a81e69-ccc2-4d66-a8f6-65b27310503f.vsidx
+.vs/CheatClient/FileContentIndex/577f5d1a-0223-4947-854b-60d8b63f4d03.vsidx

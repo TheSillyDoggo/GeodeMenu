@@ -1,0 +1,13 @@
+{
+	"geode": "2.0.0",
+	"version": "v1.0.0",
+	"id": "TheSillyDoggo.Cheats",
+	"name": "CheatClient",
+	"developer": "TheSillyDoggo",
+	"description": "cheaterino",
+	"resources": {
+        "files": [
+            "resources/fonts/*.ttf"
+        ]
+    }
+}
