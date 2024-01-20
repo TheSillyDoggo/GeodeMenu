@@ -18,6 +18,8 @@ public:
     {
         ImVec2 wp = DrawUtils::addImVec2(windowPos, getOffsetForTime(anim));
 
+        #ifndef GEODE_IS_ANDROID
+
         DrawUtils::drawRect(wp, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(wp.x, wp.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
         DrawUtils::drawRect(DrawUtils::addImVec2(wp, ImVec2(0, tileSize.y)), ImVec2(tileSize.x, 3), ColourUtility::GetColour(ColourUtility::ClientColour::Accent));
 
@@ -33,6 +35,8 @@ public:
 
             modules[i]->Draw(tileSize);
         }
+
+        #endif
 
         bool o = over(tileSize);
 
