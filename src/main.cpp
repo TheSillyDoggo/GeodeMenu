@@ -1,7 +1,7 @@
 #include "include.h"
 
 bool showing = false;
-#if GEODE_IS_ANDROID
+#ifdef GEODE_IS_ANDROID
 bool android = true;
 #else
 bool android = false;
