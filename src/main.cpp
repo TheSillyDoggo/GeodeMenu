@@ -9,6 +9,8 @@ bool android = false;
 
 Client* client;
 
+#ifndef GEODE_IS_ANDROID
+
 class $modify(CCKeyboardDispatcher) {
     static void onModify(auto& self) {
         self.setHookPriority("CCKeyboardDispatcher::dispatchKeyboardMSG", 1024);
@@ -96,6 +98,10 @@ class $modify(CCKeyboardDispatcher) {
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }
 };
+
+#endif
+
+
 
 $on_mod(Loaded)
 {
