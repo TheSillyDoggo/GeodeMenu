@@ -1,9 +1,12 @@
 #include "ColourUtility.h"
 #include "DrawUtils.h"
 
+using namespace geode::prelude;
+
 class Module
 {
     public:
+
         static inline std::string descMod = "";
 
         enum kModuleType
@@ -108,6 +111,35 @@ class Module
         {
             enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", false);
         }
+
+        void onToggleAndroid(CCObject* sender)
+        {
+            auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
+
+            dat->enabled = !dat->enabled;
+
+            log::info("Toggling {}", dat->id);
+            log::info("enabled status: {}", dat->enabled);
+        }
+
+        void makeAndroid(CCMenu* menu, CCPoint pos)
+        {
+            auto btn = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Module::onToggleAndroid), 0.75f);
+            btn->setUserData(this);
+            btn->setID(id);
+            btn->toggle(enabled);
+            btn->setPosition(pos);
+
+            auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+            label->setAnchorPoint(ccp(0, 0.5f));
+            label->setScale(0.575f);
+            label->setPosition(pos + ccp(15, 0));
+            label->limitLabelWidth(150, 0.575f, 0.1f);
+
+            menu->addChild(btn);
+            menu->addChild(label);
+        }
+
 };
 
 class InputModule : public Module

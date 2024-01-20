@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/cocos/layers_scenes_transitions_nodes/CCTransition.h>
 #include <Geode/modify/CCTransitionFade.hpp>
 #include "../Client/Client.h"
@@ -18,4 +18,4 @@ class $modify (cocos2d::CCTransitionFade)
 
         return CCTransitionFade::create(duration * mod, scene);
     }
-};
+};*/

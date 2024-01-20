@@ -3,15 +3,20 @@
 class ClientUtils
 {
 public:
-	static void Setup()
+	static void Setup(bool android = false)
 	{
-        SetupBypass();
         SetupLevel();
+        SetupBypass();
+        
+        #ifndef GEODE_IS_ANDROID
         SetupSpeedhack();
+        #endif
+        
         SetupCosmetic();
-        SetupMisc();
-        SetupReplay();
+        //SetupMisc();
+        //SetupReplay();
         SetupStatus();
+        //if (!android)
         SetupOptions();
         //SetupOptions();
         //SetupCreator();
@@ -44,6 +49,7 @@ public:
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
+        level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
         Client::instance->windows.push_back(level);
@@ -73,7 +79,7 @@ public:
         cosmetic->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 3, 50);
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
-        cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
+        //cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables all rotation on ALL objects. This can make some levels impossible"));
 
         Client::instance->windows.push_back(cosmetic);
@@ -86,7 +92,7 @@ public:
         misc->id = "misc-window";
         misc->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
-        misc->modules.push_back(new Module("Use Full Options", "full-options", "Opens the full options menu instead of the mini options in the pause menu.\nAlso adds a button to the normal pause menu to open the mini options."));
+        //misc->modules.push_back(new Module("Use Full Options", "full-options", "Opens the full options menu instead of the mini options in the pause menu.\nAlso adds a button to the normal pause menu to open the mini options."));
 
         Client::instance->windows.push_back(misc);
     }
@@ -129,7 +135,7 @@ public:
     static void SetupOptions()
     {
         Window* replay = new Window();
-        replay->name = "CLIENT NAME";
+        replay->name = "Config";
         replay->id = "options-window";
         replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 7, 50);
 

@@ -1,6 +1,10 @@
 {
 	"geode": "2.0.0",
 	"version": "v1.0.0",
+	"gd": {
+		"win": "2.204",
+		"android": "2.200"
+	},
 	"id": "TheSillyDoggo.Cheats",
 	"name": "CheatClient",
 	"developer": "TheSillyDoggo",

@@ -1,6 +1,11 @@
 #include "include.h"
 
 bool showing = false;
+#if GEODE_IS_ANDROID
+bool android = true;
+#else
+bool android = false;
+#endif
 
 Client* client;
 
@@ -12,8 +17,15 @@ class $modify(CCKeyboardDispatcher) {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
     {     
         if (down && key == KEY_Tab) {
-            showing = !showing;
-            CCDirector::get()->getOpenGLView()->showCursor(true);
+            if (android)
+            {
+                AndroidUI::addToScene();
+            }
+            else
+            {
+                showing = !showing;
+                CCDirector::get()->getOpenGLView()->showCursor(true);
+            }
             return true;
         }
 
@@ -90,7 +102,7 @@ $on_mod(Loaded)
     client = new Client();
     Client::instance = client;
 
-    ClientUtils::Setup();
+    ClientUtils::Setup(android);
 }
 
 void DrawDescription()
@@ -123,28 +135,31 @@ $on_mod(Loaded) {
 
     }).draw([] {
 
-        if (client->animStatus == 0)
+        if (!android)
         {
-            InputModule::selected = nullptr;
+            if (client->animStatus == 0)
+            {
+                InputModule::selected = nullptr;
+            }
+
+            if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
+                InputModule::selected = nullptr;
+
+            client->animStatus += ((showing ? 1 : -1) * ImGui::GetIO().DeltaTime) / 0.25f;
+            client->animStatus = clampf(client->animStatus, 0, 1);
+
+            client->draw();
+
+            if (!showing)
+                ImGui::GetIO().WantCaptureMouse = false;
+
+            if (showing)
+            {
+                if (Module::descMod != "")
+                    DrawDescription();
+            }
+
+            ImGui::End();
         }
-
-        if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-            InputModule::selected = nullptr;
-
-        client->animStatus += ((showing ? 1 : -1) * ImGui::GetIO().DeltaTime) / 0.25f;
-        client->animStatus = clampf(client->animStatus, 0, 1);
-
-        client->draw();
-
-        if (!showing)
-            ImGui::GetIO().WantCaptureMouse = false;
-
-        if (showing)
-        {
-            if (Module::descMod != "")
-                DrawDescription();
-        }
-
-        ImGui::End();
     });
 }

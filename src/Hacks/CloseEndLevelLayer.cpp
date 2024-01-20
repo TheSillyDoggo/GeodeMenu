@@ -4,6 +4,8 @@
 
 using namespace geode::prelude;
 
+/*
+
 class EndLevelPopup
 {
 	public:
@@ -133,3 +135,5 @@ class $modify(EndLevelLayer)
 		}
 	}
 };
+
+*/

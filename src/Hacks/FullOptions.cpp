@@ -14,6 +14,8 @@ class FullOptions
         }
 };
 
+/*
+
 class $modify (OptionsLayer)
 {
     void customSetup()
@@ -59,4 +61,4 @@ class $modify (PauseLayer)
         else
             PauseLayer::onSettings(sender);
     }
-};
+};*/

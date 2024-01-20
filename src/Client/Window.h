@@ -7,6 +7,7 @@ class Window
 public:
     std::string name;
     std::string id;
+    bool excludeAndroid = false;
     std::vector<Module*> modules;
     ImVec2 windowPos = ImVec2(100, 100);
 
