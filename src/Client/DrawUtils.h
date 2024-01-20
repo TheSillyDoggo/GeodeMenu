@@ -28,6 +28,7 @@ class DrawUtils
                 s = 1;
             
             ImGui::SetCursorPos(ImVec2(pos.x + ((size.x) * anchor.x) - ImGui::CalcTextSize(text.c_str()).x * anchor.x, pos.y + ((size.y) * anchor.y) - ImGui::CalcTextSize(text.c_str()).y * anchor.y));
+            
             ImGui::TextColored(colour, text.c_str());
         }
 

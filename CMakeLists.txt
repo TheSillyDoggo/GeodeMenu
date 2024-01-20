@@ -20,7 +20,7 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#a7624d0") # specify a commit!
+CPMAddPackage("gh:matcool/gd-imgui-cocos#4eb5777") # specify a commit!
 
 target_link_libraries(${PROJECT_NAME} imgui-cocos)
 
