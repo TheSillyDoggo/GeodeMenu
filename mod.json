@@ -6,9 +6,9 @@
 		"android": "2.200"
 	},
 	"id": "TheSillyDoggo.Cheats",
-	"name": "CheatClient",
+	"name": "QOLMod",
 	"developer": "TheSillyDoggo",
-	"description": "cheaterino",
+	"description": "better than mega hack mobile",
 	"resources": {
         "files": [
             "resources/fonts/*.ttf"

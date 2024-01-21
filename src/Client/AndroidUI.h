@@ -1,6 +1,12 @@
 #include <Geode/Geode.hpp>
 #include "ClientSetup.h"
+#include <Geode/modify/AchievementNotifier.hpp>
+#include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/PauseLayer.hpp>
+#include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 using namespace geode::prelude;
+
 
 class AndroidUI : public cocos2d::CCLayerColor {
 public:
@@ -221,12 +227,6 @@ public:
         return true;
     }
 
-    // Handle touch events
-    virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-        log::info("touch began");
-        return true;
-    }
-
     CREATE_FUNC(AndroidUI);
 
     static void addToScene()
@@ -234,5 +234,224 @@ public:
         auto l = AndroidUI::create();
 
         CCDirector::get()->getRunningScene()->addChild(l, 69420);
+    }
+};
+
+class AndroidBall : public CCLayer
+{
+    public:
+        static inline bool hasPos = false;
+        static inline CCPoint position = ccp(32, CCDirector::get()->getWinSize().height / 2);
+        static inline AndroidBall* instance = nullptr;
+
+        bool doingThing = false;
+        static inline bool dragging = false;
+        CircleButtonSprite* btn;
+        CCLabelBMFont* l;
+
+        void onOpenMenu()
+        {
+            AndroidUI::addToScene();
+        }
+
+        virtual bool init()
+        {
+            if (!CCLayer::init())
+                return false;
+
+            this->setID("android-ball");
+
+            this->setTouchEnabled(true);
+            this->setMouseEnabled(true);
+
+            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
+            //CCDirector::sharedDirector()->getTouchDispatcher()->addStandardDelegate(this, 69420);
+
+            auto menu = CCMenu::create();
+            menu->setPosition(ccp(0, 0));
+            menu->setContentSize(ccp(0, 0));
+
+            l = CCLabelBMFont::create(">_", "bigFont.fnt");
+            l->setAnchorPoint(ccp(0.5f, 0.35f));
+
+            btn = CircleButtonSprite::create(l);
+            btn->setPosition(position);
+            menu->addChild(btn);
+
+            this->addChild(menu);
+
+            this->setZOrder(69420 - 1);
+
+            this->scheduleUpdate();
+
+            return true;
+        }
+
+        virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+            auto space = btn->convertTouchToNodeSpace(touch);
+
+            doingThing = false;
+            dragging = false;
+
+            if (space.x > 0 && space.y > 0)
+            {
+                if (space.x < btn->getContentSize().width && space.y < btn->getContentSize().height)
+                {
+                    btn->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
+                    doingThing = true;
+                }
+            }
+
+            /*if (PlayLayer::get())
+            {
+                if (CCDirector::get()->getRunningScene()->getChildByID("pause-layer"))
+                {
+                    btn->runAction(CCFadeTo::create(0.5f, 255));
+                }
+                else
+                {
+                    btn->runAction(CCFadeTo::create(0.5f, 50));
+                }
+            }
+            else if (GameManager::sharedState()->m_levelEditorLayer)
+            {
+                if (CCDirector::get()->getRunningScene()->getChildByID("editor-pause-layer"))
+                {
+                    btn->runAction(CCFadeTo::create(0.5f, 255));
+                }
+                else
+                {
+                    btn->runAction(CCFadeTo::create(0.5f, 50));
+                }
+            }
+            else
+            {
+                btn->runAction(CCFadeTo::create(0.5f, 255));
+            }*/
+
+            return doingThing;
+        }
+
+        virtual void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+            if (doingThing)
+            {
+                if (!dragging)
+                    onOpenMenu();
+
+                btn->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
+
+                doingThing = false;
+            }
+        }
+
+        virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+            if (doingThing)
+            {
+                if (btn->getPosition().getDistance(touch->getLocation()) > 7.5f)
+                {
+                    dragging = true;
+
+                    log::info("dragging");
+                }
+
+                if (dragging)
+                {
+                    position = touch->getLocation();
+
+                    btn->setPosition(position);
+                }
+            }
+        }
+
+        virtual void update(float dt)
+        {
+            ColourUtility::pastel++;
+
+            l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
+            instance = this;
+        }
+
+        CREATE_FUNC(AndroidBall);
+};
+
+class $modify (PlayLayer)
+{
+    void pauseGame(bool p0)
+    {
+        PlayLayer::pauseGame(p0);
+
+        log::info("paused");
+
+        if (AndroidBall::instance)
+        {
+            log::info("exists");
+
+            AndroidBall::instance->removeFromParent();
+        }
+
+        auto andBall = AndroidBall::create();
+        CCDirector::get()->getRunningScene()->addChild(andBall);
+    }
+};
+
+class $modify (PauseLayer)
+{
+    static PauseLayer* create(bool p0)
+    {
+        auto v = PauseLayer::create(p0);
+
+        v->setID("pause-layer");
+
+        return v;
+    }
+};
+
+//todo: fix android
+
+class $modify (MenuLayer)
+{
+    static cocos2d::CCScene* scene(bool p0)
+    {
+        auto v = MenuLayer::scene(p0);
+
+        log::info("menuscene s");
+
+        return v;
+    }
+};
+
+bool initFix = false;
+
+class $modify (AchievementNotifier)
+{
+    void willSwitchToScene(CCScene* p0)
+    {
+        log::info("will switch to scene");
+
+        AchievementNotifier::willSwitchToScene(p0);
+
+        if (!initFix)
+        {
+            initFix = true;
+
+            auto v = MenuLayer::scene(false);
+
+            CCDirector::get()->pushScene(v);
+
+            p0 = v;
+        }
+
+        auto andBall = AndroidBall::create();
+        p0->addChild(andBall);
+
+        return;
+
+        if (!p0->getChildByID("android-ball"))
+            p0->addChild(AndroidBall::create());
+        else
+        {
+            AndroidBall::instance = static_cast<AndroidBall*>(p0->getChildByID("android-ball"));
+            AndroidBall::instance->btn->setPosition(AndroidBall::instance->position);
+        }
     }
 };
