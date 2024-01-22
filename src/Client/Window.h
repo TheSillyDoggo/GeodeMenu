@@ -142,4 +142,61 @@ public:
 
         return ImVec2(0, 0);
     }
+
+    virtual void cocosCreate(CCMenu* menu)
+    {
+        auto back = CCScale9Sprite::create("square02_small.png");
+        back->setContentSize(menu->getContentSize() / 0.5f);
+        back->setPosition(ccp(0, 0));
+        back->setAnchorPoint(ccp(0, 0));
+        back->setScale(0.5f);
+        back->setOpacity(100);
+
+        menu->addChild(back);
+
+        for (size_t m = 0; m < modules.size(); m++)
+        {
+            modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 15 - (35.0f * (m - 1.0f))});
+        }
+    }
+};
+
+class Credits : public Window
+{
+    public:
+        Credits()
+        {
+            name = "Credits";
+            id = "credits-window";
+        }
+
+        void onName(CCObject* sender)
+        {
+            ProfilePage::create(7107344, false)->show();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(menu->getContentSize() / 0.5f);
+            back->setPosition(ccp(0, 0));
+            back->setAnchorPoint(ccp(0, 0));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+
+            auto credsLeft = CCLabelBMFont::create("Name:", "bigFont.fnt");
+            credsLeft->setAnchorPoint(ccp(0, 1));
+            credsLeft->setPosition(ccp(10, menu->getContentSize().height - 10));
+            credsLeft->setScale(0.65f * 0.75f);
+
+            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onName));
+            btn->setPositionY(credsLeft->getPositionY() - 5 - 2);
+            btn->setPositionX(135);
+            btn->setScale(0.75f);
+            btn->m_baseScale = 0.75f;
+
+            menu->addChild(back);
+            menu->addChild(credsLeft);
+            menu->addChild(btn);
+        }
 };

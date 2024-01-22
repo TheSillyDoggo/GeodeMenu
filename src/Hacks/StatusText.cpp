@@ -110,6 +110,7 @@ class StatusNode : public CCNode
 
 class $modify (PlayLayer)
 {
+    /*
     bool init(GJGameLevel* p0, bool p1, bool p2)
     {
         if (!PlayLayer::init(p0, p1, p2))
@@ -148,5 +149,5 @@ class $modify (PlayLayer)
         menu->addChild(stn);
         this->addChild(menu, 69420);
         return true;
-    }
+    }*/
 };

@@ -112,17 +112,26 @@ class Module
             enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", false);
         }
 
+        void onInfoAndroid(CCObject* sender)
+        {
+            auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
+
+            FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "Ok")->show();
+        }
+
+
         void onToggleAndroid(CCObject* sender)
         {
             auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
             dat->enabled = !dat->enabled;
+            dat->save();
 
             log::info("Toggling {}", dat->id);
             log::info("enabled status: {}", dat->enabled);
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos)
+        virtual void makeAndroid(CCMenu* menu, CCPoint pos)
         {
             auto btn = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Module::onToggleAndroid), 0.75f);
             btn->setUserData(this);
@@ -136,13 +145,20 @@ class Module
             label->setPosition(pos + ccp(15, 0));
             label->limitLabelWidth(150, 0.575f, 0.1f);
 
+            auto info = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), menu, menu_selector(Module::onInfoAndroid));
+            info->setScale(0.55f);
+            info->m_baseScale = info->getScale();
+            info->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-5, 5));
+            info->setUserData(this);
+
             menu->addChild(btn);
+            menu->addChild(info);
             menu->addChild(label);
         }
 
 };
 
-class InputModule : public Module
+class InputModule : public Module, public TextInputDelegate
 {
     public:
         float speedhackV = 1.0f;
@@ -220,6 +236,32 @@ class InputModule : public Module
         {
             text = geode::prelude::Mod::get()->getSavedValue<std::string>(id + "_value", text);
         }
+
+        void makeAndroid(CCMenu* menu, CCPoint pos)
+        {
+            auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+            label->setAnchorPoint(ccp(0, 0.5f));
+            label->setScale(0.575f);
+            label->setPosition(pos - ccp(10, 0));
+            label->limitLabelWidth(70, 0.575f, 0.1f);
+
+            auto input = InputNode::create(100, name.c_str(), allowedChars, maxSize);
+            input->setPosition(pos + ccp(70, 0));
+            input->setAnchorPoint(ccp(0, 0.5f));
+            input->getInput()->setDelegate(this);
+            input->setString(text);
+
+            menu->addChild(input);
+            menu->addChild(label);
+        }
+
+        virtual void textChanged(CCTextInputNode* p0)
+        {
+            log::info(p0->getString().c_str());
+            text = p0->getString();
+
+            this->save();
+        }
 };
 
 class InfoModule : public Module
@@ -262,6 +304,7 @@ class SpeedhackTop : public InputModule
         {
             id = "speedhack-top";
             text = "1.0";
+            name = "Speed Mod";
             description = "Speed modifier (*)";
 
             instance = this;
@@ -280,6 +323,7 @@ class StatusOpacity : public InputModule
             id = "status-op";
             text = "0.9";
             maxSize = 4;
+            name = "Opacity";
             format = "Opacity: %";
 
             instance = this;
@@ -298,6 +342,7 @@ class StatusScale : public InputModule
             id = "status-sc";
             text = "1.0";
             maxSize = 4;
+            name = "Scale";
             format = "Scale: %";
 
             instance = this;

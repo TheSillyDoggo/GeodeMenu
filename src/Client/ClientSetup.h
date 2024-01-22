@@ -7,20 +7,21 @@ public:
 	{
         SetupLevel();
         SetupBypass();
-        
-        #ifndef GEODE_IS_ANDROID
         SetupSpeedhack();
-        #endif
-        
         SetupCosmetic();
         //SetupMisc();
         //SetupReplay();
-        SetupStatus();
-        //if (!android)
-        SetupOptions();
+        //SetupStatus();
+        if (android)
+            log::info("todo: finish");
+        else
+            SetupOptions();
         //SetupOptions();
         //SetupCreator();
         //SetupVariables();
+
+        if (android)
+            Client::instance->windows.push_back(new Credits());
 	}
 
 #pragma region Setup Windows
@@ -80,7 +81,8 @@ public:
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         //cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
-        cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables all rotation on ALL objects. This can make some levels impossible"));
+        cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables ALL rotation on ALL objects. This can make some levels impossible"));
+        cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
     }
@@ -139,8 +141,14 @@ public:
         replay->id = "options-window";
         replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 7, 50);
 
+        #ifndef GEODE_IS_ANDROID
+
         replay->modules.push_back(new AltModuleLocation());
         replay->modules.push_back(new CompactMode());
+
+        #else
+
+        #endif
 
         Client::instance->windows.push_back(replay);
     }

@@ -5,6 +5,7 @@
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/LoadingLayer.hpp>
 using namespace geode::prelude;
 
 
@@ -47,10 +48,33 @@ public:
 
     CCAction* getEnterAction(CCNode* panel)
     {
+        float v = 1.0f;
+
+        if (SpeedhackTop::instance)
+        {
+            if (Client::GetModuleEnabled("speedhack-enabled"))
+            {
+                try
+                {
+                    v = std::stof(SpeedhackTop::instance->text);
+                }
+                catch(const std::exception& e)
+                {
+                    v = 1.0f;
+                }
+
+                if (v < 0.01f)
+                    v = 0.01f;
+
+                if (v > 99999)
+                    v = 99999;
+            }
+        }
+
         panel->setPosition(CCDirector::get()->getWinSize() / 2);
         panel->setPositionY(-1 * panel->getContentSize().height / 2);
-        
-        return (CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2)));
+
+        return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
     }
 
 
@@ -104,7 +128,31 @@ public:
         backMenu->setPositionY(CCDirector::get()->getWinSize().height);
 
         auto backSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
-        backSpr->runAction(CCFadeIn::create(0.5f));
+        
+        float v = 1.0f;
+
+        if (SpeedhackTop::instance)
+        {
+            if (Client::GetModuleEnabled("speedhack-enabled"))
+            {
+                try
+                {
+                    v = std::stof(SpeedhackTop::instance->text);
+                }
+                catch(const std::exception& e)
+                {
+                    v = 1.0f;
+                }
+
+                if (v < 0.01f)
+                    v = 0.01f;
+
+                if (v > 99999)
+                    v = 99999;
+            }
+        }
+
+        backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / v));
 
         auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::close));
         backBtn->setPosition(ccp(20, -24));
@@ -191,16 +239,13 @@ public:
         {
             auto menu = CCMenu::create();
             menu->setAnchorPoint(ccp(1, 0));
-            menu->setPosition(ccp(panel->getContentSize().width - 15, 15));
-            menu->setContentSize(ccp(340, panel->getContentSize().height - 15 - 15));
+            menu->setPosition(ccp(panel->getContentSize().width - 15 + 5, 10));
+            menu->setContentSize(ccp(340, panel->getContentSize().height - 10 - 10));
             menu->ignoreAnchorPointForPosition(false);
 
             menu->setID(Client::instance->windows[i]->id);
 
-            for (size_t m = 0; m < Client::instance->windows[i]->modules.size(); m++)
-            {
-                Client::instance->windows[i]->modules[m]->makeAndroid(menu, ccp(20, (panel->getContentSize().height - 20 - 20) - (35 * m)));
-            }
+            Client::instance->windows[i]->cocosCreate(menu);
             
             pages.push_back(menu);
 
@@ -212,13 +257,24 @@ public:
         panel->addChild(windows);
         this->addChild(panel);
 
-        auto versionText = CCLabelBMFont::create("Mod Developed By TheSillyDoggo", "chatFont.fnt");
+        std::stringstream ver;
+        ver << "Using version " << Mod::get()->getVersion().getMajor() << "." << Mod::get()->getVersion().getMinor() << "." << Mod::get()->getVersion().getPatch();
+
+        auto versionText = CCLabelBMFont::create(ver.str().c_str(), "chatFont.fnt");
         versionText->setColor({0, 0, 0});
         versionText->setOpacity(100);
         versionText->setAnchorPoint(ccp(0.5f, 0));
         versionText->setScale(0.45f);
-        versionText->setPosition(ccp(64, 13));
+        versionText->setPosition(ccp(64, 13 + 8));
         panel->addChild(versionText);
+
+        auto devText = CCLabelBMFont::create("Mod Developed By TheSillyDoggo", "chatFont.fnt");
+        devText->setColor({0, 0, 0});
+        devText->setOpacity(100);
+        devText->setAnchorPoint(ccp(0.5f, 0));
+        devText->setScale(0.45f);
+        devText->setPosition(ccp(64, 13));
+        panel->addChild(devText);
 
         goToPage(selectedTab);
 
@@ -284,6 +340,8 @@ class AndroidBall : public CCLayer
 
             this->scheduleUpdate();
 
+            UpdateVisible(true);
+
             return true;
         }
 
@@ -301,33 +359,6 @@ class AndroidBall : public CCLayer
                     doingThing = true;
                 }
             }
-
-            /*if (PlayLayer::get())
-            {
-                if (CCDirector::get()->getRunningScene()->getChildByID("pause-layer"))
-                {
-                    btn->runAction(CCFadeTo::create(0.5f, 255));
-                }
-                else
-                {
-                    btn->runAction(CCFadeTo::create(0.5f, 50));
-                }
-            }
-            else if (GameManager::sharedState()->m_levelEditorLayer)
-            {
-                if (CCDirector::get()->getRunningScene()->getChildByID("editor-pause-layer"))
-                {
-                    btn->runAction(CCFadeTo::create(0.5f, 255));
-                }
-                else
-                {
-                    btn->runAction(CCFadeTo::create(0.5f, 50));
-                }
-            }
-            else
-            {
-                btn->runAction(CCFadeTo::create(0.5f, 255));
-            }*/
 
             return doingThing;
         }
@@ -369,6 +400,54 @@ class AndroidBall : public CCLayer
 
             l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
             instance = this;
+
+            UpdateVisible(false);
+        }
+
+        void UpdateVisible(bool i)
+        {
+            if (btn->numberOfRunningActions() != 0)
+                return;
+
+            if (i)
+            {
+                if (PlayLayer::get())
+                {
+                    btn->setOpacity(50);
+                    l->setOpacity(50);
+                }
+            }
+
+            int op = 255;
+
+            if (PlayLayer::get())
+            {
+                if (CCDirector::get()->getRunningScene()->getChildByID("pause-layer"))
+                {
+                    op = 255;
+                }
+                else
+                {
+                    op = 50;
+                }
+            }
+            else if (GameManager::sharedState()->m_levelEditorLayer)
+            {
+                if (CCDirector::get()->getRunningScene()->getChildByID("editor-pause-layer"))
+                {
+                    op = 255;
+                }
+                else
+                {
+                    op = 50;
+                }
+            }
+
+            if (op != btn->getOpacity())
+            {
+                btn->runAction(CCFadeTo::create(0.5f, op));
+                l->runAction(CCFadeTo::create(0.5f, op));
+            }
         }
 
         CREATE_FUNC(AndroidBall);
@@ -408,19 +487,28 @@ class $modify (PauseLayer)
 
 //todo: fix android
 
-class $modify (MenuLayer)
+class $modify (MenuLaunchFix, MenuLayer)
 {
-    static cocos2d::CCScene* scene(bool p0)
+    void fix(float dt)
     {
-        auto v = MenuLayer::scene(p0);
+        log::info("fix unclickable");
 
-        log::info("menuscene s");
+        if (AndroidBall::instance)
+            AndroidBall::instance->removeFromParent();
 
-        return v;
+        CCDirector::get()->getRunningScene()->addChild(AndroidBall::create());
+    }
+
+    virtual bool init()
+    {
+        if (!MenuLayer::init())
+            return false;
+
+        this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+
+        return true;
     }
 };
-
-bool initFix = false;
 
 class $modify (AchievementNotifier)
 {
@@ -429,17 +517,6 @@ class $modify (AchievementNotifier)
         log::info("will switch to scene");
 
         AchievementNotifier::willSwitchToScene(p0);
-
-        if (!initFix)
-        {
-            initFix = true;
-
-            auto v = MenuLayer::scene(false);
-
-            CCDirector::get()->pushScene(v);
-
-            p0 = v;
-        }
 
         auto andBall = AndroidBall::create();
         p0->addChild(andBall);
