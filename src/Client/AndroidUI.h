@@ -376,13 +376,13 @@ class AndroidBall : public CCLayer
         }
 
         virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
-            if (doingThing)
+            if (doingThing && (btn->numberOfRunningActions() == 0))
             {
                 if (btn->getPosition().getDistance(touch->getLocation()) > 7.5f)
                 {
                     dragging = true;
 
-                    log::info("dragging");
+                    //log::info("dragging");
                 }
 
                 if (dragging)

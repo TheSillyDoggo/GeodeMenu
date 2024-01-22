@@ -139,7 +139,7 @@ public:
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
-        replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 7, 50);
+        replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
         #ifndef GEODE_IS_ANDROID
 
