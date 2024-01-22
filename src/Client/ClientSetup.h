@@ -82,7 +82,7 @@ public:
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         //cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables ALL rotation on ALL objects. This can make some levels impossible"));
-        cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly but you do you"));
+        //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
     }
