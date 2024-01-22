@@ -257,7 +257,7 @@ class InputModule : public Module, public TextInputDelegate
 
         virtual void textChanged(CCTextInputNode* p0)
         {
-            log::info(p0->getString().c_str());
+            //log::info(p0->getString().c_str());
             text = p0->getString();
 
             this->save();
