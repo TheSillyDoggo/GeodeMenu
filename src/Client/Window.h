@@ -1,3 +1,4 @@
+#include <Geode/Geode.hpp>
 #include "Module.h"
 
 class Client;
@@ -182,8 +183,76 @@ class Credits : public Window
                     ProfilePage::create(14467409, false)->show();
                     return;
 
+                case 2:
+                    CCApplication::sharedApplication()->openURL("https://gist.github.com/absoIute/657a4c95bb92755f96e20772adbf5f32");
+                    return;
+
                 default: return;
             }
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(menu->getContentSize() / 0.5f);
+            back->setPosition(ccp(0, 0));
+            back->setAnchorPoint(ccp(0, 0));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+
+            auto credsLeft = CCLabelBMFont::create("Name:", "bigFont.fnt");
+            credsLeft->setAnchorPoint(ccp(0, 1));
+            credsLeft->setPosition(ccp(10, menu->getContentSize().height - 10));
+            credsLeft->setScale(0.65f * 0.75f);
+
+            auto credsLeftTest = CCLabelBMFont::create("Testers:", "bigFont.fnt");
+            credsLeftTest->setAnchorPoint(ccp(0, 1));
+            credsLeftTest->setPosition(ccp(10, menu->getContentSize().height - 10 - 30));
+            credsLeftTest->setScale(0.65f * 0.75f);
+
+            auto credsFade = CCLabelBMFont::create("Colours:", "bigFont.fnt");
+            credsFade->setAnchorPoint(ccp(0, 1));
+            credsFade->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30));
+            credsFade->setScale(0.65f * 0.75f);
+
+            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn->setTag(0);
+            btn->setPositionY(credsLeft->getPositionY() - 5 - 2);
+            btn->setPositionX(135);
+            btn->setScale(0.75f);
+            btn->m_baseScale = 0.75f;
+
+            auto btn2 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("CatXus", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn2->setTag(1);
+            btn2->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
+            btn2->setPositionX(120);
+            btn2->setScale(0.75f);
+            btn2->m_baseScale = 0.75f;
+
+            auto btn3 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Absolllute", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn3->setTag(3);
+            btn3->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30);
+            btn3->setPositionX(145);
+            btn3->setScale(0.75f);
+            btn3->m_baseScale = 0.75f;
+
+            menu->addChild(back);
+            menu->addChild(credsLeft);
+            menu->addChild(credsLeftTest);
+            menu->addChild(credsFade);
+            menu->addChild(btn);
+            menu->addChild(btn2);
+            menu->addChild(btn3);
+        }
+};
+
+class Config : public Window
+{
+    public:
+        Config()
+        {
+            name = "Config";
+            id = "config-window";
         }
 
         void cocosCreate(CCMenu* menu)

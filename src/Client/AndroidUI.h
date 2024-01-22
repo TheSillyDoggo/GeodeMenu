@@ -163,7 +163,7 @@ public:
 
         #pragma endregion
 
-        auto panel = CCScale9Sprite::create("GJ_square01.png");
+        auto panel = CCScale9Sprite::create("GJ_square05.png");
         panel->setContentSize(ccp(475, 280));
 
         auto windows = CCScale9Sprite::create("square02_small.png");

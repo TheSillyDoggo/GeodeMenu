@@ -12,10 +12,7 @@ public:
         //SetupMisc();
         //SetupReplay();
         //SetupStatus();
-        if (android)
-            log::info("todo: finish");
-        else
-            SetupOptions();
+        SetupOptions(android);
         //SetupOptions();
         //SetupCreator();
         //SetupVariables();
@@ -50,6 +47,7 @@ public:
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
+        level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level"));
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -59,7 +57,7 @@ public:
     static void SetupBypass()
     {
         Window* bypass = new Window();
-        bypass->name = "Bypass";
+        bypass->name = "Universal";
         bypass->id = "bypass-window";
         bypass->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
@@ -134,21 +132,18 @@ public:
         Client::instance->windows.push_back(replay);
     }
 
-    static void SetupOptions()
+    static void SetupOptions(bool android)
     {
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
         replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
-        #ifndef GEODE_IS_ANDROID
-
-        replay->modules.push_back(new AltModuleLocation());
-        replay->modules.push_back(new CompactMode());
-
-        #else
-
-        #endif
+        if (android)
+        {
+            replay->modules.push_back(new AltModuleLocation());
+            replay->modules.push_back(new CompactMode());
+        }
 
         Client::instance->windows.push_back(replay);
     }
