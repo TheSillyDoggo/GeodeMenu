@@ -16,7 +16,7 @@ class $modify (GJBaseGameLayer)
         {
             if (!m_fields->fix)
             {
-                PlayLayer::get()->playPlatformerEndAnimationToPos(PlayLayer::get()->m_player1->m_position, false);
+                PlayLayer::get()->playPlatformerEndAnimationToPos(ccp(0, 0), false);
                 m_fields->fix = true;
             }
         }
