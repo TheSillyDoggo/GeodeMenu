@@ -4,7 +4,7 @@ bool showing = false;
 #ifdef GEODE_IS_ANDROID
 bool android = true;
 #else
-bool android = true;
+bool android = false;
 #endif
 
 Client* client;
@@ -109,6 +109,8 @@ $on_mod(Loaded)
     ClientUtils::Setup(android);
 }
 
+#ifndef GEODE_IS_ANDROID
+
 void DrawDescription()
 {
     ImVec2 pos = ImVec2(10, ImGui::GetIO().DisplaySize.y - 10);
@@ -167,3 +169,5 @@ $on_mod(Loaded) {
         }
     });
 }
+
+#endif
