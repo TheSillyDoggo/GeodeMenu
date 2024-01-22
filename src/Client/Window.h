@@ -170,9 +170,20 @@ class Credits : public Window
             id = "credits-window";
         }
 
-        void onName(CCObject* sender)
+        void onCredit(CCObject* sender)
         {
-            ProfilePage::create(7107344, false)->show();
+            switch (static_cast<CCNode*>(sender)->getTag())
+            {
+                case 0:
+                    ProfilePage::create(7107344, false)->show();
+                    return;
+
+                case 1:
+                    ProfilePage::create(14467409, false)->show();
+                    return;
+
+                default: return;
+            }
         }
 
         void cocosCreate(CCMenu* menu)
@@ -189,14 +200,29 @@ class Credits : public Window
             credsLeft->setPosition(ccp(10, menu->getContentSize().height - 10));
             credsLeft->setScale(0.65f * 0.75f);
 
-            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onName));
+            auto credsLeftTest = CCLabelBMFont::create("Testers:", "bigFont.fnt");
+            credsLeftTest->setAnchorPoint(ccp(0, 1));
+            credsLeftTest->setPosition(ccp(10, menu->getContentSize().height - 10 - 30));
+            credsLeftTest->setScale(0.65f * 0.75f);
+
+            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn->setTag(0);
             btn->setPositionY(credsLeft->getPositionY() - 5 - 2);
             btn->setPositionX(135);
             btn->setScale(0.75f);
             btn->m_baseScale = 0.75f;
 
+            auto btn2 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("CatXus", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn2->setTag(1);
+            btn2->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
+            btn2->setPositionX(120);
+            btn2->setScale(0.75f);
+            btn2->m_baseScale = 0.75f;
+
             menu->addChild(back);
             menu->addChild(credsLeft);
+            menu->addChild(credsLeftTest);
             menu->addChild(btn);
+            menu->addChild(btn2);
         }
 };
