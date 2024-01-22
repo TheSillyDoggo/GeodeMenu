@@ -187,6 +187,15 @@ class Credits : public Window
                     CCApplication::sharedApplication()->openURL("https://gist.github.com/absoIute/657a4c95bb92755f96e20772adbf5f32");
                     return;
 
+                case 3:
+                    ProfilePage::create(6253758, false)->show();
+                    //CCApplication::sharedApplication()->openURL("https://github.com/FireMario211");
+                    return;
+
+                case 4:
+                    ProfilePage::create(16778880, false)->show();
+                    return;
+
                 default: return;
             }
         }
@@ -210,10 +219,20 @@ class Credits : public Window
             credsLeftTest->setPosition(ccp(10, menu->getContentSize().height - 10 - 30));
             credsLeftTest->setScale(0.65f * 0.75f);
 
-            auto credsFade = CCLabelBMFont::create("Colours:", "bigFont.fnt");
+            auto credsFade = CCLabelBMFont::create("Pastel:", "bigFont.fnt");
             credsFade->setAnchorPoint(ccp(0, 1));
             credsFade->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30));
             credsFade->setScale(0.65f * 0.75f);
+
+            auto credCode = CCLabelBMFont::create("Copy Hack:", "bigFont.fnt");
+            credCode->setAnchorPoint(ccp(0, 1));
+            credCode->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30 - 30));
+            credCode->setScale(0.65f * 0.75f);
+
+            auto dev = CCLabelBMFont::create("Developer:", "bigFont.fnt");
+            dev->setAnchorPoint(ccp(0, 1));
+            dev->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30 - 30 - 30));
+            dev->setScale(0.65f * 0.75f);
 
             auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
             btn->setTag(0);
@@ -230,19 +249,97 @@ class Credits : public Window
             btn2->m_baseScale = 0.75f;
 
             auto btn3 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Absolllute", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn3->setTag(3);
+            btn3->setTag(2);
             btn3->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30);
             btn3->setPositionX(145);
             btn3->setScale(0.75f);
             btn3->m_baseScale = 0.75f;
 
+            auto btn4 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Firee", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn4->setTag(3);
+            btn4->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30 - 30);
+            btn4->setPositionX(145);
+            btn4->setScale(0.75f);
+            btn4->m_baseScale = 0.75f;
+
+            auto btn5 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("TheSillyDoggo", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            btn5->setTag(4);
+            btn5->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30 - 30 - 30);
+            btn5->setPositionX(145);
+            btn5->setScale(0.75f);
+            btn5->m_baseScale = 0.75f;
+
             menu->addChild(back);
             menu->addChild(credsLeft);
             menu->addChild(credsLeftTest);
             menu->addChild(credsFade);
+            menu->addChild(credCode);
+            menu->addChild(dev);
             menu->addChild(btn);
             menu->addChild(btn2);
             menu->addChild(btn3);
+            menu->addChild(btn4);
+            menu->addChild(btn5);
+        }
+};
+
+class Variables : public Window
+{
+    public:
+        Variables()
+        {
+            name = "Variables";
+            id = "vars-window";
+        }
+
+        void onChangeMode(CCObject* sender)
+        {
+            /*
+            //why robert
+
+            bool m_isShip;
+            bool m_isBall;
+            bool m_isBird;
+            bool m_isDart;
+            bool m_isRobot;
+            bool m_isSpider;
+            bool m_isSwing;
+            */
+
+            if (!PlayLayer::get() || !PlayLayer::get()->m_player1)
+                return;
+
+            auto plr = PlayLayer::get()->m_player1;
+
+            int selMode = 5;
+
+            plr->m_isPlatformer = true;
+
+            //plr->switchedToMode(GameObjectType::BallPortal);
+
+            //plr->toggleRollMode(true, true);
+            //plr->m_isBall = selMode == 2;
+            //plr->m_isBird = selMode == 3;
+            //plr->m_isDart = selMode == 4;
+            //plr->m_isRobot = selMode == 5;
+            //plr->m_isSpider = selMode == 6;
+            //plr->m_isSwing = selMode == 7;
+
+            //plr->updatePlayerFrame();
+            //plr->updatePlayerShipFrame();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(ccp(110, menu->getContentSize().height) / 0.5f);
+            back->setPosition(ccp(0, 0));
+            back->setAnchorPoint(ccp(0, 0));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+
+            auto btn = CCMenuItemSpriteExtra::create(back, menu, menu_selector(Variables::onChangeMode));
+            menu->addChild(btn);
         }
 };
 
@@ -255,43 +352,105 @@ class Config : public Window
             id = "config-window";
         }
 
+        static inline std::vector<CCScale9Sprite*> btns = {};
+        static inline std::vector<CCMenuItemSprite*> btnsS = {};
+
+        void changeTheme(CCObject* sender)
+        {
+            int v = reinterpret_cast<CCNode*>(sender)->getTag();
+
+            Mod::get()->setSavedValue<int>("theme", v);
+
+            log::info("change theme to {}", v);
+
+            for (size_t i = 0; i < btns.size(); i++)
+            {
+                if (i == v - 1)
+                {
+                    btns[i]->setColor({255, 255, 255});
+                    btns[i]->setOpacity(255);
+                }
+                else
+                {
+                    btns[i]->setColor({150, 150, 150});
+                    btns[i]->setOpacity(200);
+                }
+
+                btnsS[i]->setEnabled(i != v - 1);
+            }
+        }
+
+        void createBtn(CCNode* menu, int i)
+        {
+            std::stringstream ss;
+            ss << "GJ_square0";
+            ss << i;
+            ss << ".png";
+
+            auto spr = CCScale9Sprite::create(ss.str().c_str());
+            spr->setColor({150, 150, 150});
+            spr->setOpacity(200);
+            auto sprSel = CCScale9Sprite::create(ss.str().c_str());
+            sprSel->setColor({200, 200, 200});
+
+            auto btn = CCMenuItemSprite::create(spr, sprSel, menu, menu_selector(Config::changeTheme));
+            btn->setContentSize(ccp(100, 35) * 2);
+            spr->setContentSize(ccp(100, 35) * 2);
+            spr->setPosition(ccp(0, 0));
+            sprSel->setContentSize(ccp(100, 35) * 2);
+            sprSel->setPosition(ccp(0, 0));
+
+            btn->setTag(i);
+
+            btn->setEnabled(i != Mod::get()->getSavedValue<int>("theme", 5));
+
+            if (!btn->isEnabled())
+            {
+                spr->setColor({255, 255, 255});
+                spr->setOpacity(255);
+            }
+
+            menu->addChild(btn);
+
+            btns.push_back(spr);
+            btnsS.push_back(btn);
+        }
+
         void cocosCreate(CCMenu* menu)
         {
+            btns.clear();
+            btnsS.clear();
+
             auto back = CCScale9Sprite::create("square02_small.png");
-            back->setContentSize(menu->getContentSize() / 0.5f);
+            back->setContentSize(ccp(110, menu->getContentSize().height) / 0.5f);
             back->setPosition(ccp(0, 0));
             back->setAnchorPoint(ccp(0, 0));
             back->setScale(0.5f);
             back->setOpacity(100);
 
-            auto credsLeft = CCLabelBMFont::create("Name:", "bigFont.fnt");
-            credsLeft->setAnchorPoint(ccp(0, 1));
-            credsLeft->setPosition(ccp(10, menu->getContentSize().height - 10));
-            credsLeft->setScale(0.65f * 0.75f);
+            auto m = CCMenu::create();
+            m->setAnchorPoint(back->getAnchorPoint());
+            m->setPosition(back->getPosition() + ccp(10, -10));
+            m->setContentSize(back->getContentSize());
 
-            auto credsLeftTest = CCLabelBMFont::create("Testers:", "bigFont.fnt");
-            credsLeftTest->setAnchorPoint(ccp(0, 1));
-            credsLeftTest->setPosition(ccp(10, menu->getContentSize().height - 10 - 30));
-            credsLeftTest->setScale(0.65f * 0.75f);
+            createBtn(m, 1);
+            createBtn(m, 2);
+            createBtn(m, 3);
+            createBtn(m, 4);
+            createBtn(m, 5);
 
-            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn->setTag(0);
-            btn->setPositionY(credsLeft->getPositionY() - 5 - 2);
-            btn->setPositionX(135);
-            btn->setScale(0.75f);
-            btn->m_baseScale = 0.75f;
-
-            auto btn2 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("CatXus", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn2->setTag(1);
-            btn2->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
-            btn2->setPositionX(120);
-            btn2->setScale(0.75f);
-            btn2->m_baseScale = 0.75f;
+            m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10));
+            m->updateLayout();
+            back->addChild(m);
 
             menu->addChild(back);
-            menu->addChild(credsLeft);
-            menu->addChild(credsLeftTest);
-            menu->addChild(btn);
-            menu->addChild(btn2);
+
+            auto devText = CCLabelBMFont::create("Re-open menu to apply changes", "chatFont.fnt");
+            devText->setColor({0, 0, 0});
+            devText->setOpacity(100);
+            devText->setAnchorPoint(ccp(0.5f, 0));
+            devText->setScale(0.45f);
+            devText->setPosition(ccp((menu->getContentSize().width / 2) + 65, 1));
+            menu->addChild(devText);
         }
 };

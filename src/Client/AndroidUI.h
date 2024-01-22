@@ -6,8 +6,8 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/LoadingLayer.hpp>
+#include <Geode/modify/CCScene.hpp>
 using namespace geode::prelude;
-
 
 class AndroidUI : public cocos2d::CCLayerColor {
 public:
@@ -163,8 +163,14 @@ public:
 
         #pragma endregion
 
-        auto panel = CCScale9Sprite::create("GJ_square05.png");
+        std::stringstream ss;
+        ss << "GJ_square0";
+        ss << Mod::get()->getSavedValue<int>("theme", 5);
+        ss << ".png";
+
+        auto panel = CCScale9Sprite::create(ss.str().c_str());
         panel->setContentSize(ccp(475, 280));
+        panel->setID("panel");
 
         auto windows = CCScale9Sprite::create("square02_small.png");
         windows->setOpacity(100);
@@ -451,6 +457,20 @@ class AndroidBall : public CCLayer
         }
 
         CREATE_FUNC(AndroidBall);
+};
+
+class $modify (CCScene)
+{
+    int getHighestChildZ()
+    {
+        AndroidBall::instance->removeFromParentAndCleanup(false);
+
+        int v = CCScene::getHighestChildZ();
+
+        this->addChild(AndroidBall::instance);
+
+        return v;
+    }
 };
 
 class $modify (PlayLayer)

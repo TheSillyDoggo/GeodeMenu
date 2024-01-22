@@ -9,9 +9,10 @@ public:
         SetupBypass();
         SetupSpeedhack();
         SetupCosmetic();
-        //SetupMisc();
-        //SetupReplay();
-        //SetupStatus();
+        
+        //if (android)
+            //Client::instance->windows.push_back(new Variables());
+
         SetupOptions(android);
         //SetupOptions();
         //SetupCreator();
@@ -48,6 +49,7 @@ public:
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level"));
+        //level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels"));
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -65,6 +67,8 @@ public:
         bypass->modules.push_back(new Module("Practice Music Sync", "practice-bypass", "Unlocks the Practice Music Sync button in the pause menu options"));
         bypass->modules.push_back(new Module("Unlock All Icons", "icon-bypass", "It... Unlocks all the icons, You should know what this does"));
         bypass->modules.push_back(new Module("Music Unlocker", "music-bypass", "Unlocks the menu and practice music buttons"));
+        bypass->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by Firee"));
+        bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by Firee"));
 
 
         Client::instance->windows.push_back(bypass);
@@ -80,7 +84,7 @@ public:
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         //cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables ALL rotation on ALL objects. This can make some levels impossible"));
-        //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly but you do you"));
+        //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
     }
@@ -134,6 +138,9 @@ public:
 
     static void SetupOptions(bool android)
     {
+        Client::instance->windows.push_back(new Config());
+
+        return;
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
