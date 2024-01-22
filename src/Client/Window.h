@@ -306,14 +306,14 @@ class Variables : public Window
             bool m_isSwing;
             */
 
-            if (!PlayLayer::get() || !PlayLayer::get()->m_player1)
-                return;
+            //if (!PlayLayer::get() || !PlayLayer::get()->m_player1)
+                //return;
 
-            auto plr = PlayLayer::get()->m_player1;
+            //auto plr = PlayLayer::get()->m_player1;
 
-            int selMode = 5;
+            //int selMode = 5;
 
-            plr->m_isPlatformer = true;
+            //plr->m_isPlatformer = true;
 
             //plr->switchedToMode(GameObjectType::BallPortal);
 
