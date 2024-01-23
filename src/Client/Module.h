@@ -32,12 +32,13 @@ class Module
             this->load();
         }
 
-        Module(std::string n, std::string i, std::string d)
+        Module(std::string n, std::string i, std::string d, bool _def = false)
         {
             name = n;
             id = i;
             description = d;
             enabled = false;
+            def = _def;
 
             this->load();
         }
@@ -55,6 +56,7 @@ class Module
         std::string id;
         std::string description;
         bool enabled;
+        bool def;
         float value = 1.0f;
 
         virtual bool Draw(ImVec2 tileSize)
@@ -109,7 +111,7 @@ class Module
 
         virtual void load()
         {
-            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", false);
+            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
         }
 
         void onInfoAndroid(CCObject* sender)

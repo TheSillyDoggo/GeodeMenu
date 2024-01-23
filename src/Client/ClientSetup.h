@@ -142,9 +142,16 @@ public:
 
     static void SetupOptions(bool android)
     {
-        Client::instance->windows.push_back(new Config());
+        if (android)
+        {
+            auto cfg = new Config();
+            
+            cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
 
-        return;
+            Client::instance->windows.push_back(cfg);
+            return;
+        }
+
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
@@ -154,6 +161,10 @@ public:
         {
             replay->modules.push_back(new AltModuleLocation());
             replay->modules.push_back(new CompactMode());
+        }
+        else
+        {
+            replay->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen"));
         }
 
         Client::instance->windows.push_back(replay);

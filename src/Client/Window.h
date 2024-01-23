@@ -434,8 +434,6 @@ class Config : public Window
 
         void createBtn(CCNode* menu, int i)
         {
-            CCEGLView::get()->setFrameSize(1280, 720);
-
             std::stringstream ss;
             ss << "GJ_square0";
             ss << i;
@@ -490,6 +488,11 @@ class Config : public Window
             Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
         }
 
+        void onChangeDraggable(CCObject* sender)
+        {
+
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             btns.clear();
@@ -539,7 +542,7 @@ class Config : public Window
             normal->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
             auto lGP = CCLabelBMFont::create("Gameplay:", "bigFont.fnt");
-            lGP->setPosition(ccp(120, menu->getContentSize().height - 5 - 30));
+            lGP->setPosition(ccp(120, menu->getContentSize().height - 5 - 20));
             lGP->setAnchorPoint(ccp(0, 1));
             lGP->setScale(0.5f);
 
@@ -550,7 +553,7 @@ class Config : public Window
             GP->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
             auto lED = CCLabelBMFont::create("Editor:", "bigFont.fnt");
-            lED->setPosition(ccp(120, menu->getContentSize().height - 5 - 30 - 30));
+            lED->setPosition(ccp(120, menu->getContentSize().height - 5 - 20 - 20));
             lED->setAnchorPoint(ccp(0, 1));
             lED->setScale(0.5f);
 
@@ -559,6 +562,8 @@ class Config : public Window
             ED->setPosition(ccp(lED->getPositionX() + 115, lED->getPositionY() - 10));
             ED->setScaleX(0.8f);
             ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+
+            modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90));
 
             menu->addChild(lNormal);
             menu->addChild(normal);

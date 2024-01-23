@@ -6,9 +6,9 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/LoadingLayer.hpp>
-#ifdef GEODE_IS_ANDROID
 #include <Geode/modify/CCScene.hpp>
-#endif
+#include <Geode/modify/CCNode.hpp>
+
 using namespace geode::prelude;
 
 class AndroidUI : public cocos2d::CCLayerColor {
@@ -393,6 +393,9 @@ class AndroidBall : public CCLayer
                     //log::info("dragging");
                 }
 
+                if (!Client::GetModuleEnabled("allow-dragging"))
+                    dragging = false;
+
                 if (dragging)
                 {
                     position = touch->getLocation();
@@ -471,26 +474,6 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
-#ifdef GEODE_IS_ANDROID
-
-class $modify (CCScene)
-{
-    int getHighestChildZ()
-    {
-        if (AndroidBall::instance)
-            AndroidBall::instance->setZOrder(-1);
-
-        int value = CCScene::getHighestChildZ();
-        
-        if (AndroidBall::instance)
-            AndroidBall::instance->setZOrder(68419);
-
-        return value;
-    }
-};
-
-#endif
-
 class $modify (PlayLayer)
 {
     void pauseGame(bool p0)
@@ -546,6 +529,24 @@ class $modify (MenuLaunchFix, MenuLayer)
         this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
 
         return true;
+    }
+};
+
+class $modify (CCScene)
+{
+    int getHighestChildZ()
+    {
+        if (AndroidBall::instance)
+            AndroidBall::instance->setZOrder(-1);
+
+        int value = CCScene::getHighestChildZ();
+        
+        if (AndroidBall::instance)
+            AndroidBall::instance->setZOrder(68419);
+
+        this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+
+        return value;
     }
 };
 
