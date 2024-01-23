@@ -6,7 +6,9 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/LoadingLayer.hpp>
+#ifdef GEODE_IS_ANDROID
 #include <Geode/modify/CCScene.hpp>
+#endif
 using namespace geode::prelude;
 
 class AndroidUI : public cocos2d::CCLayerColor {
@@ -459,6 +461,8 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
+#ifdef GEODE_IS_ANDROID
+
 class $modify (CCScene)
 {
     int getHighestChildZ()
@@ -472,6 +476,8 @@ class $modify (CCScene)
         return v;
     }
 };
+
+#endif
 
 class $modify (PlayLayer)
 {
