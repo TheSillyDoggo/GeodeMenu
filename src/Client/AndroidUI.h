@@ -461,7 +461,7 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
-/*#ifdef GEODE_IS_ANDROID
+#ifdef GEODE_IS_ANDROID
 
 class $modify (CCScene)
 {
@@ -477,7 +477,7 @@ class $modify (CCScene)
     }
 };
 
-#endif*/
+#endif
 
 class $modify (PlayLayer)
 {
