@@ -1,5 +1,6 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/FMODAudioEngine.hpp>
+#include <Geode/modify/MusicDownloadManager.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -7,7 +8,7 @@ using namespace geode::prelude;
 class $modify (FMODAudioEngine)
 {
     static void onModify(auto& self) {
-        auto res = self.getHook("FMODAudioEngine::playEffect");
+        auto res = self.getHook("FMODAudioEngine::playEffectAdvanced");
         if (!res) {
             log::error("Something went horribly wrong");
             return;
@@ -17,8 +18,20 @@ class $modify (FMODAudioEngine)
 
     void playEffect(gd::string p0, float p1, float p2, float p3)
     {
-        log::info(p0);
-
-        FMODAudioEngine::playEffect(p0, p1, p2, p3);
+        if (!Client::GetModuleEnabled("fire-in-the-hole"))
+            FMODAudioEngine::playEffect(p0, p1, p2, p3);
+        else        
+            FMODAudioEngine::playEffect("sfx/s4451.ogg", p1, p2, p3);
     }
-};*/
+};
+
+class $modify (MusicDownloadManager)
+{
+    gd::string pathForSFX(int p0)
+    {
+        if (!Client::GetModuleEnabled("fire-in-the-hole"))
+            return MusicDownloadManager::pathForSFX(p0);
+        else
+            return "sfx/s4451.ogg";
+    }
+};

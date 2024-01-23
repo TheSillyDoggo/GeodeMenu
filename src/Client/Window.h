@@ -155,11 +155,48 @@ public:
 
         menu->addChild(back);
 
+        int y = 0;
+
         for (size_t m = 0; m < modules.size(); m++)
         {
-            modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (m - 1.0f))});
+            float x = 20;
+
+            if (!(m % 2 == 0))
+                x = 188;
+
+            modules[m]->makeAndroid(menu, {x, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (y - 1.0f)) });
+
+            if ((m - 1) % 2 == 0 && m != 0)
+                y++;
         }
     }
+};
+
+class Speedhack : public Window
+{
+    public:
+        Speedhack()
+        {
+            name = "Speedhack";
+            id = "speedhack-window";
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(menu->getContentSize() / 0.5f);
+            back->setPosition(ccp(0, 0));
+            back->setAnchorPoint(ccp(0, 0));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+
+            menu->addChild(back);
+
+            for (size_t m = 0; m < modules.size(); m++)
+            {
+                modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (m - 1.0f))});
+            }
+        }
 };
 
 class Credits : public Window
@@ -397,6 +434,8 @@ class Config : public Window
 
         void createBtn(CCNode* menu, int i)
         {
+            CCEGLView::get()->setFrameSize(1280, 720);
+
             std::stringstream ss;
             ss << "GJ_square0";
             ss << i;

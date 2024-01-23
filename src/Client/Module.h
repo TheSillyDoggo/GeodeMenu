@@ -143,7 +143,7 @@ class Module
             label->setAnchorPoint(ccp(0, 0.5f));
             label->setScale(0.575f);
             label->setPosition(pos + ccp(15, 0));
-            label->limitLabelWidth(100, 0.575f, 0.1f);
+            label->limitLabelWidth(110, 0.575f, 0.1f);
 
             auto info = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), menu, menu_selector(Module::onInfoAndroid));
             info->setScale(0.55f);

@@ -157,7 +157,7 @@ public:
         backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / v));
 
         auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::close));
-        backBtn->setPosition(ccp(20, -24));
+        backBtn->setPosition(ccp(24, -23));
         backBtn->setSizeMult(1.15f);
 
         backMenu->addChild(backBtn);
