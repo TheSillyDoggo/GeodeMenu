@@ -4,7 +4,7 @@ bool showing = false;
 #ifdef GEODE_IS_ANDROID
 bool android = true;
 #else
-bool android = false;
+bool android = true;
 #endif
 
 Client* client;

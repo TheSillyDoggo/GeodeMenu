@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
 
@@ -22,4 +22,4 @@ class $modify (PlayerObject)
             }
         }
     }
-};
+};*/

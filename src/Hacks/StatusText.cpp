@@ -4,6 +4,7 @@
 
 using namespace geode::prelude;
 
+/*
 class StatusNode : public CCNode
 {
     public:
@@ -149,5 +150,5 @@ class $modify (PlayLayer)
         menu->addChild(stn);
         this->addChild(menu, 69420);
         return true;
-    }*/
-};
+    }
+};*/

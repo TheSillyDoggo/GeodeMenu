@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-class $modify (GJBaseGameLayer)
+/*class $modify (GJBaseGameLayer)
 {
     bool fix = false;
 
@@ -21,4 +21,4 @@ class $modify (GJBaseGameLayer)
             }
         }
     }
-};
+};*/
