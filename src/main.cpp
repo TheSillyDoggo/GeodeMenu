@@ -130,6 +130,8 @@ void DrawDescription()
     DrawUtils::anchoredText(ImVec2(pos.x + 10, pos.y - 10 - (ImGui::CalcTextSize(Module::descMod.c_str()).y)), ImVec2(ImGui::CalcTextSize(Module::descMod.c_str()).x, ImGui::CalcTextSize(Module::descMod.c_str()).y), Module::descMod.c_str(), ImColor(255, 255, 255, 255), ImVec2(0, 0));
 }
 
+#endif
+
 bool v = false;
 
 class $modify (LoadingLayer)
@@ -143,6 +145,8 @@ class $modify (LoadingLayer)
         {
             AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
             
+            #ifndef GEODE_IS_ANDROID
+
             ImGuiCocos::get().setup([] {
                 // this runs after imgui has been setup,
                 // its a callback as imgui will be re initialized when toggling fullscreen,
@@ -182,11 +186,11 @@ class $modify (LoadingLayer)
                 }
             });
 
+            #endif
+
             v = true;
         }
 
         return true;
     }
 };
-
-#endif
