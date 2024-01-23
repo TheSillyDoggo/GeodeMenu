@@ -512,7 +512,7 @@ class $modify (PauseLayer)
 };
 
 //todo: fix android
-
+/*
 class $modify (MenuLaunchFix, MenuLayer)
 {
     void fix(float dt)
@@ -535,7 +535,7 @@ class $modify (MenuLaunchFix, MenuLayer)
         return true;
     }
 };
-
+*/
 class $modify (AchievementNotifier)
 {
     void willSwitchToScene(CCScene* p0)
