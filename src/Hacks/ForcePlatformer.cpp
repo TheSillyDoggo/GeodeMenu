@@ -8,7 +8,8 @@ class $modify (PlayerObject)
 {
     virtual void update(float dt)
     {
-        this->togglePlatformerMode(true);
+        if (Client::GetModuleEnabled("force-plat"))
+            this->togglePlatformerMode(true);
 
         PlayerObject::update(dt);
     }

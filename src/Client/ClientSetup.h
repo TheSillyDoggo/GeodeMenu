@@ -49,7 +49,7 @@ public:
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level"));
-        //level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels"));
+        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels"));
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
