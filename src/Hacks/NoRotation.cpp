@@ -5,18 +5,18 @@
 
 using namespace geode::prelude;
 
-/*
 class $modify (PlayerObject)
 {
     void setRotation(float r)
     {
-        if (Client::GetModuleEnabled("no-plr-rot"))
+        if (Client::GetModuleEnabled("no-rot"))
             PlayerObject::setRotation(0);
         else
             PlayerObject::setRotation(r);
     }
 };
-*/
+
+/*
 class $modify (CCNode)
 {
     void setRotation(float r)
@@ -26,4 +26,4 @@ class $modify (CCNode)
         else
             CCNode::setRotation(r);
     }
-};
+};*/

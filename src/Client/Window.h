@@ -442,15 +442,11 @@ class Config : public Window
 
             float ovgp = (GP->getThumb()->getPositionX() + 50.0f) / 100.0f;
             int vgp = round(ovgp * 255.0f);
-            if (vgp < 10)
-                vgp = 10;
 
             Mod::get()->setSavedValue<int>("gameplay-opacity", (int)(vgp));
 
             float oved = (ED->getThumb()->getPositionX() + 50.0f) / 100.0f;
             int ved = round(oved * 255.0f);
-            if (ved < 10)
-                ved = 10;
 
             Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
         }

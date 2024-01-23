@@ -69,6 +69,7 @@ public:
         bypass->modules.push_back(new Module("Music Unlocker", "music-bypass", "Unlocks the menu and practice music buttons"));
         bypass->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by Firee"));
         bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by Firee"));
+        bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
 
         Client::instance->windows.push_back(bypass);
