@@ -477,13 +477,17 @@ class $modify (CCScene)
 {
     int getHighestChildZ()
     {
+        if (AndroidBall::instance)
+            AndroidBall::instance->setZOrder(-1);
+
+        int value = CCScene::getHighestChildZ();
         //AndroidBall::instance->removeFromParentAndCleanup(false);
 
         //int v = CCScene::getHighestChildZ();
+        if (AndroidBall::instance)
+            AndroidBall::instance->setZOrder(68419);
 
-        //this->addChild(AndroidBall::instance);
-
-        return CCScene::getHighestChildZ();//v;
+        return value;//v;
     }
 };
 
