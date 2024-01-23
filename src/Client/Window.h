@@ -196,6 +196,10 @@ class Credits : public Window
                     ProfilePage::create(16778880, false)->show();
                     return;
 
+                case 5:
+                    ProfilePage::create(7236822, false)->show();
+                    return;
+
                 default: return;
             }
         }
@@ -248,6 +252,13 @@ class Credits : public Window
             btn2->setScale(0.75f);
             btn2->m_baseScale = 0.75f;
 
+            auto km7 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("km7dev", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
+            km7->setTag(5);
+            km7->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
+            km7->setPositionX(210);
+            km7->setScale(0.75f);
+            km7->m_baseScale = 0.75f;
+
             auto btn3 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Absolllute", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
             btn3->setTag(2);
             btn3->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30);
@@ -265,7 +276,7 @@ class Credits : public Window
             auto btn5 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("TheSillyDoggo", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
             btn5->setTag(4);
             btn5->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30 - 30 - 30);
-            btn5->setPositionX(145);
+            btn5->setPositionX(180);
             btn5->setScale(0.75f);
             btn5->m_baseScale = 0.75f;
 
@@ -280,6 +291,7 @@ class Credits : public Window
             menu->addChild(btn3);
             menu->addChild(btn4);
             menu->addChild(btn5);
+            menu->addChild(km7);
         }
 };
 
@@ -354,6 +366,9 @@ class Config : public Window
 
         static inline std::vector<CCScale9Sprite*> btns = {};
         static inline std::vector<CCMenuItemSprite*> btnsS = {};
+        static inline Slider* normal = nullptr;
+        static inline Slider* GP = nullptr;
+        static inline Slider* ED = nullptr;
 
         void changeTheme(CCObject* sender)
         {
@@ -416,6 +431,30 @@ class Config : public Window
             btnsS.push_back(btn);
         }
 
+        void onSliderChanged(CCObject* sender)
+        {
+            float ov = (normal->getThumb()->getPositionX() + 50.0f) / 100.0f;
+            int v = round(ov * 255.0f);
+            if (v < 10)
+                v = 10;
+
+            Mod::get()->setSavedValue<int>("normal-opacity", (int)(v));
+
+            float ovgp = (GP->getThumb()->getPositionX() + 50.0f) / 100.0f;
+            int vgp = round(ovgp * 255.0f);
+            if (vgp < 10)
+                vgp = 10;
+
+            Mod::get()->setSavedValue<int>("gameplay-opacity", (int)(vgp));
+
+            float oved = (ED->getThumb()->getPositionX() + 50.0f) / 100.0f;
+            int ved = round(oved * 255.0f);
+            if (ved < 10)
+                ved = 10;
+
+            Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             btns.clear();
@@ -452,5 +491,45 @@ class Config : public Window
             devText->setScale(0.45f);
             devText->setPosition(ccp((menu->getContentSize().width / 2) + 65, 1));
             menu->addChild(devText);
+
+            auto lNormal = CCLabelBMFont::create("Normal:", "bigFont.fnt");
+            lNormal->setPosition(ccp(120, menu->getContentSize().height - 5));
+            lNormal->setAnchorPoint(ccp(0, 1));
+            lNormal->setScale(0.5f);
+
+            normal = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
+            normal->setValue((Mod::get()->getSavedValue<int>("normal-opacity", 255) / 255.0f));
+            normal->setPosition(ccp(lNormal->getPositionX() + 115, lNormal->getPositionY() - 10));
+            normal->setScaleX(0.8f);
+            normal->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+
+            auto lGP = CCLabelBMFont::create("Gameplay:", "bigFont.fnt");
+            lGP->setPosition(ccp(120, menu->getContentSize().height - 5 - 30));
+            lGP->setAnchorPoint(ccp(0, 1));
+            lGP->setScale(0.5f);
+
+            GP = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
+            GP->setValue((Mod::get()->getSavedValue<int>("gameplay-opacity", 50) / 255.0f));
+            GP->setPosition(ccp(lGP->getPositionX() + 115, lGP->getPositionY() - 10));
+            GP->setScaleX(0.8f);
+            GP->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+
+            auto lED = CCLabelBMFont::create("Editor:", "bigFont.fnt");
+            lED->setPosition(ccp(120, menu->getContentSize().height - 5 - 30 - 30));
+            lED->setAnchorPoint(ccp(0, 1));
+            lED->setScale(0.5f);
+
+            ED = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
+            ED->setValue((Mod::get()->getSavedValue<int>("editor-opacity", 50) / 255.0f));
+            ED->setPosition(ccp(lED->getPositionX() + 115, lED->getPositionY() - 10));
+            ED->setScaleX(0.8f);
+            ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+
+            menu->addChild(lNormal);
+            menu->addChild(normal);
+            menu->addChild(lGP);
+            menu->addChild(GP);
+            menu->addChild(lED);
+            menu->addChild(ED);
         }
 };

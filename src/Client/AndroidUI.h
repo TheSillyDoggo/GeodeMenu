@@ -338,7 +338,7 @@ class AndroidBall : public CCLayer
             l = CCLabelBMFont::create(">_", "bigFont.fnt");
             l->setAnchorPoint(ccp(0.5f, 0.35f));
 
-            btn = CircleButtonSprite::create(l);
+            btn = CircleButtonSprite::create(l, CircleBaseColor::Gray);
             btn->setPosition(position);
             menu->addChild(btn);
 
@@ -423,61 +423,71 @@ class AndroidBall : public CCLayer
                 {
                     btn->setOpacity(50);
                     l->setOpacity(50);
+
+                    i = false;
                 }
             }
 
-            int op = 255;
+            int op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
 
             if (PlayLayer::get())
             {
                 if (CCDirector::get()->getRunningScene()->getChildByID("pause-layer"))
                 {
-                    op = 255;
+                    op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
                 }
                 else
                 {
-                    op = 50;
+                    op = Mod::get()->getSavedValue<int>("gameplay-opacity", 50);
                 }
             }
             else if (GameManager::sharedState()->m_levelEditorLayer)
             {
                 if (CCDirector::get()->getRunningScene()->getChildByID("editor-pause-layer"))
                 {
-                    op = 255;
+                    op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
                 }
                 else
                 {
-                    op = 50;
+                    op = Mod::get()->getSavedValue<int>("editor-opacity", 50);
                 }
             }
 
             if (op != btn->getOpacity())
             {
-                btn->runAction(CCFadeTo::create(0.5f, op));
-                l->runAction(CCFadeTo::create(0.5f, op));
+                if (i)
+                {
+                    btn->setOpacity(op);
+                    l->setOpacity(op);
+                }
+                else
+                {
+                    btn->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f, op), 2));
+                    l->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f, op), 2));
+                }
             }
         }
 
         CREATE_FUNC(AndroidBall);
 };
 
-/*#ifdef GEODE_IS_ANDROID
+#ifdef GEODE_IS_ANDROID
 
 class $modify (CCScene)
 {
     int getHighestChildZ()
     {
-        AndroidBall::instance->removeFromParentAndCleanup(false);
+        //AndroidBall::instance->removeFromParentAndCleanup(false);
 
-        int v = CCScene::getHighestChildZ();
+        //int v = CCScene::getHighestChildZ();
 
-        this->addChild(AndroidBall::instance);
+        //this->addChild(AndroidBall::instance);
 
-        return v;
+        return CCScene::getHighestChildZ();//v;
     }
 };
 
-#endif*/
+#endif
 
 class $modify (PlayLayer)
 {
@@ -512,7 +522,8 @@ class $modify (PauseLayer)
 };
 
 //todo: fix android
-/*
+//no longer todo i fixed it :3
+
 class $modify (MenuLaunchFix, MenuLayer)
 {
     void fix(float dt)
@@ -535,7 +546,7 @@ class $modify (MenuLaunchFix, MenuLayer)
         return true;
     }
 };
-*/
+
 class $modify (AchievementNotifier)
 {
     void willSwitchToScene(CCScene* p0)
