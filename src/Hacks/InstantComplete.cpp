@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-/*class $modify (GJBaseGameLayer)
+class $modify (GJBaseGameLayer)
 {
     bool fix = false;
 
@@ -16,9 +16,9 @@ using namespace geode::prelude;
         {
             if (!m_fields->fix)
             {
-                //PlayLayer::get()->playPlatformerEndAnimationToPos(ccp(0, 0), false);
+                PlayLayer::get()->playPlatformerEndAnimationToPos(ccp(0, 0), false);
                 m_fields->fix = true;
             }
         }
     }
-};*/
+};
