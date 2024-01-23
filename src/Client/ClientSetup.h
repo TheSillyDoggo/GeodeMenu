@@ -70,6 +70,7 @@ public:
         bypass->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by Firee"));
         bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by Firee"));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
+        bypass->modules.push_back(new Module("Auto Safe mode\nNOT YET IMPLEMENTED", "auto-safe-mode", "NOT YET IMPLEMENTED"));
 
 
         Client::instance->windows.push_back(bypass);
@@ -84,7 +85,7 @@ public:
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         //cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
-        cosmetic->modules.push_back(new Module("No Rotation", "no-rot", "Disables ALL rotation on ALL objects. This can make some levels impossible"));
+        cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);

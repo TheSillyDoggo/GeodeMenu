@@ -5,6 +5,7 @@
 		"win": "2.204",
 		"android": "*"
 	},
+	"early-load": true,
 	"id": "TheSillyDoggo.Cheats",
 	"name": "QOLMod",
 	"developer": "TheSillyDoggo",

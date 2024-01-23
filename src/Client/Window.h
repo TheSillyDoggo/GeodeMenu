@@ -157,7 +157,7 @@ public:
 
         for (size_t m = 0; m < modules.size(); m++)
         {
-            modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 15 - (35.0f * (m - 1.0f))});
+            modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (m - 1.0f))});
         }
     }
 };

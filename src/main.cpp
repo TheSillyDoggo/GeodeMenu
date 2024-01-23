@@ -1,4 +1,5 @@
 #include "include.h"
+#include <Geode/modify/LoadingLayer.hpp>
 
 bool showing = false;
 #ifdef GEODE_IS_ANDROID
@@ -129,45 +130,63 @@ void DrawDescription()
     DrawUtils::anchoredText(ImVec2(pos.x + 10, pos.y - 10 - (ImGui::CalcTextSize(Module::descMod.c_str()).y)), ImVec2(ImGui::CalcTextSize(Module::descMod.c_str()).x, ImGui::CalcTextSize(Module::descMod.c_str()).y), Module::descMod.c_str(), ImColor(255, 255, 255, 255), ImVec2(0, 0));
 }
 
-$on_mod(Loaded) {
-    ImGuiCocos::get().setup([] {
-        // this runs after imgui has been setup,
-        // its a callback as imgui will be re initialized when toggling fullscreen,
-        // so use this to setup any themes and or fonts!
+bool v = false;
 
-        auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "verdana.ttf").string().c_str(), 32.0f);
-        ImGui::GetIO().FontDefault = font;
-        ImGui::GetIO().FontGlobalScale = 0.5f;
+class $modify (LoadingLayer)
+{
+    bool init(bool p0)
+    {
+        if (!LoadingLayer::init(p0))
+            return false;
 
-    }).draw([] {
-
-        if (!android)
+        if (!v)
         {
-            if (client->animStatus == 0)
-            {
-                InputModule::selected = nullptr;
-            }
+            AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
+            
+            ImGuiCocos::get().setup([] {
+                // this runs after imgui has been setup,
+                // its a callback as imgui will be re initialized when toggling fullscreen,
+                // so use this to setup any themes and or fonts!
 
-            if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-                InputModule::selected = nullptr;
+                auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "verdana.ttf").string().c_str(), 32.0f);
+                ImGui::GetIO().FontDefault = font;
+                ImGui::GetIO().FontGlobalScale = 0.5f;
 
-            client->animStatus += ((showing ? 1 : -1) * ImGui::GetIO().DeltaTime) / 0.25f;
-            client->animStatus = clampf(client->animStatus, 0, 1);
+            }).draw([] {
 
-            client->draw();
+                if (!android)
+                {
+                    if (client->animStatus == 0)
+                    {
+                        InputModule::selected = nullptr;
+                    }
 
-            if (!showing)
-                ImGui::GetIO().WantCaptureMouse = false;
+                    if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
+                        InputModule::selected = nullptr;
 
-            if (showing)
-            {
-                if (Module::descMod != "")
-                    DrawDescription();
-            }
+                    client->animStatus += ((showing ? 1 : -1) * ImGui::GetIO().DeltaTime) / 0.25f;
+                    client->animStatus = clampf(client->animStatus, 0, 1);
 
-            ImGui::End();
+                    client->draw();
+
+                    if (!showing)
+                        ImGui::GetIO().WantCaptureMouse = false;
+
+                    if (showing)
+                    {
+                        if (Module::descMod != "")
+                            DrawDescription();
+                    }
+
+                    ImGui::End();
+                }
+            });
+
+            v = true;
         }
-    });
-}
+
+        return true;
+    }
+};
 
 #endif
