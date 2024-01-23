@@ -3,7 +3,7 @@
 	"version": "v1.0.0",
 	"gd": {
 		"win": "2.204",
-		"android": "2.200"
+		"android": "*"
 	},
 	"id": "TheSillyDoggo.Cheats",
 	"name": "QOLMod",
