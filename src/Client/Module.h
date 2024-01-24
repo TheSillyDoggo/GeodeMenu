@@ -139,8 +139,7 @@ class Module
             btn->setUserData(this);
             btn->setID(id);
             btn->toggle(enabled);
-            btn->setPosition(pos - ccp(12, 0));
-            btn->setAnchorPoint(ccp(0, 0.5f));
+            btn->setPosition(pos);
 
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));

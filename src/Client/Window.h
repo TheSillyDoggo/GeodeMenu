@@ -210,6 +210,19 @@ class Credits : public Window
 
         void onCredit(CCObject* sender)
         {
+            auto tag = static_cast<CCNode*>(sender)->getID();
+
+            if (tag.starts_with("gd"))
+            {
+                log::info("open gd profile: {}", std::stoi(tag.c_str() + 2));
+                ProfilePage::create(std::stoi(tag.c_str() + 2), false)->show();
+            }
+            else
+            {
+                CCApplication::sharedApplication()->openURL(tag.c_str());
+            }
+
+            return;
             switch (static_cast<CCNode*>(sender)->getTag())
             {
                 case 0:
@@ -241,6 +254,28 @@ class Credits : public Window
             }
         }
 
+        void createPanel(CCMenu* menu, CCPoint pos, char const * title, char const * name, CCNode* img, float scale, std::string v)
+        {
+            auto t = CCLabelBMFont::create(title, "bigFont.fnt");
+            t->setPosition(pos + ccp(0, 28));
+            t->limitLabelWidth(110, 0.5f, 0.1f);
+            menu->addChild(t);
+
+            auto n = CCLabelBMFont::create(name, "goldFont.fnt");
+            menu->addChild(n);
+            n->limitLabelWidth(110, 0.5f, 0.1f);
+            n->setPosition(pos + ccp(0, -28));
+
+            auto btn = CCMenuItemSpriteExtra::create(img, menu, menu_selector(Credits::onCredit));
+            btn->setID(v);
+            btn->setPosition(pos);
+            btn->setContentSize(ccp(34, 34));
+            menu->addChild(btn);
+
+            img->setPosition(btn->getContentSize() / 2);
+            img->setScale(scale);
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             auto back = CCScale9Sprite::create("square02_small.png");
@@ -249,86 +284,69 @@ class Credits : public Window
             back->setAnchorPoint(ccp(0, 0));
             back->setScale(0.5f);
             back->setOpacity(100);
-
-            auto credsLeft = CCLabelBMFont::create("Name:", "bigFont.fnt");
-            credsLeft->setAnchorPoint(ccp(0, 1));
-            credsLeft->setPosition(ccp(10, menu->getContentSize().height - 10));
-            credsLeft->setScale(0.65f * 0.75f);
-
-            auto credsLeftTest = CCLabelBMFont::create("Testers:", "bigFont.fnt");
-            credsLeftTest->setAnchorPoint(ccp(0, 1));
-            credsLeftTest->setPosition(ccp(10, menu->getContentSize().height - 10 - 30));
-            credsLeftTest->setScale(0.65f * 0.75f);
-
-            auto credsFade = CCLabelBMFont::create("Pastel:", "bigFont.fnt");
-            credsFade->setAnchorPoint(ccp(0, 1));
-            credsFade->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30));
-            credsFade->setScale(0.65f * 0.75f);
-
-            auto credCode = CCLabelBMFont::create("Copy Hack:", "bigFont.fnt");
-            credCode->setAnchorPoint(ccp(0, 1));
-            credCode->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30 - 30));
-            credCode->setScale(0.65f * 0.75f);
-
-            auto dev = CCLabelBMFont::create("Developer:", "bigFont.fnt");
-            dev->setAnchorPoint(ccp(0, 1));
-            dev->setPosition(ccp(10, menu->getContentSize().height - 10 - 30 - 30 - 30 - 30));
-            dev->setScale(0.65f * 0.75f);
-
-            auto btn = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("PrometheusSV", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn->setTag(0);
-            btn->setPositionY(credsLeft->getPositionY() - 5 - 2);
-            btn->setPositionX(135);
-            btn->setScale(0.75f);
-            btn->m_baseScale = 0.75f;
-
-            auto btn2 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("CatXus", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn2->setTag(1);
-            btn2->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
-            btn2->setPositionX(120);
-            btn2->setScale(0.75f);
-            btn2->m_baseScale = 0.75f;
-
-            auto km7 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("km7dev", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            km7->setTag(5);
-            km7->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30);
-            km7->setPositionX(210);
-            km7->setScale(0.75f);
-            km7->m_baseScale = 0.75f;
-
-            auto btn3 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Absolllute", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn3->setTag(2);
-            btn3->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30);
-            btn3->setPositionX(145);
-            btn3->setScale(0.75f);
-            btn3->m_baseScale = 0.75f;
-
-            auto btn4 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("Firee", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn4->setTag(3);
-            btn4->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30 - 30);
-            btn4->setPositionX(145);
-            btn4->setScale(0.75f);
-            btn4->m_baseScale = 0.75f;
-
-            auto btn5 = CCMenuItemSpriteExtra::create(CCLabelBMFont::create("TheSillyDoggo", "goldFont.fnt"), menu, menu_selector(Credits::onCredit));
-            btn5->setTag(4);
-            btn5->setPositionY(credsLeft->getPositionY() - 5 - 2 - 30 - 30 - 30 - 30);
-            btn5->setPositionX(180);
-            btn5->setScale(0.75f);
-            btn5->m_baseScale = 0.75f;
-
             menu->addChild(back);
-            menu->addChild(credsLeft);
-            menu->addChild(credsLeftTest);
-            menu->addChild(credsFade);
-            menu->addChild(credCode);
-            menu->addChild(dev);
-            menu->addChild(btn);
-            menu->addChild(btn2);
-            menu->addChild(btn3);
-            menu->addChild(btn4);
-            menu->addChild(btn5);
-            menu->addChild(km7);
+
+            auto promImg = SimplePlayer::create(233);
+            promImg->setColor({255, 75, 0});
+            promImg->setSecondColor({255, 185, 0});
+            promImg->setGlowOutline({255, 185, 0});
+            promImg->updateColors();
+
+            createPanel(menu, ccp(55, menu->getContentSize().height - 45), "Name", "PrometheusSV", promImg, 1.0f, "gd7107344");
+
+
+            createPanel(menu, ccp(55 + (230 / 2) * 1, menu->getContentSize().height - 45), "Pastel", "Absolllute", CCSprite::create("absolllute.png"_spr), 0.45f, "https://gist.github.com/absoIute/657a4c95bb92755f96e20772adbf5f32");
+
+
+            auto fireeImg = SimplePlayer::create(98);
+            fireeImg->setColor({125, 0, 255});
+            fireeImg->setSecondColor({255, 255, 255});
+            fireeImg->setGlowOutline({255, 255, 255});
+            fireeImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 2, menu->getContentSize().height - 45), "Copy Hack", "FireeDev", fireeImg, 1.0f, "gd6253758");
+
+
+            auto catImg = SimplePlayer::create(98);
+            catImg->setColor({255, 0, 0});
+            catImg->setSecondColor({255, 255, 255});
+            catImg->setGlowOutline({0, 255, 255});
+            catImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 0, menu->getContentSize().height - 45 - (85 * 1)), "", "CatXus", catImg, 1.0f, "gd14467409");
+
+
+            auto kmImg = SimplePlayer::create(1);
+            kmImg->setColor({125, 255, 0});
+            kmImg->setSecondColor({0, 255, 255});
+            kmImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 1, menu->getContentSize().height - 45 - (85 * 1)), "Beta Testers", "km7dev", kmImg, 1.0f, "gd7236822");
+
+
+            auto mkrImg = SimplePlayer::create(242);
+            mkrImg->setColor({125, 0, 255});
+            mkrImg->setSecondColor({185, 0, 255});
+            mkrImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 2, menu->getContentSize().height - 45 - (85 * 1)), "", "MrMkr", mkrImg, 1.0f, "gd21449475");
+
+
+            auto jaidImg = SimplePlayer::create(373);
+            jaidImg->setColor({90, 90, 90});
+            jaidImg->setSecondColor({182, 0, 255});
+            jaidImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 0, menu->getContentSize().height - 45 - (85 * 2)), "", "Jaid", jaidImg, 1.0f, "gd7669473");
+
+
+            auto devImg = SimplePlayer::create(5);
+            devImg->setColor({125, 125, 255});
+            devImg->setSecondColor({125, 255, 175});
+            devImg->setGlowOutline({255, 255, 255});
+            devImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 2, menu->getContentSize().height - 45 - (85 * 2)), "Developer", "TheSillyDoggo", devImg, 1.0f, "gd16778880");
         }
 };
 

@@ -12,7 +12,8 @@
 	"description": "Best Geode Android mod menu!",
 	"resources": {
         "files": [
-            "resources/fonts/*.ttf"
+            "resources/fonts/*.ttf",
+			"resources/*.png"
         ]
     }
 }
