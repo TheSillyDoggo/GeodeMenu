@@ -10,7 +10,7 @@ bool android = true;
 
 Client* client;
 
-#ifndef GEODE_IS_ANDROID
+#ifdef KEYBINDS
 
 class $modify(CCKeyboardDispatcher) {
     static void onModify(auto& self) {
@@ -134,16 +134,35 @@ void DrawDescription()
 
 bool v = false;
 
-class $modify (LoadingLayer)
+class $modify (MenuLayer)
 {
-    bool init(bool p0)
+    virtual bool init()
     {
-        if (!LoadingLayer::init(p0))
+        if (!MenuLayer::init())
             return false;
 
         if (!v)
         {
-            AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
+            if (Client::GetModuleEnabled("save-pos"))
+            {
+                AndroidBall::position = ccp(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));
+
+                if (AndroidBall::position.x < 0)
+                    AndroidBall::position.x = 0;
+
+                if (AndroidBall::position.y < 0)
+                    AndroidBall::position.y = 0;
+
+                if (AndroidBall::position.x > CCDirector::get()->getWinSize().width)
+                    AndroidBall::position.x = CCDirector::get()->getWinSize().width;
+
+                if (AndroidBall::position.y > CCDirector::get()->getWinSize().height)
+                    AndroidBall::position.y = CCDirector::get()->getWinSize().height;
+            }
+            else
+            {
+                AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
+            }
             
             #ifndef GEODE_IS_ANDROID
 

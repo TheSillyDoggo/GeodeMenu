@@ -32,6 +32,8 @@ public:
 
         for (size_t i = 0; i < modules.size(); i++)
         {
+            log::info(modules[i]->id);
+            
             ImGui::SetCursorPos(DrawUtils::addImVec2(wp, ImVec2(0, (tileSize.y * (i + 1)) + 3)));
 
             modules[i]->Draw(tileSize);
@@ -564,6 +566,7 @@ class Config : public Window
             ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
             modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90));
+            modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28));
 
             menu->addChild(lNormal);
             menu->addChild(normal);

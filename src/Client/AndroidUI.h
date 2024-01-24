@@ -380,6 +380,12 @@ class AndroidBall : public CCLayer
                 btn->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
 
                 doingThing = false;
+
+                if (Client::GetModuleEnabled("save-pos"))
+                {
+                    Mod::get()->setSavedValue("posX", position.x);
+                    Mod::get()->setSavedValue("posY", position.y);
+                }
             }
         }
 
@@ -574,9 +580,14 @@ class $modify (AchievementNotifier)
 
         if (!p0->getChildByID("loading-layer"))
         {
+            if (p0->getChildByID("android-ball"))
+            {
+                p0->getChildByID("android-ball")->removeFromParent();
+            }
+
             auto andBall = AndroidBall::create();
             if (andBall)
-                p0->addChild(andBall);   
+                p0->addChild(andBall);
         }
         else
         {

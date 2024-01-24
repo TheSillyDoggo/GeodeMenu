@@ -48,8 +48,10 @@ public:
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
-        level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level"));
-        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels"));
+        level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>"));
+        #ifndef GEODE_IS_ANDROID
+        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nOnly supported on <cl>Windows</c> for the time being"));
+        #endif
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -71,7 +73,9 @@ public:
         bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
+        #ifdef GEODE_IS_ANDROID
         bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider"));
+        #endif
         bypass->modules.push_back(new Module("Fire in the hole!", "fire-in-the-hole", "Replaces every single sfx with\n<cr>FIRE IN THE HOLE!</c>"));
 
 
@@ -147,6 +151,7 @@ public:
             auto cfg = new Config();
             
             cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
+            cfg->modules.push_back(new Module("Save Ball Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
 
             Client::instance->windows.push_back(cfg);
             return;

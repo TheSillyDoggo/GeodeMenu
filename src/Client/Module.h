@@ -139,7 +139,8 @@ class Module
             btn->setUserData(this);
             btn->setID(id);
             btn->toggle(enabled);
-            btn->setPosition(pos);
+            btn->setPosition(pos - ccp(12, 0));
+            btn->setAnchorPoint(ccp(0, 0.5f));
 
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));
@@ -151,6 +152,8 @@ class Module
             info->setScale(0.55f);
             info->m_baseScale = info->getScale();
             info->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-5, 5));
+            info->setContentSize(info->getContentSize() * 2.5f);
+            static_cast<CCSprite*>(info->getChildren()->objectAtIndex(0))->setPosition(info->getContentSize() / 2);
             info->setUserData(this);
 
             menu->addChild(btn);
