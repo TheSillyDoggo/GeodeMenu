@@ -506,6 +506,7 @@ class $modify (PauseLayer)
     }
 };
 
+/*
 class $modify (LoadingLayer)
 {
     bool init(bool p0)
@@ -513,7 +514,7 @@ class $modify (LoadingLayer)
         LoadingLayer::init(p0);
         this->setID("loading-layer");
     }
-};
+};*/
 
 //todo: fix android
 //no longer todo i fixed it :3
@@ -568,7 +569,8 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
-        if (!p0->getChildByID("loading-layer"))
+        //if (!p0->getChildByID("loading-layer"))
+        if (true)
         {
             auto andBall = AndroidBall::create();
             if (andBall)
