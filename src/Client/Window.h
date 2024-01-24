@@ -32,8 +32,6 @@ public:
 
         for (size_t i = 0; i < modules.size(); i++)
         {
-            log::info(modules[i]->id);
-            
             ImGui::SetCursorPos(DrawUtils::addImVec2(wp, ImVec2(0, (tileSize.y * (i + 1)) + 3)));
 
             modules[i]->Draw(tileSize);
