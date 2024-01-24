@@ -7,8 +7,11 @@ class $modify (SliderTouchLogic)
 {
     virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
     {
-        if (!Client::GetModuleEnabled("slider-limit"))    
+        if (!Client::GetModuleEnabled("slider-limit"))
+        {
+            SliderTouchLogic::ccTouchMoved(p0, p1);
             return;
+        }
         
         float w = 100;
         float x = (this->convertTouchToNodeSpace(p0).x + 100) / 2;
