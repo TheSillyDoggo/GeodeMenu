@@ -578,6 +578,9 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
+ p0->addChild(AndroidBall::create());
+return;
+
         if (!p0->getChildByID("loading-layer"))
         {
             if (p0->getChildByID("android-ball"))
