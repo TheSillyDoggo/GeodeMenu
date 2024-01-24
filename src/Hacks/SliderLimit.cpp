@@ -33,6 +33,6 @@ class $modify (SliderTouchLogic)
         float x = (this->convertTouchToNodeSpace(p0).x + 100) / 2;
 
         this->m_slider->setValue(x / w);
-        this->ccTouchEnded();
+        this->ccTouchEnded(p0, p1);
     }
 };
