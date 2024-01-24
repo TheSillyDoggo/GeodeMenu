@@ -530,18 +530,6 @@ class $modify (MenuLaunchFix, MenuLayer)
         CCDirector::get()->getRunningScene()->addChild(AndroidBall::create());
     }
 
-    void fix2(float dt)
-    {
-        /*
-        if (!p0->getChildByID("android-ball"))
-            p0->addChild(AndroidBall::create());
-        else
-        {
-            AndroidBall::instance = static_cast<AndroidBall*>(p0->getChildByID("android-ball"));
-            AndroidBall::instance->btn->setPosition(AndroidBall::instance->position);
-        }*/
-    }
-
     virtual bool init()
     {
         if (!MenuLayer::init())

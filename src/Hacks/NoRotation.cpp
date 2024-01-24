@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-class $modify (PlayerObject)
+/*class $modify (PlayerObject)
 {
     void setRotation(float r)
     {
@@ -14,7 +14,7 @@ class $modify (PlayerObject)
         else
             PlayerObject::setRotation(r);
     }
-};
+};*/
 
 /*
 class $modify (CCNode)
