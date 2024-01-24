@@ -506,6 +506,15 @@ class $modify (PauseLayer)
     }
 };
 
+class $modify (LoadingLayer)
+{
+    bool init(bool p0)
+    {
+        LoadingLayer::init(p0);
+        this->setID("loading-layer");
+    }
+};
+
 //todo: fix android
 //no longer todo i fixed it :3
 
@@ -521,12 +530,25 @@ class $modify (MenuLaunchFix, MenuLayer)
         CCDirector::get()->getRunningScene()->addChild(AndroidBall::create());
     }
 
+    void fix2(float dt)
+    {
+        /*
+        if (!p0->getChildByID("android-ball"))
+            p0->addChild(AndroidBall::create());
+        else
+        {
+            AndroidBall::instance = static_cast<AndroidBall*>(p0->getChildByID("android-ball"));
+            AndroidBall::instance->btn->setPosition(AndroidBall::instance->position);
+        }*/
+    }
+
     virtual bool init()
     {
         if (!MenuLayer::init())
             return false;
 
         this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+        //this->schedule(schedule_selector(MenuLaunchFix::fix2), 1);
 
         return true;
     }
@@ -558,17 +580,17 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
-        auto andBall = AndroidBall::create();
-        p0->addChild(andBall);
-
-        return;
-
-        if (!p0->getChildByID("android-ball"))
-            p0->addChild(AndroidBall::create());
+        if (!p0->getChildByID("loading-layer"))
+        {
+            auto andBall = AndroidBall::create();
+            if (andBall)
+                p0->addChild(andBall);   
+        }
         else
         {
-            AndroidBall::instance = static_cast<AndroidBall*>(p0->getChildByID("android-ball"));
-            AndroidBall::instance->btn->setPosition(AndroidBall::instance->position);
+            log::info("LoadingLayer, probably loading textures :3");
         }
+
+        return;
     }
 };
