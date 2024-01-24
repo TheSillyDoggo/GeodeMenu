@@ -510,8 +510,12 @@ class $modify (LoadingLayer)
 {
     bool init(bool p0)
     {
-        LoadingLayer::init(p0);
+        if (!LoadingLayer::init(p0))
+            return false;
+
         this->setID("loading-layer");
+
+        return true;
     }
 };
 
@@ -568,8 +572,7 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
-        //if (!p0->getChildByID("loading-layer"))
-        if (true)
+        if (!p0->getChildByID("loading-layer"))
         {
             auto andBall = AndroidBall::create();
             if (andBall)
