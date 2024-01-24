@@ -582,7 +582,8 @@ class $modify (AchievementNotifier)
         {
             if (p0->getChildByID("android-ball"))
             {
-                p0->getChildByID("android-ball")->removeFromParent();
+                //p0->getChildByID("android-ball")->removeFromParent();
+return;
             }
 
             auto andBall = AndroidBall::create();
