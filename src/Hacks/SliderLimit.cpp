@@ -3,6 +3,7 @@
 #include <Geode/modify/Slider.hpp>
 #include "../Client/Client.h"
 
+/*
 class $modify (SliderTouchLogic)
 {
     virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
@@ -21,4 +22,4 @@ class $modify (SliderTouchLogic)
         //this->ccTouchEnded(p0, p1);
         #endif
     }
-};
+};*/
