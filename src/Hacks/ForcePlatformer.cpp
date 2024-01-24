@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-/*class $modify (PlayerObject)
+class $modify (PlayerObject)
 {
     virtual void update(float dt)
     {
@@ -13,4 +13,4 @@ using namespace geode::prelude;
 
         PlayerObject::update(dt);
     }
-};*/
+};
