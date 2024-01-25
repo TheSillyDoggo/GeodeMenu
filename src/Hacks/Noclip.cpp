@@ -11,8 +11,6 @@ class $modify (PlayLayer)
 
     void destroyPlayer(PlayerObject * p0, GameObject * p1)
     {
-        log::info("the heavy is dead");
-        
         if (!Client::GetModuleEnabled("noclip"))
             PlayLayer::destroyPlayer(p0, p1);
     }
