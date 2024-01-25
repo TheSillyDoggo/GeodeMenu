@@ -7,15 +7,6 @@ using namespace geode::prelude;
 
 class $modify (FMODAudioEngine)
 {
-    static void onModify(auto& self) {
-        auto res = self.getHook("FMODAudioEngine::playEffectAdvanced");
-        if (!res) {
-            log::error("Something went horribly wrong");
-            return;
-        }
-        log::info("I hooked {}!", res.unwrap()->getDisplayName());
-    }
-
     void playEffect(gd::string p0, float p1, float p2, float p3)
     {
         if (!Client::GetModuleEnabled("fire-in-the-hole"))
@@ -35,3 +26,31 @@ class $modify (MusicDownloadManager)
             return "sfx/s4451.ogg";
     }
 };
+
+/*
+class $modify (CCSprite)
+{
+    static CCSprite* create(const char *pszFileName)
+    {
+        if (PlayLayer::get())
+        {
+            return CCSprite::createWithSpriteFrameName("diffIcon_02_btn_001.png");
+        }
+        else
+        {
+            return CCSprite::create(pszFileName);
+        }
+    }
+
+    static CCSprite* createWithSpriteFrameName(const char *pszFileName)
+    {
+        if (PlayLayer::get())
+        {
+            return CCSprite::createWithSpriteFrameName("diffIcon_02_btn_001.png");
+        }
+        else
+        {
+            return CCSprite::createWithSpriteFrameName(pszFileName);
+        }
+    }
+};  */

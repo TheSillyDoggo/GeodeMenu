@@ -1,3 +1,8 @@
+# 1.0.2
+
+- Added character filter and character limit bypass
+- Fixed balls duplicating
+
 # 1.0.1
 
 - Fixed force priority issues in newest geode build

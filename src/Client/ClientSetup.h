@@ -16,7 +16,7 @@ public:
         SetupOptions(android);
         //SetupOptions();
         //SetupCreator();
-        //SetupVariables();
+        SetupVariables();
 
         if (android)
             Client::instance->windows.push_back(new Credits());
@@ -68,15 +68,22 @@ public:
 
         bypass->modules.push_back(new Module("Practice Music Sync", "practice-bypass", "Unlocks the Practice Music Sync button in the pause menu options"));
         bypass->modules.push_back(new Module("Unlock All Icons", "icon-bypass", "It... Unlocks all the icons, You should know what this does"));
+
         bypass->modules.push_back(new Module("Music Unlocker", "music-bypass", "Unlocks the menu and practice music buttons"));
+        bypass->modules.push_back(new Module("Fire in the hole!", "fire-in-the-hole", "Replaces every single sfx with\n<cr>FIRE IN THE HOLE!</c>"));
+
         bypass->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
         bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
-        bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
+
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
+        bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
+
+        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
+        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));
+
         #ifdef GEODE_IS_ANDROID
-        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider"));
+        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         #endif
-        bypass->modules.push_back(new Module("Fire in the hole!", "fire-in-the-hole", "Replaces every single sfx with\n<cr>FIRE IN THE HOLE!</c>"));
 
 
         Client::instance->windows.push_back(bypass);
@@ -185,22 +192,12 @@ public:
         creator->modules.push_back(new Module("Copy Hack", "copy-hack"));
 
         Client::instance->windows.push_back(creator);
-    }
+    }*/
 
     static void SetupVariables()
     {
-        Window* variables = new Window();
-        variables->name = "Variables";
-        variables->id = "variables-window";
-        variables->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
-
-        auto mName = new InputModule();
-        mName->id = "var-id";
-        mName->allowedChars = "0987654321";
-        variables->modules.push_back(mName);
-
-        Client::instance->windows.push_back(variables);
-    }*/
+        //Client::instance->windows.push_back(new Variables());
+    }
 
 #pragma endregion
 };

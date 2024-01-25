@@ -600,9 +600,6 @@ class $modify (AchievementNotifier)
         if (p0->getChildByID("loading-layer"))
             return;
 
-        if (p0->getChildByID("android-ball"))
-            log::info("duplicate but i'm not allowed to fix it because it crashes");
-
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
 
@@ -613,7 +610,8 @@ class $modify (AchievementNotifier)
         {
             if (typeinfo_cast<AndroidBall*>(p0->getChildren()->objectAtIndex(i)))
             {
-                log::info("found dupe");
+                //log::info("found dupe");
+                balls.push_back(static_cast<AndroidBall*>(p0->getChildren()->objectAtIndex(i)));
             }
         }
 
@@ -622,31 +620,11 @@ class $modify (AchievementNotifier)
             for (size_t i = 0; i < balls.size() - 1; i++)
             {
                 balls[i]->removeFromParent();
+                //log::info("removed ball");
                 //please don't crash on my phone
             }
         }
 
         balls.clear();
-        
-        return;
-
-        if (!p0->getChildByID("loading-layer"))
-        {
-            if (p0->getChildByID("android-ball"))
-            {
-                //p0->getChildByID("android-ball")->removeFromParent();
-return;
-            }
-
-            auto andBall = AndroidBall::create();
-            if (andBall)
-                p0->addChild(andBall);
-        }
-        else
-        {
-            log::info("LoadingLayer, probably loading textures :3");
-        }
-
-        return;
     }
 };

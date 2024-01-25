@@ -384,6 +384,11 @@ class Variables : public Window
 
         void onChangeMode(CCObject* sender)
         {
+            log::info("button");
+
+            //PlayLayer::get()->m_player1->playerDestroyed(false);
+
+            //PlayLayer::get()->destroyPlayer(PlayLayer::get()->m_player1, GameObject::createWithKey(0));
             /*
             //why robert
 
