@@ -122,7 +122,7 @@ public:
         this->setKeypadEnabled(true);
 
         //CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
-        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -128, true);
+        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -129, true);
 
         this->runAction(CCFadeTo::create(0.5f, 100));
 
@@ -342,7 +342,7 @@ class AndroidBall : public CCLayer
             this->setTouchEnabled(true);
             this->setMouseEnabled(true);
 
-            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -128 + 1, true);
+            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -129 + 1, true);
             //this->setTouchPriority(69420);
             //CCDirector::sharedDirector()->getTouchDispatcher()->addStandardDelegate(this, 69420);
 
