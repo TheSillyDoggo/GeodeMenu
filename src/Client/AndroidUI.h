@@ -16,8 +16,10 @@ public:
     static inline std::vector<CCLabelBMFont*> labels = {};
     static inline std::vector<CCMenuItemSprite*> buttons = {};
     static inline std::vector<CCMenu*> pages = {};
+    CCScale9Sprite* panel = nullptr;
 
     static inline int selectedTab = 0;
+    static inline int lastTab = 0;
     
     void goToPage(int p, bool transition = false)
     {
@@ -83,7 +85,8 @@ public:
     void onPressTab(CCObject* sender)
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
-
+        
+        lastTab = selectedTab;
         selectedTab = btn->getTag();
 
         for (size_t i = 0; i < labels.size(); i++)
@@ -116,8 +119,6 @@ public:
         this->setTouchEnabled(true);
         this->setMouseEnabled(true);
         this->setKeypadEnabled(true);
-
-        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
 
         this->runAction(CCFadeTo::create(0.5f, 100));
 
@@ -170,7 +171,7 @@ public:
         ss << Mod::get()->getSavedValue<int>("theme", 5);
         ss << ".png";
 
-        auto panel = CCScale9Sprite::create(ss.str().c_str());
+        panel = CCScale9Sprite::create(ss.str().c_str());
         panel->setContentSize(ccp(475, 280));
         panel->setID("panel");
 
@@ -298,6 +299,8 @@ public:
         auto l = AndroidUI::create();
 
         CCDirector::get()->getRunningScene()->addChild(l, 69420);
+
+        cocos::handleTouchPriority(l);
     }
 };
 
@@ -307,11 +310,13 @@ class AndroidBall : public CCLayer
         static inline bool hasPos = false;
         static inline CCPoint position = ccp(32, CCDirector::get()->getWinSize().height / 2);
         static inline AndroidBall* instance = nullptr;
+        static inline int highest = 0;
 
         bool doingThing = false;
         static inline bool dragging = false;
         CircleButtonSprite* btn;
         CCLabelBMFont* l;
+        CCMenu* menu;
 
         void onOpenMenu()
         {
@@ -325,13 +330,19 @@ class AndroidBall : public CCLayer
 
             this->setID("android-ball");
 
+            highest++;
+
+            this->setTag(highest);
+            instance = this;
+
             this->setTouchEnabled(true);
             this->setMouseEnabled(true);
 
-            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
+            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -69420, true);
+            //this->setTouchPriority(69420);
             //CCDirector::sharedDirector()->getTouchDispatcher()->addStandardDelegate(this, 69420);
 
-            auto menu = CCMenu::create();
+            menu = CCMenu::create();
             menu->setPosition(ccp(0, 0));
             menu->setContentSize(ccp(0, 0));
 
@@ -339,7 +350,7 @@ class AndroidBall : public CCLayer
             l->setAnchorPoint(ccp(0.5f, 0.35f));
 
             btn = CircleButtonSprite::create(l, CircleBaseColor::Gray);
-            btn->setPosition(position);
+            //btn->setPosition(position);
             menu->addChild(btn);
 
             this->addChild(menu);
@@ -347,6 +358,8 @@ class AndroidBall : public CCLayer
             this->setZOrder(69420 - 1);
 
             this->scheduleUpdate();
+
+            menu->setPosition(position);
 
             UpdateVisible(true);
 
@@ -405,24 +418,25 @@ class AndroidBall : public CCLayer
                 if (dragging)
                 {
                     position = touch->getLocation();
+                    menu->setPosition(position);
 
-                    btn->setPosition(position);
+                    //btn->setPosition(position);
                 }
             }
         }
 
         virtual void update(float dt)
         {
-            ColourUtility::pastel++;
-
-            l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
-            instance = this;
-
             UpdateVisible(false);
         }
 
         void UpdateVisible(bool i)
         {
+            ColourUtility::pastel++;
+
+            l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
+            instance = this;
+
             if (btn->numberOfRunningActions() != 0)
                 return;
 
@@ -538,6 +552,7 @@ class $modify (MenuLaunchFix, MenuLayer)
             AndroidBall::instance->removeFromParent();
 
         CCDirector::get()->getRunningScene()->addChild(AndroidBall::create());
+        cocos::handleTouchPriority(AndroidBall::instance);
     }
 
     virtual bool init()
@@ -578,8 +593,38 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
- p0->addChild(AndroidBall::create());
-return;
+        if (p0->getChildByID("loading-layer"))
+            return;
+
+        if (p0->getChildByID("android-ball"))
+            log::info("duplicate but i'm not allowed to fix it because it crashes");
+
+        p0->addChild(AndroidBall::create());
+        cocos::handleTouchPriority(AndroidBall::instance);
+
+        // ;)
+        std::vector<AndroidBall*> balls = {};
+
+        for (size_t i = 0; i < p0->getChildrenCount(); i++)
+        {
+            if (typeinfo_cast<AndroidBall*>(p0->getChildren()->objectAtIndex(i)))
+            {
+                log::info("found dupe");
+            }
+        }
+
+        if (balls.size() > 1)
+        {
+            for (size_t i = 0; i < balls.size() - 1; i++)
+            {
+                balls[i]->removeFromParent();
+                //please don't crash on my phone
+            }
+        }
+
+        balls.clear();
+        
+        return;
 
         if (!p0->getChildByID("loading-layer"))
         {

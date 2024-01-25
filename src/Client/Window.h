@@ -98,6 +98,7 @@ public:
         return false;
     }
 
+    //stolen from stack overflow
     int getIndex(std::vector<float> v, float K) 
     { 
         auto it = std::find(v.begin(), v.end(), K); 
@@ -181,6 +182,12 @@ class Speedhack : public Window
             id = "speedhack-window";
         }
 
+        void clear(CCObject* sender)
+        {
+            SpeedhackTop::instance->text = "";
+            reinterpret_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getChildByID("speedhack-top"))->setString("");
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             auto back = CCScale9Sprite::create("square02_small.png");
@@ -196,6 +203,12 @@ class Speedhack : public Window
             {
                 modules[m]->makeAndroid(menu, {20, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (m - 1.0f))});
             }
+
+            auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), menu, menu_selector(Speedhack::clear));
+            trash->m_baseScale = 0.725f;
+            trash->setScale(0.725f);
+            trash->setPosition(ccp(210, menu->getContentSize().height - 20));
+            menu->addChild(trash);
         }
 };
 

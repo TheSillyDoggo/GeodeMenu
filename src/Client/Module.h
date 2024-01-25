@@ -253,6 +253,7 @@ class InputModule : public Module, public TextInputDelegate
             input->setPosition(pos + ccp(70, 0));
             input->setAnchorPoint(ccp(0, 0.5f));
             input->getInput()->setDelegate(this);
+            input->setID(id);
             input->setString(text);
 
             menu->addChild(input);
@@ -308,7 +309,7 @@ class SpeedhackTop : public InputModule
         {
             id = "speedhack-top";
             text = "1.0";
-            name = "Speed Mod";
+            name = "Speed";
             description = "Speed modifier (*)";
 
             instance = this;
