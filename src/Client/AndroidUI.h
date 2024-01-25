@@ -604,7 +604,7 @@ class $modify (AchievementNotifier)
         for (size_t i = 0; i < p0->getChildrenCount(); i++)
         {
             auto id = reinterpret_cast<CCLayer*>(p0->getChildren()->objectAtIndex(i))->getID();
-            log::info(id);
+            //log::info(id);
             
             if (id == "android-ball")
             {
