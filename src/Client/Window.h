@@ -329,9 +329,10 @@ class Credits : public Window
             createPanel(menu, ccp(55 + (230 / 2) * 0, menu->getContentSize().height - 45 - (85 * 1)), "", "CatXus", catImg, 1.0f, "gd14467409");
 
 
-            auto kmImg = SimplePlayer::create(1);
-            kmImg->setColor({125, 255, 0});
-            kmImg->setSecondColor({0, 255, 255});
+            auto kmImg = SimplePlayer::create(233);
+            kmImg->setColor({255, 125, 0});
+            kmImg->setSecondColor({0, 125, 255});
+            kmImg->setGlowOutline({255, 255, 255});
             kmImg->updateColors();
 
             createPanel(menu, ccp(55 + (230 / 2) * 1, menu->getContentSize().height - 45 - (85 * 1)), "Beta Testers", "km7dev", kmImg, 1.0f, "gd7236822");
@@ -351,6 +352,15 @@ class Credits : public Window
             jaidImg->updateColors();
 
             createPanel(menu, ccp(55 + (230 / 2) * 0, menu->getContentSize().height - 45 - (85 * 2)), "", "Jaid", jaidImg, 1.0f, "gd7669473");
+
+
+            auto zephImg = SimplePlayer::create(482);
+            zephImg->setColor({77, 77, 90});
+            zephImg->setSecondColor({0, 200, 255});
+            zephImg->setGlowOutline({0, 200, 255});
+            zephImg->updateColors();
+
+            createPanel(menu, ccp(55 + (230 / 2) * 1, menu->getContentSize().height - 45 - (85 * 2)), "", "imzeph", zephImg, 1.0f, "gd23948408");
 
 
             auto devImg = SimplePlayer::create(5);

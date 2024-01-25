@@ -118,7 +118,9 @@ class Module
         {
             auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
-            FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "Ok")->show();
+            //fucking force priority kill yourself
+            auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "Ok");
+            al->show();
         }
 
 

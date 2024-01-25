@@ -18,8 +18,8 @@ public:
     static inline std::vector<CCMenu*> pages = {};
     CCScale9Sprite* panel = nullptr;
 
-    static inline int selectedTab = 0;
     static inline int lastTab = 0;
+    static inline int selectedTab = 0;
     
     void goToPage(int p, bool transition = false)
     {
@@ -85,7 +85,7 @@ public:
     void onPressTab(CCObject* sender)
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
-        
+
         lastTab = selectedTab;
         selectedTab = btn->getTag();
 
@@ -117,8 +117,12 @@ public:
         }
 
         this->setTouchEnabled(true);
+        this->setTouchMode(kCCTouchesOneByOne);
         this->setMouseEnabled(true);
         this->setKeypadEnabled(true);
+
+        //CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
+        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -128, true);
 
         this->runAction(CCFadeTo::create(0.5f, 100));
 
@@ -338,7 +342,7 @@ class AndroidBall : public CCLayer
             this->setTouchEnabled(true);
             this->setMouseEnabled(true);
 
-            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -69420, true);
+            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -128 + 1, true);
             //this->setTouchPriority(69420);
             //CCDirector::sharedDirector()->getTouchDispatcher()->addStandardDelegate(this, 69420);
 
