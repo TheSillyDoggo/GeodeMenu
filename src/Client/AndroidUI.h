@@ -27,7 +27,7 @@ public:
 
         if (transition)
         {
-
+            
         }
         else
         {
@@ -121,7 +121,6 @@ public:
         this->setMouseEnabled(true);
         this->setKeypadEnabled(true);
 
-        //CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, true);
         CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -129, true);
 
         this->runAction(CCFadeTo::create(0.5f, 100));
@@ -356,11 +355,8 @@ class AndroidBall : public CCLayer
             btn = CircleButtonSprite::create(l, CircleBaseColor::Gray);
             //btn->setPosition(position);
             menu->addChild(btn);
-
             this->addChild(menu);
-
             this->setZOrder(69420 - 1);
-
             this->scheduleUpdate();
 
             menu->setPosition(position);
@@ -423,8 +419,6 @@ class AndroidBall : public CCLayer
                 {
                     position = touch->getLocation();
                     menu->setPosition(position);
-
-                    //btn->setPosition(position);
                 }
             }
         }
@@ -436,6 +430,8 @@ class AndroidBall : public CCLayer
 
         void UpdateVisible(bool i)
         {
+            menu->setPosition(position);
+
             ColourUtility::pastel++;
 
             l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
@@ -565,7 +561,6 @@ class $modify (MenuLaunchFix, MenuLayer)
             return false;
 
         this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
-        //this->schedule(schedule_selector(MenuLaunchFix::fix2), 1);
 
         return true;
     }
@@ -597,34 +592,30 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
-        if (p0->getChildByID("loading-layer"))
-            return;
+        if (p0 == nullptr)
+            return; // this is not good :(
 
-        p0->addChild(AndroidBall::create());
-        cocos::handleTouchPriority(AndroidBall::instance);
+        if (p0->getChildByID("loading-layer"))
+            return; // fix texture ldr
 
         // ;)
         std::vector<AndroidBall*> balls = {};
 
         for (size_t i = 0; i < p0->getChildrenCount(); i++)
         {
-            if (typeinfo_cast<AndroidBall*>(p0->getChildren()->objectAtIndex(i)))
+            auto id = reinterpret_cast<CCLayer*>(p0->getChildren()->objectAtIndex(i))->getID();
+            log::info(id);
+            
+            if (id == "android-ball")
             {
-                //log::info("found dupe");
-                balls.push_back(static_cast<AndroidBall*>(p0->getChildren()->objectAtIndex(i)));
+                log::info("found ball");
+                return;
             }
         }
 
-        if (balls.size() > 1)
-        {
-            for (size_t i = 0; i < balls.size() - 1; i++)
-            {
-                balls[i]->removeFromParent();
-                //log::info("removed ball");
-                //please don't crash on my phone
-            }
-        }
+        log::info("ok create new ball");
 
-        balls.clear();
+        p0->addChild(AndroidBall::create());
+        cocos::handleTouchPriority(AndroidBall::instance);
     }
 };

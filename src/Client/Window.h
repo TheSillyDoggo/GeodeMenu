@@ -234,37 +234,6 @@ class Credits : public Window
             {
                 CCApplication::sharedApplication()->openURL(tag.c_str());
             }
-
-            return;
-            switch (static_cast<CCNode*>(sender)->getTag())
-            {
-                case 0:
-                    ProfilePage::create(7107344, false)->show();
-                    return;
-
-                case 1:
-                    ProfilePage::create(14467409, false)->show();
-                    return;
-
-                case 2:
-                    CCApplication::sharedApplication()->openURL("https://gist.github.com/absoIute/657a4c95bb92755f96e20772adbf5f32");
-                    return;
-
-                case 3:
-                    ProfilePage::create(6253758, false)->show();
-                    //CCApplication::sharedApplication()->openURL("https://github.com/FireMario211");
-                    return;
-
-                case 4:
-                    ProfilePage::create(16778880, false)->show();
-                    return;
-
-                case 5:
-                    ProfilePage::create(7236822, false)->show();
-                    return;
-
-                default: return;
-            }
         }
 
         void createPanel(CCMenu* menu, CCPoint pos, char const * title, char const * name, CCNode* img, float scale, std::string v)
