@@ -28,11 +28,19 @@ class $modify (CCScheduler)
 
                 if (v > 99999)
                     v = 99999;
+
+                FMOD::ChannelGroup* masterGroup;
+                FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+                masterGroup->setPitch(Client::GetModuleEnabled("speedhack-music") ? v : 1);
                 
                 CCScheduler::update(dt * v);
                 return;
             }
         }
+
+        FMOD::ChannelGroup* masterGroup;
+        FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+        masterGroup->setPitch(1);
         
         CCScheduler::update(dt);
     }

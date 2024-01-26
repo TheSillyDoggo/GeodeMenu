@@ -33,7 +33,7 @@ public:
 
         speedhack->modules.push_back(new SpeedhackTop());
         speedhack->modules.push_back(new Module("Enabled", "speedhack-enabled", "Is the speedhack enabled?"));
-        //speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music"));
+        speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music", "Speedhack all sound by your speed modifier", true));
 
         (reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
 

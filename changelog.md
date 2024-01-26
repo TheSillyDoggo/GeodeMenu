@@ -2,6 +2,7 @@
 
 - Added character filter and character limit bypass
 - Fixed balls duplicating
+- Added No Particles, No Shaders, Text Limit Bypass, Text Character Bypass and Speedhack Music
 
 # 1.0.1
 
