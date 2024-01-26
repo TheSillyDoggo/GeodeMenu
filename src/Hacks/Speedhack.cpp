@@ -13,14 +13,10 @@ class $modify (CCScheduler)
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
                 float v = 1.0f;
-                
-                try
+
+                if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
                 {
                     v = std::stof(SpeedhackTop::instance->text);
-                }
-                catch(const std::exception& e)
-                {
-                    v = 1.0f;
                 }
 
                 if (v < 0.01f)
