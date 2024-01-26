@@ -9,13 +9,14 @@ class $modify (GameStatsManager)
 {
     bool isItemUnlocked(UnlockType type, int id)
     {
-        /*if (Client::GetModuleEnabled("icon-bypass"))
+        if (Client::GetModuleEnabled("icon-bypass"))
         {
-            if (type != UnlockType::GJItem)
+            if (type == UnlockType::GJItem)
             {
-                return true;
+                if (id == 18 || id == 20)
+                    return true;
             }
-        }*/
+        }
         
         if (id == 16 && Client::GetModuleEnabled("music-bypass"))
         {
