@@ -243,7 +243,7 @@ class InputModule : public Module, public TextInputDelegate
             text = geode::prelude::Mod::get()->getSavedValue<std::string>(id + "_value", text);
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos)
+        void makeAndroid(CCMenu* menu, CCPoint pos/*, bool useless, SEL_MenuHandler event*/)
         {
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));

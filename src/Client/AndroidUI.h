@@ -125,6 +125,8 @@ public:
 
         this->runAction(CCFadeTo::create(0.5f, 100));
 
+        this->setID("android-ui");
+
         #pragma region Back
 
         auto backMenu = CCMenu::create();
@@ -299,6 +301,9 @@ public:
 
     static void addToScene()
     {
+        if (CCDirector::get()->getRunningScene()->getChildByID("android-ui"))
+            return;
+
         auto l = AndroidUI::create();
 
         CCDirector::get()->getRunningScene()->addChild(l, 69420);
@@ -513,7 +518,7 @@ class $modify (PlayLayer)
         CCDirector::get()->getRunningScene()->addChild(andBall);
     }
 };
-
+/*
 class $modify (PauseLayer)
 {
     static PauseLayer* create(bool p0)
@@ -525,7 +530,7 @@ class $modify (PauseLayer)
         return v;
     }
 };
-
+*/
 class $modify (LoadingLayer)
 {
     bool init(bool p0)
@@ -538,7 +543,7 @@ class $modify (LoadingLayer)
         return true;
     }
 };
-
+/*
 //todo: fix android
 //no longer todo i fixed it :3
 
@@ -560,12 +565,12 @@ class $modify (MenuLaunchFix, MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+        this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 10);
 
         return true;
     }
 };
-
+*/
 class $modify (CCScene)
 {
     int getHighestChildZ()
@@ -578,7 +583,7 @@ class $modify (CCScene)
         if (AndroidBall::instance)
             AndroidBall::instance->setZOrder(68419);
 
-        this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+        //this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
 
         return value;
     }
@@ -617,6 +622,5 @@ class $modify (AchievementNotifier)
 
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
-        AndroidBall::instance->setTouchPriority(AndroidBall::instance->getTouchPriority() - 1);
     }
 };
