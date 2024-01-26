@@ -516,6 +516,7 @@ class $modify (PlayLayer)
 
         auto andBall = AndroidBall::create();
         CCDirector::get()->getRunningScene()->addChild(andBall);
+        cocos::handleTouchPriority(andBall);
     }
 };
 /*
