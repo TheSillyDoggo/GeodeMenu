@@ -8,6 +8,8 @@ class $modify (PlayerObject)
 {
     void playerDestroyed(bool p0)
     {
+        log::info("PlayerObject::playerDestroyed");
+        
         if (!Client::GetModuleEnabled("no-death"))
             PlayerObject::playerDestroyed(p0);
     }

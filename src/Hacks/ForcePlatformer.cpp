@@ -4,6 +4,8 @@
 
 using namespace geode::prelude;
 
+#ifdef GEODE_IS_WINDOWS
+
 class $modify (PlayerObject)
 {
     virtual void update(float dt)
@@ -14,3 +16,5 @@ class $modify (PlayerObject)
         PlayerObject::update(dt);
     }
 };
+
+#endif

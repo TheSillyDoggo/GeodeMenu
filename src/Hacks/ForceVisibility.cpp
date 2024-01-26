@@ -5,6 +5,7 @@
 
 using namespace geode::prelude;
 
+/*
 class $modify (GameObject)
 {
     virtual void setVisible(bool visible)
@@ -25,4 +26,4 @@ class $modify (CCNode)
         else
             CCNode::setVisible(visible);
     }
-};
+};*/
