@@ -617,5 +617,6 @@ class $modify (AchievementNotifier)
 
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
+        AndroidBall::instance->setTouchPriority(AndroidBall::instance->getTouchPriority() - 1);
     }
 };
