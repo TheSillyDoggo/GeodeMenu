@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/SliderTouchLogic.hpp>
 #include <Geode/modify/Slider.hpp>
 #include "../Client/Client.h"
@@ -24,4 +24,4 @@ class $modify (SliderTouchLogic)
         this->ccTouchEnded(p0, p1);
         #endif
     }
-};
+};*/
