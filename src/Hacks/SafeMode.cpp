@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/GJGameLevel.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
@@ -61,4 +61,3 @@ class $modify(GJGameLevel) {
             GJGameLevel::savePercentage(p0, p1, p2, p3, p4);
     }
 };
-*/
