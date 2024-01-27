@@ -9,7 +9,7 @@ class $modify (ShaderLayer)
 {
     TodoReturn performCalculations()
     {
-        log::info("ShaderLayer::performCalculations");
+        //log::info("ShaderLayer::performCalculations");
 
         if (!Client::GetModuleEnabled("no-shaders"))
             ShaderLayer::performCalculations();

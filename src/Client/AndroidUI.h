@@ -599,16 +599,17 @@ class $modify (AchievementNotifier)
         AchievementNotifier::willSwitchToScene(p0);
 
         if (p0 == nullptr)
-            return; // this is not good :(
+            return; // something real bad happened, gd will probably shit itself :(
 
         if (p0->getChildByID("loading-layer"))
             return; // fix texture ldr
 
+        /*
         if (typeinfo_cast<PlayLayer*>(p0->getChildren()->objectAtIndex(0)))
             return; // todo: fix gameplay
 
         // ;)
-        std::vector<AndroidBall*> balls = {};
+        //std::vector<AndroidBall*> balls = {};
 
         for (size_t i = 0; i < p0->getChildrenCount(); i++)
         {
@@ -622,7 +623,7 @@ class $modify (AchievementNotifier)
             }
         }
 
-        log::info("ok create new ball");
+        log::info("ok create new ball");*/
 
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
