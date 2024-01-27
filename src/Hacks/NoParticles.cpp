@@ -1,3 +1,5 @@
+#ifdef GEODE_IS_WINDOWS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCParticleSystem.hpp>
 #include <Geode/modify/CCParticleSystemQuad.hpp>
@@ -47,3 +49,5 @@ class $modify (CCParticleSystemQuad)
         CCParticleSystemQuad::setTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : tp);
     }
 };
+
+#endif
