@@ -10,7 +10,6 @@ class $modify (CCParticleSystem)
     virtual bool initWithTotalParticles(unsigned int numberOfParticles, bool idk)
     {
         //log::info("CCParticleSystem::initWithTotalParticles");
-        
         return CCParticleSystem::initWithTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : numberOfParticles, idk);
     }
 
