@@ -8,7 +8,7 @@ project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES
 	src/*.cpp
-	#src/Hacks/*.cpp
+	src/Hacks/*.cpp
 	src/Client/*.cpp
 	src/Client/*.h
 )

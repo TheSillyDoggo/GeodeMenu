@@ -607,7 +607,6 @@ class $modify (AchievementNotifier)
         if (typeinfo_cast<PlayLayer*>(p0->getChildren()->objectAtIndex(0)))
             return; // todo: fix gameplay
 
-        /*
         // ;)
         //std::vector<AndroidBall*> balls = {};
 
@@ -623,7 +622,7 @@ class $modify (AchievementNotifier)
             }
         }
 
-        log::info("ok create new ball");*/
+        log::info("ok create new ball");
 
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);

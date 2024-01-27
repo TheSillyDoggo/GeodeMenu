@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GameStatsManager.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include "../Client/Client.h"
@@ -48,4 +48,4 @@ class $modify(GameManager) {
 
         return GameManager::isColorUnlocked(id, type);
     }
-};
+};*/

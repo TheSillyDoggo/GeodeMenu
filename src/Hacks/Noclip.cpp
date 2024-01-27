@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
@@ -14,4 +14,4 @@ class $modify (PlayLayer)
         if (!Client::GetModuleEnabled("noclip"))
             PlayLayer::destroyPlayer(p0, p1);
     }
-};
+};*/
