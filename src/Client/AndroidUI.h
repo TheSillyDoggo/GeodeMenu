@@ -499,6 +499,7 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
+/*
 class $modify (PlayLayer)
 {
     void pauseGame(bool p0)
@@ -519,7 +520,7 @@ class $modify (PlayLayer)
         cocos::handleTouchPriority(andBall);
     }
 };
-/*
+
 class $modify (PauseLayer)
 {
     static PauseLayer* create(bool p0)
