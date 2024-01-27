@@ -604,10 +604,10 @@ class $modify (AchievementNotifier)
         if (p0->getChildByID("loading-layer"))
             return; // fix texture ldr
 
-        /*
         if (typeinfo_cast<PlayLayer*>(p0->getChildren()->objectAtIndex(0)))
             return; // todo: fix gameplay
 
+        /*
         // ;)
         //std::vector<AndroidBall*> balls = {};
 
