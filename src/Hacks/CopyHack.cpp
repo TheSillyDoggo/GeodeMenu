@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/LevelInfoLayer.hpp>
 #include "../Client/Client.h"
 
@@ -21,4 +21,4 @@ class $modify(LevelInfoLayer) {
         }
         return true;
     }
-};*/
+};
