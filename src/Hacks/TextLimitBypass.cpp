@@ -10,6 +10,7 @@ class $modify (CCTextInputNode)
     TodoReturn updateLabel(gd::string p0)
     {
         log::info("updating label");
+        
         if (Client::GetModuleEnabled("char-limit"))
             CCTextInputNode::setMaxLabelLength(99999);
 
