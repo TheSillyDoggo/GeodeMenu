@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-class $modify (AlertPauseLayer, PauseLayer)
+class $modify (PauseLayer)
 {
     void onPrac(float dt)
     {
@@ -13,17 +13,22 @@ class $modify (AlertPauseLayer, PauseLayer)
 
     void onPracticeMode(cocos2d::CCObject* sender)
     {
-        //create(FLAlertLayerProtocol* p0, char const* p1, gd::string p2, char const* p3, char const* p4)
-        auto al = FLAlertLayer::create(this, "");
+        if (PlayLayer::get()->m_isPracticeMode)
+            { PlayLayer::get()->resetLevelFromStart(); PlayLayer::get()->togglePracticeMode(false); PlayLayer::get()->pauseGame(false); return; }
+        
 
-        al->show();
         geode::createQuickPopup(
             "Practice Mode",
-            "Are you sure you want to enter\n<cg>practice mode</c>",
+            "Are you sure you want to\nenter <cg>practice mode</c>?",
             "Cancel", "Practice",
-            [](auto tis, bool btn2) {
+            [](FLAlertLayer* tis, bool btn2) {
+                log::info("click practice");
+
                 if (btn2) {
-                    tis->scheduleOnce(schedule_selector(AlertPauseLayer::onPrac), 1.0f);
+                    log::info("right btn");
+
+                    PlayLayer::get()->togglePracticeMode(true);
+                    PlayLayer::get()->pauseGame(false);
                 }
             }
         );

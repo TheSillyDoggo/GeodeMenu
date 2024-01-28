@@ -58,13 +58,11 @@ public:
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
-                try
+                float v = 1.0f;
+
+                if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
                 {
                     v = std::stof(SpeedhackTop::instance->text);
-                }
-                catch(const std::exception& e)
-                {
-                    v = 1.0f;
                 }
 
                 if (v < 0.01f)
@@ -253,7 +251,7 @@ public:
         {
             auto menu = CCMenu::create();
             menu->setAnchorPoint(ccp(1, 0));
-            menu->setPosition(ccp(panel->getContentSize().width - 15 + 5, 10));
+            menu->setPosition(ccp(475 - 15 + 5, 10));
             menu->setContentSize(ccp(340, panel->getContentSize().height - 10 - 10));
             menu->ignoreAnchorPointForPosition(false);
 

@@ -661,5 +661,9 @@ class Config : public Window
             menu->addChild(GP);
             menu->addChild(lED);
             menu->addChild(ED);
+
+            auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, nullptr); // https://discord.gg/DfQSTEnQKK
+            discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
+            menu->addChild(discord);
         }
 };

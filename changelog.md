@@ -1,3 +1,13 @@
+# 1.1.0
+
+- Added Icon Effects (RGB Icons)
+- Created an official [Discord Server](https://discord.gg/DfQSTEnQKK)
+
+# 1.0.3
+
+- Added back the button wheh in gameplay
+- Fixed pause crash with speedhack
+
 # 1.0.2
 
 - Fixed crash when playing user levels
