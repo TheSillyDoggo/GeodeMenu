@@ -69,4 +69,18 @@ class ColourUtility
 			return geode::prelude::cc3x(pastel[v]);
 		}
 
+		static geode::prelude::ccColor3B lerpColour(const geode::prelude::ccColor3B& color1, const geode::prelude::ccColor3B& color2, float t) {
+			if (t < 0)
+				t = 0;
+
+			if (t > 1)
+				t = 1;
+
+			return geode::prelude::ccc3(
+				static_cast<uint8_t>(color1.r + (color2.r - color1.r) * t),
+				static_cast<uint8_t>(color1.g + (color2.g - color1.g) * t),
+				static_cast<uint8_t>(color1.b + (color2.b - color1.b) * t)
+			);
+		}
+
 };

@@ -696,6 +696,10 @@ class EffectUI : public CCNode
 {
     public:
         std::vector<SimplePlayer*> players;
+        std::vector<SimplePlayer*> players2;
+        std::vector<CCSprite*> chromas;
+        std::vector<CCSprite*> pastels;
+        std::vector<CCSprite*> fades;
 
         bool init()
         {
@@ -753,6 +757,18 @@ class EffectUI : public CCNode
 
             if (sel == 3)
             {
+                std::stringstream fadeIn;
+                fadeIn << "fadeColour1";
+                fadeIn << mode;
+
+                std::stringstream fadeOut;
+                fadeOut << "fadeColour2";
+                fadeOut << mode;
+
+                ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
+                ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
+
+                return ColourUtility::lerpColour(in, out, (sinf(ColourUtility::va * 3) + 1) / 2);
                 //fade
             }
 
@@ -774,7 +790,42 @@ class EffectUI : public CCNode
                 players[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
                 players[i]->updateColors();
             }
+
+            for (size_t i = 0; i < players2.size(); i++)
+            {
+                players2[i]->setColor(getColourForSelected(1));
+                players2[i]->setSecondColor(getColourForSelected(0));
+
+                players2[i]->enableCustomGlowColor(getColourForSelected(2));
+                players2[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
+                players2[i]->updateColors();
+            }
             
+            for (size_t i = 0; i < chromas.size(); i++)
+            {
+                chromas[i]->setColor(ColourUtility::getChromaColour());
+            }
+
+            for (size_t i = 0; i < chromas.size(); i++)
+            {
+                pastels[i]->setColor(ColourUtility::getPastelColour());
+            }
+
+            for (size_t i = 0; i < fades.size(); i++)
+            {
+                std::stringstream fadeIn;
+                fadeIn << "fadeColour1";
+                fadeIn << i;
+
+                std::stringstream fadeOut;
+                fadeOut << "fadeColour2";
+                fadeOut << i;
+
+                ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
+                ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
+
+                fades[i]->setColor(ColourUtility::lerpColour(in, out, (sinf(ColourUtility::va * 3) + 1) / 2));
+            }
         }
 };
 
@@ -787,7 +838,9 @@ class IconEffects : public Window
             id = "icon-effects";
         }
 
-        SimplePlayer* getPlayer(IconType type, EffectUI* ui)
+        EffectUI* ui = nullptr;
+
+        SimplePlayer* getPlayer(IconType type, EffectUI* ui, bool second = false)
         {
             int id = GameManager::get()->m_playerFrame.value();
 
@@ -812,23 +865,75 @@ class IconEffects : public Window
             auto plr = SimplePlayer::create(id);
             plr->updatePlayerFrame(id, type);
             plr->setScale(1.65f);
-            ui->players.push_back(plr);
+            if (second)
+                ui->players2.push_back(plr);
+            else
+                ui->players.push_back(plr);
 
             return plr;
         }
 
         void generateType(CCMenu* menu, int type)
         {
+            CCPoint pos = ccp((menu->getContentSize().width / 3) * type, 0) + ccp(10, -40);
+            float width = menu->getContentSize().width / 4;
 
+            auto defSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            
+            if (type == 0)
+                defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
+            else if (type == 1)
+                defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
+            else
+                defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value()));
+
+            auto d = CCLabelBMFont::create("D", "bigFont.fnt");
+            d->setOpacity(100);
+            defSpr->addChild(d);
+            d->setPosition(defSpr->getContentSize() / 2);
+            d->setAnchorPoint(ccp(0.45f, 0.45f));
+
+            defSpr->setScale(0.7f);
+
+            auto dBtn = CCMenuItemSpriteExtra::create(defSpr, menu, nullptr);
+            dBtn->setPosition(pos + ccp(width, menu->getContentSize().height - 80));
+            menu->addChild(dBtn);
+
+            auto chSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            chSpr->setScale(defSpr->getScale());
+            ui->chromas.push_back(chSpr);
+            auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, nullptr);
+            chBtn->setPosition(dBtn->getPosition() + ccp(0, -30));
+            menu->addChild(chBtn);
+
+            auto paSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            paSpr->setScale(defSpr->getScale());
+            ui->pastels.push_back(paSpr);
+            auto paBtn = CCMenuItemSpriteExtra::create(paSpr, menu, nullptr);
+            paBtn->setPosition(chBtn->getPosition() + ccp(0, -30));
+            menu->addChild(paBtn);
+
+            auto faSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            faSpr->setScale(paSpr->getScale());
+            ui->fades.push_back(faSpr);
+            auto faBtn = CCMenuItemSpriteExtra::create(faSpr, menu, nullptr);
+            faBtn->setPosition(paBtn->getPosition() + ccp(0, -30));
+            menu->addChild(faBtn);
+
+            auto faSSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
+            auto faSBtn = CCMenuItemSpriteExtra::create(faSSpr, menu, nullptr);
+            faSBtn->setPosition(faBtn->getPosition() + ccp(-25, 0));
+            faSSpr->setScale(0.45f);
+            menu->addChild(faSBtn);
         }
 
         void cocosCreate(CCMenu* menu)
         {
-            auto ui = EffectUI::create();
+            ui = EffectUI::create();
             menu->addChild(ui);
 
             auto back = CCScale9Sprite::create("square02_small.png");
-            back->setContentSize(ccp(menu->getContentSize().width, 40) / 0.5f);
+            back->setContentSize(ccp(menu->getContentSize().width, 80) / 0.5f);
             back->setPosition(ccp(0, menu->getContentSize().height));
             back->setAnchorPoint(ccp(0, 1));
             back->setScale(0.5f);
@@ -836,18 +941,20 @@ class IconEffects : public Window
             menu->addChild(back);
 
             auto back2 = CCScale9Sprite::create("square02_small.png");
-            back2->setContentSize(ccp(menu->getContentSize().width, menu->getContentSize().height - 40 - 6) / 0.5f);
+            back2->setContentSize(ccp(menu->getContentSize().width, menu->getContentSize().height - 80 - 6) / 0.5f);
             back2->setPosition(ccp(0, 0));
             back2->setAnchorPoint(ccp(0, 0));
             back2->setScale(0.5f);
             back2->setOpacity(100);
             menu->addChild(back2);
 
+            #pragma region Normal
+
             auto m = CCMenu::create();
             m->setAnchorPoint(ccp(0, 0));
             m->ignoreAnchorPointForPosition(false);
             m->setPosition(ccp(10, 10));
-            m->setPositionY(back->getContentSize().height / 2);
+            m->setPositionY(back->getContentSize().height - 40);
             m->setContentSize(back->getContentSize() - ccp(20, 20));
             back->addChild(m);
 
@@ -864,15 +971,45 @@ class IconEffects : public Window
             m->setLayout(RowLayout::create()->setGap(75)->setAutoScale(false)->setGrowCrossAxis(false));
             m->updateLayout();
 
+            #pragma endregion
+
+            #pragma region Dual
+
+            auto m2 = CCMenu::create();
+            m2->setAnchorPoint(ccp(0, 0));
+            m2->ignoreAnchorPointForPosition(false);
+            m2->setPosition(ccp(10, 10));
+            m2->setPositionY(40);
+            m2->setContentSize(back->getContentSize() - ccp(20, 20));
+            back->addChild(m2);
+
+            m2->addChild(getPlayer(IconType::Cube, ui, true));
+            m2->addChild(getPlayer(IconType::Ship, ui, true));
+            m2->addChild(getPlayer(IconType::Ball, ui, true));
+            m2->addChild(getPlayer(IconType::Ufo, ui, true));
+            m2->addChild(getPlayer(IconType::Wave, ui, true));
+            m2->addChild(getPlayer(IconType::Robot, ui, true));
+            m2->addChild(getPlayer(IconType::Spider, ui, true));
+            m2->addChild(getPlayer(IconType::Swing, ui, true));
+            m2->addChild(getPlayer(IconType::Jetpack, ui, true));
+
+            m2->setLayout(RowLayout::create()->setGap(75)->setAutoScale(false)->setGrowCrossAxis(false));
+            m2->updateLayout();
+
+            #pragma endregion
 
             for (size_t i = 0; i < 2; i++)
             {
                 auto split = CCSprite::createWithSpriteFrameName("floorLine_001.png");
                 split->setPosition(ccp(back2->getContentSize().width / 3 * (i + 1), back2->getContentSize().height / 2));
                 split->setScaleY(2);
-                split->setScaleX(0.9f);
+                split->setScaleX(0.7f);
                 split->setRotation(-90);
-                split->setOpacity(75);
+                split->setOpacity(100);
+                split->setAnchorPoint(ccp(0.5f, 0));
+
+                auto blend = ccBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
+                split->setBlendFunc(blend);
 
                 back2->addChild(split);
             }
@@ -883,6 +1020,8 @@ class IconEffects : public Window
                 title->setPosition(ccp((back2->getContentSize().width / 3) * i + ((back2->getContentSize().width / 3) / 2), back2->getContentSize().height - 20));
 
                 back2->addChild(title);
+
+                generateType(menu, i);
             }
               
         }
