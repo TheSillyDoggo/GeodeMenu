@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/CCTextInputNode.hpp>
 #include <Geode/modify/CCSprite.hpp>
 #include "../Client/Client.h"
@@ -19,4 +19,4 @@ class $modify (CCTextInputNode)
         
         CCTextInputNode::updateLabel(p0);
     }
-};
+};*/

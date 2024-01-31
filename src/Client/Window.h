@@ -691,3 +691,199 @@ class Config : public Window
             menu->addChild(yt);
         }
 };
+
+class EffectUI : public CCNode
+{
+    public:
+        std::vector<SimplePlayer*> players;
+
+        bool init()
+        {
+            if (!CCNode::init())
+                return false;
+
+            this->scheduleUpdate();
+
+            return true;
+        }
+
+        static EffectUI* create() {
+            EffectUI* ret = new EffectUI();
+            if (ret && ret->init()) {
+                ret->autorelease();
+                return ret;
+            } else {
+                delete ret;
+                ret = nullptr;
+                return nullptr;
+            }
+        }
+
+        ccColor3B getColourForSelected(int mode) // bri`ish
+        {
+            // 0 : primary, 1 : secondary : 2 : glow
+
+            std::stringstream ss;
+            ss << "selColour";
+            ss << mode;
+
+            int sel = Mod::get()->getSavedValue<int>(ss.str(), 0);
+
+            if (mode == 0)
+            {
+                if (sel == 0)
+                    return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value());
+            }
+            else if (mode == 1)
+            {
+                if (sel == 0)
+                    return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value());
+            }
+            else
+            {
+                if (sel == 0)
+                    return GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value());
+            }
+
+            if (sel == 1)
+                return ColourUtility::getChromaColour();
+
+            if (sel == 2)
+                return ColourUtility::getPastelColour();
+
+            if (sel == 3)
+            {
+                //fade
+            }
+
+            if (sel == 4)
+            {
+                //custom colour
+            }
+
+            return {0, 0, 0};
+        }
+
+        void update(float delta) {
+            for (size_t i = 0; i < players.size(); i++)
+            {
+                players[i]->setColor(getColourForSelected(0));
+                players[i]->setSecondColor(getColourForSelected(1));
+
+                players[i]->enableCustomGlowColor(getColourForSelected(2));
+                players[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
+                players[i]->updateColors();
+            }
+            
+        }
+};
+
+class IconEffects : public Window
+{
+    public:
+        IconEffects()
+        {
+            name = "Icon Effects";
+            id = "icon-effects";
+        }
+
+        SimplePlayer* getPlayer(IconType type, EffectUI* ui)
+        {
+            int id = GameManager::get()->m_playerFrame.value();
+
+            if (type == IconType::Ship)
+                id = GameManager::get()->m_playerShip.value();
+            if (type == IconType::Ball)
+                id = GameManager::get()->m_playerBall.value();
+            if (type == IconType::Ufo)
+                id = GameManager::get()->m_playerBird.value();
+            if (type == IconType::Wave)
+                id = GameManager::get()->m_playerDart.value();
+            if (type == IconType::Robot)
+                id = GameManager::get()->m_playerRobot.value();
+            if (type == IconType::Spider)
+                id = GameManager::get()->m_playerSpider.value();
+            if (type == IconType::Swing)
+                id = GameManager::get()->m_playerSwing.value();
+            if (type == IconType::Jetpack)
+                id = GameManager::get()->m_playerJetpack.value();
+
+
+            auto plr = SimplePlayer::create(id);
+            plr->updatePlayerFrame(id, type);
+            plr->setScale(1.65f);
+            ui->players.push_back(plr);
+
+            return plr;
+        }
+
+        void generateType(CCMenu* menu, int type)
+        {
+
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto ui = EffectUI::create();
+            menu->addChild(ui);
+
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(ccp(menu->getContentSize().width, 40) / 0.5f);
+            back->setPosition(ccp(0, menu->getContentSize().height));
+            back->setAnchorPoint(ccp(0, 1));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+            menu->addChild(back);
+
+            auto back2 = CCScale9Sprite::create("square02_small.png");
+            back2->setContentSize(ccp(menu->getContentSize().width, menu->getContentSize().height - 40 - 6) / 0.5f);
+            back2->setPosition(ccp(0, 0));
+            back2->setAnchorPoint(ccp(0, 0));
+            back2->setScale(0.5f);
+            back2->setOpacity(100);
+            menu->addChild(back2);
+
+            auto m = CCMenu::create();
+            m->setAnchorPoint(ccp(0, 0));
+            m->ignoreAnchorPointForPosition(false);
+            m->setPosition(ccp(10, 10));
+            m->setPositionY(back->getContentSize().height / 2);
+            m->setContentSize(back->getContentSize() - ccp(20, 20));
+            back->addChild(m);
+
+            m->addChild(getPlayer(IconType::Cube, ui));
+            m->addChild(getPlayer(IconType::Ship, ui));
+            m->addChild(getPlayer(IconType::Ball, ui));
+            m->addChild(getPlayer(IconType::Ufo, ui));
+            m->addChild(getPlayer(IconType::Wave, ui));
+            m->addChild(getPlayer(IconType::Robot, ui));
+            m->addChild(getPlayer(IconType::Spider, ui));
+            m->addChild(getPlayer(IconType::Swing, ui));
+            m->addChild(getPlayer(IconType::Jetpack, ui));
+
+            m->setLayout(RowLayout::create()->setGap(75)->setAutoScale(false)->setGrowCrossAxis(false));
+            m->updateLayout();
+
+
+            for (size_t i = 0; i < 2; i++)
+            {
+                auto split = CCSprite::createWithSpriteFrameName("floorLine_001.png");
+                split->setPosition(ccp(back2->getContentSize().width / 3 * (i + 1), back2->getContentSize().height / 2));
+                split->setScaleY(2);
+                split->setScaleX(0.9f);
+                split->setRotation(-90);
+                split->setOpacity(75);
+
+                back2->addChild(split);
+            }
+
+            for (size_t i = 0; i < 3; i++)
+            {
+                auto title = CCLabelBMFont::create(i == 0 ? "Primary" : (i == 1 ? "Secondary" : "Glow"), "bigFont.fnt");
+                title->setPosition(ccp((back2->getContentSize().width / 3) * i + ((back2->getContentSize().width / 3) / 2), back2->getContentSize().height - 20));
+
+                back2->addChild(title);
+            }
+              
+        }
+};

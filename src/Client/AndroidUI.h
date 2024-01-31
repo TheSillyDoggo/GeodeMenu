@@ -84,6 +84,20 @@ public:
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
 
+        if (btn->getTag() == 5)
+        {
+            FLAlertLayer::create("Coming soon", "Replay is not ready...", "Ok")->show();
+            //auto dO = DialogObject::create("Shopkeeper", "Hewwo :3", 1, 1.0f, true, {255, 255, 255});
+            //auto dialog = DialogObject::create("Scratch", "<cr><s005>RobTop</s></c>", 13, 1.0f, true, _ccColor3B({255, 255, 255}));
+
+            // auto layer = DialogLayer::create(dO, 0);
+            //layer->setZOrder(999999);
+            //CCScene::get()->addChild(layer);
+            //layer->animateIn(DialogAnimationType::FromCenter);
+
+            return;
+        }
+
         lastTab = selectedTab;
         selectedTab = btn->getTag();
 

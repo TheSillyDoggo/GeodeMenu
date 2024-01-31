@@ -8,6 +8,10 @@ class $modify (CCScheduler)
 {
     void update(float dt)
     {
+        // icon effects value
+        ColourUtility::update(dt);
+        
+
         if (SpeedhackTop::instance)
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))

@@ -6,17 +6,19 @@ public:
 	static void Setup(bool android = false)
 	{
         SetupLevel();
-        SetupBypass();
-        SetupSpeedhack();
+        SetupBypass();        
         SetupCosmetic();
-        
-        //if (android)
-            //Client::instance->windows.push_back(new Variables());
+        SetupIconEffects();
+        SetupSpeedhack();
+
+        SetupVariables(android);
+
+        Window* level = new Window();
+        level->name = "Replay";
+        level->id = "replay-window";
+        Client::instance->windows.push_back(level);
 
         SetupOptions(android);
-        //SetupOptions();
-        //SetupCreator();
-        SetupVariables();
 
         if (android)
             Client::instance->windows.push_back(new Credits());
@@ -79,8 +81,8 @@ public:
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
-        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
-        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));
+        //bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
+        //bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));
 
         #ifdef GEODE_IS_ANDROID
         bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
@@ -108,6 +110,11 @@ public:
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
+    }
+
+    static void SetupIconEffects()
+    {
+        Client::instance->windows.push_back(new IconEffects());
     }
 
     static void SetupMisc()
@@ -200,8 +207,13 @@ public:
         Client::instance->windows.push_back(creator);
     }*/
 
-    static void SetupVariables()
+    static void SetupVariables(bool android)
     {
+        return;
+                
+        if (android)
+            Client::instance->windows.push_back(new Variables());
+
         //Client::instance->windows.push_back(new Variables());
     }
 
