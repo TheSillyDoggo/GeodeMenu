@@ -925,6 +925,34 @@ class IconEffects : public Window
             faSBtn->setPosition(faBtn->getPosition() + ccp(-25, 0));
             faSSpr->setScale(0.45f);
             menu->addChild(faSBtn);
+
+            auto def = CCLabelBMFont::create("Default:", "bigFont.fnt");
+            def->setPosition(pos + ccp(-6, dBtn->getPositionY() + 40));
+            def->setOpacity(100);
+            def->setAnchorPoint(ccp(0, 0.5f));
+            def->setScale(0.5f);
+            menu->addChild(def);
+
+            auto ch = CCLabelBMFont::create("Chroma:", "bigFont.fnt");
+            ch->setPosition(pos + ccp(-6, chBtn->getPositionY() + 40));
+            ch->setOpacity(100);
+            ch->setAnchorPoint(ccp(0, 0.5f));
+            ch->setScale(0.5f);
+            menu->addChild(ch);
+
+            auto pa = CCLabelBMFont::create("Pastel:", "bigFont.fnt");
+            pa->setPosition(pos + ccp(-6, paBtn->getPositionY() + 40));
+            pa->setOpacity(100);
+            pa->setAnchorPoint(ccp(0, 0.5f));
+            pa->setScale(0.5f);
+            menu->addChild(pa);
+
+            auto fa = CCLabelBMFont::create("Fade:", "bigFont.fnt");
+            fa->setPosition(pos + ccp(-6, faBtn->getPositionY() + 40));
+            fa->setOpacity(100);
+            fa->setAnchorPoint(ccp(0, 0.5f));
+            fa->setScale(0.5f);
+            menu->addChild(fa);
         }
 
         void cocosCreate(CCMenu* menu)
