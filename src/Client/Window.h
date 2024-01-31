@@ -254,8 +254,8 @@ class Speedhack : public Window//, public TextInputDelegate
             modules[0]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 50) - ccp(180 / 2, 0) + ccp(10, 0));
 
             modules[1]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[2]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (24 * 1)) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[3]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (24 * 2)) - ccp(180 / 2, 0) + ccp(10, 0));
+            modules[2]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * 1)) - ccp(180 / 2, 0) + ccp(10, 0));
+            modules[3]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * 2)) - ccp(180 / 2, 0) + ccp(10, 0));
             //static_cast<geode::InputNode*>(menu->getChildByID("speedhack-top"))->getInput()->setDelegate(this);
 
             auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), menu, menu_selector(Speedhack::clear));
