@@ -252,8 +252,10 @@ class Speedhack : public Window//, public TextInputDelegate
             menu->addChild(slider, 2);
 
             modules[0]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 50) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[1]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 200) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[2]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 250) - ccp(180 / 2, 0) + ccp(10, 0));
+
+            modules[1]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110) - ccp(180 / 2, 0) + ccp(10, 0));
+            modules[2]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (24 * 1)) - ccp(180 / 2, 0) + ccp(10, 0));
+            modules[3]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (24 * 2)) - ccp(180 / 2, 0) + ccp(10, 0));
             //static_cast<geode::InputNode*>(menu->getChildByID("speedhack-top"))->getInput()->setDelegate(this);
 
             auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), menu, menu_selector(Speedhack::clear));
@@ -582,6 +584,22 @@ class Config : public Window
 
         }
 
+        void onLink(CCObject* sender)
+        {
+            auto a = geode::createQuickPopup(
+                "Hold Up!",
+                "Links are spooky! Are you sure you want to go to <cy>" + std::string(as<CCNode*>(sender)->getID()) + "</c>?",
+                "Cancel", "Yes",
+                [](FLAlertLayer* a, bool btn2) {
+                    if (btn2) {
+                        CCApplication::get()->openURL(a->getID().c_str());
+                    }
+                }
+            );
+
+            a->setID(as<CCNode*>(sender)->getID());
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             btns.clear();
@@ -662,8 +680,14 @@ class Config : public Window
             menu->addChild(lED);
             menu->addChild(ED);
 
-            auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, nullptr); // https://discord.gg/DfQSTEnQKK
+            auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
             discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
+            discord->setID("https://discord.gg/DfQSTEnQKK");
             menu->addChild(discord);
+
+            auto yt = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_ytIcon_001.png"), menu, menu_selector(Config::onLink)); // https://www.youtube.com/@TheSillyDoggo
+            yt->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12) + ccp(0, 35));
+            yt->setID("https://www.youtube.com/@TheSillyDoggo");
+            menu->addChild(yt);
         }
 };

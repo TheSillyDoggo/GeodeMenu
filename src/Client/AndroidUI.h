@@ -58,7 +58,7 @@ public:
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
-                float v = 1.0f;
+                v = 1.0f;
 
                 if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
                 {
@@ -428,6 +428,11 @@ class AndroidBall : public CCLayer
 
         virtual void update(float dt)
         {
+            //if (CCScene::get()->getChildByID("android-ui"))
+            //    CCDirector::get()->setNotificationNode(nullptr);
+            //else
+            //    CCDirector::get()->setNotificationNode(this);
+            
             UpdateVisible(false);
         }
 

@@ -25,6 +25,9 @@ class $modify (CCScheduler)
                 if (v > 99999)
                     v = 99999;
 
+                if (Client::GetModuleEnabled("speedhack-gameplay"))
+                    if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
                 FMOD::ChannelGroup* masterGroup;
                 FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
                 masterGroup->setPitch(Client::GetModuleEnabled("speedhack-music") ? v : 1);
