@@ -965,6 +965,15 @@ class IconEffects : public Window
             Mod::get()->setSavedValue<bool>("same-dual", !Mod::get()->getSavedValue<bool>("same-dual"));
         }
 
+        void changeColour(CCObject* sender)
+        {
+            std::stringstream ss;
+            ss << "selColour";
+            ss << as<CCNode*>(sender)->getID();
+
+            int sel = Mod::get()->getSavedValue<int>(ss.str(), as<CCNode*>(sender)->getTag());
+        }
+
         void generateType(CCMenu* menu, int type)
         {
             CCPoint pos = ccp((menu->getContentSize().width / 3) * type, 0) + ccp(10, -40);
@@ -987,30 +996,38 @@ class IconEffects : public Window
 
             defSpr->setScale(0.7f);
 
-            auto dBtn = CCMenuItemSpriteExtra::create(defSpr, menu, nullptr);
+            auto dBtn = CCMenuItemSpriteExtra::create(defSpr, menu, menu_selector(IconEffects::changeColour));
+            dBtn->setID(std::to_string(type));
             dBtn->setPosition(pos + ccp(width, menu->getContentSize().height - 80));
             menu->addChild(dBtn);
+            dBtn->setTag(0);
 
             auto chSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
             chSpr->setScale(defSpr->getScale());
             ui->chromas.push_back(chSpr);
-            auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, nullptr);
+            auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, menu_selector(IconEffects::changeColour));
+            chBtn->setID(std::to_string(type));
             chBtn->setPosition(dBtn->getPosition() + ccp(0, -30));
             menu->addChild(chBtn);
+            chBtn->setTag(1);
 
             auto paSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
             paSpr->setScale(defSpr->getScale());
             ui->pastels.push_back(paSpr);
-            auto paBtn = CCMenuItemSpriteExtra::create(paSpr, menu, nullptr);
+            auto paBtn = CCMenuItemSpriteExtra::create(paSpr, menu, menu_selector(IconEffects::changeColour));
+            paBtn->setID(std::to_string(type));
             paBtn->setPosition(chBtn->getPosition() + ccp(0, -30));
             menu->addChild(paBtn);
+            paBtn->setTag(2);
 
             auto faSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
             faSpr->setScale(paSpr->getScale());
             ui->fades.push_back(faSpr);
-            auto faBtn = CCMenuItemSpriteExtra::create(faSpr, menu, nullptr);
+            auto faBtn = CCMenuItemSpriteExtra::create(faSpr, menu, menu_selector(IconEffects::changeColour));
+            faBtn->setID(std::to_string(type));
             faBtn->setPosition(paBtn->getPosition() + ccp(0, -30));
             menu->addChild(faBtn);
+            faBtn->setTag(3);
 
             auto faSSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
             auto faSBtn = CCMenuItemSpriteExtra::create(faSSpr, menu, menu_selector(IconEffects::onFadeSettings));
