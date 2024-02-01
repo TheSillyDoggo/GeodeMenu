@@ -1,5 +1,8 @@
 #include <Geode/Geode.hpp>
 #include "Module.h"
+#include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/PlayerObject.hpp>
+#include "../Layers/SetupFadeSetting.h"
 
 class Client;
 
@@ -723,7 +726,7 @@ class EffectUI : public CCNode
             }
         }
 
-        ccColor3B getColourForSelected(int mode) // bri`ish
+        static ccColor3B getColourForSelected(int mode) // bri`ish
         {
             // 0 : primary, 1 : secondary : 2 : glow
 
@@ -793,8 +796,16 @@ class EffectUI : public CCNode
 
             for (size_t i = 0; i < players2.size(); i++)
             {
-                players2[i]->setColor(getColourForSelected(1));
-                players2[i]->setSecondColor(getColourForSelected(0));
+                if (Mod::get()->getSavedValue<bool>("same-dual"))
+                {
+                    players2[i]->setColor(getColourForSelected(0));
+                    players2[i]->setSecondColor(getColourForSelected(1));
+                }
+                else
+                {
+                    players2[i]->setColor(getColourForSelected(1));
+                    players2[i]->setSecondColor(getColourForSelected(0));
+                }
 
                 players2[i]->enableCustomGlowColor(getColourForSelected(2));
                 players2[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
@@ -829,6 +840,77 @@ class EffectUI : public CCNode
         }
 };
 
+class $modify (PlayerObject)
+{
+    bool init(int p0, int p1, GJBaseGameLayer* p2, cocos2d::CCLayer* p3, bool p4)
+    {
+        if (!PlayerObject::init(p0, p1, p2, p3, p4))
+            return false;
+
+        auto l = as<CCNode*>(this->getChildren()->objectAtIndex(0));
+        as<CCSprite*>(l->getChildren()->objectAtIndex(0))->setID("gamemode-frame");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(0))->getChildren()->objectAtIndex(0))->setID("secondary-frame");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(0))->getChildren()->objectAtIndex(1))->setID("highlights-frame");
+
+        as<CCSprite*>(l->getChildren()->objectAtIndex(1))->setID("ship-frame");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(1))->getChildren()->objectAtIndex(0))->setID("secondary-frame");
+
+        as<CCSprite*>(l->getChildren()->objectAtIndex(6))->setID("glow-frame");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(0))->setID("dash-frame");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(1))->setID("gamemode-glow");
+        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(2))->setID("ship-glow");
+
+        return true;
+    }
+};
+
+class $modify (GJBaseGameLayer)
+{
+    virtual void update(float p0)
+    {
+        GJBaseGameLayer::update(p0);
+
+        if (m_player1)
+        {
+            auto l = as<CCNode*>(m_player1->getChildren()->objectAtIndex(0));
+
+            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("gamemode-glow"))->setColor(EffectUI::getColourForSelected(2));
+            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("ship-glow"))->setColor(EffectUI::getColourForSelected(2));
+
+            as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(0));
+            as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(0));
+
+            as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+            as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+        }
+
+        if (m_player2)
+        {
+            auto l = as<CCNode*>(m_player2->getChildren()->objectAtIndex(0));
+
+            if (!Mod::get()->getSavedValue<bool>("same-dual"))
+            {
+                as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(1));
+                as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(1));
+
+                as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(0));
+                as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(0));
+            }
+            else
+            {
+                as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(0));
+                as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(0));
+
+                as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+                as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+            }
+
+            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("gamemode-glow"))->setColor(EffectUI::getColourForSelected(2));
+            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("ship-glow"))->setColor(EffectUI::getColourForSelected(2));
+        }
+    }
+};
+
 class IconEffects : public Window
 {
     public:
@@ -838,7 +920,7 @@ class IconEffects : public Window
             id = "icon-effects";
         }
 
-        EffectUI* ui = nullptr;
+        EffectUI* ui = nullptr;        
 
         SimplePlayer* getPlayer(IconType type, EffectUI* ui, bool second = false)
         {
@@ -864,13 +946,23 @@ class IconEffects : public Window
 
             auto plr = SimplePlayer::create(id);
             plr->updatePlayerFrame(id, type);
-            plr->setScale(1.65f);
+            plr->setScale(1.4f);
             if (second)
                 ui->players2.push_back(plr);
             else
                 ui->players.push_back(plr);
 
             return plr;
+        }
+
+        void onFadeSettings(CCObject* sender)
+        {
+            CCScene::get()->addChild(SetupFadeSetting::create(as<CCNode*>(sender)->getTag()), 99999);
+        }
+
+        void changeDual(CCObject*)
+        {
+            Mod::get()->setSavedValue<bool>("same-dual", !Mod::get()->getSavedValue<bool>("same-dual"));
         }
 
         void generateType(CCMenu* menu, int type)
@@ -921,7 +1013,8 @@ class IconEffects : public Window
             menu->addChild(faBtn);
 
             auto faSSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
-            auto faSBtn = CCMenuItemSpriteExtra::create(faSSpr, menu, nullptr);
+            auto faSBtn = CCMenuItemSpriteExtra::create(faSSpr, menu, menu_selector(IconEffects::onFadeSettings));
+            faSBtn->setTag(type);
             faSBtn->setPosition(faBtn->getPosition() + ccp(-25, 0));
             faSSpr->setScale(0.45f);
             menu->addChild(faSBtn);
@@ -983,7 +1076,7 @@ class IconEffects : public Window
             m->ignoreAnchorPointForPosition(false);
             m->setPosition(ccp(10, 10));
             m->setPositionY(back->getContentSize().height - 40);
-            m->setContentSize(back->getContentSize() - ccp(20, 20));
+            m->setContentSize(back->getContentSize() - ccp(120, 20));
             back->addChild(m);
 
             m->addChild(getPlayer(IconType::Cube, ui));
@@ -996,7 +1089,7 @@ class IconEffects : public Window
             m->addChild(getPlayer(IconType::Swing, ui));
             m->addChild(getPlayer(IconType::Jetpack, ui));
 
-            m->setLayout(RowLayout::create()->setGap(75)->setAutoScale(false)->setGrowCrossAxis(false));
+            m->setLayout(RowLayout::create()->setGap(64)->setAutoScale(false)->setGrowCrossAxis(false));
             m->updateLayout();
 
             #pragma endregion
@@ -1008,7 +1101,7 @@ class IconEffects : public Window
             m2->ignoreAnchorPointForPosition(false);
             m2->setPosition(ccp(10, 10));
             m2->setPositionY(40);
-            m2->setContentSize(back->getContentSize() - ccp(20, 20));
+            m2->setContentSize(back->getContentSize() - ccp(120, 20));
             back->addChild(m2);
 
             m2->addChild(getPlayer(IconType::Cube, ui, true));
@@ -1021,10 +1114,20 @@ class IconEffects : public Window
             m2->addChild(getPlayer(IconType::Swing, ui, true));
             m2->addChild(getPlayer(IconType::Jetpack, ui, true));
 
-            m2->setLayout(RowLayout::create()->setGap(75)->setAutoScale(false)->setGrowCrossAxis(false));
+            m2->setLayout(RowLayout::create()->setGap(64)->setAutoScale(false)->setGrowCrossAxis(false));
             m2->updateLayout();
 
             #pragma endregion
+
+            auto sameTitle = CCLabelBMFont::create("Same\nDual\nColour", "bigFont.fnt", 110, CCTextAlignment::kCCTextAlignmentCenter);
+            sameTitle->setPosition(menu->getContentSize() + ccp(-25, -20));
+            sameTitle->setScale(0.3f);
+            menu->addChild(sameTitle);
+
+            auto sameDual = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(IconEffects::changeDual), 0.6f);
+            sameDual->setPosition(menu->getContentSize() + ccp(-25, -50));
+            sameDual->toggle(Mod::get()->getSavedValue<bool>("same-dual"));
+            menu->addChild(sameDual);
 
             for (size_t i = 0; i < 2; i++)
             {
@@ -1051,6 +1154,5 @@ class IconEffects : public Window
 
                 generateType(menu, i);
             }
-              
         }
 };
