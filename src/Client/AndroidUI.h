@@ -616,8 +616,6 @@ class $modify (AchievementNotifier)
 
         AchievementNotifier::willSwitchToScene(p0);
 
-        return;
-
         if (p0 == nullptr)
             return; // something real bad happened, gd will probably shit itself :(
 
