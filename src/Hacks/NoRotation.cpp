@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/CCNode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
@@ -14,7 +14,7 @@ class $modify (PlayerObject)
         else
             PlayerObject::setRotation(r);
     }
-};*/
+};
 
 /*
 class $modify (CCNode)
