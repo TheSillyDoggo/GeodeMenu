@@ -13,7 +13,7 @@ class $modify (GameStatsManager)
         {
             if (type == UnlockType::GJItem)
             {
-                if (id == 18 || id == 20)
+                if (id == 18 || id == 19 || id == 20)
                     return true;
             }
         }

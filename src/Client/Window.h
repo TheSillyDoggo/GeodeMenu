@@ -862,6 +862,11 @@ class $modify (PlayerObject)
 
         return true;
     }
+
+    TodoReturn createRobot(int p0)
+    {
+        PlayerObject::createRobot(p0);
+    }
 };
 
 class $modify (GJBaseGameLayer)
@@ -969,9 +974,11 @@ class IconEffects : public Window
         {
             std::stringstream ss;
             ss << "selColour";
-            ss << as<CCNode*>(sender)->getID();
+            ss << as<CCNode*>(sender)->getID(); // adb push TheSillyDoggo.Cheats.geode /storage/emulated/0/Android/media/com.geode.launcher/game/geode/mods/
 
-            int sel = Mod::get()->getSavedValue<int>(ss.str(), as<CCNode*>(sender)->getTag());
+            log::info("changing colour: {}", ss.str());
+
+            Mod::get()->setSavedValue<int>(ss.str(), as<CCNode*>(sender)->getTag());
         }
 
         void generateType(CCMenu* menu, int type)
@@ -1008,6 +1015,7 @@ class IconEffects : public Window
             auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, menu_selector(IconEffects::changeColour));
             chBtn->setID(std::to_string(type));
             chBtn->setPosition(dBtn->getPosition() + ccp(0, -30));
+            chBtn->addChild(CCSprite::createWithSpriteFrameName("GJ_select_001.png"));
             menu->addChild(chBtn);
             chBtn->setTag(1);
 
