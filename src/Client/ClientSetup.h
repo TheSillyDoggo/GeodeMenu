@@ -16,7 +16,7 @@ public:
         Window* level = new Window();
         level->name = "Replay";
         level->id = "replay-window";
-        Client::instance->windows.push_back(level);
+        //Client::instance->windows.push_back(level);
 
         SetupOptions(android);
 
