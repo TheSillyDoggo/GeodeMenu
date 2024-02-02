@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_ANDROID32
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCNode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
@@ -15,6 +17,8 @@ class $modify (PlayerObject)
             PlayerObject::setRotation(r);
     }
 };
+
+#endif
 
 /*
 class $modify (CCNode)

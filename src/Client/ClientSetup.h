@@ -101,7 +101,9 @@ public:
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
+        #ifndef GEODE_IS_ANDROID32
         cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
+        #endif
         #ifdef GEODE_IS_WINDOWS
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
         #endif
