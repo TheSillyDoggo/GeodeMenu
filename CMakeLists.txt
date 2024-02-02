@@ -10,6 +10,9 @@ file(GLOB SOURCES
 	src/*.cpp
 	#src/Hacks/*.cpp
 	src/Hacks/Speedhack.cpp
+	src/Hacks/NoRotation.cpp
+	src/Hacks/Noclip.cpp
+	src/Hacks/CopyHack.cpp
 	src/Client/*.cpp
 	src/Client/*.h
 )
