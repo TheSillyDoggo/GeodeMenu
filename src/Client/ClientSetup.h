@@ -109,6 +109,9 @@ public:
         #endif
         cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
+
+        cosmetic->modules.push_back(new Module("No Wave Trail", "no-wave", "Disables the wave trail"));
+        cosmetic->modules.push_back(new Module("Solid Wave Trail", "solid-wave", "Makes the wave trail a solid colour"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);

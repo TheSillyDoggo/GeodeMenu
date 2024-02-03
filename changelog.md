@@ -1,6 +1,7 @@
 # 1.1.0
 
 - Added Icon Effects (RGB Icons)
+- Added no Wave Trail
 - Removed the text limit bypasses due to crashes, sorry :/
 - **Temporarily** <cr>disabled</c> 32 bit android support due to crashes, when I get my hands on a copy of 32 bit gd i can fix this
 - Created an official [Discord Server](https://discord.gg/DfQSTEnQKK)

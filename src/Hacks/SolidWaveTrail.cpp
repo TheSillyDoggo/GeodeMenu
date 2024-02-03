@@ -1,24 +1,32 @@
-/*#include <Geode/Geode.hpp>
-//#include <Geode/modify/HardStreak.hpp>
-#include <Geode/modify/CCDrawNode.hpp>
+#include <Geode/Geode.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (CCDrawNode)
-{
-    void drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+bool myDrawCircle(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
+    if (Client::GetModuleEnabled("no-wave"))
+        return true;
+
+    if (Client::GetModuleEnabled("solid-wave"))
     {
-        log::info("a");
+        if (fillColor.r >= 1.0f && fillColor.g >= 1.0f && fillColor.b >= 1.0f)
+            return true;
 
-        CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+        ins->setBlendFunc(CCSprite::create()->getBlendFunc());
+
+        ins->setZOrder(-1);
     }
-};
-*/
-/*void updateStroke(float p0)
-{
-    HardStreak::updateStroke(p0);
 
-    log::info("s");
-}//
-};*/
+    return ins->drawPolygon(verts, count, fillColor, borderWidth, fillColor);
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getNonVirtual(&HardStreak::drawPolygon)
+        ),
+        &myDrawCircle,
+        "cocos2d::CCDrawNode::drawPolygon",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
