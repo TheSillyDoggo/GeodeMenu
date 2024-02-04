@@ -191,7 +191,7 @@ class Speedhack : public Window//, public TextInputDelegate
         void clear(CCObject* sender)
         {
             SpeedhackTop::instance->text = "";
-            reinterpret_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getChildByID("speedhack-top"))->setString("");
+            reinterpret_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getChildByID("IGNOREBYPASSES"_spr))->setString("");
             slider->setValue(unscaleValue(1));
         }
 
@@ -216,7 +216,7 @@ class Speedhack : public Window//, public TextInputDelegate
             std::stringstream ss;
             ss << round(scaleValue(v) * 100.0) / 100.0;
 
-            auto inp = static_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getParent()->getParent()->getChildByID("speedhack-top"));
+            auto inp = static_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getParent()->getParent()->getChildByID("IGNOREBYPASSES"_spr));
             inp->setString(ss.str().c_str());
             SpeedhackTop::instance->text = ss.str();
 
@@ -694,7 +694,7 @@ class Config : public Window
             yt->setID("https://www.youtube.com/@TheSillyDoggo");
             menu->addChild(yt);
 
-            menu->addChild(Dropdown::create({130, 30}, {"a", "b", "c"}, nullptr));
+            menu->addChild(Dropdown::create({130, 30}, {"Boobs", "b", "c"}, nullptr));
         }
 };
 

@@ -255,7 +255,7 @@ class InputModule : public Module, public TextInputDelegate
             input->setPosition(pos + ccp(70, 0));
             input->setAnchorPoint(ccp(0, 0.5f));
             input->getInput()->setDelegate(this);
-            input->setID(id);
+            input->setID("IGNOREBYPASSES"_spr);
             input->setString(text);
 
             menu->addChild(input);

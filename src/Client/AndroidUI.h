@@ -70,6 +70,11 @@ public:
 
                 if (v > 99999)
                     v = 99999;
+
+                v /= CCDirector::get()->getScheduler()->getTimeScale();
+
+                if (Client::GetModuleEnabled("speedhack-gameplay"))
+                    if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
             }
         }
 
@@ -480,7 +485,7 @@ class AndroidBall : public CCLayer
 
             if (PlayLayer::get())
             {
-                if (CCDirector::get()->getRunningScene()->getChildByID("pause-layer"))
+                if (CCDirector::get()->getRunningScene()->getChildByID("PauseLayer"))
                 {
                     op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
                 }
@@ -519,19 +524,19 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
-/*
+
 class $modify (PauseLayer)
 {
     static PauseLayer* create(bool p0)
     {
         auto v = PauseLayer::create(p0);
 
-        v->setID("pause-layer");
+        v->setID("PauseLayer");
 
         return v;
     }
 };
-*/
+
 class $modify (LoadingLayer)
 {
     bool init(bool p0)

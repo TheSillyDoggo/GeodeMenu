@@ -1,3 +1,10 @@
+# 1.1.1
+
+- Added hide endscreen
+- Fixed button not being clickable on the pause menu
+- Re enable text bypasses
+- Fix incorrect menu speed during transition
+
 # 1.1.0
 
 - Added Icon Effects (RGB Icons)
