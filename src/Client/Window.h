@@ -1018,7 +1018,7 @@ class IconEffects : public Window
             auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, menu_selector(IconEffects::changeColour));
             chBtn->setID(std::to_string(type));
             chBtn->setPosition(dBtn->getPosition() + ccp(0, -30));
-            chBtn->addChild(CCSprite::createWithSpriteFrameName("GJ_select_001.png"));
+            //chBtn->addChild(CCSprite::createWithSpriteFrameName("GJ_select_001.png"));
             menu->addChild(chBtn);
             chBtn->setTag(1);
 
