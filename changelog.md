@@ -4,6 +4,7 @@
 - Fixed button not being clickable on the pause menu
 - Re enable text bypasses
 - Fix incorrect menu speed during transition
+- Added Transparent BG & Transparent Lists
 
 # 1.1.0
 
