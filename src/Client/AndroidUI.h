@@ -519,20 +519,6 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
-class $modify (PlayLayer)
-{
-    void pauseGame(bool p0)
-    {
-        PlayLayer::pauseGame(p0);
-
-        log::info("paused");
-
-        if (AndroidBall::instance)
-        {
-            //AndroidBall::instance->setTouchPriority(-504);
-        }
-    }
-};
 /*
 class $modify (PauseLayer)
 {
