@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include "Module.h"
+#include "Dropdown.h"
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Layers/SetupFadeSetting.h"
@@ -692,6 +693,8 @@ class Config : public Window
             yt->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12) + ccp(0, 35));
             yt->setID("https://www.youtube.com/@TheSillyDoggo");
             menu->addChild(yt);
+
+            menu->addChild(Dropdown::create({130, 30}, {"a", "b", "c"}, nullptr));
         }
 };
 

@@ -358,7 +358,7 @@ class AndroidBall : public CCLayer
             this->setTouchEnabled(true);
             this->setMouseEnabled(true);
 
-            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -129 + 1, true);
+            CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512 - 1, true);
             //this->setTouchPriority(69420);
             //CCDirector::sharedDirector()->getTouchDispatcher()->addStandardDelegate(this, 69420);
 
@@ -384,6 +384,9 @@ class AndroidBall : public CCLayer
         }
 
         virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+
+            //auto d = DialogLayer::create(DialogObject::create("title", "text", 0, 1.0f, false, {255, 255, 255}), 0);
+
             auto space = btn->convertTouchToNodeSpace(touch);
 
             doingThing = false;
@@ -516,7 +519,6 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
 };
 
-/*
 class $modify (PlayLayer)
 {
     void pauseGame(bool p0)
@@ -527,17 +529,11 @@ class $modify (PlayLayer)
 
         if (AndroidBall::instance)
         {
-            log::info("exists");
-
-            AndroidBall::instance->removeFromParent();
+            //AndroidBall::instance->setTouchPriority(-504);
         }
-
-        auto andBall = AndroidBall::create();
-        CCDirector::get()->getRunningScene()->addChild(andBall);
-        cocos::handleTouchPriority(andBall);
     }
 };
-
+/*
 class $modify (PauseLayer)
 {
     static PauseLayer* create(bool p0)
