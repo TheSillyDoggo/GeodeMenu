@@ -9,8 +9,6 @@ class $modify (CCTextInputNode)
 {
     TodoReturn updateLabel(gd::string p0)
     {
-        log::info(this->getID());
-
         if (this->getID().starts_with("IGNOREBYPASSES"_spr))
         {
             CCTextInputNode::updateLabel(p0);
