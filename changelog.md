@@ -8,6 +8,7 @@
 - Added Transparent BG & Transparent Lists
 - Added Confirm Practice and Confirm Restart
 - Fixed show hitboxes breaking (vanilla one)
+- Added thicker hitboxes
 
 # 1.1.0
 
