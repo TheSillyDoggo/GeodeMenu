@@ -4,7 +4,10 @@
 - Fixed button not being clickable on the pause menu
 - Re enable text bypasses
 - Fix incorrect menu speed during transition
+- Re-added the text bypasses due to hopefully fixing the crashes
 - Added Transparent BG & Transparent Lists
+- Added Confirm Practice and Confirm Restart
+- Fixed show hitboxes breaking (vanilla one)
 
 # 1.1.0
 

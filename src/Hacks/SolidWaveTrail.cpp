@@ -17,7 +17,7 @@ bool myDrawCircle(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccC
         ins->setZOrder(-1);
     }
 
-    return ins->drawPolygon(verts, count, fillColor, borderWidth, fillColor);
+    return ins->drawPolygon(verts, count, fillColor, borderWidth, borderColor);
 }
 
 $execute {
