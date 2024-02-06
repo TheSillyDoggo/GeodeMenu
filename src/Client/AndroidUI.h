@@ -2,6 +2,7 @@
 #include "ClientSetup.h"
 #include <Geode/modify/AchievementNotifier.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/AppDelegate.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/MenuLayer.hpp>
@@ -355,6 +356,8 @@ class AndroidBall : public CCLayer
 
             this->setID("android-ball");
 
+            //this->retain(); // idk what this does but it fixes transition customizer
+
             highest++;
 
             this->setTag(highest);
@@ -595,13 +598,13 @@ class $modify (CCScene)
     }
 };
 
-class $modify (AchievementNotifier)
+class $modify (AppDelegate)
 {
     void willSwitchToScene(CCScene* p0)
     {
         log::info("will switch to scene");
 
-        AchievementNotifier::willSwitchToScene(p0);
+        AppDelegate::willSwitchToScene(p0);
 
         if (p0 == nullptr)
             return; // something real bad happened, gd will probably shit itself :(

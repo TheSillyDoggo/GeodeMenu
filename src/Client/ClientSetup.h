@@ -87,6 +87,8 @@ public:
         bypass->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         bypass->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
 
+        bypass->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+
         #ifdef GEODE_IS_ANDROID
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         #endif

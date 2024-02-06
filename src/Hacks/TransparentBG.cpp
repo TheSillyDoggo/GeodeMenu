@@ -1,10 +1,11 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCSprite.hpp>
+#include <Geode/modify/AppDelegate.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (CCSprite)
+/*class $modify (CCSprite)
 {
     bool grad;
 
@@ -27,5 +28,56 @@ class $modify (CCSprite)
             CCSprite::setColor({255, 255, 255});
         else
             CCSprite::setColor(color3);
+    }
+};*/
+
+std::string getNodeName(CCObject* node) {
+#ifdef GEODE_IS_WINDOWS
+    return typeid(*node).name() + 6;
+#else 
+    {
+        std::string ret;
+
+        int status = 0;
+        auto demangle = abi::__cxa_demangle(typeid(*node).name(), 0, 0, &status);
+        if (status == 0) {
+            ret = demangle;
+        }
+        free(demangle);
+
+        return ret;
+    }
+#endif
+}
+
+class $modify (AppDelegate)
+{
+    virtual void willSwitchToScene(CCScene* scene)
+    {
+        AppDelegate::willSwitchToScene(scene);
+
+        if (!Client::GetModuleEnabled("trans-bg"))
+            return;
+
+        if (scene->getChildrenCount() > 0)
+        {
+            if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)))
+            {
+                l->sortAllChildren();
+
+                if (auto b = static_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
+                {
+                    log::info("bg: {}", b);
+
+                    if (getNodeName(b).starts_with("cocos2d::CCSprite"))
+                    {
+                        if (b->getColor().r == 0 && b->getColor().g == 102 && b->getColor().b == 255)
+                        {
+                            b->setColor({255, 255, 255});
+                        }
+                    }
+                }
+            }
+        }
     }
 };

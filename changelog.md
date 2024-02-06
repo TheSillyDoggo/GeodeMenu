@@ -1,3 +1,9 @@
+# 1.1.2
+
+- Added Level Edit
+- Removed boob dropdown (sad day)
+- Fixed lag with Transparent BG
+
 # 1.1.1
 
 - Added hide endscreen
