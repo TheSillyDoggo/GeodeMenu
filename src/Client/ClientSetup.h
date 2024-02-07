@@ -106,12 +106,8 @@ public:
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
-        #ifndef GEODE_IS_ANDROID32
-        cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
-        #endif
-        #ifdef GEODE_IS_WINDOWS
-        cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
-        #endif
+        cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
+
         cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
 
@@ -121,7 +117,18 @@ public:
         cosmetic->modules.push_back(new Module("Transparent BG", "trans-bg", "Disables the colouring on the gradient backgrounds"));
         cosmetic->modules.push_back(new Module("Transparent Lists", "trans-lists", "Disables the colouring on all cells"));
 
-        cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
+        cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
+        cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
+
+        #ifndef GEODE_IS_ANDROID32
+        cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
+        #endif
+        #ifdef GEODE_IS_WINDOWS
+        cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
+        #endif
+
+        //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
+        cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);

@@ -1,3 +1,10 @@
+# 1.1.3
+
+- Fixed Level Edit breaking level page
+- Added Force Trail On and Force Trail Off
+- Added No Camera Shake
+- Added ~~Herobrine~~ Zulguroth
+
 # 1.1.2
 
 - Added Level Edit

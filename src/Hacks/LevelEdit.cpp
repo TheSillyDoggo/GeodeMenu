@@ -8,9 +8,13 @@ class $modify (PauseLayer)
 {
     virtual TodoReturn customSetup()
     {
+        auto a = PlayLayer::get()->m_level->m_levelType;
+
         if (Client::GetModuleEnabled("level-edit"))
             PlayLayer::get()->m_level->m_levelType = GJLevelType::Editor;
 
         PauseLayer::customSetup();
+
+        PlayLayer::get()->m_level->m_levelType = a;
     }
 };
