@@ -4,6 +4,7 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Layers/SetupFadeSetting.h"
+#include "../Layers/SetupTransitionCustomizer.h"
 
 class Client;
 
@@ -1182,5 +1183,32 @@ class IconEffects : public Window
 
                 generateType(menu, i);
             }
+        }
+};
+
+class Universal : public Window
+{
+    public:
+        void onTransCustomizer(CCObject*)
+        {
+            SetupTransCustom::addToScene();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            Window::cocosCreate(menu);
+
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
+
+            return;
+
+            auto btnS = ButtonSprite::create("Transition\nCustomizer", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Universal::onTransCustomizer));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+            menu->addChild(btn);
         }
 };

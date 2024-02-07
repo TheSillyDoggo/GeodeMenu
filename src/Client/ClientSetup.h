@@ -65,7 +65,7 @@ public:
 
     static void SetupBypass()
     {
-        Window* bypass = new Window();
+        Window* bypass = new Universal();
         bypass->name = "Universal";
         bypass->id = "bypass-window";
         bypass->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);

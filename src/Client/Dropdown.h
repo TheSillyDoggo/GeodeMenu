@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Geode/Geode.hpp>
 #include "CCContentSizeTo.h"
 
@@ -42,7 +44,7 @@ class Dropdown : public CCMenu {
 
         void setVis(bool n)
         {
-            CCPoint s = ccp(size.width, size.height * (1 + (open ? strs.size() : 0)));
+            CCPoint s = ccp(size.width, size.height * (1 + (open ? (std::min<float>(6, strs.size())) : 0)));
             bg->stopAllActions();
             bg->runAction(CCEaseInOut::create( CCContentSizeTo::create(0.35f, s), 2.0f));
 
@@ -52,7 +54,7 @@ class Dropdown : public CCMenu {
                 {
                     btns[i]->stopAllActions();
 
-                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.5f, 1), 2)));
+                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.02f * i), CCEaseInOut::create(CCScaleTo::create(0.5f, 1), 2)));
                 }
             }
             else
@@ -63,7 +65,7 @@ class Dropdown : public CCMenu {
                 {
                     btns[i]->stopAllActions();
 
-                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.35f, 0), 2)));
+                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.02f * i), CCEaseInOut::create(CCScaleTo::create(0.35f, 0), 2)));
                 }
 
                 std::reverse(btns.begin(), btns.end());
@@ -113,26 +115,40 @@ class Dropdown : public CCMenu {
             tex->limitLabelWidth(size.width - 10 - (7.5f + sprBtn->getContentSize().width), 0.7f, 0.05f);
             this->addChild(tex);
 
+            auto scl = geode::ScrollLayer::create({ size.width, size.height * std::min<float>(6, strs.size()) });
+            scl->setPositionY(-1 * scl->getContentSize().height);
+            scl->m_contentLayer->setContentSize(ccp(scl->getContentSize().width, size.height * strs.size()));
+            scl->moveToTop();
+
+            auto m = CCMenu::create();
+
             for (size_t s = 0; s < strs.size(); s++)
             {
                 auto lbl = CCLabelBMFont::create(strs[s].c_str(), "bigFont.fnt");
-                lbl->limitLabelWidth(size.width, 0.7f, 0.01f);
+                lbl->limitLabelWidth(size.width - 10 - 10, 0.7f, 0.01f);
 
                 auto btn = CCMenuItemSpriteExtra::create(lbl, this, menu_selector(Dropdown::onPress));
-                btn->setPosition(ccp(size.width / 2, (size.height * (s + 1) * -1) + size.height / 2 ));
+                btn->setPosition(ccp(size.width / 2, scl->m_contentLayer->getContentSize().height + ((size.height * (s + 1) * -1) + size.height / 2 )));
                 btn->setScale(0);
                 btn->setTag(s);
-                this->addChild(btn);
+                btn->setSizeMult(1.1f);
+                m->addChild(btn);
 
                 btns.push_back(btn);
             }
-            
+
+            scl->m_contentLayer->addChild(m);
+            scl->setTouchPriority(-555);
+
+            this->addChild(scl);
 
             this->registerWithTouchDispatcher();
-            cocos::handleTouchPriority(this);
+            //cocos::handleTouchPriority(this); // maybe this fixes it
 
             return true;
         }
+
+        int getSelectedIndex() { return selected; }
 
         void setSelected(int sh)
         {
