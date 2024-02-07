@@ -17,6 +17,8 @@ class Dropdown : public CCMenu {
         std::vector<std::string> strs;
         std::vector<CCMenuItemSprite*> btns;
 
+        cocos2d::SEL_MenuHandler event;
+
     public:
         void onToggleVisible(CCObject*)
         {
@@ -41,8 +43,43 @@ class Dropdown : public CCMenu {
         void setVis(bool n)
         {
             CCPoint s = ccp(size.width, size.height * (1 + (open ? strs.size() : 0)));
-
+            bg->stopAllActions();
             bg->runAction(CCEaseInOut::create( CCContentSizeTo::create(0.35f, s), 2.0f));
+
+            if (n)
+            {
+                for (size_t i = 0; i < btns.size(); i++)
+                {
+                    btns[i]->stopAllActions();
+
+                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.5f, 1), 2)));
+                }
+            }
+            else
+            {
+                std::reverse(btns.begin(), btns.end());
+                
+                for (size_t i = 0; i < btns.size(); i++)
+                {
+                    btns[i]->stopAllActions();
+
+                    btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.35f, 0), 2)));
+                }
+
+                std::reverse(btns.begin(), btns.end());
+            }
+        }
+
+        void onPress(CCObject* sender)
+        {
+            open = false;
+            setSelected(as<CCNode*>(sender)->getTag());
+
+            btn->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1, 1)));
+            setVis(false);
+
+            if (event)
+                (this->*event)(sender);
         }
 
         bool init(CCSize size, std::vector<std::string> strs, cocos2d::SEL_MenuHandler callback, int sel = 0)
@@ -52,6 +89,7 @@ class Dropdown : public CCMenu {
 
             this->size = size;
             this->strs = strs;
+            this->event = callback;
 
             this->setContentSize(size);
             bg = CCScale9Sprite::create("square02b_small.png");
@@ -63,9 +101,9 @@ class Dropdown : public CCMenu {
             bg->setScaleY(-1);
             this->addChild(bg);
 
-            sprBtn = CCSprite::createWithSpriteFrameName("edit_upBtn_001.png");
+            sprBtn = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
             sprBtn->setColor({200, 200, 200});
-            sprBtn2 = CCSprite::createWithSpriteFrameName("edit_upBtn_001.png");
+            sprBtn2 = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
             btn = CCMenuItemSprite::create(sprBtn, sprBtn2, this, menu_selector(Dropdown::onToggleVisible));
             btn->setPosition(size + ccp(-7.5f - sprBtn->getContentSize().width / 2, -1 * (size.height / 2)));
             this->addChild(btn);
@@ -74,6 +112,21 @@ class Dropdown : public CCMenu {
             tex->setPosition(size / 2 + ccp(-1 * sprBtn->getContentSize().width, 0) + ccp(10 / 2, 0));
             tex->limitLabelWidth(size.width - 10 - (7.5f + sprBtn->getContentSize().width), 0.7f, 0.05f);
             this->addChild(tex);
+
+            for (size_t s = 0; s < strs.size(); s++)
+            {
+                auto lbl = CCLabelBMFont::create(strs[s].c_str(), "bigFont.fnt");
+                lbl->limitLabelWidth(size.width, 0.7f, 0.01f);
+
+                auto btn = CCMenuItemSpriteExtra::create(lbl, this, menu_selector(Dropdown::onPress));
+                btn->setPosition(ccp(size.width / 2, (size.height * (s + 1) * -1) + size.height / 2 ));
+                btn->setScale(0);
+                btn->setTag(s);
+                this->addChild(btn);
+
+                btns.push_back(btn);
+            }
+            
 
             this->registerWithTouchDispatcher();
             cocos::handleTouchPriority(this);

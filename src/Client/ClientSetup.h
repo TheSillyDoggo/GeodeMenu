@@ -52,9 +52,11 @@ public:
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>"));
-        #ifndef GEODE_IS_ANDROID
+
+        level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
+        level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
+
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nOnly supported on <cl>Windows</c> for the time being"));
-        #endif
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -83,9 +85,6 @@ public:
 
         bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
         bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));
-
-        bypass->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
-        bypass->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
 
         bypass->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
 

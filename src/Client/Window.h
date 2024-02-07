@@ -694,7 +694,7 @@ class Config : public Window
             yt->setID("https://www.youtube.com/@TheSillyDoggo");
             menu->addChild(yt);
 
-            menu->addChild(Dropdown::create({130, 30}, {"Boobs", "b", "c"}, nullptr));
+            menu->addChild(Dropdown::create({130, 30}, {"hi", "b", "c"}, nullptr));
         }
 };
 
