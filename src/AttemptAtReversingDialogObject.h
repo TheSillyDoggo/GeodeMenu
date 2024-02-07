@@ -24,10 +24,15 @@ protected:
 
 public:
 	bool init(std::string title, std::string text, int type, float unknown, bool also_unknown, _ccColor3B textColor) {
+		#ifdef GEODE_IS_WINDOWS
+
 		uintptr_t base = (uintptr_t)GetModuleHandle(0);
 
 		return reinterpret_cast<bool(__thiscall*)(AttemptAtReversingDialogObject*, std::string, std::string, int, float, bool, _ccColor3B)>
 			(base + 0x9a6c0)(this, title, text, type, unknown, also_unknown, textColor);
+		#elif GEODE_IS_ANDROID
+		return as<DialogObject*>(this)->init(title, text, type, unknown, also_unknown, textColor);
+		#endif
 	}
 
 	static AttemptAtReversingDialogObject* create(std::string title, std::string text, int type, float text_scale, bool is_unskippable, _ccColor3B textColor) {
