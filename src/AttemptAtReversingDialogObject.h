@@ -30,8 +30,8 @@ public:
 
 		return reinterpret_cast<bool(__thiscall*)(AttemptAtReversingDialogObject*, std::string, std::string, int, float, bool, _ccColor3B)>
 			(base + 0x9a6c0)(this, title, text, type, unknown, also_unknown, textColor);
-		#elif GEODE_IS_ANDROID
-		return as<DialogObject*>(this)->init(title, text, type, unknown, also_unknown, textColor);
+		#else
+		return base_cast<DialogObject*>(this)->init(title.c_str(), text.c_str(), type, unknown, also_unknown, textColor);
 		#endif
 	}
 
