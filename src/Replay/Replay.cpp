@@ -46,12 +46,16 @@ class $modify (PauseLayer)
     {
         PauseLayer::customSetup();
 
+		return;
+
 		auto s = CCSprite::create("replay.png"_spr);
 		s->setScale(CCDirector::get()->getContentScaleFactor() * 0.5f);
 
 		auto btn = CCMenuItemSpriteExtra::create(s, this, nullptr);
 
         auto m = CCMenu::create();
+		m->setContentSize(ccp(0, 0));
+		m->setScale(0.25f);
 		m->addChild(btn);
         this->addChild(m);
 	}
