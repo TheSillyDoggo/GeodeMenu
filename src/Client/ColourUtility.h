@@ -1,3 +1,5 @@
+#pragma once
+
 #include <imgui-cocos.hpp>
 
 class ColourUtility

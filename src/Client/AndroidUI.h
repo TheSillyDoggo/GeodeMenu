@@ -83,8 +83,25 @@ public:
             }
         }
 
+        int e = Mod::get()->getSavedValue<int>("anim-mode", 2);
+
         panel->setPosition(CCDirector::get()->getWinSize() / 2);
-        panel->setPositionY(-1 * panel->getContentSize().height / 2);
+
+        if (e == 1)
+            panel->setPositionY(panel->getContentSize().height);
+        if (e == 2)
+            panel->setPositionY(-1 * panel->getContentSize().height / 2);
+        if (e == 3)
+            panel->setPositionX(-1 * panel->getContentSize().width / 2 / 2);
+        if (e == 4)
+            panel->setPositionX(panel->getContentSize().width);
+
+        if (e == 5)
+        {
+            panel->setScale(0);
+
+            return CCSpeed::create((CCEaseElasticOut::create(CCScaleTo::create(1, 1))), 1.0f / v);
+        }
 
         return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
     }

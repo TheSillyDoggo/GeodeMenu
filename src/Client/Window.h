@@ -502,6 +502,7 @@ class Config : public Window
         static inline Slider* normal = nullptr;
         static inline Slider* GP = nullptr;
         static inline Slider* ED = nullptr;
+        static inline Dropdown* dd = nullptr;
 
         void changeTheme(CCObject* sender)
         {
@@ -605,6 +606,11 @@ class Config : public Window
             a->setID(as<CCNode*>(sender)->getID());
         }
 
+        void onDropdownChanged(CCObject*)
+        {
+            Mod::get()->setSavedValue<int>("anim-mode", dd->getSelectedIndex());
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             btns.clear();
@@ -675,8 +681,8 @@ class Config : public Window
             ED->setScaleX(0.8f);
             ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
-            modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90));
-            modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28));
+            modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28));
+            modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28));
 
             menu->addChild(lNormal);
             menu->addChild(normal);
@@ -695,7 +701,9 @@ class Config : public Window
             yt->setID("https://www.youtube.com/@TheSillyDoggo");
             menu->addChild(yt);
 
-            menu->addChild(Dropdown::create({130, 30}, {"hi", "b", "c"}, nullptr));
+            dd = Dropdown::create({130, 25}, {"None", "From Top", "From Bottom", "From Left", "From Right", "Scale"}, menu_selector(Config::onDropdownChanged), Mod::get()->getSavedValue<int>("anim-mode", 2));
+            dd->setPosition(ccp(120.5f, menu->getContentSize().height - 90));
+            menu->addChild(dd);
         }
 };
 

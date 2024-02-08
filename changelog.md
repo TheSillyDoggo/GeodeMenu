@@ -3,6 +3,7 @@
 - Fixed Level Edit breaking level page
 - Added Force Trail On and Force Trail Off
 - Added No Camera Shake
+- Added Menu Animations, From Left, From Right, From Top, From Bottom and Scale
 - Added ~~Herobrine~~ Zulguroth
 
 # 1.1.2
