@@ -9,6 +9,6 @@ class $modify(GJBaseGameLayer) {
     {
         GJBaseGameLayer::update(p0);
 
-        
+        //this->updateDebugDraw();
     }
 };

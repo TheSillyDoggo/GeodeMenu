@@ -5,6 +5,23 @@
 
 using namespace geode::prelude;
 
+#ifdef GEODE_IS_ANDROID
+
+class $modify (UILayer)
+{
+    bool init(GJBaseGameLayer* p0)
+    {
+        if (!UILayer::init(p0))
+            return false;
+
+        togglePlatformerMode(true);
+
+        return true;
+    }
+};
+
+#endif
+
 class $modify (PlayerObject)
 {
     virtual void update(float dt)
