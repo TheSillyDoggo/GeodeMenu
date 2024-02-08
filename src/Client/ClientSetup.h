@@ -232,8 +232,6 @@ public:
 
     static void SetupVariables(bool android)
     {
-        return;
-                
         if (android)
             Client::instance->windows.push_back(new Variables());
 

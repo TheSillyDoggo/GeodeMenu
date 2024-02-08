@@ -436,6 +436,8 @@ class Variables : public Window
         {
             log::info("button");
 
+            PlayLayer::get()->m_player1->toggleDartMode(true, true);
+
             //PlayLayer::get()->m_player1->playerDestroyed(false);
 
             //PlayLayer::get()->destroyPlayer(PlayLayer::get()->m_player1, GameObject::createWithKey(0));
@@ -484,7 +486,7 @@ class Variables : public Window
             back->setOpacity(100);
 
             auto btn = CCMenuItemSpriteExtra::create(back, menu, menu_selector(Variables::onChangeMode));
-            menu->addChild(btn);
+            //menu->addChild(btn);
         }
 };
 

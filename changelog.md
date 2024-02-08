@@ -3,6 +3,8 @@
 - Fixed Level Edit breaking level page
 - Added Force Trail On and Force Trail Off
 - Added No Camera Shake
+- Added Force Platformer On Android
+- Moved Confirm Practice and Confirm Restart From Universal to Level
 - Added Menu Animations, From Left, From Right, From Top, From Bottom and Scale
 - Added ~~Herobrine~~ Zulguroth
 

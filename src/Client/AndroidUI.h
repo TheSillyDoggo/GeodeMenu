@@ -111,7 +111,7 @@ public:
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
 
-        if (btn->getTag() == 5)
+        if (btn->getTag() == 5 + 1)
         {
             #ifdef GEODE_IS_ANDROID
 
