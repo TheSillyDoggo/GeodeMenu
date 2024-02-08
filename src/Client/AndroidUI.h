@@ -96,6 +96,13 @@ public:
 
         if (btn->getTag() == 5)
         {
+            #ifdef GEODE_IS_ANDROID
+
+            FLAlertLayer::create("Coming soon", "Replay is not ready...", "Ok")->show();
+            return;
+
+            #endif
+
             CCArray* arr = CCArray::create();
 
             AttemptAtReversingDialogObject* Object = nullptr;
