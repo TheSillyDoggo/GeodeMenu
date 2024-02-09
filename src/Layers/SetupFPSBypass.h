@@ -54,7 +54,7 @@ class SetupFPSBypass : public FLAlertLayer
             l->addChild(title);
 
             auto lb = CCLabelBMFont::create("FPS Bypass:", "bigFont.fnt");
-            lb->setPosition(l->getContentSize() / 2 + ccp(-20, 0));
+            lb->setPosition(l->getContentSize() / 2 + ccp(-20, 30));
             lb->setScale(0.55f);
             lb->setAnchorPoint(ccp(1, 0.5f));
             l->addChild(lb);
@@ -63,10 +63,21 @@ class SetupFPSBypass : public FLAlertLayer
             ss2 << GameManager::get()->m_customFPSTarget;
 
             inp = geode::InputNode::create(lb->getScaledContentSize().width, "FPS Value");
+            inp->setPosition(l->getContentSize() / 2 + ccp(50, 30));
             inp->setString(ss2.str());
             inp->getInput()->setAllowedChars("098765431.");
             inp->getInput()->setMaxLabelLength(8);
             l->addChild(inp);
+
+            auto lb2 = CCLabelBMFont::create("Enabled:", "bigFont.fnt");
+            lb2->setPosition(l->getContentSize() / 2 + ccp(-20, -10));
+            lb2->setScale(0.55f);
+            lb2->setAnchorPoint(ccp(1, 0.5f));
+            l->addChild(lb2);
+
+            auto enb = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.8f);
+            enb->setPosition(l->getContentSize() / 2 + ccp(20, -10));
+            l->addChild(enb);
 
             auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupFPSBypass::onClose));
             ok->setPosition(l->getContentSize() / 2 + ccp(0, -82));
