@@ -7,11 +7,18 @@ class SetupFPSBypass : public FLAlertLayer
 {
     public:
         geode::InputNode* inp = nullptr;
+        CCMenuItemToggler* enb = nullptr;
 
         void onClose(CCObject*)
-        {            
+        {
+            if (GameManager::get()->getGameVariable("0116") != enb->isToggled())
+            {
+                GameManager::get()->m_customFPSTarget = std::stof(inp->getString());
+                GameManager::get()->setGameVariable("0116", enb->isToggled());
+                GameManager::get()->setGameVariable("0030", !enb->isToggled());
 
-            //GameManager::get()->m_customFPSTarget = std::stof(inp->getString());
+                GameManager::get()->updateCustomFPS();
+            }
 
             this->removeFromParent();
         }
@@ -75,8 +82,9 @@ class SetupFPSBypass : public FLAlertLayer
             lb2->setAnchorPoint(ccp(1, 0.5f));
             l->addChild(lb2);
 
-            auto enb = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.8f);
+            enb = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.8f);
             enb->setPosition(l->getContentSize() / 2 + ccp(20, -10));
+            enb->toggle(GameManager::get()->getGameVariable("0116"));
             l->addChild(enb);
 
             auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupFPSBypass::onClose));

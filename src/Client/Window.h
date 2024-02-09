@@ -1201,6 +1201,14 @@ class IconEffects : public Window
 class Level : public Window
 {
     public:
+        void onFix(CCObject*)
+        {
+            if (PlayLayer::get())
+            {
+                PlayLayer::get()->m_level->m_levelType = GJLevelType::Saved;
+            }
+        }
+
         void onFPS(CCObject*)
         {
             SetupFPSBypass::addToScene();
@@ -1220,6 +1228,17 @@ class Level : public Window
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
+
+            pos = pos + ccp(-30 - 27, -5);
+
+            auto btnS2 = ButtonSprite::create("?", 10, false, "bigFont.fnt", "GJ_button_05.png", 25, 0.75f);
+            as<CCNode*>(btnS2->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn2 = CCMenuItemSpriteExtra::create(btnS2, menu, menu_selector(Level::onFix));
+            btn2->setSizeMult(1.15f);
+            btn2->setPosition(pos);
+            menu->addChild(btn2);
         }
 };
 

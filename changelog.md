@@ -1,11 +1,13 @@
 # 1.1.3
 
-- Fixed Level Edit breaking level page
+- Fixed Level Edit breaking level page, for anyone who used this before the update: Press the ? button in the levels tab while in the broken level. Do this fast as the button WILL BE REMOVED IN THE FUTURE
 - Added Force Trail On and Force Trail Off
 - Added No Camera Shake
 - Added Force Platformer On Android
 - Moved Confirm Practice and Confirm Restart From Universal to Level
 - Added Menu Animations, From Left, From Right, From Top, From Bottom and Scale
+- Added FPS Bypass (Beta)
+- Added Noclip broken slope fix
 - Added ~~Herobrine~~ Zulguroth
 
 # 1.1.2

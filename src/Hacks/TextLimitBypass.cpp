@@ -17,7 +17,7 @@ class $modify (CCTextInputNode)
         }
 
         if (Client::GetModuleEnabled("char-limit"))
-            CCTextInputNode::setMaxLabelLength(32767);
+            CCTextInputNode::setMaxLabelLength(6969);
 
         if (Client::GetModuleEnabled("char-filter"))
             CCTextInputNode::setAllowedChars("!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ");
