@@ -3,11 +3,16 @@
 
 using namespace geode::prelude;
 
-class SetupTransCustom : public FLAlertLayer
+class SetupFPSBypass : public FLAlertLayer
 {
     public:
+        geode::InputNode* inp = nullptr;
+
         void onClose(CCObject*)
-        {
+        {            
+
+            //GameManager::get()->m_customFPSTarget = std::stof(inp->getString());
+
             this->removeFromParent();
         }
 
@@ -42,19 +47,30 @@ class SetupTransCustom : public FLAlertLayer
             panel->setID("panel");
             l->addChild(panel);
 
-            auto title = CCLabelBMFont::create("Setup Transition Customizer", "bigFont.fnt");
+            auto title = CCLabelBMFont::create("Setup FPS Bypass", "bigFont.fnt");
             title->setPosition(l->getContentSize() / 2 + ccp(0, 90));
             title->setOpacity(100);
             title->setScale(0.5f);
             l->addChild(title);
 
-            auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupTransCustom::onClose));
+            auto lb = CCLabelBMFont::create("FPS Bypass:", "bigFont.fnt");
+            lb->setPosition(l->getContentSize() / 2 + ccp(-20, 0));
+            lb->setScale(0.55f);
+            lb->setAnchorPoint(ccp(1, 0.5f));
+            l->addChild(lb);
+
+            std::stringstream ss2;
+            ss2 << GameManager::get()->m_customFPSTarget;
+
+            inp = geode::InputNode::create(lb->getScaledContentSize().width, "FPS Value");
+            inp->setString(ss2.str());
+            inp->getInput()->setAllowedChars("098765431.");
+            inp->getInput()->setMaxLabelLength(8);
+            l->addChild(inp);
+
+            auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupFPSBypass::onClose));
             ok->setPosition(l->getContentSize() / 2 + ccp(0, -82));
             l->addChild(ok);
-
-            auto dd = Dropdown::create({130, 30}, {"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}, nullptr);
-            dd->setTouchPriority(-550);
-            l->addChild(dd);
 
             this->addChild(l);
 
@@ -64,9 +80,9 @@ class SetupTransCustom : public FLAlertLayer
             return true;
         }
 
-        static SetupTransCustom* create()
+        static SetupFPSBypass* create()
         {
-            SetupTransCustom* pRet = new SetupTransCustom();
+            SetupFPSBypass* pRet = new SetupFPSBypass();
             if (pRet && pRet->init()) {
                 pRet->autorelease();
                 return pRet;
@@ -78,7 +94,7 @@ class SetupTransCustom : public FLAlertLayer
 
         static void addToScene()
         {
-            auto pRet = SetupTransCustom::create();
+            auto pRet = SetupFPSBypass::create();
 
             CCScene::get()->addChild(pRet, 99999);
         }

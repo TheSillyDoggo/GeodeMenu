@@ -47,7 +47,7 @@ public:
 
     static void SetupLevel()
     {
-        Window* level = new Window();
+        Window* level = new Level();
         level->name = "Level";
         level->id = "level-window";
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
@@ -58,7 +58,8 @@ public:
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
 
-        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nOnly supported on <cl>Windows</c> for the time being"));
+        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
+        level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -86,9 +87,7 @@ public:
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
         bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
-        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));
-
-        bypass->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));        
 
         #ifdef GEODE_IS_ANDROID
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));

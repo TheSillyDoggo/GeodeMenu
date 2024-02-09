@@ -4,6 +4,7 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Layers/SetupFadeSetting.h"
+#include "../Layers/SetupFPSBypass.h"
 #include "../Layers/SetupTransitionCustomizer.h"
 
 class Client;
@@ -436,7 +437,8 @@ class Variables : public Window
         {
             log::info("button");
 
-            PlayLayer::get()->m_player1->toggleDartMode(true, true);
+            //PlayLayer::get()->m_player1->toggleDartMode(true, true);
+            PlayLayer::get()->m_player1->m_position += ccp(30, 150);
 
             //PlayLayer::get()->m_player1->playerDestroyed(false);
 
@@ -486,7 +488,7 @@ class Variables : public Window
             back->setOpacity(100);
 
             auto btn = CCMenuItemSpriteExtra::create(back, menu, menu_selector(Variables::onChangeMode));
-            //menu->addChild(btn);
+            menu->addChild(btn);
         }
 };
 
@@ -596,7 +598,7 @@ class Config : public Window
         {
             auto a = geode::createQuickPopup(
                 "Hold Up!",
-                "Links are spooky! Are you sure you want to go to <cy>" + std::string(as<CCNode*>(sender)->getID()) + "</c>?",
+                "Links are spooky! Are you sure you want to go to\n<cy>" + std::string(as<CCNode*>(sender)->getID()) + "</c>?",
                 "Cancel", "Yes",
                 [](FLAlertLayer* a, bool btn2) {
                     if (btn2) {
@@ -1193,6 +1195,31 @@ class IconEffects : public Window
 
                 generateType(menu, i);
             }
+        }
+};
+
+class Level : public Window
+{
+    public:
+        void onFPS(CCObject*)
+        {
+            SetupFPSBypass::addToScene();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            Window::cocosCreate(menu);
+
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18, 22);
+
+            auto btnS = ButtonSprite::create("FPS\nBypass", 60, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Level::onFPS));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+            menu->addChild(btn);
         }
 };
 

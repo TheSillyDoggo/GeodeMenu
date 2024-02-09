@@ -94,7 +94,7 @@ class SetupFadeSetting : public FLAlertLayer
             l->addChild(title);
 
             auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupFadeSetting::onClose));
-            ok->setPosition(l->getContentSize() / 2 + ccp(0, -85));
+            ok->setPosition(l->getContentSize() / 2 + ccp(0, -82));
             l->addChild(ok);
 
 
