@@ -111,7 +111,8 @@ public:
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
 
-        if (btn->getTag() == 5 + 1)
+        /*
+        //if (btn->getTag() == 5)
         {
             #ifdef GEODE_IS_ANDROID
 
@@ -128,25 +129,25 @@ public:
             switch (secret)
             {
             case 0:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "A replay bot is planned, <d050>But I still need more time to develop it.", 5, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "A replay bot is planned, <d050>But I still need more time to develop it.", 5, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 1:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It still isn't finished, <d050>wait a bit.", 6, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It still isn't finished, <d050>wait a bit.", 6, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 2:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I just said, <d050>it isn't done yet.", 31, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I just said, <d050>it isn't done yet.", 31, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 3:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I'm warning you!", 30, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I'm warning you!", 30, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
@@ -154,50 +155,50 @@ public:
             case 4:
                 FMODAudioEngine::sharedEngine()->playMusic("dangerLoop.mp3", true, 0, 0);
 
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "STOP! <d050>ASKING!", 34, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "STOP! <d050>ASKING!", 34, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no! <d100>Just<d010>.<d010>.<d010>. <d050>Stop asking and it'll be fine.", 36, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no! <d100>Just<d010>.<d010>.<d010>. <d050>Stop asking and it'll be fine.", 36, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 5:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I<d010>.<d010>.<d010>. I said stop!", 36, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I<d010>.<d010>.<d010>. I said stop!", 36, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 6:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It's best if you stop<d010>.<d010>.<d010>.", 35, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It's best if you stop<d010>.<d010>.<d010>.", 35, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 7:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", ".<d010>.<d010>.", 34, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", ".<d010>.<d010>.", 34, 1, false, { 255,255,255 });
                 arr->addObject(Object);   
 
                 break;
 
             case 8:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no<d010>.<d010>.<d010>. not again.", 35, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no<d010>.<d010>.<d010>. not again.", 35, 1, false, { 255,255,255 });
                 arr->addObject(Object);
 
                 break;
 
             case 9:
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", "You DARE<d050> disturb a GOD!", 33, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("Zulguroth", "You DARE<d050> disturb a GOD!", 33, 1, false, { 255,255,255 });
                 arr->addObject(Object);
 
                 ss << "I have big plans for you, <d020><cl>";
                 ss << GameManager::get()->m_playerName.c_str();
                 ss << "</c>";
 
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", ss.str(), 33, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("Zulguroth", ss.str(), 33, 1, false, { 255,255,255 });
                 arr->addObject(Object);
 
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", "Now<d010>.<d010>.<d010>. BEGONE!", 33, 1, true, { 255,255,255 });
+                Object = AttemptAtReversingDialogObject::create("Zulguroth", "Now<d010>.<d010>.<d010>. BEGONE!", 33, 1, false, { 255,255,255 });
                 arr->addObject(Object);
 
                 break;
@@ -217,7 +218,7 @@ public:
                 secret = 0;
 
             return;
-        }
+        }*/
 
         lastTab = selectedTab;
         selectedTab = btn->getTag();
@@ -426,6 +427,13 @@ public:
         goToPage(selectedTab);
 
         panel->runAction(getEnterAction(panel));
+
+        if (Client::GetModuleEnabled("npesta-width"))
+        {
+            panel->setPositionX(panel->getPositionX() + 5);
+            panel->setContentSize(panel->getContentSize() + ccp(10, 0));
+            as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
+        }
 
         return true;
     }

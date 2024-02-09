@@ -687,6 +687,7 @@ class Config : public Window
 
             modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28));
             modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28));
+            modules[2]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28));
 
             menu->addChild(lNormal);
             menu->addChild(normal);
@@ -1206,6 +1207,12 @@ class Level : public Window
             if (PlayLayer::get())
             {
                 PlayLayer::get()->m_level->m_levelType = GJLevelType::Saved;
+
+                // fucking disgusting
+                if ((PlayLayer::get()->m_level->m_levelID > 0 && PlayLayer::get()->m_level->m_levelID < 127) || PlayLayer::get()->m_level->m_levelID == 3001 || PlayLayer::get()->m_level->m_levelID == 5001 || PlayLayer::get()->m_level->m_levelID == 5002 || PlayLayer::get()->m_level->m_levelID == 5003 || PlayLayer::get()->m_level->m_levelID == 5004)
+                {
+                    PlayLayer::get()->m_level->m_levelType = GJLevelType::Local;
+                }
             }
         }
 
@@ -1266,5 +1273,27 @@ class Universal : public Window
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
+        }
+};
+
+class _Replay : public Window
+{
+    public:
+        void onTransCustomizer(CCObject*)
+        {
+            SetupTransCustom::addToScene();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            auto back = CCScale9Sprite::create("square02_small.png");
+            back->setContentSize(menu->getContentSize() / 0.5f);
+            back->setPosition(ccp(0, 0));
+            back->setAnchorPoint(ccp(0, 0));
+            back->setScale(0.5f);
+            back->setOpacity(100);
+
+
+            menu->addChild(back);
         }
 };

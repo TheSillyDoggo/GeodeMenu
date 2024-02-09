@@ -1,3 +1,8 @@
+# 1,1,4
+
+- Added additional borders for npesta texture pack users
+- Fixed RobTop levels with the level edit fix
+
 # 1.1.3
 
 - Fixed Level Edit breaking level page, for anyone who used this before the update: Press the ? button in the levels tab while in the broken level. Do this fast as the button WILL BE REMOVED IN THE FUTURE

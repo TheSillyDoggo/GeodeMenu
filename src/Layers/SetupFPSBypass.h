@@ -18,6 +18,8 @@ class SetupFPSBypass : public FLAlertLayer
                 GameManager::get()->setGameVariable("0030", !enb->isToggled());
 
                 GameManager::get()->updateCustomFPS();
+
+                CCApplication::get()->setAnimationInterval(1.0f / GameManager::get()->m_customFPSTarget);
             }
 
             this->removeFromParent();

@@ -13,9 +13,9 @@ public:
         SetupIconEffects();
         SetupSpeedhack();
 
-        SetupVariables(android);
+        //SetupVariables(android);
 
-        Window* level = new Window();
+        Window* level = new _Replay();
         level->name = "Replay";
         level->id = "replay-window";
         Client::instance->windows.push_back(level);
@@ -194,6 +194,7 @@ public:
             
             cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
             cfg->modules.push_back(new Module("Save Ball Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
+            cfg->modules.push_back(new Module("Additional Width", "npesta-width", "Add's borders to the sides of the menu. Looks weird with <cl>vanilla gd pack</c> but looks nice with <cg>npesta texture pack</c>"));
 
             Client::instance->windows.push_back(cfg);
             return;
