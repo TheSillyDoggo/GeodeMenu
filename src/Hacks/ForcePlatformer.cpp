@@ -14,7 +14,8 @@ class $modify (UILayer)
         if (!UILayer::init(p0))
             return false;
 
-        togglePlatformerMode(true);
+        if (Client::GetModuleEnabled("force-plat"))
+            togglePlatformerMode(true);
 
         return true;
     }
@@ -30,7 +31,8 @@ class $modify (PlayerObject)
         {
             this->togglePlatformerMode(true);
             #ifdef GEODE_IS_ANDROID
-            PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
+            if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
+                PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
             #endif
         }
 
