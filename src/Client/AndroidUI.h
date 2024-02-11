@@ -753,8 +753,6 @@ class $modify (AppDelegate)
             }
         }
 
-        log::info("ok create new ball");
-
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
     }

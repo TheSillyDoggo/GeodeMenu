@@ -1,3 +1,5 @@
+//#define FREEMOVE
+
 #ifdef FREEMOVE
 
 #include <Geode/Geode.hpp>

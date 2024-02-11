@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Geode/Geode.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 
@@ -55,6 +57,7 @@ class SetupFadeSetting : public FLAlertLayer
             ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
 
             //auto pop = ColorPickPopup::create((leftA ? in : out));
+            //pop->show();
             //auto pop = geode::ColorPickPopup::create({255, 0, 0, 255}, false);
             //CCScene::get()->addChild(pop, this->getZOrder() + 1);
         }
@@ -88,6 +91,8 @@ class SetupFadeSetting : public FLAlertLayer
             l->addChild(panel);
 
             auto title = CCLabelBMFont::create("Setup Icon Fade\nCustomising speed and colours is not yet supported", "bigFont.fnt");
+            title->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            title->updateLabel();
             title->setPosition(l->getContentSize() / 2 + ccp(0, 90));
             title->setOpacity(100);
             title->setScale(0.5f);

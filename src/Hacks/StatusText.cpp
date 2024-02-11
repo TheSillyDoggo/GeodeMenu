@@ -2,14 +2,34 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
+#include "Noclip.cpp"
+
 using namespace geode::prelude;
 
-/*
+std::string floatToString(float num) {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << num;
+    return ss.str();
+}
+
+bool isStringConvertibleToFloat(const std::string& str) {
+    std::istringstream iss(str);
+    float f;
+    iss >> std::noskipws >> f; // Disable skipping whitespaces
+    return iss.eof() && !iss.fail();
+}
+
+float safeStringToFloat(const std::string& floatString) {
+    if (isStringConvertibleToFloat(floatString)) {
+        return std::stof(floatString);
+    } else {
+        return 0.9f;
+    }
+}
+
 class StatusNode : public CCNode
 {
     public:
-        static inline PlayLayer* pl = nullptr;
-
         static StatusNode* create() {
             auto ret = new (std::nothrow) StatusNode;
             if (ret && ret->init()) {
@@ -19,8 +39,6 @@ class StatusNode : public CCNode
             delete ret;
             return nullptr;
         }
-
-        bool testmode = false;
 
         CCLabelBMFont* tl;
         CCLabelBMFont* tr;
@@ -33,27 +51,12 @@ class StatusNode : public CCNode
             return true;
         }
 
-        void update(float dt)
+        void updateVis()
         {
             float op = 0.9f, scale = 1.0f;
-            
-            try
-            {
-                op = std::stof(StatusOpacity::instance->text);
-            }
-            catch(const std::exception& e)
-            {
-                op = 0.9f;
-            }
 
-            try
-            {
-                scale = std::stof(StatusScale::instance->text);
-            }
-            catch(const std::exception& e)
-            {
-                scale = 1.0f;
-            }
+            op = safeStringToFloat(StatusOpacity::instance->text);
+            scale = safeStringToFloat(StatusScale::instance->text);
 
             op = clamp<float>(op, 0.0f, 1.0f);
 
@@ -64,18 +67,32 @@ class StatusNode : public CCNode
             tr->setOpacity((int)round(255 * op));
             tr->setScale(0.5f * scale);
             tr->setString("");
+        }
 
-            if (Client::GetModuleEnabled("status-testmode") && testmode)
+        void update(float dt)
+        {
+            updateVis();
+
+            if (Client::GetModuleEnabled("status-testmode") && PlayLayer::get()->m_isTestMode)
                 WriteText("Testmode", "");
+
+            //if (Client::GetModuleEnabled("status-attempt"))
+                //WriteText("Attempt %", std::to_string(PlayLayer::get()->));
 
             if (Client::GetModuleEnabled("status-fps"))
                 WriteText("FPS: %", std::to_string((int)round(1.0f / dt)));
 
-            //if (Client::GetModuleEnabled("noclip"))
-            if (false)
+            if (Client::GetModuleEnabled("noclip"))
             {
+                auto v = as<NoclipLayer*>(PlayLayer::get());
+
+                float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
+
+                if (Client::GetModuleEnabled("status-accuracy"))
+                    WriteText("Accuracy: %%", floatToString(acc));
+
                 if (Client::GetModuleEnabled("status-death"))
-                    WriteText("Deaths: %", std::to_string((int)1));
+                    WriteText("Deaths: %", std::to_string((int)v->m_fields->t));
             }
 
             //log::info("attempt {}", );
@@ -86,12 +103,15 @@ class StatusNode : public CCNode
         void WriteText(std::string text, std::string f)
         {
             std::stringstream s;
+
+            bool a = false;
             
             for (size_t i = 0; i < text.size(); i++)
             {
-                if (text[i] == '%')
+                if (text[i] == '%' && !a)
                 {
                     s << f;
+                    a = true;
                 }
                 else
                 {
@@ -111,21 +131,12 @@ class StatusNode : public CCNode
 
 class $modify (PlayLayer)
 {
-    /*
     bool init(GJGameLevel* p0, bool p1, bool p2)
     {
         if (!PlayLayer::init(p0, p1, p2))
             return false;
 
-
-        StatusNode::pl = this;
         auto stn = StatusNode::create();
-
-        if (this->getChildrenCount() > 10)
-        {
-            reinterpret_cast<CCNode*>(getChildren()->objectAtIndex(10))->setVisible(false);
-            stn->testmode = true;
-        }
 
         auto menu = CCMenu::create();
         menu->setPosition(ccp(0, 0));
@@ -139,6 +150,7 @@ class $modify (PlayLayer)
 
         auto tr = CCLabelBMFont::create("TR", "bigFont.fnt");
         tr->setAnchorPoint(ccp(1, 1));
+        tr->setAlignment(CCTextAlignment::kCCTextAlignmentRight);
         tr->setPosition(ccp(CCDirector::get()->getWinSize().width - 2, CCDirector::get()->getWinSize().height));
 
         menu->addChild(tl);
@@ -151,4 +163,4 @@ class $modify (PlayLayer)
         this->addChild(menu, 69420);
         return true;
     }
-};*/
+};

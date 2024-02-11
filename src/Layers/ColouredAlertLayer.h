@@ -1,11 +1,10 @@
 #pragma once
 
-#include "../Client/Dropdown.h"
 #include <Geode/ui/GeodeUI.hpp>
 
 using namespace geode::prelude;
 
-class SetupTransCustom : public FLAlertLayer
+class ColouredAlertLayer : public FLAlertLayer
 {
     public:
         void onClose(CCObject*)
@@ -18,7 +17,7 @@ class SetupTransCustom : public FLAlertLayer
             onClose(nullptr);
         }
 
-        bool init()
+        bool init(std::string title, std::string str)
         {
             if (!FLAlertLayer::init(0))
                 return false;
@@ -44,19 +43,21 @@ class SetupTransCustom : public FLAlertLayer
             panel->setID("panel");
             l->addChild(panel);
 
-            auto title = CCLabelBMFont::create("Setup Transition Customizer", "bigFont.fnt");
-            title->setPosition(l->getContentSize() / 2 + ccp(0, 90));
-            title->setOpacity(100);
-            title->setScale(0.5f);
-            l->addChild(title);
+            auto content = CCLabelBMFont::create(str.c_str(), "chatFont.fnt");
+            content->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            l->addChild(content);
 
-            auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupTransCustom::onClose));
-            ok->setPosition(l->getContentSize() / 2 + ccp(0, -82));
+            panel->setContentSize(content->getContentSize() + ccp(0, 0));
+
+            auto titleL = CCLabelBMFont::create(title.c_str(), "bigFont.fnt");
+            titleL->setPosition(l->getContentSize() / 2 + ccp(0, 90));
+            titleL->setOpacity(100);
+            titleL->setScale(0.5f);
+            l->addChild(titleL);
+
+            auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(ColouredAlertLayer::onClose));
+            ok->setPosition(ccp(l->getContentSize().width / 2, 5));
             l->addChild(ok);
-
-            auto dd = Dropdown::create({130, 30}, {"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}, nullptr);
-            dd->setTouchPriority(-550);
-            l->addChild(dd);
 
             this->addChild(l);
 
@@ -66,10 +67,10 @@ class SetupTransCustom : public FLAlertLayer
             return true;
         }
 
-        static SetupTransCustom* create()
+        static ColouredAlertLayer* create(std::string title, std::string str)
         {
-            SetupTransCustom* pRet = new SetupTransCustom();
-            if (pRet && pRet->init()) {
+            ColouredAlertLayer* pRet = new ColouredAlertLayer();
+            if (pRet && pRet->init(title, str)) {
                 pRet->autorelease();
                 return pRet;
             } else {
@@ -78,9 +79,9 @@ class SetupTransCustom : public FLAlertLayer
             }
         }
 
-        static void addToScene()
+        static void addToScene(std::string title, std::string str)
         {
-            auto pRet = SetupTransCustom::create();
+            auto pRet = ColouredAlertLayer::create(title, str);
 
             CCScene::get()->addChild(pRet, 99999);
         }

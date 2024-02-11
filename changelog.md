@@ -1,7 +1,11 @@
-# 1,1,4
+# 1.1>4
 
 - Added additional borders for npesta texture pack users
 - Fixed RobTop levels with the level edit fix
+- Added Force Object Visibility
+- Added No Glow
+- Added Noclip Deaths and Noclip Accuracy
+- Temporarily removed thicker hitboxes due to lag :(
 
 # 1.1.3
 

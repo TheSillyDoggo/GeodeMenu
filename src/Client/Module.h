@@ -1,5 +1,9 @@
+#pragma once
+
 #include "ColourUtility.h"
 #include "DrawUtils.h"
+
+#include "../Layers/ColouredAlertLayer.h"
 
 using namespace geode::prelude;
 
@@ -32,13 +36,15 @@ class Module
             this->load();
         }
 
-        Module(std::string n, std::string i, std::string d, bool _def = false)
+        Module(std::string n, std::string i, std::string d, bool _def = false, std::string a = "", bool as = false)
         {
             name = n;
             id = i;
             description = d;
             enabled = false;
             def = _def;
+            useAlert = as;
+            alert = a;
 
             this->load();
         }
@@ -55,7 +61,13 @@ class Module
         std::string name;
         std::string id;
         std::string description;
+        std::string alert;
         bool enabled;
+        bool useAlert;
+        bool onceAlert;
+
+        bool vAlert;
+
         bool def;
         float value = 1.0f;
 
@@ -127,6 +139,21 @@ class Module
         void onToggleAndroid(CCObject* sender)
         {
             auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
+
+            log::info("alert: {}", dat->alert.c_str());
+
+            if (dat->useAlert && !dat->vAlert)
+            {
+                //create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
+                //ColouredAlertLayer::addToScene(dat->name, dat->alert);
+                FLAlertLayer::create(dat->name.c_str(), dat->alert.c_str(), "OK")->show();
+
+                dat->vAlert = true;
+
+                as<CCMenuItemToggler*>(sender)->toggle(!as<CCMenuItemToggler*>(sender)->isToggled());
+
+                return;
+            }
 
             dat->enabled = !dat->enabled;
             dat->save();

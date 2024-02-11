@@ -7,13 +7,14 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES
-	src/*.cpp
-	src/*.h
-	src/Hacks/*.cpp
 	src/Client/*.cpp
 	src/Client/*.h
+	src/Hacks/*.cpp
+	src/Layers/*.h
 	src/Replay/*.cpp
 	src/Replay/*.h
+	src/*.cpp
+	src/*.h
 )
 
 #add_library(${PROJECT_NAME} SHARED ${SOURCES}  "src/Client/Module.h" "src/Client/Window.h" "src/Client/Client.h" "src/Client/DrawUtils.h" "src/Client/ColourUtility.cpp" "src/Client/ClientSetup.h" "src/Hacks/UnlockHacks.cpp" "src/Hacks/CloseEndLevelLayer.cpp" "src/Hacks/TransitionTimeCustomiser.cpp" "src/Hacks/Speedhack.cpp" "src/Hacks/Noclip.cpp" "src/Hacks/Hitbox.cpp" "src/Hacks/NoRotation.cpp" "src/Hacks/Variables.cpp" "src/Hacks/FullOptions.cpp" "src/Hacks/StatusText.cpp" "src/Hacks/FireInTheHole.cpp" "src/Hacks/InstantComplete.cpp" "src/Hacks/ForcePlatformer.cpp" "src/Hacks/CopyHack.cpp" "src/Hacks/NocMark.cpp" "src/Hacks/SafeMode.cpp" "src/Hacks/SliderLimit.cpp" "src/Hacks/PracticeAlert.cpp" "src/Hacks/TextLimitBypass.cpp")

@@ -3,8 +3,11 @@
 
 using namespace geode::prelude;
 
+/*
 bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
-    return ins->drawPolygon(verts, count, fillColor, borderWidth * (((ins->getTag() == -9999) && Client::GetModuleEnabled("thick-hitbox")) ? 2.2f /*2.2?! HOLY SHIT IS THAT A MOTHERFUCKING GEOMETRY DASH REFERENCE*/ : 1), borderColor);
+    log::info("penis");
+
+    return ins->drawPolygon(verts, count, fillColor, borderWidth * ((Client::GetModuleEnabled("thick-hitbox") && (ins->getTag() == -9999)) ? 2.2f /*2.2?! HOLY SHIT IS THAT A MOTHERFUCKING GEOMETRY DASH REFERENCE* / : 1), borderColor);
 }
 
 $execute {
@@ -16,4 +19,4 @@ $execute {
         "cocos2d::CCDrawNode::drawPolygon",
         tulip::hook::TulipConvention::Thiscall
     );
-}
+}*/

@@ -1,6 +1,6 @@
-#include "FrameStepper.h"
+//#include "FrameStepper.h"
 
-using namespace geode::prelude;
+//using namespace geode::prelude;
 
 /*class $modify(UILayer)
 {

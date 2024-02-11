@@ -1,13 +1,15 @@
+#pragma once
+
 #include <Geode/Geode.hpp>
 #include "Module.h"
 #include "Dropdown.h"
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include "Replay.h"
+
 #include "../Layers/SetupFadeSetting.h"
 #include "../Layers/SetupFPSBypass.h"
 #include "../Layers/SetupTransitionCustomizer.h"
-
-class Client;
 
 class Window
 {
@@ -1279,9 +1281,23 @@ class Universal : public Window
 class _Replay : public Window
 {
     public:
-        void onTransCustomizer(CCObject*)
+        void onOnlineMacros(CCObject*)
         {
-            SetupTransCustom::addToScene();
+            FLAlertLayer::create("Coming soon...", "Online macro browser is coming soon...", "OK")->show();
+        }
+
+        void onSave(CCObject*)
+        {
+            //as<OpenMacroModule*>(Client::GetModule("SaveMacroPopup::addToScene"))->onSaveMacro();
+            //SaveMacroPopup::addToScene();
+        }
+
+        void onSecret(CCObject*)
+        {
+            auto s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
+            s->setScale(0);
+            s->runAction(CCScaleTo::create(0.2f, 1.0f));
+            CCScene::get()->addChild(s, 99999);
         }
 
         void cocosCreate(CCMenu* menu)
@@ -1292,8 +1308,54 @@ class _Replay : public Window
             back->setAnchorPoint(ccp(0, 0));
             back->setScale(0.5f);
             back->setOpacity(100);
-
-
             menu->addChild(back);
+
+            auto l = CCLabelBMFont::create("ill update it later", "bigFont.fnt");
+            l->setScale(0.8f);
+            l->setPosition(menu->getContentSize() / 2 + ccp(0, 50));
+            menu->addChild(l);
+
+            auto spike = GameObject::createWithKey(8);
+            auto btna = CCMenuItemSpriteExtra::create(spike, menu, menu_selector(_Replay::onSecret));
+            btna->setPosition(menu->getContentSize() / 2 + ccp(0, -40));
+
+            menu->addChild(btna, 1);
+
+            return;
+
+            auto lbl = CCLabelBMFont::create("Record\nPlayback", "bigFont.fnt");
+            lbl->setPosition(ccp(10, menu->getContentSize().height - 2));
+            lbl->setScale(0.725f);
+            lbl->setAnchorPoint(ccp(0, 1));
+            lbl->setOpacity(100);
+
+            auto btnP = CCMenuItemToggler::createWithStandardSprites(menu, nullptr, 1.0f);
+
+            auto menuRow = CCMenu::create();
+            menuRow->ignoreAnchorPointForPosition(false);
+            menuRow->setContentSize(ccp(9999, 0));
+            menuRow->setScale(0.625f);
+            menuRow->setPosition(menu->getContentSize() / 2 + ccp(0, -30));
+
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Save", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onSave)));
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Load", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("More", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
+
+            menuRow->setLayout(RowLayout::create()->setAutoScale(false)->setGap(55));
+
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-55, 22);
+
+            auto btnS = ButtonSprite::create("Download\nMacros Online", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.3f);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(_Replay::onOnlineMacros));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+
+            menu->addChild(lbl);
+            menu->addChild(menuRow);
+            menu->addChild(btn);
+            menu->addChild(btnP);
         }
 };

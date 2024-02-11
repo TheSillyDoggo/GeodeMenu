@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Client/Dropdown.h"
 #include <Geode/ui/GeodeUI.hpp>
 
@@ -76,6 +78,7 @@ class SetupFPSBypass : public FLAlertLayer
             inp->setString(ss2.str());
             inp->getInput()->setAllowedChars("098765431.");
             inp->getInput()->setMaxLabelLength(8);
+            inp->getInput()->setID("IGNOREBYPASSES"_spr);
             l->addChild(inp);
 
             auto lb2 = CCLabelBMFont::create("Enabled:", "bigFont.fnt");

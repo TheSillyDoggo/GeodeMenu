@@ -12,6 +12,7 @@ public:
         SetupCosmetic();
         SetupIconEffects();
         SetupSpeedhack();
+        SetupStatus();
 
         //SetupVariables(android);
 
@@ -60,6 +61,8 @@ public:
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+
+
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
         //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
@@ -86,8 +89,8 @@ public:
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
-        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields"));
-        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields"));        
+        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
+        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
 
         #ifdef GEODE_IS_ANDROID
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
@@ -106,7 +109,8 @@ public:
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
-        cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
+        cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
+        //cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
 
         cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
@@ -120,6 +124,12 @@ public:
         cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
 
+        cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
+        cosmetic->modules.push_back(new Module("Force Object Visibility", "force-obj-vis", "Forces all object to be visible"));
+
+        //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
+        //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));
+
         #ifndef GEODE_IS_ANDROID32
         cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
         #endif
@@ -128,7 +138,6 @@ public:
         #endif
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
-        cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
@@ -174,10 +183,9 @@ public:
         replay->modules.push_back(new StatusScale());
 
         replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
-        //replay->modules.push_back(new Module("Cheat Indicator", "", ""));
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
-        //replay->modules.push_back(new Module("Noclip Deaths", "status-death", "Shows your death count (hidden when noclip is disabled)"));
-        //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
+        replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
+        replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
         //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
         //replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
