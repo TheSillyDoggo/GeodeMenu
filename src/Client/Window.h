@@ -1292,12 +1292,29 @@ class _Replay : public Window
             //SaveMacroPopup::addToScene();
         }
 
+        PlayLayer* s = nullptr;
+
+        void onClose(float)
+        {
+            CCDirector::get()->pushScene(MenuLayer::scene(false));
+            CCDirector::get()->getOpenGLView()->showCursor(true);
+        }
+
         void onSecret(CCObject*)
         {
-            auto s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
+            s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
+            
+            auto l2 = CCLabelBMFont::create("The Challenge Jumpscare\n\nBOO!", "bigFont.fnt");
+            l2->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            l2->updateLabel();
+            l2->setPosition(s->getContentSize() / 2);
+            s->addChild(l2, 999999);
+
             s->setScale(0);
             s->runAction(CCScaleTo::create(0.2f, 1.0f));
             CCScene::get()->addChild(s, 99999);
+
+            s->scheduleOnce(schedule_selector(_Replay::onClose), 1.5f);
         }
 
         void cocosCreate(CCMenu* menu)
