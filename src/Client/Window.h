@@ -1297,7 +1297,9 @@ class _Replay : public Window
         void onClose(float)
         {
             CCDirector::get()->pushScene(MenuLayer::scene(false));
+            #ifdef GEODE_IS_WINDOWS
             CCDirector::get()->getOpenGLView()->showCursor(true);
+            #endif
         }
 
         void onSecret(CCObject*)
