@@ -30,7 +30,7 @@ using namespace geode::prelude;
             CCSprite::setColor(color3);
     }
 };*/
-
+/*
 std::string getNodeName(CCObject* node) {
 #ifdef GEODE_IS_WINDOWS
     return typeid(*node).name() + 6;
@@ -83,4 +83,4 @@ class $modify (AppDelegate)
             }
         }
     }
-};
+};*/
