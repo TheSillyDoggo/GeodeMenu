@@ -94,10 +94,6 @@ class StatusNode : public CCNode
                 if (Client::GetModuleEnabled("status-death"))
                     WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
             }
-
-            //log::info("attempt {}", );
-            //if (Client::GetModuleEnabled("status-attempts"))
-                //WriteText("%", attempt->getString());
         }
 
         void WriteText(std::string text, std::string f, int side = 0)

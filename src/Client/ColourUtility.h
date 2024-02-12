@@ -5,6 +5,29 @@
 class ColourUtility
 {
 	public:
+
+		static geode::prelude::ccColor3B cc3x(int hexValue) {
+			if (hexValue <= 0xf)
+				return geode::prelude::ccColor3B{
+					static_cast<GLubyte>(hexValue * 17),
+					static_cast<GLubyte>(hexValue * 17),
+					static_cast<GLubyte>(hexValue * 17)};
+			if (hexValue <= 0xff)
+				return geode::prelude::ccColor3B{
+					static_cast<GLubyte>(hexValue),
+					static_cast<GLubyte>(hexValue),
+					static_cast<GLubyte>(hexValue)};
+			if (hexValue <= 0xfff)
+				return geode::prelude::ccColor3B{
+					static_cast<GLubyte>((hexValue >> 8 & 0xf) * 17),
+					static_cast<GLubyte>((hexValue >> 4 & 0xf) * 17),
+					static_cast<GLubyte>((hexValue >> 0 & 0xf) * 17)};
+			else
+				return geode::prelude::ccColor3B{
+					static_cast<GLubyte>(hexValue >> 16 & 0xff),
+					static_cast<GLubyte>(hexValue >> 8 & 0xff),
+					static_cast<GLubyte>(hexValue >> 0 & 0xff)};
+		}
 		
 		enum ClientColour
 		{
@@ -68,7 +91,7 @@ class ColourUtility
 
 			v = v % pastel.size();
 
-			return geode::prelude::cc3x(pastel[v]);
+			return cc3x(pastel[v]);
 		}
 
 		static geode::prelude::ccColor3B lerpColour(const geode::prelude::ccColor3B& color1, const geode::prelude::ccColor3B& color2, float t) {
