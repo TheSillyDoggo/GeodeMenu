@@ -10,11 +10,11 @@ class $modify(GameObject) {
         if (Client::GetModuleEnabled("no-glow"))
             m_hasNoGlow = true;
 
-        if (Client::GetModuleEnabled("dont-fade"))
-            m_isDontFade = true;
+        //if (Client::GetModuleEnabled("dont-fade"))
+            //m_isDontFade = true;
 
-        if (Client::GetModuleEnabled("dont-enter"))
-            m_isDontEnter = true;
+        //if (Client::GetModuleEnabled("dont-enter"))
+            //m_isDontEnter = true;
 
         if (Client::GetModuleEnabled("force-obj-vis"))
             GameObject::setVisible(true);

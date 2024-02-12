@@ -4,17 +4,23 @@
 
 using namespace geode::prelude;
 
+FMOD::ChannelGroup* masterGroup;
+
 class $modify (CCScheduler)
 {
     void update(float dt)
     {
+        if (!masterGroup)
+        {
+            FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+        }
+
         // icon effects value
         ColourUtility::update(dt);
 
-
         if (SpeedhackTop::instance)
         {
-            if (Client::GetModuleEnabled("speedhack-enabled"))
+            if (SpeedhackEnabled::instance->enabled)
             {
                 float v = 1.0f;
 
@@ -29,20 +35,20 @@ class $modify (CCScheduler)
                 if (v > 99999)
                     v = 99999;
 
-                if (Client::GetModuleEnabled("speedhack-gameplay"))
+                bool m = SpeedhackMus::instance->enabled;
+
+                if (m)
                     if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
-                FMOD::ChannelGroup* masterGroup;
-                FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
-                masterGroup->setPitch(Client::GetModuleEnabled("speedhack-music") ? v : 1);
+                //FMOD::ChannelGroup* masterGroup;
+                //0FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+                masterGroup->setPitch(m ? v : 1);
                 
                 CCScheduler::update(dt * v);
                 return;
             }
         }
 
-        FMOD::ChannelGroup* masterGroup;
-        FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
         masterGroup->setPitch(1);
         
         CCScheduler::update(dt);

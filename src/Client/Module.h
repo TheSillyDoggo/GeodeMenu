@@ -347,6 +347,40 @@ class SpeedhackTop : public InputModule
         }
 };
 
+class SpeedhackEnabled : public Module
+{
+    public:
+        static inline SpeedhackEnabled* instance = nullptr;
+
+        SpeedhackEnabled()
+        {
+            id = "speedhack-enabled";
+            name = "Enabled";
+            description = "Is the speedhack enabled?";
+
+            instance = this;
+
+            this->load();
+        }
+};
+
+class SpeedhackMus : public Module
+{
+    public:
+        static inline SpeedhackMus* instance = nullptr;
+
+        SpeedhackMus()
+        {
+            id = "speedhack-mus";
+            name = "Speedhack Music";
+            description = "Speedhack all sound by your speed modifier";
+
+            instance = this;
+
+            this->load();
+        }
+};
+
 class StatusOpacity : public InputModule
 {
     public:

@@ -63,6 +63,9 @@ class $modify (AppDelegate)
         {
             if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)))
             {
+                if (getNodeName(l).starts_with("LevelEditorLayer"))
+                    return;
+
                 l->sortAllChildren();
 
                 if (auto b = static_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))

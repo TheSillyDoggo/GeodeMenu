@@ -37,8 +37,10 @@ public:
         speedhack->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 2, 50);
 
         speedhack->modules.push_back(new SpeedhackTop());
-        speedhack->modules.push_back(new Module("Enabled", "speedhack-enabled", "Is the speedhack enabled?"));
-        speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music", "Speedhack all sound by your speed modifier", true));
+        speedhack->modules.push_back(new SpeedhackEnabled());
+        //speedhack->modules.push_back(new Module("Enabled", "speedhack-enabled", "Is the speedhack enabled?"));
+        speedhack->modules.push_back(new SpeedhackMus());
+        //speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music", "Speedhack all sound by your speed modifier", true));
         speedhack->modules.push_back(new Module("Gameplay Only", "speedhack-gameplay", "Only enables the speedhack in gameplay and editor"));
 
         (reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
@@ -61,6 +63,8 @@ public:
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+
+        level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
 
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
@@ -174,7 +178,7 @@ public:
 
     static void SetupStatus()
     {
-        Window* replay = new Window();
+        Window* replay = new Status();
         replay->name = "Status";
         replay->id = "status-window";
         replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 6, 50);

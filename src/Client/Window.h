@@ -10,6 +10,7 @@
 #include "../Layers/SetupFadeSetting.h"
 #include "../Layers/SetupFPSBypass.h"
 #include "../Layers/SetupTransitionCustomizer.h"
+#include "../Layers/EditStatusPositionLayer.h"
 
 class Window
 {
@@ -1292,11 +1293,13 @@ class _Replay : public Window
             //SaveMacroPopup::addToScene();
         }
 
-        PlayLayer* s = nullptr;
+        static inline PlayLayer* s = nullptr;
 
         void onClose(float)
         {
             CCDirector::get()->pushScene(MenuLayer::scene(false));
+            s = nullptr;
+            
             #ifdef GEODE_IS_WINDOWS
             CCDirector::get()->getOpenGLView()->showCursor(true);
             #endif
@@ -1304,19 +1307,22 @@ class _Replay : public Window
 
         void onSecret(CCObject*)
         {
-            s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
+            if (s == nullptr)
+            {
+                s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
             
-            auto l2 = CCLabelBMFont::create("The Challenge Jumpscare\n\nBOO!", "bigFont.fnt");
-            l2->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            l2->updateLabel();
-            l2->setPosition(s->getContentSize() / 2);
-            s->addChild(l2, 999999);
+                auto l2 = CCLabelBMFont::create("The Challenge Jumpscare\n\nBOO!", "bigFont.fnt");
+                l2->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+                l2->updateLabel();
+                l2->setPosition(s->getContentSize() / 2);
+                s->addChild(l2, 999999);
 
-            s->setScale(0);
-            s->runAction(CCScaleTo::create(0.2f, 1.0f));
-            CCScene::get()->addChild(s, 99999);
+                s->setScale(0);
+                s->runAction(CCScaleTo::create(0.2f, 1.0f));
+                CCScene::get()->addChild(s, 99999);
 
-            s->scheduleOnce(schedule_selector(_Replay::onClose), 1.5f);
+                s->scheduleOnce(schedule_selector(_Replay::onClose), 1.5f);
+            }
         }
 
         void cocosCreate(CCMenu* menu)
@@ -1376,5 +1382,30 @@ class _Replay : public Window
             menu->addChild(menuRow);
             menu->addChild(btn);
             menu->addChild(btnP);
+        }
+};
+
+class Status : public Window
+{
+    public:
+        void onTransCustomizer(CCObject*)
+        {
+            EditStatusPositionLayer::addToScene();
+        }
+
+        void cocosCreate(CCMenu* menu)
+        {
+            Window::cocosCreate(menu);
+
+            auto pos = ccp(58, 22);
+
+            auto btnS = ButtonSprite::create("Edit\nPositions", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Status::onTransCustomizer));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+            menu->addChild(btn);
         }
 };
