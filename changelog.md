@@ -7,6 +7,7 @@
 - Added Noclip Deaths and Noclip Accuracy
 - Added Alerts to the text bypasses to let the user know that they can crash
 - Added Instant Restart
+- Fixed Solid Wave Trail white being broken
 - Temporarily removed thicker hitboxes due to lag :(
 
 # 1.1.3
