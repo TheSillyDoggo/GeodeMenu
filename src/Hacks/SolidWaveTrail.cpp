@@ -9,10 +9,14 @@ bool myDrawCircle(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccC
 
     if (Client::GetModuleEnabled("solid-wave"))
     {
-        if (fillColor.r >= 1.0f && fillColor.g >= 1.0f && fillColor.b >= 1.0f)
+        if (fillColor.r >= 1.0f && fillColor.g >= 1.0f && fillColor.b >= 1.0f && ins->getColor() != ccc3(255, 255, 255))
             return true;
 
-        ins->setBlendFunc(CCSprite::create()->getBlendFunc());
+        if (ins->getTag() != 1)
+        {
+            ins->setTag(1);
+            ins->setBlendFunc(CCSprite::create()->getBlendFunc());
+        }
 
         ins->setZOrder(-1);
     }

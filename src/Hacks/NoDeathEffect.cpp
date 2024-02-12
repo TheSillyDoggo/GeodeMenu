@@ -1,8 +1,18 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
+
+class $modify (PlayLayer)
+{
+    TodoReturn delayedResetLevel()
+    {
+        if (!Client::GetModuleEnabled("instant-restart"))
+            PlayLayer::delayedResetLevel();
+    }
+};
 
 class $modify (PlayerObject)
 {
