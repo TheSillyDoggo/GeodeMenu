@@ -31,14 +31,20 @@ class $modify (DashRingObject)
 
 class $modify (PlayerObject)
 {
+    bool f;
+
     virtual void update(float dt)
     {
         if (Client::GetModuleEnabled("force-plat"))
         {
             this->togglePlatformerMode(true);
             #ifdef GEODE_IS_ANDROID
-            //if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
-            //    PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
+            if (!m_fields->f)
+            {
+                m_fields->f = true;
+                if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
+                    PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
+            }
             #endif
         }
 

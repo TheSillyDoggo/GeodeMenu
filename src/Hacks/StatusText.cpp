@@ -40,6 +40,15 @@ class StatusNode : public CCNode
             return nullptr;
         }
 
+        NoclipLayer* v;
+
+        bool mods;
+        Module* testmode;
+        Module* fps;
+        Module* noclip;
+        Module* deaths;
+        Module* accuracy;
+
         CCLabelBMFont* tl;
         CCLabelBMFont* tr;
 
@@ -71,27 +80,38 @@ class StatusNode : public CCNode
 
         void update(float dt)
         {
+            if (!mods)
+            {
+                mods = true;
+
+                v = as<NoclipLayer*>(PlayLayer::get());
+
+                testmode = Client::instance->windows[5]->modules[0];
+                fps = Client::instance->windows[5]->modules[1];
+                noclip = Client::GetModule("noclip");
+                deaths = Client::instance->windows[5]->modules[2];
+                accuracy = Client::instance->windows[5]->modules[3];
+            }
+
             updateVis();
 
-            if (Client::GetModuleEnabled("status-testmode") && PlayLayer::get()->m_isTestMode)
+            if (testmode->enabled && PlayLayer::get()->m_isTestMode)
                 WriteText("Testmode", "", Mod::get()->getSavedValue<int>("testmode_side", 0));
 
             //if (Client::GetModuleEnabled("status-attempt"))
                 //WriteText("Attempt %", std::to_string(PlayLayer::get()->));
 
-            if (Client::GetModuleEnabled("status-fps"))
+            if (fps->enabled)
                 WriteText("FPS: %", std::to_string((int)round(1.0f / dt)), Mod::get()->getSavedValue<int>("fps_side", 0));
 
-            if (Client::GetModuleEnabled("noclip"))
+            if (noclip->enabled)
             {
-                auto v = as<NoclipLayer*>(PlayLayer::get());
-
                 float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
 
-                if (Client::GetModuleEnabled("status-accuracy"))
+                if (accuracy)
                     WriteText("Accuracy: %%", floatToString(acc), Mod::get()->getSavedValue<int>("accuracy_side", 0));
 
-                if (Client::GetModuleEnabled("status-death"))
+                if (deaths)
                     WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
             }
         }
