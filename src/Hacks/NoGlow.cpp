@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_ANDROID32
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include "../Client/Client.h"
@@ -22,3 +24,5 @@ class $modify(GameObject) {
         GameObject::setVisible(v);
     }
 };
+
+#endif
