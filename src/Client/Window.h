@@ -1388,7 +1388,7 @@ class _Replay : public Window
 class Status : public Window
 {
     public:
-        void onTransCustomizer(CCObject*)
+        void onEditPositions(CCObject*)
         {
             EditStatusPositionLayer::addToScene();
         }
@@ -1403,7 +1403,7 @@ class Status : public Window
             as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Status::onTransCustomizer));
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Status::onEditPositions));
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);

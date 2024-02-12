@@ -74,13 +74,13 @@ class StatusNode : public CCNode
             updateVis();
 
             if (Client::GetModuleEnabled("status-testmode") && PlayLayer::get()->m_isTestMode)
-                WriteText("Testmode", "");
+                WriteText("Testmode", "", Mod::get()->getSavedValue<int>("testmode_side", 0));
 
             //if (Client::GetModuleEnabled("status-attempt"))
                 //WriteText("Attempt %", std::to_string(PlayLayer::get()->));
 
             if (Client::GetModuleEnabled("status-fps"))
-                WriteText("FPS: %", std::to_string((int)round(1.0f / dt)));
+                WriteText("FPS: %", std::to_string((int)round(1.0f / dt)), Mod::get()->getSavedValue<int>("fps_side", 0));
 
             if (Client::GetModuleEnabled("noclip"))
             {
@@ -89,10 +89,10 @@ class StatusNode : public CCNode
                 float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
 
                 if (Client::GetModuleEnabled("status-accuracy"))
-                    WriteText("Accuracy: %%", floatToString(acc));
+                    WriteText("Accuracy: %%", floatToString(acc), Mod::get()->getSavedValue<int>("accuracy_side", 0));
 
                 if (Client::GetModuleEnabled("status-death"))
-                    WriteText("Deaths: %", std::to_string((int)v->m_fields->t));
+                    WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
             }
 
             //log::info("attempt {}", );
@@ -100,7 +100,7 @@ class StatusNode : public CCNode
                 //WriteText("%", attempt->getString());
         }
 
-        void WriteText(std::string text, std::string f)
+        void WriteText(std::string text, std::string f, int side = 0)
         {
             std::stringstream s;
 
@@ -121,11 +121,18 @@ class StatusNode : public CCNode
 
             std::stringstream ss;
 
-            ss << tl->getString();
+            if (side == 0)
+                ss << tl->getString();
+            else// if (side == 1);
+                ss << tr->getString();
+
             ss << s.str();
             ss << "\n";
 
-            tl->setString(ss.str().c_str());
+            if (side == 0)
+                tl->setString(ss.str().c_str());
+            else// if (side == 1)
+                tr->setString(ss.str().c_str());
         }
 };
 
