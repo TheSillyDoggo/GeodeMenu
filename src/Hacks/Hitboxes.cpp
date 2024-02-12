@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
 
@@ -11,4 +11,4 @@ class $modify(GJBaseGameLayer) {
 
         //this->updateDebugDraw();
     }
-};
+};*/
