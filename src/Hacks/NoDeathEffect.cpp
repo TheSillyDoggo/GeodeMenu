@@ -20,10 +20,6 @@ class $modify (PlayerObject)
 {
     void playerDestroyed(bool p0)
     {
-        log::info("penis");
-
-        log::info("unk: {}", p0);
-
         if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
             PlayLayer::get()->resetLevel();
 

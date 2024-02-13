@@ -1,3 +1,5 @@
+#ifdef STATUS_TEXTS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
@@ -86,23 +88,27 @@ class StatusNode : public CCNode
 
                 //v = as<NoclipLayer*>(PlayLayer::get());
 
-                testmode = Client::instance->windows[5]->modules[0];
-                fps = Client::instance->windows[5]->modules[1];
+                testmode = Client::GetModule("status-testmode");
+                fps = Client::GetModule("status-fps");
                 noclip = Client::GetModule("noclip");
-                deaths = Client::instance->windows[5]->modules[2];
-                accuracy = Client::instance->windows[5]->modules[3];
+                deaths = Client::GetModule("status-death");
+                accuracy = Client::GetModule("status-accuracy");
             }
+
+            if (!mods)
+                return;
 
             updateVis();
 
-            if (testmode->enabled && PlayLayer::get()->m_isTestMode)
-                WriteText("Testmode", "", Mod::get()->getSavedValue<int>("testmode_side", 0));
+            //if (testmode->enabled && PlayLayer::get() && PlayLayer::get()->m_isTestMode)
+            //    log::info("penis");
+                //WriteText("Testmode", "", Mod::get()->getSavedValue<int>("testmode_side", 0));
 
             //if (Client::GetModuleEnabled("status-attempt"))
                 //WriteText("Attempt %", std::to_string(PlayLayer::get()->));
 
-            if (fps->enabled)
-                WriteText("FPS: %", std::to_string((int)round(1.0f / dt)), Mod::get()->getSavedValue<int>("fps_side", 0));
+            //if (fps->enabled)
+                //WriteText("FPS: %", std::to_string((int)round(1.0f / dt)), Mod::get()->getSavedValue<int>("fps_side", 0));
 
             if (noclip->enabled)
             {
@@ -188,3 +194,5 @@ class $modify (PlayLayer)
         return true;
     }
 };
+
+#endif

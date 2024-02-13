@@ -10,6 +10,7 @@
 #include "../Layers/SetupFadeSetting.h"
 #include "../Layers/SetupFPSBypass.h"
 #include "../Layers/SetupTransitionCustomizer.h"
+#include "../Layers/SaveMacroPopup.h"
 #include "../Layers/EditStatusPositionLayer.h"
 
 class Window

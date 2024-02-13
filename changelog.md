@@ -4,7 +4,7 @@
 - Fixed RobTop levels with the level edit fix
 - Added Force Object Visibility
 - Added No Glow
-- Added Noclip Deaths and Noclip Accuracy
+- ~~Added Noclip Deaths and Noclip Accuracy~~ it's delayed because this shits annoying to fix
 - Added Alerts to the text bypasses to let the user know that they can crash
 - Added Instant Restart
 - Fixed Solid Wave Trail white being broken

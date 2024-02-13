@@ -217,3 +217,9 @@ struct MyReplay : gdr::Replay<MyReplay, MyInput> {
 
 	MyReplay() : Replay("QOLBot", "1.0") {}
 };
+
+class GJReplayManager
+{
+    public:
+        static inline MyReplay replay = MyReplay();
+};
