@@ -4,6 +4,7 @@
 
 using namespace geode::prelude;
 
+/*
 class $modify (NoclipLayer, PlayLayer)
 {
     GameObject* ac;
@@ -35,7 +36,7 @@ class $modify (NoclipLayer, PlayLayer)
         }
     }
 
-/*
+
     virtual TodoReturn postUpdate(float p0)
     {
         PlayLayer::postUpdate(p0);
@@ -44,5 +45,5 @@ class $modify (NoclipLayer, PlayLayer)
         {
             log::info("accuracy: {}, {}, {}%", m_fields->t, (m_gameState.m_unk1f8 * 1.0f), (1 - ((m_fields->t * 1.0f) / (m_gameState.m_unk1f8 * 1.0f))) * 100);
         }
-    }*/
-};
+    }
+};*/
