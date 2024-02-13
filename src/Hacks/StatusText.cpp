@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
@@ -40,7 +40,7 @@ class StatusNode : public CCNode
             return nullptr;
         }
 
-        NoclipLayer* v;
+        //NoclipLayer* v;
 
         bool mods;
         Module* testmode;
@@ -84,7 +84,7 @@ class StatusNode : public CCNode
             {
                 mods = true;
 
-                v = as<NoclipLayer*>(PlayLayer::get());
+                //v = as<NoclipLayer*>(PlayLayer::get());
 
                 testmode = Client::instance->windows[5]->modules[0];
                 fps = Client::instance->windows[5]->modules[1];
@@ -106,13 +106,14 @@ class StatusNode : public CCNode
 
             if (noclip->enabled)
             {
-                float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
+                //float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
+                
 
-                if (accuracy)
-                    WriteText("Accuracy: %%", floatToString(acc), Mod::get()->getSavedValue<int>("accuracy_side", 0));
+                //if (accuracy)
+                    //WriteText("Accuracy: %%", floatToString(acc), Mod::get()->getSavedValue<int>("accuracy_side", 0));
 
-                if (deaths)
-                    WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
+                //if (deaths)
+                    //WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
             }
         }
 
@@ -186,4 +187,4 @@ class $modify (PlayLayer)
         this->addChild(menu, 69420);
         return true;
     }
-};*/
+};

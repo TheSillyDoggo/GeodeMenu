@@ -24,11 +24,8 @@ class $modify (PlayerObject)
 
         log::info("unk: {}", p0);
 
-        #ifndef GEODE_IS_ANDROID32
-
         if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
             PlayLayer::get()->resetLevel();
-        #endif
 
         if (!Client::GetModuleEnabled("no-death"))
             PlayerObject::playerDestroyed(p0);
