@@ -12,7 +12,7 @@ public:
         SetupCosmetic();
         SetupIconEffects();
         SetupSpeedhack();
-        SetupStatus();
+        //SetupStatus();
 
         //SetupVariables(android);
 

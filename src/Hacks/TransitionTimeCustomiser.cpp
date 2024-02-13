@@ -8,24 +8,37 @@ using namespace geode::prelude;
 
 //{"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular" "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}
 
+class TransCust {
+    public:
+        static inline bool v = false;
+};
+
+CCScene* g(CCTransitionScene* n)
+{
+    TransCust::v = false;
+
+    return n;
+}
+
 CCScene* getSceneForSel(int i, float f, CCScene* s)
 {
+    TransCust::v = true;
     AppDelegate::get()->willSwitchToScene(s);
 
     if (i == 0)
-        return CCTransitionFade::create(f, s);
+        return g(CCTransitionFade::create(f, s));
     else if (i == 1)
-        return CCTransitionCrossFade::create(f, s);
+        return g(CCTransitionCrossFade::create(f, s));
     else if (i == 2)
-        return CCTransitionFadeBL::create(f, s);
+        return g(CCTransitionFadeBL::create(f, s));
     else if (i == 3)
-        return CCTransitionFadeTR::create(f, s);
+        return g(CCTransitionFadeTR::create(f, s));
     else if (i == 4)
-        return CCTransitionFadeUp::create(f, s);
+        return g(CCTransitionFadeUp::create(f, s));
     else if (i == 5)
-        return CCTransitionFadeDown::create(f, s);
+        return g(CCTransitionFadeDown::create(f, s));
     else if (i == 6)
-        return CCTransitionFlipAngular::create(f, s);
+        return g(CCTransitionFlipAngular::create(f, s));
     else if (i == 7)
         return CCTransitionFlipX::create(f, s);
     else if (i == 8)
@@ -63,7 +76,7 @@ CCScene* getSceneForSel(int i, float f, CCScene* s)
     else if (i == 24)
         return CCTransitionSplitCols::create(f, s);
     else if (i == 25)
-        return CCTransitionTurnOffTiles::create(f, s);
+        return g(CCTransitionTurnOffTiles::create(f, s));
 
     return nullptr;
 }
@@ -82,3 +95,26 @@ class $modify (cocos2d::CCTransitionFade)
         return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };
+
+bool myInitWW(CCRenderTexture* ins, int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat) {
+    log::info("ASDF: {} | {}", w, h);
+
+    if (TransCust::v)    
+        return ins->initWithWidthAndHeight(CCEGLView::get()->getFrameSize().width, CCEGLView::get()->getFrameSize().height, eFormat, uDepthStencilFormat);
+    else
+        return ins->initWithWidthAndHeight(w, h, eFormat, uDepthStencilFormat);
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getNonVirtual(
+                geode::modifier::Resolve<int, int, CCTexture2DPixelFormat, GLuint>::func(&CCRenderTexture::initWithWidthAndHeight)
+            )
+            //geode::addresser::getNonVirtual(&CCRenderTexture::initWithWidthAndHeight)
+        ),
+        &myInitWW,
+        "cocos2d::CCRenderTexture::initWithWidthAndHeight",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
