@@ -4,16 +4,16 @@
 
 using namespace geode::prelude;
 
-/*
+
 class $modify (NoclipLayer, PlayLayer)
 {
     GameObject* ac;
 
-    GameObject* last;
+    //GameObject* last;
 
-    std::vector<GameObject*> dies;
-    int t = 0;
-    int d = 0;
+    //std::vector<GameObject*> dies;
+    //int t = 0;
+    //int d = 0;
 
     void destroyPlayer(PlayerObject * p0, GameObject * p1)
     {
@@ -22,7 +22,7 @@ class $modify (NoclipLayer, PlayLayer)
 
         if (!Client::GetModuleEnabled("noclip") || (m_fields->ac == p1))
             PlayLayer::destroyPlayer(p0, p1);
-        else
+        /*else
         {
             if (m_fields->last != p1)
             {
@@ -33,17 +33,6 @@ class $modify (NoclipLayer, PlayLayer)
 
             if (m_fields->ac != p1)
                 m_fields->t++;
-        }
+        }*/
     }
-
-
-    virtual TodoReturn postUpdate(float p0)
-    {
-        PlayLayer::postUpdate(p0);
-
-        if (m_gameState.m_unk1f8 != 0)
-        {
-            log::info("accuracy: {}, {}, {}%", m_fields->t, (m_gameState.m_unk1f8 * 1.0f), (1 - ((m_fields->t * 1.0f) / (m_gameState.m_unk1f8 * 1.0f))) * 100);
-        }
-    }
-};*/
+};
