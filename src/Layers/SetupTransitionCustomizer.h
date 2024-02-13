@@ -8,6 +8,14 @@ using namespace geode::prelude;
 class SetupTransCustom : public FLAlertLayer
 {
     public:
+        std::vector<std::string> transNames = {"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular", "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"};
+
+        CCMenuItemSpriteExtra* left;
+        CCMenuItemSpriteExtra* right;
+        CCLabelBMFont* label;
+
+        int selMode;
+
         void onClose(CCObject*)
         {
             this->removeFromParent();
@@ -18,10 +26,36 @@ class SetupTransCustom : public FLAlertLayer
             onClose(nullptr);
         }
 
+        void onLeft(CCObject*)
+        {
+            selMode--;
+
+            left->setVisible(selMode != 0);
+            right->setVisible(selMode != transNames.size() - 1);
+            label->setString(transNames[selMode].c_str());
+            label->limitLabelWidth(235, 1, 0.1f);
+
+            Mod::get()->setSavedValue<int>("transition", selMode);
+        }
+
+        void onRight(CCObject*)
+        {
+            selMode++;
+
+            left->setVisible(selMode != 0);
+            right->setVisible(selMode != transNames.size() - 1);
+            label->setString(transNames[selMode].c_str());
+            label->limitLabelWidth(235, 1, 0.1f);
+
+            Mod::get()->setSavedValue<int>("transition", selMode);
+        }
+
         bool init()
         {
             if (!FLAlertLayer::init(0))
                 return false;
+
+            selMode = Mod::get()->getSavedValue<int>("transition", 0);
 
             this->runAction(CCFadeTo::create(1, 100));
             //this->setTouchEnabled(true);
@@ -44,7 +78,7 @@ class SetupTransCustom : public FLAlertLayer
             panel->setID("panel");
             l->addChild(panel);
 
-            auto title = CCLabelBMFont::create("Setup Transition Customizer", "bigFont.fnt");
+            auto title = CCLabelBMFont::create("Transition Customizer", "bigFont.fnt");
             title->setPosition(l->getContentSize() / 2 + ccp(0, 90));
             title->setOpacity(100);
             title->setScale(0.5f);
@@ -54,9 +88,27 @@ class SetupTransCustom : public FLAlertLayer
             ok->setPosition(l->getContentSize() / 2 + ccp(0, -82));
             l->addChild(ok);
 
-            auto dd = Dropdown::create({130, 30}, {"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}, nullptr);
-            dd->setTouchPriority(-550);
-            l->addChild(dd);
+            auto leftSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
+            left = CCMenuItemSpriteExtra::create(leftSpr, this, menu_selector(SetupTransCustom::onLeft));
+            left->setPosition(l->getContentSize() / 2 + ccp(-140, 0));
+            left->setVisible(selMode != 0);
+            l->addChild(left);
+
+            auto rightSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
+            rightSpr->setFlipX(true);
+            right = CCMenuItemSpriteExtra::create(rightSpr, this, menu_selector(SetupTransCustom::onRight));
+            right->setPosition(l->getContentSize() / 2 + ccp(140, 0));
+            right->setVisible(selMode != transNames.size() - 1);
+            l->addChild(right);
+
+            label = CCLabelBMFont::create(transNames[selMode].c_str(), "bigFont.fnt");
+            label->setPosition(l->getContentSize() / 2);
+            label->limitLabelWidth(235, 1, 0.1f);
+            l->addChild(label);
+
+            //auto dd = Dropdown::create({130, 30}, , nullptr);
+            //dd->setTouchPriority(-550);
+            //l->addChild(dd);
 
             this->addChild(l);
 

@@ -6,6 +6,8 @@
 
 using namespace geode::prelude;
 
+//{"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular" "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}
+
 CCScene* getSceneForSel(int i, float f, CCScene* s)
 {
     AppDelegate::get()->willSwitchToScene(s);
@@ -77,6 +79,6 @@ class $modify (cocos2d::CCTransitionFade)
             mod = 0;
         }
 
-        return as<CCTransitionFade*>(getSceneForSel(0, duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
+        return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };

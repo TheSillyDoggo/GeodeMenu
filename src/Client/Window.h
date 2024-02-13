@@ -1267,8 +1267,6 @@ class Universal : public Window
 
             auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
 
-            return;
-
             auto btnS = ButtonSprite::create("Transition\nCustomizer", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
