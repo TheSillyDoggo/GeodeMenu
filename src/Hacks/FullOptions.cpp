@@ -5,24 +5,30 @@
 
 using namespace geode::prelude;
 
-class FullOptions
+bool ig = false;
+
+class $modify (OptionsLayerExt, OptionsLayer)
 {
-    public:
-        void OnPauseOptions(CCObject* sender)
+    void onPauseOptions(CCObject* sender)
+    {
+        ig = true;
+
+        if (auto pause = getChildOfType<PauseLayer>(CCScene::get(), 0))
         {
-            log::info("OnPauseOptions");
+            pause->onSettings(sender);
         }
-};
+        
+        ig = false;
+    }
 
-/*
-
-class $modify (OptionsLayer)
-{
     void customSetup()
     {
         OptionsLayer::customSetup();
 
-        auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(PauseLayer::onSettings));
+        if (!PlayLayer::get())
+            return;
+
+        auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
 
         auto l = reinterpret_cast<CCLayer*>(this->getChildren()->objectAtIndex(0));
 
@@ -44,21 +50,13 @@ class $modify (PauseLayer)
 {
     void onSettings(cocos2d::CCObject* sender)
     {
-        if (Client::GetModuleEnabled("full-options"))
+        if (Client::GetModuleEnabled("full-options") && !ig)
         {
-            auto p = OptionsLayer::create();
-
-            p->runAction(CCFadeTo::create(0.5f, 125));
-            p->setVisible(true);
-
-            auto c = reinterpret_cast<CCLayer*>(p->getChildren()->objectAtIndex(0));
-            c->runAction(CCEaseInOut::create(CCMoveTo::create(0.5f, ccp(0, 0)), 2.0f));
-            
-            reinterpret_cast<CCMenuItemSpriteExtra*>(reinterpret_cast<CCMenu*>(c->getChildren()->objectAtIndex(10))->getChildren()->objectAtIndex(0))->setVisible(false);
-
-            this->addChild(p, 69420);
+            auto layer = OptionsLayer::create();
+            CCDirector::sharedDirector()->getRunningScene()->addChild(layer, 69);
+            layer->showLayer(false);
         }
         else
             PauseLayer::onSettings(sender);
     }
-};*/
+};
