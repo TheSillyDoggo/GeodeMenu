@@ -4,6 +4,8 @@
 - Fixed Crash Opening Mod menu
 - Added No reverse portal
 - Fixed input nodes
+- Added full options menu
+- Added <cl>Gradient Pages</c> integration
 - Added TAB + Insert hotkeys to open the mod menu
 - Added Replay Bot (beta)
 

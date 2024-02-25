@@ -521,13 +521,25 @@ class Config : public Window
         {
             int v = reinterpret_cast<CCNode*>(sender)->getTag();
 
+            if (v == -1)
+            {
+                if (!Loader::get()->getInstalledMod("TheSillyDoggo.GradientPages"))
+                {
+                    return FLAlertLayer::create("Gradient Pages", "The <cg>Gradient</c> Theme option requires the mod, <cl>Gradient Pages</c> to be installed. Install <cl>Gradient Pages</c> to use gradient mode.", "OK")->show();
+                }
+                else if (!Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
+                {
+                    return FLAlertLayer::create("Gradient Pages", "The <cg>Gradient</c> Theme option requires the mod, <cl>Gradient Pages</c> to be enabled. Enable <cl>Gradient Pages</c> to use gradient mode.", "OK")->show();
+                }
+            }
+
             Mod::get()->setSavedValue<int>("theme", v);
 
             log::info("change theme to {}", v);
 
             for (size_t i = 0; i < btns.size(); i++)
             {
-                if (i == v - 1)
+                if (btnsS[i]->getTag() - 1 == v - 1)
                 {
                     btns[i]->setColor({255, 255, 255});
                     btns[i]->setOpacity(255);
@@ -546,7 +558,7 @@ class Config : public Window
         {
             std::stringstream ss;
             ss << "GJ_square0";
-            ss << i;
+            ss << (i == -1 ? 6 : i);
             ss << ".png";
 
             auto spr = CCScale9Sprite::create(ss.str().c_str());
@@ -556,6 +568,7 @@ class Config : public Window
             sprSel->setColor({200, 200, 200});
 
             auto btn = CCMenuItemSprite::create(spr, sprSel, menu, menu_selector(Config::changeTheme));
+            btn->setTag(i);
             btn->setContentSize(ccp(100, 35) * 2);
             spr->setContentSize(ccp(100, 35) * 2);
             spr->setPosition(ccp(0, 0));
@@ -570,6 +583,16 @@ class Config : public Window
             {
                 spr->setColor({255, 255, 255});
                 spr->setOpacity(255);
+            }
+
+            if (i == -1)
+            {
+                auto gr = CCLabelBMFont::create("Gradient", "bigFont.fnt");
+                gr->setOpacity(100);
+                gr->setPosition(spr->getContentSize() / 2);
+
+                spr->addChild(gr);
+                sprSel->addChild(gr);
             }
 
             menu->addChild(btn);
@@ -646,6 +669,7 @@ class Config : public Window
             createBtn(m, 3);
             createBtn(m, 4);
             createBtn(m, 5);
+            createBtn(m, -1);
 
             m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10));
             m->updateLayout();

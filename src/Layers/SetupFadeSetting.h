@@ -79,9 +79,11 @@ class SetupFadeSetting : public FLAlertLayer
             l->ignoreAnchorPointForPosition(false);
             l->setTouchPriority(-514);
 
+            int theme = Mod::get()->getSavedValue<int>("theme", 5);
+
             std::stringstream ss;
             ss << "GJ_square0";
-            ss << Mod::get()->getSavedValue<int>("theme", 5);
+            ss << (theme == -1 ? 6 : theme);
             ss << ".png";
 
             auto panel = CCScale9Sprite::create(ss.str().c_str());
@@ -89,6 +91,57 @@ class SetupFadeSetting : public FLAlertLayer
             panel->setAnchorPoint(ccp(0, 0));
             panel->setID("panel");
             l->addChild(panel);
+
+            as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
+
+            if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
+            {
+                auto size = panel->getContentSize();
+
+                auto gradient = CCLayerGradient::create();
+                gradient->setContentSize(size);
+                gradient->setZOrder(-1);
+                gradient->setID("gradient"_spr);
+
+                if (Mod::get()->getSettingValue<bool>("use-custom-colours"))
+                {
+                    gradient->setStartColor(Mod::get()->getSettingValue<ccColor3B>("primary-colour"));
+                    gradient->setEndColor(Mod::get()->getSettingValue<ccColor3B>("secondary-colour"));
+                }
+                else
+                {
+                    gradient->setStartColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
+                    gradient->setEndColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
+                }
+
+                gradient->setPosition(CCDirector::get()->getWinSize() / 2);
+                gradient->ignoreAnchorPointForPosition(false);
+
+                if (Mod::get()->getSettingValue<bool>("reverse-order"))
+                gradient->setScaleY(-1);
+
+                auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
+                darken->setID("darken"_spr);
+                darken->setContentSize(size - ccp(15, 15));
+                darken->setZOrder(0);
+                darken->setPosition(size / 2);
+
+                auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
+                outline->setPosition(size / 2);
+                outline->setContentSize(size);
+                outline->setZOrder(1);
+                outline->setID("outline"_spr);
+                
+                gradient->addChild(darken);
+                gradient->addChild(outline);
+
+                panel->addChild(gradient);
+
+                gradient->setAnchorPoint(ccp(0, 0));
+                gradient->setPosition(ccp(0, 0));
+
+                gradient->setVisible(theme == -1);
+            }
 
             auto title = CCLabelBMFont::create("Setup Icon Fade\nCustomising speed and colours is not yet supported", "bigFont.fnt");
             title->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);

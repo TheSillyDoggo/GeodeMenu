@@ -114,115 +114,6 @@ public:
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
 
-        /*
-        //if (btn->getTag() == 5)
-        {
-            #ifdef GEODE_IS_ANDROID
-
-            FLAlertLayer::create("Coming soon", "Replay is not ready...", "Ok")->show();
-            return;
-
-            #endif
-
-            CCArray* arr = CCArray::create();
-
-            AttemptAtReversingDialogObject* Object = nullptr;
-            std::stringstream ss; // why do i have to declare this outside? seems stupid
-
-            switch (secret)
-            {
-            case 0:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "A replay bot is planned, <d050>But I still need more time to develop it.", 5, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 1:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It still isn't finished, <d050>wait a bit.", 6, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 2:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I just said, <d050>it isn't done yet.", 31, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 3:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I'm warning you!", 30, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 4:
-                FMODAudioEngine::sharedEngine()->playMusic("dangerLoop.mp3", true, 0, 0);
-
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "STOP! <d050>ASKING!", 34, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no! <d100>Just<d010>.<d010>.<d010>. <d050>Stop asking and it'll be fine.", 36, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 5:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "I<d010>.<d010>.<d010>. I said stop!", 36, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 6:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "It's best if you stop<d010>.<d010>.<d010>.", 35, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 7:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", ".<d010>.<d010>.", 34, 1, false, { 255,255,255 });
-                arr->addObject(Object);   
-
-                break;
-
-            case 8:
-                Object = AttemptAtReversingDialogObject::create("The Shopkeeper", "Oh no<d010>.<d010>.<d010>. not again.", 35, 1, false, { 255,255,255 });
-                arr->addObject(Object);
-
-                break;
-
-            case 9:
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", "You DARE<d050> disturb a GOD!", 33, 1, false, { 255,255,255 });
-                arr->addObject(Object);
-
-                ss << "I have big plans for you, <d020><cl>";
-                ss << GameManager::get()->m_playerName.c_str();
-                ss << "</c>";
-
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", ss.str(), 33, 1, false, { 255,255,255 });
-                arr->addObject(Object);
-
-                Object = AttemptAtReversingDialogObject::create("Zulguroth", "Now<d010>.<d010>.<d010>. BEGONE!", 33, 1, false, { 255,255,255 });
-                arr->addObject(Object);
-
-                break;
-
-            default:
-                break;
-            }
-
-            auto dl = DialogLayer::createDialogLayer(nullptr, arr, 2);
-            dl->animateIn(DialogAnimationType::FromLeft);
-            dl->setZOrder(999999);
-            CCScene::get()->addChild(dl);
-
-            secret++;
-
-            if (secret > 10)
-                secret = 0;
-
-            return;
-        }*/
-
         lastTab = selectedTab;
         selectedTab = btn->getTag();
 
@@ -308,14 +199,67 @@ public:
 
         #pragma endregion
 
+        int theme = Mod::get()->getSavedValue<int>("theme", 5);
+
         std::stringstream ss;
         ss << "GJ_square0";
-        ss << Mod::get()->getSavedValue<int>("theme", 5);
+        ss << (theme == -1 ? 6 : theme);
         ss << ".png";
 
         panel = CCScale9Sprite::create(ss.str().c_str());
         panel->setContentSize(ccp(475, 280));
         panel->setID("panel");
+
+        as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
+
+        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
+        {
+            auto size = panel->getContentSize();
+
+            auto gradient = CCLayerGradient::create();
+			gradient->setContentSize(size);
+			gradient->setZOrder(-1);
+			gradient->setID("gradient"_spr);
+
+			if (Mod::get()->getSettingValue<bool>("use-custom-colours"))
+			{
+				gradient->setStartColor(Mod::get()->getSettingValue<ccColor3B>("primary-colour"));
+				gradient->setEndColor(Mod::get()->getSettingValue<ccColor3B>("secondary-colour"));
+			}
+			else
+			{
+				gradient->setStartColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
+				gradient->setEndColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
+			}
+
+			gradient->setPosition(CCDirector::get()->getWinSize() / 2);
+			gradient->ignoreAnchorPointForPosition(false);
+
+			if (Mod::get()->getSettingValue<bool>("reverse-order"))
+			gradient->setScaleY(-1);
+
+			auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
+			darken->setID("darken"_spr);
+			darken->setContentSize(size - ccp(15, 15));
+			darken->setZOrder(0);
+			darken->setPosition(size / 2);
+
+			auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
+			outline->setPosition(size / 2);
+			outline->setContentSize(size);
+			outline->setZOrder(1);
+			outline->setID("outline"_spr);
+			
+			gradient->addChild(darken);
+			gradient->addChild(outline);
+
+			panel->addChild(gradient);
+
+            gradient->setAnchorPoint(ccp(0, 0));
+            gradient->setPosition(ccp(0, 0));
+
+            gradient->setVisible(theme == -1);
+        }
 
         auto windows = CCScale9Sprite::create("square02_small.png");
         windows->setOpacity(100);
