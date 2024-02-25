@@ -37,7 +37,7 @@ class $modify (CCScheduler)
 
                 bool m = SpeedhackMus::instance->enabled;
 
-                if (m)
+                if (SpeedhackGameplay::instance->enabled)
                     if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
                 //FMOD::ChannelGroup* masterGroup;

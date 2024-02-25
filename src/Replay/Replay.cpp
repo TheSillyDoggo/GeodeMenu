@@ -135,38 +135,4 @@ class $modify (ReplayPauseLayer, PauseLayer)
 		m->addChild(btn);
         this->addChild(m);
 	}
-};
-
-int actionsIndex = 0;
-float dta;
-
-class $modify(PlayLayer) {
-
-    void postUpdate(float dt) { //until GJBaseGameLayer::update
-        PlayLayer::postUpdate(dt);
-
-        dta += dt;
-
-        if (asdf) {
-            if (actions[actionsIndex].frame <= (dta * 240.f)) {
-                handleButton(actions[actionsIndex].down, actions[actionsIndex].button, actions[actionsIndex].player2);
-                actionsIndex++;
-            }
-        }
-    }
-
-    void resetLevel() {
-		dta = 0;
-        PlayLayer::resetLevel();
-
-        actionsIndex = 0;
-    }
-};
-
-class $modify(GJBaseGameLayer) {
-    void handleButton(bool push, int button, bool player1) {
-        GJBaseGameLayer::handleButton(push, button, player1);
-
-        if (!asdf) actions.push_back(MyInput(m_gameState.m_unk1f8, button, !player1, push, 0));
-    }
 };*/

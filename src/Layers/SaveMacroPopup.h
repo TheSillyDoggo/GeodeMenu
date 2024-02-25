@@ -1,12 +1,15 @@
 #include <Geode/Geode.hpp>
+#include <Geode/modify/TextAlertPopup.hpp>
 #include "../Client/Client.h"
+
+#include <Geode/ui/TextInput.hpp>
 
 using namespace geode::prelude;
 
 class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
 {
     public:
-        geode::InputNode* inp = nullptr;
+        geode::TextInput* inp = nullptr;
         CCLabelBMFont* errorLbl = nullptr;
         ButtonSprite* bs = nullptr;
         CCMenuItemSpriteExtra* ok = nullptr;
@@ -18,16 +21,18 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
 
         void onOk(CCObject*)
         {
-            //log::info("n: {}", Client::GetModuleEnabled("noclip"));
+            GJReplayManager::replay.author = GJAccountManager::get()->m_username;
 
-            //Client::replay.author = GJAccountManager::get()->m_username;
+            std::vector<uint8_t> output = GJReplayManager::replay.exportData(true);
+            std::string str(output.begin(), output.end());
 
-            //std::vector<uint8_t> output = replay.exportData(true);
-            //std::string str(output.begin(), output.end());
+            auto p = Mod::get()->getConfigDir() / "macros" / (inp->getString() + ".gdr");
 
-            //utils::file::writeString(Mod::get()->getConfigDir() / "macros" / inp->getString() / ".gdr", str.c_str());
+            log::info("s: {}", str);
 
-            TextAlertPopup::create("a", 0.3f, 0.1f, 1, "unk");
+            auto res = utils::file::writeString(p, str.c_str());
+
+            CCScene::get()->addChild(TextAlertPopup::create("Successfully saved '" + inp->getString() + ".gdr'", 0.5f, 0.6f, 150, ""), 9999999);
 
             this->removeFromParent();
         }
@@ -35,6 +40,40 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
         virtual void keyBackClicked()
         {
             onClose(nullptr);
+        }
+
+        void onMacroInfo(CCObject*)
+        {
+            std::stringstream ss;
+            ss << "Level Name: <ca>";
+            ss << GJReplayManager::replay.levelInfo.name;
+            ss << "</c>\n";
+            
+            ss << "Level ID: <cy>";
+            ss << GJReplayManager::replay.levelInfo.id;
+            ss << "</c>\n";
+            
+            ss << "LDM: <cg>";
+            ss << GJReplayManager::replay.ldm;
+            ss << "</c>\n";
+            
+            ss << "Inputs: <cb>";
+            ss << GJReplayManager::replay.inputs.size();
+            ss << "</c>\n";
+
+            ss << "Macro Author: <cp>";
+            ss << GJReplayManager::replay.author;
+            ss << "</c>\n";
+
+            ss << "Duration: <cl>";
+            ss << GJReplayManager::replay.duration;
+            ss << "</c>\n";
+
+            ss << "Description: <cr>";
+            ss << GJReplayManager::replay.description;
+            //ss << "</c>\n";
+
+            FLAlertLayer::create("Macro Info", ss.str(), "OK")->show();
         }
 
         virtual void textChanged(CCTextInputNode* p0)
@@ -85,6 +124,9 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
 
         bool init()
         {
+            GJReplayManager::replay.author = GJAccountManager::get()->m_username;
+
+
             if (!FLAlertLayer::init(0))
                 return false;
 
@@ -120,12 +162,12 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
             lb->setScale(0.55f);
             l->addChild(lb);
 
-            inp = geode::InputNode::create(lb->getScaledContentSize().width + 150, "Macro Name (.gdr)");
+            inp = geode::TextInput::create(lb->getScaledContentSize().width + 150, "Macro Name (.gdr)");
             inp->setPosition(l->getContentSize() / 2 + ccp(0, 5));
-            inp->getInput()->setAllowedChars("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNNM098765431");
-            inp->getInput()->setMaxLabelLength(32);
-            inp->getInput()->setDelegate(this);
-            inp->getInput()->setID("IGNOREBYPASSES"_spr);
+            inp->getInputNode()->setAllowedChars("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNNM098765431 ");
+            inp->getInputNode()->setMaxLabelLength(32);
+            inp->getInputNode()->setDelegate(this);
+            inp->getInputNode()->setID("IGNOREBYPASSES"_spr);
             l->addChild(inp);
 
             errorLbl = CCLabelBMFont::create(GJReplayManager::replay.inputs.size() == 0 ? "Macro cannot be empty" : "Macro name cannot be empty", "bigFont.fnt");
@@ -145,6 +187,9 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
             ok->setPosition(l->getContentSize() / 2 + ccp(58, -82));
             ok->setEnabled(false);
             l->addChild(ok);
+
+            auto info = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(SaveMacroPopup::onMacroInfo));
+            l->addChildAtPosition(info, Anchor::TopRight, ccp(-10 - 6, -10 - 8));
 
             this->addChild(l);
 

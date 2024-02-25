@@ -2,26 +2,32 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
 class $modify(GameObject) {
     
-    void setVisible(bool v) {
-        if (Client::GetModuleEnabled("no-glow"))
-            m_hasNoGlow = true;
+    TodoReturn commonSetup() 
+    {
+        GameObject::commonSetup();
 
-        //if (Client::GetModuleEnabled("dont-fade"))
-            //m_isDontFade = true;
+        if (PlayLayer::get())
+        {
+            if (Client::GetModuleEnabled("no-glow"))
+                m_hasNoGlow = true;
 
-        //if (Client::GetModuleEnabled("dont-enter"))
-            //m_isDontEnter = true;
+            m_isDontFade = true;
+            m_isDontEnter = true;
 
-        if (Client::GetModuleEnabled("force-obj-vis"))
-            GameObject::setVisible(true);
+            if (m_objectID == 45 || m_objectID == 46)
+            {
+                log::info("mirror");
 
-        GameObject::setVisible(v);
+                m_isNoTouch = true;
+            }
+        }
     }
 };
 

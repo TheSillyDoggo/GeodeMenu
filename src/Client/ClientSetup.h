@@ -40,8 +40,8 @@ public:
         speedhack->modules.push_back(new SpeedhackEnabled());
         //speedhack->modules.push_back(new Module("Enabled", "speedhack-enabled", "Is the speedhack enabled?"));
         speedhack->modules.push_back(new SpeedhackMus());
+        speedhack->modules.push_back(new SpeedhackGameplay());
         //speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music", "Speedhack all sound by your speed modifier", true));
-        speedhack->modules.push_back(new Module("Gameplay Only", "speedhack-gameplay", "Only enables the speedhack in gameplay and editor"));
 
         (reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
 
@@ -63,6 +63,8 @@ public:
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+
+        level->modules.push_back(new Module("No Reverse Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
 
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
@@ -95,6 +97,8 @@ public:
 
         bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
         bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
+
+        bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
 
         #ifdef GEODE_IS_ANDROID
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
@@ -129,7 +133,6 @@ public:
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
 
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
-        cosmetic->modules.push_back(new Module("Force Object Visibility", "force-obj-vis", "Forces all object to be visible"));
 
         //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
         //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));

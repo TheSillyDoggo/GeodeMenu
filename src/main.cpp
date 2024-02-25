@@ -102,6 +102,31 @@ class $modify(CCKeyboardDispatcher) {
 
 #endif
 
+class $modify (CCKeyboardDispatcher)
+{
+    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
+    {     
+        if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
+            if (android)
+            {
+                CCDirector::get()->getOpenGLView()->showCursor(true);
+                
+                if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
+                {
+                    ui->close(nullptr);
+                }
+                else
+                {
+                    AndroidUI::addToScene();
+                }
+            }
+            return true;
+        }
+
+        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
+    }
+};
+
 $on_mod(Loaded)
 {
     client = new Client();
@@ -164,7 +189,7 @@ class $modify (MenuLayer)
                 AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
             }
             
-            #ifndef GEODE_IS_ANDROID
+            #ifdef IMGUI
 
             ImGuiCocos::get().setup([] {
                 // this runs after imgui has been setup,

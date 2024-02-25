@@ -1,3 +1,12 @@
+# 1.2.0
+
+- Added auto song download
+- Fixed Crash Opening Mod menu
+- Added No reverse portal
+- Fixed input nodes
+- Added TAB + Insert hotkeys to open the mod menu
+- Added Replay Bot (beta)
+
 # 1.1.4
 
 - Added additional borders for npesta texture pack users

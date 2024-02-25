@@ -51,6 +51,7 @@ public:
 
     void close(CCObject* sender)
     {
+        CCTouchDispatcher::get()->removeDelegate(this);
         this->removeFromParent();
     }
 
@@ -63,8 +64,6 @@ public:
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
-                v = 1.0f;
-
                 if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
                 {
                     v = std::stof(SpeedhackTop::instance->text);
@@ -76,10 +75,10 @@ public:
                 if (v > 99999)
                     v = 99999;
 
-                v /= CCDirector::get()->getScheduler()->getTimeScale();
-
-                if (Client::GetModuleEnabled("speedhack-gameplay"))
+                if (SpeedhackGameplay::instance->enabled)
                     if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
+                v /= CCDirector::get()->getScheduler()->getTimeScale();
             }
         }
 

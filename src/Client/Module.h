@@ -5,6 +5,8 @@
 
 #include "../Layers/ColouredAlertLayer.h"
 
+#include <Geode/ui/TextInput.hpp>
+
 using namespace geode::prelude;
 
 class Module
@@ -270,7 +272,7 @@ class InputModule : public Module, public TextInputDelegate
             text = geode::prelude::Mod::get()->getSavedValue<std::string>(id + "_value", text);
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos/*, bool useless, SEL_MenuHandler event*/)
+        void makeAndroid(CCMenu* menu, CCPoint pos)
         {
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));
@@ -278,14 +280,19 @@ class InputModule : public Module, public TextInputDelegate
             label->setPosition(pos - ccp(10, 0));
             label->limitLabelWidth(70, 0.575f, 0.1f);
 
-            auto input = InputNode::create(100, name.c_str(), allowedChars, maxSize);
+
+            auto input = TextInput::create(100, name.c_str());
+            input->setMaxCharCount(maxSize);
+            input->getInputNode()->setAllowedChars(allowedChars);
             input->setPosition(pos + ccp(70, 0));
             input->setAnchorPoint(ccp(0, 0.5f));
-            input->getInput()->setDelegate(this);
-            input->setID("IGNOREBYPASSES"_spr);
+            input->setDelegate(this);
+            input->getInputNode()->setID("IGNOREBYPASSES"_spr);
             input->setString(text);
 
+
             menu->addChild(input);
+            
             menu->addChild(label);
         }
 
@@ -374,6 +381,23 @@ class SpeedhackMus : public Module
             id = "speedhack-mus";
             name = "Speedhack Music";
             description = "Speedhack all sound by your speed modifier";
+
+            instance = this;
+
+            this->load();
+        }
+};
+
+class SpeedhackGameplay : public Module
+{
+    public:
+        static inline SpeedhackGameplay* instance = nullptr;
+
+        SpeedhackGameplay()
+        {
+            id = "speedhack-gameplay";
+            name = "Gameplay Only";
+            description = "Only enables the speedhack in gameplay and editor";
 
             instance = this;
 

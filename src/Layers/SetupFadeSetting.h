@@ -56,8 +56,8 @@ class SetupFadeSetting : public FLAlertLayer
             ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
             ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
 
-            //auto pop = ColorPickPopup::create((leftA ? in : out));
-            //pop->show();
+            auto pop = ColorPickPopup::create((leftA ? in : out));
+            pop->show();
             //auto pop = geode::ColorPickPopup::create({255, 0, 0, 255}, false);
             //CCScene::get()->addChild(pop, this->getZOrder() + 1);
         }

@@ -11,6 +11,7 @@
 #include "../Layers/SetupFPSBypass.h"
 #include "../Layers/SetupTransitionCustomizer.h"
 #include "../Layers/SaveMacroPopup.h"
+#include "../Layers/LoadMacroPopup.h"
 #include "../Layers/EditStatusPositionLayer.h"
 
 class Window
@@ -27,6 +28,9 @@ public:
 
     bool draw(ImVec2 tileSize, float anim = 1)
     {
+        if (modules.size() == 0)
+            return false;
+
         ImVec2 wp = DrawUtils::addImVec2(windowPos, getOffsetForTime(anim));
 
         #ifndef GEODE_IS_ANDROID
@@ -197,7 +201,8 @@ class Speedhack : public Window//, public TextInputDelegate
         void clear(CCObject* sender)
         {
             SpeedhackTop::instance->text = "";
-            reinterpret_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getChildByID("IGNOREBYPASSES"_spr))->setString("");
+            auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent(), 0);
+            inp->setString("");
             slider->setValue(unscaleValue(1));
         }
 
@@ -222,7 +227,7 @@ class Speedhack : public Window//, public TextInputDelegate
             std::stringstream ss;
             ss << round(scaleValue(v) * 100.0) / 100.0;
 
-            auto inp = static_cast<geode::InputNode*>(static_cast<CCNode*>(sender)->getParent()->getParent()->getParent()->getChildByID("IGNOREBYPASSES"_spr));
+            auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent(), 0);
             inp->setString(ss.str().c_str());
             SpeedhackTop::instance->text = ss.str();
 
@@ -1283,45 +1288,32 @@ class _Replay : public Window
     public:
         void onOnlineMacros(CCObject*)
         {
-            FLAlertLayer::create("Coming soon...", "Online macro browser is coming soon...", "OK")->show();
+            FLAlertLayer::create("Coming soon...", "this button doesn't do anything, well anything useful. <cl>yet</c>...", "OK")->show();
         }
 
         void onSave(CCObject*)
         {
-            //as<OpenMacroModule*>(Client::GetModule("SaveMacroPopup::addToScene"))->onSaveMacro();
-            //SaveMacroPopup::addToScene();
+            SaveMacroPopup::addToScene();
         }
 
-        static inline PlayLayer* s = nullptr;
-
-        void onClose(float)
+        void onLoad(CCObject*)
         {
-            CCDirector::get()->pushScene(MenuLayer::scene(false));
-            s = nullptr;
-            
-            #ifdef GEODE_IS_WINDOWS
-            CCDirector::get()->getOpenGLView()->showCursor(true);
-            #endif
+            LoadMacroPopup::addToScene();
         }
 
-        void onSecret(CCObject*)
+        void onClear(CCObject*)
         {
-            if (s == nullptr)
-            {
-                s = PlayLayer::create(GameLevelManager::get()->getMainLevel(3001, false), false, false);
-            
-                auto l2 = CCLabelBMFont::create("The Challenge Jumpscare\n\nBOO!", "bigFont.fnt");
-                l2->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-                l2->updateLabel();
-                l2->setPosition(s->getContentSize() / 2);
-                s->addChild(l2, 999999);
+            GJReplayManager::replay = MyReplay();
+        }
 
-                s->setScale(0);
-                s->runAction(CCScaleTo::create(0.2f, 1.0f));
-                CCScene::get()->addChild(s, 99999);
+        void onPlayTest(CCObject*)
+        {
+            GJReplayManager::playing = !GJReplayManager::playing;
+        }
 
-                s->scheduleOnce(schedule_selector(_Replay::onClose), 1.5f);
-            }
+        void onRecTest(CCObject*)
+        {
+            GJReplayManager::recording = !GJReplayManager::recording;
         }
 
         void cocosCreate(CCMenu* menu)
@@ -1334,26 +1326,17 @@ class _Replay : public Window
             back->setOpacity(100);
             menu->addChild(back);
 
-            auto l = CCLabelBMFont::create("ill update it later", "bigFont.fnt");
-            l->setScale(0.8f);
-            l->setPosition(menu->getContentSize() / 2 + ccp(0, 50));
-            menu->addChild(l);
-
-            auto spike = GameObject::createWithKey(8);
-            auto btna = CCMenuItemSpriteExtra::create(spike, menu, menu_selector(_Replay::onSecret));
-            btna->setPosition(menu->getContentSize() / 2 + ccp(0, -40));
-
-            menu->addChild(btna, 1);
-
-            return;
-
-            auto lbl = CCLabelBMFont::create("Record\nPlayback", "bigFont.fnt");
+            auto lbl = CCLabelBMFont::create("Record\nPlay", "bigFont.fnt");
             lbl->setPosition(ccp(10, menu->getContentSize().height - 2));
             lbl->setScale(0.725f);
             lbl->setAnchorPoint(ccp(0, 1));
             lbl->setOpacity(100);
 
-            auto btnP = CCMenuItemToggler::createWithStandardSprites(menu, nullptr, 1.0f);
+            auto btnP = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onRecTest), 1.0f);
+            btnP->toggle(GJReplayManager::recording);
+
+            auto btnP2 = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onPlayTest), 1.0f);
+            btnP2->toggle(GJReplayManager::playing);
 
             auto menuRow = CCMenu::create();
             menuRow->ignoreAnchorPointForPosition(false);
@@ -1362,8 +1345,9 @@ class _Replay : public Window
             menuRow->setPosition(menu->getContentSize() / 2 + ccp(0, -30));
 
             menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Save", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onSave)));
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Load", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("More", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Load", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onLoad)));
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("clear", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onClear)));
+            //menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("More", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
 
             menuRow->setLayout(RowLayout::create()->setAutoScale(false)->setGap(55));
 
@@ -1380,7 +1364,8 @@ class _Replay : public Window
             menu->addChild(lbl);
             menu->addChild(menuRow);
             menu->addChild(btn);
-            menu->addChild(btnP);
+            menu->addChildAtPosition(btnP, Anchor::TopLeft);
+            menu->addChildAtPosition(btnP2, Anchor::TopLeft, ccp(0, -30));
         }
 };
 

@@ -1,5 +1,11 @@
 #pragma once
 
+#include <Geode/Geode.hpp>
+
+#include <Geode/modify/CheckpointObject.hpp>
+#include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
+
 #include <iostream>
 #include <vector>
 #include <optional>
@@ -204,11 +210,36 @@ namespace gdr {
 struct MyInput : gdr::Input {
 	bool h = false;
 	float xpos;
+	float ypos;
+	float dt;
+	float xvelocity;
+	float yvelocity;
+	float rotation;
 
 	MyInput() = default;
 
-	MyInput(int frame, int button, bool player2, bool down, float xpos)
-		: Input(frame, button, player2, down) {}
+	MyInput(int frame, int button, bool player2, bool down, float xpos, float ypos, float dt, float xvelocity, float yvelocity, float rotation)
+		: Input(frame, button, player2, down) {
+            this->xpos = xpos;
+            this->ypos = ypos;
+            this->dt = dt;
+            this->xvelocity = xvelocity;
+            this->yvelocity = yvelocity;
+            this->rotation = rotation;
+        }
+
+    void parseExtension(json::object_t obj) override {
+		xpos = obj["xpos"];
+		ypos = obj["ypos"];
+		dt = obj["dt"];
+		xvelocity = obj["xvelocity"];
+        yvelocity = obj["yvelocity"];
+        rotation = obj["rotation"];
+	}
+
+	json::object_t saveExtension() const override {
+		return { {"xpos", xpos}, {"ypos", ypos}, {"dt", dt}, {"xvelocity", xvelocity}, {"yvelocity", yvelocity}, {"rotation", rotation} };
+	}
 
 };
 
@@ -218,8 +249,12 @@ struct MyReplay : gdr::Replay<MyReplay, MyInput> {
 	MyReplay() : Replay("QOLBot", "1.0") {}
 };
 
-class GJReplayManager
+class GJReplayManager // roberta topertla momento
 {
     public:
+        static inline bool playing = false;
+        static inline bool recording = false;
+        static inline float dt;
+        static inline int frame;
         static inline MyReplay replay = MyReplay();
 };
