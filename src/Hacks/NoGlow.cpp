@@ -17,18 +17,7 @@ class $modify(GameObject) {
         {
             if (Client::GetModuleEnabled("no-glow"))
                 m_hasNoGlow = true;
-
-            m_isDontFade = true;
-            m_isDontEnter = true;
-
-            if (m_objectID == 45 || m_objectID == 46)
-            {
-                log::info("mirror");
-
-                m_isNoTouch = true;
-            }
         }
     }
 };
-
 #endif

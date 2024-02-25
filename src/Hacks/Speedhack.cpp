@@ -24,9 +24,11 @@ class $modify (CCScheduler)
             {
                 float v = 1.0f;
 
-                if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
+                auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+                if (x.isOk())
                 {
-                    v = std::stof(SpeedhackTop::instance->text);
+                    v = x.value();
                 }
 
                 if (v < 0.01f)

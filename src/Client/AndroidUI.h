@@ -64,9 +64,11 @@ public:
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
-                if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
+                auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+                if (x.isOk())
                 {
-                    v = std::stof(SpeedhackTop::instance->text);
+                    v = x.value();
                 }
 
                 if (v < 0.01f)
@@ -74,6 +76,8 @@ public:
 
                 if (v > 99999)
                     v = 99999;
+
+                bool m = SpeedhackMus::instance->enabled;
 
                 if (SpeedhackGameplay::instance->enabled)
                     if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }

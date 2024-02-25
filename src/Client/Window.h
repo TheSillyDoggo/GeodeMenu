@@ -227,7 +227,7 @@ class Speedhack : public Window//, public TextInputDelegate
             std::stringstream ss;
             ss << round(scaleValue(v) * 100.0) / 100.0;
 
-            auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent(), 0);
+            auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent()->getParent()->getParent(), 0);
             inp->setString(ss.str().c_str());
             SpeedhackTop::instance->text = ss.str();
 
