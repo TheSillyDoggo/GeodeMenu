@@ -5,6 +5,7 @@
 - Added No reverse portal
 - Fixed input nodes
 - Added full options menu
+- Fixed Spider and Robot with icon effects
 - Added <cl>Gradient Pages</c> integration
 - Added TAB + Insert hotkeys to open the mod menu
 - Added Replay Bot (beta)

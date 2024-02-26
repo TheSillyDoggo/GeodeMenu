@@ -890,35 +890,6 @@ class EffectUI : public CCNode
         }
 };
 
-class $modify (PlayerObject)
-{
-    bool init(int p0, int p1, GJBaseGameLayer* p2, cocos2d::CCLayer* p3, bool p4)
-    {
-        if (!PlayerObject::init(p0, p1, p2, p3, p4))
-            return false;
-
-        auto l = as<CCNode*>(this->getChildren()->objectAtIndex(0));
-        as<CCSprite*>(l->getChildren()->objectAtIndex(0))->setID("gamemode-frame");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(0))->getChildren()->objectAtIndex(0))->setID("secondary-frame");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(0))->getChildren()->objectAtIndex(1))->setID("highlights-frame");
-
-        as<CCSprite*>(l->getChildren()->objectAtIndex(1))->setID("ship-frame");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(1))->getChildren()->objectAtIndex(0))->setID("secondary-frame");
-
-        as<CCSprite*>(l->getChildren()->objectAtIndex(6))->setID("glow-frame");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(0))->setID("dash-frame");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(1))->setID("gamemode-glow");
-        as<CCSprite*>(as<CCSprite*>(l->getChildren()->objectAtIndex(6))->getChildren()->objectAtIndex(2))->setID("ship-glow");
-
-        return true;
-    }
-
-    TodoReturn createRobot(int p0)
-    {
-        PlayerObject::createRobot(p0);
-    }
-};
-
 class $modify (GJBaseGameLayer)
 {
     virtual void update(float p0)
@@ -927,41 +898,28 @@ class $modify (GJBaseGameLayer)
 
         if (m_player1)
         {
-            auto l = as<CCNode*>(m_player1->getChildren()->objectAtIndex(0));
-
-            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("gamemode-glow"))->setColor(EffectUI::getColourForSelected(2));
-            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("ship-glow"))->setColor(EffectUI::getColourForSelected(2));
-
-            as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(0));
-            as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(0));
-
-            as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
-            as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+            m_player1->setColor(EffectUI::getColourForSelected(0));
+            m_player1->setSecondColor(EffectUI::getColourForSelected(1));
+            m_player1->m_glowColor = EffectUI::getColourForSelected(2);
+            m_player1->updateGlowColor();
         }
 
         if (m_player2)
         {
-            auto l = as<CCNode*>(m_player2->getChildren()->objectAtIndex(0));
-
             if (!Mod::get()->getSavedValue<bool>("same-dual"))
             {
-                as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(1));
-                as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(1));
-
-                as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(0));
-                as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(0));
+                m_player2->setColor(EffectUI::getColourForSelected(1));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(0));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->updateGlowColor();
             }
             else
             {
-                as<CCSprite*>(l->getChildByID("gamemode-frame"))->setColor(EffectUI::getColourForSelected(0));
-                as<CCSprite*>(l->getChildByID("ship-frame"))->setColor(EffectUI::getColourForSelected(0));
-
-                as<CCSprite*>(l->getChildByID("gamemode-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
-                as<CCSprite*>(l->getChildByID("ship-frame")->getChildByID("secondary-frame"))->setColor(EffectUI::getColourForSelected(1));
+                m_player2->setColor(EffectUI::getColourForSelected(0));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(1));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->updateGlowColor();
             }
-
-            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("gamemode-glow"))->setColor(EffectUI::getColourForSelected(2));
-            as<CCSprite*>(l->getChildByID("glow-frame")->getChildByID("ship-glow"))->setColor(EffectUI::getColourForSelected(2));
         }
     }
 };
