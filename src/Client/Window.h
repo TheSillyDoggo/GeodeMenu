@@ -280,16 +280,19 @@ class Speedhack : public Window//, public TextInputDelegate
             ss << x.isErr();
             ss << "</c>\n";
 
-            ss << "Error: <cp>";
-            ss << x.err().value();
-            ss << "</c>\n";
+            if (x.isErr())
+            {
+                ss << "Error: <cp>";
+                ss << x.err().value();
+                ss << "</c>\n";
+            }
 
             ss << "Has Value: <cl>";
             ss << x.has_value();
             ss << "</c>\n";
 
-            ss << "Description: <cr>";
-            ss << x.value();
+            //ss << "Value RES: <cr>";
+            //ss << x.value();
             //ss << "</c>\n";
 
             FLAlertLayer::create("Macro Info", ss.str(), "OK")->show();
