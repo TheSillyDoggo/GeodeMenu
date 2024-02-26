@@ -60,7 +60,7 @@ class $modify (PlayLayer)
 
         if (GJReplayManager::playing)
         {
-            log::info("cur: {}, inp: {}", GJReplayManager::dt, GJReplayManager::replay.inputs[GJReplayManager::frame].dt);
+            //log::info("cur: {}, inp: {}", GJReplayManager::dt, GJReplayManager::replay.inputs[GJReplayManager::frame].dt);
 
             if (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt)
             {
