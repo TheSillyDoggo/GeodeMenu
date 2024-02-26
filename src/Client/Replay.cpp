@@ -9,7 +9,7 @@ float dta;
 */
 /*class $modify(PlayLayer) {
 
-    void postUpdate(float dt) { //until GJBaseGameLayer::update
+    void postUpdate(float dt) { //until GJBaseGameLayer::update // virtual void update(float p0) moment
         PlayLayer::postUpdate(dt);
 
         dta += dt;

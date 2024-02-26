@@ -234,6 +234,67 @@ class Speedhack : public Window//, public TextInputDelegate
             SpeedhackTop::instance->save();
         }
 
+        void onDebug(CCObject*)
+        {
+            float v = 1.0f;
+
+            auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+            if (x.isOk())
+            {
+                v = x.value();
+            }
+
+            if (v < 0.01f)
+                v = 0.01f;
+
+            if (v > 99999)
+                v = 99999;
+
+            bool m = SpeedhackMus::instance->enabled;
+
+            if (SpeedhackGameplay::instance->enabled)
+                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
+            v /= CCDirector::get()->getScheduler()->getTimeScale();
+
+            std::stringstream ss;
+
+            ss << "String: <ca>";
+            ss << SpeedhackTop::instance->text;
+            ss << "</c>\n";
+
+            ss << "Value: <ca>";
+            ss << v;
+            ss << "</c>\n";
+            
+            ss << "Value UN-TS: <cy>";
+            ss << v * CCDirector::get()->getScheduler()->getTimeScale();
+            ss << "</c>\n";
+            
+            ss << "isOk: <cg>";
+            ss << x.isOk();
+            ss << "</c>\n";
+            
+            ss << "isErr: <cb>";
+            ss << x.isErr();
+            ss << "</c>\n";
+
+            ss << "Error: <cp>";
+            ss << x.err().value();
+            ss << "</c>\n";
+
+            ss << "Has Value: <cl>";
+            ss << x.has_value();
+            ss << "</c>\n";
+
+            ss << "Description: <cr>";
+            ss << x.value();
+            //ss << "</c>\n";
+
+            FLAlertLayer::create("Macro Info", ss.str(), "OK")->show();
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             float v = 1.0f;
@@ -278,6 +339,17 @@ class Speedhack : public Window//, public TextInputDelegate
             trash->setScale(0.725f);
             trash->setPosition(ccp((menu->getContentSize().width / 2) + (180 / 2) + 20, menu->getContentSize().height - 50));
             menu->addChild(trash);
+
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
+
+            auto btnS = ButtonSprite::create("Debug", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            //as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Speedhack::onDebug));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+            menu->addChild(btn);
         }
 
         virtual void textChanged(CCTextInputNode* p0)

@@ -221,10 +221,10 @@ public:
 			gradient->setZOrder(-1);
 			gradient->setID("gradient"_spr);
 
-			if (Mod::get()->getSettingValue<bool>("use-custom-colours"))
+			if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("use-custom-colours"))
 			{
-				gradient->setStartColor(Mod::get()->getSettingValue<ccColor3B>("primary-colour"));
-				gradient->setEndColor(Mod::get()->getSettingValue<ccColor3B>("secondary-colour"));
+				gradient->setStartColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("primary-colour"));
+				gradient->setEndColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("secondary-colour"));
 			}
 			else
 			{
@@ -235,14 +235,14 @@ public:
 			gradient->setPosition(CCDirector::get()->getWinSize() / 2);
 			gradient->ignoreAnchorPointForPosition(false);
 
-			if (Mod::get()->getSettingValue<bool>("reverse-order"))
+			if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("reverse-order"))
 			gradient->setScaleY(-1);
 
-			auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
+			/*auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
 			darken->setID("darken"_spr);
 			darken->setContentSize(size - ccp(15, 15));
 			darken->setZOrder(0);
-			darken->setPosition(size / 2);
+			darken->setPosition(size / 2);*/
 
 			auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
 			outline->setPosition(size / 2);
@@ -250,7 +250,7 @@ public:
 			outline->setZOrder(1);
 			outline->setID("outline"_spr);
 			
-			gradient->addChild(darken);
+			//gradient->addChild(darken);
 			gradient->addChild(outline);
 
 			panel->addChild(gradient);
