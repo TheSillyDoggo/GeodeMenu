@@ -30,7 +30,7 @@ float dta;
     }
 };*/
 
-/*class $modify (CheckpointObjectExt, CheckpointObject)
+class $modify (CheckpointObjectExt, CheckpointObject)
 {
     float dt;
     int frame;
@@ -45,7 +45,7 @@ float dta;
 
         return true;
     }
-};
+};/*
 
 class $modify (PlayLayer)
 {
