@@ -30,6 +30,7 @@ float dta;
     }
 };*/
 
+/*
 class $modify (CheckpointObjectExt, CheckpointObject)
 {
     float dt;
@@ -45,7 +46,7 @@ class $modify (CheckpointObjectExt, CheckpointObject)
 
         return true;
     }
-};
+};*/
 
 class $modify (PlayLayer)
 {
@@ -92,9 +93,8 @@ class $modify (PlayLayer)
     TodoReturn loadFromCheckpoint(CheckpointObject* p0)
     {
         PlayLayer::loadFromCheckpoint(p0);
-
         
-
+        /*
         GJReplayManager::dt = as<CheckpointObjectExt*>(p0)->m_fields->dt;
         GJReplayManager::frame = as<CheckpointObjectExt*>(p0)->m_fields->frame;
 
@@ -111,7 +111,7 @@ class $modify (PlayLayer)
             }
 
             GJReplayManager::replay.inputs = myvec;
-        }
+        }*/
     }
 };
 
