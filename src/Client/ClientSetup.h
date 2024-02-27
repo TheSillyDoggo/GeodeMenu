@@ -65,8 +65,12 @@ public:
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
 
         level->modules.push_back(new Module("No Reverse Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
-
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
+
+        //level->modules.push_back(new Module("No Hitboxes", "no-hitboxes", "Disables Object Hitboxes"));
+
+        //level->modules.push_back(new Module("Force Show Player", "show-player", "Force the player to be visible all the time"));
+        //level->modules.push_back(new Module("Force Hide Player", "hide-player", "Force the player to be hidden all the time"));
 
 
         //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));

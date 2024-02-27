@@ -30,7 +30,7 @@ float dta;
     }
 };*/
 
-/*class $modify (CheckpointObjectExt, CheckpointObject)
+class $modify (CheckpointObjectExt, CheckpointObject)
 {
     float dt;
     int frame;
@@ -45,7 +45,7 @@ float dta;
 
         return true;
     }
-};*/
+};
 
 class $modify (PlayLayer)
 {
@@ -62,7 +62,8 @@ class $modify (PlayLayer)
         {
             //log::info("cur: {}, inp: {}", GJReplayManager::dt, GJReplayManager::replay.inputs[GJReplayManager::frame].dt);
 
-            if (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt)
+            while (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt) // SHOULD fix this replay issues :3
+            //if (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt)
             {
                 PlayerObject* plr = m_player1;
 
@@ -92,7 +93,7 @@ class $modify (PlayLayer)
     {
         PlayLayer::loadFromCheckpoint(p0);
 
-        /*
+        
 
         GJReplayManager::dt = as<CheckpointObjectExt*>(p0)->m_fields->dt;
         GJReplayManager::frame = as<CheckpointObjectExt*>(p0)->m_fields->frame;
@@ -110,7 +111,7 @@ class $modify (PlayLayer)
             }
 
             GJReplayManager::replay.inputs = myvec;
-        }*/
+        }
     }
 };
 
