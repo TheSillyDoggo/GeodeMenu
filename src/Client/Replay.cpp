@@ -30,7 +30,8 @@ float dta;
     }
 };*/
 
-/*
+/*#ifdef GEODE_IS_WINDOWS
+
 class $modify (CheckpointObjectExt, CheckpointObject)
 {
     float dt;
@@ -46,20 +47,37 @@ class $modify (CheckpointObjectExt, CheckpointObject)
 
         return true;
     }
-};*/
+};
+
+#endif*/
 
 class $modify (PlayLayer)
 {
+    bool started = false;
+
+    void startGameDelayed()
+    {
+        PlayLayer::startGameDelayed();
+        
+        m_fields->started = true;
+
+        log::info("started");
+    }
+
     void postUpdate(float dt) { //until GJBaseGameLayer::update
         PlayLayer::postUpdate(dt);
 
+        #ifdef GEODE_IS_WINDOWS
         if (!m_started)
+        #else
+        if (!m_fields->started)
+        #endif
             return;
         
         if (!m_player1->m_isDead)
             GJReplayManager::dt += dt / CCScheduler::get()->getTimeScale();
 
-        if (GJReplayManager::playing)
+        if (GJReplayManager::playing && GJReplayManager::frame + 1 < GJReplayManager::replay.inputs.size())
         {
             //log::info("cur: {}, inp: {}", GJReplayManager::dt, GJReplayManager::replay.inputs[GJReplayManager::frame].dt);
 
@@ -90,11 +108,13 @@ class $modify (PlayLayer)
         log::info("resetLevel");
     }
 
+    /*#ifdef GEODE_IS_WINDOWS
+
     TodoReturn loadFromCheckpoint(CheckpointObject* p0)
     {
         PlayLayer::loadFromCheckpoint(p0);
+
         
-        /*
         GJReplayManager::dt = as<CheckpointObjectExt*>(p0)->m_fields->dt;
         GJReplayManager::frame = as<CheckpointObjectExt*>(p0)->m_fields->frame;
 
@@ -111,8 +131,10 @@ class $modify (PlayLayer)
             }
 
             GJReplayManager::replay.inputs = myvec;
-        }*/
+        }
     }
+
+    #endif*/
 };
 
 class $modify(GJBaseGameLayer) {

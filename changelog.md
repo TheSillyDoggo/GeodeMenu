@@ -5,6 +5,9 @@
 - Added No reverse portal
 - Fixed input nodes
 - Added full options menu
+- Added no respawn blink
+- Added level uncomplete
+- Removed fps bypass since it was VERY broken, replaces with full options menu
 - Fixed Spider and Robot with icon effects
 - Added <cl>Gradient Pages</c> integration
 - Added TAB + Insert hotkeys to open the mod menu

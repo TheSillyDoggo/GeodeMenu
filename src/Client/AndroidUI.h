@@ -55,40 +55,23 @@ public:
         this->removeFromParent();
     }
 
-    template <class Num>
-    Result<Num> anumFromString(std::string_view const str, int base = 10) {
-        if constexpr (std::is_floating_point_v<Num> 
-            #if defined(__cpp_lib_to_chars)
-                && false
-            #endif
-        ) {
-            Num val;
-            char* strEnd;
-            errno = 0;
-            if (std::setlocale(LC_NUMERIC, "C")) {
-                if constexpr (std::is_same_v<Num, float>) val = std::strtof(str.data(), &strEnd);
-                else if constexpr (std::is_same_v<Num, double>) val = std::strtod(str.data(), &strEnd);
-                else if constexpr (std::is_same_v<Num, long double>) val = std::strtold(str.data(), &strEnd);
-                if (errno == ERANGE) return Err("Number is too large to fit");
-                else if (strEnd == str.data()) return Err("String is not a number");
-                else return Ok(val);
-            }
-            else return Err("Failed to set locale");
-        }
-        else {
-            Num result;
-            std::from_chars_result res;
-            if constexpr (std::is_floating_point_v<Num>) res = std::from_chars(str.data(), str.data() + str.size(), result);
-            else res = std::from_chars(str.data(), str.data() + str.size(), result, base);
+    void getAllChildrenRecursively(cocos2d::CCNode* node, std::vector<cocos2d::CCNode*>& childrenList) {
+        if (!node)
+            return;
 
-            auto [_, ec] = res;
-            if (ec == std::errc()) return Ok(result);
-            else if (ec == std::errc::invalid_argument) return Err("String is not a number");
-            else if (ec == std::errc::result_out_of_range) return Err("Number is too large to fit");
-            else return Err("Unknown error");
+        // Add this node to the list
+        childrenList.push_back(node);
+
+        // Recursively add children
+        cocos2d::CCArray* children = node->getChildren();
+        if (children) {
+            for (int i = 0; i < children->count(); i++) {
+                cocos2d::CCNode* childNode = dynamic_cast<cocos2d::CCNode*>(children->objectAtIndex(i));
+                if (childNode && !typeinfo_cast<CCSpriteBatchNode*>(childNode))
+                    getAllChildrenRecursively(childNode, childrenList);
+            }
         }
     }
-
 
     CCAction* getEnterAction(CCNode* panel)
     {
@@ -98,7 +81,7 @@ public:
         {
             if (Client::GetModuleEnabled("speedhack-enabled"))
             {
-                auto x = anumFromString<float>(SpeedhackTop::instance->text);
+                auto x = numFromString<float>(SpeedhackTop::instance->text);
 
                 if (x.isOk())
                 {
@@ -132,6 +115,27 @@ public:
             panel->setPositionX(-1 * panel->getContentSize().width / 2 / 2);
         if (e == 4)
             panel->setPositionX(panel->getContentSize().width);
+
+        /*
+        if (e == 5)
+        {
+            std::vector<cocos2d::CCNode*> allChildren;
+            getAllChildrenRecursively(this, allChildren);
+
+            for (size_t i = 0; i < allChildren.size(); i++)
+            {
+                if (typeinfo_cast<CCNodeRGBA*>(allChildren[i]))
+                {
+                    auto b = static_cast<CCNodeRGBA*>(allChildren[i]);
+
+                    auto op = b->getOpacity();
+                    b->setOpacity(0);
+                    b->runAction(CCSpeed::create(CCFadeTo::create(0.5f, op), 1.0f / v));
+                }
+            }
+
+            return CCScaleTo::create(1, 1);
+        }*/
 
         if (e == 5)
         {
@@ -713,7 +717,7 @@ class $modify (AppDelegate)
         if (p0 == nullptr)
             return; // something real bad happened, gd will probably shit itself :(
 
-        if (p0->getChildByID("loading-layer"))
+        if (getChildOfType<LoadingLayer>(p0, 0))
             return; // fix texture ldr
 
         //if (typeinfo_cast<PlayLayer*>(p0->getChildren()->objectAtIndex(0)))
@@ -730,6 +734,9 @@ class $modify (AppDelegate)
             if (id == "android-ball")
             {
                 log::info("found ball");
+
+                CCTouchDispatcher::get()->addTargetedDelegate(as<AndroidBall*>(p0->getChildren()->objectAtIndex(i)), -514, true);
+
                 return;
             }
         }

@@ -13,6 +13,7 @@
 #include "../Layers/SaveMacroPopup.h"
 #include "../Layers/LoadMacroPopup.h"
 #include "../Layers/EditStatusPositionLayer.h"
+#include "../Layers/ConfirmFLAlertLayer.h"
 
 class Window
 {
@@ -234,45 +235,11 @@ class Speedhack : public Window//, public TextInputDelegate
             SpeedhackTop::instance->save();
         }
 
-        template <class Num>
-        Result<Num> anumFromString(std::string_view const str, int base = 10) {
-            if constexpr (std::is_floating_point_v<Num> 
-                #if defined(__cpp_lib_to_chars)
-                    && false
-                #endif
-            ) {
-                Num val;
-                char* strEnd;
-                errno = 0;
-                if (std::setlocale(LC_NUMERIC, "C")) {
-                    if constexpr (std::is_same_v<Num, float>) val = std::strtof(str.data(), &strEnd);
-                    else if constexpr (std::is_same_v<Num, double>) val = std::strtod(str.data(), &strEnd);
-                    else if constexpr (std::is_same_v<Num, long double>) val = std::strtold(str.data(), &strEnd);
-                    if (errno == ERANGE) return Err("Number is too large to fit");
-                    else if (strEnd == str.data()) return Err("String is not a number");
-                    else return Ok(val);
-                }
-                else return Err("Failed to set locale");
-            }
-            else {
-                Num result;
-                std::from_chars_result res;
-                if constexpr (std::is_floating_point_v<Num>) res = std::from_chars(str.data(), str.data() + str.size(), result);
-                else res = std::from_chars(str.data(), str.data() + str.size(), result, base);
-
-                auto [_, ec] = res;
-                if (ec == std::errc()) return Ok(result);
-                else if (ec == std::errc::invalid_argument) return Err("String is not a number");
-                else if (ec == std::errc::result_out_of_range) return Err("Number is too large to fit");
-                else return Err("Unknown error");
-            }
-        }
-
         void onDebug(CCObject*)
         {
             float v = 1.0f;
 
-            auto x = anumFromString<float>(SpeedhackTop::instance->text);
+            auto x = numFromString<float>(SpeedhackTop::instance->text);
 
             if (x.isOk())
             {
@@ -377,13 +344,15 @@ class Speedhack : public Window//, public TextInputDelegate
             trash->setPosition(ccp((menu->getContentSize().width / 2) + (180 / 2) + 20, menu->getContentSize().height - 50));
             menu->addChild(trash);
 
-            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22) * 0.5f;
 
             auto btnS = ButtonSprite::create("Debug", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             //as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
             auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Speedhack::onDebug));
+            btn->m_baseScale = 0.5f;
+            btn->setScale(btn->m_baseScale);
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
@@ -1299,6 +1268,44 @@ class IconEffects : public Window
         }
 };
 
+class Uncomplete : public FLAlertLayerProtocol
+{
+    public:
+        
+        virtual void FLAlert_Clicked(FLAlertLayer* p0, bool p1)
+        {
+            if (p1)
+            {
+                log::info("uncomplete");
+
+                GJGameLevel* level = nullptr;
+
+                if (PlayLayer::get())
+                    level = PlayLayer::get()->m_level;
+
+                if (getChildOfType<LevelInfoLayer>(CCScene::get(), 0))
+                    level = getChildOfType<LevelInfoLayer>(CCScene::get(), 0)->m_level;
+
+                if (!level)
+                    return;
+
+                level->m_normalPercent = 0;
+                level->m_practicePercent = 0;
+                level->m_attempts = 0;
+                level->m_jumps = 0;
+            }
+        }
+        
+        void onToggle(CCObject* sender)
+        {
+            auto btn = as<CCMenuItemToggler*>(sender);
+
+            log::info("dont show: {}", !btn->isToggled());
+
+            Mod::get()->setSavedValue<bool>("uncomplete-dont-show", !btn->isToggled());
+        }
+};
+
 class Level : public Window
 {
     public:
@@ -1321,22 +1328,51 @@ class Level : public Window
             SetupFPSBypass::addToScene();
         }
 
+        void onUnc(CCObject* sender)
+        {
+            if (!(PlayLayer::get() || getChildOfType<LevelInfoLayer>(CCScene::get(), 0)))
+                return FLAlertLayer::create("Uncomplete Level", "You must be in a level or on a level page to uncomplete a level", "OK")->show();
+            
+            auto protocol = new Uncomplete();
+
+            if (Mod::get()->getSavedValue<bool>("uncomplete-dont-show", false) && !CCKeyboardDispatcher::get()->getShiftKeyPressed())
+            {
+                protocol->FLAlert_Clicked(nullptr, true);
+            }
+            else
+            {
+                auto alert = ConfirmFLAlertLayer::create(protocol, "Uncomplete Level", "Don't show this popup again", false, menu_selector(Uncomplete::onToggle), "Are you sure you want to <cr>uncomplete</c> this <cg>level</c>. Uncompleting a level will:\n<cl>- Reset Attempts</c>\n<cl>- Reset Percentage</c>\n<cl>- Reset Jumps</c>", "Cancel", "Reset", 350, false, 310, 1.0f);
+                alert->show();
+            }
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             Window::cocosCreate(menu);
 
-            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18, 22);
+            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18 - 2.5f, 22);
 
-            auto btnS = ButtonSprite::create("FPS\nBypass", 60, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            /*auto btnS = ButtonSprite::create("FPS\nBypass", 60, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
             auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Level::onFPS));
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
+            menu->addChild(btn);*/
+
+            auto btnUnc = ButtonSprite::create("Uncomplete\nLevel", 70, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            
+            as<CCNode*>(btnUnc->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->updateLabel();
+
+            auto btn = CCMenuItemSpriteExtra::create(btnUnc, menu, menu_selector(Level::onUnc));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
             menu->addChild(btn);
 
-            pos = pos + ccp(-30 - 27, -5);
+            pos = pos + ccp(-30 - 27 - 2.5f, -5);
 
             auto btnS2 = ButtonSprite::create("?", 10, false, "bigFont.fnt", "GJ_button_05.png", 25, 0.75f);
             as<CCNode*>(btnS2->getChildren()->objectAtIndex(0))->setScale(0.375f);
@@ -1397,13 +1433,20 @@ class _Replay : public Window
             GJReplayManager::replay = MyReplay();
         }
 
+        static inline CCMenuItemToggler* btnP = nullptr;
+        static inline CCMenuItemToggler* btnP2 = nullptr;
+
         void onPlayTest(CCObject*)
         {
+            GJReplayManager::recording = false;
+            btnP->toggle(false);
             GJReplayManager::playing = !GJReplayManager::playing;
         }
 
         void onRecTest(CCObject*)
         {
+            GJReplayManager::playing = false;
+            btnP2->toggle(false);
             GJReplayManager::recording = !GJReplayManager::recording;
         }
 
@@ -1423,10 +1466,10 @@ class _Replay : public Window
             lbl->setAnchorPoint(ccp(0, 1));
             lbl->setOpacity(100);
 
-            auto btnP = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onRecTest), 1.0f);
+            btnP = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onRecTest), 1.0f);
             btnP->toggle(GJReplayManager::recording);
 
-            auto btnP2 = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onPlayTest), 1.0f);
+            btnP2 = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onPlayTest), 1.0f);
             btnP2->toggle(GJReplayManager::playing);
 
             auto menuRow = CCMenu::create();

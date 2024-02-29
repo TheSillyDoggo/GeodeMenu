@@ -138,6 +138,7 @@ public:
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
 
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
+        cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
 
         //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
         //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));
