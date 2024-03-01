@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-#ifndef GEODE_IS_ANDROID32
+//#ifndef GEODE_IS_ANDROID32
 class $modify (PlayLayer)
 {
     TodoReturn delayedResetLevel()
@@ -14,7 +14,7 @@ class $modify (PlayLayer)
             PlayLayer::delayedResetLevel();
     }
 };
-#endif
+//#endif
 
 class $modify (PlayerObject)
 {
