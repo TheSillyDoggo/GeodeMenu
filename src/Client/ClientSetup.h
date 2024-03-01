@@ -56,7 +56,7 @@ public:
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
-        level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>"));
+        level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", false, "<cr>Warning!</c>\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", true));
 
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));

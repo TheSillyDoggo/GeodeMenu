@@ -17,7 +17,6 @@ class $modify (GJBaseGameLayer)
         if (!Client::GetModuleEnabled("no-static"))
             GJBaseGameLayer::updateStaticCameraPos(p0, p1, p2, p3, p4, p5, p6);
     }
-
     /*TodoReturn updateCamera(float p0) // delta probably ?
     {
         if (!Client::GetModuleEnabled("no-camera"))
