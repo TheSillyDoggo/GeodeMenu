@@ -67,6 +67,11 @@ public:
         level->modules.push_back(new Module("No Reverse Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
+        level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
+        level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
+
+        level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
+
         //level->modules.push_back(new Module("No Hitboxes", "no-hitboxes", "Disables Object Hitboxes"));
 
         //level->modules.push_back(new Module("Force Show Player", "show-player", "Force the player to be visible all the time"));

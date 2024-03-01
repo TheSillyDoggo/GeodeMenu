@@ -55,7 +55,7 @@ class $modify (PlayLayer)
 {
     bool started = false;
 
-    void startGameDelayed()
+    TodoReturn startGameDelayed()
     {
         PlayLayer::startGameDelayed();
         
