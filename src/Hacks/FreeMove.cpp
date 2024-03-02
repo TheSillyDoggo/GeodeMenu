@@ -21,7 +21,7 @@ class $modify (CCKeyboardDispatcher)
     {
         if (PlayLayer::get())
         {
-            if (key == enumKeyCodes::KEY_Insert && down)
+            if (key == enumKeyCodes::KEY_Home && down)
             {
                 a = !a;
 

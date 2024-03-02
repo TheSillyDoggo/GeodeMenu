@@ -5,7 +5,6 @@ using namespace geode::prelude;
 /*
 int actionsIndex = 0;
 float dta;
-
 */
 /*class $modify(PlayLayer) {
 
@@ -58,32 +57,37 @@ class $modify (PlayLayer)
     TodoReturn startGameDelayed()
     {
         PlayLayer::startGameDelayed();
-        
+
         m_fields->started = true;
 
         log::info("started");
     }
 
     void postUpdate(float dt) { //until GJBaseGameLayer::update
+
         PlayLayer::postUpdate(dt);
 
         #ifdef GEODE_IS_WINDOWS
+
         if (!m_started)
         #else
         if (!m_fields->started)
         #endif
+
             return;
-        
+
         if (!m_player1->m_isDead)
             GJReplayManager::dt += dt / CCScheduler::get()->getTimeScale();
 
         if (GJReplayManager::playing && GJReplayManager::frame + 1 < GJReplayManager::replay.inputs.size())
         {
+
             //log::info("cur: {}, inp: {}", GJReplayManager::dt, GJReplayManager::replay.inputs[GJReplayManager::frame].dt);
 
             while (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt) // SHOULD fix this replay issues :3
             //if (GJReplayManager::replay.inputs[GJReplayManager::frame].dt <= GJReplayManager::dt)
             {
+
                 PlayerObject* plr = m_player1;
 
                 if (GJReplayManager::replay.inputs[GJReplayManager::frame].player2)
@@ -103,6 +107,7 @@ class $modify (PlayLayer)
     void resetLevel() {
         GJReplayManager::dt = 0;
         GJReplayManager::frame = 0;
+
         PlayLayer::resetLevel();
 
         log::info("resetLevel");
@@ -112,9 +117,9 @@ class $modify (PlayLayer)
 
     TodoReturn loadFromCheckpoint(CheckpointObject* p0)
     {
+
         PlayLayer::loadFromCheckpoint(p0);
 
-        
         GJReplayManager::dt = as<CheckpointObjectExt*>(p0)->m_fields->dt;
         GJReplayManager::frame = as<CheckpointObjectExt*>(p0)->m_fields->frame;
 
@@ -140,6 +145,7 @@ class $modify (PlayLayer)
 class $modify(GJBaseGameLayer) {
 
     void handleButton(bool push, int button, bool player1) {
+
         GJBaseGameLayer::handleButton(push, button, player1);
 
         PlayerObject* plr = m_player1;

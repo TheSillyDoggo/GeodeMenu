@@ -51,6 +51,11 @@ public:
 
     void close(CCObject* sender)
     {
+        if (auto pause = getChildOfType<PauseLayer>(CCScene::get(), 0))
+        {
+            handleTouchPriority(pause);
+        }
+
         CCTouchDispatcher::get()->removeDelegate(this);
         this->removeFromParent();
     }
