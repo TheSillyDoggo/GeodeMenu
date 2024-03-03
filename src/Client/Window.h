@@ -593,6 +593,7 @@ class Config : public Window
         static inline Slider* normal = nullptr;
         static inline Slider* GP = nullptr;
         static inline Slider* ED = nullptr;
+        static inline Slider* scale = nullptr;
         static inline Dropdown* dd = nullptr;
 
         void changeTheme(CCObject* sender)
@@ -697,6 +698,8 @@ class Config : public Window
             int ved = round(oved * 255.0f);
 
             Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
+
+            Mod::get()->setSavedValue<float>("button-scale", scale->getValue());
         }
 
         void onChangeDraggable(CCObject* sender)
@@ -796,9 +799,23 @@ class Config : public Window
             ED->setScaleX(0.8f);
             ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
-            modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28));
-            modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28));
-            modules[2]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28));
+            auto lSc = CCLabelBMFont::create("Scale:", "bigFont.fnt");
+            lSc->setPosition(ccp(120, menu->getContentSize().height - 5 - 20 - 20 - 20));
+            lSc->setAnchorPoint(ccp(0, 1));
+            lSc->setScale(0.5f);
+
+            scale = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
+            scale->setValue((Mod::get()->getSavedValue<float>("button-scale", 1)));
+            scale->setPosition(ccp(lED->getPositionX() + 115, lSc->getPositionY() - 10));
+            scale->setScaleX(0.8f);
+            scale->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+
+            modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28 - 20));
+            modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 20));
+            modules[2]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 20));
+            #ifdef GEODE_IS_DESKTOP
+            modules[3]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 28 - 20));
+            #endif
 
             menu->addChild(lNormal);
             menu->addChild(normal);
@@ -806,6 +823,8 @@ class Config : public Window
             menu->addChild(GP);
             menu->addChild(lED);
             menu->addChild(ED);
+            menu->addChild(lSc);
+            menu->addChild(scale);
 
             auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
             discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
@@ -818,7 +837,7 @@ class Config : public Window
             menu->addChild(yt);
 
             dd = Dropdown::create({130, 25}, {"None", "From Top", "From Bottom", "From Left", "From Right", "Scale"}, menu_selector(Config::onDropdownChanged), Mod::get()->getSavedValue<int>("anim-mode", 2));
-            dd->setPosition(ccp(120.5f, menu->getContentSize().height - 90));
+            dd->setPosition(ccp(120.5f, menu->getContentSize().height - 90 - 20));
             menu->addChild(dd);
         }
 };

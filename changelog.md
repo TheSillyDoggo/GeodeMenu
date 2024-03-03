@@ -9,6 +9,7 @@
 - Added level uncomplete
 - Added show hitboxes and show hitboxes on death
 - Added no static camera
+- Added scale button slider
 - Removed fps bypass since it was VERY broken, replaces with full options menu
 - Fixed Spider and Robot with icon effects
 - Added <cl>Gradient Pages</c> integration

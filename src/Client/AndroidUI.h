@@ -457,6 +457,8 @@ class AndroidBall : public CCLayer
         CCLabelBMFont* l;
         CCMenu* menu;
 
+        Module* mod = nullptr;
+
         void onOpenMenu()
         {
             AndroidUI::addToScene();
@@ -472,6 +474,8 @@ class AndroidBall : public CCLayer
             //this->retain(); // idk what this does but it fixes transition customizer
 
             highest++;
+
+            mod = Client::GetModule("hide-btn");
 
             this->setTag(highest);
             instance = this;
@@ -506,7 +510,12 @@ class AndroidBall : public CCLayer
 
         virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
 
-            //auto d = DialogLayer::create(DialogObject::create("title", "text", 0, 1.0f, false, {255, 255, 255}), 0);
+            //auto d = DialogLayer::create(DialogObject::create("title", "text", 0, 1.0f, false, {255, 255, 255}), 0);'
+            #ifdef GEODE_IS_DESKTOP
+            if (mod->enabled)
+                return false;
+            #endif
+
 
             auto space = btn->convertTouchToNodeSpace(touch);
 
@@ -526,6 +535,11 @@ class AndroidBall : public CCLayer
         }
 
         virtual void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+            #ifdef GEODE_IS_DESKTOP
+            if (mod->enabled)
+                return;
+            #endif
+
             if (doingThing)
             {
                 if (!dragging)
@@ -544,6 +558,11 @@ class AndroidBall : public CCLayer
         }
 
         virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+            #ifdef GEODE_IS_DESKTOP
+            if (mod->enabled)
+                return;
+            #endif
+
             if (doingThing && (btn->numberOfRunningActions() == 0))
             {
                 if (btn->getPosition().getDistance(touch->getLocation()) > 7.5f)
@@ -566,12 +585,16 @@ class AndroidBall : public CCLayer
 
         virtual void update(float dt)
         {
+            #ifdef GEODE_IS_DESKTOP
+            this->setVisible(!mod->enabled);
+            #endif
             //if (CCScene::get()->getChildByID("android-ui"))
             //    CCDirector::get()->setNotificationNode(nullptr);
             //else
             //    CCDirector::get()->setNotificationNode(this);
             
             UpdateVisible(false);
+            menu->setScale(clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
         }
 
         void UpdateVisible(bool i)

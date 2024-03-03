@@ -1,8 +1,14 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/EffectGameObject.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
+
+class $modify (EffectGameObject)
+{
+    //edit_eStaticBtn_001.png
+};
 
 class $modify (GJBaseGameLayer)
 {
