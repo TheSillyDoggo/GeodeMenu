@@ -1469,6 +1469,11 @@ class _Replay : public Window
             GJReplayManager::recording = !GJReplayManager::recording;
         }
 
+        void onConfig(CCObject*)
+        {
+
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             auto back = CCScale9Sprite::create("square02_small.png");
@@ -1513,6 +1518,11 @@ class _Replay : public Window
             auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(_Replay::onOnlineMacros));
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
+
+            auto options = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png"), menu, menu_selector(_Replay::onConfig));
+            options->m_baseScale = 0.6f;
+            options->setScale(options->m_baseScale);
+            menu->addChildAtPosition(options, Anchor::TopRight, ccp(-18, -18));
 
             menu->addChild(lbl);
             menu->addChild(menuRow);

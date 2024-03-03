@@ -91,8 +91,6 @@ class $modify (PlayLayer)
 
         #endif
 
-        geode::Notification::create("started")->show();
-
         if (!m_player1->m_isDead)
             GJReplayManager::dt += dt / CCScheduler::get()->getTimeScale();
 
