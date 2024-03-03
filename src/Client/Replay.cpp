@@ -70,11 +70,28 @@ class $modify (PlayLayer)
         #ifdef GEODE_IS_WINDOWS
 
         if (!m_started)
-        #else
+            return;
+        #endif
+        
+        #ifdef GEODE_IS_ANDROID32
+
         if (!m_fields->started)
+        {
+            m_fields->started = (*(double*)(((char*)PlayLayer::get()) + 0x320));
+            return;
+        }
+
+        #else
+
+        if (!m_fields->started)
+        {
+            m_fields->started = (*(double*)(((char*)PlayLayer::get()) + 0x3B8));
+            return;
+        }
+
         #endif
 
-            return;
+        geode::Notification::create("started")->show();
 
         if (!m_player1->m_isDead)
             GJReplayManager::dt += dt / CCScheduler::get()->getTimeScale();
