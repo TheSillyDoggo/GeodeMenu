@@ -55,4 +55,4 @@ class $modify (CCScheduler)
         
         CCScheduler::update(dt);
     }
-};
+}; // LINE 115 DOESN'T FUCKING EXIST???? HOW CRASH

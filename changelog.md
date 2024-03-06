@@ -5,7 +5,9 @@
 - Added No reverse portal
 - Fixed input nodes
 - Added full options menu
+- Added hide player
 - Added no respawn blink
+- Added All modes platformer (windows only)
 - Added level uncomplete
 - Added show hitboxes and show hitboxes on death
 - Added no static camera

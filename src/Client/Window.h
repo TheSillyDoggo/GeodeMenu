@@ -14,6 +14,7 @@
 #include "../Layers/LoadMacroPopup.h"
 #include "../Layers/EditStatusPositionLayer.h"
 #include "../Layers/ConfirmFLAlertLayer.h"
+#include "../Layers/ReplayOptionsLayer.h"
 
 class Window
 {
@@ -1471,7 +1472,7 @@ class _Replay : public Window
 
         void onConfig(CCObject*)
         {
-
+            ReplayOptionsLayer::addToScene();
         }
 
         void cocosCreate(CCMenu* menu)

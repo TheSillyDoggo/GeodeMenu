@@ -45,6 +45,9 @@ class $modify (PlayLayer)
         if (!m_fields->dn)
             m_fields->dn = as<CCDrawNode*>(getChildByTagRecursively(PlayLayer::get(), 1));
 
+        if (!m_fields->dn && PlayLayer::get()->getChildByID("hitbox-node"))
+            m_fields->dn = as<CCDrawNode*>(getChildOfType<CCDrawNode>(getChildOfType<CCLayer>(PlayLayer::get()->getChildByID("hitbox-node"), 0), 0));
+
         if (!m_fields->dn)
             return;
 

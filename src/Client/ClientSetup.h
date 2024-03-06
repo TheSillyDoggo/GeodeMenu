@@ -64,13 +64,17 @@ public:
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
 
-        level->modules.push_back(new Module("No Reverse Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
+        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
+
+        #ifdef GEODE_IS_WINDOWS
+        level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
+        #endif
 
         //level->modules.push_back(new Module("No Hitboxes", "no-hitboxes", "Disables Object Hitboxes"));
 

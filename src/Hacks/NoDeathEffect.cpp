@@ -18,6 +18,10 @@ class $modify (PlayLayer)
 
 class $modify (PlayerObject)
 {
+    static void onModify(auto& self) {
+        self.setHookPriority("PlayerObject::playerDestroyed", -6969);
+    }
+
     void playerDestroyed(bool p0)
     {
         if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
