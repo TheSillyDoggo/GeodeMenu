@@ -148,7 +148,7 @@ class $modify (PlayLayer)
             }
         }
 
-        if (GJReplayManager::playing && Mod::get()->getSavedValue<bool>("frame-fixes") && GJReplayManager::frameFix + 1 < GJReplayManager::replay.frames.size())
+        if (GJReplayManager::playing && Mod::get()->getSavedValue<bool>("frame-fixes", true) && GJReplayManager::frameFix + 1 < GJReplayManager::replay.frames.size())
         {
             while (GJReplayManager::replay.frames[GJReplayManager::frameFix].dt <= GJReplayManager::dt)
             {
@@ -166,7 +166,7 @@ class $modify (PlayLayer)
             }
         }
 
-        if (GJReplayManager::recording && Mod::get()->getSavedValue<bool>("frame-fixes"))
+        if (GJReplayManager::recording && Mod::get()->getSavedValue<bool>("frame-fixes", true))
         {
             auto plr = m_player1;
 

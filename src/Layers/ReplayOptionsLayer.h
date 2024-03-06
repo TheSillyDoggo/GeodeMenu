@@ -149,7 +149,7 @@ class ReplayOptionsLayer : public FLAlertLayer
             l->addChildAtPosition(miscBG, Anchor::Center, ccp(100, 0));
 
             addToggle("Click Fixes", -1, 0, Mod::get()->getSavedValue<bool>("click-fixes", true));
-            addToggle("Frame Fixes", -1, 1, Mod::get()->getSavedValue<bool>("frame-fixes", false));
+            addToggle("Frame Fixes", -1, 1, Mod::get()->getSavedValue<bool>("frame-fixes", true));
             //addToggle("ASDF", 0, 1, false);
             //addToggle("ASDF", 0, 2, false);
             //addToggle("ASDF", 0, 3, false);
