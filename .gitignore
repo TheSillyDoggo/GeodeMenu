@@ -69,3 +69,5 @@ CMakeSettings.json
 .vs/CheatClient/FileContentIndex/76a81e69-ccc2-4d66-a8f6-65b27310503f.vsidx
 .vs/CheatClient/FileContentIndex/577f5d1a-0223-4947-854b-60d8b63f4d03.vsidx
 GeodeMenu/
+
+/build*
