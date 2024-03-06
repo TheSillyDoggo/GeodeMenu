@@ -32,7 +32,7 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
-          bindings: 'geode-sdk/bindings#9508c25'
+          bindings: 'geode-sdk/bindings#4043cf7'
           combine: true
           sdk: nightly
           target: ${{ matrix.config.target }}
