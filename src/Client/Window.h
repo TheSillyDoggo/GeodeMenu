@@ -1569,7 +1569,7 @@ class _Replay : public Window
 
             auto manager = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("folderIcon_001.png"), menu, menu_selector(_Replay::onManage));
 
-            menu->addChild(lbl);
+            //menu->addChild(lbl);
             menu->addChild(menuRow);
             menu->addChildAtPosition(btnRec, Anchor::Center, ccp(-70, 0));
             menu->addChildAtPosition(btnPlay, Anchor::Center, ccp(70, 0));

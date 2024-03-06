@@ -64,7 +64,7 @@ public:
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
 
-        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables reverse portals, only use if your a pussy <cl>jk</c>"));
+        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only use if your a pussy <cl>jk</c>"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
