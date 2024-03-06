@@ -89,6 +89,7 @@ namespace gdr {
         Level levelInfo;
 
         std::vector<InputType> inputs;
+        std::vector<InputType> frames;
 
         virtual void parseExtension(json::object_t obj) {}
         virtual json::object_t saveExtension() const {
@@ -133,6 +134,17 @@ namespace gdr {
                 replay.inputs.push_back(input);
             }
 
+            for (json const& inputJson : replayJson["frames"]) {
+                InputType input;
+                input.frame = inputJson["frame"];
+                input.button = inputJson["btn"];
+                input.player2 = inputJson["2p"];
+                input.down = inputJson["down"];
+                input.parseExtension(inputJson.get<json::object_t>());
+
+                replay.inputs.push_back(input);
+            }
+
             return replay;
         }
 
@@ -157,6 +169,17 @@ namespace gdr {
             replay.parseExtension(replayJson.get<json::object_t>());
 
             for (json const& inputJson : replayJson["inputs"]) {
+                InputType input;
+                input.frame = inputJson["frame"];
+                input.button = inputJson["btn"];
+                input.player2 = inputJson["2p"];
+                input.down = inputJson["down"];
+                input.parseExtension(inputJson.get<json::object_t>());
+
+                replay.inputs.push_back(input);
+            }
+
+            for (json const& inputJson : replayJson["frames"]) {
                 InputType input;
                 input.frame = inputJson["frame"];
                 input.button = inputJson["btn"];
@@ -193,6 +216,16 @@ namespace gdr {
                 inputJson["down"] = input.down;
 
                 replayJson["inputs"].push_back(inputJson);
+            }
+
+            for (InputType const& input : inputs) {
+                json inputJson = input.saveExtension();
+                inputJson["frame"] = input.frame;
+                inputJson["btn"] = input.button;
+                inputJson["2p"] = input.player2;
+                inputJson["down"] = input.down;
+
+                replayJson["frames"].push_back(inputJson);
             }
 
             if (exportJson) {
@@ -256,5 +289,6 @@ class GJReplayManager // roberta topertla momento
         static inline bool recording = false;
         static inline float dt;
         static inline int frame;
+        static inline int frameFix;
         static inline MyReplay replay = MyReplay();
 };

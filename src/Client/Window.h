@@ -1433,10 +1433,9 @@ class Universal : public Window
 class _Replay : public Window
 {
     public:
-        void onOnlineMacros(CCObject*)
-        {
-            FLAlertLayer::create("Coming soon...", "this button doesn't do anything, well anything useful. <cl>yet</c>...", "OK")->show();
-        }
+        static inline CCMenuItemToggler* btnRec = nullptr;
+        static inline CCMenuItemToggler* btnPlay = nullptr;
+        static inline CCLabelBMFont* lbl = nullptr;
 
         void onSave(CCObject*)
         {
@@ -1450,24 +1449,47 @@ class _Replay : public Window
 
         void onClear(CCObject*)
         {
-            GJReplayManager::replay = MyReplay();
+            auto pop = geode::createQuickPopup(
+                "Clear Replay",
+                "Are you sure you want to <cr>clear</c> this replay?\nIf you haven't saved the <cg>replay</c>\n it will be <cr>DELETED</c>.",
+                "Cancel", "Clear",
+                [this](FLAlertLayer* tis, bool btn2) {
+                    log::info("click clear");
+
+                    if (btn2) {
+                        log::info("right btn");
+
+                        GJReplayManager::replay = MyReplay();
+
+                        CCScene::get()->addChild(TextAlertPopup::create("Cleared Replay", 0.5f, 0.6f, 150, ""), 9999999);
+                    }
+                }
+            );
+
+            pop->m_button2->updateBGImage("GJ_button_06.png");
         }
 
-        static inline CCMenuItemToggler* btnP = nullptr;
-        static inline CCMenuItemToggler* btnP2 = nullptr;
-
-        void onPlayTest(CCObject*)
-        {
-            GJReplayManager::recording = false;
-            btnP->toggle(false);
-            GJReplayManager::playing = !GJReplayManager::playing;
-        }
-
-        void onRecTest(CCObject*)
+        void onRecord(CCObject*)
         {
             GJReplayManager::playing = false;
-            btnP2->toggle(false);
             GJReplayManager::recording = !GJReplayManager::recording;
+
+            //btnRec->toggle(GJReplayManager::recording);
+            btnPlay->toggle(GJReplayManager::playing);
+        }
+
+        void onPlay(CCObject*)
+        {
+            GJReplayManager::recording = false;
+            GJReplayManager::playing = !GJReplayManager::playing;
+
+            btnRec->toggle(GJReplayManager::recording);
+            //btnPlay->toggle(GJReplayManager::playing);
+        }
+
+        void onManage(CCObject*)
+        {
+            FLAlertLayer::create("Macro Manager", "Macro Manager is not added yet as I wanted to get the update out as fast as I could, hope you understand <cl>^w^</c>", "OK")->show();
         }
 
         void onConfig(CCObject*)
@@ -1485,51 +1507,73 @@ class _Replay : public Window
             back->setOpacity(100);
             menu->addChild(back);
 
-            auto lbl = CCLabelBMFont::create("Record\nPlay", "bigFont.fnt");
-            lbl->setPosition(ccp(10, menu->getContentSize().height - 2));
+            lbl = CCLabelBMFont::create("Status", "bigFont.fnt");
+            lbl->setPosition(ccp(5, menu->getContentSize().height - 2));
             lbl->setScale(0.725f);
             lbl->setAnchorPoint(ccp(0, 1));
             lbl->setOpacity(100);
-
-            btnP = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onRecTest), 1.0f);
-            btnP->toggle(GJReplayManager::recording);
-
-            btnP2 = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(_Replay::onPlayTest), 1.0f);
-            btnP2->toggle(GJReplayManager::playing);
 
             auto menuRow = CCMenu::create();
             menuRow->ignoreAnchorPointForPosition(false);
             menuRow->setContentSize(ccp(9999, 0));
             menuRow->setScale(0.625f);
-            menuRow->setPosition(menu->getContentSize() / 2 + ccp(0, -30));
+            menuRow->setPosition(menu->getContentSize() / 2 + ccp(0, -30) + ccp(0, -25));
+
+            auto btnRecSpr1 = ButtonSprite::create("Record", 105, false, "bigFont.fnt", "GJ_button_05.png", 40, 0.65f);
+            getChildOfType<CCLabelBMFont>(btnRecSpr1, 0)->setOpacity(100);
+            getChildOfType<CCLabelBMFont>(btnRecSpr1, 0)->setPositionX(105 / 2);
+            getChildOfType<CCScale9Sprite>(btnRecSpr1, 0)->setPositionX(105 / 2);
+            
+            btnRecSpr1->setContentWidth(105);
+            getChildOfType<CCScale9Sprite>(btnRecSpr1, 0)->setContentWidth(105);
+            
+            auto btnRecSpr2 = ButtonSprite::create("Recording", 105, false, "bigFont.fnt", "GJ_button_01.png", 40, 0.5f);
+            btnRecSpr2->setContentWidth(105);
+            getChildOfType<CCScale9Sprite>(btnRecSpr2, 0)->setContentWidth(105);
+            getChildOfType<CCLabelBMFont>(btnRecSpr2, 0)->setPositionX(105 / 2);
+            getChildOfType<CCScale9Sprite>(btnRecSpr2, 0)->setPositionX(105 / 2);
+
+            btnRec = CCMenuItemToggler::create(btnRecSpr1, btnRecSpr2, menu, menu_selector(_Replay::onRecord));
+            btnRec->toggle(GJReplayManager::recording);
+
+            auto btnPlaySpr1 = ButtonSprite::create("Play", 105, false, "bigFont.fnt", "GJ_button_05.png", 40, 0.65f);
+            getChildOfType<CCLabelBMFont>(btnPlaySpr1, 0)->setOpacity(100);
+            getChildOfType<CCLabelBMFont>(btnPlaySpr1, 0)->setPositionX(105 / 2);
+            getChildOfType<CCScale9Sprite>(btnPlaySpr1, 0)->setPositionX(105 / 2);
+
+            btnPlaySpr1->setContentWidth(105);
+            getChildOfType<CCScale9Sprite>(btnPlaySpr1, 0)->setContentWidth(105);
+
+            auto btnPlaySpr2 = ButtonSprite::create("Playing", 105, false, "bigFont.fnt", "GJ_button_01.png", 40, 0.5f);
+            btnPlaySpr2->setContentWidth(105);
+            getChildOfType<CCScale9Sprite>(btnPlaySpr2, 0)->setContentWidth(105);
+            getChildOfType<CCLabelBMFont>(btnPlaySpr2, 0)->setPositionX(105 / 2);
+            getChildOfType<CCScale9Sprite>(btnPlaySpr2, 0)->setPositionX(105 / 2);
+
+            btnPlay = CCMenuItemToggler::create(btnPlaySpr1, btnPlaySpr2, menu, menu_selector(_Replay::onPlay));
+            btnPlay->toggle(GJReplayManager::playing);
 
             menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Save", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onSave)));
             menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Load", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onLoad)));
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("clear", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onClear)));
+            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Clear", "bigFont.fnt", "GJ_button_06.png"), menu, menu_selector(_Replay::onClear)));
             //menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("More", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
 
             menuRow->setLayout(RowLayout::create()->setAutoScale(false)->setGap(55));
 
             auto pos = ccp(menu->getContentSize().width, 0) + ccp(-55, 22);
 
-            auto btnS = ButtonSprite::create("Download\nMacros Online", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
-            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.3f);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(_Replay::onOnlineMacros));
-            btn->setSizeMult(1.15f);
-            btn->setPosition(pos);
-
             auto options = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png"), menu, menu_selector(_Replay::onConfig));
             options->m_baseScale = 0.6f;
             options->setScale(options->m_baseScale);
             menu->addChildAtPosition(options, Anchor::TopRight, ccp(-18, -18));
 
+            auto manager = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("folderIcon_001.png"), menu, menu_selector(_Replay::onManage));
+
             menu->addChild(lbl);
             menu->addChild(menuRow);
-            menu->addChild(btn);
-            menu->addChildAtPosition(btnP, Anchor::TopLeft);
-            menu->addChildAtPosition(btnP2, Anchor::TopLeft, ccp(0, -30));
+            menu->addChildAtPosition(btnRec, Anchor::Center, ccp(-70, 0));
+            menu->addChildAtPosition(btnPlay, Anchor::Center, ccp(70, 0));
+            menu->addChildAtPosition(manager, Anchor::BottomLeft, ccp(25, 23));
         }
 };
 

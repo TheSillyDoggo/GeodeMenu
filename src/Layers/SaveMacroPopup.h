@@ -217,7 +217,7 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
 
             inp = geode::TextInput::create(lb->getScaledContentSize().width + 150, "Macro Name (.gdr)");
             inp->setPosition(l->getContentSize() / 2 + ccp(0, 5));
-            inp->getInputNode()->setAllowedChars("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNNM098765431 ");
+            inp->getInputNode()->setAllowedChars("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNNM0987654321 ");
             inp->getInputNode()->setMaxLabelLength(32);
             inp->getInputNode()->setDelegate(this);
             inp->getInputNode()->setID("IGNOREBYPASSES"_spr);

@@ -16,7 +16,18 @@ void mySetID(CCNode* ins, const std::string &id) {
         log::info("i am real");
 
         lbl1 = (getChildOfType<CCLabelBMFont>(as<CCNode*>(ins->getChildren()->objectAtIndex(0)), 0));
+        if (lbl1->getID() == "lbl1")
+            lbl1 = nullptr;
+        
         lbl2 = (getChildOfType<CCLabelBMFont>(as<CCNode*>(ins->getChildren()->objectAtIndex(1)), 0));
+        if (lbl2->getID() == "lbl2")
+            lbl2 = nullptr;
+        
+        if (lbl1)
+            lbl1->setID("lbl1");
+
+        if (lbl2)
+            lbl2->setID("lbl2");
     }
 }
 

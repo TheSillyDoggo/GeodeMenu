@@ -9,6 +9,7 @@ class ReplayOptionsLayer : public FLAlertLayer
 {
     public:
         CCMenu* l = nullptr;
+        std::vector<CCMenuItemToggler*> toggles = {};
 
         void onClose(CCObject*)
         {
@@ -22,19 +23,27 @@ class ReplayOptionsLayer : public FLAlertLayer
 
         void onToggle(CCObject*)
         {
+            Mod::get()->setSavedValue<bool>("click-fixes", toggles[0]->isToggled());
+            Mod::get()->setSavedValue<bool>("frame-fixes", toggles[1]->isToggled());
 
+            if (!Mod::get()->saveData().isOk())
+                log::info("womp womp");
         }
 
         void addToggle(std::string name, int x, int y, bool enabled)
         {
-            auto pos = ccp(100 * x, -55 - (25 * y));
+            auto pos = ccp(100 * x, -55 - (19 * y) - (19 / 2));
 
-            auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(ReplayOptionsLayer::onToggle), 0.65f);
+            auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(ReplayOptionsLayer::onToggle), 0.45f);
+            toggler->toggle(enabled);
             auto lbl = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+            lbl->limitLabelWidth(90 - 30, 0.65f, 0);
             lbl->setAnchorPoint(ccp(0, 0.5f));
 
-            l->addChildAtPosition(toggler, Anchor::Top, pos + ccp(-30, 0));
-            //l->addChildAtPosition(lbl, Anchor::Top, pos + ccp(-130 + 30, 0));
+            l->addChildAtPosition(toggler, Anchor::Top, pos + ccp(-30 - 5, 0));
+            l->addChildAtPosition(lbl, Anchor::Top, pos + ccp(-30 + 5, 0));
+
+            toggles.push_back(toggler);
         }
 
         bool init()
@@ -139,14 +148,14 @@ class ReplayOptionsLayer : public FLAlertLayer
             miscBG->setScale(0.5f);
             l->addChildAtPosition(miscBG, Anchor::Center, ccp(100, 0));
 
-            addToggle("ASDF", -1, 0, false);
-            addToggle("ASDF", 0, 0, false);
-            addToggle("ASDF", 0, 1, false);
-            addToggle("ASDF", 0, 2, false);
-            addToggle("ASDF", 0, 3, false);
-            addToggle("ASDF", 0, 4, false);
-            addToggle("ASDF", 0, 5, false);
-            addToggle("ASDF", 1, 0, false);
+            addToggle("Click Fixes", -1, 0, Mod::get()->getSavedValue<bool>("click-fixes", true));
+            addToggle("Frame Fixes", -1, 1, Mod::get()->getSavedValue<bool>("frame-fixes", false));
+            //addToggle("ASDF", 0, 1, false);
+            //addToggle("ASDF", 0, 2, false);
+            //addToggle("ASDF", 0, 3, false);
+            //addToggle("ASDF", 0, 4, false);
+            //addToggle("ASDF", 0, 5, false);
+            //addToggle("ASDF", 1, 0, false);
 
             auto ok = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(ReplayOptionsLayer::onClose));
             l->addChildAtPosition(ok, Anchor::Bottom, ccp(0, 25));

@@ -2,6 +2,7 @@
 
 - Added auto song download
 - Fixed Crash Opening Mod menu
+- Fixed Instant Restart being broken on android 32
 - Added No reverse portal
 - Fixed input nodes
 - Added full options menu

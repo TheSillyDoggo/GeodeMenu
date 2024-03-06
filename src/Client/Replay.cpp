@@ -56,6 +56,7 @@ class $modify (PlayLayer)
     std::vector<CheckpointObject*> checkpoints = {};
     std::vector<float> checkpointsDT = {};
     std::vector<int> checkpointsFrame = {};
+    std::vector<int> checkpointsFrameFix = {};
 
     TodoReturn startGameDelayed()
     {
@@ -73,6 +74,7 @@ class $modify (PlayLayer)
         m_fields->checkpoints.push_back(p0);
         m_fields->checkpointsDT.push_back(GJReplayManager::dt);
         m_fields->checkpointsFrame.push_back(GJReplayManager::frame);
+        m_fields->checkpointsFrameFix.push_back(GJReplayManager::frameFix);
 
         log::info("cp {}", p0);
     }
@@ -80,9 +82,10 @@ class $modify (PlayLayer)
     TodoReturn removeCheckpoint(bool p0)
     {
         PlayLayer::removeCheckpoint(p0);
-        checkpoints.pop_back();
-        checkpointsDT.pop_back();
-        checkpointsFrame.pop_back();
+        m_fields->checkpoints.pop_back();
+        m_fields->checkpointsDT.pop_back();
+        m_fields->checkpointsFrame.pop_back();
+        m_fields->checkpointsFrameFix.pop_back();
     }
 
     void postUpdate(float dt) { //until GJBaseGameLayer::update
@@ -132,20 +135,49 @@ class $modify (PlayLayer)
                 if (GJReplayManager::replay.inputs[GJReplayManager::frame].player2)
                     plr = m_player2;
 
-                plr->m_position = ccp(GJReplayManager::replay.inputs[GJReplayManager::frame].xpos, GJReplayManager::replay.inputs[GJReplayManager::frame].ypos);
-                plr->m_platformerXVelocity = GJReplayManager::replay.inputs[GJReplayManager::frame].xvelocity;
-                plr->m_yVelocity = GJReplayManager::replay.inputs[GJReplayManager::frame].yvelocity;
-                plr->setRotation(GJReplayManager::replay.inputs[GJReplayManager::frame].rotation);
+                if (Mod::get()->getSavedValue<bool>("click-fixes"))
+                {
+                    plr->m_position = ccp(GJReplayManager::replay.inputs[GJReplayManager::frame].xpos, GJReplayManager::replay.inputs[GJReplayManager::frame].ypos);
+                    plr->m_platformerXVelocity = GJReplayManager::replay.inputs[GJReplayManager::frame].xvelocity;
+                    plr->m_yVelocity = GJReplayManager::replay.inputs[GJReplayManager::frame].yvelocity;
+                    plr->setRotation(GJReplayManager::replay.inputs[GJReplayManager::frame].rotation);
+                }
 
                 handleButton(GJReplayManager::replay.inputs[GJReplayManager::frame].down, GJReplayManager::replay.inputs[GJReplayManager::frame].button, GJReplayManager::replay.inputs[GJReplayManager::frame].player2);
                 GJReplayManager::frame++;
             }
+        }
+
+        if (GJReplayManager::playing && Mod::get()->getSavedValue<bool>("frame-fixes") && GJReplayManager::frameFix + 1 < GJReplayManager::replay.frames.size())
+        {
+            while (GJReplayManager::replay.frames[GJReplayManager::frameFix].dt <= GJReplayManager::dt)
+            {
+                PlayerObject* plr = m_player1;
+
+                if (GJReplayManager::replay.frames[GJReplayManager::frameFix].player2)
+                    plr = m_player2;
+
+                plr->m_position = ccp(GJReplayManager::replay.frames[GJReplayManager::frameFix].xpos, GJReplayManager::replay.frames[GJReplayManager::frameFix].ypos);
+                plr->m_platformerXVelocity = GJReplayManager::replay.frames[GJReplayManager::frameFix].xvelocity;
+                plr->m_yVelocity = GJReplayManager::replay.frames[GJReplayManager::frameFix].yvelocity;
+                plr->setRotation(GJReplayManager::replay.frames[GJReplayManager::frameFix].rotation);
+
+                GJReplayManager::frameFix++;
+            }
+        }
+
+        if (GJReplayManager::recording && Mod::get()->getSavedValue<bool>("frame-fixes"))
+        {
+            auto plr = m_player1;
+
+            GJReplayManager::replay.frames.push_back(MyInput(m_gameState.m_unk1f8, 69, false, false, plr->m_position.x, plr->m_position.y, GJReplayManager::dt, plr->m_platformerXVelocity, plr->m_yVelocity, plr->getRotation()));
         }
     }
 
     void resetLevel() {
         GJReplayManager::dt = 0;
         GJReplayManager::frame = 0;
+        GJReplayManager::frameFix = 0;
 
         PlayLayer::resetLevel();
 
@@ -164,6 +196,7 @@ class $modify (PlayLayer)
 
             GJReplayManager::dt = m_fields->checkpointsDT[index];
             GJReplayManager::frame = m_fields->checkpointsFrame[index];
+            GJReplayManager::frameFix = m_fields->checkpointsFrameFix[index];
 
             if (GJReplayManager::recording)
             {

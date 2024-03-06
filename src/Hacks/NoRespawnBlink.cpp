@@ -6,37 +6,20 @@
 
 using namespace geode::prelude;
 
-class $modify (PlayerObject)
-{
-    Module* mod = nullptr;
+Module* mod = nullptr;
 
-    virtual void update(float p0)
-    {
-        if (!m_fields->mod)
-            m_fields->mod = Client::GetModule("no-blink");
-
-        PlayerObject::update(p0);
-
-        if (m_fields->mod->enabled && numberOfRunningActions() != 0)
-        {
-            if (this->getActionByTag(11))
-            {
-                this->stopActionByTag(11);
-
-                this->setVisible(!m_isHidden);
-            }
-        }
-    }
-
-
-};
-/*
 class $modify (CCNode)
 {
     CCAction* runAction(CCAction* action)
     {
-        log::info("action: {} {}", action, action->getTag());
+        if (!mod)
+            mod = Client::GetModule("no-blink");
+
+        if (mod->enabled && PlayLayer::get() && PlayLayer::get()->m_player1 == as<CCNode*>(this) && action->getTag() == 11)
+            return action;
+
+        //log::info("action: {} {}", action, action->getTag());
 
         return CCNode::runAction(action);
     }
-};*/
+};
