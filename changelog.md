@@ -1,3 +1,7 @@
+# 1.2.1
+
+- Fixed Speedhack
+
 # 1.2.0
 
 - Added auto song download

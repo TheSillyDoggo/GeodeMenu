@@ -6,6 +6,22 @@ using namespace geode::prelude;
 
 FMOD::ChannelGroup* masterGroup;
 
+bool stringToFloat(const std::string& str, float& result) {
+    std::istringstream iss(str);
+    if (!(iss >> result)) {
+        // Conversion failed
+        return false;
+    }
+    // Check if there are any trailing characters in the stream
+    char remaining;
+    if (iss >> remaining) {
+        // Conversion succeeded, but there are extra characters in the string
+        return false;
+    }
+    // Conversion succeeded
+    return true;
+}
+
 class $modify (CCScheduler)
 {
     void update(float dt)
@@ -24,12 +40,8 @@ class $modify (CCScheduler)
             {
                 float v = 1.0f;
 
-                auto x = numFromString<float>(SpeedhackTop::instance->text);
-
-                if (x.isOk())
-                {
-                    v = x.value();
-                }
+                if (!stringToFloat(SpeedhackTop::instance->text, v))
+                    log::info("bruh: {}", SpeedhackTop::instance->text);
 
                 if (v < 0.01f)
                     v = 0.01f;

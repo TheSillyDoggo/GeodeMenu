@@ -54,7 +54,8 @@ class $modify (PlayLayer)
         #ifdef GEODE_IS_WINDOWS
         bool shouldVis = m_isDebugDrawEnabled && m_isPracticeMode;
         #else
-        bool shouldVis = m_isPracticeMode;
+        //bool shouldVis = m_isPracticeMode;
+        bool shouldVis = false;
         #endif
 
         if (!m_fields->mod)

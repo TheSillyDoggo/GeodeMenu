@@ -720,15 +720,16 @@ class $modify (CCScene)
 {
     int getHighestChildZ()
     {
-        if (AndroidBall::instance)
-            AndroidBall::instance->setZOrder(-1);
+        if (!getChildOfType<AndroidBall>(CCScene::get(), 0))
+            return CCScene::getHighestChildZ();
+
+        auto ins = getChildOfType<AndroidBall>(CCScene::get(), 0);
+
+        auto v = ins->getZOrder();
+        ins->setZOrder(-1);
 
         int value = CCScene::getHighestChildZ();
-        
-        if (AndroidBall::instance)
-            AndroidBall::instance->setZOrder(68419);
-
-        //this->scheduleOnce(schedule_selector(MenuLaunchFix::fix), 0.1f);
+        ins->setZOrder(v);
 
         return value;
     }
@@ -747,9 +748,6 @@ class $modify (AppDelegate)
 
         if (getChildOfType<LoadingLayer>(p0, 0))
             return; // fix texture ldr
-
-        //if (typeinfo_cast<PlayLayer*>(p0->getChildren()->objectAtIndex(0)))
-            //return; // todo: ~~fix gameplay~~ nvm it was no particles
 
         // ;)
         //std::vector<AndroidBall*> balls = {};
