@@ -84,7 +84,7 @@ public:
 
         if (SpeedhackTop::instance)
         {
-            if (Client::GetModuleEnabled("speedhack-enabled"))
+            if (SpeedhackEnabled::instance->enabled)
             {
                 auto x = numFromString<float>(SpeedhackTop::instance->text);
 

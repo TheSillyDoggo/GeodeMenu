@@ -103,4 +103,6 @@ public:
 
         return nullptr;
     }
+
+    void onPostSetup();
 };

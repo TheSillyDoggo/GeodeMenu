@@ -2,6 +2,7 @@
 
 - Fixed Speedhack
 - Added Verify Hack
+- Improved Safe Mode
 
 # 1.2.0
 

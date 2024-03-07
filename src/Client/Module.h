@@ -9,6 +9,15 @@
 
 using namespace geode::prelude;
 
+class ModuleChangeDelegate
+{
+    public:
+        virtual void onModuleChanged(bool enabled)
+        {
+
+        }
+};
+
 class Module
 {
     public:
@@ -73,6 +82,8 @@ class Module
         bool def;
         float value = 1.0f;
 
+        ModuleChangeDelegate* delegate = nullptr;
+
         virtual bool Draw(ImVec2 tileSize)
         {
             ImVec2 pos = ImGui::GetCursorPos();
@@ -115,7 +126,8 @@ class Module
 
         virtual void OnChange()
         {
-
+            if (delegate)
+                delegate->onModuleChanged(this->enabled);
         }
 
         virtual void save()
@@ -159,6 +171,7 @@ class Module
 
             dat->enabled = !dat->enabled;
             dat->save();
+            dat->OnChange();
 
             log::info("Toggling {}", dat->id);
             log::info("enabled status: {}", dat->enabled);

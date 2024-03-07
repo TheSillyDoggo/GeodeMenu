@@ -25,6 +25,8 @@ public:
 
         if (android)
             Client::instance->windows.push_back(new Credits());
+
+        Client::instance->onPostSetup();
 	}
 
 #pragma region Setup Windows
@@ -69,6 +71,7 @@ public:
 
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
+        level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
 
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
