@@ -19,7 +19,7 @@ class $modify (PauseLayer)
 
         geode::createQuickPopup(
             "Practice Mode",
-            std::string("Are you sure you want to\n") + std::string(PlayLayer::get()->m_isPracticeMode ? "exit" : "enter") + std::string("<cg>practice mode</c>?"),
+            std::string("Are you sure you want to\n") + std::string(PlayLayer::get()->m_isPracticeMode ? "exit" : "enter") + std::string(" <cg>practice mode</c>?"),
             "Cancel", "Practice",
             [this, sender](FLAlertLayer* tis, bool btn2) {
                 log::info("click practice");
