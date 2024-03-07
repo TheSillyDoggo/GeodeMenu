@@ -8,17 +8,12 @@ FMOD::ChannelGroup* masterGroup;
 
 bool stringToFloat(const std::string& str, float& result) {
     std::istringstream iss(str);
-    if (!(iss >> result)) {
-        // Conversion failed
+    iss >> std::noskipws; // Disable skipping whitespace
+    char c;
+    if (!(iss >> result) || (iss >> c && !std::isspace(c))) {
+        // Conversion failed or there are extra characters
         return false;
     }
-    // Check if there are any trailing characters in the stream
-    char remaining;
-    if (iss >> remaining) {
-        // Conversion succeeded, but there are extra characters in the string
-        return false;
-    }
-    // Conversion succeeded
     return true;
 }
 
@@ -40,8 +35,19 @@ class $modify (CCScheduler)
             {
                 float v = 1.0f;
 
-                if (!stringToFloat(SpeedhackTop::instance->text, v))
-                    log::info("bruh: {}", SpeedhackTop::instance->text);
+                //if (!stringToFloat(SpeedhackTop::instance->text, v))
+                    //v = 1.0f;
+
+                try
+                {
+                    v = std::stof(SpeedhackTop::instance->text);
+                }
+                catch(const std::exception& e)
+                {
+                    //std::cerr << e.what() << '\n';
+                    v = 1.0f;
+                }
+                    
 
                 if (v < 0.01f)
                     v = 0.01f;
