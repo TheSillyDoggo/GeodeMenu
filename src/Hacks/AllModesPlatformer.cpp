@@ -7,16 +7,16 @@
 
 using namespace geode::prelude;
 
+Module* allMod = nullptr;
+
 class $modify (GJBaseGameLayer)
 {
-    Module* mod = nullptr;
-
     TodoReturn collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
     {
-        if (!mod)
-            mod = Client::GetModule("all-plat");
+        if (!allMod)
+            allMod = Client::GetModule("all-plat");
 
-        if (mod->enabled)
+        if (allMod->enabled)
         {
             //#ifdef GEODE_IS_WINDOWS
             auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29C6);

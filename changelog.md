@@ -1,6 +1,7 @@
 # 1.2.1
 
 - Fixed Speedhack
+- Added Verify Hack
 
 # 1.2.0
 
