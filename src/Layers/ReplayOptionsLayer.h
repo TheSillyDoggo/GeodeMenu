@@ -9,7 +9,7 @@ class ReplayOptionsLayer : public FLAlertLayer
 {
     public:
         CCMenu* l = nullptr;
-        std::vector<CCMenuItemToggler*> toggles = {};
+        static inline std::vector<CCMenuItemToggler*> toggles = {};
 
         void onClose(CCObject*)
         {
@@ -48,6 +48,8 @@ class ReplayOptionsLayer : public FLAlertLayer
 
         bool init()
         {
+            toggles.clear();
+            
             if (!FLAlertLayer::init(0))
                 return false;
 
