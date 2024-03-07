@@ -7,11 +7,16 @@
 
 using namespace geode::prelude;
 
+Module* rot = nullptr;
+
 class $modify (PlayerObject)
 {
     void setRotation(float r)
     {
-        if (Client::GetModuleEnabled("no-rot"))
+        if (!rot)
+            rot = Client::GetModule("no-rot");
+
+        if (rot->enabled)
             PlayerObject::setRotation(0);
         else
             PlayerObject::setRotation(r);

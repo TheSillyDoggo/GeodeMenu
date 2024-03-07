@@ -6,6 +6,8 @@
 
 using namespace geode::prelude;
 
+Module* platMod = nullptr;
+
 #ifdef GEODE_IS_ANDROID
 
 class $modify (UILayer)
@@ -15,7 +17,10 @@ class $modify (UILayer)
         if (!UILayer::init(p0))
             return false;
 
-        if (Client::GetModuleEnabled("force-plat"))
+        if (!platMod)
+            platMod = Client::GetModule("force-plat");
+
+        if (platMod->enabled)
             togglePlatformerMode(true);
 
         return true;
@@ -35,8 +40,12 @@ class $modify (PlayerObject)
 
     virtual void update(float dt)
     {
-        if (Client::GetModuleEnabled("force-plat"))
+        if (!platMod)
+            platMod = Client::GetModule("force-plat");
+
+        if (platMod->enabled)
         {
+
             this->togglePlatformerMode(true);
             #ifdef GEODE_IS_ANDROID
             if (!m_fields->f)
@@ -46,6 +55,7 @@ class $modify (PlayerObject)
                     PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
             }
             #endif
+
         }
 
         PlayerObject::update(dt);

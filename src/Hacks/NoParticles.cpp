@@ -7,19 +7,24 @@
 
 using namespace geode::prelude;
 
+Module* part = nullptr;
+
 class $modify (CCParticleSystem)
 {
     virtual bool initWithTotalParticles(unsigned int numberOfParticles, bool idk)
     {
-        //log::info("CCParticleSystem::initWithTotalParticles");
-        return CCParticleSystem::initWithTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : numberOfParticles, idk);
+        if (!part)
+            part = Client::GetModule("no-particles");
+        
+        return CCParticleSystem::initWithTotalParticles(part->enabled ? 0 : numberOfParticles, idk);
     }
 
     virtual void update(float dt)
     {
-        //log::info("CCParticleSystem::update");
+        if (!part)
+            part = Client::GetModule("no-particles");
         
-        if (!Client::GetModuleEnabled("no-particles"))
+        if (!part->enabled)
             CCParticleSystem::update(dt);
         else
             this->setScale(0);
@@ -27,9 +32,10 @@ class $modify (CCParticleSystem)
 
     virtual void setTotalParticles(unsigned int tp)
     {
-        //log::info("CCParticleSystem::setTotalParticles");
+        if (!part)
+            part = Client::GetModule("no-particles");
         
-        CCParticleSystem::setTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : tp);
+        CCParticleSystem::setTotalParticles(part->enabled ? 0 : tp);
     }
 };
 
@@ -37,16 +43,18 @@ class $modify (CCParticleSystemQuad)
 {
     virtual bool initWithTotalParticles(unsigned int numberOfParticles, bool idk)
     {
-        //log::info("CCParticleSystemQuad::initWithTotalParticles");
+        if (!part)
+            part = Client::GetModule("no-particles");
         
-        return CCParticleSystemQuad::initWithTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : numberOfParticles, idk);
+        return CCParticleSystemQuad::initWithTotalParticles(part->enabled ? 0 : numberOfParticles, idk);
     }
 
     virtual void setTotalParticles(unsigned int tp)
     {
-        //log::info("CCParticleSystemQuad::setTotalParticles");
+        if (!part)
+            part = Client::GetModule("no-particles");
         
-        CCParticleSystemQuad::setTotalParticles(Client::GetModuleEnabled("no-particles") ? 0 : tp);
+        CCParticleSystemQuad::setTotalParticles(part->enabled ? 0 : tp);
     }
 };
 

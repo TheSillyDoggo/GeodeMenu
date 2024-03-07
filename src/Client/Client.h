@@ -62,9 +62,13 @@ public:
         style->WindowPadding = ImVec2(0, 0);
     }
 
+    [[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {
-        CCScene::get()->addChild(TextAlertPopup::create("request to get '" + id + "'", 0.5f, 0.6f, 150, ""), 9999999);
+        //if (CCScene::get())
+            //CCScene::get()->addChild(TextAlertPopup::create("request to get '" + id + "'", 0.5f, 0.6f, 150, ""), 9999999);
+
+        //log::info("get module: {}", id);
 
         for (size_t w = 0; w < instance->windows.size(); w++)
         {

@@ -4,6 +4,8 @@
 
 using namespace geode::prelude;
 
+Module* instant = nullptr;
+
 class $modify (GJBaseGameLayer)
 {
     bool fix = false;
@@ -11,8 +13,11 @@ class $modify (GJBaseGameLayer)
     virtual void update(float dt)
     {
         GJBaseGameLayer::update(dt);
+
+        if (!instant)
+            instant = Client::GetModule("instant");
         
-        if (PlayLayer::get() && Client::GetModuleEnabled("instant"))
+        if (PlayLayer::get() && instant->enabled)
         {
             if (!m_fields->fix)
             {

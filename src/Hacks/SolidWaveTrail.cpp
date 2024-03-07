@@ -3,22 +3,35 @@
 
 using namespace geode::prelude;
 
-bool myDrawCircle(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
-    if (Client::GetModuleEnabled("no-wave"))
-        return true;
+Module* noWave = nullptr;
+Module* solidWave = nullptr;
 
-    if (Client::GetModuleEnabled("solid-wave"))
+bool myDrawCircle(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
+
+    if (typeinfo_cast<HardStreak*>(ins))
     {
-        if (fillColor.r >= 1.0f && fillColor.g >= 1.0f && fillColor.b >= 1.0f && ins->getColor() != ccc3(255, 255, 255))
+        if (!noWave)
+            noWave = Client::GetModule("no-wave");
+
+        if (!solidWave)
+            solidWave = Client::GetModule("solid-wave");
+
+        if (noWave->enabled)
             return true;
 
-        if (ins->getTag() != 1)
+        if (solidWave->enabled)
         {
-            ins->setTag(1);
-            ins->setBlendFunc(CCSprite::create()->getBlendFunc());
-        }
+            if (fillColor.r >= 1.0f && fillColor.g >= 1.0f && fillColor.b >= 1.0f && ins->getColor() != ccc3(255, 255, 255))
+                return true;
 
-        ins->setZOrder(-1);
+            if (ins->getTag() != 1)
+            {
+                ins->setTag(1);
+                ins->setBlendFunc(CCSprite::create()->getBlendFunc());
+            }
+
+            ins->setZOrder(-1);
+        }
     }
 
     return ins->drawPolygon(verts, count, fillColor, borderWidth, borderColor);

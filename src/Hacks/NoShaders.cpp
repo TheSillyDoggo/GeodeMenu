@@ -5,13 +5,17 @@
 
 using namespace geode::prelude;
 
+Module* noShad = nullptr;
+
 class $modify (ShaderLayer)
 {
     TodoReturn performCalculations()
     {
+        if (!noShad)
+            noShad = Client::GetModule("no-shaders");
         //log::info("ShaderLayer::performCalculations");
 
-        if (!Client::GetModuleEnabled("no-shaders"))
+        if (!noShad->enabled)
             ShaderLayer::performCalculations();
     }
 };

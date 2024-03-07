@@ -7,15 +7,20 @@
 
 using namespace geode::prelude;
 
+Module* noGlow = nullptr;
+
 class $modify(GameObject) {
     
     TodoReturn commonSetup() 
     {
         GameObject::commonSetup();
 
+        if (!noGlow)
+            noGlow = Client::GetModule("no-glow");
+
         if (PlayLayer::get())
         {
-            if (Client::GetModuleEnabled("no-glow"))
+            if (noGlow->enabled)
                 m_hasNoGlow = true;
         }
     }
