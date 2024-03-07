@@ -212,7 +212,7 @@ public:
 
         if (SpeedhackTop::instance)
         {
-            if (Client::GetModuleEnabled("speedhack-enabled"))
+            if (SpeedhackEnabled::instance->enabled)
             {
                 try
                 {
