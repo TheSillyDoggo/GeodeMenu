@@ -78,6 +78,9 @@ bool stringToFloat(const std::string& str, float& result) {
 
 void myUpdate(CCScheduler* ins, float dt)
 {
+    if (!masterGroup)
+        FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+
     if (SpeedhackTop::instance)
     {
         if (SpeedhackEnabled::instance->enabled)
