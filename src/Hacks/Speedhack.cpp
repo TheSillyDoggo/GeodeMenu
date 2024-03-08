@@ -84,7 +84,7 @@ void myUpdate(CCScheduler* ins, float dt)
 $execute {
     Mod::get()->hook(
         reinterpret_cast<void*>(
-            geode::addresser::getNonVirtual(&CCScheduler::update)
+            geode::addresser::getVirtual(&CCScheduler::update)
         ),
         &myUpdate,
         "cocos2d::CCScheduler::update",
