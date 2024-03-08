@@ -91,13 +91,15 @@ public:
                 if (x.isOk())
                 {
                     v = x.value();
+                    
+                    if (v < 0.01f)
+                        v = 0.01f;
+
+                    if (v > 99999)
+                        v = 99999;
                 }
-
-                if (v < 0.01f)
-                    v = 0.01f;
-
-                if (v > 99999)
-                    v = 99999;
+                else
+                    v = 1;
 
                 bool m = SpeedhackMus::instance->enabled;
 
