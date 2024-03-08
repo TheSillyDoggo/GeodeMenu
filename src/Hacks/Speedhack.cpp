@@ -71,6 +71,6 @@ class $modify (CCScheduler)
 
         masterGroup->setPitch(1);
         
-        CCScheduler::update(dt);
+        CCScheduler::update(dt * 2);
     }
 }; // LINE 115 DOESN'T FUCKING EXIST???? HOW CRASH
