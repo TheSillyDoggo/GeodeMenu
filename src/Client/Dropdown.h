@@ -59,6 +59,7 @@ class Dropdown : public /*CCMenu*/ClippingNode {
                 for (size_t i = 0; i < btns.size(); i++)
                 {
                     btns[i]->stopAllActions();
+                    btns[i]->setEnabled(n);
 
                     //btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.5f, 1), 2)));
                 }
@@ -70,6 +71,7 @@ class Dropdown : public /*CCMenu*/ClippingNode {
                 for (size_t i = 0; i < btns.size(); i++)
                 {
                     btns[i]->stopAllActions();
+                    btns[i]->setEnabled(n);
 
                     //btns[i]->runAction(CCSequence::createWithTwoActions(CCDelayTime::create(0.1f * i), CCEaseInOut::create(CCScaleTo::create(0.35f, 0), 2)));
                 }
@@ -132,6 +134,7 @@ class Dropdown : public /*CCMenu*/ClippingNode {
                 btn->setPosition(ccp(size.width / 2, (size.height * (s + 1) * -1) + size.height / 2 ));
                 btn->setScale(1);
                 btn->setTag(s);
+                btn->setEnabled(false);
                 this->addChild(btn);
 
                 btns.push_back(btn);

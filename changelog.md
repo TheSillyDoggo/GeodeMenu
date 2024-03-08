@@ -1,3 +1,8 @@
+# 1.2.2
+
+- Fixed Icon Effects
+- and some other stuff i dont want to write down
+
 # 1.2.1
 
 - Fixed Speedhack

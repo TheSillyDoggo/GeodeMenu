@@ -39,6 +39,11 @@ class $modify (PlayLayer)
     void updateVisibility(float p0) {
         PlayLayer::updateVisibility(p0);
 
+        #ifdef GEODE_IS_WINDOWS
+        if (!m_fields->dn)
+            m_fields->dn = m_debugDrawNode;
+        #endif
+
         if (!m_fields->dn)
             m_fields->dn = as<CCDrawNode*>(getChildByTagRecursively(PlayLayer::get(), -9999));
 

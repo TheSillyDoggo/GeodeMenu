@@ -107,11 +107,13 @@ void myUpdate(CCScheduler* ins, float dt)
 
             masterGroup->setPitch(v);
             ins->update(dt * v);
+            ColourUtility::update(dt * v);
             return;
         }
     }
 
     masterGroup->setPitch(1);
+    ColourUtility::update(dt);
     ins->update(dt);
 }
 

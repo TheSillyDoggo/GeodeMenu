@@ -626,7 +626,7 @@ class AndroidBall : public CCLayer
 
             if (PlayLayer::get())
             {
-                if (CCDirector::get()->getRunningScene()->getChildByID("PauseLayer"))
+                if (getChildOfType<PauseLayer>(CCScene::get(), 0))
                 {
                     op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
                 }

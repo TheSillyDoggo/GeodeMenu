@@ -1361,7 +1361,7 @@ class Level : public Window
             }
             else
             {
-                auto alert = ConfirmFLAlertLayer::create(protocol, "Uncomplete Level", "Don't show this popup again", false, menu_selector(Uncomplete::onToggle), "Are you sure you want to <cr>uncomplete</c> this <cg>level</c>. Uncompleting a level will:\n<cl>- Reset Attempts</c>\n<cl>- Reset Percentage</c>\n<cl>- Reset Jumps</c>", "Cancel", "Reset", 350, false, 310, 1.0f);
+                auto alert = ConfirmFLAlertLayer::create(protocol, "Uncomplete Level", "Don't show this popup again", false, menu_selector(Uncomplete::onToggle), "Are you sure you want to <cr>uncomplete</c> this <cg>level</c>? Uncompleting a level will:\n<cl>- Reset Attempts</c>\n<cl>- Reset Percentage</c>\n<cl>- Reset Jumps</c>", "Cancel", "Reset", 350, false, 310, 1.0f);
                 alert->show();
             }
         }
