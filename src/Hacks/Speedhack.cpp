@@ -102,7 +102,7 @@ void myUpdate(CCScheduler* ins, float dt)
             if (SpeedhackGameplay::instance->enabled)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
-            masterGroup->setPitch(1);
+            masterGroup->setPitch(v);
             ins->update(dt * v);
             return;
         }
