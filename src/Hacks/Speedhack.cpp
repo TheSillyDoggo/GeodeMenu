@@ -17,7 +17,7 @@ bool stringToFloat(const std::string& str, float& result) {
     return true;
 }
 
-class $modify (CCScheduler)
+/*class $modify (CCScheduler)
 {
     void update(float dt)
     {
@@ -74,3 +74,20 @@ class $modify (CCScheduler)
         CCScheduler::update(dt * 2);
     }
 }; // LINE 115 DOESN'T FUCKING EXIST???? HOW CRASH
+*/
+
+void myUpdate(CCScheduler* ins, float dt)
+{
+    ins->update(dt * 2);
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getNonVirtual(&CCScheduler::update)
+        ),
+        &myUpdate,
+        "cocos2d::CCScheduler::update",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
