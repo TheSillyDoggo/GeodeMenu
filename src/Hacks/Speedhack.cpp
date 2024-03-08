@@ -78,7 +78,38 @@ bool stringToFloat(const std::string& str, float& result) {
 
 void myUpdate(CCScheduler* ins, float dt)
 {
-    ins->update(dt * 2);
+    if (SpeedhackTop::instance)
+    {
+        if (SpeedhackEnabled::instance->enabled)
+        {
+            float v = 1.0f;
+
+            auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+            if (x.isOk())
+            {
+                v = x.value();
+            }
+
+            if (v < 0.01f)
+                v = 0.01f;
+
+            if (v > 99999)
+                v = 99999;
+
+            bool m = SpeedhackMus::instance->enabled;
+
+            if (SpeedhackGameplay::instance->enabled)
+                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
+            masterGroup->setPitch(1);
+            ins->update(dt * v);
+            return;
+        }
+    }
+
+    masterGroup->setPitch(1);
+    ins->update(dt);
 }
 
 $execute {
