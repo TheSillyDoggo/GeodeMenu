@@ -107,7 +107,7 @@ class Dropdown : public /*CCMenu*/ClippingNode {
             bg->setContentSize(size / 0.5f);
             bg->setScale(0.5f);
             bg->setColor(ccc3(0, 0, 0));
-            bg->setOpacity(100);
+            bg->setOpacity(200);
             bg->setPositionY(size.height);
             bg->setScaleY(-1 * 0.5f);
             this->addChild(bg);
