@@ -194,7 +194,7 @@ public:
         this->setMouseEnabled(true);
         this->setKeypadEnabled(true);
 
-        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -129, true);
+        CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512, true);
 
         this->runAction(CCFadeTo::create(0.5f, 100));
 

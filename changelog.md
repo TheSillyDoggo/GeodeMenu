@@ -1,7 +1,10 @@
+# 1.2.4
+
+- Added Noclip Accuracy
+
 # 1.2.3
 
 - Fixed transparent bg causing textureldr to crash
-- Fixed some lists not being transparent with transparent lists
 - Fixed Typo
 - Added status texts
 

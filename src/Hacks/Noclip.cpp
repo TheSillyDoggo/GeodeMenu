@@ -9,11 +9,12 @@ class $modify (NoclipLayer, PlayLayer)
 {
     GameObject* ac;
 
-    //GameObject* last;
+    GameObject* last;
 
     //std::vector<GameObject*> dies;
-    //int t = 0;
-    //int d = 0;
+
+    int t = 0;
+    int d = 0;
 
     void destroyPlayer(PlayerObject * p0, GameObject * p1)
     {
@@ -22,7 +23,7 @@ class $modify (NoclipLayer, PlayLayer)
 
         if (!Client::GetModuleEnabled("noclip") || (m_fields->ac == p1))
             PlayLayer::destroyPlayer(p0, p1);
-        /*else
+        else
         {
             if (m_fields->last != p1)
             {
@@ -33,6 +34,6 @@ class $modify (NoclipLayer, PlayLayer)
 
             if (m_fields->ac != p1)
                 m_fields->t++;
-        }*/
+        }
     }
 };
