@@ -53,7 +53,7 @@ void updateSafemode()
     hasHackedAttempt = (Client::GetModule("safe-mode")->enabled) ? true : hasHackedAttempt;
 }
 
-class $modify (PlayLayer)
+class $modify (PlayLayerExt, PlayLayer)
 {
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
@@ -71,7 +71,7 @@ class $modify (PlayLayer)
         {
             if (m_isPracticeMode)
             {
-                //todo: implement :3
+                this->showCompleteText();
             }
             else
             {
