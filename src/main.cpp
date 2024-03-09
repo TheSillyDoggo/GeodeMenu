@@ -106,23 +106,25 @@ class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
     {     
-        if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
-            if (android)
-            {
-                #ifdef GEODE_IS_DESKTOP
-                CCDirector::get()->getOpenGLView()->showCursor(true);
-                #endif
-                
-                if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
+        if (!getChildOfType<LoadingLayer>(CCScene::get(), 0))
+        { 
+            if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
+                if (android)
                 {
-                    ui->close(nullptr);
-                }
-                else
-                {
-                    AndroidUI::addToScene();
+                    #ifdef GEODE_IS_DESKTOP
+                    CCDirector::get()->getOpenGLView()->showCursor(true);
+                    #endif
+                    
+                    if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
+                    {
+                        ui->close(nullptr);
+                    }
+                    else
+                    {
+                        AndroidUI::addToScene();
+                    }
                 }
             }
-            return true;
         }
 
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);

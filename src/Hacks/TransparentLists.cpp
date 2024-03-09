@@ -3,7 +3,7 @@
 #include <Geode/modify/LevelListCell.hpp>
 #include <Geode/modify/LevelCell.hpp>
 #include <Geode/modify/CCLayerColor.hpp>
-#include <Geode/modify/GJListLayer.hpp>
+#include <Geode/modify/GJCommentListLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -64,5 +64,13 @@ class $modify (LevelCell)
             return;
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
+    }
+};
+
+class $modify (GJCommentListLayer)
+{
+    bool init(BoomListView* p0, char const* p1, cocos2d::ccColor4B p2, float p3, float p4, int p5)
+    {
+        return GJCommentListLayer::init(p0, p1, Client::GetModuleEnabled("trans-lists") ? ccc4(0, 0, 0, 0) : p2, p3, p4, p5);
     }
 };

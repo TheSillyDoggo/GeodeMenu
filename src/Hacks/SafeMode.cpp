@@ -3,8 +3,38 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
 #include "../Client/Client.h"
+#include "StatusText.cpp"
 
 bool hasHackedAttempt = false;
+
+ccColor3B getColour()
+{
+    if (Client::GetModule("safe-mode")->enabled)
+        return ccc3(255, 255, 0);
+
+    if (hasHackedAttempt)
+        return ccc3(255, 0, 0);
+
+    return ccc3(0, 255, 0);
+}
+
+void updateInd()
+{
+    if (!PlayLayer::get())
+        return;
+
+    if (auto p = PlayLayer::get()->getChildByID("status-text-menu"_spr))
+    {
+        log::info("{}", p);
+
+        if (auto a = p->getChildByID("status-node"_spr))
+        {
+            log::info("{}", a);
+            
+            as<StatusNode*>(a)->sLabels[0]->setColor(getColour());
+        }
+    }
+}
 
 class HackModuleDelegate : public ModuleChangeDelegate
 {
@@ -15,7 +45,7 @@ class HackModuleDelegate : public ModuleChangeDelegate
         else
             hasHackedAttempt = false;
 
-
+        updateInd();
     }
 };
 
@@ -51,16 +81,25 @@ void updateSafemode()
     }
 
     hasHackedAttempt = (Client::GetModule("safe-mode")->enabled) ? true : hasHackedAttempt;
+
+    updateInd();
 }
 
 class $modify (PlayLayerExt, PlayLayer)
 {
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+            return false;
+        
         hasHackedAttempt = false;
         updateSafemode();
 
-        return PlayLayer::init(level, useReplay, dontCreateObjects);
+        return true;
+    }
+
+    static void onModify(auto& self) {
+        self.setHookPriority("PlayLayer::init", -6969);
     }
 
     TodoReturn levelComplete()
@@ -150,17 +189,6 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
 
         auto alert = FLAlertLayer::create(nullptr, "Cheat Indicator", ss.str(), "OK", nullptr, 300, false, 300, 0.7f);
         alert->show();
-    }
-
-    ccColor3B getColour()
-    {
-        if (Client::GetModule("safe-mode")->enabled)
-            return ccc3(255, 255, 0);
-
-        if (hasHackedAttempt)
-            return ccc3(255, 0, 0);
-
-        return ccc3(0, 255, 0);
     }
 
 	void customSetup()

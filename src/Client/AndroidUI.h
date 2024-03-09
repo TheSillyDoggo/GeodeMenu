@@ -463,7 +463,7 @@ class AndroidBall : public CCLayer
 
         void onOpenMenu()
         {
-            //AndroidUI::addToScene();
+            AndroidUI::addToScene();
         }
 
         virtual bool init()

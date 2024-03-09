@@ -12,7 +12,7 @@ public:
         SetupCosmetic();
         SetupIconEffects();
         SetupSpeedhack();
-        //SetupStatus();
+        SetupStatus();
 
         //SetupVariables(android);
 
@@ -187,18 +187,6 @@ public:
         Client::instance->windows.push_back(misc);
     }
 
-    static void SetupReplay()
-    {
-        Window* replay = new Window();
-        replay->name = "Robtop Replay";
-        replay->id = "replay-window";
-        replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
-
-        replay->modules.push_back(new InfoModule("Coming Soon", "This replay bot is called Robtop Replay because it uses Robtop's replay code"));
-
-        Client::instance->windows.push_back(replay);
-    }
-
     static void SetupStatus()
     {
         Window* replay = new Status();
@@ -209,10 +197,11 @@ public:
         replay->modules.push_back(new StatusOpacity());
         replay->modules.push_back(new StatusScale());
 
-        replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
+        //replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
+        replay->modules.push_back(new Module("Cheat Indicator", "cheat-indicator", "Shows if you are cheating"));
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
-        replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
-        replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
+        //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
+        //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
         //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
         //replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));

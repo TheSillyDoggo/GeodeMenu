@@ -1,3 +1,10 @@
+# 1.2.3
+
+- Fixed transparent bg causing textureldr to crash
+- Fixed some lists not being transparent with transparent lists
+- Fixed Typo
+- Added status texts
+
 # 1.2.2
 
 - Fixed Icon Effects

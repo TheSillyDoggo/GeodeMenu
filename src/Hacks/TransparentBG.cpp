@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCSprite.hpp>
+#include <Geode/modify/LoadingLayer.hpp>
 #include <Geode/modify/AppDelegate.hpp>
 #include "../Client/Client.h"
 
@@ -61,14 +62,17 @@ class $modify (AppDelegate)
 
         if (scene->getChildrenCount() > 0)
         {
-            if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)))
+            if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)); l->getChildrenCount() > 0)
             {
-                if (getNodeName(l).starts_with("LevelEditorLayer"))
+                if (getChildOfType<LevelEditorLayer>(scene, 0))
+                    return;
+
+                if (getChildOfType<LoadingLayer>(scene, 0))
                     return;
 
                 l->sortAllChildren();
 
-                if (auto b = static_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
+                if (auto b = typeinfo_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
                 {
                     log::info("bg: {}", b);
 

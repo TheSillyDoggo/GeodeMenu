@@ -1,3 +1,5 @@
+#define STATUS_TEXTS
+
 #ifdef STATUS_TEXTS
 
 #include <Geode/Geode.hpp>
@@ -7,27 +9,6 @@
 #include "Noclip.cpp"
 
 using namespace geode::prelude;
-
-std::string floatToString(float num) {
-    std::stringstream ss;
-    ss << std::fixed << std::setprecision(2) << num;
-    return ss.str();
-}
-
-bool isStringConvertibleToFloat(const std::string& str) {
-    std::istringstream iss(str);
-    float f;
-    iss >> std::noskipws >> f; // Disable skipping whitespaces
-    return iss.eof() && !iss.fail();
-}
-
-float safeStringToFloat(const std::string& floatString) {
-    if (isStringConvertibleToFloat(floatString)) {
-        return std::stof(floatString);
-    } else {
-        return 0.9f;
-    }
-}
 
 class StatusNode : public CCNode
 {
@@ -45,8 +26,12 @@ class StatusNode : public CCNode
         //NoclipLayer* v;
 
         bool mods;
+
+        static inline Module* fps = nullptr;
+        static inline Module* cheat = nullptr;
+
         Module* testmode;
-        Module* fps;
+
         Module* noclip;
         Module* deaths;
         Module* accuracy;
@@ -54,9 +39,14 @@ class StatusNode : public CCNode
         CCLabelBMFont* tl;
         CCLabelBMFont* tr;
 
+        std::vector<CCLabelBMFont*> sLabels = {};
+
         bool init()
         {
-            this->setID("status-node");
+            if (!CCNode::init())
+                return false;
+            
+            this->setID("status-node"_spr);
             this->scheduleUpdate();
 
             return true;
@@ -66,96 +56,49 @@ class StatusNode : public CCNode
         {
             float op = 0.9f, scale = 1.0f;
 
-            op = safeStringToFloat(StatusOpacity::instance->text);
-            scale = safeStringToFloat(StatusScale::instance->text);
+            auto o = numFromString<float>(StatusOpacity::instance->text);
+            if (o.isOk())
+                op = o.value();
+
+            auto s = numFromString<float>(StatusScale::instance->text);
+            if (s.isOk())
+                scale = s.value();
 
             op = clamp<float>(op, 0.0f, 1.0f);
 
-            tl->setOpacity((int)round(255 * op));
-            tl->setScale(0.5f * scale);
-            tl->setString("");
+            int y = 0;
 
-            tr->setOpacity((int)round(255 * op));
-            tr->setScale(0.5f * scale);
-            tr->setString("");
+            for (size_t i = 0; i < sLabels.size(); i++)
+            {
+                sLabels[i]->setPositionY((CCDirector::get()->getWinSize().height - (32.5f * y) * (0.5f * scale)) - 1);
+
+                sLabels[i]->setScale(0.5f * scale);
+
+                sLabels[i]->setOpacity((int)round(255 * op));
+
+                if (sLabels[i]->isVisible())
+                {
+                    y++;
+                }
+            }
+            
         }
 
         void update(float dt)
         {
-            if (!mods)
-            {
-                mods = true;
-
-                //v = as<NoclipLayer*>(PlayLayer::get());
-
-                testmode = Client::GetModule("status-testmode");
+            if (!cheat)
+                cheat = Client::GetModule("cheat-indicator");
+            
+            if (!fps)
                 fps = Client::GetModule("status-fps");
-                noclip = Client::GetModule("noclip");
-                deaths = Client::GetModule("status-death");
-                accuracy = Client::GetModule("status-accuracy");
-            }
+            
 
-            if (!mods)
-                return;
+            sLabels[0]->setVisible(cheat->enabled);
+            sLabels[1]->setVisible(fps->enabled);
+            sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale())) + std::string(" FPS")).c_str());
+
 
             updateVis();
-
-            //if (testmode->enabled && PlayLayer::get() && PlayLayer::get()->m_isTestMode)
-            //    log::info("penis");
-                //WriteText("Testmode", "", Mod::get()->getSavedValue<int>("testmode_side", 0));
-
-            //if (Client::GetModuleEnabled("status-attempt"))
-                //WriteText("Attempt %", std::to_string(PlayLayer::get()->));
-
-            //if (fps->enabled)
-                //WriteText("FPS: %", std::to_string((int)round(1.0f / dt)), Mod::get()->getSavedValue<int>("fps_side", 0));
-
-            if (noclip->enabled)
-            {
-                //float acc = (((1 - ((v->m_fields->t * 1.0f) / (v->m_gameState.m_unk1f8 * 1.0f))) * 100.0f));
-                
-
-                //if (accuracy)
-                    //WriteText("Accuracy: %%", floatToString(acc), Mod::get()->getSavedValue<int>("accuracy_side", 0));
-
-                //if (deaths)
-                    //WriteText("Deaths: %", std::to_string((int)v->m_fields->t), Mod::get()->getSavedValue<int>("death_side", 0));
-            }
-        }
-
-        void WriteText(std::string text, std::string f, int side = 0)
-        {
-            std::stringstream s;
-
-            bool a = false;
-            
-            for (size_t i = 0; i < text.size(); i++)
-            {
-                if (text[i] == '%' && !a)
-                {
-                    s << f;
-                    a = true;
-                }
-                else
-                {
-                    s << text[i];
-                }
-            }
-
-            std::stringstream ss;
-
-            if (side == 0)
-                ss << tl->getString();
-            else// if (side == 1);
-                ss << tr->getString();
-
-            ss << s.str();
-            ss << "\n";
-
-            if (side == 0)
-                tl->setString(ss.str().c_str());
-            else// if (side == 1)
-                tr->setString(ss.str().c_str());
         }
 };
 
@@ -166,31 +109,38 @@ class $modify (PlayLayer)
         if (!PlayLayer::init(p0, p1, p2))
             return false;
 
+        if (this->getChildByID("status-text-menu"_spr))
+            return true;
+
         auto stn = StatusNode::create();
 
         auto menu = CCMenu::create();
+        menu->setID("status-text-menu"_spr);
         menu->setPosition(ccp(0, 0));
         menu->setContentSize(CCDirector::get()->getWinSize());
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        auto tl = CCLabelBMFont::create("TL", "bigFont.fnt");
-        tl->setAnchorPoint(ccp(0, 1));
-        tl->setPosition(ccp(2, CCDirector::get()->getWinSize().height));
+        int count = 2;
 
-        auto tr = CCLabelBMFont::create("TR", "bigFont.fnt");
-        tr->setAnchorPoint(ccp(1, 1));
-        tr->setAlignment(CCTextAlignment::kCCTextAlignmentRight);
-        tr->setPosition(ccp(CCDirector::get()->getWinSize().width - 2, CCDirector::get()->getWinSize().height));
+        for (size_t i = 0; i < count; i++)
+        {
+            auto lbl = CCLabelBMFont::create("penis", "bigFont.fnt");
+            lbl->setAnchorPoint(ccp(0, 1));
+            lbl->setPositionX(3);
+            menu->addChild(lbl);
 
-        menu->addChild(tl);
-        menu->addChild(tr);
+            stn->sLabels.push_back(lbl);
+        }
 
-        stn->tl = tl;
-        stn->tr = tr;
+        stn->sLabels[0]->setString(".");
+        as<CCNode*>(stn->sLabels[0]->getChildren()->objectAtIndex(0))->setScale(2.25f);
+        as<CCNode*>(stn->sLabels[0]->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0.2f, 0.35f));
 
         menu->addChild(stn);
+
         this->addChild(menu, 69420);
+        
         return true;
     }
 };

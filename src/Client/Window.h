@@ -1589,6 +1589,8 @@ class Status : public Window
         {
             Window::cocosCreate(menu);
 
+            return;
+
             auto pos = ccp(58, 22);
 
             auto btnS = ButtonSprite::create("Edit\nPositions", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
