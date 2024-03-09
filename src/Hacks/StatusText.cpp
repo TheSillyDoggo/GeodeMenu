@@ -95,7 +95,7 @@ class StatusNode : public CCNode
 
             sLabels[0]->setVisible(cheat->enabled);
             sLabels[1]->setVisible(fps->enabled);
-            sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale())) + std::string(" FPS")).c_str());
+            sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
 
 
             updateVis();
