@@ -15,8 +15,9 @@ class $modify (NoclipLayer, PlayLayer)
 
     int t = 0;
     int d = 0;
+    bool isDead = false;
 
-    void destroyPlayer(PlayerObject * p0, GameObject * p1)
+    void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
         if (!m_fields->ac)
             m_fields->ac = p1;
@@ -25,6 +26,8 @@ class $modify (NoclipLayer, PlayLayer)
             PlayLayer::destroyPlayer(p0, p1);
         else
         {
+            m_fields->isDead = true;
+            
             if (m_fields->last != p1)
             {
                 m_fields->last = p1;

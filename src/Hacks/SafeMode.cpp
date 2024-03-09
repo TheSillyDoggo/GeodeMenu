@@ -9,7 +9,7 @@ bool hasHackedAttempt = false;
 
 ccColor3B getColour()
 {
-    if (Client::GetModule("safe-mode")->enabled)
+    if (Client::GetModuleEnabled("safe-mode"))
         return ccc3(255, 255, 0);
 
     if (hasHackedAttempt)
@@ -30,8 +30,9 @@ void updateInd()
         if (auto a = p->getChildByID("status-node"_spr))
         {
             log::info("{}", a);
-            
-            as<StatusNode*>(a)->sLabels[0]->setColor(getColour());
+
+            if (auto l = as<StatusNode*>(a)->sLabels[0])
+                l->setColor(getColour());
         }
     }
 }

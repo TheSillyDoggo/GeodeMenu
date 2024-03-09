@@ -147,6 +147,11 @@ class Module
             //fucking force priority kill yourself
             auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
             al->show();
+
+            CCTouchDispatcher::get()->addTargetedDelegate(al, -514, true);
+            al->setTouchPriority(-514);
+
+            //al->m_buttonMenu->setTouchPriority(-513);
         }
 
 

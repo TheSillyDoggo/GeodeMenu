@@ -105,7 +105,7 @@ void myUpdate(CCScheduler* ins, float dt)
             if (SpeedhackGameplay::instance->enabled)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
-            masterGroup->setPitch(v);
+            masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
             ins->update(dt * v);
             ColourUtility::update(dt * v);
             return;
