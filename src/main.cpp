@@ -1,7 +1,9 @@
 #include "include.h"
 #include <Geode/modify/LoadingLayer.hpp>
 
-#define IMGUI
+#ifdef GEODE_IS_WINDOWS
+//#define IMGUI
+#endif
 
 bool showing = false;
 #ifdef GEODE_IS_ANDROID
@@ -124,7 +126,7 @@ $on_mod(Loaded)
     ClientUtils::Setup(android);
 }
 
-#ifndef GEODE_IS_ANDROID
+#ifdef IMGUI
 
 void DrawDescription()
 {
