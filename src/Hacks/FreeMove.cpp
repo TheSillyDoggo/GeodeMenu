@@ -1,4 +1,4 @@
-#define FREEMOVE
+//#define FREEMOVE
 
 #ifdef FREEMOVE
 
