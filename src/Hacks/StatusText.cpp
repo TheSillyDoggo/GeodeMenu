@@ -30,6 +30,7 @@ class StatusNode : public CCNode
         static inline Module* fps = nullptr;
         static inline Module* cheat = nullptr;
         static inline Module* accuracy = nullptr;
+        static inline Module* deaths = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -92,6 +93,9 @@ class StatusNode : public CCNode
             if (!accuracy)
                 accuracy = Client::GetModule("status-accuracy");
 
+            if (!deaths)
+                deaths = Client::GetModule("status-deaths");
+
             if (!noclip)
                 noclip = Client::GetModule("noclip");
 
@@ -102,16 +106,22 @@ class StatusNode : public CCNode
             sLabels[0]->setVisible(cheat->enabled);
             sLabels[1]->setVisible(fps->enabled);
             sLabels[2]->setVisible(noclip->enabled && accuracy->enabled);
+            sLabels[3]->setVisible(noclip->enabled && deaths->enabled);
 
 
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
+            sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
 
             if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
             {
                 sLabels[2]->stopAllActions();
                 sLabels[2]->setColor(ccc3(255, 0, 0));
                 sLabels[2]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
+
+                sLabels[3]->stopAllActions();
+                sLabels[3]->setColor(ccc3(255, 0, 0));
+                sLabels[3]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
 
                 as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead = false;
             }
@@ -139,7 +149,7 @@ class $modify (PlayLayer)
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        int count = 3;
+        int count = 4;
 
         for (size_t i = 0; i < count; i++)
         {

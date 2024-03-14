@@ -16,6 +16,8 @@
 #include "../Layers/ConfirmFLAlertLayer.h"
 #include "../Layers/ReplayOptionsLayer.h"
 
+class Client;
+
 class Window
 {
 public:
@@ -28,6 +30,16 @@ public:
     bool dragging = false;
     ImVec2 offset = ImVec2(0, 0);
 
+    bool isClosed = false;
+    float v = 1.0f;
+
+    float quadraticEaseInOut(float t) {
+        if (t < 0.5f)
+            return 2 * t * t;
+        else
+            return (-2 * t * t) + (4 * t) - 1;
+    }
+
     bool draw(ImVec2 tileSize, float anim = 1)
     {
         if (modules.size() == 0)
@@ -37,8 +49,16 @@ public:
 
         #ifndef GEODE_IS_ANDROID
 
-        DrawUtils::drawRect(wp, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(wp.x, wp.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
-        DrawUtils::drawRect(DrawUtils::addImVec2(wp, ImVec2(0, tileSize.y)), ImVec2(tileSize.x, 3), ColourUtility::GetColour(ColourUtility::ClientColour::Accent));
+        ImVec2 clipRect;
+        clipRect.x = wp.x + tileSize.x;
+        clipRect.y = wp.y + tileSize.y * (1 + (modules.size() * quadraticEaseInOut(v)));
+
+        ImGui::PushClipRect(wp, clipRect, true);
+
+        //DrawUtils::drawRect(wp, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(wp.x, wp.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
+        DrawUtils::drawGradient(wp, tileSize, ColourUtility::GetColour(ColourUtility::ClientColour::GradientLeft), ColourUtility::GetColour(ColourUtility::ClientColour::GradientRight));
+
+        ImGui::PushFont(DrawUtils::title);
 
         ImGui::SetCursorPos(DrawUtils::addImVec2(ImVec2(wp.x + (tileSize.x / 2) - (ImGui::CalcTextSize(name.c_str()).x / 2), wp.y + (tileSize.y / 2) - (ImGui::CalcTextSize(name.c_str()).y / 2)), ImVec2(1, 1)));
         ImGui::TextColored(ImVec4(0, 0, 0, 50.0f), name.c_str());
@@ -46,18 +66,42 @@ public:
         ImGui::SetCursorPos(ImVec2(wp.x + (tileSize.x / 2) - (ImGui::CalcTextSize(name.c_str()).x / 2), wp.y + (tileSize.y / 2) - (ImGui::CalcTextSize(name.c_str()).y / 2)));
         ImGui::Text(name.c_str());
 
-        for (size_t i = 0; i < modules.size(); i++)
-        {
-            ImGui::SetCursorPos(DrawUtils::addImVec2(wp, ImVec2(0, (tileSize.y * (i + 1)) + 3)));
+        ImGui::PopFont();
 
-            modules[i]->Draw(tileSize);
+        if (mouseIn(ImVec4(windowPos.x + tileSize.x - 25, windowPos.y, 25, tileSize.y)) && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+        {
+            isClosed = !isClosed;
         }
+
+        if (isClosed)
+        {
+            DrawUtils::drawRect(DrawUtils::addImVec2(wp, ImVec2(tileSize.x - 20, tileSize.y / 2 - (1.75f / 2) - 6)), ImVec2(15, 1.75f), ImColor(255, 255, 255, 255));
+
+            DrawUtils::drawRect(DrawUtils::addImVec2(wp, ImVec2(tileSize.x - 20, tileSize.y / 2 - (1.75f / 2) + 6)), ImVec2(15, 1.75f), ImColor(255, 255, 255, 255));
+        }
+
+        DrawUtils::drawRect(DrawUtils::addImVec2(wp, ImVec2(tileSize.x - 20, tileSize.y / 2 - (1.75f / 2))), ImVec2(15, 1.75f), ImColor(255, 255, 255, 255));
+
+        if (v != 0)
+        {
+            for (size_t i = 0; i < modules.size(); i++)
+            {
+                ImGui::SetCursorPos(DrawUtils::addImVec2(wp, ImVec2(0, (tileSize.y * (i + 1)))));
+
+                modules[i]->Draw(tileSize);
+            }
+        }
+
+        ImGui::PopClipRect();
 
         #endif
 
         bool o = over(tileSize);
 
         move(o, tileSize);
+
+        v += (ImGui::GetIO().DeltaTime * (isClosed ? -1 : 1)) / 0.2f;
+        v = clampf(v, 0, 1);
 
         return o;
     }
@@ -99,13 +143,28 @@ public:
             windowPos.y = ImGui::GetIO().DisplaySize.y - (tileSize.y * (modules.size() + 1) + 3);
     }
 
+    bool mouseIn(ImVec4 pos)
+    {
+        auto mp = ImGui::GetIO().MousePos;
+
+        if (mp.x > pos.x && mp.y > pos.y)
+        {
+            if (mp.x < pos.x + pos.z && mp.y < pos.y + pos.w)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     bool over(ImVec2 tileSize)
     {
         auto mp = ImGui::GetIO().MousePos;
 
         if (mp.x > windowPos.x && mp.y > windowPos.y)
         {
-            if (mp.x < windowPos.x + tileSize.x && mp.y < windowPos.y + (tileSize.y * (modules.size() + 1) + 3))
+            if (mp.x < windowPos.x + tileSize.x && mp.y < windowPos.y + (tileSize.y * (modules.size() + 1)))
             {
                 return true;
             }

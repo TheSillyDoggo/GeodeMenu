@@ -1,4 +1,4 @@
-#ifdef GEODE_IS_WINDOWS
+/*#ifdef GEODE_IS_WINDOWS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
@@ -42,4 +42,4 @@ class $modify (GJBaseGameLayer)
     }
 };
 
-#endif
+#endif*/

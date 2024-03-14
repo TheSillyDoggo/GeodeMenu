@@ -1,6 +1,6 @@
 # 1.2.4
 
-- Added Noclip Accuracy
+- Added Noclip Deaths and Noclip Accuracy
 
 # 1.2.3
 

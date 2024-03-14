@@ -15,6 +15,8 @@ void mySetID(CCNode* ins, const std::string &id) {
     {
         log::info("i am real");
 
+        Notification::create("TheSillyDoggo is in your Globed server\nsay hi :3 :3 :3")->show();
+
         lbl1 = (getChildOfType<CCLabelBMFont>(as<CCNode*>(ins->getChildren()->objectAtIndex(0)), 0));
         if (lbl1->getID() == "lbl1")
             lbl1 = nullptr;

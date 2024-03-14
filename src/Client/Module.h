@@ -95,7 +95,7 @@ class Module
                 DrawUtils::drawRect(pos, ImVec2(tileSize.x * value, tileSize.y), ColourUtility::GetColour(ColourUtility::ClientColour::Accent));
             }
 
-            DrawUtils::anchoredText(pos, tileSize, name.c_str(), ColourUtility::GetColour(enabled ? ColourUtility::Accent : ColourUtility::Text));
+            DrawUtils::anchoredText(DrawUtils::addImVec2(pos, ImVec2(3, 0)), tileSize, name.c_str(), ColourUtility::GetColour(enabled ? ColourUtility::Accent : ColourUtility::Text), ImVec2(0, 0.5f));
 
             ImGui::SetCursorPos(pos);
             if (DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)))
@@ -320,6 +320,60 @@ class InputModule : public Module, public TextInputDelegate
             text = p0->getString();
 
             this->save();
+        }
+};
+
+class ColourModule : public Module, public TextInputDelegate
+{
+    public:
+        static inline ColourModule* selected = nullptr;
+
+        ccColor3B colour = ccc3(255, 255, 255);
+
+        ColourModule(std::string name, std::string id, ccColor3B def)
+        {
+            colour = def;
+
+            this->load();
+        }
+
+        bool Draw(ImVec2 tileSize)
+        {
+            ImVec2 pos = ImGui::GetCursorPos();
+
+            auto v = name;
+            name = "";            
+            auto res = Module::Draw(tileSize);
+            name = v;
+
+            float height = tileSize.y - 10;
+
+            DrawUtils::drawRect(DrawUtils::addImVec2(DrawUtils::addImVec2(pos, tileSize), ImVec2(-(5 + height), -(5 + height))), ImVec2(height, height), DrawUtils::imColorFromccColor3B(colour));
+
+            return res;
+        }
+
+        void save()
+        {
+            geode::prelude::Mod::get()->setSavedValue<ccColor3B>(id + "_value", colour);
+        }
+
+        void load()
+        {
+            colour = geode::prelude::Mod::get()->getSavedValue<ccColor3B>(id + "_value", colour);
+        }
+
+        void makeAndroid(CCMenu* menu, CCPoint pos)
+        {
+            auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+            label->setAnchorPoint(ccp(0, 0.5f));
+            label->setScale(0.575f);
+            label->setPosition(pos - ccp(10, 0));
+            label->limitLabelWidth(70, 0.575f, 0.1f);
+
+            //menu->addChild(input);
+            
+            menu->addChild(label);
         }
 };
 

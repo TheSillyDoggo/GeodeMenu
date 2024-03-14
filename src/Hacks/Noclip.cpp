@@ -27,7 +27,7 @@ class $modify (NoclipLayer, PlayLayer)
         else
         {
             m_fields->isDead = true;
-            
+
             if (m_fields->last != p1)
             {
                 m_fields->last = p1;
@@ -38,5 +38,14 @@ class $modify (NoclipLayer, PlayLayer)
             if (m_fields->ac != p1)
                 m_fields->t++;
         }
+    }
+
+    void resetLevel()
+    {
+        PlayLayer::resetLevel();
+
+        m_fields->d = 0;
+        m_fields->t = 0;
+        m_fields->isDead = false;
     }
 };

@@ -1,10 +1,10 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/HardStreak.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (HardStreak)
+/*class $modify (HardStreak)
 {   
     void updateStroke(float p0)
     {

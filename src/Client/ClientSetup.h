@@ -26,6 +26,12 @@ public:
         if (android)
             Client::instance->windows.push_back(new Credits());
 
+        if (!android)
+            setupTheming();
+
+        if (!android)
+            setupDevtools();
+
         Client::instance->onPostSetup();
 	}
 
@@ -76,7 +82,7 @@ public:
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         #ifdef GEODE_IS_WINDOWS
-        level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
+        //level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
         #endif
 
         //level->modules.push_back(new Module("No Hitboxes", "no-hitboxes", "Disables Object Hitboxes"));
@@ -201,6 +207,7 @@ public:
         replay->modules.push_back(new Module("Cheat Indicator", "cheat-indicator", "Shows if you are cheating"));
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
         replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
+        replay->modules.push_back(new Module("Noclip Deaths", "status-deaths", "Shows your deaths in noclip (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
@@ -213,7 +220,8 @@ public:
 
     static void SetupOptions(bool android)
     {
-        if (android)
+        //if (android)
+        if (true)
         {
             auto cfg = new Config();
             
@@ -222,7 +230,9 @@ public:
             cfg->modules.push_back(new Module("Additional Width", "npesta-width", "Add's borders to the sides of the menu. Looks weird with <cl>vanilla gd pack</c> but looks nice with <cg>npesta texture pack</c>"));
             #ifdef GEODE_IS_DESKTOP
             cfg->modules.push_back(new Module("Hide Button", "hide-btn", "Hides the button to open the menu, use the <cl>Tab</c> or <cl>Insert</c> key to open the mod menu", true));
-            #endif
+            cfg->modules.push_back(new CompactMode());
+            cfg->modules.push_back(new AltModuleLocation());
+            #endif        
 
             Client::instance->windows.push_back(cfg);
             return;
@@ -236,7 +246,7 @@ public:
         if (android)
         {
             replay->modules.push_back(new AltModuleLocation());
-            replay->modules.push_back(new CompactMode());
+            
         }
         else
         {
@@ -264,6 +274,30 @@ public:
             Client::instance->windows.push_back(new Variables());
 
         //Client::instance->windows.push_back(new Variables());
+    }
+
+    static void setupTheming()
+    {
+        Window* theming = new Window();
+        theming->name = "Theming";
+        theming->id = "themes-window";
+        theming->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+
+        theming->modules.push_back(new ColourModule("Accent", "accent-colour", ccc3(10, 0, 0)));
+
+        Client::instance->windows.push_back(theming);
+    }
+
+    static void setupDevtools()
+    {
+        Window* devtools = new Window();
+        devtools->name = "Developer";
+        devtools->id = "devtools-window";
+        devtools->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+
+        devtools->modules.push_back(new Module("Recompile Shader", "recomp-shaders", "Recompiles blur shader"));
+
+        Client::instance->windows.push_back(devtools);
     }
 
 #pragma endregion

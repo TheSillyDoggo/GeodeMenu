@@ -37,7 +37,9 @@ class ColourUtility
 			Hovered,
 			Pressed,
 			InputField,
-			InputCarot
+			InputCarot,
+			GradientLeft,
+			GradientRight,
 		};
 
 		static ImColor GetColour(ClientColour colour);

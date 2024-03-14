@@ -5,6 +5,9 @@
 class DrawUtils
 {
     public:
+        static inline ImFont* title = nullptr;
+        static inline ImFont* mod = nullptr;
+
         static ImVec2 addImVec2(ImVec2 arg1, ImVec2 arg2)
         {
             float x = 0, y = 0;
@@ -21,7 +24,33 @@ class DrawUtils
         static void drawRect(ImVec2 pos, ImVec2 size, ImColor colour)
         {
             #ifndef GEODE_IS_ANDROID
-            ImGui::GetWindowDrawList()->AddRectFilled(pos, addImVec2(pos, size), colour);
+            ImGui::GetWindowDrawList()->AddRectFilled(pos, addImVec2(pos, size), colour, 0.0f);
+            #endif
+        }
+
+        static ImColor LerpColor(const ImColor& c1, const ImColor& c2, float t) {
+            ImVec4 col1 = c1;
+            ImVec4 col2 = c2;
+            ImVec4 lerped_color;
+            lerped_color.x = col1.x + (col2.x - col1.x) * t;
+            lerped_color.y = col1.y + (col2.y - col1.y) * t;
+            lerped_color.z = col1.z + (col2.z - col1.z) * t;
+            lerped_color.w = col1.w + (col2.w - col1.w) * t;
+            return ImColor(lerped_color);
+        }
+
+        static void drawGradient(ImVec2 apos, ImVec2 size, ImColor colour, ImColor colour2)
+        {
+            #ifndef GEODE_IS_ANDROID
+            auto list = ImGui::GetWindowDrawList();
+
+            for (size_t i = 0; i < size.x; i++)
+            {
+                auto pos = ImVec2(apos.x + i, apos.y);
+
+                list->AddLine(pos, addImVec2(pos, ImVec2(0, size.y)), LerpColor(colour, colour2, i / size.x));
+            }
+
             #endif
         }
 
@@ -37,6 +66,11 @@ class DrawUtils
             
             ImGui::TextColored(colour, text.c_str());
             #endif
+        }
+
+        static ImColor imColorFromccColor3B(geode::prelude::ccColor3B col)
+        {
+            return ImColor(ImVec4(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, 255));
         }
 
         /// <summary>

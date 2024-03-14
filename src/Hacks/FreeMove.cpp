@@ -1,4 +1,4 @@
-//#define FREEMOVE
+#define FREEMOVE
 
 #ifdef FREEMOVE
 
@@ -21,7 +21,7 @@ class $modify (CCKeyboardDispatcher)
     {
         if (PlayLayer::get())
         {
-            if (key == enumKeyCodes::KEY_Home && down)
+            if (key == enumKeyCodes::KEY_End && down)
             {
                 a = !a;
 

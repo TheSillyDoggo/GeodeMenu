@@ -13,7 +13,9 @@
 	"resources": {
         "files": [
             "resources/fonts/*.ttf",
-			"resources/*.png"
+			"resources/*.png",
+			"resources/*.glsl",
+			"resources/*.hlsl"
         ]
     }
 }

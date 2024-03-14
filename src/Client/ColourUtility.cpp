@@ -8,13 +8,13 @@ ImColor ColourUtility::GetColour(ClientColour colour)
 		return ImColor(34, 40, 49);
 
 	case ClientColour::Accent:
-		return ImColor(113, 96, 232);
+		return ImColor(115, 103, 210);
 
 	case ClientColour::Text:
 		return ImColor(255, 255, 255);
 
 	case ClientColour::Hovered:
-		return ImColor(54, 60, 68);
+		return ImColor(68, 73, 83);
 
 	case ClientColour::Pressed:
 		return ImColor(32, 35, 39);
@@ -24,6 +24,12 @@ ImColor ColourUtility::GetColour(ClientColour colour)
 
 	case ClientColour::InputCarot:
 		return ImColor(120, 120, 120);
+
+	case ClientColour::GradientLeft:
+		return ImColor(125, 93, 211);
+
+	case ClientColour::GradientRight:
+		return ImColor(160, 87, 154);
 
 	default:
 		break;

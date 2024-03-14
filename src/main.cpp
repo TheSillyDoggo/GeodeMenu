@@ -1,111 +1,25 @@
 #include "include.h"
 #include <Geode/modify/LoadingLayer.hpp>
 
+#define IMGUI
+
 bool showing = false;
 #ifdef GEODE_IS_ANDROID
 bool android = true;
 #else
 bool android = true;
+//bool android = false;
 #endif
 
 Client* client;
 
-#ifdef KEYBINDS
-
-class $modify(CCKeyboardDispatcher) {
-    static void onModify(auto& self) {
-        self.setHookPriority("CCKeyboardDispatcher::dispatchKeyboardMSG", 1024);
-    }
-
-    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
-    {     
-        if (down && key == KEY_Tab) {
-            if (android)
-            {
-                AndroidUI::addToScene();
-            }
-            else
-            {
-                showing = !showing;
-                CCDirector::get()->getOpenGLView()->showCursor(true);
-            }
-            return true;
-        }
-
-        if (key == KEY_Escape)
-        {
-            if (InputModule::selected)
-            {
-                InputModule::selected = nullptr;
-                return true;
-            }
-        }
-
-        if (InputModule::selected)
-        {
-            if (down)
-            {    
-                if (key >= 48)
-                {
-                    if (key <= 90)
-                    {
-                        std::stringstream ss;
-
-                        if (CCKeyboardDispatcher::getShiftKeyPressed())
-                            ss << CCKeyboardDispatcher::keyToString(key);
-                        else
-                        {
-                            ss << CCKeyboardDispatcher::keyToString(key);
-                        }
-
-                        if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                        {
-                            for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                            {
-                                if (InputModule::selected->allowedChars[i] == ss.str()[0])
-                                {
-                                    InputModule::selected->text += ss.str();
-                                }
-                            }
-                        }
-
-                        return true;
-                    }
-                }
-
-                if (key == KEY_Backspace)
-                {
-                    InputModule::selected->text = InputModule::selected->text.substr(0, InputModule::selected->text.length() - 1);
-                }
-
-                if (key == 190)
-                {
-                    if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                        {
-                            for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                            {
-                                if (InputModule::selected->allowedChars[i] == "."[0])
-                                {
-                                    InputModule::selected->text += ".";
-                                }
-                            }
-                        }
-                }
-
-                return true;
-            }
-        }
-
-        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
-    }
-};
-
-#endif
-
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
-    {     
+    {
+        if (!CCScene::get())
+            return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
+
         if (!getChildOfType<LoadingLayer>(CCScene::get(), 0))
         { 
             if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
@@ -123,6 +37,77 @@ class $modify (CCKeyboardDispatcher)
                     {
                         AndroidUI::addToScene();
                     }
+                }
+                else
+                {
+                    showing = !showing;
+                }
+            }
+        }
+
+        if (!android)
+        {
+            if (key == KEY_Escape)
+            {
+                if (InputModule::selected)
+                {
+                    InputModule::selected = nullptr;
+                    return true;
+                }
+            }
+
+            if (InputModule::selected)
+            {
+                if (down)
+                {    
+                    if (key >= 48)
+                    {
+                        if (key <= 90)
+                        {
+                            std::stringstream ss;
+
+                            if (CCKeyboardDispatcher::getShiftKeyPressed())
+                                ss << CCKeyboardDispatcher::keyToString(key);
+                            else
+                            {
+                                ss << CCKeyboardDispatcher::keyToString(key);
+                            }
+
+                            if (InputModule::selected->text.length() < InputModule::selected->maxSize)
+                            {
+                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
+                                {
+                                    if (InputModule::selected->allowedChars[i] == ss.str()[0])
+                                    {
+                                        InputModule::selected->text += ss.str();
+                                    }
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+
+                    if (key == KEY_Backspace)
+                    {
+                        InputModule::selected->text = InputModule::selected->text.substr(0, InputModule::selected->text.length() - 1);
+                    }
+
+                    if (key == 190)
+                    {
+                        if (InputModule::selected->text.length() < InputModule::selected->maxSize)
+                            {
+                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
+                                {
+                                    if (InputModule::selected->allowedChars[i] == "."[0])
+                                    {
+                                        InputModule::selected->text += ".";
+                                    }
+                                }
+                            }
+                    }
+
+                    return true;
                 }
             }
         }
@@ -200,9 +185,14 @@ class $modify (MenuLayer)
                 // its a callback as imgui will be re initialized when toggling fullscreen,
                 // so use this to setup any themes and or fonts!
 
-                auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "verdana.ttf").string().c_str(), 32.0f);
-                ImGui::GetIO().FontDefault = font;
-                ImGui::GetIO().FontGlobalScale = 0.5f;
+                //auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "verdana.ttf").string().c_str(), 32.0f);
+
+                float mult = 1.0f;
+
+                DrawUtils::mod = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "OpenSans-Regular.ttf").string().c_str(), 18.0f * mult);
+                DrawUtils::title = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "OpenSans-Regular.ttf").string().c_str(), 24.0f * mult);
+                ImGui::GetIO().FontDefault = DrawUtils::mod;
+                ImGui::GetIO().FontGlobalScale = 1 / mult;
 
             }).draw([] {
 

@@ -38,11 +38,11 @@ public:
         bool a = false;
         for (size_t i = 0; i < windows.size(); i++)
         {
-            windows[i]->a = a;
-            windows[i]->i = windows[i]->getIndex(v, windows[i]->windowPos.x);
-            a = !a;
+            //windows[i]->a = a;
+            //windows[i]->i = windows[i]->getIndex(v, windows[i]->windowPos.x);
+            //a = !a;
 
-            if (windows[i]->draw(CompactMode::instance->enabled ? tileSizeCompact : tileSize, animStatus))
+            if (windows[i]->draw(false/*CompactMode::instance->enabled*/ ? tileSizeCompact : tileSize, animStatus))
                 over = true;
         }
 
