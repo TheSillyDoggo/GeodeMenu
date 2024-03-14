@@ -31,16 +31,12 @@ class EndLevelPopup
 
 		void startIn(CCObject* sender)
 		{
-			// Create a move-to action with a specified duration and target position
 			auto moveToAction = CCMoveTo::create(1.0f, ccp(0.0f, 5));
 
-			// Create an ease-in-out action with the move-to action and a rate
 			auto easeInOutAction = CCEaseBounceOut::create(moveToAction);
 
-			// Create a fade-to action with a specified duration and opacity
 			auto fadeToAction = CCFadeTo::create(1.0f, 100);
 
-			// Run the fade-to action on the CCNode
 			ins->runAction(fadeToAction);
 			safe_cast<CCNode*>(ins->getChildren()->objectAtIndex(0))->runAction(easeInOutAction);
 

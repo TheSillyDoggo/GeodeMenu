@@ -9,8 +9,13 @@ bool showing = false;
 #ifdef GEODE_IS_ANDROID
 bool android = true;
 #else
+
+#ifdef IMGUI
+bool android = false;
+#else
 bool android = true;
-//bool android = false;
+#endif
+
 #endif
 
 Client* client;
