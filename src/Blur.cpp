@@ -1,3 +1,5 @@
+#ifdef GEODE_IS_DESKTOP
+
 #include "Blur.hpp"
 
 // COMPLETELY stolen from cgytrus/SimplePatchLoader (with permission)
@@ -326,3 +328,5 @@ class $modify(CCScheduler) {
             recomp = Client::GetModule("recomp-shaders");
     }
 };
+
+#endif
