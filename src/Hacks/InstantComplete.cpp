@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
@@ -21,9 +23,11 @@ class $modify (GJBaseGameLayer)
         {
             if (!m_fields->fix)
             {
-                PlayLayer::get()->playPlatformerEndAnimationToPos(ccp(2, 2), false);
+                PlayLayer::get()->playEndAnimationToPos(ccp(2, 2), false);
                 m_fields->fix = true;
             }
         }
     }
 };
+
+#endif
