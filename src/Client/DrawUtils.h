@@ -23,7 +23,7 @@ class DrawUtils
 
         static void drawRect(ImVec2 pos, ImVec2 size, ImColor colour)
         {
-            #ifndef GEODE_IS_ANDROID
+            #ifdef GEODE_IS_WINDOWS
             ImGui::GetWindowDrawList()->AddRectFilled(pos, addImVec2(pos, size), colour, 0.0f);
             #endif
         }
@@ -41,7 +41,7 @@ class DrawUtils
 
         static void drawGradient(ImVec2 apos, ImVec2 size, ImColor colour, ImColor colour2)
         {
-            #ifndef GEODE_IS_ANDROID
+            #ifdef GEODE_IS_WINDOWS
             auto list = ImGui::GetWindowDrawList();
 
             for (size_t i = 0; i < size.x; i++)
@@ -56,7 +56,7 @@ class DrawUtils
 
         static void anchoredText(ImVec2 pos, ImVec2 size, std::string text, ImColor colour = ImColor(ImVec4(255, 255, 255, 255)), ImVec2 anchor = ImVec2(0.5f, 0.5f))
         {
-            #ifndef GEODE_IS_ANDROID
+            #ifdef GEODE_IS_WINDOWS
             float s = size.x / ImGui::CalcTextSize(text.c_str()).x;
             if (s > 1)
                 s = 1;

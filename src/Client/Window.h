@@ -47,7 +47,7 @@ public:
 
         ImVec2 wp = DrawUtils::addImVec2(windowPos, getOffsetForTime(anim));
 
-        #ifndef GEODE_IS_ANDROID
+        #ifdef GEODE_IS_WINDOWS
 
         ImVec2 clipRect;
         clipRect.x = wp.x + tileSize.x;
