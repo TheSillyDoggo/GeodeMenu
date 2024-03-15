@@ -12,6 +12,7 @@ class MenuPulse : public CCNode
 {
     public:
         CCNode* node = nullptr;
+        FMODLevelVisualizer* lvl = nullptr;
 
         bool init()
         {
@@ -26,12 +27,15 @@ class MenuPulse : public CCNode
         void update(float dt)
         {
             #ifdef GEODE_IS_ANDROID
+            FMODAudioEngine::sharedEngine()->enableMetering();
+            
             node->setScale(FMODAudioEngine::sharedEngine()->getMeteringValue());
             #endif
 
             #ifdef GEODE_IS_WINDOWS
             //node->setScale(2);
             #endif
+            
         }
 
         CREATE_FUNC(MenuPulse);
@@ -54,10 +58,13 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        this->addChild(FMODLevelVisualizer::create());
+        auto c = FMODLevelVisualizer::create();
+
+        this->addChild(c);
 
         auto mp = MenuPulse::create();
         mp->node = getChildOfType<CCSprite>(this, 0);
+        mp->lvl = c;
 
         this->addChild(mp);
 
