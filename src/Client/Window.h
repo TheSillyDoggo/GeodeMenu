@@ -759,7 +759,7 @@ class Config : public Window
 
             Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
 
-            Mod::get()->setSavedValue<float>("button-scale", scale->getValue());
+            Mod::get()->setSavedValue<float>("button-scale", scale->getThumb()->getValue());
         }
 
         void onChangeDraggable(CCObject* sender)

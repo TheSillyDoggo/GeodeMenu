@@ -8,7 +8,7 @@ using namespace geode::prelude;
 i took this class from FigmentBoy (https://github.com/FigmentBoy/DialogHandler)
 
 */
-
+/*
 class AttemptAtReversingDialogObject : public cocos2d::CCObject {
 protected:
 	char pad_0x00[0x60]; // 0x00
@@ -43,4 +43,4 @@ public:
 
 		return obj;
 	}
-};
+};*/

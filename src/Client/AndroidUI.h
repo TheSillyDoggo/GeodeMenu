@@ -159,6 +159,11 @@ public:
     {
         auto btn = static_cast<CCMenuItemSprite*>(sender);
 
+        #ifdef GEODE_IS_MACOS
+        if (typeinfo_cast<_Replay*>(Client::instance->windows[btn->getTag()]))
+            return FLAlertLayer::create("Replay", "Replay bot is not available on macos due to missing bindings, this will probably <cr>not</c> be fixed <cp>^w^</c>", "OK")->show();
+        #endif
+
         lastTab = selectedTab;
         selectedTab = btn->getTag();
 

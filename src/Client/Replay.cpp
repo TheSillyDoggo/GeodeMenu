@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include "Replay.h"
 
 using namespace geode::prelude;
@@ -233,3 +235,5 @@ class $modify(GJBaseGameLayer) {
         if (GJReplayManager::recording) GJReplayManager::replay.inputs.push_back(MyInput(m_gameState.m_unk1f8, button, !player1, push, plr->m_position.x, plr->m_position.y, GJReplayManager::dt, plr->m_platformerXVelocity, plr->m_yVelocity, plr->getRotation()));
     }
 };
+
+#endif
