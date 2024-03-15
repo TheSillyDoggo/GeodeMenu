@@ -3,6 +3,7 @@
 	"version": "v1.2.5",
 	"gd": {
 		"win": "2.204",
+		"mac": "2.200",
 		"android": "*"
 	},
 	"early-load": true,
