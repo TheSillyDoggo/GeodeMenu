@@ -12,14 +12,12 @@ class MenuPulse : public CCNode
 {
     public:
         CCNode* node = nullptr;
-        FMOD::Channel* channel = nullptr;
 
         bool init()
         {
             if (!CCNode::init())
                 return false;
 
-            channel = FMODAudioEngine::sharedEngine()->m_globalChannel;
             this->scheduleUpdate();
 
             return true;
