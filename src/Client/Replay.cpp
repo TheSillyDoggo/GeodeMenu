@@ -70,6 +70,9 @@ class $modify (PlayLayer)
     TodoReturn storeCheckpoint(CheckpointObject* p0)
     {
         PlayLayer::storeCheckpoint(p0);
+
+        if (!p0)
+            return;
         
         m_fields->checkpoints.push_back(p0);
         m_fields->checkpointsDT.push_back(GJReplayManager::dt);
