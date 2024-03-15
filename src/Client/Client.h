@@ -62,7 +62,7 @@ public:
         style->WindowPadding = ImVec2(0, 0);
     }
 
-    [[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
+    //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {
         //if (CCScene::get())
