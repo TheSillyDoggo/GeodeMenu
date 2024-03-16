@@ -8,7 +8,8 @@ public:
 	static void Setup(bool android = false)
 	{
         SetupLevel();
-        SetupBypass();        
+        SetupBypass();
+        SetupCreator();
         SetupCosmetic();
         SetupIconEffects();
         SetupSpeedhack();
@@ -23,8 +24,8 @@ public:
 
         SetupOptions(android);
 
-        if (android)
-            Client::instance->windows.push_back(new Credits());
+        //if (android)
+            //Client::instance->windows.push_back(new Credits());
 
         if (!android)
             setupTheming();
@@ -33,6 +34,8 @@ public:
             setupDevtools();
 
         Client::instance->onPostSetup();
+
+        //log::info("base: {}", geode::base::get());
 	}
 
 #pragma region Setup Windows
@@ -71,9 +74,6 @@ public:
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
 
-        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
-        level->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
-
         level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only use if your a pussy <cl>jk</c>"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
@@ -81,6 +81,7 @@ public:
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
         //level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
 
+        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         #ifdef GEODE_IS_WINDOWS
@@ -113,9 +114,6 @@ public:
         bypass->modules.push_back(new Module("Music Unlocker", "music-bypass", "Unlocks the menu and practice music buttons"));
         bypass->modules.push_back(new Module("Fire in the hole!", "fire-in-the-hole", "Replaces every single sfx with\n<cr>FIRE IN THE HOLE!</c>"));
 
-        bypass->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
-        bypass->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
-
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
@@ -124,8 +122,6 @@ public:
 
         bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
         bypass->modules.push_back(new Module("Full Options Menu", "full-options", "Replaces the mini options menu in the pause menu with the full options menu"));
-        
-        bypass->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
 
         #ifdef GEODE_IS_ANDROID
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
@@ -133,6 +129,32 @@ public:
 
 
         Client::instance->windows.push_back(bypass);
+    }
+
+    static void SetupCreator()
+    {
+        Window* creator = new Window();
+        creator->name = "Creator";
+        creator->id = "creator-window";
+        creator->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+
+        creator->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
+        creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
+
+        creator->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
+        creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
+
+        creator->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+        creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
+
+        //creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
+
+        #ifdef GEODE_IS_ANDROID
+        //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        #endif
+
+
+        Client::instance->windows.push_back(creator);
     }
 
     static void SetupCosmetic()
@@ -161,6 +183,9 @@ public:
 
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
+
+        cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
+        cosmetic->modules.push_back(new Module("Pulse Scene", "all-pulse", "Pulses the CCScene to the music, <cl>why would you want this?</c>"));
 
         //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
         //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));

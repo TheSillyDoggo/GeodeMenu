@@ -1,3 +1,11 @@
+# 1.2.5
+
+- Added Pulsing menu and pulsing scene
+- Added Creator category for creator hacks
+- Fixed descriptions being openable multiple times
+- Added Custom Object Limit Bypass
+- Added Free Scroll
+
 # 1.2.4
 
 - Added Noclip Deaths and Noclip Accuracy

@@ -1,5 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/CCNode.hpp>
+#include <Geode/modify/CCScheduler.hpp>
 #include <Geode/modify/FMODLevelVisualizer.hpp>
 #include "../Client/Client.h"
 
@@ -8,18 +10,26 @@
 
 using namespace geode::prelude;
 
+Module* pulseAll = nullptr;
+
 class MenuPulse : public CCNode
 {
     public:
+        Module* mod = nullptr;
+
         CCNode* node = nullptr;
-        CCLabelBMFont* lbl = nullptr;
-        FMODLevelVisualizer* lvl = nullptr;
         float v = 1.0f;
+
+        FMODAudioEngine* engine = nullptr;
 
         bool init()
         {
             if (!CCNode::init())
                 return false;
+
+            mod = Client::GetModule("menu-pulse");
+
+            engine = FMODAudioEngine::sharedEngine();
 
             this->scheduleUpdate();
 
@@ -28,32 +38,36 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
-            #ifdef GEODE_IS_ANDROID
-            FMODAudioEngine::sharedEngine()->enableMetering();
-            FMODAudioEngine::sharedEngine()->updateMetering();
-            lbl->setString(numToString<float>(FMODAudioEngine::sharedEngine()->getMeteringValue(), 10).c_str());
+            engine->updateMetering();
 
-            v = as<float>(std::lerp(as<float>(v), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), dt * 4));
-        
-            node->setScale(0.65f + (v * 0.55f));
-            #endif
-
-            #ifdef GEODE_IS_WINDOWS
-            //node->setScale(2);
-            #endif
-            
+            v = as<float>(std::lerp(as<float>(v), as<float>(engine->getMeteringValue()), dt * 6.9420f));
+            if (node)
+                node->setScale(mod->enabled ? (0.85f + clampf(v * 0.25f, 0, 1)) : 1);
         }
 
         CREATE_FUNC(MenuPulse);
 };
 
-class $modify (FMODLevelVisualizer)
-{
-    TodoReturn updateVisualizer(float p0, float p1, float p2)
-    {
-        log::info("p0: {}, p1: {}, p2: {}", p0, p1, p2);
+float vPulse = 0;
+Module* pul = nullptr;
 
-        FMODLevelVisualizer::updateVisualizer(p0, p1, p2);
+class $modify (PulsingScheduler, CCScheduler)
+{
+    void update(float dt)
+    {
+        CCScheduler::update(dt);
+
+        if (auto scene = CCScene::get())
+        {
+            if (!pul)
+                pul = Client::GetModule("all-pulse");
+
+            FMODAudioEngine::sharedEngine()->enableMetering();
+        
+            vPulse = as<float>(std::lerp(as<float>(vPulse), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), 0.1f));
+
+            scene->setScale((pul->enabled && !PlayLayer::get()) ? (0.85f + clampf(vPulse * 0.25f, 0, 1)) : 1);
+        }
     }
 };
 
@@ -64,17 +78,10 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        auto c = FMODLevelVisualizer::create();
-        auto lbl = CCLabelBMFont::create("asdf", "bigFont.fnt");
-        lbl->setPosition(ccp(200, 200));
-
-        this->addChild(c);
-        this->addChild(lbl, 696969);
+        FMODAudioEngine::sharedEngine()->enableMetering();
 
         auto mp = MenuPulse::create();
         mp->node = getChildOfType<CCSprite>(this, 0);
-        mp->lvl = c;
-        mp->lbl = lbl;
 
         this->addChild(mp);
 
