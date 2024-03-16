@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/CCNode.hpp>
 #include <Geode/modify/CCScheduler.hpp>
@@ -78,13 +78,13 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        //FMODAudioEngine::sharedEngine()->enableMetering();
+        FMODAudioEngine::sharedEngine()->enableMetering();
 
-        //auto mp = MenuPulse::create();
-        //mp->node = getChildOfType<CCSprite>(this, 0);
+        auto mp = MenuPulse::create();
+        mp->node = getChildOfType<CCSprite>(this, 0);
 
-        //this->addChild(mp);
+        this->addChild(mp);
 
         return true;
     }
-};*/
+};
