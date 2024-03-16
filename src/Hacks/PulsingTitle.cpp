@@ -48,6 +48,8 @@ class MenuPulse : public CCNode
         CREATE_FUNC(MenuPulse);
 };
 
+#ifndef GEODE_IS_ANDROID
+
 float vPulse = 0;
 Module* pul = nullptr;
 
@@ -70,6 +72,8 @@ class $modify (PulsingScheduler, CCScheduler)
         }
     }
 };
+
+#endif
 
 class $modify (MenuLayer)
 {

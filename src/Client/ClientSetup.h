@@ -182,7 +182,9 @@ public:
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
 
         cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
+        #ifndef GEODE_IS_ANDROID
         cosmetic->modules.push_back(new Module("Pulse Scene", "all-pulse", "Pulses the CCScene to the music, <cl>why would you want this?</c>"));
+        #endif
 
         //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
         //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));
