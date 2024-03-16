@@ -33,9 +33,9 @@ class MenuPulse : public CCNode
             FMODAudioEngine::sharedEngine()->updateMetering();
             lbl->setString(numToString<float>(FMODAudioEngine::sharedEngine()->getMeteringValue(), 10).c_str());
 
-            v = as<float>(std::lerp(as<float>(v), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), dt * 10));
+            v = as<float>(std::lerp(as<float>(v), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), dt * 4));
         
-            node->setScale(0.8f + (v * 0.4f));
+            node->setScale(0.65f + (v * 0.55f));
             #endif
 
             #ifdef GEODE_IS_WINDOWS
