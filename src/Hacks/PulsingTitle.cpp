@@ -14,6 +14,7 @@ class MenuPulse : public CCNode
         CCNode* node = nullptr;
         CCLabelBMFont* lbl = nullptr;
         FMODLevelVisualizer* lvl = nullptr;
+        float v = 1.0f;
 
         bool init()
         {
@@ -32,7 +33,9 @@ class MenuPulse : public CCNode
             FMODAudioEngine::sharedEngine()->updateMetering();
             lbl->setString(numToString<float>(FMODAudioEngine::sharedEngine()->getMeteringValue(), 10).c_str());
 
-            node->setScale(FMODAudioEngine::sharedEngine()->getMeteringValue());
+            v = as<float>(std::lerp(as<float>(v), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), dt * 10));
+        
+            node->setScale(0.8f + (v * 0.4f));
             #endif
 
             #ifdef GEODE_IS_WINDOWS
