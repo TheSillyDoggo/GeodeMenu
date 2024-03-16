@@ -25,21 +25,6 @@ class $modify (CCArray)
     }
 };
 
-class $modify (CCDictionary)
-{
-    unsigned int count()
-    {
-        if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf)
-        {
-            return 1;
-        }
-        else
-        {
-            return CCDictionary::count();
-        }
-    }
-};
-
 class $modify (EditorUI)
 {
     void onNewCustomItem(cocos2d::CCObject* sender)
@@ -53,3 +38,26 @@ class $modify (EditorUI)
         EditorUI::reloadCustomItems();
     }
 };
+
+unsigned int dicCount(CCDictionary* ins)
+{
+    if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf)
+    {
+        return 1;
+    }
+    else
+    {
+        return ins->count();
+    }
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getNonVirtual(&CCDictionary::count)
+        ),
+        &dicCount,
+        "cocos2d::CCDictionary::count",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
