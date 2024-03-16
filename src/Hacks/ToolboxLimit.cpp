@@ -1,7 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
 #include <Geode/modify/CCArray.hpp>
-#include <Geode/modify/CCDictionary.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
