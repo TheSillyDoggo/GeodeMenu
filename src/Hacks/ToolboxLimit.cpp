@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
 #include <Geode/modify/CCArray.hpp>
 #include "../Client/Client.h"
@@ -59,4 +59,4 @@ $execute {
         "cocos2d::CCDictionary::count",
         tulip::hook::TulipConvention::Thiscall
     );
-}
+}*/
