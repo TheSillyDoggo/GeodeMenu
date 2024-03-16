@@ -29,6 +29,7 @@ class MenuPulse : public CCNode
         {
             #ifdef GEODE_IS_ANDROID
             FMODAudioEngine::sharedEngine()->enableMetering();
+            FMODAudioEngine::sharedEngine()->updateMetering();
             lbl->setString(numToString<float>(FMODAudioEngine::sharedEngine()->getMeteringValue(), 10).c_str());
 
             node->setScale(FMODAudioEngine::sharedEngine()->getMeteringValue());
