@@ -3,7 +3,7 @@
 - Added Pulsing menu and pulsing scene
 - Added Creator category for creator hacks
 - Fixed descriptions being openable multiple times
-- Added Custom Object Limit Bypass
+- Added Custom Object Limit Bypass (pc only for now)
 - Added Free Scroll
 
 # 1.2.4
