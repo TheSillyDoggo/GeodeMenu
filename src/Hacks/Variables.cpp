@@ -1,10 +1,10 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-/*class $modify (GameManager)
+class $modify (GameManager)
 {
     bool getUGV(char const* id)
     {

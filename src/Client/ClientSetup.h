@@ -79,6 +79,8 @@ public:
 
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
+
+        level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
         //level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
@@ -139,10 +141,10 @@ public:
         creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
 
         creator->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
-        creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
-
         creator->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
+
         #ifdef GEODE_IS_WINDOWS
+        creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
         creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
         #endif
 

@@ -68,7 +68,7 @@ class $modify (PulsingScheduler, CCScheduler)
         
             vPulse = as<float>(std::lerp(as<float>(vPulse), as<float>(FMODAudioEngine::sharedEngine()->getMeteringValue()), 0.1f));
 
-            scene->setScale((pul->enabled && !PlayLayer::get()) ? (0.85f + clampf(vPulse * 0.25f, 0, 1)) : 1);
+            scene->setScale((pul->enabled && !(PlayLayer::get() || LevelEditorLayer::get())) ? (0.85f + clampf(vPulse * 0.25f, 0, 1)) : 1);
         }
     }
 };

@@ -1,3 +1,8 @@
+# 1.2.6
+
+- Added Show Triggers in normal mode
+- Fixed editor crash
+
 # 1.2.5
 
 - Added Pulsing menu and pulsing scene

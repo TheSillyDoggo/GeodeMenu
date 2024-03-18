@@ -1,3 +1,5 @@
+#ifdef GEODE_IS_WINDOWS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
 #include "../Client/Client.h"
@@ -17,3 +19,5 @@ class $modify (EditorUI)
             EditorUI::constrainGameLayerPosition();
     }
 };
+
+#endif
