@@ -33,29 +33,6 @@ class $modify (PlayLayer)
                 m_fields->mainLayer->addChild(p0);
         }
     }
-    /*PlayerObject* hold = nullptr;
-
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
-    {
-        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
-            return false;
-
-        //playerFrame, shipFrame?, gameLayer, unk, isPlaformerMaybeIDK
-        auto h = PlayerObject::create(1, 1, nullptr, this, false);
-        h->pushButton(PlayerButton::Jump);
-
-        for (size_t i = 0; i < 240 * 5; i++)
-        {
-            h->update(1 / 240);
-        }
-        
-        
-        m_fields->hold = h;
-
-        this->addChild(h);
-
-        return true;
-    }*/
 };
 
 class $modify (GameObject)

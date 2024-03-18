@@ -80,6 +80,7 @@ public:
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
+        level->modules.push_back(new Module("Hitbox Trail", "show-hitbox-trail", "Shows object hitboxes on death"));
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
         //level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
 

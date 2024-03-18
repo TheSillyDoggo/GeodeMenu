@@ -1,3 +1,8 @@
+# 1.2.7
+
+- Added Hitbox Trail
+- Added No Wave Pulse
+
 # 1.2.6
 
 - Added Show Triggers in normal mode
