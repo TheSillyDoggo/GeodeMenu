@@ -36,7 +36,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 
         for (auto node : children)
         {
-            if (typeinfo_cast<CCNode*>(node))
+            if (typeinfo_cast<CCNode*>(node) && node->getChildrenCount() == 1)
             {
                 if (auto l = getChildOfType<CCLayer>(node, 0))
                 {
