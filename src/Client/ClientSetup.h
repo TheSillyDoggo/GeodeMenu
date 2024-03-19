@@ -87,6 +87,8 @@ public:
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
+        level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
+
         #ifdef GEODE_IS_WINDOWS
         //level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
         #endif

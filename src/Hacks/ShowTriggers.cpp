@@ -19,8 +19,8 @@ class $modify (PlayLayer)
         {
             if (!m_fields->mainLayer)
             {
-                this->sortAllChildren();
-                if (auto mainNode = getChildOfType<CCNode>(this, 0))
+                //this->sortAllChildren();
+                if (auto mainNode = getChildOfType<CCNode>(this, 1))
                 {
                     if (auto l = getChildOfType<CCLayer>(mainNode, 0))
                     {

@@ -4,13 +4,6 @@
 
 using namespace geode::prelude;
 
-class HBox : public CCObject
-{
-    public:
-        CCPoint point;
-        float scale;
-};
-
 std::vector<CCPoint> points;
 std::vector<CCPoint> sizes;
 Module* hitboxTrail = nullptr;
@@ -18,6 +11,8 @@ Module* hitboxTrail = nullptr;
 class $modify (GJBaseGameLayer)
 {
     CCPoint lastPos = CCPointZero;
+
+    CCDrawNode* dn = nullptr;
 
     virtual bool init()
     {
@@ -29,14 +24,43 @@ class $modify (GJBaseGameLayer)
 
         hitboxTrail = Client::GetModule("show-hitbox-trail");
 
+        m_fields->dn = getNode();
+
         return true;
+    }
+
+    CCDrawNode* getNode()
+    {
+        CCArrayExt<CCNode*> children = this->getChildren();
+
+        for (auto node : children)
+        {
+            if (typeinfo_cast<CCNode*>(node))
+            {
+                if (auto l = getChildOfType<CCLayer>(node, 0))
+                {
+                    if (auto n = getChildOfType<CCDrawNode>(l, 0))
+                        return n;
+                }
+            }
+        }
+
+        return nullptr;
     }
 
     virtual void update(float dt)
     {
         GJBaseGameLayer::update(dt);
 
-        if (m_player1 && m_debugDrawNode && hitboxTrail->enabled)
+        #ifdef GEODE_IS_WINDOWS
+        if (!m_fields->dn)
+            m_fields->dn = m_debugDrawNode;
+        #endif
+
+        if (!m_fields->dn)
+            m_fields->dn = getNode();
+
+        if (m_player1 && m_fields->dn && hitboxTrail->enabled)
         {
             if (m_fields->lastPos != m_player1->getPosition())
             {
@@ -59,7 +83,7 @@ class $modify (GJBaseGameLayer)
                     ccp(squarePosition.x - squareSize.x / 2, squarePosition.y + squareSize.y / 2)  // Top-left
                 };
 
-                m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
+                m_fields->dn->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
 
                 i++;
             }

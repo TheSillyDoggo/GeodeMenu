@@ -5,36 +5,31 @@
 
 using namespace geode::prelude;
 
-CCNode* getChildByTagRecursively(CCNode* parent, int tag) {
-    if (!parent) {
-        return nullptr;
-    }
-
-    if (parent->getTag() == tag) {
-        return parent;
-    }
-
-    CCArray* children = parent->getChildren();
-    CCObject* obj = nullptr;
-    CCARRAY_FOREACH(children, obj) {
-        CCNode* child = dynamic_cast<CCNode*>(obj);
-        if (child) {
-            CCNode* result = getChildByTagRecursively(child, tag);
-            if (result && typeinfo_cast<CCDrawNode*>(result)) {
-                return result;
-            }
-        }
-    }
-
-    return nullptr;
-}
-
 class $modify (PlayLayer)
 {
     Module* mod = nullptr;
     Module* mod2 = nullptr;
 
     CCDrawNode* dn = nullptr;
+
+    CCDrawNode* getNode()
+    {
+        CCArrayExt<CCNode*> children = this->getChildren();
+
+        for (auto node : children)
+        {
+            if (typeinfo_cast<CCNode*>(node))
+            {
+                if (auto l = getChildOfType<CCLayer>(node, 0))
+                {
+                    if (auto n = getChildOfType<CCDrawNode>(l, 0))
+                        return n;
+                }
+            }
+        }
+
+        return nullptr;
+    }
 
     void updateVisibility(float p0) {
         PlayLayer::updateVisibility(p0);
@@ -45,23 +40,12 @@ class $modify (PlayLayer)
         #endif
 
         if (!m_fields->dn)
-            m_fields->dn = as<CCDrawNode*>(getChildByTagRecursively(PlayLayer::get(), -9999));
-
-        if (!m_fields->dn)
-            m_fields->dn = as<CCDrawNode*>(getChildByTagRecursively(PlayLayer::get(), 1));
-
-        if (!m_fields->dn && PlayLayer::get()->getChildByID("hitbox-node"))
-            m_fields->dn = as<CCDrawNode*>(getChildOfType<CCDrawNode>(getChildOfType<CCLayer>(PlayLayer::get()->getChildByID("hitbox-node"), 0), 0));
+            m_fields->dn = getNode();
 
         if (!m_fields->dn)
             return;
 
-        #ifdef GEODE_IS_WINDOWS
-        bool shouldVis = m_isDebugDrawEnabled && m_isPracticeMode;
-        #else
-        //bool shouldVis = m_isPracticeMode;
-        bool shouldVis = false;
-        #endif
+        bool shouldVis = GameManager::sharedState()->getGameVariable("0045") && m_isPracticeMode;
 
         if (!m_fields->mod)
             m_fields->mod = Client::GetModule("show-hitboxes");
