@@ -8,13 +8,12 @@ using namespace geode::prelude;
 std::vector<CCPoint> points;
 std::vector<CCPoint> sizes;
 Module* hitboxTrail = nullptr;
+CCPoint lastPos = CCPointZero;
+Ref<CCDrawNode> dn = nullptr;
+
 
 class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 {
-    CCPoint lastPos = CCPointZero;
-
-    CCDrawNode* dn = nullptr;
-
     virtual bool init()
     {
         if (!GJBaseGameLayer::init())
@@ -23,9 +22,11 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         points.clear();
         sizes.clear();
 
+        lastPos = CCPointZero;
+
         hitboxTrail = Client::GetModule("show-hitbox-trail");
 
-        m_fields->dn = getNode();
+        dn = getNode();
 
         return true;
     }
@@ -54,12 +55,12 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         GJBaseGameLayer::update(dt);
 
         #ifdef GEODE_IS_WINDOWS
-        if (!m_fields->dn)
-            m_fields->dn = m_debugDrawNode;
+        if (!dn)
+            dn = m_debugDrawNode;
         #endif
 
-        if (!m_fields->dn)
-            m_fields->dn = getNode();
+        if (!dn)
+            dn = getNode();
 
         if (hitboxTrail->enabled)
             drawTrail();
@@ -69,16 +70,16 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
     {
         if (m_player1)
         {
-            if (m_fields->lastPos != m_player1->getPosition())
+            if (lastPos != m_player1->getPosition())
             {
-                m_fields->lastPos = m_player1->getPosition();
+                lastPos = m_player1->getPosition();
 
-                points.push_back(m_fields->lastPos);
+                points.push_back(lastPos);
                 sizes.push_back(m_player1->getObjectRect().size);
             }
         }
 
-        if (m_fields->dn)
+        if (dn)
         {
             int i = 0;
             for (auto point : points)
@@ -93,7 +94,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
                     ccp(squarePosition.x - squareSize.x / 2, squarePosition.y + squareSize.y / 2)  // Top-left
                 };
 
-                m_fields->dn->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
+                dn->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
 
                 i++;
             }
