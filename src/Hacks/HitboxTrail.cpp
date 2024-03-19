@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
 #include "../Client/Client.h"
 
@@ -108,6 +109,17 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
     }
 };
 
+class $modify (PlayLayer)
+{
+    void resetLevel()
+    {
+        PlayLayer::resetLevel();
+
+        points.clear();
+        sizes.clear();
+    }
+};
+
 class $modify (LevelEditorLayer)
 {
     virtual TodoReturn updateVisibility(float p0)
@@ -116,5 +128,13 @@ class $modify (LevelEditorLayer)
 
         if (hitboxTrail && hitboxTrail->enabled)
             reinterpret_cast<GJBaseGameLayerExt*>(this)->drawTrail();
+    }
+
+    TodoReturn onPlaytest()
+    {
+        LevelEditorLayer::onPlaytest();
+
+        points.clear();
+        sizes.clear();
     }
 };
