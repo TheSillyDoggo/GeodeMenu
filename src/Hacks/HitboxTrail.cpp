@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -8,7 +9,7 @@ std::vector<CCPoint> points;
 std::vector<CCPoint> sizes;
 Module* hitboxTrail = nullptr;
 
-class $modify (GJBaseGameLayer)
+class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 {
     CCPoint lastPos = CCPointZero;
 
@@ -60,7 +61,13 @@ class $modify (GJBaseGameLayer)
         if (!m_fields->dn)
             m_fields->dn = getNode();
 
-        if (m_player1 && m_fields->dn && hitboxTrail->enabled)
+        if (hitboxTrail->enabled)
+            drawTrail();
+    }
+
+    void drawTrail()
+    {
+        if (m_player1)
         {
             if (m_fields->lastPos != m_player1->getPosition())
             {
@@ -69,7 +76,10 @@ class $modify (GJBaseGameLayer)
                 points.push_back(m_fields->lastPos);
                 sizes.push_back(m_player1->getObjectRect().size);
             }
+        }
 
+        if (m_fields->dn)
+        {
             int i = 0;
             for (auto point : points)
             {
@@ -94,5 +104,16 @@ class $modify (GJBaseGameLayer)
             points.erase(points.begin());
             sizes.erase(sizes.begin());
         }
+    }
+};
+
+class $modify (LevelEditorLayer)
+{
+    virtual TodoReturn updateVisibility(float p0)
+    {
+        LevelEditorLayer::updateVisibility(p0);
+
+        if (hitboxTrail && hitboxTrail->enabled)
+            reinterpret_cast<GJBaseGameLayerExt*>(this)->drawTrail();
     }
 };
