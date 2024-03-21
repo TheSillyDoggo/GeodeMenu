@@ -148,7 +148,7 @@ public:
         {
             panel->setScale(0);
 
-            return CCSpeed::create((CCEaseElasticOut::create(CCScaleTo::create(1, 1))), 1.0f / v);
+            return CCSpeed::create((CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)), 1.0f / v);
         }
 
         return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);

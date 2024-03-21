@@ -74,7 +74,7 @@ public:
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
 
-        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only use if your a pussy <cl>jk</c>"));
+        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
@@ -88,6 +88,11 @@ public:
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
+
+        level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
+        level->modules[0]->options.push_back(new Module("Test", "test", ""));
+        level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
+        level->modules[0]->options.push_back(new Module("Test", "test", ""));
 
         #ifdef GEODE_IS_WINDOWS
         //level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
@@ -187,6 +192,8 @@ public:
 
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
+
+        cosmetic->modules.push_back(new Module("No Circles", "no-circles", "Disables circle effects such as the one when you touch an orb"));
 
         cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
         #ifndef GEODE_IS_ANDROID

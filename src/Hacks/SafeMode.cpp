@@ -57,7 +57,8 @@ std::vector<std::string> hacks = {
     "instant",
     "no-reverse",
     "no-static",
-    "no-shaders",
+    "show-hitboxes",
+    "show-triggers"
 };
 
 void Client::onPostSetup()
@@ -136,6 +137,8 @@ class $modify (PlayLayerExt, PlayLayer)
 
     void resetLevel()
     {
+        hasHackedAttempt = false;
+
         PlayLayer::resetLevel();
 
         updateSafemode();

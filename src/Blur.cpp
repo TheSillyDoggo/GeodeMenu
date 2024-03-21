@@ -1,4 +1,4 @@
-/*#ifdef GEODE_IS_DESKTOP
+//#ifdef GEODE_IS_DESKTOP
 
 #include "Blur.hpp"
 
@@ -239,7 +239,7 @@ class $modify(CCNode) {
             blurTimer = as<float>(as<CCLayerColor*>((CCNode*)(this))->getOpacity()) / 100.0f;
         
         float blur = 0.05 * (1.f - std::cos((float)std::numbers::pi * blurTimer)) * 0.5f;
-        if (blur == 0.f || /*this->getID() != std::string("android-ui") || (CCNode*)this != CCDirector::get()->getRunningScene() || ppShader.program == 0) {
+        if (blur == 0.f || this->getID() != std::string("android-ui") /*|| (CCNode*)this != CCDirector::get()->getRunningScene()*/ || ppShader.program == 0) {
             CCNode::visit();
             return;
         }
@@ -317,15 +317,12 @@ $on_mod(Unloaded) {
     cleanupPostProcess();
 }
 
-/*class $modify(CCScheduler) {
+class $modify(CCScheduler) {
     void update(float dt) {
         CCScheduler::update(dt);
         
         blurTimer = Client::instance->animStatus;
-
-        if (!recomp)
-            recomp = Client::GetModule("recomp-shaders");
     }
 };
 
-#endif*/
+//#endif

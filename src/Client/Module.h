@@ -24,6 +24,23 @@ class Module
 
         static inline std::string descMod = "";
 
+        std::vector<Module*> options = {};
+
+        std::string name;
+        std::string id;
+        std::string description;
+        std::string alert;
+        bool enabled;
+        bool useAlert;
+        bool onceAlert;
+
+        bool vAlert;
+
+        bool def;
+        float value = 1.0f;
+
+        ModuleChangeDelegate* delegate = nullptr;
+
         enum kModuleType
         {
             Toggle,
@@ -68,21 +85,6 @@ class Module
 
             this->load();
         }
-
-        std::string name;
-        std::string id;
-        std::string description;
-        std::string alert;
-        bool enabled;
-        bool useAlert;
-        bool onceAlert;
-
-        bool vAlert;
-
-        bool def;
-        float value = 1.0f;
-
-        ModuleChangeDelegate* delegate = nullptr;
 
         virtual bool Draw(ImVec2 tileSize)
         {
@@ -140,75 +142,11 @@ class Module
             enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
         }
 
-        void onInfoAndroid(CCObject* sender)
-        {
-            auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
-
-            //fucking force priority kill yourself
-            auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
-            al->show();
-
-            CCTouchDispatcher::get()->addTargetedDelegate(al, -514, true);
-            al->setTouchPriority(-514);
-
-            //al->m_buttonMenu->setTouchPriority(-513);
-        }
-
-
-        void onToggleAndroid(CCObject* sender)
-        {
-            auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
-
-            log::info("alert: {}", dat->alert.c_str());
-
-            if (dat->useAlert && !dat->vAlert)
-            {
-                //create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
-                //ColouredAlertLayer::addToScene(dat->name, dat->alert);
-                FLAlertLayer::create(dat->name.c_str(), dat->alert.c_str(), "OK")->show();
-
-                dat->vAlert = true;
-
-                as<CCMenuItemToggler*>(sender)->toggle(!as<CCMenuItemToggler*>(sender)->isToggled());
-
-                return;
-            }
-
-            dat->enabled = !dat->enabled;
-            dat->save();
-            dat->OnChange();
-
-            log::info("Toggling {}", dat->id);
-            log::info("enabled status: {}", dat->enabled);
-        }
-
-        virtual void makeAndroid(CCMenu* menu, CCPoint pos)
-        {
-            auto btn = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Module::onToggleAndroid), 0.75f);
-            btn->setUserData(this);
-            btn->setID(id);
-            btn->toggle(enabled);
-            btn->setPosition(pos);
-
-            auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
-            label->setAnchorPoint(ccp(0, 0.5f));
-            label->setScale(0.575f);
-            label->setPosition(pos + ccp(15, 0));
-            label->limitLabelWidth(110, 0.575f, 0.1f);
-
-            auto info = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), menu, menu_selector(Module::onInfoAndroid));
-            info->setScale(0.55f);
-            info->m_baseScale = info->getScale();
-            info->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-5, 5));
-            info->setContentSize(info->getContentSize() * 2.5f);
-            static_cast<CCSprite*>(info->getChildren()->objectAtIndex(0))->setPosition(info->getContentSize() / 2);
-            info->setUserData(this);
-
-            menu->addChild(btn);
-            menu->addChild(info);
-            menu->addChild(label);
-        }
-
+        void onInfoAndroid(CCObject* sender);
+        void onOptionsAndroid(CCObject* sender);
+        void onToggleAndroid(CCObject* sender);
+        
+        virtual void makeAndroid(CCMenu* menu, CCPoint pos);
 };
 
 class InputModule : public Module, public TextInputDelegate

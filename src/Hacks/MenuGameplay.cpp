@@ -6,16 +6,8 @@ using namespace geode::prelude;
 
 class $modify (MenuGameLayer)
 {
-    CCTouch* touch = nullptr;
-
-    virtual bool ccTouchBegan(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+    virtual void update(float dt)
     {
-        m_fields->touch = p0;
 
-        log::info("penis");
-
-        return true;
     }
-
-
 };*/
