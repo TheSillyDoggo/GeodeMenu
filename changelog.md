@@ -5,6 +5,7 @@
 - Readded thicker hitboxes
 - Added fill hitboxes
 - Made hitbox trail work for 2 player
+- Show Hitboxes is now considered a cheat
 
 # 1.2.7
 
