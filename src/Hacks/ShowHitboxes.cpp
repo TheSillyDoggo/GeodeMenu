@@ -45,7 +45,7 @@ class $modify (PlayLayer)
         if (!m_fields->dn)
             return;
 
-        bool shouldVis = GameManager::sharedState()->getGameVariable("0045") && m_isPracticeMode;
+        bool shouldVis = GameManager::sharedState()->getGameVariable("0166") && m_isPracticeMode;
 
         if (!m_fields->mod)
             m_fields->mod = Client::GetModule("show-hitboxes");

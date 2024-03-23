@@ -89,10 +89,10 @@ public:
 
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
 
-        level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
-        level->modules[0]->options.push_back(new Module("Test", "test", ""));
-        level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
-        level->modules[0]->options.push_back(new Module("Test", "test", ""));
+        //level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
+        //level->modules[0]->options.push_back(new Module("Test", "test", ""));
+        //level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
+        //level->modules[0]->options.push_back(new Module("Test", "test", ""));
 
         #ifdef GEODE_IS_WINDOWS
         //level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
@@ -176,7 +176,9 @@ public:
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
-        //cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
+
+        cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
+        cosmetic->modules.push_back(new Module("Fill Hitboxes", "fill-hitbox", "Fills the hitboxes as well as outlining them"));
 
         cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
@@ -248,6 +250,7 @@ public:
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
         replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
         replay->modules.push_back(new Module("Noclip Deaths", "status-deaths", "Shows your deaths in noclip (hidden when noclip is disabled)"));
+        replay->modules.push_back(new Module("Replay Status", "status-replay", "Replay debug info"));
         //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));

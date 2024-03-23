@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include <numbers>
 #include <Geode/Geode.hpp>
@@ -36,4 +36,4 @@ GLint ppShaderRadius = 0;
 GLint ppShaderEffect = 0;
 Module* recomp = nullptr;
 
-float blurTimer = 0.f;
+float blurTimer = 0.f;*/

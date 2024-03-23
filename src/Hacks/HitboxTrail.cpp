@@ -10,6 +10,7 @@ std::vector<CCPoint> points;
 std::vector<CCPoint> sizes;
 Module* hitboxTrail = nullptr;
 CCPoint lastPos = CCPointZero;
+CCPoint lastPos2 = CCPointZero;
 Ref<CCDrawNode> dn = nullptr;
 
 
@@ -24,6 +25,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         sizes.clear();
 
         lastPos = CCPointZero;
+        lastPos2 = CCPointZero;
 
         hitboxTrail = Client::GetModule("show-hitbox-trail");
 
@@ -77,6 +79,17 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 
                 points.push_back(lastPos);
                 sizes.push_back(m_player1->getObjectRect().size);
+            }
+        }
+
+        if (m_player2)
+        {
+            if (lastPos2 != m_player2->getPosition())
+            {
+                lastPos2 = m_player2->getPosition();
+
+                points.push_back(lastPos2);
+                sizes.push_back(m_player2->getObjectRect().size);
             }
         }
 

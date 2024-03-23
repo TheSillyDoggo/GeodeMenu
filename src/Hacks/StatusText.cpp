@@ -31,6 +31,7 @@ class StatusNode : public CCNode
         static inline Module* cheat = nullptr;
         static inline Module* accuracy = nullptr;
         static inline Module* deaths = nullptr;
+        static inline Module* replay = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -99,6 +100,9 @@ class StatusNode : public CCNode
             if (!noclip)
                 noclip = Client::GetModule("noclip");
 
+            if (!replay)
+                replay = Client::GetModule("status-replay");
+
             
             float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_unk1f8 == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_unk1f8)));
             
@@ -107,11 +111,25 @@ class StatusNode : public CCNode
             sLabels[1]->setVisible(fps->enabled);
             sLabels[2]->setVisible(noclip->enabled && accuracy->enabled);
             sLabels[3]->setVisible(noclip->enabled && deaths->enabled);
+            sLabels[4]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+            sLabels[5]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+            sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
 
 
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
             sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
+
+            std::stringstream ss;
+            ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
+
+            std::stringstream inp;
+            inp << GJReplayManager::replay.inputs.size() << (GJReplayManager::replay.inputs.size() == 1 ? " Input" : " Inputs") << ", " << GJReplayManager::replay.frames.size() << (GJReplayManager::replay.frames.size() == 1 ? " Frame" : " Frames");
+
+            std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
+            sLabels[4]->setString(ss.str().c_str());
+            sLabels[5]->setString(b.c_str());
+            sLabels[6]->setString(inp.str().c_str());
 
             if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
             {
@@ -149,11 +167,11 @@ class $modify (PlayLayer)
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        int count = 4;
+        int count = 7;
 
         for (size_t i = 0; i < count; i++)
         {
-            auto lbl = CCLabelBMFont::create("penis", "bigFont.fnt");
+            auto lbl = CCLabelBMFont::create("boobs", "bigFont.fnt");
             lbl->setAnchorPoint(ccp(0, 1));
             lbl->setPositionX(3);
             menu->addChild(lbl);

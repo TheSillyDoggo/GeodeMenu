@@ -1,3 +1,11 @@
+# 1.2.8
+
+- Fixed practice hitboxes being broken
+- Added Replay status text
+- Readded thicker hitboxes
+- Added fill hitboxes
+- Made hitbox trail work for 2 player
+
 # 1.2.7
 
 - Added Hitbox Trail
