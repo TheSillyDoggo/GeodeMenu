@@ -32,7 +32,7 @@ class $modify (CCKeyboardDispatcher)
             if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
                 if (android)
                 {
-                    #ifdef GEODE_IS_DESKTOP
+                    #ifdef GEODE_IS_WINDOWS
                     CCDirector::get()->getOpenGLView()->showCursor(true);
                     #endif
                     
