@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
@@ -64,3 +66,5 @@ class $modify (PlayLayer)
     }
 
 };
+
+#endif
