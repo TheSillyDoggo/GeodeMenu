@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include "../Client/Client.h"
 
@@ -47,3 +49,5 @@ $execute {
         tulip::hook::TulipConvention::Thiscall
     );
 }
+
+#endif
