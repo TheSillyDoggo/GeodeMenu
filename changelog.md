@@ -3,6 +3,7 @@
 - Added hitbox colour customizer
 - Fixed hitboxes in mirror portal mode
 - Added no particles on android
+- Added Kill at % (also supports time for platformer)
 
 # 1.2.8
 

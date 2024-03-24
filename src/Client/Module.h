@@ -166,6 +166,15 @@ class InputModule : public Module, public TextInputDelegate
             this->load();
         }
 
+        InputModule(std::string name, std::string id, std::string def)
+        {
+            this->name = name;
+            this->id = id;
+            this->text = def;
+
+            this->load();
+        }
+
         bool Draw(ImVec2 tileSize)
         {
             ImVec2 pos = ImGui::GetCursorPos();

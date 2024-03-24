@@ -73,7 +73,7 @@ public:
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
-        //level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
+        level->modules.push_back(new Module("Kill at %", "kill-after", "you're not supposed to be here"));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
@@ -81,6 +81,12 @@ public:
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
 
         Client::instance->windows.push_back(level);
+
+        auto dp = new InputModule("Percent:", "death-percent", "100");
+        auto time = new InputModule("Time:", "death-time", "6.9");
+
+        Client::GetModule("kill-after")->options.push_back(dp);
+        Client::GetModule("kill-after")->options.push_back(time);
     }
 
     static void SetupBypass()
