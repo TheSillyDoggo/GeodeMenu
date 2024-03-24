@@ -2,6 +2,7 @@
 
 - Added hitbox colour customizer
 - Fixed hitboxes in mirror portal mode
+- Added no particles on android
 
 # 1.2.8
 

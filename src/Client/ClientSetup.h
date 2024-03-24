@@ -178,9 +178,7 @@ public:
         #ifndef GEODE_IS_ANDROID32
         cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
         #endif
-        #ifdef GEODE_IS_WINDOWS
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
-        #endif
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
