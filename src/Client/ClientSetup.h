@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client.h"
+#include "HitboxesModule.h"
 
 class ClientUtils
 {
@@ -15,17 +16,12 @@ public:
         SetupSpeedhack();
         SetupStatus();
 
-        //SetupVariables(android);
-
         Window* level = new _Replay();
         level->name = "Replay";
         level->id = "replay-window";
         Client::instance->windows.push_back(level);
 
         SetupOptions(android);
-
-        //if (android)
-            //Client::instance->windows.push_back(new Credits());
 
         if (!android)
             setupTheming();
@@ -34,8 +30,6 @@ public:
             setupDevtools();
 
         Client::instance->onPostSetup();
-
-        //log::info("base: {}", geode::base::get());
 	}
 
 #pragma region Setup Windows
@@ -49,12 +43,10 @@ public:
 
         speedhack->modules.push_back(new SpeedhackTop());
         speedhack->modules.push_back(new SpeedhackEnabled());
-        //speedhack->modules.push_back(new Module("Enabled", "speedhack-enabled", "Is the speedhack enabled?"));
         speedhack->modules.push_back(new SpeedhackMus());
         speedhack->modules.push_back(new SpeedhackGameplay());
-        //speedhack->modules.push_back(new Module("Speedhack Music", "speedhack-music", "Speedhack all sound by your speed modifier", true));
 
-        (reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
+        //(reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
 
         Client::instance->windows.push_back(speedhack);
     }
@@ -77,10 +69,9 @@ public:
         level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
-        level->modules.push_back(new Module("Show Hitboxes", "show-hitboxes", "Shows object hitboxes"));
+        level->modules.push_back(new Hitboxes());
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
-        level->modules.push_back(new Module("Hitbox Trail", "show-hitbox-trail", "Shows object hitboxes on death"));
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
         //level->modules.push_back(new Module("Hitbox Trail", "hitbox-trail", "Creates a trail for your players hitbox"));
 
@@ -88,24 +79,6 @@ public:
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
-
-        //level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
-        //level->modules[0]->options.push_back(new Module("Test", "test", ""));
-        //level->modules[0]->options.push_back(new Module("TestWWWWWWWWWWWWWWWWWWWW", "test", ""));
-        //level->modules[0]->options.push_back(new Module("Test", "test", ""));
-
-        #ifdef GEODE_IS_WINDOWS
-        //level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Enabled All Gamemodes in platformer mode. <cl>Windows only</c>"));
-        #endif
-
-        //level->modules.push_back(new Module("No Hitboxes", "no-hitboxes", "Disables Object Hitboxes"));
-
-        //level->modules.push_back(new Module("Force Show Player", "show-player", "Force the player to be visible all the time"));
-        //level->modules.push_back(new Module("Force Hide Player", "hide-player", "Force the player to be hidden all the time"));
-
-
-        //level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start-positions in the level"));
-        //level->modules.push_back(new Module("Show Hitboxes", "hitbox"));
 
         Client::instance->windows.push_back(level);
     }
@@ -176,9 +149,6 @@ public:
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
-
-        cosmetic->modules.push_back(new Module("Thicker Hitboxes", "thick-hitbox", "Makes the hitboxes in gd thicker ;)"));
-        cosmetic->modules.push_back(new Module("Fill Hitboxes", "fill-hitbox", "Fills the hitboxes as well as outlining them"));
 
         cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));

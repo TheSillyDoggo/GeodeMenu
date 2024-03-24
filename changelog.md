@@ -1,3 +1,8 @@
+# 1.2.9
+
+- Added hitbox colour customizer
+- Fixed hitboxes in mirror portal mode
+
 # 1.2.8
 
 - Fixed practice hitboxes being broken

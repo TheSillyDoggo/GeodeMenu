@@ -75,3 +75,14 @@ void Module::makeAndroid(CCMenu* menu, CCPoint pos)
     menu->addChild(btn);
     menu->addChild(label);
 }
+
+void ColourDelegate::updateColor(cocos2d::ccColor4B const& color)
+{
+    log::info("colour: {}", color);
+
+    auto v = as<ColourModule*>(mod);
+
+    v->colour = ccc3(color.r, color.g, color.b);
+    v->btnSpr->setColor(v->colour);
+    v->save();
+}

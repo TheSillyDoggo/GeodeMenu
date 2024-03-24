@@ -23,7 +23,7 @@ class ModuleOptionsLayer : public SillyBaseLayer
             
             pRet->mod = module;
 
-            if (pRet && pRet->initWithSizeAndName(ccp(350, 210), module->name)) {
+            if (pRet && pRet->initWithSizeAndName(ccp(350, 250), module->name)) {
                 pRet->autorelease();
                 return pRet;
             } else {

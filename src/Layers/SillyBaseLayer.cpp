@@ -6,6 +6,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
         return false;
 
     this->size = size;
+    int priority = -501;
 
     this->runAction(CCFadeTo::create(1, 100));
     this->setKeypadEnabled(true);
@@ -15,7 +16,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
     l->setContentSize(size);
     l->setPosition(CCDirector::get()->getWinSize() / 2);
     l->ignoreAnchorPointForPosition(false);
-    l->setTouchPriority(-514);
+    l->setTouchPriority(priority);
 
     int theme = Mod::get()->getSavedValue<int>("theme", 5);
 
@@ -82,8 +83,8 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
     }
 
     auto title = CCLabelBMFont::create(_title.c_str(), "bigFont.fnt");
-    title->setPosition(l->getContentSize() / 2 + ccp(0, (l->getContentSize().height / 2) - 15 - 2));
-    title->setScale(0.7f);
+    title->setPosition(l->getContentSize() / 2 + ccp(0, (l->getContentSize().height / 2) - 15));
+    title->setScale(0.6f);
     l->addChild(title);
 
     if (createWithOK)
@@ -105,7 +106,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     this->customSetup();
 
-    CCTouchDispatcher::get()->addTargetedDelegate(this, -2048, true);
+    CCTouchDispatcher::get()->addTargetedDelegate(this, priority, true);
     handleTouchPriority(this); // sets the priority after setting up the custom layer, this will come back to fuck me in the ass
 
     return true;

@@ -27,7 +27,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         lastPos = CCPointZero;
         lastPos2 = CCPointZero;
 
-        hitboxTrail = Client::GetModule("show-hitbox-trail");
+        hitboxTrail = Client::GetModule("show-hitboxes")->options[6];
 
         dn = getNode();
 
