@@ -4,6 +4,7 @@
 - Fixed hitboxes in mirror portal mode
 - Added no particles on android
 - Added Kill at % (also supports time for platformer)
+- Added Noclip tint on death
 
 # 1.2.8
 

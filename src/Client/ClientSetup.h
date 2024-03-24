@@ -82,11 +82,13 @@ public:
 
         Client::instance->windows.push_back(level);
 
-        auto dp = new InputModule("Percent:", "death-percent", "100");
-        auto time = new InputModule("Time:", "death-time", "6.9");
 
-        Client::GetModule("kill-after")->options.push_back(dp);
-        Client::GetModule("kill-after")->options.push_back(time);
+        Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
+        Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
+
+
+        Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
+        Client::GetModule("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
     }
 
     static void SetupBypass()

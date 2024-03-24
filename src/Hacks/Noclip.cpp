@@ -17,6 +17,27 @@ class $modify (NoclipLayer, PlayLayer)
     int d = 0;
     bool isDead = false;
 
+    CCLayerColor* tint;
+
+    Module* tintOnDeath;
+    SliderModule* tintOpacity;
+
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+    {
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+            return false;
+
+        m_fields->tintOnDeath = Client::GetModule("noclip")->options[0];
+        m_fields->tintOpacity = as<SliderModule*>(Client::GetModule("noclip")->options[1]);
+
+        m_fields->tint = CCLayerColor::create(ccc4(255, 0, 0, 0));
+        m_fields->tint->setID("noclip-tint-popup"_spr);
+
+        this->addChild(m_fields->tint);
+
+        return true;
+    }
+
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
         if (!m_fields->ac)
@@ -37,6 +58,13 @@ class $modify (NoclipLayer, PlayLayer)
 
             if (m_fields->ac != p1)
                 m_fields->t++;
+
+            if (m_fields->tintOnDeath->enabled)
+            {
+                m_fields->tint->stopAllActions();
+                m_fields->tint->setOpacity(m_fields->tintOpacity->value * 255);
+                m_fields->tint->runAction(CCFadeTo::create(0.35f, 0));
+            }
         }
     }
 
