@@ -104,6 +104,19 @@ class $modify (GJBaseGameLayer)
         };
 
         m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(-1, -1, -1, -1));
+
+        m_debugDrawNode->drawCircle(squarePosition, po->getObjectRect().size.width / 2, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(-1, -1, -1, -1), 64);
+
+        CCPoint squareSize2 = po->getObjectRect(0.25f, 0.25f).size;
+
+        CCPoint squareVertices2[] = {
+            ccp(squarePosition.x - squareSize2.x / 2, squarePosition.y - squareSize2.y / 2), // Bottom-left
+            ccp(squarePosition.x + squareSize2.x / 2, squarePosition.y - squareSize2.y / 2), // Bottom-right
+            ccp(squarePosition.x + squareSize2.x / 2, squarePosition.y + squareSize2.y / 2), // Top-right
+            ccp(squarePosition.x - squareSize2.x / 2, squarePosition.y + squareSize2.y / 2)  // Top-left
+        };
+
+        m_debugDrawNode->drawPolygon(squareVertices2, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(0, 0.25f, 1, 1));
     }
 
     virtual void updateDebugDraw()

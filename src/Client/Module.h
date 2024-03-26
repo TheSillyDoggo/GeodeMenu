@@ -7,6 +7,21 @@
 
 #include <Geode/ui/TextInput.hpp>
 
+#define public_cast(value, member) [](auto* v) { \
+	class FriendClass__; \
+	using T = std::remove_pointer<decltype(v)>::type; \
+	class FriendeeClass__: public T { \
+	protected: \
+		friend FriendClass__; \
+	}; \
+	class FriendClass__ { \
+	public: \
+		auto& get(FriendeeClass__* v) { return v->member; } \
+	} c; \
+	return c.get(reinterpret_cast<FriendeeClass__*>(v)); \
+}(value)
+
+
 using namespace geode::prelude;
 
 class ModuleChangeDelegate
@@ -284,6 +299,7 @@ class ColourModule : public Module
         static inline ColourModule* selected = nullptr;
 
         ccColor3B colour = ccc3(255, 255, 255);
+        ccColor3B def = ccc3(255, 255, 255);
 
         ColourDelegate* del = nullptr;
 
@@ -294,6 +310,7 @@ class ColourModule : public Module
             this->name = name;
             this->id = id;
             colour = def;
+            this->def = def;
 
             this->load();
         }
@@ -335,6 +352,11 @@ class ColourModule : public Module
             }
 
             auto men = geode::ColorPickPopup::create(v->colour);
+
+            public_cast(men, m_originalColor) = ccc4BFromccc4F(ccc4FFromccc3B(v->def));
+
+            if (v->colour != v->def)
+                public_cast(men, m_resetBtn)->setVisible(true);
 
             men->setDelegate(v->del);
             men->show();

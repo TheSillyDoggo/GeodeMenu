@@ -746,8 +746,6 @@ class $modify (AppDelegate)
 {
     void willSwitchToScene(CCScene* p0)
     {
-        log::info("will switch to scene");
-
         AppDelegate::willSwitchToScene(p0);
 
         if (p0 == nullptr)
@@ -761,13 +759,11 @@ class $modify (AppDelegate)
 
         for (size_t i = 0; i < p0->getChildrenCount(); i++)
         {
-            auto id = reinterpret_cast<CCLayer*>(p0->getChildren()->objectAtIndex(i))->getID();
+            auto id = as<CCLayer*>(p0->getChildren()->objectAtIndex(i))->getID();
             //log::info(id);
             
             if (id == "android-ball")
             {
-                log::info("found ball");
-
                 CCTouchDispatcher::get()->addTargetedDelegate(as<AndroidBall*>(p0->getChildren()->objectAtIndex(i)), -514, true);
 
                 return;

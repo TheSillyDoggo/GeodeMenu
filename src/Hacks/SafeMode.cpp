@@ -58,7 +58,8 @@ std::vector<std::string> hacks = {
     "no-reverse",
     "no-static",
     "show-hitboxes",
-    "show-triggers"
+    "show-triggers",
+    "coin-tracers",
 };
 
 void Client::onPostSetup()

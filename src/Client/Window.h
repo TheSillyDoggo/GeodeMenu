@@ -363,17 +363,18 @@ class Speedhack : public Window//, public TextInputDelegate
         {
             float v = 1.0f;
 
-            if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
+            auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+            if (x.isOk())
             {
-                v = std::stof(SpeedhackTop::instance->text);
+                v = x.value();
             }
 
             if (v < 0.01f)
                 v = 0.01f;
 
             if (v > 99999)
-                v = 99999;
-            
+                v = 99999;            
             
             auto back = CCScale9Sprite::create("square02_small.png");
             back->setContentSize(menu->getContentSize() / 0.5f);

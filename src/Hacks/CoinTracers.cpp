@@ -1,53 +1,71 @@
-/*#include <Geode/Geode.hpp>
-#include <Geode/modify/PlayerObject.hpp>
+#include <Geode/Geode.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/DashRingObject.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-#ifdef GEODE_IS_ANDROID
+Module* coinTracers = nullptr;
+ColourModule* coinColour = nullptr;
 
-class $modify (UILayer)
+class $modify (PlayLayer)
 {
-    bool init(GJBaseGameLayer* p0)
+    std::vector<GameObject*> coins;
+
+    CCDrawNode* dn;
+    CCLayer* mainLayer = nullptr;
+
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
-        if (!UILayer::init(p0))
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        if (Client::GetModuleEnabled("force-plat"))
-            togglePlatformerMode(true);
+        coinTracers = Client::GetModule("coin-tracers");
+        coinColour = as<ColourModule*>(coinTracers->options[0]);
+
+        if (!m_fields->mainLayer)
+        {
+            if (auto mainNode = getChildOfType<CCNode>(this, 1))
+            {
+                if (auto l = getChildOfType<CCLayer>(mainNode, 0))
+                {
+                    m_fields->mainLayer = l;
+                }
+            }
+        }
+
+        auto dn = CCDrawNode::create();
+        m_fields->mainLayer->addChild(dn);
+
+        m_fields->dn = dn;
 
         return true;
     }
-};
 
-#endif
-
-class $modify (DashRingObject)
-{
-
-};
-
-class $modify (PlayerObject)
-{
-    bool f;
-
-    virtual void update(float dt)
+    TodoReturn addObject(GameObject* p0)
     {
-        if (Client::GetModuleEnabled("force-plat"))
-        {
-            this->togglePlatformerMode(true);
-            #ifdef GEODE_IS_ANDROID
-            if (!m_fields->f)
-            {
-                m_fields->f = true;
-                if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
-                    PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
-            }
-            #endif
-        }
+        PlayLayer::addObject(p0);
 
-        PlayerObject::update(dt);
+        if (p0->m_objectType == GameObjectType::UserCoin || p0->m_objectType == GameObjectType::SecretCoin) // 142 
+        {
+            m_fields->coins.push_back(p0);
+        }
     }
-};*/
+
+    virtual TodoReturn postUpdate(float p0)
+    {
+        PlayLayer::postUpdate(p0);
+
+        m_fields->dn->clear();
+
+        if (!coinTracers->enabled)
+            return;
+
+        for (auto coin : m_fields->coins)
+        {
+            if (coin->getOpacity() != 0)
+                m_fields->dn->drawSegment(m_player1->getPosition(), coin->getPosition(), 1, ccc4FFromccc3B(coinColour->colour));
+        }
+    }
+};

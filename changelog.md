@@ -1,3 +1,12 @@
+# 1.3.0
+
+- Added Coin Finder
+- Fixed crash opening mod menu
+- Added Fixed Hitboxes for players
+- Added Accurate Percentage
+- Added Classic Percentage (before 2.2)
+- Added Show Layout
+
 # 1.2.9
 
 - Added hitbox colour customizer

@@ -79,6 +79,13 @@ public:
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
+        level->modules.push_back(new Module("Coin Finder", "coin-tracers", "Draws a line to secret / user coins in the level"));
+
+        level->modules.push_back(new Module("Accurate Percentage", "accurate-percentage", "Allows you to have any amount of decimal places in your percentage text"));
+        level->modules.push_back(new Module("Classic Percentage", "classic-percentage", "Makes the percentage calculated like in 2.1, The percentage for new best is still calculated like 2.2"));
+
+        level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
+
 
         Client::instance->windows.push_back(level);
 
@@ -86,9 +93,17 @@ public:
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
 
-
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
         Client::GetModule("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
+
+        Client::GetModule("coin-tracers")->options.push_back(new ColourModule("Line Colour:", "coin-tracers-colour", ccc3(255, 0, 0)));
+
+        Client::GetModule("show-layout")->options.push_back(new Module("Keep Camera Triggers", "layout-retain-camera", "Keeps the 2.2 camera triggers in the level", true));
+
+
+        auto decimals = new InputModule("Decimal Places:", "accurate-percentage-places", "2");
+        decimals->allowedChars = "1234567890";
+        Client::GetModule("accurate-percentage")->options.push_back(decimals);
     }
 
     static void SetupBypass()
