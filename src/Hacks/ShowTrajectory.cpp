@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -37,7 +37,7 @@ class $modify (PlayerObjectExt, PlayerObject)
         if (!ignoreStuff)
             EffectGameObject::triggerObject(p0, p1, p2);
     }
-};
+};*/
 
 
 class $modify (GJBaseGameLayer)
@@ -54,7 +54,7 @@ class $modify (GJBaseGameLayer)
             return false;
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
-    }
+    }*/
 
     void destroyObject(GameObject* p0)
     {
@@ -231,4 +231,4 @@ class $modify (PlayLayer)
 
         ignoreStuff = false;
     }
-};*/
+};
