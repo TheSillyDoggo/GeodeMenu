@@ -1,3 +1,7 @@
+# 1.3.2
+
+- Fixed startup crash
+
 # 1.3.1
 
 - Fixed bug where fixed hitboxes were shown in the editor even is show hitboxes was disabled
