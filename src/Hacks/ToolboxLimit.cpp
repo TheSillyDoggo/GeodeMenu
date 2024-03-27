@@ -1,4 +1,4 @@
-//#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_WINDOWS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
@@ -63,4 +63,4 @@ $execute {
     );
 }
 
-//#endif
+#endif
