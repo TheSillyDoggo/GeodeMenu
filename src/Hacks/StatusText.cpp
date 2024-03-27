@@ -165,21 +165,12 @@ class $modify (PlayLayer)
     {
         PlayLayer::createObjectsFromSetupFinished();
 
-        CCLayer* mainLayer = nullptr;
+        Loader::get()->queueInMainThread([this] {
+            CCLayer* mainLayer = m_objectLayer;
 
-        if (!mainLayer)
-        {
-            if (auto mainNode = getChildOfType<CCNode>(this, 0))
-            {
-                if (auto l = getChildOfType<CCLayer>(mainNode, 0))
-                {
-                    mainLayer = l;
-                }
-            }
-        }
-
-        auto stn = m_fields->stn;
-        stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+            auto stn = m_fields->stn;
+            stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+        });
     }
 
     bool init(GJGameLevel* p0, bool p1, bool p2)
