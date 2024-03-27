@@ -126,7 +126,8 @@ class StatusNode : public CCNode
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
             sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
-            sLabels[4]->setString(attemptText->getString());
+            if (attemptText)
+                sLabels[4]->setString(attemptText->getString());
 
             std::stringstream ss;
             ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
@@ -158,6 +159,29 @@ class StatusNode : public CCNode
 
 class $modify (PlayLayer)
 {
+    StatusNode* stn;
+
+    TodoReturn createObjectsFromSetupFinished()
+    {
+        PlayLayer::createObjectsFromSetupFinished();
+
+        CCLayer* mainLayer = nullptr;
+
+        if (!mainLayer)
+        {
+            if (auto mainNode = getChildOfType<CCNode>(this, 0))
+            {
+                if (auto l = getChildOfType<CCLayer>(mainNode, 0))
+                {
+                    mainLayer = l;
+                }
+            }
+        }
+
+        auto stn = m_fields->stn;
+        stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+    }
+
     bool init(GJGameLevel* p0, bool p1, bool p2)
     {
         if (!PlayLayer::init(p0, p1, p2))
@@ -209,6 +233,8 @@ class $modify (PlayLayer)
         menu->addChild(stn);
 
         this->addChild(menu, 69420);
+
+        m_fields->stn = stn;
         
         return true;
     }

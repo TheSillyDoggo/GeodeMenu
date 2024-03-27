@@ -1,4 +1,4 @@
-#ifdef GEODE_IS_WINDOWS
+//#ifdef GEODE_IS_WINDOWS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
@@ -13,7 +13,7 @@ class $modify (CCArray)
 {
     unsigned int count()
     {
-        if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf)
+        if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf && LevelEditorLayer::get())
         {
             auto v = CCArray::count();
 
@@ -42,7 +42,7 @@ class $modify (EditorUI)
 
 unsigned int dicCount(CCDictionary* ins)
 {
-    if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf)
+    if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf && LevelEditorLayer::get())
     {
         return 1;
     }
@@ -63,4 +63,4 @@ $execute {
     );
 }
 
-#endif
+//#endif

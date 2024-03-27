@@ -1,3 +1,8 @@
+# 1.3.1
+
+- Fixed bug where fixed hitboxes were shown in the editor even is show hitboxes was disabled
+- Fixed crash playing user levels
+
 # 1.3.0
 
 - Added Coin Finder

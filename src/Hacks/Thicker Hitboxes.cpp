@@ -123,6 +123,9 @@ class $modify (GJBaseGameLayer)
     {
         GJBaseGameLayer::updateDebugDraw();
 
+        if (LevelEditorLayer::get() && !GameManager::get()->getGameVariable("0045"))
+            return;
+
         //if (!player)
             //player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
 
