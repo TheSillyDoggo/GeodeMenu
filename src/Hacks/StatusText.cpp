@@ -126,8 +126,8 @@ class StatusNode : public CCNode
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
             sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
-            if (attemptText)
-                sLabels[4]->setString(attemptText->getString());
+            //if (attemptText != nullptr)
+                sLabels[4]->setString(attemptText == nullptr ? "nullptr" : attemptText->getString());
 
             std::stringstream ss;
             ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
@@ -161,16 +161,22 @@ class $modify (PlayLayer)
 {
     StatusNode* stn;
 
-    TodoReturn createObjectsFromSetupFinished()
+    virtual TodoReturn postUpdate(float p0)
     {
-        PlayLayer::createObjectsFromSetupFinished();
+        PlayLayer::postUpdate(p0);
 
-        Loader::get()->queueInMainThread([this] {
-            CCLayer* mainLayer = m_objectLayer;
+        if (m_fields->stn && !m_fields->stn->attemptText)
+        {
+            CCLayer* mainLayer = this->m_objectLayer;
+            log::info("mainLayer: {}", mainLayer);
+            auto lbl = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+            log::info("label: {}", lbl);
 
-            auto stn = m_fields->stn;
-            stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
-        });
+            auto stn2 = this->m_fields->stn;
+            log::info("status node: {}", stn2);
+            stn2->attemptText = lbl;
+            log::info("sex");
+        }
     }
 
     bool init(GJGameLevel* p0, bool p1, bool p2)
