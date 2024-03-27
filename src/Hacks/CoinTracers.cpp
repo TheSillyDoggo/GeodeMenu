@@ -36,7 +36,7 @@ class $modify (PlayLayer)
         }
 
         auto dn = CCDrawNode::create();
-        m_fields->mainLayer->addChild(dn);
+        m_debugDrawNode->getParent()->addChild(dn);
 
         m_fields->dn = dn;
 
