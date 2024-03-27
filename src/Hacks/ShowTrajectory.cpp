@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -37,7 +37,7 @@ class $modify (PlayerObjectExt, PlayerObject)
         if (!ignoreStuff)
             EffectGameObject::triggerObject(p0, p1, p2);
     }
-};*/
+};* /
 
 
 class $modify (GJBaseGameLayer)
@@ -48,13 +48,21 @@ class $modify (GJBaseGameLayer)
             GJBaseGameLayer::gameEventTriggered(p0, p1, p2);
     }
 
-    /*bool canBeActivatedByPlayer(PlayerObject* p0, EffectGameObject* p1)
+    TodoReturn playerWillSwitchMode(PlayerObject* p0, GameObject* p1)
     {
-        if (ignoreStuff)
+        if (p0->getID() == "trajectory-player"_spr || ignoreStuff)
+            return;
+
+        GJBaseGameLayer::playerWillSwitchMode(p0, p1);
+    }
+
+    bool canBeActivatedByPlayer(PlayerObject* p0, EffectGameObject* p1)
+    {
+        if (p0->getID() == "trajectory-player"_spr && !(p1->m_objectType == GameObjectType::YellowJumpPad || p1->m_objectType == GameObjectType::RedJumpPad || p1->m_objectType == GameObjectType::PinkJumpPad || p1->m_objectType == GameObjectType::GravityPad || p1->m_objectType == GameObjectType::SpiderPad || p1->m_objectType == GameObjectType::NormalGravityPortal || p1->m_objectType == GameObjectType::GravityTogglePortal || p1->m_objectType == GameObjectType::NormalGravityPortal))
             return false;
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
-    }*/
+    }
 
     void destroyObject(GameObject* p0)
     {
@@ -67,6 +75,7 @@ class $modify (PlayLayer)
 {
     CCDrawNode* dn;
     PlayerObject* plr;
+    PlayerObject* ship;
     CCLayer* mainLayer = nullptr;
 
     virtual TodoReturn destroyPlayer(PlayerObject* p0, GameObject* p1)
@@ -120,6 +129,14 @@ class $modify (PlayLayer)
 	    m_fields->mainLayer->addChild(plr);
         plr->pushButton(PlayerButton::Jump);
 
+        auto ship = PlayerObject::create(1, 1, this, m_fields->mainLayer, false);
+	    ship->setPosition({0, 105});
+	    ship->setVisible(false);
+        ship->setID("trajectory-player"_spr);
+	    m_fields->mainLayer->addChild(ship);
+        ship->pushButton(PlayerButton::Jump);
+        ship->toggleFlyMode(true, true);
+
         CCPoint point = plr->getPosition();
 
         auto dn = CCDrawNode::create();
@@ -128,6 +145,7 @@ class $modify (PlayLayer)
 
         m_fields->dn = dn;
         m_fields->plr = plr;
+        m_fields->ship = ship;
 
         return true;
     }
@@ -158,9 +176,8 @@ class $modify (PlayLayer)
         return 0;
     }
 
-    void perform(PlayerObject* play, bool first = false)
+    void perform(PlayerObject* plr, bool first = false)
     {
-        auto plr = m_fields->plr;
         auto dn = m_fields->dn;
 
         int updateRate = 5;
@@ -171,13 +188,17 @@ class $modify (PlayLayer)
         CCPoint point = (first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : m_player1->getPosition();
         plr->setPosition(point);
         plr->m_isPlatformer = m_player1->m_isPlatformer;
-        plr->m_isUpsideDown = plr->m_isUpsideDown;
+        plr->m_isUpsideDown = m_player1->m_isUpsideDown;
         plr->m_isDead = false;
+        plr->m_collidedObject = nullptr;
+        plr->m_wasOnSlope = m_player1->m_wasOnSlope;
+        plr->m_isDashing = m_player1->m_isDashing;
         plr->m_vehicleSize = m_player1->m_vehicleSize;
 
         plr->m_yVelocity = m_player1->m_yVelocity;
         plr->m_vehicleSize = m_player1->m_vehicleSize;
-        plr->m_isShip = m_player1->m_isShip;
+
+        //plr->m_isShip = m_player1->m_isShip;
         plr->m_isBall = m_player1->m_isBall;
         plr->m_isBird = m_player1->m_isBird;
         plr->m_isDart = m_player1->m_isDart;
@@ -186,15 +207,21 @@ class $modify (PlayLayer)
         plr->m_isSwing = m_player1->m_isSwing;
 
         for (size_t i = 0; i < updateRate * steps; i++) {
+            plr->m_isDead = false;
+
+            if (first)
+                plr->pushButton(PlayerButton::Jump);
+
             plr->update(0.2f);
             plr->updateSpecial(0.2f);
-            this->checkCollisions(plr, 1, false);
+            this->checkCollisions(plr, 0.2f, true);
             
-            dn->drawSegment(point, plr->getPosition(), 1, ccc4f(0, held ? 1 : 0.45f, 0, 1));
+            dn->drawSegment(point, plr->getPosition(), 1, plr->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, held ? 1 : 0.45f, 0, 1));
             point = plr->getPosition();
 
             if (plr->m_isDead)
             {
+                //plr->m_isDead = false;
                 CCPoint squareSize = plr->getObjectRect().size;
                 CCPoint squarePosition = plr->getPosition();
 
@@ -219,16 +246,16 @@ class $modify (PlayLayer)
         ignoreStuff = true;
 
         auto dn = m_fields->dn;
-        auto plr = m_fields->plr;
+        auto plr = m_player1->m_isShip ? m_fields->ship : m_fields->plr;
 
         dn->clear();
 
         plr->pushButton(PlayerButton::Jump);
-        perform(nullptr, true);
+        perform(plr, true);
 
         plr->releaseButton(PlayerButton::Jump);
-        perform(nullptr);
+        perform(plr);
 
         ignoreStuff = false;
     }
-};
+};*/

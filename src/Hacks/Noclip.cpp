@@ -40,6 +40,13 @@ class $modify (NoclipLayer, PlayLayer)
 
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
+        if (p0 && p0->getID() == "trajectory-player"_spr)
+        {
+            p0->m_isDead = true;
+
+            return;
+        }
+
         if (!m_fields->ac)
             m_fields->ac = p1;
 

@@ -6,6 +6,7 @@
 - Added Accurate Percentage
 - Added Classic Percentage (before 2.2)
 - Added Show Layout
+- Added Attempts Status Text
 
 # 1.2.9
 

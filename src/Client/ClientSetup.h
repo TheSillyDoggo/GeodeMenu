@@ -241,6 +241,7 @@ public:
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
         replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
         replay->modules.push_back(new Module("Noclip Deaths", "status-deaths", "Shows your deaths in noclip (hidden when noclip is disabled)"));
+        replay->modules.push_back(new Module("Attempts", "status-attempt", "Shows Attempt Count"));
         replay->modules.push_back(new Module("Replay Status", "status-replay", "Replay debug info"));
         //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));

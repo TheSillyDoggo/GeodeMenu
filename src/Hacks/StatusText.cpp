@@ -27,11 +27,14 @@ class StatusNode : public CCNode
 
         bool mods;
 
+        CCLabelBMFont* attemptText = nullptr;
+
         static inline Module* fps = nullptr;
         static inline Module* cheat = nullptr;
         static inline Module* accuracy = nullptr;
         static inline Module* deaths = nullptr;
         static inline Module* replay = nullptr;
+        static inline Module* attempt = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -103,6 +106,9 @@ class StatusNode : public CCNode
             if (!replay)
                 replay = Client::GetModule("status-replay");
 
+            if (!attempt)
+                attempt = Client::GetModule("status-attempt");
+
             
             float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_unk1f8 == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_unk1f8)));
             
@@ -111,14 +117,16 @@ class StatusNode : public CCNode
             sLabels[1]->setVisible(fps->enabled);
             sLabels[2]->setVisible(noclip->enabled && accuracy->enabled);
             sLabels[3]->setVisible(noclip->enabled && deaths->enabled);
-            sLabels[4]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+            sLabels[4]->setVisible(attempt->enabled);
             sLabels[5]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
             sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+            sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
 
 
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
             sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
+            sLabels[4]->setString(attemptText->getString());
 
             std::stringstream ss;
             ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
@@ -127,9 +135,9 @@ class StatusNode : public CCNode
             inp << GJReplayManager::replay.inputs.size() << (GJReplayManager::replay.inputs.size() == 1 ? " Input" : " Inputs") << ", " << GJReplayManager::replay.frames.size() << (GJReplayManager::replay.frames.size() == 1 ? " Frame" : " Frames");
 
             std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
-            sLabels[4]->setString(ss.str().c_str());
-            sLabels[5]->setString(b.c_str());
-            sLabels[6]->setString(inp.str().c_str());
+            sLabels[5]->setString(ss.str().c_str());
+            sLabels[6]->setString(b.c_str());
+            sLabels[7]->setString(inp.str().c_str());
 
             if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
             {
@@ -158,7 +166,22 @@ class $modify (PlayLayer)
         if (this->getChildByID("status-text-menu"_spr))
             return true;
 
+        CCLayer* mainLayer = nullptr;
+
+        if (!mainLayer)
+        {
+            if (auto mainNode = getChildOfType<CCNode>(this, 1))
+            {
+                if (auto l = getChildOfType<CCLayer>(mainNode, 0))
+                {
+                    mainLayer = l;
+                }
+            }
+        }
+
         auto stn = StatusNode::create();
+        stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+        log::info("attemptText: {}", stn->attemptText);
 
         auto menu = CCMenu::create();
         menu->setID("status-text-menu"_spr);
@@ -167,7 +190,7 @@ class $modify (PlayLayer)
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        int count = 7;
+        int count = 8;
 
         for (size_t i = 0; i < count; i++)
         {
