@@ -985,8 +985,6 @@ class Level : public Window
         {
             Window::cocosCreate(menu);
 
-            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18 - 2.5f, 22);
-
             /*auto btnS = ButtonSprite::create("FPS\nBypass", 60, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
@@ -995,28 +993,6 @@ class Level : public Window
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);*/
-
-            auto btnUnc = ButtonSprite::create("Uncomplete\nLevel", 70, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
-            
-            as<CCNode*>(btnUnc->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->updateLabel();
-
-            auto btn = CCMenuItemSpriteExtra::create(btnUnc, menu, menu_selector(Level::onUnc));
-            btn->setSizeMult(1.15f);
-            btn->setPosition(pos);
-            menu->addChild(btn);
-
-            pos = pos + ccp(-30 - 27 - 2.5f, -5);
-
-            auto btnS2 = ButtonSprite::create("?", 10, false, "bigFont.fnt", "GJ_button_05.png", 25, 0.75f);
-            as<CCNode*>(btnS2->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn2 = CCMenuItemSpriteExtra::create(btnS2, menu, menu_selector(Level::onFix));
-            btn2->setSizeMult(1.15f);
-            btn2->setPosition(pos);
-            menu->addChild(btn2);
         }
 };
 
@@ -1042,6 +1018,32 @@ class Universal : public Window
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
+
+
+            pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18 - 2.5f, 22);
+            pos += ccp(-110, 0);
+
+            auto btnUnc = ButtonSprite::create("Uncomplete\nLevel", 70, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
+            
+            as<CCNode*>(btnUnc->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->updateLabel();
+
+            btn = CCMenuItemSpriteExtra::create(btnUnc, menu, menu_selector(Level::onUnc));
+            btn->setSizeMult(1.15f);
+            btn->setPosition(pos);
+            menu->addChild(btn);
+
+            pos = pos + ccp(-30 - 27 - 2.5f, -5);
+
+            auto btnS2 = ButtonSprite::create("?", 10, false, "bigFont.fnt", "GJ_button_05.png", 25, 0.75f);
+            as<CCNode*>(btnS2->getChildren()->objectAtIndex(0))->setScale(0.375f);
+            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->updateLabel();
+            auto btn2 = CCMenuItemSpriteExtra::create(btnS2, menu, menu_selector(Level::onFix));
+            btn2->setSizeMult(1.15f);
+            btn2->setPosition(pos);
+            menu->addChild(btn2);
         }
 };
 
