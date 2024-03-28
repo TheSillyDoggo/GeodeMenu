@@ -229,7 +229,7 @@ public:
     static void SetupStatus()
     {
         Window* replay = new Status();
-        replay->name = "Status";
+        replay->name = "Labels";
         replay->id = "status-window";
         replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 6, 50);
 
@@ -242,6 +242,8 @@ public:
         replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
         replay->modules.push_back(new Module("Noclip Deaths", "status-deaths", "Shows your deaths in noclip (hidden when noclip is disabled)"));
         replay->modules.push_back(new Module("Attempts", "status-attempt", "Shows Attempt Count"));
+        //replay->modules.push_back(new Module("Clicks", "status-cps", "Shows Attempt Count"));
+        
         replay->modules.push_back(new Module("Replay Status", "status-replay", "Replay debug info"));
         //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
