@@ -85,6 +85,7 @@ public:
         level->modules.push_back(new Module("Classic Percentage", "classic-percentage", "Makes the percentage calculated like in 2.1, The percentage for new best is still calculated like 2.2"));
 
         level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
+        level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
 
 
         Client::instance->windows.push_back(level);
@@ -189,6 +190,7 @@ public:
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
 
         cosmetic->modules.push_back(new Module("No Circles", "no-circles", "Disables circle effects such as the one when you touch an orb"));
+        cosmetic->modules.push_back(new Module("No Wave Pulse", "no-wave-pulse", "Disables wave pulse"));
 
         cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
         #ifndef GEODE_IS_ANDROID
@@ -207,6 +209,9 @@ public:
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
 
         Client::instance->windows.push_back(cosmetic);
+
+
+        Client::GetModule("no-wave-pulse")->options.push_back(new SliderModule("Pulse Size:", "wave-pulse-size", 0.5f));
     }
 
     static void SetupIconEffects()

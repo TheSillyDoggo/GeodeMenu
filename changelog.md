@@ -1,6 +1,8 @@
 # 1.3.3
 
 - Fixed windows not being able to open the mod menu, sorry
+- Added No Wave Pulse
+- Added Jump Hack
 
 # 1.3.2
 

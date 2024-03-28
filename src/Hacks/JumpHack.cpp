@@ -1,25 +1,24 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (PlayerObject)
-{
-    bool fix = false;
+Module* jumpHack = nullptr;
 
+class $modify (GJBaseGameLayer)
+{
     virtual void update(float dt)
     {
-        PlayerObject::jump();
+        if (!jumpHack)
+            jumpHack = Client::GetModule("jump-hack");
+
+        if (jumpHack->enabled)
+            m_player1->m_isOnGround = true;
+
         GJBaseGameLayer::update(dt);
         
-        if (PlayLayer::get() && Client::GetModuleEnabled("instant"))
-        {
-            if (!m_fields->fix)
-            {
-                PlayLayer::get()->playPlatformerEndAnimationToPos(PlayLayer::get()->m_player1->m_position, false);
-                m_fields->fix = true;
-            }
-        }
+        if (jumpHack->enabled)
+            m_player1->m_isOnGround = true;
     }
-};*/
+};
