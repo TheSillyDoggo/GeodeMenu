@@ -432,6 +432,11 @@ public:
             as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
         }
 
+        //CCTouchDispatcher::get()->setPriority(-127, this);
+        //cocos::handleTouchPriorityWith(this, -128);
+
+        cocos::handleTouchPriority(this);
+
         return true;
     }
 
@@ -445,8 +450,6 @@ public:
         auto l = AndroidUI::create();
 
         CCDirector::get()->getRunningScene()->addChild(l, 69420);
-
-        cocos::handleTouchPriority(l);
     }
 };
 

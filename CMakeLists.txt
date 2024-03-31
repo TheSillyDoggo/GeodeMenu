@@ -10,6 +10,7 @@ file(GLOB SOURCES
 	src/Client/*.cpp
 	src/Client/*.h
 	src/Hacks/*.cpp
+	src/Hacks/*.hpp
 	src/Layers/*.cpp
 	src/Layers/*.h
 	src/Replay/*.cpp

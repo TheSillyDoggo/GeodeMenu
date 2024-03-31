@@ -1,3 +1,7 @@
+# 1.3.4
+
+- Temporarily removed show layout because of editor crashes
+
 # 1.3.3
 
 - Fixed windows not being able to open the mod menu, sorry

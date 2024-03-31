@@ -3,7 +3,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
 #include "../Client/Client.h"
-#include "StatusText.cpp"
+#include "StatusText.hpp"
 
 bool hasHackedAttempt = false;
 
