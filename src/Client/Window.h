@@ -410,7 +410,7 @@ class Speedhack : public Window//, public TextInputDelegate
 
             for (size_t i = 1; i < modules.size(); i++)
             {
-                modules[i]->makeAndroid(menu, (ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * i)) - ccp(180 / 2, 0) + ccp(10, 0)) + ccp(0, 27.5f));
+                modules[i]->makeAndroid(menu, (ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * i)) - ccp(180 / 2, 0) + ccp(20, 0)) + ccp(0, 27.5f));
             }
 
             //static_cast<geode::InputNode*>(menu->getChildByID("speedhack-top"))->getInput()->setDelegate(this);

@@ -43,7 +43,7 @@ class MenuPulse : public CCNode
             #ifdef GEODE_IS_WINDOWS
             float met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(engine) + 0x178));
             #else
-            float met = engine->getMeteringValue()
+            float met = engine->getMeteringValue();
             #endif
 
             v = as<float>(std::lerp(as<float>(v), as<float>(met), dt * 6.9420f));
