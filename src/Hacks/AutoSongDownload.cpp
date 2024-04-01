@@ -16,8 +16,7 @@ class $modify (LevelInfoLayer)
             Loader::get()->queueInMainThread([this] {
                 if(m_songWidget && m_songWidget->m_downloadBtn->isVisible())
                     m_songWidget->onDownload(nullptr);
-                }
-            );
+            });
         }
 
         return true;

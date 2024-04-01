@@ -34,6 +34,23 @@ void Module::onToggleAndroid(CCObject* sender)
     dat->enabled = !dat->enabled;
     dat->save();
     dat->OnChange();
+
+    if (dat->hooks.size() > 0)
+    {
+        for (auto hook : dat->hooks)
+        {
+            if (hook->isEnabled())
+            {
+                if (!dat->enabled)
+                    hook->disable();
+            }
+            else
+            {
+                if (dat->enabled)
+                    hook->enable();
+            }
+        }
+    }
 }
 
 void Module::makeAndroid(CCMenu* menu, CCPoint pos)

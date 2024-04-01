@@ -88,6 +88,9 @@ public:
 
     static Module* GetModule(std::string id)
     {
+        if (!instance)
+            return nullptr;
+
         for (size_t w = 0; w < instance->windows.size(); w++)
         {
             for (size_t m = 0; m < instance->windows[w]->modules.size(); m++)

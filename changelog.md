@@ -1,6 +1,9 @@
 # 1.3.4
 
 - Temporarily removed show layout because of editor crashes
+- Added Show Trajectory (Beta)
+- Added Instant Fade (Makes the mod menu button instantly disappear instead of slowly fading)
+- Safe Mode Kicks you out of the level now instead of showing the end screen, it was really broken
 
 # 1.3.3
 

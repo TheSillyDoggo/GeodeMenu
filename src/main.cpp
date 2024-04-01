@@ -123,7 +123,8 @@ class $modify (CCKeyboardDispatcher)
     }
 };
 
-$on_mod(Loaded)
+//$on_mod(Loaded)
+$execute
 {
     client = new Client();
     Client::instance = client;

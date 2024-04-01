@@ -40,6 +40,7 @@ class Module
         static inline std::string descMod = "";
 
         std::vector<Module*> options = {};
+        std::vector<geode::Hook*> hooks = {};
 
         std::string name;
         std::string id;

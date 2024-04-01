@@ -22,7 +22,7 @@ class $modify (PlayerObject)
         self.setHookPriority("PlayerObject::playerDestroyed", -6969);
     }
 
-    void playerDestroyed(bool p0)
+    TodoReturn playDeathEffect()
     {
         m_isDead = true;
         
@@ -30,6 +30,6 @@ class $modify (PlayerObject)
             PlayLayer::get()->resetLevel();
 
         if (!Client::GetModuleEnabled("no-death"))
-            PlayerObject::playerDestroyed(p0);
+            PlayerObject::playDeathEffect();
     }
 };

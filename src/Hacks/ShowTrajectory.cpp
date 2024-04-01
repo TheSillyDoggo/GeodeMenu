@@ -8,6 +8,7 @@
 
 CCPoint startPos = CCPointZero;
 bool ignoreStuff = false;
+Module* trajectoryMod = nullptr;
 
 class $modify (PlayerObjectExt, PlayerObject)
 {
@@ -69,6 +70,30 @@ class $modify (GJBaseGameLayer)
         if (!ignoreStuff)
             GJBaseGameLayer::destroyObject(p0);
     }
+
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("GJBaseGameLayer::destroyObject").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::canBeActivatedByPlayer").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::playerWillSwitchMode").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::gameEventTriggered").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-trajectory");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
 };
 
 class $modify (PlayLayer)
@@ -91,7 +116,28 @@ class $modify (PlayLayer)
     }
 
     static void onModify(auto& self) {
-        self.setHookPriority("PlayLayer::destroyPlayer", 6969);
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("PlayLayer::destroyPlayer").unwrap());
+        hooks.push_back(self.getHook("PlayLayer::incrementJumps").unwrap());
+        hooks.push_back(self.getHook("PlayLayer::playEndAnimationToPos").unwrap());
+        //hooks.push_back(self.getHook("PlayLayer::init").unwrap());
+        //hooks.push_back(self.getHook("PlayLayer::postUpdate").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-trajectory");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
     }
 
     void incrementJumps()
@@ -121,6 +167,8 @@ class $modify (PlayLayer)
                 }
             }
         }
+
+        trajectoryMod = Client::GetModule("show-trajectory");
 
         auto plr = PlayerObject::create(1, 1, this, m_fields->mainLayer, false);
 	    plr->setPosition({0, 105});
@@ -185,7 +233,7 @@ class $modify (PlayLayer)
 
         bool held = as<PlayerObjectExt*>(m_player1)->m_fields->isHeld == first;
 
-        CCPoint point = (first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : m_player1->getPosition();
+        CCPoint point = /*(first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : */m_player1->getPosition();
         plr->setPosition(point);
         plr->m_isPlatformer = m_player1->m_isPlatformer;
         plr->m_isUpsideDown = m_player1->m_isUpsideDown;
@@ -197,6 +245,7 @@ class $modify (PlayLayer)
 
         plr->m_yVelocity = m_player1->m_yVelocity;
         plr->m_vehicleSize = m_player1->m_vehicleSize;
+        plr->m_playerSpeed = m_player1->m_playerSpeed;
 
         //plr->m_isShip = m_player1->m_isShip;
         plr->m_isBall = m_player1->m_isBall;
@@ -221,7 +270,8 @@ class $modify (PlayLayer)
 
             if (plr->m_isDead)
             {
-                //plr->m_isDead = false;
+                plr->m_isDead = false;
+
                 CCPoint squareSize = plr->getObjectRect().size;
                 CCPoint squarePosition = plr->getPosition();
 
@@ -241,14 +291,19 @@ class $modify (PlayLayer)
 
     virtual TodoReturn postUpdate(float p0)
     {
-        PlayLayer::postUpdate(p0);
+        ignoreStuff = false;
 
-        ignoreStuff = true;
+        PlayLayer::postUpdate(p0);
 
         auto dn = m_fields->dn;
         auto plr = m_player1->m_isShip ? m_fields->ship : m_fields->plr;
 
         dn->clear();
+
+        if (!trajectoryMod->enabled)
+            return;
+
+        ignoreStuff = true;
 
         plr->pushButton(PlayerButton::Jump);
         perform(plr, true);

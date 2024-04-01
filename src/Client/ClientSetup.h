@@ -86,6 +86,7 @@ public:
 
         //level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
+        level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
 
 
         Client::instance->windows.push_back(level);
@@ -270,6 +271,7 @@ public:
             cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
             cfg->modules.push_back(new Module("Save Ball Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
             cfg->modules.push_back(new Module("Additional Width", "npesta-width", "Add's borders to the sides of the menu. Looks weird with <cl>vanilla gd pack</c> but looks nice with <cg>npesta texture pack</c>"));
+            cfg->modules.push_back(new Module("Instant Button Fade", "instant-fade", "Makes the mod menu button fade instantly"));
             #ifdef GEODE_IS_DESKTOP
             cfg->modules.push_back(new Module("Hide Button", "hide-btn", "Hides the button to open the menu, use the <cl>Tab</c> or <cl>Insert</c> key to open the mod menu", true));
             cfg->modules.push_back(new CompactMode());

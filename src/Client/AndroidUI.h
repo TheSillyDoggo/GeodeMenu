@@ -468,6 +468,7 @@ class AndroidBall : public CCLayer
         CCMenu* menu;
 
         Module* mod = nullptr;
+        Module* mod2 = nullptr;
 
         void onOpenMenu()
         {
@@ -486,6 +487,7 @@ class AndroidBall : public CCLayer
             highest++;
 
             mod = Client::GetModule("hide-btn");
+            mod2 = Client::GetModule("instant-fade");
 
             this->setTag(highest);
             instance = this;
@@ -595,20 +597,17 @@ class AndroidBall : public CCLayer
 
         virtual void update(float dt)
         {
-            #ifdef GEODE_IS_DESKTOP
-            this->setVisible(!mod->enabled);
-            #endif
-            //if (CCScene::get()->getChildByID("android-ui"))
-            //    CCDirector::get()->setNotificationNode(nullptr);
-            //else
-            //    CCDirector::get()->setNotificationNode(this);
-            
             UpdateVisible(false);
-            menu->setScale(clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
         }
 
         void UpdateVisible(bool i)
         {
+            #ifdef GEODE_IS_DESKTOP
+            this->setVisible(!mod->enabled);
+            #endif
+
+            menu->setScale(clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
+
             menu->setPosition(position);
 
             ColourUtility::pastel++;

@@ -874,8 +874,9 @@ class Config : public Window
             modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28 - 20));
             modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 20));
             modules[2]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 20));
+            modules[3]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 20 - 20));
             #ifdef GEODE_IS_DESKTOP
-            modules[3]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 28 - 20));
+            modules[4]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 28 - 20 - 20));
             #endif
 
             menu->addChild(lNormal);
