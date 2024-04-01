@@ -81,6 +81,38 @@ class $modify (cocos2d::CCTransitionFade)
             mod = 0;
         }
 
+        float v = 1.0f;
+
+        if (SpeedhackTop::instance && SpeedhackTransFix::instance->enabled)
+        {
+            if (SpeedhackEnabled::instance->enabled)
+            {
+                auto x = numFromString<float>(SpeedhackTop::instance->text);
+
+                if (x.isOk())
+                {
+                    v = x.value();
+                    
+                    if (v < 0.01f)
+                        v = 0.01f;
+
+                    if (v > 99999)
+                        v = 99999;
+                }
+                else
+                    v = 1;
+
+                bool m = SpeedhackMus::instance->enabled;
+
+                if (SpeedhackGameplay::instance->enabled)
+                    if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
+                v /= CCDirector::get()->getScheduler()->getTimeScale();
+
+                mod = mod * v;
+            }
+        }
+
         return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };

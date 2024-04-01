@@ -6,6 +6,7 @@
 - Safe Mode Kicks you out of the level now instead of showing the end screen, it was really broken
 - Removed Debug Button from Speedhack
 - Added Speedhack Presets
+- Added Speedhack transition fixes
 
 # 1.3.3
 

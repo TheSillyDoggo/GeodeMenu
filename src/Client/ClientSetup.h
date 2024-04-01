@@ -45,6 +45,7 @@ public:
         speedhack->modules.push_back(new SpeedhackEnabled());
         speedhack->modules.push_back(new SpeedhackMus());
         speedhack->modules.push_back(new SpeedhackGameplay());
+        speedhack->modules.push_back(new SpeedhackTransFix());
 
         //(reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
 

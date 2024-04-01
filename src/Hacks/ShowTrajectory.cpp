@@ -233,7 +233,7 @@ class $modify (PlayLayer)
 
         bool held = as<PlayerObjectExt*>(m_player1)->m_fields->isHeld == first;
 
-        CCPoint point = /*(first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : */m_player1->getPosition();
+        CCPoint point = (first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : m_player1->getPosition();
         plr->setPosition(point);
         plr->m_isPlatformer = m_player1->m_isPlatformer;
         plr->m_isUpsideDown = m_player1->m_isUpsideDown;

@@ -526,6 +526,7 @@ class SpeedhackMus : public Module
             id = "speedhack-mus";
             name = "Speedhack Music";
             description = "Speedhack all sound by your speed modifier";
+            enabled = true;
 
             instance = this;
 
@@ -543,6 +544,24 @@ class SpeedhackGameplay : public Module
             id = "speedhack-gameplay";
             name = "Gameplay Only";
             description = "Only enables the speedhack in gameplay and editor";
+
+            instance = this;
+
+            this->load();
+        }
+};
+
+class SpeedhackTransFix : public Module
+{
+    public:
+        static inline SpeedhackTransFix* instance = nullptr;
+
+        SpeedhackTransFix()
+        {
+            id = "trans-fix";
+            name = "Transition Fix";
+            description = "Scene Transitions run at normal speed instead of your speedhack value";
+            enabled = true;
 
             instance = this;
 
