@@ -6,7 +6,7 @@ using namespace geode::prelude;
 
 class $modify (PauseLayer)
 {
-    virtual TodoReturn customSetup()
+    virtual void customSetup()
     {
         auto a = PlayLayer::get()->m_level->m_levelType;
 

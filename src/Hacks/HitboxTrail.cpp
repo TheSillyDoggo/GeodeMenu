@@ -135,7 +135,7 @@ class $modify (PlayLayer)
 
 class $modify (LevelEditorLayer)
 {
-    virtual TodoReturn updateVisibility(float p0)
+    virtual void updateVisibility(float p0)
     {
         LevelEditorLayer::updateVisibility(p0);
 
@@ -143,7 +143,7 @@ class $modify (LevelEditorLayer)
             reinterpret_cast<GJBaseGameLayerExt*>(this)->drawTrail();
     }
 
-    TodoReturn onPlaytest()
+    void onPlaytest()
     {
         LevelEditorLayer::onPlaytest();
 

@@ -43,7 +43,7 @@ class $modify (PlayLayer)
         return true;
     }
 
-    TodoReturn addObject(GameObject* p0)
+    void addObject(GameObject* p0)
     {
         PlayLayer::addObject(p0);
 
@@ -53,7 +53,7 @@ class $modify (PlayLayer)
         }
     }
 
-    virtual TodoReturn postUpdate(float p0)
+    virtual void postUpdate(float p0)
     {
         PlayLayer::postUpdate(p0);
 

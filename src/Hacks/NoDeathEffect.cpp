@@ -8,7 +8,7 @@ using namespace geode::prelude;
 //#ifndef GEODE_IS_ANDROID32
 class $modify (PlayLayer)
 {
-    TodoReturn delayedResetLevel()
+    void delayedResetLevel()
     {
         if (!Client::GetModuleEnabled("instant-restart"))
             PlayLayer::delayedResetLevel();
@@ -22,7 +22,7 @@ class $modify (PlayerObject)
         self.setHookPriority("PlayerObject::playerDestroyed", -6969);
     }
 
-    TodoReturn playDeathEffect()
+    void playDeathEffect()
     {
         m_isDead = true;
         

@@ -10,7 +10,7 @@ class $modify (PlayLayer)
 {
     CCLabelBMFont* time;
 
-    virtual TodoReturn postUpdate(float p0)
+    virtual void postUpdate(float p0)
     {
         PlayLayer::postUpdate(p0);
 

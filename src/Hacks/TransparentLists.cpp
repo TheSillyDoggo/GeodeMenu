@@ -56,7 +56,7 @@ class $modify (LevelListCell)
 
 class $modify (LevelCell)
 {
-    TodoReturn loadFromLevel(GJGameLevel* p0)
+    void loadFromLevel(GJGameLevel* p0)
     {
         LevelCell::loadFromLevel(p0);
 

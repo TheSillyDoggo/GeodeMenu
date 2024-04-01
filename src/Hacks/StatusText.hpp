@@ -161,7 +161,7 @@ class $modify (PlayLayer)
 {
     StatusNode* stn;
 
-    virtual TodoReturn postUpdate(float p0)
+    virtual void postUpdate(float p0)
     {
         PlayLayer::postUpdate(p0);
 

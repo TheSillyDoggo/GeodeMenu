@@ -14,7 +14,7 @@ class $modify (PlayerObjectExt, PlayerObject)
 {
     bool isHeld;
 
-    TodoReturn pushButton(PlayerButton p0)
+    void pushButton(PlayerButton p0)
     {
         PlayerObject::pushButton(p0);
 
@@ -22,7 +22,7 @@ class $modify (PlayerObjectExt, PlayerObject)
             m_fields->isHeld = true;
     }
 
-    TodoReturn releaseButton(PlayerButton p0)
+    void releaseButton(PlayerButton p0)
     {
         PlayerObject::releaseButton(p0);
 
@@ -43,13 +43,13 @@ class $modify (PlayerObjectExt, PlayerObject)
 
 class $modify (GJBaseGameLayer)
 {
-    TodoReturn gameEventTriggered(GJGameEvent p0, int p1, int p2)
+    void gameEventTriggered(GJGameEvent p0, int p1, int p2)
     {
         if (!ignoreStuff)
             GJBaseGameLayer::gameEventTriggered(p0, p1, p2);
     }
 
-    TodoReturn playerWillSwitchMode(PlayerObject* p0, GameObject* p1)
+    void playerWillSwitchMode(PlayerObject* p0, GameObject* p1)
     {
         if (p0->getID() == "trajectory-player"_spr || ignoreStuff)
             return;
@@ -103,7 +103,7 @@ class $modify (PlayLayer)
     PlayerObject* ship;
     CCLayer* mainLayer = nullptr;
 
-    virtual TodoReturn destroyPlayer(PlayerObject* p0, GameObject* p1)
+    virtual void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
         if ((p0 && p0->getID() == "trajectory-player"_spr) || ignoreStuff)
         {
@@ -146,7 +146,7 @@ class $modify (PlayLayer)
             PlayLayer::incrementJumps();
     }
 
-    TodoReturn playEndAnimationToPos(cocos2d::CCPoint p0)
+    void playEndAnimationToPos(cocos2d::CCPoint p0)
     {
         if (!ignoreStuff)
             PlayLayer::playEndAnimationToPos(p0);
@@ -289,7 +289,7 @@ class $modify (PlayLayer)
         }
     }
 
-    virtual TodoReturn postUpdate(float p0)
+    virtual void postUpdate(float p0)
     {
         ignoreStuff = false;
 

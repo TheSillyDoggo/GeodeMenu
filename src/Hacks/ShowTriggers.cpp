@@ -8,7 +8,7 @@ class $modify (PlayLayer)
     CCLayer* mainLayer = nullptr;
     Module* mod = nullptr;
 
-    TodoReturn addObject(GameObject* p0)
+    void addObject(GameObject* p0)
     {
         PlayLayer::addObject(p0);
 

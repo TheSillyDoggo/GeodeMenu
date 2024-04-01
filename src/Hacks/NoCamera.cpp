@@ -15,7 +15,7 @@ Module* stati = nullptr;
 
 class $modify (GJBaseGameLayer)
 {
-    TodoReturn applyShake(cocos2d::CCPoint& p0)
+    void applyShake(cocos2d::CCPoint& p0)
     {
         if (!shake)
             shake = Client::GetModule("no-shake");
@@ -24,7 +24,7 @@ class $modify (GJBaseGameLayer)
             GJBaseGameLayer::applyShake(p0);
     }
 
-    TodoReturn updateStaticCameraPos(cocos2d::CCPoint p0, bool p1, bool p2, bool p3, float p4, int p5, float p6)
+    void updateStaticCameraPos(cocos2d::CCPoint p0, bool p1, bool p2, bool p3, float p4, int p5, float p6)
     {
         if (!stati)
             stati = Client::GetModule("no-static");

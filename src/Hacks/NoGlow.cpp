@@ -11,7 +11,7 @@ Module* noGlow = nullptr;
 
 class $modify(GameObject) {
     
-    TodoReturn commonSetup() 
+    void commonSetup() 
     {
         GameObject::commonSetup();
 

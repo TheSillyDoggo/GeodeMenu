@@ -9,7 +9,7 @@ Module* noShad = nullptr;
 
 class $modify (ShaderLayer)
 {
-    TodoReturn performCalculations()
+    void performCalculations()
     {
         if (!noShad)
             noShad = Client::GetModule("no-shaders");

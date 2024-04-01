@@ -17,7 +17,7 @@ class $modify (PlayLayer)
         return inaccurateMod->enabled ? ((m_player1->getPositionX() / (m_levelLength == 0 ? 1 : m_levelLength))) * 100 : this->getCurrentPercent();
     }
 
-    TodoReturn updateProgressbar()
+    void updateProgressbar()
     {
         PlayLayer::updateProgressbar();
 
