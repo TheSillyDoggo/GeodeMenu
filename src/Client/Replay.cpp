@@ -84,7 +84,7 @@ class $modify (PlayLayer)
         log::info("cp {}", p0);
     }
 
-    TodoReturn removeCheckpoint(bool p0)
+    void removeCheckpoint(bool p0)
     {
         PlayLayer::removeCheckpoint(p0);
         m_fields->checkpoints.pop_back();
@@ -189,7 +189,7 @@ class $modify (PlayLayer)
         log::info("resetLevel");
     }
 
-    TodoReturn loadFromCheckpoint(CheckpointObject* p0)
+    void loadFromCheckpoint(CheckpointObject* p0)
     {
         PlayLayer::loadFromCheckpoint(p0);
 
