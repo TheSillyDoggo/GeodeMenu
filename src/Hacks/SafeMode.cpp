@@ -106,7 +106,7 @@ class $modify (PlayLayerExt, PlayLayer)
         self.setHookPriority("PlayLayer::init", -6969);
     }
 
-    TodoReturn levelComplete()
+    void levelComplete()
     {
         log::info("hacked attempt: {}", hasHackedAttempt);
 

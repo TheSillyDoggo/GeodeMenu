@@ -7,7 +7,7 @@ using namespace geode::prelude;
 
 class $modify (CCTextInputNode)
 {
-    TodoReturn updateLabel(gd::string p0)
+    void updateLabel(gd::string p0)
     {
         if (this->getID().starts_with("IGNOREBYPASSES"_spr))
         {

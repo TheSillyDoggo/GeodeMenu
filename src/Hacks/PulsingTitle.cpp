@@ -39,8 +39,14 @@ class MenuPulse : public CCNode
         void update(float dt)
         {
             engine->updateMetering();
+            
+            #ifdef GEODE_IS_WINDOWS
+            float met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(engine) + 0x178));
+            #else
+            float met = engine->getMeteringValue()
+            #endif
 
-            v = as<float>(std::lerp(as<float>(v), as<float>(engine->getMeteringValue()), dt * 6.9420f));
+            v = as<float>(std::lerp(as<float>(v), as<float>(met), dt * 6.9420f));
             if (node)
                 node->setScale(mod->enabled ? (0.85f + clampf(v * 0.25f, 0, 1)) : 1);
         }
@@ -64,7 +70,11 @@ class $modify (PulsingScheduler, CCScheduler)
             if (!pul)
                 pul = Client::GetModule("all-pulse");
 
+            #ifdef GEODE_IS_WINDOWS
+            *(reinterpret_cast<bool*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x188)) = true;
+            #else
             FMODAudioEngine::sharedEngine()->enableMetering();
+            #endif
 
             float met = 0;
 

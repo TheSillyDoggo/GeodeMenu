@@ -10,7 +10,7 @@ class $modify (EditorUI)
 {
     Module* mod = nullptr;
 
-    TodoReturn constrainGameLayerPosition()
+    void constrainGameLayerPosition()
     {
         if (!m_fields->mod)
             m_fields->mod = Client::GetModule("free-scroll");
