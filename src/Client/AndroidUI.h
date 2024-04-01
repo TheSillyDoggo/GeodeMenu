@@ -663,8 +663,8 @@ class AndroidBall : public CCLayer
                 }
                 else
                 {
-                    btn->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f, op), 2));
-                    l->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f, op), 2));
+                    btn->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
+                    l->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
                 }
             }
         }
