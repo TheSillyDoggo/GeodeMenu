@@ -177,6 +177,8 @@ class InputModule : public Module, public TextInputDelegate
 
         int maxSize = 5;
 
+        TextInput* inputField = nullptr;
+
         InputModule()
         {
             this->load();
@@ -275,6 +277,8 @@ class InputModule : public Module, public TextInputDelegate
             menu->addChild(input);
             
             menu->addChild(label);
+
+            this->inputField = input;
         }
 
         virtual void textChanged(CCTextInputNode* p0)

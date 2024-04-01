@@ -4,6 +4,8 @@
 - Added Show Trajectory (Beta)
 - Added Instant Fade (Makes the mod menu button instantly disappear instead of slowly fading)
 - Safe Mode Kicks you out of the level now instead of showing the end screen, it was really broken
+- Removed Debug Button from Speedhack
+- Added Speedhack Presets
 
 # 1.3.3
 

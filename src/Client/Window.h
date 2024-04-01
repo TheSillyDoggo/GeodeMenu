@@ -258,6 +258,10 @@ class Speedhack : public Window//, public TextInputDelegate
         }
 
         static inline Slider* slider = nullptr;
+        std::vector<float> presets = 
+        {
+            0.1f, 0.25f, 0.3f, 0.50f, 0.75f, 1, 1.50f, 2
+        };
 
         void clear(CCObject* sender)
         {
@@ -359,6 +363,16 @@ class Speedhack : public Window//, public TextInputDelegate
             FLAlertLayer::create("Macro Info", ss.str(), "OK")->show();
         }
 
+        void onPreset(CCObject* sender)
+        {
+            float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).value();
+
+            SpeedhackTop::instance->text = as<CCNode*>(sender)->getID();
+            auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent()->getParent(), 0);
+            inp->setString(as<CCNode*>(sender)->getID());
+            slider->setValue(unscaleValue(value));
+        }
+
         void cocosCreate(CCMenu* menu)
         {
             float v = 1.0f;
@@ -394,9 +408,11 @@ class Speedhack : public Window//, public TextInputDelegate
 
             modules[0]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 50) - ccp(180 / 2, 0) + ccp(10, 0));
 
-            modules[1]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[2]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * 1)) - ccp(180 / 2, 0) + ccp(10, 0));
-            modules[3]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * 2)) - ccp(180 / 2, 0) + ccp(10, 0));
+            for (size_t i = 1; i < modules.size(); i++)
+            {
+                modules[i]->makeAndroid(menu, (ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * i)) - ccp(180 / 2, 0) + ccp(10, 0)) + ccp(0, 27.5f));
+            }
+
             //static_cast<geode::InputNode*>(menu->getChildByID("speedhack-top"))->getInput()->setDelegate(this);
 
             auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), menu, menu_selector(Speedhack::clear));
@@ -404,6 +420,27 @@ class Speedhack : public Window//, public TextInputDelegate
             trash->setScale(0.725f);
             trash->setPosition(ccp((menu->getContentSize().width / 2) + (180 / 2) + 20, menu->getContentSize().height - 50));
             menu->addChild(trash);
+
+            auto presetMenu = CCMenu::create();
+            presetMenu->setScale(0.41f);
+            presetMenu->setAnchorPoint(ccp(0.5f, 0.5f));
+            presetMenu->setPosition(menu->getContentWidth() / 2, 13);
+            presetMenu->setContentWidth(6969);
+            presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(false));
+
+            for (auto preset : presets)
+            {
+                auto btn = ButtonSprite::create(utils::numToString(preset, 2).c_str(), "bigFont.fnt", "GJ_button_05.png");
+                auto act = CCMenuItemSpriteExtra::create(btn, menu, menu_selector(Speedhack::onPreset));
+                act->setID(numToString(preset, 2));
+
+                presetMenu->addChild(act);
+            }           
+
+            presetMenu->updateLayout();
+            menu->addChild(presetMenu);
+
+            return;
 
             auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22) * 0.5f;
 
