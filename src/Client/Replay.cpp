@@ -60,7 +60,7 @@ class $modify (PlayLayer)
     std::vector<int> checkpointsFrame = {};
     std::vector<int> checkpointsFrameFix = {};
 
-    TodoReturn startGameDelayed()
+    void startGameDelayed()
     {
         PlayLayer::startGameDelayed();
 
@@ -69,7 +69,7 @@ class $modify (PlayLayer)
         log::info("started");
     }
 
-    TodoReturn storeCheckpoint(CheckpointObject* p0)
+    void storeCheckpoint(CheckpointObject* p0)
     {
         PlayLayer::storeCheckpoint(p0);
 
