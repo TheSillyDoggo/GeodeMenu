@@ -96,6 +96,7 @@ public:
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
 
+
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
         Client::GetModule("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
 
@@ -256,10 +257,16 @@ public:
         //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
         //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
-        //replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
+        replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
         //replay->modules.push_back(new StatusMessage());
 
         Client::instance->windows.push_back(replay);
+
+        auto messageOption = new InputModule("Message Text: ", "status-message-text", "Default Message");
+        messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";
+        messageOption->description = "What text is displayed";
+        messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
+        Client::GetModule("status-message")->options.push_back(messageOption);
     }
 
     static void SetupOptions(bool android)
