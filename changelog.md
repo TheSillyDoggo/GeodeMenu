@@ -1,5 +1,6 @@
 # 1.3.4
 
+- Added customizable message label
 - Temporarily removed show layout because of editor crashes
 - Added Show Trajectory (Beta)
 - Added Instant Fade (Makes the mod menu button instantly disappear instead of slowly fading)

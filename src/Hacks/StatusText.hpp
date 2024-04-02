@@ -35,6 +35,7 @@ class StatusNode : public CCNode
         static inline Module* deaths = nullptr;
         static inline Module* replay = nullptr;
         static inline Module* attempt = nullptr;
+        static inline Module* message = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -109,6 +110,9 @@ class StatusNode : public CCNode
             if (!attempt)
                 attempt = Client::GetModule("status-attempt");
 
+            if (!message)
+                message = Client::GetModule("status-message");
+
             
             float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_unk1f8 == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_unk1f8)));
             
@@ -121,6 +125,7 @@ class StatusNode : public CCNode
             sLabels[5]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
             sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
             sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+            sLabels[8]->setVisible(message->enabled);
 
 
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
@@ -139,6 +144,7 @@ class StatusNode : public CCNode
             sLabels[5]->setString(ss.str().c_str());
             sLabels[6]->setString(b.c_str());
             sLabels[7]->setString(inp.str().c_str());
+            sLabels[8]->setString(as<InputModule*>(message->options[0])->text.c_str());
 
             if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
             {
@@ -211,7 +217,7 @@ class $modify (PlayLayer)
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        int count = 8;
+        int count = 9;
 
         for (size_t i = 0; i < count; i++)
         {
