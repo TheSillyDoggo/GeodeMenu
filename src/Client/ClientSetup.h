@@ -264,7 +264,6 @@ public:
 
         auto messageOption = new InputModule("Message Text: ", "status-message-text", "Default Message");
         messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";
-        messageOption->description = "What text is displayed";
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
     }
