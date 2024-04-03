@@ -44,7 +44,7 @@ class $modify (NoclipLayer, PlayLayer)
         {
             p0->m_isDead = true;
 
-            return;
+            return PlayLayer::destroyPlayer(p0, p1);
         }
 
         if (!m_fields->ac)

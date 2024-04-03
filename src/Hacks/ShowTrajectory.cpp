@@ -59,8 +59,11 @@ class $modify (GJBaseGameLayer)
 
     bool canBeActivatedByPlayer(PlayerObject* p0, EffectGameObject* p1)
     {
-        if (p0->getID() == "trajectory-player"_spr && !(p1->m_objectType == GameObjectType::YellowJumpPad || p1->m_objectType == GameObjectType::RedJumpPad || p1->m_objectType == GameObjectType::PinkJumpPad || p1->m_objectType == GameObjectType::GravityPad || p1->m_objectType == GameObjectType::SpiderPad || p1->m_objectType == GameObjectType::NormalGravityPortal || p1->m_objectType == GameObjectType::GravityTogglePortal || p1->m_objectType == GameObjectType::NormalGravityPortal || p1->m_objectType == GameObjectType::Hazard || p1->m_objectType == GameObjectType::AnimatedHazard || p1->m_objectType == GameObjectType::Solid))
-            return false;
+        if (p0->getID() == "trajectory-player"_spr)
+        {
+            //if (p1->m_objectType == GameObjectType::Fa)
+                //return false;
+        }
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
     }
@@ -258,8 +261,8 @@ class $modify (PlayLayer)
         for (size_t i = 0; i < updateRate * steps; i++) {
             plr->m_isDead = false;
 
-            //if (first)
-                //plr->pushButton(PlayerButton::Jump);
+            if (first && !plr->m_isSpider)
+                plr->pushButton(PlayerButton::Jump);
 
             plr->update(0.2f);
             plr->updateSpecial(0.2f);
