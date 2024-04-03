@@ -18,5 +18,10 @@
 			"resources/*.glsl",
 			"resources/*.hlsl"
         ]
-    }
+    },
+	"tags": [
+		"Cheat",
+		"Mod Menu",
+		"Hack"
+	]
 }
