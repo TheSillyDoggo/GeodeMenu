@@ -9,7 +9,7 @@ Module* allMod = nullptr;
 
 class $modify (GJBaseGameLayer)
 {
-    TodoReturn collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+    void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
     {
         if (!allMod)
             allMod = Client::GetModule("all-plat");
@@ -21,7 +21,7 @@ class $modify (GJBaseGameLayer)
             #endif
 
             #ifdef GEODE_IS_ANDROID32
-            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29e6);
+            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + (0x29e6 - 0x16));
             #endif
 
             #ifdef GEODE_IS_ANDROID64
