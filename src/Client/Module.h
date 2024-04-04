@@ -162,7 +162,7 @@ class Module
         void onOptionsAndroid(CCObject* sender);
         void onToggleAndroid(CCObject* sender);
         
-        virtual void makeAndroid(CCMenu* menu, CCPoint pos);
+        virtual void makeAndroid(CCNode* menu, CCPoint pos);
 };
 
 class InputModule : public Module, public TextInputDelegate
@@ -255,7 +255,7 @@ class InputModule : public Module, public TextInputDelegate
             text = geode::prelude::Mod::get()->getSavedValue<std::string>(id + "_value", text);
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos)
+        void makeAndroid(CCNode* menu, CCPoint pos)
         {
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));
@@ -367,7 +367,7 @@ class ColourModule : public Module
             men->show();
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos)
+        void makeAndroid(CCNode* menu, CCPoint pos)
         {
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));
@@ -424,7 +424,7 @@ class SliderModule : public Module
             x->save();
         }
 
-        void makeAndroid(CCMenu* menu, CCPoint pos)
+        void makeAndroid(CCNode* menu, CCPoint pos)
         {
             auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
             label->setAnchorPoint(ccp(0, 0.5f));

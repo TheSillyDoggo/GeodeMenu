@@ -56,8 +56,8 @@ std::vector<std::string> camera = {
 class $modify (PlayLayer)
 {
     CCSprite* background;
-    GJGroundLayer* ground1;
-    GJGroundLayer* ground2;
+    Ref<GJGroundLayer> ground1;
+    Ref<GJGroundLayer> ground2;
 
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
@@ -78,6 +78,23 @@ class $modify (PlayLayer)
                 modu->hooks.push_back(hook);
             }
         });
+    }
+
+    void addObject(GameObject* p0)
+    {
+        if (!showLayout)
+        {
+            showLayout = Client::GetModule("show-layout");
+            showLayoutCamera = showLayout->options[0];
+        }
+
+        if (showLayout->enabled)
+        {
+            p0->m_isHide = false;
+            //p0->m_customColorType = 2;
+        }
+
+        PlayLayer::addObject(p0);
     }
 
     virtual void postUpdate(float dt)
@@ -278,7 +295,7 @@ class $modify(GameObject) {
         if (m_objectType == GameObjectType::Decoration && m_objectID != 44) { // 44 being practice mode checkpoint, because thats a "decoration"
             GameObject::setVisible(false);
         } else {
-            GameObject::setVisible(v);
+            GameObject::setVisible(showLayout->enabled ? true : v);
         }
     }
 
@@ -290,7 +307,7 @@ class $modify(GameObject) {
             showLayoutCamera = showLayout->options[0];
         }
 
-		GameObject::setOpacity(g);
+		GameObject::setOpacity(showLayout->enabled ? 255 : g);
 
         if (!PlayLayer::get() || !showLayout->enabled)
             return;

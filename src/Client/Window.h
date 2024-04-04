@@ -220,6 +220,11 @@ public:
         return ImVec2(0, 0);
     }
 
+    float roundUpToMultipleOf2(float num) { // def not stolen
+        float roundedNum = std::ceil(num / 2.0f) * 2.0f;
+        return roundedNum;
+    }
+
     virtual void cocosCreate(CCMenu* menu)
     {
         auto back = CCScale9Sprite::create("square02_small.png");
@@ -233,6 +238,22 @@ public:
 
         int y = 0;
 
+        float gap = 28;
+        float extraGap = 9.69f;
+        float height = gap * roundUpToMultipleOf2(modules.size() / 2);
+        height = std::max<float>(menu->getContentHeight(), height + extraGap);
+
+        auto scroll = geode::ScrollLayer::create(menu->getContentSize());
+        scroll->m_peekLimitTop = 15;
+        scroll->m_peekLimitBottom = 15;
+        menu->addChild(scroll);
+
+        auto btnMenu = CCMenu::create();
+        btnMenu->setContentSize(ccp(menu->getContentWidth(), height));
+        btnMenu->setPosition(ccp(0, 0));
+        btnMenu->setAnchorPoint(ccp(0, 0));
+        scroll->m_contentLayer->addChild(btnMenu);
+
         for (size_t m = 0; m < modules.size(); m++)
         {
             float x = 20;
@@ -240,11 +261,14 @@ public:
             if (!(m % 2 == 0))
                 x = 188;
 
-            modules[m]->makeAndroid(menu, {x, (menu->getContentSize().height - 20 - 20) - 7 - (28.0f * (y - 1.0f)) });
+            modules[m]->makeAndroid(btnMenu, {x, height - (gap * y) - (gap / 2) - (extraGap / 2)});
 
             if ((m - 1) % 2 == 0 && m != 0)
                 y++;
         }
+
+        scroll->m_contentLayer->setContentHeight(height);
+        scroll->moveToTop();
     }
 };
 

@@ -1,7 +1,11 @@
 # 1.3.5
 
 - Show Trajectory shows where you will die
-- Readded Show Layout
+- Re added Show Layout
+- Fixed another crash opening mod menu
+- Optimised the on screen button
+- Made the mod menu popup scrollable
+- Fixed Spelling mistake in confirm restart
 
 # 1.3.4
 

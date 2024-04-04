@@ -49,7 +49,7 @@ class $modify (PauseLayer)
         }        
 
         geode::createQuickPopup(
-            "Restart Leevl",
+            "Restart Level",
             "Are you sure you want to\n<cr>restart this level</c>?",
             "Cancel", "Restart",
             [this, sender](FLAlertLayer* tis, bool btn2) {

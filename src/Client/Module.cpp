@@ -53,7 +53,7 @@ void Module::onToggleAndroid(CCObject* sender)
     }
 }
 
-void Module::makeAndroid(CCMenu* menu, CCPoint pos)
+void Module::makeAndroid(CCNode* menu, CCPoint pos)
 {
     auto btn = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Module::onToggleAndroid), 0.75f);
     btn->setUserData(this);
