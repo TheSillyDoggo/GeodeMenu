@@ -45,7 +45,7 @@ class $modify (GJBaseGameLayer)
 {
     void gameEventTriggered(GJGameEvent p0, int p1, int p2)
     {
-        if (!ignoreStuff)
+        //if (!ignoreStuff)
             GJBaseGameLayer::gameEventTriggered(p0, p1, p2);
     }
 
@@ -236,17 +236,20 @@ class $modify (PlayLayer)
 
         bool held = as<PlayerObjectExt*>(m_player1)->m_fields->isHeld == first;
 
-        CCPoint point = (first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : m_player1->getPosition();
+        CCPoint point = /*(first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : */m_player1->getPosition();
         plr->setPosition(point);
         plr->m_isPlatformer = m_player1->m_isPlatformer;
         plr->m_isUpsideDown = m_player1->m_isUpsideDown;
         plr->m_isDead = false;
         plr->m_collidedObject = nullptr;
+        plr->m_isOnGround = m_player1->m_isOnGround;
+        plr->m_isOnSlope = m_player1->m_isOnSlope;
         plr->m_wasOnSlope = m_player1->m_wasOnSlope;
         plr->m_isDashing = m_player1->m_isDashing;
         plr->m_vehicleSize = m_player1->m_vehicleSize;
 
         plr->m_yVelocity = m_player1->m_yVelocity;
+        plr->m_collidedObject = m_player1->m_collidedObject;
         plr->m_vehicleSize = m_player1->m_vehicleSize;
         plr->m_playerSpeed = m_player1->m_playerSpeed;
 
@@ -266,7 +269,7 @@ class $modify (PlayLayer)
 
             plr->update(0.2f);
             plr->updateSpecial(0.2f);
-            this->checkCollisions(plr, 0.2f, true);
+            this->checkCollisions(plr, 0.2f, false);
             
             dn->drawSegment(point, plr->getPosition(), 1, plr->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, held ? 1 : 0.45f, 0, 1));
             point = plr->getPosition();

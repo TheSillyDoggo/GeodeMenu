@@ -1,3 +1,8 @@
+# 1.3.5
+
+- Show Trajectory shows where you will die
+- Readded Show Layout
+
 # 1.3.4
 
 - Added customizable message label

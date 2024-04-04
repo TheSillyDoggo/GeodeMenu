@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -59,7 +59,28 @@ class $modify (PlayLayer)
     GJGroundLayer* ground1;
     GJGroundLayer* ground2;
 
-    virtual TodoReturn postUpdate(float dt)
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("PlayLayer::postUpdate").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+
+    virtual void postUpdate(float dt)
     {
         PlayLayer::postUpdate(dt);
 
@@ -96,6 +117,30 @@ class $modify (PlayLayer)
 
 class $modify (GJBaseGameLayer)
 {
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("GJBaseGameLayer::createMiddleground").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::createBackground").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::createGroundLayer").unwrap());
+        hooks.push_back(self.getHook("GJBaseGameLayer::updateColor").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+
     void createMiddleground(int p0)
     {
         if (!showLayout)
@@ -130,7 +175,7 @@ class $modify (GJBaseGameLayer)
         GJBaseGameLayer::createGroundLayer(PlayLayer::get() && showLayout->enabled ? 0 : p0, PlayLayer::get() && showLayout->enabled ? 0 : p1);
     }
 
-    virtual TodoReturn updateColor(cocos2d::ccColor3B& p0, float p1, int p2, bool p3, float p4, cocos2d::ccHSVValue& p5, int p6, bool p7, EffectGameObject* p8, int p9, int p10)
+    virtual void updateColor(cocos2d::ccColor3B& p0, float p1, int p2, bool p3, float p4, cocos2d::ccHSVValue& p5, int p6, bool p7, EffectGameObject* p8, int p9, int p10)
     {
         if (!showLayout)
         {
@@ -144,6 +189,28 @@ class $modify (GJBaseGameLayer)
 };
 
 class $modify(EffectGameObject) {
+
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("EffectGameObject::init").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+
 	bool init(char const* p0) {
 		if (!EffectGameObject::init(p0)) 
             return false;
@@ -171,6 +238,30 @@ class $modify(EffectGameObject) {
 };
 
 class $modify(GameObject) {
+
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("GameObject::setVisible").unwrap());
+        hooks.push_back(self.getHook("GameObject::setOpacity").unwrap());
+        hooks.push_back(self.getHook("GameObject::setObjectColor").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+
     void setVisible(bool v) {
         if (!showLayout)
         {
@@ -227,4 +318,4 @@ class $modify(GameObject) {
 			GameObject::setObjectColor(cor);
 		}
 	}
-};*/
+};
