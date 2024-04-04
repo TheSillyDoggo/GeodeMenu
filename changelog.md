@@ -6,6 +6,7 @@
 - Optimised the on screen button
 - Made the mod menu popup scrollable
 - Fixed Spelling mistake in confirm restart
+- Added All modes platformer on windows and android 32
 
 # 1.3.4
 

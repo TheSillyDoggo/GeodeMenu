@@ -87,8 +87,9 @@ public:
 
         level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
-        
+
         level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
+        level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
 
 
         Client::instance->windows.push_back(level);

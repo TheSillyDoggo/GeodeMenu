@@ -1,4 +1,4 @@
-/*#ifdef GEODE_IS_WINDOWS
+#ifndef GEODE_IS_ANDROID64
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
@@ -18,13 +18,13 @@ class $modify (GJBaseGameLayer)
 
         if (allMod->enabled)
         {
-            //#ifdef GEODE_IS_WINDOWS
+            #ifdef GEODE_IS_WINDOWS
             auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29C6);
-            //#endif
+            #endif
 
-            //#ifdef GEODE_IS_ANDROID32
-            //auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29de);
-            //#endif
+            #ifdef GEODE_IS_ANDROID32
+            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29e6);
+            #endif
 
             //#ifdef GEODE_IS_ANDROID64
             //auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29C6);
@@ -42,4 +42,4 @@ class $modify (GJBaseGameLayer)
     }
 };
 
-#endif*/
+#endif
