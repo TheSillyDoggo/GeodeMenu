@@ -16,22 +16,25 @@ class $modify (GJBaseGameLayer)
 
         if (allMod->enabled)
         {
-            #ifdef GEODE_IS_WINDOWS
-            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x29C6);
-            #endif
+            for (size_t i = 0; i < p2; i++)
+            {
+                auto obj = p1->at(i);
 
-            #ifdef GEODE_IS_ANDROID32
-            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + (0x29e6 - 0x16));
-            #endif
+                if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
+                {
+                    if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
+                    {
+                        if(canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
+                        {
+                            playerWillSwitchMode(p0, obj);
+                            switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
+                            obj->playShineEffect();
+                        }
+                    }
+                }
+            }            
 
-            #ifdef GEODE_IS_ANDROID64
-            auto* value = reinterpret_cast<uintptr_t*>(((uintptr_t)this) + 0x30C6);
-            #endif
-            
-            uintptr_t og = *value;
-            *value = 0;
-            GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
-            *value = og;
+            return GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
         }
         else
         {
