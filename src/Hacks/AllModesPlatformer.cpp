@@ -7,6 +7,8 @@ using namespace geode::prelude;
 
 Module* allMod = nullptr;
 
+#ifdef GEODE_IS_WINDOWS
+
 class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
@@ -15,7 +17,6 @@ class $modify (GJBaseGameLayer)
             allMod = Client::GetModule("all-plat");
 
         if (allMod->enabled)
-        //if (true)
         {
             for (size_t i = 0; i < p2; i++)
             {
@@ -29,8 +30,6 @@ class $modify (GJBaseGameLayer)
 
                         if(canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                         {
-                            CCScene::get()->addChild(TextAlertPopup::create("should", 0.5f, 0.6f, 150, ""), 9999999);
-
                             playerWillSwitchMode(p0, obj);
                             switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
                             obj->playShineEffect();
@@ -47,3 +46,24 @@ class $modify (GJBaseGameLayer)
         }
     }
 };
+
+#endif
+
+#ifdef GEODE_IS_ANDROID
+
+void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+{
+    CCScene::get()->addChild(TextAlertPopup::create("we sexxing", 0.5f, 0.6f, 150, ""), 9999999);
+    log::info("Sexexes");
+
+    self->collisionCheckObjects(p0, p1, p2, p3);
+}
+
+Mod::get()->hook(
+    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
+    &myCollisionCheck,
+    "GJBaseGameLayer::collisionCheckObjects",
+    tulip::hook::TulipConvention::Default
+);
+
+#endif

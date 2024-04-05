@@ -19,7 +19,7 @@ class $modify (PlayLayer)
 class $modify (PlayerObject)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("PlayerObject::playerDestroyed", -6969);
+        self.setHookPriority("PlayerObject::playDeathEffect", -6969);
     }
 
     void playDeathEffect()
