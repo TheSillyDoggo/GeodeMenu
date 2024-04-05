@@ -59,11 +59,14 @@ void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameOb
     self->collisionCheckObjects(p0, p1, p2, p3);
 }
 
-Mod::get()->hook(
-    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
-    &myCollisionCheck,
-    "GJBaseGameLayer::collisionCheckObjects",
-    tulip::hook::TulipConvention::Default
-);
+$execute
+{
+    Mod::get()->hook(
+        dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
+        &myCollisionCheck,
+        "GJBaseGameLayer::collisionCheckObjects",
+        tulip::hook::TulipConvention::Default
+    );
+}
 
 #endif
