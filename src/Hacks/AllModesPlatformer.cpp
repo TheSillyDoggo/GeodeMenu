@@ -58,7 +58,7 @@ void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameOb
 {
     CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
 
-    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif")
+    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif");
 }
 
 $execute
