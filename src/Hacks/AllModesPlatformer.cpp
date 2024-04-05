@@ -56,8 +56,6 @@ class $modify (GJBaseGameLayer)
 
 void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
-    CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
-
     if (!allMod)
         allMod = Client::GetModule("all-plat");
 
