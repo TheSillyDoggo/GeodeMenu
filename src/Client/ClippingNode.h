@@ -36,6 +36,10 @@ public:
     
     virtual void visit() {
         if (!m_clipRect.equals(CCRectZero)) {
+            
+            if (CCKeyboardDispatcher::get()->getAltKeyPressed() && CCKeyboardDispatcher::get()->getShiftKeyPressed())
+                cocos2d::ccDrawSolidRect(m_clipRect.origin, m_clipRect.size, ccc4f(1, 0, 0, 1));
+
             glEnable(GL_SCISSOR_TEST);
             CCEGLView::sharedOpenGLView()->setScissorInPoints(m_clipRect.origin.x, m_clipRect.origin.y, m_clipRect.size.width, m_clipRect.size.height);
             CCMenu::visit();

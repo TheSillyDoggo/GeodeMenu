@@ -1,12 +1,14 @@
 # 1.3.5
 
 - Show Trajectory shows where you will die
-- Re added Show Layout
+- Readded Show Layout
 - Fixed another crash opening mod menu
 - Optimised the on screen button
 - Made the mod menu popup scrollable
 - Fixed Spelling mistake in confirm restart
 - Added All Modes Platformer
+- Added Comment History Bypass
+- Redesugbed Config Menu
 
 # 1.3.4
 

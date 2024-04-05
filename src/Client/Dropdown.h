@@ -160,7 +160,7 @@ class Dropdown : public /*CCMenu*/ClippingNode {
 
         void update(float dt)
         {
-            this->setClipRect(CCRectMake(this->getParent()->convertToWorldSpace(this->getPosition()).x - 50, this->getParent()->convertToWorldSpace(this->getPosition()).y - (bg->getContentSize().height / 2) + size.height, size.width + 50 + 50, size.height * (strs.size() + 2)));
+            this->setClipRect(CCRectMake(this->getParent()->convertToWorldSpace(this->getPosition()).x - 50, (this->getParent()->convertToWorldSpace(this->getPosition()).y - (bg->getContentSize().height / 2) + size.height) * getScaleY(), (size.width + 50) * getScaleX() + 50, (size.height * (strs.size() + 2)) * getScaleY()));
         }
 
         static Dropdown* create(CCSize size, std::vector<std::string> strs, cocos2d::SEL_MenuHandler callback, int sel = 0) {

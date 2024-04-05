@@ -138,6 +138,8 @@ public:
         bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
         bypass->modules.push_back(new Module("Full Options Menu", "full-options", "Replaces the mini options menu in the pause menu with the full options menu"));
 
+        bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
+
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
         Client::instance->windows.push_back(bypass);
@@ -280,15 +282,17 @@ public:
         if (true)
         {
             auto cfg = new Config();
+
+            cfg->modules.push_back(new SliderModule("Anim Speed:", "anim-speed", 0.5f));
+            cfg->modules.push_back(new Module("Additional Border", "npesta-width", "Adds borders to the left and right sides of the mod menu to make the menu look better with some texture packs\nlike the <cg>npesta</c> pack"));
             
             cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
             cfg->modules.push_back(new Module("Save Ball Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
-            cfg->modules.push_back(new Module("Additional Width", "npesta-width", "Add's borders to the sides of the menu. Looks weird with <cl>vanilla gd pack</c> but looks nice with <cg>npesta texture pack</c>"));
             cfg->modules.push_back(new Module("Instant Button Fade", "instant-fade", "Makes the mod menu button fade instantly"));
             #ifdef GEODE_IS_DESKTOP
             cfg->modules.push_back(new Module("Hide Button", "hide-btn", "Hides the button to open the menu, use the <cl>Tab</c> or <cl>Insert</c> key to open the mod menu", true));
-            cfg->modules.push_back(new CompactMode());
-            cfg->modules.push_back(new AltModuleLocation());
+            //cfg->modules.push_back(new CompactMode());
+            //cfg->modules.push_back(new AltModuleLocation());
             #endif        
 
             Client::instance->windows.push_back(cfg);

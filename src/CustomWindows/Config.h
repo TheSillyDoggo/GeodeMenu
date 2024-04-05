@@ -11,15 +11,23 @@ class Config : public Window
             id = "config-window";
         }
 
+        static inline std::vector<CCNode*> tabs = {};
+        static inline int selectedTab = 1;
+
+        static inline Ref<CCSprite> sprJoin = nullptr;
+        CCMenu* menu = nullptr;
+
         static inline std::vector<CCScale9Sprite*> btns = {};
         static inline std::vector<CCMenuItemSprite*> btnsS = {};
         static inline Slider* normal = nullptr;
         static inline Slider* GP = nullptr;
         static inline Slider* ED = nullptr;
         static inline Slider* scale = nullptr;
-        static inline Dropdown* dd = nullptr;
+        static inline Dropdown* animDropdown = nullptr;
 
         void changeTheme(CCObject* sender);
+
+        CCMenuItemToggler* createTabButton(std::string name, int index);
 
         void createBtn(CCNode* menu, int i);
 
@@ -28,6 +36,8 @@ class Config : public Window
         void onLink(CCObject* sender);
 
         void onDropdownChanged(CCObject*);
+
+        void onChangeTab(CCObject*);
 
         void cocosCreate(CCMenu* menu);
 };
