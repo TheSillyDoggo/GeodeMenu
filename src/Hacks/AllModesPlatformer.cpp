@@ -51,3 +51,24 @@ class $modify (GJBaseGameLayer)
 };
 
 #endif
+
+#ifdef GEODE_IS_ANDROID
+
+void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+{
+    CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
+
+    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif")
+}
+
+$execute
+{
+    Mod::get()->hook(
+        dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
+        &myCollisionCheck,
+        "GJBaseGameLayer::collisionCheckObjects",
+        tulip::hook::TulipConvention::Default
+    );
+}
+
+#endif
