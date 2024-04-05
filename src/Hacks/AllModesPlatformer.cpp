@@ -14,7 +14,8 @@ class $modify (GJBaseGameLayer)
         if (!allMod)
             allMod = Client::GetModule("all-plat");
 
-        if (allMod->enabled)
+        //if (allMod->enabled)
+        if (true)
         {
             for (size_t i = 0; i < p2; i++)
             {
