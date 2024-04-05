@@ -1,5 +1,3 @@
-#ifdef GEODE_IS_WINDOWS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -8,6 +6,8 @@
 using namespace geode::prelude;
 
 Module* allMod = nullptr;
+
+#ifdef GEODE_IS_WINDOWS
 
 void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2)
 {
