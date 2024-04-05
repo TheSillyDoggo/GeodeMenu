@@ -7,8 +7,6 @@ using namespace geode::prelude;
 
 Module* allMod = nullptr;
 
-#ifdef GEODE_IS_WINDOWS
-
 void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2)
 {
     for (size_t i = 0; i < p2; i++)
@@ -29,6 +27,8 @@ void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, 
         }
     }
 }
+
+#ifdef GEODE_IS_WINDOWS
 
 class $modify (GJBaseGameLayer)
 {
@@ -57,6 +57,14 @@ class $modify (GJBaseGameLayer)
 void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
     CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
+
+    if (!allMod)
+        allMod = Client::GetModule("all-plat");
+
+    if (allMod && allMod->enabled)
+    {
+        hack(self, p0, p1, p2);
+    }
 
     dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif");
 }
