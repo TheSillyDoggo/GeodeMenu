@@ -15,6 +15,8 @@ file(GLOB SOURCES
 	src/Layers/*.h
 	src/Replay/*.cpp
 	src/Replay/*.h
+	src/CustomWindows/*.cpp
+	src/CustomWindows/*.h	
 	src/*.cpp
 	src/*.h
 	src/*.hpp

@@ -1,3 +1,5 @@
+#ifdef GEODE_IS_WINDOWS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -17,8 +19,6 @@ void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, 
         {
             if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
             {
-                CCScene::get()->addChild(TextAlertPopup::create("touching", 0.5f, 0.6f, 150, ""), 9999999);
-
                 if(self->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                 {
                     self->playerWillSwitchMode(p0, obj);
@@ -30,8 +30,6 @@ void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, 
     }
 }
 
-#ifdef GEODE_IS_WINDOWS
-
 class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
@@ -39,7 +37,7 @@ class $modify (GJBaseGameLayer)
         if (!allMod)
             allMod = Client::GetModule("all-plat");
 
-        if (allMod->enabled)
+        if (allMod && allMod->enabled)
         {
             hack(this, p0, p1, p2);
 
@@ -51,36 +49,5 @@ class $modify (GJBaseGameLayer)
         }
     }
 };
-
-#endif
-
-#ifdef GEODE_IS_ANDROID
-
-bool skip = false;
-
-void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
-{
-    if (!skip)
-    {
-        skip = true;
-
-        CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
-
-        self->collisionCheckObjects(p0, p1, p2, p3);
-        return;
-    }
-
-    skip = false;
-}
-
-$execute
-{
-    Mod::get()->hook(
-        dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
-        &myCollisionCheck,
-        "GJBaseGameLayer::collisionCheckObjects",
-        tulip::hook::TulipConvention::Default
-    );
-}
 
 #endif
