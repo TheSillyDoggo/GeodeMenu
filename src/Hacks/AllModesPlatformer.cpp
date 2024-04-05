@@ -14,8 +14,8 @@ class $modify (GJBaseGameLayer)
         if (!allMod)
             allMod = Client::GetModule("all-plat");
 
-        //if (allMod->enabled)
-        if (true)
+        if (allMod->enabled)
+        //if (true)
         {
             for (size_t i = 0; i < p2; i++)
             {
@@ -25,8 +25,12 @@ class $modify (GJBaseGameLayer)
                 {
                     if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
                     {
+                        CCScene::get()->addChild(TextAlertPopup::create("touching", 0.5f, 0.6f, 150, ""), 9999999);
+
                         if(canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                         {
+                            CCScene::get()->addChild(TextAlertPopup::create("should", 0.5f, 0.6f, 150, ""), 9999999);
+
                             playerWillSwitchMode(p0, obj);
                             switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
                             obj->playShineEffect();
