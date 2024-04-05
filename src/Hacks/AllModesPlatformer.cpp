@@ -49,35 +49,28 @@ class $modify (GJBaseGameLayer)
 
 #endif
 
+bool skip = false;
 
 void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
-    CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
+    if (!skip)
+    {
+        skip = true;
 
-    self->collisionCheckObjects(p0, p1, p2, p3);
+        CCScene::get()->addChild(TextAlertPopup::create("test", 0.5f, 0.6f, 150, ""), 9999999);
+
+        //self->collisionCheckObjects(p0, p1, p2, p3);
+        return;
+    }
+
+    skip = false;
 }
 
-
-#ifdef GEODE_IS_WINDOWS
-
-$execute
-{
-    Mod::get()->hook(
-        reinterpret_cast<void*>(geode::addresser::getNonVirtual(&GJBaseGameLayer::collisionCheckObjects)),
-        &myCollisionCheck,
-        "GJBaseGameLayer::collisionCheckObjects",
-        tulip::hook::TulipConvention::Default
-    );
-}
-
-#endif
 
 #ifdef GEODE_IS_ANDROID
 
 $execute
 {
-    log::info("GJSexManager::unlockSex = {}", geode::addresser::getNonVirtual(&GJBaseGameLayer::collisionCheckObjects));
-
     Mod::get()->hook(
         dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
         &myCollisionCheck,
