@@ -152,6 +152,23 @@ void Config::cocosCreate(CCMenu* menu)
     m->updateLayout();
     themeTab->addChild(m);
 
+    auto aboutTab = CCMenu::create();
+    aboutTab->setContentWidth(menu->getContentWidth());
+    aboutTab->setContentHeight(menu->getContentHeight() - 32);
+    aboutTab->setPosition(ccp(0, 0));
+    aboutTab->setAnchorPoint(ccp(0, 0));
+    tabs.push_back(aboutTab);
+    menu->addChild(aboutTab);
+
+    auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
+    discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
+    discord->setID("https://discord.gg/DfQSTEnQKK");
+    aboutTab->addChild(discord);
+
+    auto yt = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_ytIcon_001.png"), menu, menu_selector(Config::onLink)); // https://www.youtube.com/@TheSillyDoggo
+    yt->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12) + ccp(0, 35));
+    yt->setID("https://www.youtube.com/@TheSillyDoggo");
+    aboutTab->addChild(yt);
 
     for (size_t i = 0; i < tabs.size(); i++)
     {
@@ -186,16 +203,6 @@ void Config::cocosCreate(CCMenu* menu)
     menu->addChild(ED);
     menu->addChild(lSc);
     menu->addChild(scale);
-
-    auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
-    discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
-    discord->setID("https://discord.gg/DfQSTEnQKK");
-    menu->addChild(discord);
-
-    auto yt = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_ytIcon_001.png"), menu, menu_selector(Config::onLink)); // https://www.youtube.com/@TheSillyDoggo
-    yt->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12) + ccp(0, 35));
-    yt->setID("https://www.youtube.com/@TheSillyDoggo");
-    menu->addChild(yt);
 }
 
 CCMenuItemToggler* Config::createTabButton(std::string name, int index)
