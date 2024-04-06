@@ -81,6 +81,8 @@ void myUpdate(CCScheduler* ins, float dt)
     if (!masterGroup)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
 
+    ColourUtility::totalSessionTime += dt;
+
     if (SpeedhackTop::instance)
     {
         if (SpeedhackEnabled::instance->enabled)

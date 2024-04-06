@@ -47,6 +47,7 @@ class ColourUtility
 		static inline int pastel = 0;
 
 		static inline float va = 0.0f;
+		static inline float totalSessionTime = 0.0f;
 
 		static void update(float dt)
 		{

@@ -36,6 +36,7 @@ class StatusNode : public CCNode
         static inline Module* replay = nullptr;
         static inline Module* attempt = nullptr;
         static inline Module* message = nullptr;
+        static inline Module* session = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -43,6 +44,27 @@ class StatusNode : public CCNode
         CCLabelBMFont* tr;
 
         std::vector<CCLabelBMFont*> sLabels = {};
+
+        std::string formatTime(float time) {
+            // Convert float time to milliseconds
+            std::chrono::milliseconds duration(static_cast<long long>(time * 1000));
+
+            // Extract hours, minutes, and seconds
+            auto hours = std::chrono::duration_cast<std::chrono::hours>(duration);
+            duration -= hours;
+            auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+            duration -= minutes;
+            auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+
+            // Format the time into hh:mm:ss
+            std::ostringstream formattedTime;
+            formattedTime << std::setfill('0') << std::setw(2) << hours.count() << ":"
+                        << std::setfill('0') << std::setw(2) << minutes.count() << ":"
+                        << std::setfill('0') << std::setw(2) << seconds.count();
+            
+            return formattedTime.str();
+        }
+
 
         bool init()
         {
@@ -113,6 +135,9 @@ class StatusNode : public CCNode
             if (!message)
                 message = Client::GetModule("status-message");
 
+            if (!session)
+                session = Client::GetModule("status-session");
+
             
             float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_unk1f8 == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_unk1f8)));
             
@@ -126,13 +151,13 @@ class StatusNode : public CCNode
             sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
             sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
             sLabels[8]->setVisible(message->enabled);
+            sLabels[9]->setVisible(session->enabled);
 
 
             sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
             sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
             sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
-            //if (attemptText != nullptr)
-                sLabels[4]->setString(attemptText == nullptr ? "nullptr" : attemptText->getString());
+            sLabels[4]->setString(attemptText == nullptr ? "nullptr" : attemptText->getString());
 
             std::stringstream ss;
             ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
@@ -145,6 +170,7 @@ class StatusNode : public CCNode
             sLabels[6]->setString(b.c_str());
             sLabels[7]->setString(inp.str().c_str());
             sLabels[8]->setString(as<InputModule*>(message->options[0])->text.c_str());
+            sLabels[9]->setString(formatTime(ColourUtility::totalSessionTime).c_str());
 
             if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
             {
@@ -171,6 +197,10 @@ class $modify (PlayLayer)
     {
         PlayLayer::postUpdate(p0);
 
+        m_fields->stn->attemptText = m_attemptLabel;
+
+        return;
+        
         if (m_fields->stn && !m_fields->stn->attemptText)
         {
             CCLayer* mainLayer = this->m_objectLayer;
@@ -207,7 +237,7 @@ class $modify (PlayLayer)
         }
 
         auto stn = StatusNode::create();
-        stn->attemptText = getChildOfType<CCLabelBMFont>(mainLayer, 0);
+        stn->attemptText = m_attemptLabel;
         log::info("attemptText: {}", stn->attemptText);
 
         auto menu = CCMenu::create();
@@ -217,7 +247,7 @@ class $modify (PlayLayer)
         menu->setAnchorPoint(ccp(0, 0));
         menu->ignoreAnchorPointForPosition(false);
 
-        int count = 9;
+        int count = 10;
 
         for (size_t i = 0; i < count; i++)
         {

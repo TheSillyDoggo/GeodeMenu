@@ -8,7 +8,8 @@
 - Fixed Spelling mistake in confirm restart
 - Added All Modes Platformer
 - Added Comment History Bypass
-- Redesugbed Config Menu
+- Added Game Time label
+- Redesigned Config Menu
 
 # 1.3.4
 

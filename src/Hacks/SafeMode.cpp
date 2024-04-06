@@ -25,11 +25,11 @@ void updateInd()
 
     if (auto p = PlayLayer::get()->getChildByID("status-text-menu"_spr))
     {
-        log::info("{}", p);
+        //log::info("{}", p);
 
         if (auto a = p->getChildByID("status-node"_spr))
         {
-            log::info("{}", a);
+            //log::info("{}", a);
 
             if (auto l = as<StatusNode*>(a)->sLabels[0])
                 l->setColor(getColour());

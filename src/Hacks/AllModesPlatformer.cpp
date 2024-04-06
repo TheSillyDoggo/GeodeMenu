@@ -69,12 +69,24 @@ void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameOb
 
 $execute
 {
-    Mod::get()->hook(
+    auto hook = Mod::get()->hook(
         dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
         &myCollisionCheck,
         "GJBaseGameLayer::collisionCheckObjects",
         tulip::hook::TulipConvention::Default
-    );
+    ).unwrap();
+
+    Loader::get()->queueInMainThread([hook]
+    {
+        auto modu = Client::GetModule("all-plat");
+
+        hook->setAutoEnable(false);
+
+        if (!modu->enabled)
+            hook->disable();
+
+        modu->hooks.push_back(hook);
+    });
 }
 
 #endif

@@ -264,6 +264,7 @@ public:
         //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
         //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
         replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
+        replay->modules.push_back(new Module("Session Time", "status-session", "Shows the time you've had the game open for in the format <cg>hh::mm::ss</c>"));
         //replay->modules.push_back(new StatusMessage());
 
         Client::instance->windows.push_back(replay);
