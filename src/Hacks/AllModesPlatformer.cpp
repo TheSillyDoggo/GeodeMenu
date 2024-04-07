@@ -54,6 +54,8 @@ class $modify (GJBaseGameLayer)
 
 #ifdef GEODE_IS_ANDROID
 
+typedef void (*CollisionCheckFunction)(void*, void*, std::vector<void*>, int, float);
+
 void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
     if (!allMod)
@@ -64,7 +66,8 @@ void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameOb
         hack(self, p0, p1, p2);
     }
 
-    dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif");
+    CollisionCheckFunction v = (CollisionCheckFunction)dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif");
+    v(p0, p1, p2, p3);
 }
 
 $execute
