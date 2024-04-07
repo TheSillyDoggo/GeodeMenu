@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_MACOS
+/*#ifndef GEODE_IS_MACOS
 
 #include "Replay.h"
 
@@ -29,7 +29,7 @@ float dta;
 
         actionsIndex = 0;
     }
-};*/
+};* /
 
 /*#ifdef GEODE_IS_WINDOWS
 
@@ -50,15 +50,29 @@ class $modify (CheckpointObjectExt, CheckpointObject)
     }
 };
 
-#endif*/
+#endif* /
+
+class $modify (CheckpointObjectExt, CheckpointObject)
+{
+    float dt;
+    int frame;
+    int frameFix;
+
+    static CheckpointObject* create()
+    {
+        auto v = CheckpointObject::create();
+
+        as<CheckpointObjectExt*>(v)->m_fields->dt = GJReplayManager::dt;
+        as<CheckpointObjectExt*>(v)->m_fields->frame = GJReplayManager::frame;
+        as<CheckpointObjectExt*>(v)->m_fields->frameFix = GJReplayManager::frameFix;
+
+        return v;
+    }
+};
 
 class $modify (PlayLayer)
 {
     bool started = false;
-    std::vector<CheckpointObject*> checkpoints = {};
-    std::vector<float> checkpointsDT = {};
-    std::vector<int> checkpointsFrame = {};
-    std::vector<int> checkpointsFrameFix = {};
 
     void startGameDelayed()
     {
@@ -67,30 +81,6 @@ class $modify (PlayLayer)
         m_fields->started = true;
 
         log::info("started");
-    }
-
-    void storeCheckpoint(CheckpointObject* p0)
-    {
-        PlayLayer::storeCheckpoint(p0);
-
-        if (!p0)
-            return;
-        
-        m_fields->checkpoints.push_back(p0);
-        m_fields->checkpointsDT.push_back(GJReplayManager::dt);
-        m_fields->checkpointsFrame.push_back(GJReplayManager::frame);
-        m_fields->checkpointsFrameFix.push_back(GJReplayManager::frameFix);
-
-        log::info("cp {}", p0);
-    }
-
-    void removeCheckpoint(bool p0)
-    {
-        PlayLayer::removeCheckpoint(p0);
-        m_fields->checkpoints.pop_back();
-        m_fields->checkpointsDT.pop_back();
-        m_fields->checkpointsFrame.pop_back();
-        m_fields->checkpointsFrameFix.pop_back();
     }
 
     void postUpdate(float dt) { //until GJBaseGameLayer::update
@@ -153,7 +143,7 @@ class $modify (PlayLayer)
             }
         }
 
-        if (GJReplayManager::playing && Mod::get()->getSavedValue<bool>("frame-fixes", true) && GJReplayManager::frameFix + 1 < GJReplayManager::replay.frames.size())
+        /*if (GJReplayManager::playing && Mod::get()->getSavedValue<bool>("frame-fixes", true) && GJReplayManager::frameFix + 1 < GJReplayManager::replay.frames.size())
         {
             while (GJReplayManager::replay.frames[GJReplayManager::frameFix].dt <= GJReplayManager::dt)
             {
@@ -169,14 +159,14 @@ class $modify (PlayLayer)
 
                 GJReplayManager::frameFix++;
             }
-        }
+        }*/
 
-        if (GJReplayManager::recording && Mod::get()->getSavedValue<bool>("frame-fixes", true))
+        /*if (GJReplayManager::recording && Mod::get()->getSavedValue<bool>("frame-fixes", true))
         {
             auto plr = m_player1;
 
             GJReplayManager::replay.frames.push_back(MyInput(m_gameState.m_unk1f8, 69, false, false, plr->m_position.x, plr->m_position.y, GJReplayManager::dt, plr->m_platformerXVelocity, plr->m_yVelocity, plr->getRotation()));
-        }
+        }* /
     }
 
     void resetLevel() {
@@ -184,40 +174,23 @@ class $modify (PlayLayer)
         GJReplayManager::frame = 0;
         GJReplayManager::frameFix = 0;
 
-        PlayLayer::resetLevel();
-
         log::info("resetLevel");
+        PlayLayer::resetLevel();
     }
 
     void loadFromCheckpoint(CheckpointObject* p0)
     {
+        log::info("cp");
         PlayLayer::loadFromCheckpoint(p0);
 
-        auto it = find(m_fields->checkpoints.begin(), m_fields->checkpoints.end(), p0);
-  
-        if (it != m_fields->checkpoints.end())  
-        { 
-            int index = it - m_fields->checkpoints.begin();
+        GJReplayManager::dt = as<CheckpointObjectExt*>(p0)->dt;
+        GJReplayManager::frame = as<CheckpointObjectExt*>(p0)->frame;
+        GJReplayManager::frameFix = as<CheckpointObjectExt*>(p0)->frameFix;
 
-            GJReplayManager::dt = m_fields->checkpointsDT[index];
-            GJReplayManager::frame = m_fields->checkpointsFrame[index];
-            GJReplayManager::frameFix = m_fields->checkpointsFrameFix[index];
-
-            if (GJReplayManager::recording)
-            {
-                std::vector<MyInput> myvec = {};
-
-                for (size_t i = 0; i < GJReplayManager::replay.inputs.size(); i++)
-                {
-                    if (GJReplayManager::replay.inputs[i].dt <= GJReplayManager::dt)
-                    {
-                        myvec.push_back(GJReplayManager::replay.inputs[i]);
-                    }
-                }
-
-                GJReplayManager::replay.inputs = myvec;
-            }
-        } 
+        while (GJReplayManager::replay.inputs[GJReplayManager::replay.inputs.size() - 1].dt > GJReplayManager::dt)
+        {
+            GJReplayManager::replay.inputs.pop_back();
+        }
     }
 };
 
@@ -236,4 +209,4 @@ class $modify(GJBaseGameLayer) {
     }
 };
 
-#endif
+#endif*/

@@ -6,8 +6,6 @@
 
 using namespace geode::prelude;
 
-//class Module;
-
 class SillyBaseLayer : public CCLayerColor
 {
     public:

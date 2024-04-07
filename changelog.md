@@ -9,6 +9,7 @@
 - Added All Modes Platformer
 - Added Comment History Bypass
 - Added Game Time label
+- Temporarily removed replay because of bugs
 - Redesigned Config Menu
 
 # 1.3.4

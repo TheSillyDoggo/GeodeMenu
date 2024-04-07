@@ -339,6 +339,9 @@ void AndroidUI::onPressTab(CCObject* sender)
 {
     auto btn = static_cast<CCMenuItemSprite*>(sender);
 
+    if (typeinfo_cast<_Replay*>(Client::instance->windows[btn->getTag()]))
+        return FLAlertLayer::create("Replay", "Replay bot is not available right now as i'm trying to improve it <cp>:3</c>", "OK")->show();
+
     #ifdef GEODE_IS_MACOS
     if (typeinfo_cast<_Replay*>(Client::instance->windows[btn->getTag()]))
         return FLAlertLayer::create("Replay", "Replay bot is not available on macos due to missing bindings, this will probably <cr>not</c> be fixed <cp>^w^</c>", "OK")->show();
