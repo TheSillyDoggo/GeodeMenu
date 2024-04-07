@@ -54,7 +54,7 @@ class $modify (GJBaseGameLayer)
 
 #ifdef GEODE_IS_ANDROID
 
-typedef void (*CollisionCheckFunction)(void*, void*, std::vector<void*>, int, float);
+typedef void (*CollisionCheckFunction)(GJBaseGameLayer*, PlayerObject*, std::vector<GameObject*>, int, float);
 
 void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
