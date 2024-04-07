@@ -66,8 +66,8 @@ void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameOb
         hack(self, p0, p1, p2);
     }
 
-    CollisionCheckFunction v = (CollisionCheckFunction)dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif");
-    v(self, p0, p1, p2, p3);
+    auto f = reinterpret_cast<void(*)(GJBaseGameLayer*, PlayerObject*, gd::vector<GameObject*>*, int, float)>(dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"));
+    f(self, p0, p1, p2, p3);
 }
 
 $execute
