@@ -242,7 +242,7 @@ public:
         float extraGap = 9.69f;
         float height = gap * roundUpToMultipleOf2(modules.size() / 2);
         height = std::max<float>(menu->getContentHeight(), height + extraGap);
-
+        
         auto scroll = geode::ScrollLayer::create(menu->getContentSize());
         scroll->m_peekLimitTop = 15;
         scroll->m_peekLimitBottom = 15;
@@ -269,6 +269,7 @@ public:
 
         scroll->m_contentLayer->setContentHeight(height);
         scroll->moveToTop();
+        scroll->enableScrollWheel();
     }
 };
 
