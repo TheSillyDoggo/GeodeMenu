@@ -16,13 +16,14 @@ void Module::onInfoAndroid(CCObject* sender)
     if (!dat)
         return;
 
-    //geode::Notification::create(fmt::format("asdf: {}", dat->description))->show();
-
-    FLAlertLayer::create("dat->name.c_str()", "afsagsdfa", "OK");//->show();
-
+    #ifdef GEODE_IS_ANDROID
+    auto f = reinterpret_cast<FLAlertLayer*(*)(const char*, const gd::string&, const char*)>(dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN12FLAlertLayer6createEP20FLAlertLayerProtocolPKcSsS3_S3_f"));
+    auto al = f(dat->name.c_str(), dat->description.c_str(), "OK");
+    #else
     //fucking force priority kill yourself
-    //auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
-    //al->show();
+    auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
+    #endif
+    al->show();
 }
 
 void Module::onToggleAndroid(CCObject* sender)
