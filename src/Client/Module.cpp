@@ -17,10 +17,9 @@ void Module::onInfoAndroid(CCObject* sender)
         return;
 
     #ifdef GEODE_IS_ANDROID
-    auto f = reinterpret_cast<FLAlertLayer*(*)(const char*, const gd::string&, const char*)>(dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN12FLAlertLayer6createEP20FLAlertLayerProtocolPKcSsS3_S3_f"));
-    auto al = f(dat->name.c_str(), dat->description.c_str(), "OK");
+    auto f = reinterpret_cast<FLAlertLayer*(*)(FLAlertLayerProtocol*, char const*, std::string, char const*, char const*, float)>(dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN12FLAlertLayer6createEP20FLAlertLayerProtocolPKcSsS3_S3_f"));
+    auto al = f(nullptr, dat->name.c_str(), dat->description.c_str(), "OK", nullptr, 300); //return FLAlertLayer::create(nullptr, title, desc, btn, nullptr, 300.0)
     #else
-    //fucking force priority kill yourself
     auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
     #endif
     al->show();
