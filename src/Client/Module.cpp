@@ -17,8 +17,8 @@ void Module::onInfoAndroid(CCObject* sender)
         return;
 
     //fucking force priority kill yourself
-    auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
-    al->show();
+    //auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
+    //al->show();
 }
 
 void Module::onToggleAndroid(CCObject* sender)
