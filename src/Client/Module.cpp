@@ -16,7 +16,9 @@ void Module::onInfoAndroid(CCObject* sender)
     if (!dat)
         return;
 
-    geode::Notification::create(fmt::format("asdf: {}", dat->description))->show();
+    //geode::Notification::create(fmt::format("asdf: {}", dat->description))->show();
+
+    FLAlertLayer::create(nullptr, dat->name.c_str(), "afsagsdfa", "OK", nullptr)->show();
 
     //fucking force priority kill yourself
     //auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
