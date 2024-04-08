@@ -47,6 +47,8 @@ class $modify (GJBaseGameLayer)
         {
             GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
         }
+
+        //AppDelegate::get()->m_pControllerHandler->m_xinputState.Gamepad
     }
 };
 

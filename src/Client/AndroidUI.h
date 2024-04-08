@@ -5,12 +5,17 @@
 
 using namespace geode::prelude;
 
-class AndroidUI : public cocos2d::CCLayerColor {
+class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
 public:
     static inline std::vector<CCLabelBMFont*> labels = {};
     static inline std::vector<CCMenuItemSprite*> buttons = {};
     static inline std::vector<CCMenu*> pages = {};
     CCScale9Sprite* panel = nullptr;
+    CCLabelBMFont* searchLabel = nullptr;
+    CCMenu* searchResultsPanel = nullptr;
+    CCMenu* btnMenu = nullptr;
+    TextInput* inputField = nullptr;
+    ScrollLayer* scroll = nullptr;
 
     static inline int lastTab = 0;
     static inline int selectedTab = 0;
@@ -28,6 +33,17 @@ public:
     void onPressTab(CCObject* sender);
 
     virtual bool init();
+
+    virtual void update(float dt);
+
+    virtual void textChanged(CCTextInputNode* p0);
+
+    float roundUpToMultipleOf2(float num) { // def not stolen
+        float roundedNum = std::ceil(num / 2.0f) * 2.0f;
+        return roundedNum;
+    }
+
+    CCMenu* getSearchPanel();
 
     CREATE_FUNC(AndroidUI);
 

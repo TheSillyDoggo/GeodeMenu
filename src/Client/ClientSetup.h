@@ -17,10 +17,10 @@ public:
         SetupSpeedhack();
         SetupStatus();
 
-        Window* level = new _Replay();
-        level->name = "Replay";
-        level->id = "replay-window";
-        Client::instance->windows.push_back(level);
+        //Window* level = new _Replay();
+        //level->name = "Replay";
+        //level->id = "replay-window";
+        //Client::instance->windows.push_back(level);
 
         SetupOptions(android);
 

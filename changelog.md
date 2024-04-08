@@ -11,6 +11,7 @@
 - Added Game Time label
 - Temporarily removed replay because of bugs
 - Redesigned Config Menu
+- Added Search Box
 
 # 1.3.4
 

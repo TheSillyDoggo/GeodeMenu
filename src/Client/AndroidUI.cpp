@@ -179,6 +179,7 @@ bool AndroidUI::init()
         auto b = CCMenuItemSprite::create(btn2, btn, windowsMenu, menu_selector(AndroidUI::onPressTab));
         b->setTag(i);
         b->setEnabled(i != selectedTab);
+        b->setUserData(this);
         b->setContentSize(b->getContentSize() / 2);
 
         windowsMenu->addChild(b);
@@ -204,10 +205,34 @@ bool AndroidUI::init()
         panel->addChild(menu);
     }
 
+    searchResultsPanel = getSearchPanel();
+    panel->addChild(searchResultsPanel);
+
     windowsMenu->updateLayout();
     
     panel->addChild(windows);
-    this->addChild(panel);
+
+    float height = 25;
+    auto input = TextInput::create(100, "Search Mods");
+    input->setMaxCharCount(20);
+    input->setCommonFilter(CommonFilter::Any);
+    input->setPosition(ccp(15, 28));
+    input->setContentHeight(height);
+    input->getInputNode()->setContentHeight(height);
+    input->getBGSprite()->setContentHeight(height * 2);
+    input->getBGSprite()->setPositionY(height / 2);
+    input->getInputNode()->setPositionY(height / 2);
+    input->getBGSprite()->setContentSize(input->getBGSprite()->getContentSize() / 0.5f);
+    input->getBGSprite()->setScale(input->getBGSprite()->getScale() * 0.5f);
+    input->getInputNode()->setAnchorPoint(ccp(0, 0));
+    input->setAnchorPoint(ccp(0, 0.5f));
+    input->setDelegate(this);
+    input->getInputNode()->setID("IGNOREBYPASSES"_spr);
+    input->setString("");
+    searchLabel = input->getInputNode()->m_placeholderLabel;
+
+    panel->addChild(input);
+    this->inputField = input;
 
     std::stringstream ver;
     ver << "Using version " << Mod::get()->getVersion().getMajor() << "." << Mod::get()->getVersion().getMinor() << "." << Mod::get()->getVersion().getPatch();
@@ -218,7 +243,7 @@ bool AndroidUI::init()
     versionText->setAnchorPoint(ccp(0.5f, 0));
     versionText->setScale(0.45f);
     versionText->setPosition(ccp(64, 13 + 8));
-    panel->addChild(versionText);
+    //panel->addChild(versionText);
 
     auto devText = CCLabelBMFont::create("Mod Developed By TheSillyDoggo", "chatFont.fnt");
     devText->setColor({0, 0, 0});
@@ -226,11 +251,9 @@ bool AndroidUI::init()
     devText->setAnchorPoint(ccp(0.5f, 0));
     devText->setScale(0.45f);
     devText->setPosition(ccp(64, 13));
-    panel->addChild(devText);
+    //panel->addChild(devText);
 
     goToPage(selectedTab);
-
-    panel->runAction(getEnterAction(panel));
 
     if (Client::GetModuleEnabled("npesta-width"))
     {
@@ -239,15 +262,119 @@ bool AndroidUI::init()
         as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
     }
 
+    this->addChild(panel);
+    panel->runAction(getEnterAction(panel));
+
     cocos::handleTouchPriority(this);
+    this->scheduleUpdate();
 
     return true;
 }
 
+CCMenu* AndroidUI::getSearchPanel()
+{
+    auto menu = CCMenu::create();
+    menu->setAnchorPoint(ccp(1, 0));
+    menu->setPosition(ccp(475 - 15 + 5, 10));
+    menu->setContentSize(ccp(340, panel->getContentSize().height - 10 - 10));
+    menu->ignoreAnchorPointForPosition(false);
+    menu->setID("search-results");
+
+    auto back = CCScale9Sprite::create("square02_small.png");
+    back->setContentSize(menu->getContentSize() / 0.5f);
+    back->setPosition(ccp(0, 0));
+    back->setAnchorPoint(ccp(0, 0));
+    back->setScale(0.5f);
+    back->setOpacity(100);
+
+    menu->addChild(back);
+
+    int y = 0;
+
+    float gap = 28;
+    float extraGap = 9.69f;
+    float height = gap * roundUpToMultipleOf2(0 / 2);
+    height = std::max<float>(menu->getContentHeight(), height + extraGap);
+    
+    scroll = geode::ScrollLayer::create(menu->getContentSize());
+    scroll->m_peekLimitTop = 15;
+    scroll->m_peekLimitBottom = 15;
+    menu->addChild(scroll);
+
+    btnMenu = CCMenu::create();
+    btnMenu->setContentSize(ccp(menu->getContentWidth(), height));
+    btnMenu->setPosition(ccp(0, 0));
+    btnMenu->setAnchorPoint(ccp(0, 0));
+    scroll->m_contentLayer->addChild(btnMenu);
+
+    scroll->m_contentLayer->setContentHeight(height);
+    scroll->moveToTop();
+    scroll->enableScrollWheel();
+
+    menu->setVisible(false);
+    return menu;
+}
 
 void AndroidUI::keyBackClicked()
 {
     close(nullptr);
+}
+
+void AndroidUI::update(float dt)
+{
+    searchLabel->limitLabelWidth(90, 0.6f, 0.1f);
+}
+
+void AndroidUI::textChanged(CCTextInputNode* p0)
+{
+    for (size_t i = 0; i < pages.size(); i++)
+    {
+        pages[i]->setVisible(p0->getString().empty() ? (i == selectedTab) : false);
+    }
+
+    searchResultsPanel->setVisible(!p0->getString().empty());
+
+    std::vector<Module*> modules = {};
+
+    for (auto window : Client::instance->windows)
+    {
+        for (auto module : window->modules)
+        {
+            if (string::toLower(module->name).find(string::toLower(std::string(p0->getString()))) != std::string::npos)
+            {
+                log::info("id: {}", module->id);
+
+                modules.push_back(module);
+            }
+        }
+    }
+
+    int y = 0;
+
+    float gap = 28;
+    float extraGap = 9.69f;
+    float height = gap * roundUpToMultipleOf2(modules.size() / 2);
+    height = std::max<float>(scroll->getContentHeight(), height + extraGap);
+
+    btnMenu->removeAllChildrenWithCleanup(true);
+    btnMenu->setContentHeight(height);
+
+    for (size_t m = 0; m < modules.size(); m++)
+    {
+        float x = 20;
+
+        if (!(m % 2 == 0))
+            x = 188;
+
+        modules[m]->makeAndroid(btnMenu, {x, height - (gap * y) - (gap / 2) - (extraGap / 2)});
+
+        if ((m - 1) % 2 == 0 && m != 0)
+            y++;
+    }
+
+    scroll->m_contentLayer->setContentHeight(height);
+    scroll->moveToTop();
+    scroll->enableScrollWheel();
 }
 
 void AndroidUI::goToPage(int p, bool transition)
@@ -349,6 +476,11 @@ void AndroidUI::onPressTab(CCObject* sender)
 
     lastTab = selectedTab;
     selectedTab = btn->getTag();
+
+    auto input = as<AndroidUI*>(as<CCNode*>(sender)->getUserData())->inputField;
+    input->setString("");
+
+    as<AndroidUI*>(as<CCNode*>(sender)->getUserData())->searchResultsPanel->setVisible(false);
 
     for (size_t i = 0; i < labels.size(); i++)
     {
