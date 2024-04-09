@@ -28,8 +28,6 @@ void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, 
     }
 }
 
-#ifdef GEODE_IS_WINDOWS
-
 class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
@@ -51,47 +49,3 @@ class $modify (GJBaseGameLayer)
         //AppDelegate::get()->m_pControllerHandler->m_xinputState.Gamepad
     }
 };
-
-#endif
-
-#ifdef GEODE_IS_ANDROID
-
-typedef void (*CollisionCheckFunction)(GJBaseGameLayer*, PlayerObject*, std::vector<GameObject*>, int, float);
-
-void myCollisionCheck(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
-{
-    if (!allMod)
-        allMod = Client::GetModule("all-plat");
-
-    if (allMod && allMod->enabled)
-    {
-        hack(self, p0, p1, p2);
-    }
-
-    auto f = reinterpret_cast<void(*)(GJBaseGameLayer*, PlayerObject*, gd::vector<GameObject*>*, int, float)>(dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"));
-    f(self, p0, p1, p2, p3);
-}
-
-$execute
-{
-    auto hook = Mod::get()->hook(
-        dlsym(dlopen("libcocos2dcpp.so", RTLD_NOW), "_ZN15GJBaseGameLayer21collisionCheckObjectsEP12PlayerObjectPSt6vectorIP10GameObjectSaIS4_EEif"),
-        &myCollisionCheck,
-        "GJBaseGameLayer::collisionCheckObjects",
-        tulip::hook::TulipConvention::Default
-    ).unwrap();
-
-    Loader::get()->queueInMainThread([hook]
-    {
-        auto modu = Client::GetModule("all-plat");
-
-        hook->setAutoEnable(false);
-
-        if (!modu->enabled)
-            hook->disable();
-
-        modu->hooks.push_back(hook);
-    });
-}
-
-#endif

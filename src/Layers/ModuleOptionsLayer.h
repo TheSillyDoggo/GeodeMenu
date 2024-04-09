@@ -17,6 +17,8 @@ class ModuleOptionsLayer : public SillyBaseLayer
 
         virtual void customSetup();
 
+        void onInfoButton(CCObject*);
+
         static ModuleOptionsLayer* create(Module* module)
         {
             ModuleOptionsLayer* pRet = new ModuleOptionsLayer();

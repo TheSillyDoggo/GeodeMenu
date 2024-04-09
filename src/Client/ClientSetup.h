@@ -75,7 +75,7 @@ public:
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
-        level->modules.push_back(new Module("Kill at %", "kill-after", "you're not supposed to be here"));
+        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
@@ -91,6 +91,8 @@ public:
 
         level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
         level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
+
+        level->modules.push_back(new Module("Random Seed", "rand-seed", "Sets the seed for random triggers to a value of your choice"));
 
 
         Client::instance->windows.push_back(level);
@@ -111,6 +113,11 @@ public:
         auto decimals = new InputModule("Decimal Places:", "accurate-percentage-places", "2");
         decimals->allowedChars = "1234567890";
         Client::GetModule("accurate-percentage")->options.push_back(decimals);
+
+        auto seed = new InputModule("Seed:", "rand-seed-seed", "69420");
+        seed->allowedChars = "1234567890";
+        seed->maxSize = 16;
+        Client::GetModule("rand-seed")->options.push_back(seed);
     }
 
     static void SetupBypass()
@@ -213,6 +220,7 @@ public:
         #endif
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
         cosmetic->modules.push_back(new Module("No Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
+
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));

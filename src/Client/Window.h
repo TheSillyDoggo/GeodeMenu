@@ -220,9 +220,10 @@ public:
         return ImVec2(0, 0);
     }
 
-    float roundUpToMultipleOf2(float num) { // def not stolen
-        float roundedNum = std::ceil(num / 2.0f) * 2.0f;
-        return roundedNum;
+    int roundUpToMultipleOf2(float num) { // def not stolen
+        //float roundedNum = std::ceil(num / 2.0f) * 2.0f;
+        //return roundedNum;
+        return static_cast<int>(std::ceil(num));
     }
 
     virtual void cocosCreate(CCMenu* menu)
@@ -241,6 +242,10 @@ public:
         float gap = 28;
         float extraGap = 9.69f;
         float height = gap * roundUpToMultipleOf2(modules.size() / 2);
+
+        if (roundUpToMultipleOf2(modules.size() / 2) % 2 == 0)
+            height += gap;
+
         height = std::max<float>(menu->getContentHeight(), height + extraGap);
         
         auto scroll = geode::ScrollLayer::create(menu->getContentSize());

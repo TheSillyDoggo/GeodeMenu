@@ -23,4 +23,14 @@ void ModuleOptionsLayer::customSetup()
             y++;
         }
     }
+
+    auto about = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(ModuleOptionsLayer::onInfoButton));
+
+    baseLayer->addChildAtPosition(about, Anchor::TopRight, ccp(-16, -18));
+}
+
+void ModuleOptionsLayer::onInfoButton(CCObject*)
+{
+    auto al = FLAlertLayer::create(mod->name.c_str(), mod->description.c_str(), "OK");
+    al->show();
 }

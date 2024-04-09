@@ -1,3 +1,9 @@
+# 1.3.6
+
+- Added Random Seed
+- Improved Performance of all modes platformer
+- Added Mod Descriptions to Settings Popups
+
 # 1.3.5
 
 - Show Trajectory shows where you will die
