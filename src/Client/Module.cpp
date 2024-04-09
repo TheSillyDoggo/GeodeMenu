@@ -1,6 +1,7 @@
 #include "Module.h"
 
 #include "../Layers/ModuleOptionsLayer.h"
+#include "Dropdown.h"
 
 void Module::onOptionsAndroid(CCObject* sender)
 {
@@ -104,4 +105,20 @@ void ColourDelegate::updateColor(cocos2d::ccColor4B const& color)
     v->colour = ccc3(color.r, color.g, color.b);
     v->btnSpr->setColor(v->colour);
     v->save();
+}
+
+void DropdownModule::makeAndroid(CCNode* menu, CCPoint pos)
+{
+    auto dd = Dropdown::create(ccp(140, 30), content, menu_selector(DropdownModule::onDropdownSelectionChanged), index);
+    dd->setUserData(this);
+    dd->setPosition(pos + ccp(0, -15));
+    menu->addChild(dd);
+}
+
+void DropdownModule::onDropdownSelectionChanged(CCObject* sender)
+{
+    auto mod = as<DropdownModule*>(as<CCNode*>(sender)->getParent()->getUserData());
+    auto drop = as<Dropdown*>(as<CCNode*>(sender)->getParent());
+
+    mod->index = drop->getSelectedIndex();
 }

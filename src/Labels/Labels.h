@@ -6,7 +6,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
-#include "Noclip.cpp"
+#include "../Hacks/Noclip.cpp"
 
 using namespace geode::prelude;
 

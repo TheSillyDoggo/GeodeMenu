@@ -242,9 +242,7 @@ public:
         float gap = 28;
         float extraGap = 9.69f;
         float height = gap * roundUpToMultipleOf2(modules.size() / 2);
-
-        if (roundUpToMultipleOf2(modules.size() / 2) % 2 == 0)
-            height += gap;
+        height += gap;
 
         height = std::max<float>(menu->getContentHeight(), height + extraGap);
         

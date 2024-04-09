@@ -13,6 +13,8 @@ file(GLOB SOURCES
 	src/Hacks/*.hpp
 	src/Layers/*.cpp
 	src/Layers/*.h
+	src/Labels/*.cpp
+	src/Labels/*.h
 	src/Replay/*.cpp
 	src/Replay/*.h
 	src/CustomWindows/*.cpp

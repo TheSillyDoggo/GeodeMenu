@@ -390,6 +390,37 @@ class ColourModule : public Module
         }
 };
 
+class DropdownModule : public Module
+{
+    public:
+        std::vector<std::string> content = {};
+        int index = 0;
+
+        DropdownModule(std::vector<std::string> stuff, std::string id, int def)
+        {
+            this->name = name;
+            this->id = id;
+            index = def;
+            this->content = stuff;
+
+            this->load();
+        }
+
+        void save()
+        {
+            geode::prelude::Mod::get()->setSavedValue<int>(id + "_index", index);
+        }
+
+        void load()
+        {
+            value = geode::prelude::Mod::get()->getSavedValue<int>(id + "_index", value);
+        }
+
+        void makeAndroid(CCNode* menu, CCPoint pos);
+
+        void onDropdownSelectionChanged(CCObject* sender);
+};
+
 class SliderModule : public Module
 {
     public:

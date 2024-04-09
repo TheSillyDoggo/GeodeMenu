@@ -3,6 +3,7 @@
 #include "Client.h"
 #include "HitboxesModule.h"
 #include "../CustomWindows/Config.h"
+#include "../CustomWindows/Labels.h"
 
 class ClientUtils
 {
@@ -250,10 +251,7 @@ public:
 
     static void SetupStatus()
     {
-        Window* replay = new Status();
-        replay->name = "Labels";
-        replay->id = "status-window";
-        replay->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 6, 50);
+        Window* replay = new Labels();
 
         replay->modules.push_back(new StatusOpacity());
         replay->modules.push_back(new StatusScale());
@@ -276,6 +274,11 @@ public:
         //replay->modules.push_back(new StatusMessage());
 
         Client::instance->windows.push_back(replay);
+
+        for (auto mod : replay->modules)
+        {
+            mod->options.push_back(new DropdownModule({"Top Left", "Top Right", "Bottom Left", "Bottom Right"}, mod->id + "-side", 0));
+        }
 
         auto messageOption = new InputModule("Message Text: ", "status-message-text", "Default Message");
         messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";

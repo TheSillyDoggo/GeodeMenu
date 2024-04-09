@@ -3,7 +3,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
 #include "../Client/Client.h"
-#include "StatusText.hpp"
+#include "../Labels/Labels.h"
 
 bool hasHackedAttempt = false;
 
@@ -61,6 +61,7 @@ std::vector<std::string> hacks = {
     "show-triggers",
     "coin-tracers",
     "show-trajectory",
+    "rand-seed",
 };
 
 void Client::onPostSetup()

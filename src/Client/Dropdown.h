@@ -2,9 +2,6 @@
 
 #include "Client.h"
 
-class Client;
-class SaveMacroPopup;
-
 #include <Geode/Geode.hpp>
 #include "CCContentSizeTo.h"
 #include "ClippingNode.h"

@@ -6,7 +6,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
         return false;
 
     this->size = size;
-    int priority = -502;
+    int priority = -504;
 
     this->runAction(CCFadeTo::create(1, 100));
     this->setKeypadEnabled(true);
