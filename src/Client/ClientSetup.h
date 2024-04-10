@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "HitboxesModule.h"
+#include "../Labels/Labels.h"
 #include "../CustomWindows/Config.h"
 #include "../CustomWindows/Labels.h"
 
@@ -284,6 +285,8 @@ public:
         messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
+
+        StatusNode::postSetup(replay);
     }
 
     static void SetupOptions(bool android)

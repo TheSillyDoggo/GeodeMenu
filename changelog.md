@@ -3,6 +3,8 @@
 - Added Random Seed
 - Improved Performance of all modes platformer
 - Added Mod Descriptions to Settings Popups
+- Improved Labels Menu
+- Added ability to move labels to different corners
 
 # 1.3.5
 

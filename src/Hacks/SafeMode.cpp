@@ -23,17 +23,12 @@ void updateInd()
     if (!PlayLayer::get())
         return;
 
-    if (auto p = PlayLayer::get()->getChildByID("status-text-menu"_spr))
+    if (auto a = PlayLayer::get()->getChildByID("status-node"_spr))
     {
-        //log::info("{}", p);
+        //log::info("{}", a);
 
-        if (auto a = p->getChildByID("status-node"_spr))
-        {
-            //log::info("{}", a);
-
-            if (auto l = as<StatusNode*>(a)->sLabels[0])
-                l->setColor(getColour());
-        }
+        if (auto l = as<StatusNode*>(a)->sLabels[0])
+            l->setColor(getColour());
     }
 }
 

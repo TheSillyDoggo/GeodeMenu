@@ -121,4 +121,7 @@ void DropdownModule::onDropdownSelectionChanged(CCObject* sender)
     auto drop = as<Dropdown*>(as<CCNode*>(sender)->getParent());
 
     mod->index = drop->getSelectedIndex();
+
+    if (mod->delegate)
+        mod->delegate->onModuleChanged(mod->enabled);
 }

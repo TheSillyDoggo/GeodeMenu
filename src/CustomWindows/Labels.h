@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Client/Client.h"
+#include "../Labels/Labels.h"
 
 class Labels : public Window
 {
