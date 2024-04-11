@@ -286,7 +286,9 @@ public:
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
 
+        #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
+        #endif
     }
 
     static void SetupOptions(bool android)

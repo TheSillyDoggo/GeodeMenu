@@ -1,4 +1,4 @@
-#define STATUS_TEXTS
+//#define STATUS_TEXTS
 
 #ifdef STATUS_TEXTS
 

@@ -23,6 +23,8 @@ void updateInd()
     if (!PlayLayer::get())
         return;
 
+    #ifdef STATUS_TEXTS
+
     if (auto a = PlayLayer::get()->getChildByID("status-node"_spr))
     {
         //log::info("{}", a);
@@ -30,6 +32,8 @@ void updateInd()
         if (auto l = as<StatusNode*>(a)->sLabels[0])
             l->setColor(getColour());
     }
+
+    #endif
 }
 
 class HackModuleDelegate : public ModuleChangeDelegate

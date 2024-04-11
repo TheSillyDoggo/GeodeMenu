@@ -1,3 +1,5 @@
+#ifdef STATUS_TEXTS
+
 #include "Labels.h"
 
 bool StatusNode::init()
@@ -273,3 +275,5 @@ void StatusNode::update(float dt)
 
     updateVis();
 }
+
+#endif

@@ -94,7 +94,9 @@ void Labels::onHide(CCObject* sender)
         name->setOpacity(v ? 150 : 255);
     }
 
+    #ifdef STATUS_TEXTS
     StatusNode::hidden = Mod::get()->getSavedValue<bool>("hide-labels");
+    #endif
 }
 
 void Labels::onToggleLabel(CCObject* sender)
