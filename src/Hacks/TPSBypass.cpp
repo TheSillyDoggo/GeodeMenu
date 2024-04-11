@@ -12,7 +12,7 @@ class $modify (GJBaseGameLayer)
     {
         auto v = GJBaseGameLayer::getModifiedDelta(dt);
 
-        CCScene::get()->addChild(TextAlertPopup::create(fmt::format("dt: {} | unmod: {}", v, v * (1 / 240)).c_str(), 0.5f, 0.6f, 150, ""), 9999999);
+        CCScene::get()->addChild(TextAlertPopup::create(fmt::format("dt: {} | unmod: {}", v, v / (1 / 240)).c_str(), 0.5f, 0.6f, 150, ""), 9999999);
 
         return v;
     }
