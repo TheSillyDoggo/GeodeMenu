@@ -21,7 +21,7 @@ $execute {
         &myParticleUpdate,
         "cocos2d::CCParticleSystem::update",
         tulip::hook::TulipConvention::Thiscall
-    );
+    ).unwrap();
 
     Loader::get()->queueInMainThread([hook]
     {

@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/ShaderLayer.hpp>
@@ -38,4 +38,4 @@ class $modify (GJBaseGameLayer)
         if (noLevel)
             m_objectLayer->getParent()->setVisible(!noLevel->enabled);
     }
-};
+};*/
