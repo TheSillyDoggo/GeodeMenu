@@ -38,7 +38,8 @@ bool AndroidBall::init()
     menu->addChild(btn);
     this->addChild(menu);
     this->setZOrder(69420 - 1);
-    this->schedule(schedule_selector(AndroidBall::update), 1);
+    //this->schedule(schedule_selector(AndroidBall::update), 1);
+    this->scheduleUpdate();
 
     menu->setPosition(position);
 
