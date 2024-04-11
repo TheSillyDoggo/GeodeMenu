@@ -11,6 +11,10 @@
 	"name": "QOLMod",
 	"developer": "TheSillyDoggo",
 	"description": "Best Geode Android mod menu!",
+	"links": {
+		"source": "https://github.com/TheSillyDoggo/GeodeMenu",
+		"community": "https://discord.gg/8CFcZNh4CW"
+	},
 	"resources": {
         "files": [
             "resources/fonts/*.ttf",

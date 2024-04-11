@@ -9,17 +9,12 @@ Module* part = nullptr;
 
 void myParticleUpdate(CCParticleSystem* ins, float dt)
 {
-    if (!part)
-            part = Client::GetModule("no-particles");
-    
     ins->update(dt);
-
-    if (part->enabled)
-        ins->setScale(0);
+    ins->setScale(0);
 }
 
 $execute {
-    Mod::get()->hook(
+    auto hook = Mod::get()->hook(
         reinterpret_cast<void*>(
             geode::addresser::getVirtual(&CCParticleSystem::update)
         ),
@@ -27,4 +22,16 @@ $execute {
         "cocos2d::CCParticleSystem::update",
         tulip::hook::TulipConvention::Thiscall
     );
+
+    Loader::get()->queueInMainThread([hook]
+    {
+        auto modu = Client::GetModule("no-particles");
+    
+        hook->setAutoEnable(false);
+
+        if (!modu->enabled)
+            hook->disable();
+
+        modu->hooks.push_back(hook);
+    });
 }

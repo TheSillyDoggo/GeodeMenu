@@ -65,6 +65,8 @@ public:
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {
+        return Mod::get()->getSavedValue<bool>(id + "_enabled");
+
         //if (CCScene::get())
             //CCScene::get()->addChild(TextAlertPopup::create("request to get '" + id + "'", 0.5f, 0.6f, 150, ""), 9999999);
 

@@ -5,47 +5,49 @@
 
 using namespace geode::prelude;
 
-Module* allMod = nullptr;
-
-void hack(GJBaseGameLayer* self, PlayerObject* p0, gd::vector<GameObject*>* p1, int p2)
-{
-    for (size_t i = 0; i < p2; i++)
-    {
-        auto obj = p1->at(i);
-
-        if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
-        {
-            if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
-            {
-                if(self->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
-                {
-                    self->playerWillSwitchMode(p0, obj);
-                    self->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
-                    obj->playShineEffect();
-                }
-            }
-        }
-    }
-}
-
 class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
-    {
-        if (!allMod)
-            allMod = Client::GetModule("all-plat");
-
-        if (allMod && allMod->enabled)
+    {    
+        for (size_t i = 0; i < p2; i++)
         {
-            hack(this, p0, p1, p2);
+            auto obj = p1->at(i);
 
-            return GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
+            if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
+            {
+                if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
+                {
+                    if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
+                    {
+                        this->playerWillSwitchMode(p0, obj);
+                        this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
+                        obj->playShineEffect();
+                    }
+                }
+            }
         }
-        else
+
+        GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
+    }
+
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("GJBaseGameLayer::collisionCheckObjects").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
         {
-            GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
-        }
+            auto modu = Client::GetModule("all-plat");
 
-        //AppDelegate::get()->m_pControllerHandler->m_xinputState.Gamepad
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
     }
 };
