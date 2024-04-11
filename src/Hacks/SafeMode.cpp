@@ -61,6 +61,8 @@ std::vector<std::string> hacks = {
     "coin-tracers",
     "show-trajectory",
     "rand-seed",
+    "jump-hack",
+    "tps-bypass"
 };
 
 void Client::onPostSetup()

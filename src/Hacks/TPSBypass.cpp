@@ -4,22 +4,66 @@
 
 using namespace geode::prelude;
 
-#ifdef GEODE_IS_ANDROID
+template <typename T>
+inline std::vector<uint8_t> getBytes(T value) {
+    return std::vector<uint8_t>((uint8_t *) &value, (uint8_t *) &value + sizeof(T));
+}
 
-class $modify (GJBaseGameLayer)
-{
-    float getModifiedDelta(float dt)
+std::vector<Patch*> patches = {};
+
+void updateTPSPatches(bool tpsEnabled)
+{    
+    if (patches.size() > 0)
     {
-        auto v = GJBaseGameLayer::getModifiedDelta(dt);
+        for (auto catgirl : patches)
+        {
+            Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
+        }
 
-        float tps = 15;
+        patches.clear();
+    }
 
-        v = (v * 240) / tps;
+    float tps = 240;
 
-        //CCScene::get()->addChild(TextAlertPopup::create(fmt::format("dt: {} | unmod: {}", v, (v * 240) / 15).c_str(), 0.5f, 0.6f, 150, ""), 9999999);
+    auto x = numFromString<float>(as<InputModule*>(Client::GetModule("tps-bypass")->options[0])->text);
 
-        return v;
+    if (x.isOk())
+    {
+        tps = x.value();
+    }
+
+    if (tpsEnabled)
+    {
+        #ifdef GEODE_IS_WINDOWS
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x49D548), getBytes<float>(1.0f / tps)).unwrap());
+        #endif
+
+        #ifdef GEODE_IS_ANDROID32
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x457E7A), getBytes<float>(1.0f / tps)).unwrap());
+        #endif
+
+        #ifdef GEODE_IS_ANDROID64
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x83355C), getBytes<float>(1.0f / tps)).unwrap());
+        #endif
+    }
+}
+
+class TPSChangedDelegate : public ModuleChangeDelegate
+{
+    virtual void onModuleChanged(bool enabled)
+    {
+        updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
     }
 };
 
-#endif
+$execute
+{
+    Loader::get()->queueInMainThread([] {
+        auto del = new TPSChangedDelegate();
+
+        Client::GetModule("tps-bypass")->delegate = del;
+        Client::GetModule("tps-bypass")->options[0]->delegate = del;
+
+        updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
+    });
+}

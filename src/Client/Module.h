@@ -288,6 +288,9 @@ class InputModule : public Module, public TextInputDelegate
             text = p0->getString();
 
             this->save();
+
+            if (delegate)
+                delegate->onModuleChanged(false);
         }
 };
 

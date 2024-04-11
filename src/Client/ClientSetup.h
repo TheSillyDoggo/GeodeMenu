@@ -145,11 +145,16 @@ public:
         bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
         bypass->modules.push_back(new Module("Full Options Menu", "full-options", "Replaces the mini options menu in the pause menu with the full options menu"));
 
+        bypass->modules.push_back(new Module("TPS Bypass", "tps-bypass", "Ticks per second bypass, allows your physics to run at values other than 240"));
         bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
 
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
         Client::instance->windows.push_back(bypass);
+
+        auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
+        tps->maxSize = 6;
+        Client::GetModule("tps-bypass")->options.push_back(tps);
     }
 
     static void SetupCreator()
