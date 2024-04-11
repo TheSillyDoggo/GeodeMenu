@@ -757,6 +757,9 @@ class Level : public Window
                 {
                     PlayLayer::get()->m_level->m_levelType = GJLevelType::Local;
                 }
+
+                if (PlayLayer::get()->m_level->m_levelID == 0)
+                    PlayLayer::get()->m_level->m_levelType = GJLevelType::Editor;
             }
         }
 
