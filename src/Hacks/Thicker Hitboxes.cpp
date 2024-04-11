@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_MACOS
+/*#ifndef GEODE_IS_MACOS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -17,7 +17,7 @@ ColourModule* interact = nullptr;
 ColourModule* player = nullptr;
 ColourModule* playerRot = nullptr;
 
-bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, /*const */ccColor4F &borderColor) {
+bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, ccColor4F &borderColor) {
     if (!thicker)
         thicker = Client::GetModule("show-hitboxes")->options[7];
 
@@ -136,4 +136,4 @@ class $modify (GJBaseGameLayer)
     }
 };
 
-#endif
+#endif*/
