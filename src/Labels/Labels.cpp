@@ -257,7 +257,8 @@ void StatusNode::update(float dt)
     sLabels[5]->setString(ss.str().c_str());
     //sLabels[6]->setString(b.c_str());
     //sLabels[7]->setString(inp.str().c_str());
-    sLabels[6]->setString(as<InputModule*>(message->options[0])->text.c_str());
+    auto v2 = as<InputModule*>(message->options[1])->text.c_str();
+    sLabels[6]->setString(v2);
     sLabels[7]->setString(formatTime(ColourUtility::totalSessionTime).c_str());
 
     if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)

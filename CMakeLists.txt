@@ -35,6 +35,20 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
+# Read the content of modules.txt file
+file(READ "modules.txt" MODULES_CONTENT)
+
+# Split the content into lines
+string(REGEX REPLACE "\n$" "" MODULES_CONTENT "${MODULES_CONTENT}")
+string(REPLACE "\n" ";" MODULES_LIST "${MODULES_CONTENT}")
+
+# Loop through each line and add definitions, ignoring lines starting with "//"
+foreach(MODULE ${MODULES_LIST})
+    if(NOT MODULE MATCHES "^//")
+        add_definitions(-D${MODULE})
+    endif()
+endforeach()
+
 CPMAddPackage("gh:matcool/gd-imgui-cocos#4eb5777") # specify a commit!
 
 target_link_libraries(${PROJECT_NAME} imgui-cocos)

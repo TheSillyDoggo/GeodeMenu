@@ -1,5 +1,3 @@
-//#define STATUS_TEXTS
-
 #ifdef STATUS_TEXTS
 
 #pragma once

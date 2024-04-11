@@ -252,6 +252,10 @@ public:
 
     static void SetupStatus()
     {
+        #ifndef STATUS_TEXTS
+        return;
+        #endif
+
         Window* replay = new Labels();
 
         replay->modules.push_back(new StatusOpacity());

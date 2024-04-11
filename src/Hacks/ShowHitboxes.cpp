@@ -1,4 +1,4 @@
-/*#ifndef GEODE_IS_MACOS
+#ifndef GEODE_IS_MACOS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -67,4 +67,4 @@ class $modify (PlayLayer)
 
 };
 
-#endif*/
+#endif
