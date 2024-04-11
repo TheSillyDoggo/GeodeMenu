@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/CCNode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
@@ -36,4 +36,4 @@ class $modify (CCNode)
             }
         });
     }
-};
+};*/
