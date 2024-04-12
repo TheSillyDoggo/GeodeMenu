@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #pragma once
 
 #include <Geode/Geode.hpp>
@@ -49,3 +51,5 @@ public:
         }
     }
 };
+
+#endif

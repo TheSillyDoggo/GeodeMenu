@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 
 //definetly not ai generated
@@ -55,3 +57,5 @@ protected:
     cocos2d::CCSize _startSize;
     cocos2d::CCNode* _target;
 };
+
+#endif

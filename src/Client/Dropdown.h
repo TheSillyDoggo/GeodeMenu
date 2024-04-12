@@ -8,7 +8,11 @@
 
 using namespace geode::prelude;
 
+#ifndef GEODE_IS_MACOS
 class Dropdown : public /*CCMenu*/ClippingNode {
+#else
+class Dropdown : public CCMenu {
+#endif
     private:
         CCLabelBMFont* tex;
         CCSize size;
@@ -49,7 +53,11 @@ class Dropdown : public /*CCMenu*/ClippingNode {
         {
             CCPoint s = ccp(size.width, size.height * (1 + (open ? strs.size() : 0)));
             bg->stopAllActions();
+            #ifndef GEODE_IS_MACOS
             bg->runAction(CCEaseInOut::create( CCContentSizeTo::create(0.35f, s / 0.5f), 2.0f));
+            #else
+            bg->setContentSize(s / 0.5f);
+            #endif
 
             if (n)
             {
@@ -157,7 +165,9 @@ class Dropdown : public /*CCMenu*/ClippingNode {
 
         void update(float dt)
         {
+            #ifndef GEODE_IS_MACOS
             this->setClipRect(CCRectMake(this->getParent()->convertToWorldSpace(this->getPosition()).x - 50, (this->getParent()->convertToWorldSpace(this->getPosition()).y - (bg->getContentSize().height / 2) + size.height) * getScaleY(), (size.width + 50) * getScaleX() + 50, (size.height * (strs.size() + 2)) * getScaleY()));
+            #endif
         }
 
         static Dropdown* create(CCSize size, std::vector<std::string> strs, cocos2d::SEL_MenuHandler callback, int sel = 0) {
