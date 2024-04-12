@@ -7,6 +7,21 @@ using namespace geode::prelude;
 
 Module* randMod = nullptr;
 
+/*
+static void fast_srand(unsigned long seed) {
+    *(int*)((char*)geode::base::get() + 0x4f24a8) = seed;
+}
+static TodoReturn gen_random(int);		static TodoReturn gen_random(int);
+static TodoReturn getDropActionWDelay(float, float, float, cocos2d::CCNode*, cocos2d::SEL_CallFunc);		static TodoReturn getDropActionWDelay(float, float, float, cocos2d::CCNode*, cocos2d::SEL_CallFunc);
+static TodoReturn getDropActionWEnd(float, float, float, cocos2d::CCAction*, float);		static TodoReturn getDropActionWEnd(float, float, float, cocos2d::CCAction*, float);
+static TodoReturn getEasedAction(cocos2d::CCActionInterval*, int, float);		static TodoReturn getEasedAction(cocos2d::CCActionInterval*, int, float);
+static TodoReturn getEasedValue(float, int, float);		static TodoReturn getEasedValue(float, int, float);
+static TodoReturn getfast_srand();		static int getfast_srand() {
+        return *(int*)((char*)geode::base::get() + 0x4f24a8); // global :(
+}
+
+*/
+
 class $modify (GJBaseGameLayer)
 {
     void resetLevelVariables()
@@ -25,7 +40,11 @@ class $modify (GJBaseGameLayer)
             if (x.has_value())
                 seed = x.value();
 
+            #ifdef GEODE_IS_WINDOWS
+            *(int*)((char*)geode::base::get() + 0x4f24a8) = seed;
+            #else
             GameToolbox::fast_srand(seed);
+            #endif
         }
     }
 };
@@ -48,7 +67,11 @@ class $modify (PlayLayer)
             if (x.has_value())
                 seed = x.value();
 
+            #ifdef GEODE_IS_WINDOWS
+            *(int*)((char*)geode::base::get() + 0x4f24a8) = seed;
+            #else
             GameToolbox::fast_srand(seed);
+            #endif
         }
     }
 };
