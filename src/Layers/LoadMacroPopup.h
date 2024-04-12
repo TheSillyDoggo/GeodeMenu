@@ -92,7 +92,7 @@ class LoadMacroPopup : public FLAlertLayer, TextInputDelegate
             {
                 auto size = panel->getContentSize();
 
-                auto gradient = CCLayerGradient::create();
+                auto gradient = CCLayerGradient::create(ccc4(255, 255, 255, 255), ccc4(255, 255, 255, 255));
                 gradient->setContentSize(size);
                 gradient->setZOrder(-1);
                 gradient->setID("gradient"_spr);
