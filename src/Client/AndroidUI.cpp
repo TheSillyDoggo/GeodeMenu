@@ -457,14 +457,14 @@ CCAction* AndroidUI::getEnterAction(CCNode* panel)
         panel->setScale(0);
 
         #ifdef GEODE_IS_MACOS
-        return ((CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)), 1.0f / v);
+        return CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f);
         #else
         return CCSpeed::create((CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)), 1.0f / v);
         #endif
     }
 
     #ifdef GEODE_IS_MACOS
-    return ((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
+    return CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2));
     #else
     return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
     #endif
