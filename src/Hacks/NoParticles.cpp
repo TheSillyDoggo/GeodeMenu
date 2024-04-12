@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCParticleSystem.hpp>
 #include <Geode/modify/CCParticleSystemQuad.hpp>
@@ -35,3 +37,5 @@ $execute {
         modu->hooks.push_back(hook);
     });
 }
+
+#endif
