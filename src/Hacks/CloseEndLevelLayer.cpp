@@ -21,7 +21,7 @@ class EndLevelPopup
 			CCArray* ar = CCArray::create();
 			ar->addObject(easeInOutAction);
 			ar->addObject(CCDelayTime::create(0.1f));
-			ar->addObject(CCCallFuncN::create(arr, callfuncN_selector(EndLevelPopup::startArrowOut)));
+			ar->addObject(CCCallFunc::create(arr, callfunc_selector(EndLevelPopup::startArrowOut)));
 
 			auto act = CCSequence::create(ar);
 
@@ -57,7 +57,7 @@ class EndLevelPopup
 			CCArray* ar = CCArray::create();
 			ar->addObject(CCEaseInOut::create(CCMoveBy::create(0.25f, ccp(0, 30)), 2.0f));
 			ar->addObject(CCDelayTime::create(0.1f));
-			ar->addObject(CCCallFuncN::create(arr, callfuncN_selector(EndLevelPopup::startIn)));
+			ar->addObject(CCCallFunc::create(arr, callfunc_selector(EndLevelPopup::startIn)));
 
 			auto act = CCSequence::create(ar);
 

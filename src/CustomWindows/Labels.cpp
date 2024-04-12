@@ -32,7 +32,7 @@ void Labels::cocosCreate(CCMenu* menu)
     scroll->m_peekLimitBottom = 15;
     menu->addChild(scroll);
 
-    auto bg = CCLayerColor::create();
+    auto bg = CCLayerColor::create(ccc4(0, 0, 0));
     bg->setOpacity(75);
     bg->setContentSize(scroll->getContentSize() + ccp(4, 4));
     bg->setPosition(scroll->getPosition() + ccp(-2, -2));
