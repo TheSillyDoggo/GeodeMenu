@@ -313,6 +313,17 @@ class Speedhack : public Window//, public TextInputDelegate
             return originalValue;
         }
 
+        float clampf(float v, float min, float max)
+        {
+            if (v < min)
+                v = min;
+
+            if (v > max)
+                v = max;
+
+            return v;
+        }
+
         void sliderChanged(CCObject* sender)
         {
             float v = ((slider->getThumb()->getPositionX() + 100) / 200.0f);

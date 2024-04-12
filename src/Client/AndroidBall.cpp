@@ -243,3 +243,14 @@ class $modify (AppDelegate)
         cocos::handleTouchPriority(AndroidBall::instance);
     }
 };
+
+float AndroidBall::clampf(float v, float min, float max)
+{
+    if (v < min)
+        v = min;
+
+    if (v > max)
+        v = max;
+
+    return v;
+}
