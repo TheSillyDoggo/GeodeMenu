@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/EffectGameObject.hpp>
@@ -38,3 +40,5 @@ class $modify (GJBaseGameLayer)
             GJBaseGameLayer::updateCamera(p0);
     }*/
 };
+
+#endif
