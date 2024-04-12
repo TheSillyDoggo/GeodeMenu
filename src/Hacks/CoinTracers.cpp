@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/DashRingObject.hpp>
@@ -69,3 +71,5 @@ class $modify (PlayLayer)
         }
     }
 };
+
+#endif
