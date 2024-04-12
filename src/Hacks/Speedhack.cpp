@@ -56,7 +56,7 @@ class $modify (CCScheduler)
     {
         dt = speedhackLogic(dt);
 
-        ins->update(dt);
+        CCScheduler::update(dt);
     }
 };
 
