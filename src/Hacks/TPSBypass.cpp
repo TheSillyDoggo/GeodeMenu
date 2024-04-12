@@ -6,12 +6,12 @@ using namespace geode::prelude;
 
 template <typename T>
 inline std::vector<uint8_t> getBytes(T value) {
-    //return std::vector<uint8_t>((uint8_t *) &value, (uint8_t *) &value + sizeof(T));
-    std::vector<uint8_t> out(sizeof(float));
-    float in = value;
-    std::memcpy(out.data(), &in, out.size());
+    return std::vector<uint8_t>((uint8_t *) &value, (uint8_t *) &value + sizeof(T));
+    //std::vector<uint8_t> out(sizeof(T));
+    //T in = value;
+    //std::memcpy(out.data(), &in, out.size());
 
-    return out;
+    //return out;
 }
 
 std::vector<Patch*> patches = {};
@@ -44,7 +44,7 @@ void updateTPSPatches(bool tpsEnabled)
         #endif
 
         #ifdef GEODE_IS_ANDROID32
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x467EB8 - 0x10000)), getBytes<float>(1.0f / tps)).unwrap());
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x467EB8 - 0x10000)), getBytes<double>(1.0f / tps)).unwrap());
         #endif
 
         #ifdef GEODE_IS_ANDROID64
