@@ -47,7 +47,7 @@ void Labels::cocosCreate(CCMenu* menu)
         cell->setPosition(ccp(0, ((modules.size() - i) - 1) * 30));
         cell->setAnchorPoint(ccp(0, 0));
 
-        auto bg = CCLayerColor::create();
+        auto bg = CCLayerColor::create(ccc4(0, 0, 0, 0));
         bg->setOpacity((i & 1) ? 100 : 35);
         bg->setContentSize(cell->getContentSize());
         cell->addChild(bg);

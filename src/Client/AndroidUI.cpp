@@ -53,7 +53,11 @@ bool AndroidUI::init()
         }
     }
 
+    #ifdef GEODE_IS_MACOS
+    backSpr->runAction(CCFadeIn::create(0.5f));
+    #else
     backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / v));
+    #endif
 
     auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::close));
     backBtn->setPosition(ccp(24, -23));
