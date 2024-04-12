@@ -80,7 +80,7 @@ bool AndroidUI::init()
     {
         auto size = panel->getContentSize();
 
-        auto gradient = CCLayerGradient::create();
+        auto gradient = CCLayerGradient::create(ccc4(0, 0, 0, 0), ccc4(0, 0, 0, 0));
         gradient->setContentSize(size);
         gradient->setZOrder(-1);
         gradient->setID("gradient"_spr);
