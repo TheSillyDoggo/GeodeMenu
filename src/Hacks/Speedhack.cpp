@@ -120,24 +120,12 @@ void myUpdate(CCScheduler* ins, float dt)
 }
 
 $execute {
-    auto hook = Mod::get()->hook(
+    Mod::get()->hook(
         reinterpret_cast<void*>(
             geode::addresser::getVirtual(&CCScheduler::update)
         ),
         &myUpdate,
         "cocos2d::CCScheduler::update",
         tulip::hook::TulipConvention::Thiscall
-    ).unwrap();
-
-    Loader::get()->queueInMainThread([hook]
-    {
-        auto modu = SpeedhackEnabled::instance;
-    
-        hook->setAutoEnable(false);
-
-        if (!modu->enabled)
-            hook->disable();
-
-        modu->hooks.push_back(hook);
-    });
+    );
 }
