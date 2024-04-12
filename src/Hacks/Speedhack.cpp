@@ -48,6 +48,20 @@ float speedhackLogic(float dt)
     return dt;
 }
 
+#ifdef GEODE_IS_MACOS
+
+class $modify (CCScheduler)
+{
+    virtual void update(float dt)
+    {
+        dt = speedhackLogic(dt);
+
+        ins->update(dt);
+    }
+};
+
+#else
+
 void myUpdate(CCScheduler* ins, float dt)
 {
     dt = speedhackLogic(dt);
@@ -65,3 +79,5 @@ $execute {
         tulip::hook::TulipConvention::Thiscall
     );
 }
+
+#endif
