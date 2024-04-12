@@ -126,13 +126,13 @@ class SetupFPSBypass : public FLAlertLayer
             std::stringstream ss2;
             ss2 << GameManager::get()->m_customFPSTarget;
 
-            inp = geode::InputNode::create(lb->getScaledContentSize().width, "FPS Value");
+            /*inp = geode::InputNode::create(lb->getScaledContentSize().width, "FPS Value");
             inp->setPosition(l->getContentSize() / 2 + ccp(50, 30));
             inp->setString(ss2.str());
             inp->getInput()->setAllowedChars("098765431.");
             inp->getInput()->setMaxLabelLength(8);
             inp->getInput()->setID("IGNOREBYPASSES"_spr);
-            l->addChild(inp);
+            l->addChild(inp);*/
 
             auto lb2 = CCLabelBMFont::create("Enabled:", "bigFont.fnt");
             lb2->setPosition(l->getContentSize() / 2 + ccp(-20, -10));
