@@ -79,11 +79,13 @@ void Client::onPostSetup()
     {
         Client::GetModule(mod)->delegate = new HackModuleDelegate();
     }
+
     #endif
 }
 
 void updateSafemode()
 {
+    #ifndef GEODE_IS_MACOS
     if (Client::GetModuleEnabled("auto-safe-mode"))
     {
         for (auto mod : hacks)
@@ -92,6 +94,7 @@ void updateSafemode()
                 hasHackedAttempt = true;
         }
     }
+    #endif
 
     hasHackedAttempt = (Client::GetModule("safe-mode")->enabled) ? true : hasHackedAttempt;
 
@@ -206,11 +209,13 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
 
         std::vector<std::string> hs = {};
 
+        #ifndef GEODE_IS_MACOS
         for (auto mod : hacks)
         {
             if (Client::GetModule(mod)->enabled)
                 hs.push_back(Client::GetModule(mod)->name);
         }
+        #endif
 
         if (hs.size() != 0)
         {
