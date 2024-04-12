@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
@@ -151,3 +153,5 @@ class $modify (LevelEditorLayer)
         sizes.clear();
     }
 };
+
+#endif
