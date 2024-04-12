@@ -50,6 +50,10 @@ void updateTPSPatches(bool tpsEnabled)
         #ifdef GEODE_IS_ANDROID64
         patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x9335c0 - 0x100000)), getBytes<float>(1.0f / tps)).unwrap());
         #endif
+
+        #ifdef GEODE_IS_MACOS
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (7e9c60)), getBytes<float>(1.0f / tps)).unwrap());
+        #endif
     }
 }
 
