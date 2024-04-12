@@ -49,6 +49,8 @@ class HackModuleDelegate : public ModuleChangeDelegate
     }
 };
 
+#ifndef GEODE_IS_MACOS
+
 std::vector<std::string> hacks = {
     "speedhack-enabled",
     "force-plat",
@@ -65,14 +67,19 @@ std::vector<std::string> hacks = {
     "tps-bypass"
 };
 
+#endif
+
 void Client::onPostSetup()
 {
+    #ifndef GEODE_IS_MACOS
+    
     log::info("post setup");
 
     for (auto mod : hacks)
     {
         Client::GetModule(mod)->delegate = new HackModuleDelegate();
     }
+    #endif
 }
 
 void updateSafemode()
