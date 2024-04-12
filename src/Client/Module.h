@@ -362,10 +362,10 @@ class ColourModule : public Module
 
             auto men = geode::ColorPickPopup::create(v->colour);
 
-            public_cast(men, m_originalColor) = ccc4BFromccc4F(ccc4FFromccc3B(v->def));
+            //public_cast(men, m_originalColor) = ccc4BFromccc4F(ccc4FFromccc3B(v->def));
 
-            if (v->colour != v->def)
-                public_cast(men, m_resetBtn)->setVisible(true);
+            //if (v->colour != v->def)
+                //public_cast(men, m_resetBtn)->setVisible(true);
 
             men->setDelegate(v->del);
             men->show();
