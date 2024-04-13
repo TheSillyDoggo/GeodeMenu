@@ -9,7 +9,8 @@ Module* solidWave = nullptr;
 
 class $modify (CCDrawNode)
 {
-    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    bool 
+    drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
     {
         if (typeinfo_cast<HardStreak*>(this))
         {
@@ -37,11 +38,11 @@ class $modify (CCDrawNode)
             }
         }
 
-        bool v = CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
-
-        if (!v)
-            return false;
-
+        #ifdef GEODE_IS_MACOS
+        CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
         return true;
+        #else
+        return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+        #endif
     }
 };
