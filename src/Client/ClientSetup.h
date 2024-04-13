@@ -399,6 +399,8 @@ public:
             "no-trans",
             "verify-hack",
             "coin-tracers",
+            "no-wave",
+            "solid-wave",
             "no-shake"
         };
 

@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCDrawNode.hpp>
 #include "../Client/Client.h"
@@ -38,11 +40,8 @@ class $modify (CCDrawNode)
             }
         }
 
-        #ifdef GEODE_IS_MACOS
-        CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
-        return true;
-        #else
         return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
-        #endif
     }
 };
+
+#endif
