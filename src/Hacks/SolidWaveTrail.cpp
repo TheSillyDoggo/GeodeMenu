@@ -37,6 +37,11 @@ class $modify (CCDrawNode)
             }
         }
 
-        return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+        bool v = CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+
+        if (!v)
+            return false;
+
+        return true;
     }
 };
