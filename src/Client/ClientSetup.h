@@ -395,7 +395,6 @@ public:
             "no-static",
             "show-trajectory",
             "show-layout",
-            "menu-pulse",
             "no-trans",
             "verify-hack",
             "coin-tracers",

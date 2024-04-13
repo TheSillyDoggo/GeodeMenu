@@ -40,7 +40,11 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
+            #ifdef GEODE_IS_MACOS
+            engine->update(dt);
+            #else
             engine->updateMetering();
+            #endif
             
             #ifdef GEODE_IS_WINDOWS
             float met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(engine) + 0x178));
@@ -56,7 +60,7 @@ class MenuPulse : public CCNode
         CREATE_FUNC(MenuPulse);
 };
 
-#ifndef GEODE_IS_ANDROID
+#ifdef GEODE_IS_WINDOWS
 
 float vPulse = 0;
 Module* pul = nullptr;
