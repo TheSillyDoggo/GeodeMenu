@@ -390,7 +390,6 @@ public:
         #ifdef GEODE_IS_MACOS
 
         std::vector<std::string> macInc = {
-            "instant",
             "show-hitboxes",
             "show-hitboxes-on-death",
             "no-static",
