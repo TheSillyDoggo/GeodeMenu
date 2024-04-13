@@ -25,6 +25,12 @@ void Module::onToggleAndroid(CCObject* sender)
 {
     auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
+    if (dat->isInComp)
+    {
+        as<CCMenuItemToggler*>(sender)->toggle(!as<CCMenuItemToggler*>(sender)->isToggled());
+        return FLAlertLayer::create(dat->name.c_str(), dat->inCompAlert.c_str(), "OK")->show();
+    }
+
     if (dat->useAlert && !dat->vAlert)
     {
         FLAlertLayer::create(dat->name.c_str(), dat->alert.c_str(), "OK")->show();
@@ -58,6 +64,9 @@ void Module::onToggleAndroid(CCObject* sender)
 
 void Module::makeAndroid(CCNode* menu, CCPoint pos)
 {
+    if (inCompAlert.empty())
+        this->isInComp = false;
+
     auto btn = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Module::onToggleAndroid), 0.75f);
     btn->setUserData(this);
     btn->setID(id);
@@ -68,9 +77,9 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos + ccp(15, 0));
-    label->limitLabelWidth(110 - ((options.size() != 0) ? 3 : 0), 0.575f, 0.1f);
+    label->limitLabelWidth(110 - ((options.size() != 0) ? 3 : 0) + (isInComp ? 17.5f : 0), 0.575f, 0.1f);
 
-    if (description.size() != 0 && options.size() == 0)
+    if (description.size() != 0 && options.size() == 0 && !isInComp)
     {
         auto info = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), menu, menu_selector(Module::onInfoAndroid));
         info->setScale(0.55f);
@@ -83,7 +92,7 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
         menu->addChild(info);
     }
 
-    if (options.size() != 0)
+    if (options.size() != 0 && !isInComp)
     {
         auto options = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png"), menu, menu_selector(Module::onOptionsAndroid));
         options->setUserData(this);
@@ -92,8 +101,21 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
         menu->addChild(options);
     }
 
+    if (isInComp)
+    {
+        label->setOpacity(150);
+        btn->m_onButton->setOpacity(150);
+        btn->m_offButton->setOpacity(150);
+    }
+
     menu->addChild(btn);
     menu->addChild(label);
+}
+
+void Module::setIncompatible(std::string str)
+{
+    this->isInComp = true;
+    this->inCompAlert = str;
 }
 
 void ColourDelegate::updateColor(cocos2d::ccColor4B const& color)

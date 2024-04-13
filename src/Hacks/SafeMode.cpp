@@ -49,8 +49,6 @@ class HackModuleDelegate : public ModuleChangeDelegate
     }
 };
 
-#ifndef GEODE_IS_MACOS
-
 std::vector<std::string> hacks = {
     "speedhack-enabled",
     "force-plat",
@@ -67,25 +65,18 @@ std::vector<std::string> hacks = {
     "tps-bypass"
 };
 
-#endif
-
 void Client::onPostSetup()
 {
-    #ifndef GEODE_IS_MACOS
-    
     log::info("post setup");
 
     for (auto mod : hacks)
     {
         Client::GetModule(mod)->delegate = new HackModuleDelegate();
     }
-
-    #endif
 }
 
 void updateSafemode()
 {
-    #ifndef GEODE_IS_MACOS
     if (Client::GetModuleEnabled("auto-safe-mode"))
     {
         for (auto mod : hacks)
@@ -94,7 +85,6 @@ void updateSafemode()
                 hasHackedAttempt = true;
         }
     }
-    #endif
 
     hasHackedAttempt = (Client::GetModule("safe-mode")->enabled) ? true : hasHackedAttempt;
 
@@ -157,8 +147,8 @@ class $modify (PlayLayerExt, PlayLayer)
 
         PlayLayer::resetLevel();
 
-        updateSafemode();
         hasHackedAttempt = Client::GetModule("safe-mode")->enabled;
+        updateSafemode();
     }
 };
 
@@ -209,13 +199,11 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
 
         std::vector<std::string> hs = {};
 
-        #ifndef GEODE_IS_MACOS
         for (auto mod : hacks)
         {
             if (Client::GetModule(mod)->enabled)
                 hs.push_back(Client::GetModule(mod)->name);
         }
-        #endif
 
         if (hs.size() != 0)
         {

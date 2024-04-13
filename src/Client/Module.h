@@ -46,9 +46,11 @@ class Module
         std::string id;
         std::string description;
         std::string alert;
+        std::string inCompAlert;
         bool enabled;
         bool useAlert;
         bool onceAlert;
+        bool isInComp;
 
         bool vAlert;
 
@@ -162,6 +164,8 @@ class Module
         void onInfoAndroid(CCObject* sender);
         void onOptionsAndroid(CCObject* sender);
         void onToggleAndroid(CCObject* sender);
+
+        void setIncompatible(std::string str);
         
         virtual void makeAndroid(CCNode* menu, CCPoint pos);
 };

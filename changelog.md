@@ -6,6 +6,7 @@
 - Improved Labels Menu
 - Added ability to move labels to different corners
 - Added TPS Bypass
+- Added Mac Support
 
 # 1.3.5
 

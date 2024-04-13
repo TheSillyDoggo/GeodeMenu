@@ -826,11 +826,15 @@ class Universal : public Window
 
             auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
 
+            CCMenuItemSpriteExtra* btn = nullptr;
+
+            #ifndef GEODE_IS_MACOS
+
             auto btnS = ButtonSprite::create("Transition\nCustomizer", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
             as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Universal::onTransCustomizer));
+            btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Universal::onTransCustomizer));
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
@@ -838,6 +842,8 @@ class Universal : public Window
 
             pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18 - 2.5f, 22);
             pos += ccp(-110, 0);
+
+            #endif
 
             auto btnUnc = ButtonSprite::create("Uncomplete\nLevel", 70, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             

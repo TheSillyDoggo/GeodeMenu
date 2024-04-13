@@ -33,6 +33,8 @@ public:
             setupDevtools();
 
         Client::instance->onPostSetup();
+
+        registerIncompatibilitys();
 	}
 
 #pragma region Setup Windows
@@ -63,9 +65,7 @@ public:
         level->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
-        #ifndef GEODE_IS_MACOS
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", false, "<cr>Warning!</c>\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", true));
-        #endif
 
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
@@ -215,7 +215,7 @@ public:
         cosmetic->modules.push_back(new Module("No Wave Pulse", "no-wave-pulse", "Disables wave pulse"));
 
         cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
-        #ifndef GEODE_IS_ANDROID
+        #ifdef GEODE_IS_WINDOWS
         cosmetic->modules.push_back(new Module("Pulse Scene", "all-pulse", "Pulses the CCScene to the music, <cl>why would you want this?</c>"));
         #endif
 
@@ -383,6 +383,38 @@ public:
         devtools->modules.push_back(new Module("Recompile Shader", "recomp-shaders", "Recompiles blur shader"));
 
         Client::instance->windows.push_back(devtools);
+    }
+
+    static void registerIncompatibilitys()
+    {
+        #ifdef GEODE_IS_MACOS
+
+        std::vector<std::string> macInc = {
+            "instant",
+            "show-hitboxes",
+            "show-hitboxes-on-death",
+            "no-static",
+            "all-plat",
+            "show-trajectory",
+            "show-layout",
+            "menu-pulse",
+            "no-trans",
+            "verify-hack",
+            "coin-tracers",
+            "no-wave",
+            "solid-wave",
+            "no-shake"
+        };
+
+        for (auto hack : macInc)
+        {
+            auto mod = Client::GetModule(hack);
+
+            mod->setIncompatible("This mod has not <cg>yet</c> been ported to <cl>Mac OS</c>");
+            mod->enabled = false;
+        }
+
+        #endif
     }
 
 #pragma endregion
