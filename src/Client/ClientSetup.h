@@ -394,7 +394,6 @@ public:
             "show-hitboxes",
             "show-hitboxes-on-death",
             "no-static",
-            "all-plat",
             "show-trajectory",
             "show-layout",
             "menu-pulse",
