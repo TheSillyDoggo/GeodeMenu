@@ -6,6 +6,7 @@
 - Added ability to move labels to different corners
 - Added TPS Bypass
 - Added Mac Support
+- Added New Bypass category with <cl>Main Level Bypass, Tower Level Bypass, </c>
 
 # 1.3.5
 

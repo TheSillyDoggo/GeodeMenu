@@ -13,6 +13,7 @@ public:
 	{
         SetupLevel();
         SetupBypass();
+        SetupUniversal();
         SetupCreator();
         SetupCosmetic();
         SetupIconEffects();
@@ -124,9 +125,29 @@ public:
 
     static void SetupBypass()
     {
+        Window* bypass = new Window();
+        bypass->name = "Bypass";
+        bypass->id = "bypass-window";
+        bypass->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+
+
+        bypass->modules.push_back(new Module("Main Levels", "main-level-bypass", "Allows you to play the main demon levels"));
+        bypass->modules.push_back(new Module("Tower Levels", "tower-level-bypass", "Allows you to play the levels in the tower"));
+
+        //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        
+        Client::instance->windows.push_back(bypass);
+
+        auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
+        tps->maxSize = 6;
+        Client::GetModule("tps-bypass")->options.push_back(tps);
+    }
+
+    static void SetupUniversal()
+    {
         Window* bypass = new Universal();
         bypass->name = "Universal";
-        bypass->id = "bypass-window";
+        bypass->id = "universal-window";
         bypass->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
 
