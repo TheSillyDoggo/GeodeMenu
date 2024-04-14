@@ -27,7 +27,10 @@ class $modify (PlayerObject)
         m_isDead = true;
         
         if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
+        {
             PlayLayer::get()->resetLevel();
+            this->setVisible(true);
+        }
 
         if (!Client::GetModuleEnabled("no-death"))
             PlayerObject::playDeathEffect();

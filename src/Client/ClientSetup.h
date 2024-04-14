@@ -228,6 +228,8 @@ public:
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
         cosmetic->modules.push_back(new Module("No Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
 
+        //cosmetic->modules.push_back(new Module("Unlock Buttons", "unlock-buttons", "Visually Unlocks the greyed out buttons in the online page"));
+
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
@@ -400,7 +402,7 @@ public:
             "coin-tracers",
             "no-wave",
             "solid-wave",
-            "no-shake"
+            "no-shake",
         };
 
         for (auto hack : macInc)

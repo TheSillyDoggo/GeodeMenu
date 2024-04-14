@@ -2,6 +2,8 @@
 
 void Labels::cocosCreate(CCMenu* menu)
 {
+    return Window::cocosCreate(menu); // todo: finish ui
+
     labels.clear();
 
     auto back = CCScale9Sprite::create("square02_small.png");

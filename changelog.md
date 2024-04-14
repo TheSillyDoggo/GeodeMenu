@@ -3,7 +3,6 @@
 - Added Random Seed
 - Improved Performance of a lot of stuff
 - Added Mod Descriptions to Settings Popups
-- Improved Labels Menu
 - Added ability to move labels to different corners
 - Added TPS Bypass
 - Added Mac Support
