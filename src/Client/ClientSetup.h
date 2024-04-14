@@ -12,7 +12,7 @@ public:
 	static void Setup(bool android = false)
 	{
         SetupLevel();
-        SetupBypass();
+        //SetupBypass();
         SetupUniversal();
         SetupCreator();
         SetupCosmetic();
@@ -130,17 +130,9 @@ public:
         bypass->id = "bypass-window";
         bypass->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
-
-        bypass->modules.push_back(new Module("Main Levels", "main-level-bypass", "Allows you to play the main demon levels"));
-        bypass->modules.push_back(new Module("Tower Levels", "tower-level-bypass", "Allows you to play the levels in the tower"));
-
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
         Client::instance->windows.push_back(bypass);
-
-        auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
-        tps->maxSize = 6;
-        Client::GetModule("tps-bypass")->options.push_back(tps);
     }
 
     static void SetupUniversal()
@@ -160,8 +152,11 @@ public:
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
         bypass->modules.push_back(new Module("Safe mode", "safe-mode", "Disables all progress on levels"));
 
-        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
-        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields", false, "<cr>Warning!</c>\nThis module has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this module", true));
+        bypass->modules.push_back(new Module("Character Limit", "char-limit", "Removes the <cl>character limit</c> on input fields", false, "<cr>Warning!</c>\nThis mod has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this mod", true));
+        bypass->modules.push_back(new Module("Character Filter", "char-filter", "Allows you to input <cg>any</c> character in input fields", false, "<cr>Warning!</c>\nThis mod has been <cl>known</c> to cause issues on <cg>some</c> devices such as:\n<cl>- Crashing when you type</c>\n- Crashing when the input field goes away.\nIf the game crashes pressing an ok button, <cr>Disable</c> this mod", true));
+
+        bypass->modules.push_back(new Module("Main Levels", "main-level-bypass", "Allows you to play the main demon levels"));
+        bypass->modules.push_back(new Module("Tower Levels", "tower-level-bypass", "Allows you to play the levels in the tower"));
 
         bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
         bypass->modules.push_back(new Module("Full Options Menu", "full-options", "Replaces the mini options menu in the pause menu with the full options menu"));
