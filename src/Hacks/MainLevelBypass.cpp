@@ -28,11 +28,15 @@ class $modify (LevelAreaInnerLayer)
         if (!LevelAreaInnerLayer::init(p0))
             return false;
 
-        auto v = getChildByTagRecursive(this, 5001);
+        if (!Client::GetModuleEnabled("tower-level-bypass"))
+            return true;
 
-        if (v)
+        auto x = getChildOfType<CCNode>(this, 1);
+        auto menu = getChildOfType<CCMenu>(x, 0);
+
+        if (menu)
         {
-            CCArrayExt<CCMenuItemSpriteExtra*> objs = v->getParent()->getChildren();
+            CCArrayExt<CCMenuItemSpriteExtra*> objs = menu->getChildren();
 
             for (auto child : objs)
             {
