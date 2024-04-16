@@ -36,7 +36,7 @@ jobs:
         with:
           bindings: 'TheSillyDoggo/bindings'
           combine: true
-          sdk: nightly
+          #sdk: nightly
           target: ${{ matrix.config.target }}
       
   package:
