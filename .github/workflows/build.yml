@@ -34,9 +34,10 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
+          uses: Prevter/build-geode-mod@main
           bindings: 'TheSillyDoggo/bindings'
+          export-pdb: true
           combine: true
-          #sdk: nightly
           target: ${{ matrix.config.target }}
       
   package:

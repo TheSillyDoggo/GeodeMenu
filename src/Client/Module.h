@@ -421,7 +421,7 @@ class DropdownModule : public Module
 
         void load()
         {
-            value = geode::prelude::Mod::get()->getSavedValue<int>(id + "_index", value);
+            index = geode::prelude::Mod::get()->getSavedValue<int>(id + "_index", index);
         }
 
         void makeAndroid(CCNode* menu, CCPoint pos);

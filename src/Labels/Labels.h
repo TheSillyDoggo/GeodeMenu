@@ -23,6 +23,10 @@ class StatusNode : public CCNode
             return nullptr;
         }
 
+        static inline StatusNode* instance = nullptr;
+
+        static StatusNode* get() { return instance; }
+
         //NoclipLayer* v;
 
         bool mods;

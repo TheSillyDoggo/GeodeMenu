@@ -49,7 +49,7 @@ class HackModuleDelegate : public ModuleChangeDelegate
 
         if (PlayLayer::get())
         {
-            if (auto stn = getChildOfType<StatusNode>(PlayLayer::get(), 0))
+            if (auto stn = StatusNode::get())
             {
                 stn->update(1);
                 stn->reorderSides();
