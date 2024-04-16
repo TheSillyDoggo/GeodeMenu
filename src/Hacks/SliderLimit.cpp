@@ -15,8 +15,6 @@ class $modify (SliderTouchLogic)
         this->m_slider->updateBar();
 
         this->m_thumb->activate();
-
-        log::info("value: {}", this->m_slider->getValue());
     }
 
     static void onModify(auto& self) {
