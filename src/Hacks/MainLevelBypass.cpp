@@ -21,13 +21,25 @@ class $modify (LevelPage)
     }
 };
 
-class $modify (GameStatsManager)
+class $modify (LevelAreaInnerLayer)
 {
-    bool hasCompletedMainLevel(int levelID)
+    bool init(bool p0)
     {
-        if (Client::GetModuleEnabled("tower-level-bypass") && levelID >= 5000 && levelID <= 5004)
-            return true;
+        if (!LevelAreaInnerLayer::init(p0))
+            return false;
 
-        return GameStatsManager::hasCompletedMainLevel(levelID);
+        auto v = getChildByTagRecursive(this, 5001);
+
+        if (v)
+        {
+            CCArrayExt<CCMenuItemSpriteExtra*> objs = v->getParent()->getChildren();
+
+            for (auto child : objs)
+            {
+                child->setEnabled(true);
+            }
+        }
+
+        return true;
     }
 };
