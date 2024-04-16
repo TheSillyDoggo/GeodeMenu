@@ -1,9 +1,10 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
-
 
 class EndLevelPopup
 {
@@ -21,7 +22,7 @@ class EndLevelPopup
 			CCArray* ar = CCArray::create();
 			ar->addObject(easeInOutAction);
 			ar->addObject(CCDelayTime::create(0.1f));
-			ar->addObject(CCCallFunc::create(arr, callfunc_selector(EndLevelPopup::startArrowOut)));
+			ar->addObject(CCCallFuncN::create(arr, callfuncN_selector(EndLevelPopup::startArrowOut)));
 
 			auto act = CCSequence::create(ar);
 
@@ -57,7 +58,7 @@ class EndLevelPopup
 			CCArray* ar = CCArray::create();
 			ar->addObject(CCEaseInOut::create(CCMoveBy::create(0.25f, ccp(0, 30)), 2.0f));
 			ar->addObject(CCDelayTime::create(0.1f));
-			ar->addObject(CCCallFunc::create(arr, callfunc_selector(EndLevelPopup::startIn)));
+			ar->addObject(CCCallFuncN::create(arr, callfuncN_selector(EndLevelPopup::startIn)));
 
 			auto act = CCSequence::create(ar);
 
@@ -133,3 +134,5 @@ class $modify(EndLevelLayer)
 		}
 	}
 };
+
+#endif

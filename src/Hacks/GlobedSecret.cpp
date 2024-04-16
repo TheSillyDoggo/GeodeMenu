@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/CCScheduler.hpp>
 #include "../Client/Client.h"
@@ -56,4 +56,4 @@ $execute {
         "cocos2d::CCNode::setID (Geode)",
         tulip::hook::TulipConvention::Thiscall
     );
-}
+}*/

@@ -5,9 +5,10 @@
 - Added Mod Descriptions to Settings Popups
 - Added ability to move labels to different corners
 - Added TPS Bypass
-- Added Mac Support
 - Added Main Level Bypass
 - Added Tower Level Bypass
+- Added Slider Limit Bypass
+- Added **[<cl>EXPERIMENTAL</c>]** Mac Support
 
 # 1.3.5
 

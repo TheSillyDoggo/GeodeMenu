@@ -6,7 +6,7 @@ class ColourUtility
 {
 	public:
 
-		static geode::prelude::ccColor3B cc3x(int hexValue) {
+		static cocos2d::ccColor3B cc3x(int hexValue) {
 			if (hexValue <= 0xf)
 				return geode::prelude::ccColor3B{
 					static_cast<GLubyte>(hexValue * 17),

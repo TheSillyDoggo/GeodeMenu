@@ -1,28 +1,60 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/SliderTouchLogic.hpp>
-#include <Geode/modify/Slider.hpp>
+#include <Geode/modify/SliderThumb.hpp>
+#include <Geode/modify/GJScaleControl.hpp>
 #include "../Client/Client.h"
 
 class $modify (SliderTouchLogic)
 {
     virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
     {
-        if (!Client::GetModuleEnabled("slider-limit"))
-            return SliderTouchLogic::ccTouchMoved(p0, p1);
-        
-        float w = 100;
-        float x = (this->convertTouchToNodeSpace(p0).x + 100) / 2;
+        this->m_thumb->setPositionX(this->convertTouchToNodeSpace(p0).x);
 
-        this->m_slider->setValue(x / w);
+        //this->m_slider->setValue(value);
 
         this->m_slider->updateBar();
 
-        CCObject *pTarget = m_thumb->m_pListener;
-        SEL_MenuHandler pSelector = m_thumb->m_pfnSelector;
-       
-        if (pTarget && pSelector) 
+        this->m_thumb->activate();
+
+        log::info("value: {}", this->m_slider->getValue());
+    }
+
+    static void onModify(auto& self) {
+        geode::Hook* hook = self.getHook("SliderTouchLogic::ccTouchMoved").unwrap();
+
+        Loader::get()->queueInMainThread([hook] 
         {
-            (pTarget->*pSelector)(this);
+            auto modu = Client::GetModule("slider-limit");
+
+            hook->setAutoEnable(false);
+
+            if (!modu->enabled)
+                hook->disable();
+
+            modu->hooks.push_back(hook);
+        });
+    }
+};
+
+/*#ifdef GEODE_IS_ANDROID
+
+class $modify (GJScaleControl)
+{
+    virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+    {
+        GJScaleControl::ccTouchMoved(p0, p1);
+
+        auto slider = getChildOfType<Slider>(this, -1);
+        auto lbl = getChildOfType<CCLabelBMFont>(this, 2);
+
+        if (slider && lbl && slider->isVisible())
+        {
+            slider->m_touchLogic->ccTouchMoved(p0, p1);
+
         }
     }
-};*/
+};
+
+#else
+
+#endif*/

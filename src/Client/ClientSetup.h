@@ -164,7 +164,7 @@ public:
         bypass->modules.push_back(new Module("TPS Bypass", "tps-bypass", "Ticks per second bypass, allows your physics to run at values other than 240"));
         bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
 
-        //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
         Client::instance->windows.push_back(bypass);
 
