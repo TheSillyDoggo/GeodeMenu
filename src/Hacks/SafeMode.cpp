@@ -46,6 +46,16 @@ class HackModuleDelegate : public ModuleChangeDelegate
             hasHackedAttempt = false;
 
         updateInd();
+
+        if (PlayLayer::get())
+        {
+            if (auto stn = getChildOfType<StatusNode>(PlayLayer::get(), 0))
+            {
+                stn->update(1);
+                stn->reorderSides();
+                stn->reorderPosition();
+            }
+        }
     }
 };
 
