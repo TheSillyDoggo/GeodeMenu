@@ -59,6 +59,13 @@ class Dropdown : public CCMenu {
             bg->setContentSize(s / 0.5f);
             #endif
 
+            #ifdef GEODE_IF_MACOS
+            for (size_t i = 0; i < btns.size(); i++)
+            {
+                btns[i]->setVisible(n);
+            }
+            #endif
+
             if (n)
             {
                 for (size_t i = 0; i < btns.size(); i++)
