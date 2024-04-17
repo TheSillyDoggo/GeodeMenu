@@ -414,6 +414,7 @@ public:
             "show-trajectory",
             "show-layout",
             "coin-tracers",
+            "no-trans"
             "no-wave",
             "solid-wave",
             "no-shake",

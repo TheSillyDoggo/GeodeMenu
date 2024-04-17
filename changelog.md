@@ -1,3 +1,7 @@
+# 1.3.8
+
+- Removed no transition from MacOS due to crashes
+
 # 1.3.7
 
 - Label Corners now save the corner
