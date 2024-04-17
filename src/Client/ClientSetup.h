@@ -424,8 +424,11 @@ public:
         {
             auto mod = Client::GetModule(hack);
 
-            mod->setIncompatible("This mod has not <cg>yet</c> been ported to <cl>macOS</c>");
-            mod->enabled = false;
+            if (mod)
+            {
+                mod->setIncompatible("This mod has not <cg>yet</c> been ported to <cl>macOS</c>");
+                mod->enabled = false;
+            }
         }
 
         #endif
