@@ -47,6 +47,8 @@ class HackModuleDelegate : public ModuleChangeDelegate
 
         updateInd();
 
+        #ifdef STATUS_TEXTS
+
         if (PlayLayer::get())
         {
             if (auto stn = StatusNode::get())
@@ -56,6 +58,8 @@ class HackModuleDelegate : public ModuleChangeDelegate
                 stn->reorderPosition();
             }
         }
+
+        #endif
     }
 };
 

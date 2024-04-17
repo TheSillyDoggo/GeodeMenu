@@ -1,7 +1,11 @@
 # 1.3.7
 
 - Label Corners now save the corner
-- Fixed Crash Playing Levels
+- Fixed Crash Playing Levels on Windows
+- Fixed Attempt Count saying nullptr every attempt
+- Increased the amount of numbers you can input in tps bypass to 11
+- FPS Counter now only updates every half of a second instead of every frame
+- Added No Transition and Verify Hack On MacOS
 
 # 1.3.6
 

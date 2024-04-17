@@ -169,7 +169,7 @@ public:
         Client::instance->windows.push_back(bypass);
 
         auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
-        tps->maxSize = 6;
+        tps->maxSize = 11;
         Client::GetModule("tps-bypass")->options.push_back(tps);
     }
 
@@ -413,8 +413,6 @@ public:
             "no-static",
             "show-trajectory",
             "show-layout",
-            "no-trans",
-            "verify-hack",
             "coin-tracers",
             "no-wave",
             "solid-wave",

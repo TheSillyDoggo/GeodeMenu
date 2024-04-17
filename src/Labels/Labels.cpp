@@ -6,6 +6,8 @@ bool StatusNode::init()
 {
     if (!CCNode::init())
         return false;
+
+    instance = this;
     
     this->setID("status-node"_spr);
     this->setZOrder(69);
@@ -225,6 +227,8 @@ void StatusNode::update(float dt)
     if (!session)
         session = Client::GetModule("status-session");
         
+    if (!attPL)
+        attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
 
     
     float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_unk1f8 == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_unk1f8)));
@@ -242,10 +246,9 @@ void StatusNode::update(float dt)
     sLabels[7]->setVisible(session->enabled);
 
 
-    sLabels[1]->setString((numToString(1 / (dt / CCScheduler::get()->getTimeScale()), 0) + std::string(" FPS")).c_str());
     sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
     sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
-    sLabels[4]->setString(attemptText == nullptr ? "nullptr" : attemptText->getString());
+    sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
 
     std::stringstream ss;
     ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
@@ -272,6 +275,21 @@ void StatusNode::update(float dt)
         sLabels[3]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
 
         as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead = false;
+    }
+
+    _timeLeft -= dt;
+    _accum += 1 / dt;
+    _frames++;
+
+    if (_timeLeft <= 0) {
+        float fps = _accum / _frames;
+
+        sLabels[1]->setString((std::to_string(as<int>(roundf(fps))) + std::string(" FPS")).c_str());
+        //CCLOG("Average FPS: %.2f", fps);
+
+        _timeLeft = _updateInterval;
+        _accum = 0;
+        _frames = 0;
     }
 
     updateVis();

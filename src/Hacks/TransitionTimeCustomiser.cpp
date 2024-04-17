@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/cocos/layers_scenes_transitions_nodes/CCTransition.h>
 #include <Geode/modify/CCTransitionFade.hpp>
@@ -16,6 +14,7 @@ CCScene* getSceneForSel(int i, float f, CCScene* s)
 
     if (i == 0)
         return CCTransitionFade::create(f, s);
+    #ifndef GEODE_IS_MACOS
     else if (i == 1)
         return CCTransitionCrossFade::create(f, s);
     else if (i == 2)
@@ -66,6 +65,8 @@ CCScene* getSceneForSel(int i, float f, CCScene* s)
         return CCTransitionSplitCols::create(f, s);
     else if (i == 25)
         return CCTransitionTurnOffTiles::create(f, s);
+    
+    #endif
 
     return nullptr;
 }
@@ -116,5 +117,3 @@ class $modify (cocos2d::CCTransitionFade)
         return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };
-
-#endif
