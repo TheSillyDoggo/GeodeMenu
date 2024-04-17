@@ -74,8 +74,6 @@ class $modify (AppDelegate)
 
                 if (auto b = typeinfo_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
                 {
-                    log::info("bg: {}", b);
-
                     if (getNodeName(b).starts_with("cocos2d::CCSprite"))
                     {
                         if (b->getColor().r == 0 && b->getColor().g == 102 && b->getColor().b == 255)
