@@ -1,6 +1,7 @@
 # 1.3.8
 
-- Removed no transition from MacOS due to crashes
+- Fixed no transition crash on MacOS
+- Fixed Gradient Theme appearing white
 
 # 1.3.7
 

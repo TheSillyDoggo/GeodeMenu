@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/cocos/layers_scenes_transitions_nodes/CCTransition.h>
 #include <Geode/modify/CCTransitionFade.hpp>
@@ -7,6 +5,8 @@
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
+
+#ifndef GEODE_IS_MACOS
 
 //{"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular" "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}
 
@@ -117,6 +117,16 @@ class $modify (cocos2d::CCTransitionFade)
         }
 
         return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
+    }
+};
+
+#else
+
+class $modify (cocos2d::CCTransitionFade)
+{
+    static CCTransitionFade* create(float duration,CCScene* scene)
+    {
+        return CCTransitionFade::create(Client::GetModuleEnabled("no-trans") ? 0 : 1, scene);
     }
 };
 
