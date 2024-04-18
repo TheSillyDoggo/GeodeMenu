@@ -1,7 +1,7 @@
 QOLMod is **THE** mod menu for android, it has a Mobile Optimised <cl>UI</c> with many features to improve your <cg>Geometry Dash</c> experience such as a Speedhack, Copy hack, Icon Effects, Noclip Accuracy, Unlock item hack and more.
 
 # How to use.
-On Windows:
+On Windows / Mac:
 - Press **Tab** or **Insert** on your keyboard
 
 On Android:
