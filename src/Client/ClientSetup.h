@@ -231,9 +231,7 @@ public:
         cosmetic->modules.push_back(new Module("No Wave Pulse", "no-wave-pulse", "Disables wave pulse"));
 
         cosmetic->modules.push_back(new Module("Pulse Menu", "menu-pulse", "Pulses the <cg>Geometry Dash</c> logo on the main menu to the music"));
-        #ifdef GEODE_IS_WINDOWS
-        cosmetic->modules.push_back(new Module("Pulse Scene", "all-pulse", "Pulses the CCScene to the music, <cl>why would you want this?</c>"));
-        #endif
+        cosmetic->modules.push_back(new Module("No \"Do Not\" flip", "just-dont", "Disables the attempt text and endscreen text from being flipped with the <cl>Do Not</c> option enabled."));
 
         //cosmetic->modules.push_back(new Module("Force Don't Fade", "dont-fade", "Forces all object to be Don't Fade"));
         //cosmetic->modules.push_back(new Module("Force Don't Enter", "dont-enter", "Forces all object to be Don't Enter"));

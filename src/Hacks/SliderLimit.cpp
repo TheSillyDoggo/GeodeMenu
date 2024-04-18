@@ -8,7 +8,10 @@ class $modify (SliderTouchLogic)
 {
     virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
     {
-        this->m_thumb->setPositionX(this->convertTouchToNodeSpace(p0).x);
+        if (this->m_thumb->m_vertical)
+            this->m_thumb->setPositionY(this->convertTouchToNodeSpace(p0).y);
+        else
+            this->m_thumb->setPositionX(this->convertTouchToNodeSpace(p0).x);
 
         //this->m_slider->setValue(value);
 

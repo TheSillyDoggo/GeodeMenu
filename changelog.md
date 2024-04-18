@@ -2,6 +2,8 @@
 
 - Fixed no transition crash on MacOS
 - Fixed Gradient Theme appearing white
+- Removed Pulse Scene because of unnecessary lag
+- Fixed Vertical sliders with slider limit bypass
 
 # 1.3.7
 

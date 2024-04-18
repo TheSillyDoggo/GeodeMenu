@@ -60,45 +60,6 @@ class MenuPulse : public CCNode
         CREATE_FUNC(MenuPulse);
 };
 
-#ifdef GEODE_IS_WINDOWS
-
-float vPulse = 0;
-Module* pul = nullptr;
-
-class $modify (PulsingScheduler, CCScheduler)
-{
-    void update(float dt)
-    {
-        CCScheduler::update(dt);
-
-        if (auto scene = CCScene::get())
-        {
-            if (!pul)
-                pul = Client::GetModule("all-pulse");
-
-            #ifdef GEODE_IS_WINDOWS
-            *(reinterpret_cast<bool*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x188)) = true;
-            #else
-            FMODAudioEngine::sharedEngine()->enableMetering();
-            #endif
-
-            float met = 0;
-
-            #ifdef GEODE_IS_WINDOWS
-            met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x178));
-            #else
-            met = FMODAudioEngine::sharedEngine()->getMeteringValue()
-            #endif
-        
-            vPulse = as<float>(std::lerp(as<float>(vPulse), as<float>(met), 0.1f));
-
-            scene->setScale((pul->enabled && !(PlayLayer::get() || LevelEditorLayer::get())) ? (0.85f + clampf(vPulse * 0.25f, 0, 1)) : 1);
-        }
-    }
-};
-
-#endif
-
 class $modify (MenuLayer)
 {
     bool init()
