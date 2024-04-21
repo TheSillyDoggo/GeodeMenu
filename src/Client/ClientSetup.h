@@ -412,8 +412,8 @@ public:
             "show-trajectory",
             "show-layout",
             "coin-tracers",
-            "no-trans"
             "no-wave",
+            "no-particles",
             "solid-wave",
             "no-shake",
         };

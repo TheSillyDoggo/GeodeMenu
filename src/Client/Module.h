@@ -87,7 +87,7 @@ class Module
             name = n;
             id = i;
             description = d;
-            enabled = false;
+            enabled = _def;
             def = _def;
             useAlert = as;
             alert = a;
@@ -157,7 +157,7 @@ class Module
 
         virtual void load()
         {
-            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
+            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", enabled);
             save();
         }
 
