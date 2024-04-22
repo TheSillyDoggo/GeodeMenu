@@ -4,6 +4,7 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
 
 #include "../Hacks/Noclip.cpp"
@@ -53,6 +54,7 @@ class StatusNode : public CCNode
         static inline Module* attempt = nullptr;
         static inline Module* message = nullptr;
         static inline Module* session = nullptr;
+        static inline Module* cpsM = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -71,6 +73,8 @@ class StatusNode : public CCNode
         float _timeLeft = _updateInterval;
         float _accum;
         int _frames;
+
+        std::vector<float> cps;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds
@@ -103,6 +107,7 @@ class StatusNode : public CCNode
         void reorderPosition();
 
         void update(float dt);
+        void updateCPS(float dt);
 };
 
 class $modify (PlayLayer)

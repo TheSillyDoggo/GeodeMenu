@@ -1,9 +1,12 @@
 # 1.3.8
 
-- Fixed no transition crash on MacOS
+- Fixed crash on MacOS
 - Fixed Gradient Theme appearing white
 - Removed Pulse Scene because of unnecessary lag
 - Fixed Vertical sliders with slider limit bypass
+- Fixed timewarp messing with the fps counter
+- Added Clicks Per Second Counter
+- Added No **"Do Not"** Flip
 
 # 1.3.7
 

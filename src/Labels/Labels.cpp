@@ -33,7 +33,7 @@ bool StatusNode::init()
     bottomRight->setID("bottom-right");
     this->addChild(bottomRight);
 
-    int count = 8;
+    int count = 9;
 
     for (size_t i = 0; i < count; i++)
     {
@@ -226,6 +226,9 @@ void StatusNode::update(float dt)
 
     if (!session)
         session = Client::GetModule("status-session");
+
+    if (!cpsM)
+        cpsM = Client::GetModule("status-cps");
         
     if (!attPL)
         attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
@@ -244,6 +247,7 @@ void StatusNode::update(float dt)
     //sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
     sLabels[6]->setVisible(message->enabled);
     sLabels[7]->setVisible(session->enabled);
+    sLabels[8]->setVisible(cpsM->enabled);
 
 
     sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
@@ -277,8 +281,8 @@ void StatusNode::update(float dt)
         as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead = false;
     }
 
-    _timeLeft -= dt;
-    _accum += 1 / dt;
+    _timeLeft -= dt / CCScheduler::get()->getTimeScale();
+    _accum += 1 / (dt / CCScheduler::get()->getTimeScale());
     _frames++;
 
     if (_timeLeft <= 0) {
@@ -292,7 +296,54 @@ void StatusNode::update(float dt)
         _frames = 0;
     }
 
+    for (size_t i = 0; i < cps.size(); i++)
+    {
+        cps[i] -= dt / CCScheduler::get()->getTimeScale();
+    }
+
+    cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
+
+    sLabels[8]->setString((std::to_string(as<int>(cps.size())) + std::string(" CPS")).c_str());
+
     updateVis();
 }
+
+void StatusNode::updateCPS(float dt)
+{
+    
+}
+
+class $modify (PlayerObject)
+{
+    void pushButton(PlayerButton p0)
+    {
+        PlayerObject::pushButton(p0);
+
+        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
+        {
+            if (auto stn = StatusNode::get())
+            {
+                stn->cps.push_back(1);
+
+                stn->sLabels[8]->stopAllActions();
+                stn->sLabels[8]->setColor(ccc3(0, 255, 0));
+            }
+        }
+    }
+
+    void releaseButton(PlayerButton p0)
+    {
+        PlayerObject::releaseButton(p0);
+
+        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
+        {
+            if (auto stn = StatusNode::get())
+            {
+                stn->sLabels[8]->stopAllActions();
+                stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
+            }
+        }
+    }
+};
 
 #endif
