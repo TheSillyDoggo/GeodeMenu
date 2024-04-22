@@ -4,7 +4,8 @@
 	"gd": {
 		"win": "2.204",
 		"mac": "2.200",
-		"android": "*"
+		"android": "2.205",
+		"ios": "2.205"
 	},
 	"early-load": true,
 	"id": "TheSillyDoggo.Cheats",
