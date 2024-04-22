@@ -49,9 +49,9 @@ foreach(MODULE ${MODULES_LIST})
     endif()
 endforeach()
 
-if("$ENV{USERNAME}" STREQUAL "talgo")
-    add_definitions(-DFREEMOVE)
-endif()
+#if("$ENV{USERNAME}" STREQUAL "talgo")
+    #add_definitions(-DFREEMOVE)
+#endif()
 
 CPMAddPackage("gh:matcool/gd-imgui-cocos#4eb5777") # specify a commit!
 

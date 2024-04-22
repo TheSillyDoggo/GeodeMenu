@@ -319,7 +319,11 @@ class $modify (PlayerObject)
     {
         PlayerObject::pushButton(p0);
 
+        #ifdef GEODE_IS_WINDOWS
         if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
+        #else
+        if (p0 == PlayerButton::Jump && PlayLayer::get())
+        #endif
         {
             if (auto stn = StatusNode::get())
             {
@@ -335,7 +339,11 @@ class $modify (PlayerObject)
     {
         PlayerObject::releaseButton(p0);
 
+        #ifdef GEODE_IS_WINDOWS
         if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
+        #else
+        if (p0 == PlayerButton::Jump && PlayLayer::get())
+        #endif
         {
             if (auto stn = StatusNode::get())
             {
