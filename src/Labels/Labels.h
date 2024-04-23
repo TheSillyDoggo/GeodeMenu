@@ -36,6 +36,11 @@ class StatusNode : public CCNode
             return nullptr;
         }
 
+        ~StatusNode()
+        {
+            instance = nullptr;
+        }
+
         static inline StatusNode* instance = nullptr;
 
         static StatusNode* get() { return instance; }

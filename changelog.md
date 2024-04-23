@@ -1,3 +1,7 @@
+# 1.3.9
+
+- Fixed Crash Playing Levels a second time
+
 # 1.3.8
 
 - Fixed crash on MacOS
