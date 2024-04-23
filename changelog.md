@@ -1,12 +1,12 @@
 # 1.3.8
 
 - Fixed crash on MacOS
-- Fixed Gradient Theme appearing white
 - Removed Pulse Scene because of unnecessary lag
 - Fixed Vertical sliders with slider limit bypass
 - Fixed timewarp messing with the fps counter
 - Added Clicks Per Second Counter
 - Added No **"Do Not"** Flip
+- Mod is now build with a pdb, which basically means crashlogs will show what line in qolmod crashed
 
 # 1.3.7
 

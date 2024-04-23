@@ -32,10 +32,11 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build the mod
-        uses: Prevter/build-geode-mod@main
-        #uses: geode-sdk/build-geode-mod@main
+        #uses: Prevter/build-geode-mod@main
+        uses: geode-sdk/build-geode-mod@main
         with:
           bindings: 'TheSillyDoggo/bindings'
+          build-config: RelWithDebInfo
           export-pdb: true
           combine: true
           target: ${{ matrix.config.target }}
