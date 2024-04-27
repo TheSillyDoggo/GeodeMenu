@@ -327,7 +327,7 @@ public:
 
             cfg->modules.push_back(new SliderModule("Anim Speed:", "anim-speed", 0.5f));
             cfg->modules.push_back(new Module("Additional Border", "npesta-width", "Adds borders to the left and right sides of the mod menu to make the menu look better with some texture packs\nlike the <cg>npesta</c> pack"));
-            
+
             #ifdef GEODE_IS_DESKTOP
             cfg->modules.push_back(new Module("Hide Button", "hide-btn", "Hides the button to open the menu, use the <cl>Tab</c> or <cl>Insert</c> key to open the mod menu", true));
             #endif
@@ -419,6 +419,7 @@ public:
             "no-particles",
             "solid-wave",
             "no-shake",
+            "conditional-retry",
         };
 
         for (auto hack : macInc)

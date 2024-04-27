@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
@@ -20,3 +22,5 @@ class $modify (PlayLayer)
         GameManager::get()->setGameVariable("0026", v);
     }
 };
+
+#endif
