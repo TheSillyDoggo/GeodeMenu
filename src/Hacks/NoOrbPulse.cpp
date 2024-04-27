@@ -19,3 +19,15 @@ class $modify (CCCircleWave)
             CCCircleWave::draw();
     }
 };
+
+/*class $modify (PlayLayer)
+{
+    virtual void updateVisibility(float p0)
+    {
+        *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x178)) = 1.0f;
+
+        log::info("asdf");
+
+        PlayLayer::updateVisibility(p0);
+    }
+};*/

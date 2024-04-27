@@ -180,11 +180,13 @@ bool AndroidUI::init()
 
         btn2->addChild(lbl2);
         
-        auto b = CCMenuItemSprite::create(btn2, btn, windowsMenu, menu_selector(AndroidUI::onPressTab));
+        auto b = CCMenuItemSpriteExtra::create(btn2, btn, windowsMenu, menu_selector(AndroidUI::onPressTab));
         b->setTag(i);
         b->setEnabled(i != selectedTab);
+        b->setSelectedImage(btn);
         b->setUserData(this);
-        b->setContentSize(b->getContentSize() / 2);
+        b->setContentSize(btn->getContentSize() / 2);
+        b->m_scaleMultiplier = 1.0f;
 
         windowsMenu->addChild(b);
 

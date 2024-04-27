@@ -96,6 +96,7 @@ public:
         level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
 
         level->modules.push_back(new Module("Random Seed", "rand-seed", "Sets the seed for random triggers to a value of your choice"));
+        level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
 
 
         Client::instance->windows.push_back(level);
@@ -327,14 +328,15 @@ public:
             cfg->modules.push_back(new SliderModule("Anim Speed:", "anim-speed", 0.5f));
             cfg->modules.push_back(new Module("Additional Border", "npesta-width", "Adds borders to the left and right sides of the mod menu to make the menu look better with some texture packs\nlike the <cg>npesta</c> pack"));
             
-            cfg->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen", true));
-            cfg->modules.push_back(new Module("Save Ball Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
-            cfg->modules.push_back(new Module("Instant Button Fade", "instant-fade", "Makes the mod menu button fade instantly"));
             #ifdef GEODE_IS_DESKTOP
             cfg->modules.push_back(new Module("Hide Button", "hide-btn", "Hides the button to open the menu, use the <cl>Tab</c> or <cl>Insert</c> key to open the mod menu", true));
+            #endif
+            
+            cfg->modules.push_back(new Module("Draggable Button", "allow-dragging", "Allow dragging the ball on screen", true));
+            cfg->modules.push_back(new Module("Save Button Position", "save-pos", "Saves the position of the ball on screen between sessions", true));
+            cfg->modules.push_back(new Module("Instant Button Fade", "instant-fade", "Makes the mod menu button fade instantly"));
             //cfg->modules.push_back(new CompactMode());
             //cfg->modules.push_back(new AltModuleLocation());
-            #endif        
 
             Client::instance->windows.push_back(cfg);
             return;

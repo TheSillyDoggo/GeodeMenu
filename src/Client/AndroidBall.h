@@ -36,7 +36,7 @@ class AndroidBall : public CCLayer
 
         virtual void update(float dt);
 
-        float clampf(float v, float min, float max);
+        static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);
 

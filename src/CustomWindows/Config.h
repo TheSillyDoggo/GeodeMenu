@@ -18,12 +18,16 @@ class Config : public Window
         CCMenu* menu = nullptr;
 
         static inline std::vector<CCScale9Sprite*> btns = {};
-        static inline std::vector<CCMenuItemSprite*> btnsS = {};
+        static inline std::vector<CCMenuItemSpriteExtra*> btnsS = {};
         static inline Slider* normal = nullptr;
         static inline Slider* GP = nullptr;
         static inline Slider* ED = nullptr;
         static inline Slider* scale = nullptr;
         static inline Dropdown* animDropdown = nullptr;
+
+        static inline CCMenu* btnMenu = nullptr;
+        static inline CCSprite* btn = nullptr;
+        static inline CCLabelBMFont* btnL = nullptr;
 
         void changeTheme(CCObject* sender);
 

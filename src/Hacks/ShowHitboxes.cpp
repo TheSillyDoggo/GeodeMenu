@@ -61,7 +61,9 @@ class $modify (PlayLayer)
         if (m_fields->mod2->enabled && m_player1->m_isDead)
             shouldVis = true;
 
-        PlayLayer::updateDebugDraw();
+        if (shouldVis)
+            PlayLayer::updateDebugDraw();
+        
         m_fields->dn->setVisible(shouldVis);
     }
 

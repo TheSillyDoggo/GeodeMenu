@@ -3,8 +3,10 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/GJGroundLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/EffectGameObject.hpp>
+#include <Geode/modify/CCNode.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -42,6 +44,9 @@ std::vector<std::string> objs = {
 
     // Gradient
     "edit_eGradientBtn_001.png",
+
+    // Pulse
+    "edit_ePulseBtn_001.png",
 };
 
 std::vector<std::string> camera = {
@@ -60,6 +65,7 @@ class $modify (PlayLayer)
     CCSprite* background;
     Ref<GJGroundLayer> ground1;
     Ref<GJGroundLayer> ground2;
+    Ref<CCNode> customNode;
 
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
@@ -90,13 +96,30 @@ class $modify (PlayLayer)
             showLayoutCamera = showLayout->options[0];
         }
 
+        if (!m_fields->customNode)
+        {
+            m_fields->customNode = CCNode::create();
+            m_fields->customNode->setID("IMPORTANT"_spr);
+
+            this->m_objectLayer->addChild(m_fields->customNode);
+        }
+            
+
         if (showLayout->enabled)
         {
-            p0->m_isHide = false;
-            //p0->m_customColorType = 2;
+            if (p0->m_isHide && p0->m_objectType != GameObjectType::Modifier && p0->m_objectType != GameObjectType::Special)
+                m_fields->customNode->addChild(p0);
         }
 
         PlayLayer::addObject(p0);
+    }
+
+    void onQuit()
+    {
+        if (m_fields->customNode)
+            m_fields->customNode->setID("");
+
+        PlayLayer::onQuit();
     }
 
     virtual void postUpdate(float dt)
@@ -124,12 +147,6 @@ class $modify (PlayLayer)
         if (m_fields->background && m_fields->ground1 && m_fields->ground2)
         {
             m_fields->background->setColor(ccc3(40, 125, 255));
-
-            m_fields->ground1->updateGround01Color(ccc3(0, 102, 255));
-            m_fields->ground1->updateGround02Color(ccc3(0, 102, 255));
-
-            m_fields->ground2->updateGround01Color(ccc3(0, 102, 255));
-            m_fields->ground2->updateGround02Color(ccc3(0, 102, 255));
         }
     }
 };
@@ -204,6 +221,48 @@ class $modify (GJBaseGameLayer)
 
         if (!PlayLayer::get() || !showLayout->enabled)
             GJBaseGameLayer::updateColor(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+
+        if (p2 == 1010 || p6 == 1010 || p9 == 1010 || p10 == 1010)
+            GJBaseGameLayer::updateColor(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+    }
+};
+
+class $modify (CCNode)
+{
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        auto it = self.m_hooks.begin();
+        std::advance(it, 0);
+
+        hooks.push_back(it->second.get());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                if (hook)
+                {
+                    hook->setAutoEnable(false);
+
+                    if (!modu->enabled)
+                        hook->disable();
+
+                    modu->hooks.push_back(hook);
+                }
+            }
+        });
+    }
+
+    void removeFromParentAndCleanup(bool p0) // shitty workaround but it is what it is
+    {
+        if (!PlayLayer::get() || !this->getParent())
+            return CCNode::removeFromParentAndCleanup(p0);
+
+        if (this->getParent()->getID() != std::string("IMPORTANT"_spr))
+            return CCNode::removeFromParentAndCleanup(p0);
     }
 };
 
@@ -254,6 +313,41 @@ class $modify(EffectGameObject) {
 
 		return true;
 	}
+};
+
+class $modify (GJGroundLayer)
+{
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("GJGroundLayer::updateGround01Color").unwrap());
+        hooks.push_back(self.getHook("GJGroundLayer::updateGround02Color").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("show-layout");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+
+    void updateGround01Color(cocos2d::ccColor3B p0)
+    {
+        GJGroundLayer::updateGround01Color(PlayLayer::get() ? ccc3(0, 102, 255) : p0);
+    }
+
+    void updateGround02Color(cocos2d::ccColor3B p0)
+    {
+        GJGroundLayer::updateGround02Color(PlayLayer::get() ? ccc3(0, 102, 255) : p0);
+    }
 };
 
 class $modify(GameObject) {

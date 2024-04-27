@@ -1,4 +1,5 @@
 #include "Config.h"
+#include "../Client/AndroidBall.h"
 
 void Config::cocosCreate(CCMenu* menu)
 {
@@ -55,8 +56,11 @@ void Config::cocosCreate(CCMenu* menu)
     animDropdown->setZOrder(42069);
     menuTab->addChildAtPosition(animDropdown, Anchor::TopLeft, ccp(5 + animTitle->getScaledContentSize().width + 2, -2 - 25));
 
-
+    #ifdef GEODE_IS_DESKTOP
+    for (size_t i = 1; i < 3; i++)
+    #else
     for (size_t i = 1; i < 2; i++)
+    #endif
     {
         modules[i]->makeAndroid(menuTab, ccp(20, menuTab->getContentHeight() - 45 - (28 * (i - 1))));
     }
@@ -69,13 +73,48 @@ void Config::cocosCreate(CCMenu* menu)
     tabs.push_back(buttonTab);
     menu->addChild(buttonTab);
 
-    for (size_t i = 2; i < modules.size(); i++)
-    {
-        modules[i]->makeAndroid(buttonTab, ccp(20, buttonTab->getContentHeight() - 15 - (28 * (i - 2))));
-    }
+    float posY = 0;
+    posY += 17;
+
+    Client::GetModule("save-pos")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+    posY += 30;
+
+    Client::GetModule("allow-dragging")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+    posY += 10;
+
+    auto lSc = CCLabelBMFont::create("Scale:", "bigFont.fnt");
+    lSc->setPosition(ccp(5, posY + 23));
+    posY += 27;
+    lSc->setAnchorPoint(ccp(0, 1));
+    lSc->setScale(0.5f);
+
+    scale = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
+    scale->setPosition(ccp(lSc->getPositionX() + 85, lSc->getPositionY() - 10));
+    scale->setScaleX(0.8f);
+    scale->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+    scale->setValue((Mod::get()->getSavedValue<float>("button-scale", 1)));
+
+    auto floor = CCSprite::createWithSpriteFrameName("floorLine_001.png");
+    posY += 2;
+    floor->setScaleX(0.45f);
+    floor->setOpacity(100);
+    floor->setPosition(ccp(105, posY));
+
+    auto misc = CCLabelBMFont::create("Misc", "bigFont.fnt");
+    posY += 12;
+    misc->setScale(0.65f);
+    misc->setPosition(ccp(105, posY));
+
+    posY += 25;
+
+    Client::GetModule("instant-fade")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+
+    posY += 13;
+
+    posY += 22 * 3;
 
     auto lNormal = CCLabelBMFont::create("Normal:", "bigFont.fnt");
-    lNormal->setPosition(ccp(5, 115 - 5));
+    lNormal->setPosition(ccp(5, posY));
     lNormal->setAnchorPoint(ccp(0, 1));
     lNormal->setScale(0.5f);
 
@@ -85,8 +124,10 @@ void Config::cocosCreate(CCMenu* menu)
     normal->setScaleX(0.8f);
     normal->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
+    posY -= 22;
+
     auto lGP = CCLabelBMFont::create("Gameplay:", "bigFont.fnt");
-    lGP->setPosition(ccp(5, 115 - 5 - 20));
+    lGP->setPosition(ccp(5, posY));
     lGP->setAnchorPoint(ccp(0, 1));
     lGP->setScale(0.5f);
 
@@ -96,8 +137,10 @@ void Config::cocosCreate(CCMenu* menu)
     GP->setScaleX(0.8f);
     GP->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
+    posY -= 22;
+
     auto lED = CCLabelBMFont::create("Editor:", "bigFont.fnt");
-    lED->setPosition(ccp(5, 115 - 5 - 20 - 20));
+    lED->setPosition(ccp(5, posY));
     lED->setAnchorPoint(ccp(0, 1));
     lED->setScale(0.5f);
 
@@ -107,17 +150,51 @@ void Config::cocosCreate(CCMenu* menu)
     ED->setScaleX(0.8f);
     ED->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
 
-    auto lSc = CCLabelBMFont::create("Scale:", "bigFont.fnt");
-    lSc->setPosition(ccp(5, 115 - 5 - 20 - 20 - 20));
-    lSc->setAnchorPoint(ccp(0, 1));
-    lSc->setScale(0.5f);
 
-    scale = Slider::create(menu, menu_selector(Config::onSliderChanged), 0.5f);
-    scale->setValue((Mod::get()->getSavedValue<float>("button-scale", 1)));
-    scale->setPosition(ccp(lED->getPositionX() + 85, lSc->getPositionY() - 10));
-    scale->setScaleX(0.8f);
-    scale->getThumb()->setScaleX((1.0f / 0.8f) * 0.5f);
+    posY += 22 * 2;
 
+    auto floor2 = CCSprite::createWithSpriteFrameName("floorLine_001.png");
+    posY += 2;
+    floor2->setScaleX(0.45f);
+    floor2->setOpacity(100);
+    floor2->setPosition(ccp(105, posY));
+
+    auto opac = CCLabelBMFont::create("Opacity", "bigFont.fnt");
+    posY += 12;
+    opac->setScale(0.65f);
+    opac->setPosition(ccp(105, posY));
+
+
+    auto previewBG = CCLayerColor::create();
+    previewBG->setOpacity(255);
+    previewBG->setContentSize(ccp(120, 180));
+    previewBG->setAnchorPoint(ccp(1, 0));
+    previewBG->ignoreAnchorPointForPosition(false);
+
+    auto previewTitle = CCLabelBMFont::create("Preview", "bigFont.fnt");
+    previewTitle->setScale(0.5f);
+
+    btnMenu = CCMenu::create();
+    btnMenu->setScale(AndroidBall::clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
+    btnMenu->setContentSize(ccp(0, 0));
+
+    btnL = CCLabelBMFont::create(">_", "bigFont.fnt");
+    btnL->setAnchorPoint(ccp(0.5f, 0.35f));
+
+    btn = CircleButtonSprite::create(btnL, CircleBaseColor::Gray);
+    btnMenu->addChild(btn);
+
+    btn->setOpacity(Mod::get()->getSavedValue<int>("normal-opacity", 255));
+    btnL->setOpacity(Mod::get()->getSavedValue<int>("normal-opacity", 255));
+
+    buttonTab->addChildAtPosition(previewBG, Anchor::BottomRight, ccp(-10, 10));
+    previewBG->addChildAtPosition(previewTitle, Anchor::Top, ccp(0, -11));
+    previewBG->addChildAtPosition(btnMenu, Anchor::Center);
+
+    buttonTab->addChild(floor);
+    buttonTab->addChild(misc);
+    buttonTab->addChild(floor2);
+    buttonTab->addChild(opac);
     buttonTab->addChild(lNormal);
     buttonTab->addChild(normal);
     buttonTab->addChild(lGP);
@@ -174,35 +251,6 @@ void Config::cocosCreate(CCMenu* menu)
     {
         tabs[i]->setVisible(i == selectedTab - 1);
     }
-
-    return;
-
-    menu->addChild(back);
-
-    auto devText = CCLabelBMFont::create("Re-open menu to apply changes", "chatFont.fnt");
-    devText->setColor({0, 0, 0});
-    devText->setOpacity(100);
-    devText->setAnchorPoint(ccp(0.5f, 0));
-    devText->setScale(0.45f);
-    devText->setPosition(ccp((menu->getContentSize().width / 2) + 65, 1));
-    menu->addChild(devText);
-
-    modules[0]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 28 - 20));
-    modules[1]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 20));
-    modules[2]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 20));
-    modules[3]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 20 - 20));
-    #ifdef GEODE_IS_DESKTOP
-    modules[4]->makeAndroid(menu, ccp(132, menu->getContentSize().height - 90 - 30 - 28 - 28 - 28 - 20 - 20));
-    #endif
-
-    menu->addChild(lNormal);
-    menu->addChild(normal);
-    menu->addChild(lGP);
-    menu->addChild(GP);
-    menu->addChild(lED);
-    menu->addChild(ED);
-    menu->addChild(lSc);
-    menu->addChild(scale);
 }
 
 CCMenuItemToggler* Config::createTabButton(std::string name, int index)
@@ -298,15 +346,16 @@ void Config::createBtn(CCNode* menu, int i)
     auto sprSel = CCScale9Sprite::create(ss.str().c_str());
     sprSel->setColor({200, 200, 200});
 
-    auto btn = CCMenuItemSprite::create(spr, sprSel, menu, menu_selector(Config::changeTheme));
-    btn->setTag(i);
-    btn->setContentSize(ccp(100, 35) * 2);
     spr->setContentSize(ccp(100, 35) * 2);
     spr->setPosition(ccp(0, 0));
     sprSel->setContentSize(ccp(100, 35) * 2);
     sprSel->setPosition(ccp(0, 0));
 
+    auto btn = CCMenuItemSpriteExtra::create(spr, sprSel, menu, menu_selector(Config::changeTheme));
+    btn->setSelectedImage(sprSel);
     btn->setTag(i);
+    btn->setContentSize(ccp(100, 35) * 2);
+    btn->m_scaleMultiplier = 1.0f;
 
     btn->setEnabled(i != Mod::get()->getSavedValue<int>("theme", 5));
 
@@ -373,4 +422,14 @@ void Config::onSliderChanged(CCObject* sender)
     Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
 
     Mod::get()->setSavedValue<float>("button-scale", scale->getThumb()->getValue());
+
+    btnMenu->setScale(AndroidBall::clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
+
+    btn->stopAllActions();
+    btnL->stopAllActions();
+    
+    btn->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
+    btnL->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
+
+    //"instant-fade"
 }
