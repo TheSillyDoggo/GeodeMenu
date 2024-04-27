@@ -165,7 +165,7 @@ void Config::cocosCreate(CCMenu* menu)
     opac->setPosition(ccp(105, posY));
 
 
-    auto previewBG = CCLayerColor::create();
+    auto previewBG = CCLayerColor::create(ccc4(0, 0, 0, 255));
     previewBG->setOpacity(255);
     previewBG->setContentSize(ccp(120, 180));
     previewBG->setAnchorPoint(ccp(1, 0));
