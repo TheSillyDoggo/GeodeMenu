@@ -6,10 +6,16 @@ using namespace geode::prelude;
 
 FMOD::ChannelGroup* masterGroup;
 
+
 float speedhackLogic(float dt)
 {
+    #ifndef GEODE_IS_IOS
     if (!masterGroup)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+    #endif
+
+    if (!masterGroup)
+        return dt;
 
     ColourUtility::totalSessionTime += dt;
 
@@ -37,7 +43,9 @@ float speedhackLogic(float dt)
             if (SpeedhackGameplay::instance->enabled)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
+            #ifndef GEODE_IS_IOS //todo: this is dumb
             masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
+            #endif
             ColourUtility::update(dt * v);
             return dt * v;
         }
@@ -61,6 +69,30 @@ class $modify (CCScheduler)
 };
 
 #else
+
+#ifdef GEODE_IS_IOS
+
+//
+
+FMOD_RESULT MenuLayer_onNewgrounds(FMOD::System* self, const char *name, FMOD::ChannelGroup **channelgroup) {
+    auto res = self->createChannelGroup(name, channelgroup);
+
+    if (!masterGroup)
+        masterGroup = *channelgroup;
+
+    return res;
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(geode::base::get() + 0x4c8964), // address
+        &MenuLayer_onNewgrounds, // detour
+        "MenuLayer::onNewgrounds", // display name, shows up on the console
+        tulip::hook::TulipConvention::Thiscall // calling convention
+    );
+}
+
+#endif
 
 void myUpdate(CCScheduler* ins, float dt)
 {
