@@ -1,12 +1,14 @@
 # 1.4.0
 
 - Added Conditional Auto-Retry
+- Added Auto Practice Mode
 - Redesigned the button tab in the config menu, this also resulted in Hide Button being moved to the menu tab
 - Show Layout shows Hidden objects
 - Fixed Show Layout making the ground's white
 - Show Layout now disables pulse triggers
 - Fixed Show Triggers making the triggers disappear once they've been on screen
 - Fixed a bug that makes cataclysm and a few other levels impossible
+- Fixed Incompatibility with better pause and being able to click through some popups
 
 # 1.3.9
 

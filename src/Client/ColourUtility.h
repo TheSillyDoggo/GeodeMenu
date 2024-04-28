@@ -53,7 +53,7 @@ class ColourUtility
 
 		static void update(float dt)
 		{
-			va += dt;	
+			va += dt;
 		}
 
 		static geode::prelude::ccColor3B hsvToRgb(const geode::prelude::ccHSVValue& hsv) {

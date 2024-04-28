@@ -137,14 +137,7 @@ class $modify (PlayLayer)
 
         if (!m_fields->background)
             m_fields->background = getChildOfType<CCSprite>(getChildOfType<CCNode>(this, 0), 0);
-
-        if (!m_fields->ground1)
-            m_fields->ground1 = getChildOfType<GJGroundLayer>(getChildOfType<CCNode>(this, 0), 0);
-
-        if (!m_fields->ground2)
-            m_fields->ground2 = getChildOfType<GJGroundLayer>(getChildOfType<CCNode>(this, 0), 0);
-
-        if (m_fields->background && m_fields->ground1 && m_fields->ground2)
+        if (m_fields->background)
         {
             m_fields->background->setColor(ccc3(40, 125, 255));
         }

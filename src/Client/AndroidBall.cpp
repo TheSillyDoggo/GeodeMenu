@@ -38,7 +38,6 @@ bool AndroidBall::init()
     menu->addChild(btn);
     this->addChild(menu);
     this->setZOrder(69420 - 1);
-    //this->schedule(schedule_selector(AndroidBall::update), 1);
     this->scheduleUpdate();
 
     menu->setPosition(position);
@@ -50,11 +49,8 @@ bool AndroidBall::init()
 
 bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
-    #ifdef GEODE_IS_DESKTOP
-    if (mod->enabled)
+    if (!this->isVisible())
         return false;
-    #endif
-
 
     auto space = btn->convertTouchToNodeSpace(touch);
 
@@ -128,9 +124,17 @@ void AndroidBall::update(float dt)
 
 void AndroidBall::UpdateVisible(bool i)
 {
+    bool vis = true;
+
+    if (Client::GetModuleEnabled("disable-gp") && this->getParent())
+        vis = !(getChildOfType<PlayLayer>(this->getParent(), 0) && !getChildOfType<PauseLayer>(this->getParent(), 0));
+
     #ifdef GEODE_IS_DESKTOP
-    this->setVisible(!mod->enabled);
+    if (vis)
+        vis = !mod->enabled;
     #endif
+
+    this->setVisible(vis);
 
     menu->setScale(clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
 

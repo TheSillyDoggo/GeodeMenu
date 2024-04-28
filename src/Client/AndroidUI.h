@@ -56,4 +56,9 @@ public:
 
         CCDirector::get()->getRunningScene()->addChild(l, 69420);
     }
+
+    ~AndroidUI()
+    {
+        CCTouchDispatcher::get()->unregisterForcePrio(this);
+    }
 };

@@ -167,7 +167,7 @@ void Config::cocosCreate(CCMenu* menu)
 
     auto previewBG = CCLayerColor::create(ccc4(0, 0, 0, 255));
     previewBG->setOpacity(255);
-    previewBG->setContentSize(ccp(120, 180));
+    previewBG->setContentSize(ccp(120, 120));
     previewBG->setAnchorPoint(ccp(1, 0));
     previewBG->ignoreAnchorPointForPosition(false);
 
@@ -178,7 +178,7 @@ void Config::cocosCreate(CCMenu* menu)
     btnMenu->setScale(AndroidBall::clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
     btnMenu->setContentSize(ccp(0, 0));
 
-    btnL = CCLabelBMFont::create(">_", "bigFont.fnt");
+    btnL = CCPastelLabelBMFont::create(">_", "bigFont.fnt");
     btnL->setAnchorPoint(ccp(0.5f, 0.35f));
 
     btn = CircleButtonSprite::create(btnL, CircleBaseColor::Gray);
@@ -191,6 +191,15 @@ void Config::cocosCreate(CCMenu* menu)
     previewBG->addChildAtPosition(previewTitle, Anchor::Top, ccp(0, -11));
     previewBG->addChildAtPosition(btnMenu, Anchor::Center);
 
+    auto disableGP = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Config::onDisableGP), 0.69420f);
+    disableGP->toggle(Mod::get()->getSavedValue<bool>("disable-gp_enabled", true));
+
+    auto disableLabel = CCLabelBMFont::create("Disable ingame:", "bigFont.fnt");
+    disableLabel->setScale(0.4f);
+    disableLabel->setAnchorPoint(ccp(0, 0));
+
+    buttonTab->addChildAtPosition(disableGP, Anchor::BottomRight, ccp(-15, 145));
+    buttonTab->addChildAtPosition(disableLabel, Anchor::BottomRight, ccp(-135, 140));
     buttonTab->addChild(floor);
     buttonTab->addChild(misc);
     buttonTab->addChild(floor2);
@@ -432,4 +441,9 @@ void Config::onSliderChanged(CCObject* sender)
     btnL->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
 
     //"instant-fade"
+}
+
+void Config::onDisableGP(CCObject* sender)
+{
+    Mod::get()->setSavedValue<bool>("disable-gp_enabled", !Mod::get()->getSavedValue<bool>("disable-gp_enabled", true));
 }

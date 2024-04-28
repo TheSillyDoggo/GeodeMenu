@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Client/Client.h"
+#include "../Utils/CCPastelLabelBMFont.hpp"
 
 class Config : public Window
 {
@@ -34,6 +35,8 @@ class Config : public Window
         CCMenuItemToggler* createTabButton(std::string name, int index);
 
         void createBtn(CCNode* menu, int i);
+        
+        void onDisableGP(CCObject* sender);
 
         void onSliderChanged(CCObject* sender);
 

@@ -5,8 +5,9 @@ bool AndroidUI::init()
     if (!CCLayerColor::init())
         return false;
 
+    CCTouchDispatcher::get()->registerForcePrio(this, 2);
+
     this->setTouchEnabled(true);
-    this->setTouchMode(kCCTouchesOneByOne);
     this->setMouseEnabled(true);
     this->setKeypadEnabled(true);
 
@@ -271,8 +272,11 @@ bool AndroidUI::init()
     this->addChild(panel);
     panel->runAction(getEnterAction(panel));
 
-    cocos::handleTouchPriority(this);
     this->scheduleUpdate();
+
+    //handleTouchPriority(this);
+
+    cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
 
     return true;
 }
