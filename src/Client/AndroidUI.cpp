@@ -101,6 +101,9 @@ bool AndroidUI::init()
             gradient->setEndColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
         }
 
+        gradient->setStartOpacity(255);
+        gradient->setEndOpacity(255);
+
         gradient->setPosition(CCDirector::get()->getWinSize() / 2);
         gradient->ignoreAnchorPointForPosition(false);
 

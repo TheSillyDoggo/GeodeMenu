@@ -114,6 +114,8 @@ public:
         Client::GetModule("coin-tracers")->options.push_back(new ColourModule("Line Colour:", "coin-tracers-colour", ccc3(255, 0, 0)));
 
         Client::GetModule("show-layout")->options.push_back(new Module("Keep Camera Triggers", "layout-retain-camera", "Keeps the 2.2 camera triggers in the level", true));
+        Client::GetModule("show-layout")->options.push_back(new ColourModule("BG Colour:", "show-layout-bg", ccc3(40, 125, 255)));
+        Client::GetModule("show-layout")->options.push_back(new ColourModule("Ground Colour:", "show-layout-g", ccc3(0, 102, 255)));
 
 
         auto decimals = new InputModule("Decimal Places:", "accurate-percentage-places", "2");
@@ -245,7 +247,7 @@ public:
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
         cosmetic->modules.push_back(new Module("No Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
 
-        //cosmetic->modules.push_back(new Module("Unlock Buttons", "unlock-buttons", "Visually Unlocks the greyed out buttons in the online page"));
+        cosmetic->modules.push_back(new Module("Unlock Buttons", "unlock-buttons", "Visually Unlocks the greyed out buttons in the online page"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
@@ -434,6 +436,16 @@ public:
                 mod->enabled = false;
             }
         }
+
+        #endif
+
+        #ifdef GEODE_IS_IOS
+
+        SpeedhackMus::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
+        SpeedhackMus::instance->enabled = false;
+
+        SpeedhackTransFix::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
+        SpeedhackTransFix::instance->enabled = false;
 
         #endif
     }

@@ -139,7 +139,7 @@ class $modify (PlayLayer)
             m_fields->background = getChildOfType<CCSprite>(getChildOfType<CCNode>(this, 0), 0);
         if (m_fields->background)
         {
-            m_fields->background->setColor(ccc3(40, 125, 255));
+            m_fields->background->setColor(as<ColourModule*>(showLayout->options[1])->colour);
         }
     }
 };
@@ -334,12 +334,12 @@ class $modify (GJGroundLayer)
 
     void updateGround01Color(cocos2d::ccColor3B p0)
     {
-        GJGroundLayer::updateGround01Color(PlayLayer::get() ? ccc3(0, 102, 255) : p0);
+        GJGroundLayer::updateGround01Color(PlayLayer::get() ? as<ColourModule*>(showLayout->options[2])->colour : p0);
     }
 
     void updateGround02Color(cocos2d::ccColor3B p0)
     {
-        GJGroundLayer::updateGround02Color(PlayLayer::get() ? ccc3(0, 102, 255) : p0);
+        GJGroundLayer::updateGround02Color(PlayLayer::get() ? as<ColourModule*>(showLayout->options[2])->colour : p0);
     }
 };
 
