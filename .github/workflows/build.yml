@@ -35,7 +35,7 @@ jobs:
         #uses: Prevter/build-geode-mod@main
         uses: geode-sdk/build-geode-mod@main
         with:
-          #bindings: 'TheSillyDoggo/bindings'
+          bindings: 'TheSillyDoggo/bindings'
           build-config: RelWithDebInfo
           export-pdb: true
           combine: true
