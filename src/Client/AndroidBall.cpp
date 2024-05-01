@@ -73,7 +73,7 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return;
+        return CCLayer::ccTouchEnded(touch, event);
     #endif
 
     if (doingThing)
@@ -91,12 +91,14 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
             Mod::get()->setSavedValue("posY", position.y);
         }
     }
+
+    CCLayer::ccTouchEnded(touch, event);
 }
 
 void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return;
+        return CCLayer::ccTouchMoved(touch, event);
     #endif
 
     if (doingThing && (btn->numberOfRunningActions() == 0))
@@ -115,6 +117,8 @@ void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
             menu->setPosition(position);
         }
     }
+
+    CCLayer::ccTouchMoved(touch, event);
 }
 
 void AndroidBall::update(float dt)

@@ -1,12 +1,8 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
-
-//definetly not ai generated
 
 using namespace geode::prelude;
 
-class CCContentSizeTo : public cocos2d::CCActionInterval
+class CCContentSizeTo : public CCActionInterval
 {
 public:
     static CCContentSizeTo* create(float duration, const cocos2d::CCSize& size)
@@ -57,5 +53,3 @@ protected:
     cocos2d::CCSize _startSize;
     cocos2d::CCNode* _target;
 };
-
-#endif

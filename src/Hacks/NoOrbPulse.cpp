@@ -3,6 +3,7 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/CCCircleWave.hpp>
 #include "../Client/Client.h"
+#include "../Utils/Utils.hpp"
 
 using namespace geode::prelude;
 
@@ -24,7 +25,10 @@ class $modify (CCCircleWave)
 {
     virtual void updateVisibility(float p0)
     {
-        *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x178)) = 1.0f;
+        log::info("v: {}", MBO(float, FMODAudioEngine::sharedEngine(), 0x178));
+        MBO(float, FMODAudioEngine::sharedEngine(), 0x178) = 1.0f;
+        log::info("v2: {}", MBO(float, FMODAudioEngine::sharedEngine(), 0x178));
+        ///**(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x178)) = 1.0f;
 
         log::info("asdf");
 

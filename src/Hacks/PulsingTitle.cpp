@@ -7,8 +7,8 @@
 #include <Geode/modify/FMODLevelVisualizer.hpp>
 #include "../Client/Client.h"
 
-#define MEMBERBYOFFSET(type, class, offset) *reinterpret_cast<type*>(reinterpret_cast<uintptr_t>(class) + offset)
-#define MBO MEMBERBYOFFSET
+//#define MEMBERBYOFFSET(type, class, offset) *reinterpret_cast<type*>(reinterpret_cast<uintptr_t>(class) + offset)
+//#define MBO MEMBERBYOFFSET
 
 using namespace geode::prelude;
 

@@ -1,8 +1,13 @@
+# 1.4.1
+
+- Fixed
+
 # 1.4.0
 
 - Added Conditional Auto-Retry
 - Added Auto Practice Mode
 - Added Unlock Buttons
+- Added Disable in-game
 - Redesigned the button tab in the config menu, this also resulted in Hide Button being moved to the menu tab
 - Show Layout shows Hidden objects
 - Added an option to customize show layout bg and ground colours
