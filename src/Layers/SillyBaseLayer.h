@@ -2,7 +2,8 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/TextAlertPopup.hpp>
-#include "../Client/Module.h"
+#include "../Client/Client.h"
+#include "../Utils/CCBlurLayer.hpp"
 
 using namespace geode::prelude;
 

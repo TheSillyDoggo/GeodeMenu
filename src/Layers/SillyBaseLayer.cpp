@@ -9,6 +9,13 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
 
+    if (Client::GetModuleEnabled("menu-bg-blur"))
+    {
+        auto blur = CCBlurLayer::create();
+        blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
+        this->addChild(blur);
+    }
+
     this->size = size;
     int priority = -504;
 

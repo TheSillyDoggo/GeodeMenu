@@ -46,6 +46,8 @@ bool CCBlurLayer::init()
     if (!CCLayerColor::init())
         return false;
 
+    this->addChild(CCSprite::create());
+
     return true;
 }
 
@@ -356,6 +358,10 @@ void cleanupPostProcess() {
     ppShaderRadius = 0;
 }
 
+#ifdef GEODE_IS_WINDOWS
+
+#include <Geode/modify/CCEGLViewProtocol.hpp>
+
 class $modify(CCEGLViewProtocol) {
     void setFrameSize(float width, float height) {
         CCEGLViewProtocol::setFrameSize(width, height);
@@ -365,6 +371,8 @@ class $modify(CCEGLViewProtocol) {
         setupPostProcess();
     }
 };
+
+#endif
 
 class $modify(GameManager) {
     void reloadAllStep5() {
