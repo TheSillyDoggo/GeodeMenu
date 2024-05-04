@@ -13,6 +13,8 @@ class SillyBaseLayer : public CCLayerColor
         CCMenuItemSpriteExtra* ok = nullptr;
         CCPoint size = CCPointZero;
 
+        ~SillyBaseLayer();
+
         void onClose(CCObject*)
         {
             this->removeFromParent();

@@ -5,6 +5,10 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
     if (!CCLayerColor::init())
         return false;
 
+    CCTouchDispatcher::get()->registerForcePrio(this, 2);
+
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
+
     this->size = size;
     int priority = -504;
 
@@ -22,7 +26,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     std::stringstream ss;
     ss << "GJ_square0";
-    ss << (theme == -1 ? 6 : theme);
+    ss << (theme < 0 ? 6 : theme);
     ss << ".png";
 
     auto panel = CCScale9Sprite::create(ss.str().c_str());
@@ -57,7 +61,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
         gradient->ignoreAnchorPointForPosition(false);
 
         if (grad->getSettingValue<bool>("reverse-order"))
-        gradient->setScaleY(-1);
+            gradient->setScaleY(-1);
 
         auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
         darken->setID("darken"_spr);
@@ -80,6 +84,17 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
         gradient->setPosition(ccp(0, 0));
 
         gradient->setVisible(theme == -1);
+    }
+
+    if (theme == -2)
+    {
+        panel->setColor(ccc3(0, 0, 0));
+        panel->setOpacity(175);
+
+        auto out = CCScale9Sprite::create("GJ_square07.png");
+        out->setContentSize(panel->getContentSize());
+        out->setAnchorPoint(ccp(0, 0));
+        panel->addChild(out);
     }
 
     auto title = CCLabelBMFont::create(_title.c_str(), "bigFont.fnt");
@@ -106,8 +121,12 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     this->customSetup();
 
-    CCTouchDispatcher::get()->addTargetedDelegate(this, priority, true);
     handleTouchPriority(this); // sets the priority after setting up the custom layer, this will come back to fuck me in the ass
 
     return true;
+}
+
+SillyBaseLayer::~SillyBaseLayer()
+{
+    CCTouchDispatcher::get()->unregisterForcePrio(this);
 }

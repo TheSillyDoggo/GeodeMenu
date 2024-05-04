@@ -35,7 +35,7 @@ class $modify (CCKeyboardDispatcher)
                     #ifdef GEODE_IS_WINDOWS
                     CCDirector::get()->getOpenGLView()->showCursor(true);
                     #endif
-                    
+
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
                         ui->close(nullptr);

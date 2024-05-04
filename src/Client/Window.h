@@ -1193,8 +1193,6 @@ class $modify (GJBaseGameLayer)
 {
     virtual void update(float p0)
     {
-        GJBaseGameLayer::update(p0);
-
         if (m_player1)
         {
             m_player1->setColor(EffectUI::getColourForSelected(0));
@@ -1220,7 +1218,14 @@ class $modify (GJBaseGameLayer)
                 m_player2->updateGlowColor();
             }
         }
+
+        GJBaseGameLayer::update(p0);
     }
+
+    static void onModify(auto& self) {
+        self.setHookPriority("GJBaseGameLayer::update", 69420);
+    }
+
 };
 
 class IconEffects : public Window

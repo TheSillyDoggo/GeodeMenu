@@ -7,7 +7,6 @@ uniform vec2 screenSize;
 uniform bool fast;
 uniform bool first;
 uniform float radius;
-uniform float effect;
 
 void main() {
     float scaledRadius = radius * screenSize.y * 0.5;
@@ -59,5 +58,5 @@ void main() {
         result /= weightSum;
     }
 
-    gl_FragColor = vec4(result, 1.0) * (vec4(1, 1, 1, 1) - (vec4(effect / 255, effect / 255, effect / 255, 0) * 0.2));
+    gl_FragColor = vec4(result, 1.0);
 }

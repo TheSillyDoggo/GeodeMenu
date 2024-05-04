@@ -18,10 +18,16 @@ class $modify (CCMotionStreak)
             off = Client::GetModule("trail-off");
 
         if (on->enabled)
+        {
             m_bStroke = true;
+            this->setOpacity(255);
+        }
 
         if (off->enabled)
+        {
             m_bStroke = false;
+            this->setOpacity(0);
+        }
 
         CCMotionStreak::update(delta);
     }

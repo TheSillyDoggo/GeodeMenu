@@ -1,8 +1,141 @@
-/*//#ifdef GEODE_IS_DESKTOP
+#include "CCBlurLayer.hpp"
 
-#include "Blur.hpp"
 
-// COMPLETELY stolen from cgytrus/SimplePatchLoader (with permission)
+struct Shader {
+    GLuint vertex = 0;
+    GLuint fragment = 0;
+    GLuint program = 0;
+
+    Result<std::string> compile(const ghc::filesystem::path& vertexPath, const ghc::filesystem::path& fragmentPath);
+    Result<std::string> link();
+    void cleanup();
+};
+
+struct RenderTexture {
+    GLuint fbo = 0;
+    GLuint tex = 0;
+    GLuint rbo = 0;
+
+    void setup(GLsizei width, GLsizei height);
+    void cleanup();
+};
+
+namespace Blur
+{
+    RenderTexture ppRt0;
+    RenderTexture ppRt1;
+    GLuint ppVao = 0;
+    GLuint ppVbo = 0;
+    Shader ppShader;
+    GLint ppShaderFast = 0;
+    GLint ppShaderFirst = 0;
+    GLint ppShaderRadius = 0;
+
+    float blurTimer = 0.f;
+};
+
+using namespace Blur;
+
+CCBlurLayer::~CCBlurLayer()
+{
+
+}
+
+bool CCBlurLayer::init()
+{
+    if (!CCLayerColor::init())
+        return false;
+
+    return true;
+}
+
+CCBlurLayer* CCBlurLayer::create()
+{
+    auto pRet = new CCBlurLayer();
+
+    if (pRet && pRet->init())
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
+void CCBlurLayer::visit()
+{
+    if (this->getOpacity())
+    {
+        float v = this->getOpacity() / 255.0f;
+
+        blurStrength = v;
+    }
+    else
+    {
+        blurStrength = 0;
+    }
+
+    CCLayerColor::visit();
+}
+
+void CCBlurLayer::draw()
+{
+    if (blurStrength == 0)
+        return CCLayerColor::draw();
+
+    GLint drawFbo = 0;
+    GLint readFbo = 0;
+    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
+    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, ppRt0.fbo);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+
+
+    CCLayerColor::draw();
+
+    getParent()->setVisible(false);
+    
+    CCNode* parent = CCScene::get();
+    if (parent && !visiting) {
+        visiting = true;
+
+        kmGLPushMatrix();
+
+        parent->transform();
+        parent->visit();
+
+        kmGLPopMatrix();
+
+        visiting = false;
+    }
+
+    getParent()->setVisible(true);
+
+
+    glBindVertexArray(ppVao);
+    ccGLUseProgram(ppShader.program);
+    glUniform1i(ppShaderFast, true);
+    glUniform1f(ppShaderRadius, blurStrength);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, ppRt1.fbo);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    glUniform1i(Blur::ppShaderFirst, GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, ppRt0.tex);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, readFbo);
+
+    glUniform1i(ppShaderFirst, GL_FALSE);
+    glBindTexture(GL_TEXTURE_2D, ppRt1.tex);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindVertexArray(0);
+}
 
 Result<std::string> Shader::compile(const ghc::filesystem::path& vertexPath, const ghc::filesystem::path& fragmentPath) {
     auto vertexSource = file::readString(vertexPath);
@@ -151,7 +284,7 @@ void RenderTexture::cleanup() {
 }
 
 void setupPostProcess() {
-    auto size = CCDirector::get()->getOpenGLView()->getFrameSize();// * 2.f;
+    auto size = CCDirector::get()->getOpenGLView()->getFrameSize();
 
     ppRt0.setup((GLsizei)size.width, (GLsizei)size.height);
     ppRt1.setup((GLsizei)size.width, (GLsizei)size.height);
@@ -178,8 +311,8 @@ void setupPostProcess() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    auto vertexPath = (std::string)CCFileUtils::get()->fullPathForFilename((Mod::get()->getResourcesDir() / "pp-vert.glsl").string().c_str(), false);
-    auto fragmentPath = (std::string)CCFileUtils::get()->fullPathForFilename((Mod::get()->getResourcesDir() / "pp-frag.glsl").string().c_str(), false);
+    auto vertexPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-vert.glsl"_spr, false);
+    auto fragmentPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-frag.glsl"_spr, false);
 
     auto res = ppShader.compile(vertexPath, fragmentPath);
     if (!res) {
@@ -204,7 +337,6 @@ void setupPostProcess() {
     ppShaderFast = glGetUniformLocation(ppShader.program, "fast");
     ppShaderFirst = glGetUniformLocation(ppShader.program, "first");
     ppShaderRadius = glGetUniformLocation(ppShader.program, "radius");
-    ppShaderEffect = glGetUniformLocation(ppShader.program, "effect");
 }
 
 void cleanupPostProcess() {
@@ -222,72 +354,7 @@ void cleanupPostProcess() {
     ppShaderFast = 0;
     ppShaderFirst = 0;
     ppShaderRadius = 0;
-    ppShaderEffect = 0;
 }
-
-// hook time yippee
-
-#include <Geode/modify/CCEGLViewProtocol.hpp>
-#include <Geode/modify/GameManager.hpp>
-#include <Geode/modify/CCScheduler.hpp>
-#include <Geode/modify/CCNode.hpp>
-#include <imgui-cocos.hpp>
-
-class $modify(CCNode) {
-    void visit() {
-        if (this->getID() == std::string("android-ui"))
-            blurTimer = as<float>(as<CCLayerColor*>((CCNode*)(this))->getOpacity()) / 100.0f;
-        
-        float blur = 0.05 * (1.f - std::cos((float)std::numbers::pi * blurTimer)) * 0.5f;
-        if (blur == 0.f || this->getID() != std::string("android-ui") /*|| (CCNode*)this != CCDirector::get()->getRunningScene()*//* || ppShader.program == 0) {
-            CCNode::visit();
-            return;
-        }
-
-        GLint drawFbo = 0;
-        GLint readFbo = 0;
-        glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
-        glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, ppRt0.fbo);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        CCNode::visit();
-
-        glBindVertexArray(ppVao);
-        ccGLUseProgram(ppShader.program);
-        glUniform1i(ppShaderFast, true);
-        glUniform1f(ppShaderRadius, blur);
-        glUniform1f(ppShaderEffect, round(blurTimer * 255));
-
-        glBindFramebuffer(GL_FRAMEBUFFER, ppRt1.fbo);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        glUniform1i(ppShaderFirst, GL_TRUE);
-        glBindTexture(GL_TEXTURE_2D, ppRt0.tex);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, readFbo);
-
-        glUniform1i(ppShaderFirst, GL_FALSE);
-        glBindTexture(GL_TEXTURE_2D, ppRt1.tex);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        glBindVertexArray(0);
-
-        if (recomp)
-        {
-            if (recomp->enabled)
-            {
-                recomp->enabled = false;
-                
-                cleanupPostProcess();
-                setupPostProcess();
-            }
-        }
-    }
-};
 
 class $modify(CCEGLViewProtocol) {
     void setFrameSize(float width, float height) {
@@ -316,13 +383,3 @@ $on_mod(Loaded) {
 $on_mod(Unloaded) {
     cleanupPostProcess();
 }
-
-class $modify(CCScheduler) {
-    void update(float dt) {
-        CCScheduler::update(dt);
-        
-        blurTimer = Client::instance->animStatus;
-    }
-};
-
-//#endif*/

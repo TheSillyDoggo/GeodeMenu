@@ -1,6 +1,7 @@
 # 1.4.1
 
-- Fixed
+- Added new 'Darken' and 'Custom Image' themes
+- Added no wave trail remove
 
 # 1.4.0
 

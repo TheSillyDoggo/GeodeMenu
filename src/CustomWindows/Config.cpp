@@ -57,9 +57,9 @@ void Config::cocosCreate(CCMenu* menu)
     menuTab->addChildAtPosition(animDropdown, Anchor::TopLeft, ccp(5 + animTitle->getScaledContentSize().width + 2, -2 - 25));
 
     #ifdef GEODE_IS_DESKTOP
-    for (size_t i = 1; i < 3; i++)
+    for (size_t i = 1; i < 4; i++)
     #else
-    for (size_t i = 1; i < 2; i++)
+    for (size_t i = 1; i < 3; i++)
     #endif
     {
         modules[i]->makeAndroid(menuTab, ccp(20, menuTab->getContentHeight() - 45 - (28 * (i - 1))));
@@ -233,6 +233,10 @@ void Config::cocosCreate(CCMenu* menu)
     createBtn(m, 4);
     createBtn(m, 5);
     createBtn(m, -1);
+    createBtn(m, -2);
+    createBtn(m, -3);
+
+    m->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), menu, menu_selector(Config::onChangeFile)));
 
     m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10));
     m->updateLayout();
@@ -346,7 +350,7 @@ void Config::createBtn(CCNode* menu, int i)
 {
     std::stringstream ss;
     ss << "GJ_square0";
-    ss << (i == -1 ? 6 : i);
+    ss << (i < 0 ? 6 : i);
     ss << ".png";
 
     auto spr = CCScale9Sprite::create(ss.str().c_str());
@@ -377,6 +381,26 @@ void Config::createBtn(CCNode* menu, int i)
     if (i == -1)
     {
         auto gr = CCLabelBMFont::create("Gradient", "bigFont.fnt");
+        gr->setOpacity(100);
+        gr->setPosition(spr->getContentSize() / 2);
+
+        spr->addChild(gr);
+        sprSel->addChild(gr);
+    }
+    
+    if (i == -2)
+    {
+        auto gr = CCLabelBMFont::create("Darken", "bigFont.fnt");
+        gr->setOpacity(100);
+        gr->setPosition(spr->getContentSize() / 2);
+
+        spr->addChild(gr);
+        sprSel->addChild(gr);
+    }
+
+    if (i == -3)
+    {
+        auto gr = CCLabelBMFont::create("Custom Image", "bigFont.fnt");
         gr->setOpacity(100);
         gr->setPosition(spr->getContentSize() / 2);
 
@@ -446,4 +470,29 @@ void Config::onSliderChanged(CCObject* sender)
 void Config::onDisableGP(CCObject* sender)
 {
     Mod::get()->setSavedValue<bool>("disable-gp_enabled", !Mod::get()->getSavedValue<bool>("disable-gp_enabled", true));
+}
+
+void Config::onChangeFile(CCObject*)
+{
+    file::FilePickOptions options = {
+        std::nullopt,
+        {}
+    };
+
+    auto callback = [this](ghc::filesystem::path result) {
+        auto path = ghc::filesystem::path(result.c_str());
+        #ifdef GEODE_IS_WINDOWS
+        auto strPath = geode::utils::string::wideToUtf8(result.c_str());
+        #else
+        std::string strPath = result.c_str();
+        #endif
+        log::info("image path: {}", strPath);
+
+        Mod::get()->setSavedValue<std::string>("image-theme-path", strPath);
+    };
+    auto failedCallback = []() {
+        FLAlertLayer::create("Error", "Failed to open file", "Ok")->show();
+    };
+
+    file::pickFile(file::PickMode::OpenFile, options, callback, failedCallback);
 }

@@ -47,4 +47,6 @@ class Config : public Window
         void onChangeTab(CCObject*);
 
         void cocosCreate(CCMenu* menu);
+
+        void onChangeFile(CCObject*);
 };

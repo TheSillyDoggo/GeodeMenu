@@ -1,4 +1,5 @@
 #include "AndroidUI.h"
+#include "../Utils/CCBlurLayer.hpp"
 
 bool AndroidUI::init()
 {
@@ -12,6 +13,13 @@ bool AndroidUI::init()
     this->setKeypadEnabled(true);
 
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
+
+    if (Client::GetModuleEnabled("menu-bg-blur"))
+    {
+        auto blur = CCBlurLayer::create();
+        blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
+        this->addChild(blur);
+    }
 
     this->runAction(CCFadeTo::create(0.5f, 100));
     this->setID("android-ui");
@@ -72,7 +80,7 @@ bool AndroidUI::init()
 
     std::stringstream ss;
     ss << "GJ_square0";
-    ss << (theme == -1 ? 6 : theme);
+    ss << (theme < 0 ? 6 : theme);
     ss << ".png";
 
     panel = CCScale9Sprite::create(ss.str().c_str());
@@ -270,6 +278,30 @@ bool AndroidUI::init()
         panel->setPositionX(panel->getPositionX() + 5);
         panel->setContentSize(panel->getContentSize() + ccp(10, 0));
         as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
+    }
+
+    if (theme == -2)
+    {
+        panel->setColor(ccc3(0, 0, 0));
+        panel->setOpacity(175);
+
+        auto out = CCScale9Sprite::create("GJ_square07.png");
+        out->setContentSize(panel->getContentSize());
+        out->setAnchorPoint(ccp(0, 0));
+        panel->addChild(out);
+    }
+
+    if (theme == -3)
+    {
+        if (auto spr = CCSprite::create(Mod::get()->getSavedValue<std::string>("image-theme-path").c_str()))
+        {
+            spr->setScaleX(panel->getContentWidth() / spr->getContentWidth());
+            spr->setScaleY(panel->getContentHeight() / spr->getContentHeight());
+            spr->setPosition(panel->getContentSize() / 2);
+            spr->setZOrder(-2);
+
+            panel->addChild(spr);
+        }
     }
 
     this->addChild(panel);
@@ -523,4 +555,10 @@ void AndroidUI::onPressTab(CCObject* sender)
     
     log::info("Changed tab to {}", selectedTab);
     goToPage(selectedTab);
+}
+
+AndroidUI::~AndroidUI()
+{
+    CCTouchDispatcher::get()->unregisterForcePrio(this);
+    CCTouchDispatcher::get()->removeDelegate(this);
 }
