@@ -265,7 +265,7 @@ void RenderTexture::setup(GLsizei width, GLsizei height) {
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(0x8D40, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    glFramebufferRenderbuffer(0x8D40, 0x821A, GL_RENDERBUFFER, rbo);
 
     if(glCheckFramebufferStatus(0x8D40) != GL_FRAMEBUFFER_COMPLETE)
         log::error("pp fbo not complete, uh oh! i guess i will have to cut off ur pp now");
