@@ -25,7 +25,7 @@ class ModuleOptionsLayer : public SillyBaseLayer
             
             pRet->mod = module;
 
-            if (pRet && pRet->initWithSizeAndName(ccp(350, 250), module->name)) {
+            if (pRet && pRet->initWithSizeAndName(ccp(350, std::ceil((std::max<int  >(module->options.size(), 3) - 1) / 2) * 35 + 110), module->name)) {
                 pRet->autorelease();
                 return pRet;
             } else {

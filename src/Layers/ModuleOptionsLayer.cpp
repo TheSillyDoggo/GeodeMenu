@@ -11,10 +11,13 @@ void ModuleOptionsLayer::customSetup()
     {
         CCPoint pos = ccp(this->size.x / 2 + (size.x * (x == 0 ? -1 : 0)), this->size.y - 50 - (size.y * y)) + ccp(15 + 7.5f, 0);
 
-        if (mod->options[i]->description.size() != 0)
-            pos.x -= 5;
+        if (mod->options[i])
+        {
+            if (mod->options[i]->description.size() != 0)
+                pos.x -= 5;
 
-        mod->options[i]->makeAndroid(baseLayer, pos);
+            mod->options[i]->makeAndroid(baseLayer, pos);
+        }
 
         x++;
         if (x == 2)

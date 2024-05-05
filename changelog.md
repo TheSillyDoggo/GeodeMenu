@@ -1,7 +1,11 @@
 # 1.4.1
 
-- Added new 'Darken' and 'Custom Image' themes
-- Added no wave trail remove
+- Added new 'Darken' theme
+- Added Blur Mod Menu BG (May cause lag on devices with weak gpus)
+- Added No Wave Trail Remove
+- Removed the [?] button from the universal tab
+- Moved Transition Customizer to its own module
+- Misc UI Related Bug Fixes / Changes
 
 # 1.4.0
 

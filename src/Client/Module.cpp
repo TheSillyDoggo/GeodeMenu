@@ -148,3 +148,9 @@ void DropdownModule::onDropdownSelectionChanged(CCObject* sender)
     if (mod->delegate)
         mod->delegate->onModuleChanged(mod->enabled);
 }
+
+void TransCustomizerModule::makeAndroid(CCNode* menu, CCPoint pos)
+{
+    label = CCLabelBMFont::create(transNames[Mod::get()->getSavedValue<int>("transition", 0)].c_str(), "bigFont.fnt");
+    menu->addChildAtPosition(label, Anchor::Top, ccp(0, 0));
+}

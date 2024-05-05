@@ -241,7 +241,7 @@ public:
 
         float gap = 28;
         float extraGap = 9.69f;
-        float height = gap * roundUpToMultipleOf2(modules.size() / 2);
+        float height = gap * roundUpToMultipleOf2((modules.size() - 1) / 2);
         height += gap;
 
         height = std::max<float>(menu->getContentHeight(), height + extraGap);
@@ -828,23 +828,6 @@ class Universal : public Window
 
             CCMenuItemSpriteExtra* btn = nullptr;
 
-            #ifndef GEODE_IS_MACOS
-
-            auto btnS = ButtonSprite::create("Transition\nCustomizer", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
-            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Universal::onTransCustomizer));
-            btn->setSizeMult(1.15f);
-            btn->setPosition(pos);
-            menu->addChild(btn);
-
-
-            pos = ccp(menu->getContentSize().width, 0) + ccp(-28 - 18 - 2.5f, 22);
-            pos += ccp(-110, 0);
-
-            #endif
-
             auto btnUnc = ButtonSprite::create("Uncomplete\nLevel", 70, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
             
             as<CCNode*>(btnUnc->getChildren()->objectAtIndex(0))->setScale(0.375f);
@@ -855,17 +838,6 @@ class Universal : public Window
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);
-
-            pos = pos + ccp(-30 - 27 - 2.5f, -5);
-
-            auto btnS2 = ButtonSprite::create("?", 10, false, "bigFont.fnt", "GJ_button_05.png", 25, 0.75f);
-            as<CCNode*>(btnS2->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS2->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn2 = CCMenuItemSpriteExtra::create(btnS2, menu, menu_selector(Level::onFix));
-            btn2->setSizeMult(1.15f);
-            btn2->setPosition(pos);
-            menu->addChild(btn2);
         }
 };
 

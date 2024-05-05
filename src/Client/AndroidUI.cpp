@@ -200,9 +200,16 @@ bool AndroidUI::init()
         b->setContentSize(btn->getContentSize() / 2);
         b->m_scaleMultiplier = 1.0f;
 
+        auto outline = CCScale9Sprite::create("GJ_square07.png");
+        outline->setContentSize(btn2->getContentSize());
+        outline->setPosition(outline->getContentSize() / 2);
+        outline->setVisible(selectedTab == i);
+        btn2->addChild(outline);
+
         windowsMenu->addChild(b);
 
         labels.push_back(lbl2);
+        outlines.push_back(outline);
         buttons.push_back(b);
     }
 
@@ -398,7 +405,7 @@ void AndroidUI::textChanged(CCTextInputNode* p0)
 
     float gap = 28;
     float extraGap = 9.69f;
-    float height = gap * roundUpToMultipleOf2(modules.size() / 2);
+    float height = gap * roundUpToMultipleOf2((modules.size() - 1) / 2);
     height = std::max<float>(scroll->getContentHeight(), height + extraGap);
 
     btnMenu->removeAllChildrenWithCleanup(true);
@@ -541,11 +548,13 @@ void AndroidUI::onPressTab(CCObject* sender)
 
         if (selectedTab == i)
         {
+            outlines[i]->setVisible(true);
             labels[i]->setColor({255, 255, 255});
             labels[i]->setOpacity(255);
         }
         else
         {
+            outlines[i]->setVisible(false);
             labels[i]->setColor({150, 150, 150});
             labels[i]->setOpacity(150);
         }

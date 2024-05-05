@@ -99,6 +99,7 @@ public:
         level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
 
         level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
+        //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
         Client::instance->windows.push_back(level);
@@ -170,12 +171,15 @@ public:
         bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
 
         bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        bypass->modules.push_back(new Module("Transition Customiser", "custom-trans", "Adjust your scene transition"));
         
         Client::instance->windows.push_back(bypass);
 
         auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
         tps->maxSize = 11;
         Client::GetModule("tps-bypass")->options.push_back(tps);
+
+        Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
     }
 
     static void SetupCreator()

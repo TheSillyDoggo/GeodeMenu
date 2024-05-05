@@ -70,7 +70,7 @@ CCScene* getSceneForSel(int i, float f, CCScene* s)
     
     //#endif
 
-    return nullptr;
+    return CCTransitionFade::create(f, s);
 }
 
 class $modify (cocos2d::CCTransitionFade)
@@ -116,7 +116,7 @@ class $modify (cocos2d::CCTransitionFade)
             }
         }
 
-        return as<CCTransitionFade*>(getSceneForSel(Mod::get()->getSavedValue<int>("transition", 0), duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
+        return as<CCTransitionFade*>(getSceneForSel(Client::GetModuleEnabled("custom-trans") ? Mod::get()->getSavedValue<int>("transition", 0) : 0, duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };
 

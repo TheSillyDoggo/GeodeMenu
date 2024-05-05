@@ -8,6 +8,7 @@ using namespace geode::prelude;
 class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
 public:
     static inline std::vector<CCLabelBMFont*> labels = {};
+    static inline std::vector<CCScale9Sprite*> outlines = {};
     static inline std::vector<CCMenuItemSpriteExtra*> buttons = {};
     static inline std::vector<CCMenu*> pages = {};
     CCScale9Sprite* panel = nullptr;

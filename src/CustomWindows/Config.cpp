@@ -234,9 +234,9 @@ void Config::cocosCreate(CCMenu* menu)
     createBtn(m, 5);
     createBtn(m, -1);
     createBtn(m, -2);
-    createBtn(m, -3);
+    //createBtn(m, -3);
 
-    m->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), menu, menu_selector(Config::onChangeFile)));
+    //m->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), menu, menu_selector(Config::onChangeFile)));
 
     m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10));
     m->updateLayout();
