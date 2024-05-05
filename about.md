@@ -2,7 +2,7 @@ QOLMod is **THE** mod menu for android, it has a Mobile Optimised <cl>UI</c> wit
 
 # How to use.
 On Windows / Mac:
-- Press **Tab** or **Insert** on your keyboard
+- Press **Tab**, **F12**, or **Insert** on your keyboard
 
 On Android:
 - Press the button on your screen to open the mod menu.
