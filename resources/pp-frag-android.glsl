@@ -19,46 +19,36 @@ void main() {
     vec3 result = texture(screen, TexCoords).rgb;
     if (fast) {
         scaledRadius *= radius * 10.0 / ((radius * 10.0 + 1.0) * (radius * 10.0 + 1.0) - 1.0);
-        float weight = 1.0;
-        float weightSum = weight;
-        if (first) {
-            for (int i = 1; float(i) < scaledRadius; i++) {
-                weight -= 1.0 / scaledRadius;
-                weightSum += weight * 2.0;
-                result += texture(screen, TexCoords + vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-                result += texture(screen, TexCoords - vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-            }
+        float weightSum = 1.0;
+        float weightDelta = 1.0 / scaledRadius;
+        vec3 sampleOffset = vec3(texOffset, 0.0);
+
+        if (!first) {
+            sampleOffset.xy *= -1.0;
         }
-        else {
-            for (int i = 1; float(i) < scaledRadius; i++) {
-                weight -= 1.0 / scaledRadius;
-                weightSum += weight * 2.0;
-                result += texture(screen, TexCoords + vec2(0.0, texOffset.y * float(i))).rgb * weight;
-                result += texture(screen, TexCoords - vec2(0.0, texOffset.y * float(i))).rgb * weight;
-            }
+
+        for (int i = 1; float(i) < scaledRadius; i++) {
+            vec2 offset = texOffset * float(i);
+            vec3 sampleColor = texture(screen, TexCoords + offset).rgb + texture(screen, TexCoords - offset).rgb;
+            result += sampleColor * (1.0 - weightSum);
+            weightSum += weightDelta;
         }
+
         result /= weightSum;
     }
     else {
         float firstWeight = 0.84089642 / pow(scaledRadius, 0.96);
         result *= firstWeight;
         float weightSum = firstWeight;
-        if (first) {
-            for (int i = 1; float(i) <= ceil(scaledRadius); i++) {
-                float weight = firstWeight * exp(-float(i) * float(i) / (2.0 * scaledRadius));
-                weightSum += weight * 2.0;
-                result += texture(screen, TexCoords + vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-                result += texture(screen, TexCoords - vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-            }
+
+        for (int i = 1; float(i) <= ceil(scaledRadius); i++) {
+            float weight = firstWeight * exp(-float(i) * float(i) / (2.0 * scaledRadius));
+            weightSum += weight * 2.0;
+            vec2 offset = texOffset * float(i);
+            vec3 sampleColor = texture(screen, TexCoords + offset).rgb + texture(screen, TexCoords - offset).rgb;
+            result += sampleColor * weight;
         }
-        else {
-            for (int i = 1; float(i) <= ceil(scaledRadius); i++) {
-                float weight = firstWeight * exp(-float(i) * float(i) / (2.0 * scaledRadius));
-                weightSum += weight * 2.0;
-                result += texture(screen, TexCoords + vec2(0.0, texOffset.y * float(i))).rgb * weight;
-                result += texture(screen, TexCoords - vec2(0.0, texOffset.y * float(i))).rgb * weight;
-            }
-        }
+
         result /= weightSum;
     }
 
