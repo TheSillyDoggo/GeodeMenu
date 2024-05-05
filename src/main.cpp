@@ -29,7 +29,7 @@ class $modify (CCKeyboardDispatcher)
 
         if (!getChildOfType<LoadingLayer>(CCScene::get(), 0))
         { 
-            if (down && (key == KEY_Tab || key == KEY_Insert) && !idk) {
+            if (down && (key == KEY_Tab || key == KEY_Insert || key == KEY_F12) && !idk) {
                 if (android)
                 {
                     #ifdef GEODE_IS_WINDOWS
