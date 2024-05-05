@@ -314,7 +314,11 @@ void setupPostProcess() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     auto vertexPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-vert.glsl"_spr, false);
+    #ifdef GEODE_IS_ANDROID
+    auto fragmentPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-frag-android.glsl"_spr, false);
+    #else
     auto fragmentPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-frag.glsl"_spr, false);
+    #endif
 
     auto res = ppShader.compile(vertexPath, fragmentPath);
     if (!res) {
