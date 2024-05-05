@@ -1,4 +1,4 @@
-#version 120
+#version 320 es
 
 attribute vec2 aPosition;
 attribute vec2 aTexCoords;

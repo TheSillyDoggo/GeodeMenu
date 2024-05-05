@@ -88,10 +88,10 @@ void CCBlurLayer::draw()
 
     GLint drawFbo = 0;
     GLint readFbo = 0;
-    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
-    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
+    glGetIntegerv(0x8CA6, &drawFbo);
+    glGetIntegerv(0x8CAA, &readFbo);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, ppRt0.fbo);
+    glBindFramebuffer(0x8D40, ppRt0.fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
@@ -122,15 +122,15 @@ void CCBlurLayer::draw()
     glUniform1i(ppShaderFast, true);
     glUniform1f(ppShaderRadius, blurStrength);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, ppRt1.fbo);
+    glBindFramebuffer(0x8D40, ppRt1.fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glUniform1i(Blur::ppShaderFirst, GL_TRUE);
     glBindTexture(GL_TEXTURE_2D, ppRt0.tex);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, readFbo);
+    glBindFramebuffer(0x8CA9, drawFbo);
+    glBindFramebuffer(0x8CA8, readFbo);
 
     glUniform1i(ppShaderFirst, GL_FALSE);
     glBindTexture(GL_TEXTURE_2D, ppRt1.tex);
@@ -245,11 +245,11 @@ void Shader::cleanup() {
 void RenderTexture::setup(GLsizei width, GLsizei height) {
     GLint drawFbo = 0;
     GLint readFbo = 0;
-    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFbo);
-    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFbo);
+    glGetIntegerv(0x8CA6, &drawFbo);
+    glGetIntegerv(0x8CAA, &readFbo);
 
     glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glBindFramebuffer(0x8D40, fbo);
 
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
@@ -260,17 +260,17 @@ void RenderTexture::setup(GLsizei width, GLsizei height) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);
+    glFramebufferTexture2D(0x8D40, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);
 
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+    glFramebufferRenderbuffer(0x8D40, 0x821A, GL_RENDERBUFFER, rbo);
 
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    if(glCheckFramebufferStatus(0x8D40) != GL_FRAMEBUFFER_COMPLETE)
         log::error("pp fbo not complete, uh oh! i guess i will have to cut off ur pp now");
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFbo);
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, readFbo);
+    glBindFramebuffer(0x8CA9, drawFbo);
+    glBindFramebuffer(0x8CA8, readFbo);
 }
 
 void RenderTexture::cleanup() {
