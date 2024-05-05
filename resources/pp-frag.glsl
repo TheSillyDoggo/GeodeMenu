@@ -1,5 +1,7 @@
 #version 300 es
 
+precision highp float;
+
 in vec2 TexCoords;
 
 uniform sampler2D screen;
