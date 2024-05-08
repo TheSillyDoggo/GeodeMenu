@@ -136,4 +136,5 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 SillyBaseLayer::~SillyBaseLayer()
 {
     CCTouchDispatcher::get()->unregisterForcePrio(this);
+    CCTouchDispatcher::get()->removeDelegate(this);
 }

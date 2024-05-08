@@ -514,6 +514,9 @@ class TransCustomizerModule : public Module
         }
 
         void makeAndroid(CCNode* menu, CCPoint pos);
+
+        void onLeft(CCObject*);
+        void onRight(CCObject*);
 };
 
 class InfoModule : public Module

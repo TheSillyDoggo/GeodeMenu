@@ -152,6 +152,7 @@ bool AndroidUI::init()
     labels.clear();
     buttons.clear();
     pages.clear();
+    outlines.clear();
 
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
     {

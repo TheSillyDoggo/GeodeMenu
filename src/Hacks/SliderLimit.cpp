@@ -13,8 +13,6 @@ class $modify (SliderTouchLogic)
         else
             this->m_thumb->setPositionX(this->convertTouchToNodeSpace(p0).x);
 
-        //this->m_slider->setValue(value);
-
         this->m_slider->updateBar();
 
         this->m_thumb->activate();
