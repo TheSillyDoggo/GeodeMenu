@@ -184,3 +184,52 @@ void TransCustomizerModule::onRight(CCObject*)
     left->setVisible(Mod::get()->getSavedValue<int>("transition", 0) != 0);
     right->setVisible(Mod::get()->getSavedValue<int>("transition", 0) != (transNames.size() - 1));
 }
+
+void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
+{
+    auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    label->setAnchorPoint(ccp(0, 0.5f));
+    label->setScale(0.575f);
+    label->setPosition(pos + ccp(-10, 0));
+    label->limitLabelWidth(110, 0.575f, 0.1f);
+
+    inp = TextInput::create(100, "Value");
+    inp->setPosition(pos + ccp(-20, 0) + ccp(220, 0));
+
+    auto setSpr = ButtonSprite::create("Set", "bigFont.fnt", "GJ_button_05.png");
+    setSpr->setScale(0.65f);
+
+    auto setBtn = CCMenuItemSpriteExtra::create(setSpr, menu, menu_selector(SetValueModule::onSet));
+    setBtn->setUserData(this);
+    setBtn->setPosition(pos + ccp(-20, 0) + ccp(308, 0));
+
+    menu->addChild(inp);
+    menu->addChild(label);
+    menu->addChild(setBtn);
+}
+
+void SetValueModule::onSet(CCObject* sender)
+{
+    auto mod = as<SetValueModule*>(as<CCNode*>(sender)->getUserData());
+
+    if (LevelEditorLayer::get() && LevelEditorLayer::get()->m_editorUI && (LevelEditorLayer::get()->m_editorUI->m_selectedObject || LevelEditorLayer::get()->m_editorUI->m_selectedObjects->count() > 0))
+    {
+        float v = 1.0f;
+
+        auto x = numFromString<float>(mod->inp->getString());
+
+        if (x.isOk())
+        {
+            v = x.value();
+        }
+
+        auto selObj = LevelEditorLayer::get()->m_editorUI->m_selectedObject;
+
+        if (selObj)
+        {
+            selObj->m_scaleX = v;
+            selObj->m_scaleY = v;
+            selObj->setScale(v);
+        }
+    }
+}

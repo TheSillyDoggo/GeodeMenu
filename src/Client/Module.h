@@ -519,6 +519,32 @@ class TransCustomizerModule : public Module
         void onRight(CCObject*);
 };
 
+class SetValueModule : public Module
+{
+    public:
+        TextInput* inp;
+        std::string allowedChars = "1234567890-.";
+
+        SetValueModule(std::string name, std::string id)
+        {
+            this->name = name;
+            this->id = id;
+        }
+
+        void save()
+        {
+
+        }
+
+        void load()
+        {
+
+        }
+
+        void makeAndroid(CCNode* menu, CCPoint pos);
+        void onSet(CCObject* sender);
+};
+
 class InfoModule : public Module
 {
     public:

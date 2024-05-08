@@ -83,7 +83,7 @@ class SetupFadeSetting : public FLAlertLayer
 
             std::stringstream ss;
             ss << "GJ_square0";
-            ss << (theme == -1 ? 6 : theme);
+            ss << (theme < 0 ? 6 : theme);
             ss << ".png";
 
             auto panel = CCScale9Sprite::create(ss.str().c_str());

@@ -81,8 +81,6 @@ std::vector<std::string> hacks = {
 
 void Client::onPostSetup()
 {
-    log::info("post setup");
-
     for (auto mod : hacks)
     {
         Client::GetModule(mod)->delegate = new HackModuleDelegate();

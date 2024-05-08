@@ -257,17 +257,32 @@ public:
         btnMenu->setAnchorPoint(ccp(0, 0));
         scroll->m_contentLayer->addChild(btnMenu);
 
+        int v = 0;
+
         for (size_t m = 0; m < modules.size(); m++)
         {
             float x = 20;
 
-            if (!(m % 2 == 0))
+            if (!(v % 2 == 0))
                 x = 188;
 
-            modules[m]->makeAndroid(btnMenu, {x, height - (gap * y) - (gap / 2) - (extraGap / 2)});
+            if (modules[m])
+                modules[m]->makeAndroid(btnMenu, {x, height - (gap * y) - (gap / 2) - (extraGap / 2)});
 
-            if ((m - 1) % 2 == 0 && m != 0)
+            if (dynamic_cast<SetValueModule*>(modules[m]))
+            {
                 y++;
+
+                if (x == 20)
+                    v++;
+            }
+            else
+            {
+                if ((v - 1) % 2 == 0 && v != 0)
+                    y++;
+            }
+
+            v++;
         }
 
         scroll->m_contentLayer->setContentHeight(height);
