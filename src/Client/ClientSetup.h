@@ -433,6 +433,7 @@ public:
             "solid-wave",
             "no-shake",
             "conditional-retry",
+            "no-wave-reset",
         };
 
         for (auto hack : macInc)
