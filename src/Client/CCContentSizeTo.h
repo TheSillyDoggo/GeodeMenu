@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_APPLE
+
 #include <Geode/Geode.hpp>
 
 using namespace geode::prelude;
@@ -53,3 +55,5 @@ protected:
     cocos2d::CCSize _startSize;
     cocos2d::CCNode* _target;
 };
+
+#endif
