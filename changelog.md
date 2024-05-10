@@ -3,7 +3,7 @@
 - Added new 'Darken' theme
 - Added Blur Mod Menu BG (May cause lag on devices with weak gpus)
 - Added No Wave Trail Remove
-- Added Editor Set Scale function
+- Added Editor Set Scale and Set Rotation functions
 - Removed the [?] button from the universal tab
 - Moved Transition Customizer to its own module
 - Misc UI Related Bug Fixes / Changes

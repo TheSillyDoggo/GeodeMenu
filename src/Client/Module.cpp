@@ -191,10 +191,11 @@ void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos + ccp(-10, 0));
-    label->limitLabelWidth(110, 0.575f, 0.1f);
 
-    inp = TextInput::create(100, "Value");
+    inp = TextInput::create(115, "Value");
     inp->setPosition(pos + ccp(-20, 0) + ccp(220, 0));
+    inp->setFilter(allowedChars);
+    inp->setScale(0.8f);
 
     auto setSpr = ButtonSprite::create("Set", "bigFont.fnt", "GJ_button_05.png");
     setSpr->setScale(0.65f);
@@ -225,11 +226,38 @@ void SetValueModule::onSet(CCObject* sender)
 
         auto selObj = LevelEditorLayer::get()->m_editorUI->m_selectedObject;
 
-        if (selObj)
+        if (mod->id == std::string("set-scale"))
         {
-            selObj->m_scaleX = v;
-            selObj->m_scaleY = v;
-            selObj->setScale(v);
+            if (selObj)
+            {
+                selObj->m_scaleX = v;
+                selObj->m_scaleY = v;
+                selObj->setScale(v);
+            }
+            else
+            {
+                for (auto obj : CCArrayExt<GameObject*>(LevelEditorLayer::get()->m_editorUI->m_selectedObjects))
+                {
+                    obj->m_scaleX = v;
+                    obj->m_scaleY = v;
+                    obj->setScale(v);
+                }
+            }
+        }
+
+        if (mod->id == std::string("set-rot"))
+        {
+            if (selObj)
+            {
+                selObj->setRotation(v);
+            }
+            else
+            {
+                for (auto obj : CCArrayExt<GameObject*>(LevelEditorLayer::get()->m_editorUI->m_selectedObjects))
+                {
+                    obj->setRotation(v);
+                }
+            }
         }
     }
 }

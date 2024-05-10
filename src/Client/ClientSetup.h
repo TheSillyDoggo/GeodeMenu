@@ -190,7 +190,7 @@ public:
         creator->windowPos = ImVec2(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
         creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
-        //creator->modules.push_back(nullptr);
+        creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
 
         creator->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
         creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
