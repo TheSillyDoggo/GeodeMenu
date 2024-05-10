@@ -30,11 +30,11 @@ class $modify (OptionsLayerExt, OptionsLayer)
 
         auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
 
-        if (auto l = getChildOfType<CCLayer>(this, 0))
+        if (auto l = m_mainLayer)
         {
-            if (auto m = getChildOfType<CCMenu>(l, 8))
+            if (auto m = getChildOfType<CCMenu>(l, 0))
             {
-                btn->setPosition(ccp(-140, -65));
+                btn->setPosition(ccp(145, -185));
 
                 m->addChild(btn);
             }
