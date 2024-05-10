@@ -24,7 +24,7 @@ void Dropdown::setVis(bool n)
 {
     CCPoint s = ccp(size.width, size.height * (1 + (open ? strs.size() : 0)));
     bg->stopAllActions();
-    #ifdef GEODE_IS_APPLE
+    #if (defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
     bg->setContentSize(s / 0.5f);
     #else
     bg->runAction(CCEaseInOut::create( CCContentSizeTo::create(0.35f, s / 0.5f), 2.0f));

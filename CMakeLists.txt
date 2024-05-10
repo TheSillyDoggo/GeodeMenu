@@ -3,13 +3,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if (IOS)
     set(CMAKE_OSX_ARCHITECTURES "arm64")
-	add_definitions(-DGEODE_IS_APPLE)
 else()
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
-endif()
-
-if (DEFINED __APPLE__)
-	add_definitions(-DGEODE_IS_APPLE)
 endif()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)

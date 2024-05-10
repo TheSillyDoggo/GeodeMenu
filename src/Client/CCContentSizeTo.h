@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_APPLE
+#if !(defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
 
 #include <Geode/Geode.hpp>
 
