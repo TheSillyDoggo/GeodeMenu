@@ -434,6 +434,8 @@ public:
             "no-shake",
             "conditional-retry",
             "no-wave-reset",
+            "custom-trans",
+            "menu-bg-blur",
         };
 
         for (auto hack : macInc)
