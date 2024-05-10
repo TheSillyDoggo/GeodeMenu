@@ -8,7 +8,7 @@ else()
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
 endif()
 
-if (MACOS)
+if (DEFINED __APPLE__)
 	add_definitions(-DGEODE_IS_APPLE)
 endif()
 
