@@ -1,3 +1,7 @@
+# 1.4.2
+
+- Added Individual X/Y scale mode in Creator Set Scale
+
 # 1.4.1
 
 - Added new 'Darken' theme

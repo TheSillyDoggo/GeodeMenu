@@ -1,5 +1,3 @@
-#ifdef GEODE_IS_WINDOWS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
 #include <Geode/modify/CCArray.hpp>
@@ -7,60 +5,56 @@
 
 using namespace geode::prelude;
 
-bool vascsdaf = false;
+std::vector<Patch*> toolboxpatches = {};
 
-class $modify (CCArray)
-{
-    unsigned int count()
+void updateToolboxPatches(bool tpsEnabled)
+{    
+    if (toolboxpatches.size() > 0)
     {
-        if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf && LevelEditorLayer::get())
+        for (auto catgirl : toolboxpatches)
         {
-            auto v = CCArray::count();
-
-            return v == 0 ? 0 : 1;
+            Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
         }
-        else
-        {
-            return CCArray::count();
-        }
+
+        toolboxpatches.clear();
     }
-};
 
-class $modify (EditorUI)
-{
-    void onNewCustomItem(cocos2d::CCObject* sender)
+    if (tpsEnabled)
     {
-        vascsdaf = true;
+        log::info("patching toolbox");
 
-        EditorUI::onNewCustomItem(sender);
+        #ifdef GEODE_IS_WINDOWS
+        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa82ad)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // custom object count
+        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // object count
+        #endif
 
-        vascsdaf = false;
+        #ifdef GEODE_IS_IOS
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa82ad)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // custom object count
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // object count
+        #endif
 
-        EditorUI::reloadCustomItems();
-    }
-};
-
-unsigned int dicCount(CCDictionary* ins)
-{
-    if (Client::GetModuleEnabled("custom-obj-limit") && vascsdaf && LevelEditorLayer::get())
-    {
-        return 1;
-    }
-    else
-    {
-        return ins->count();
+        #ifdef GEODE_IS_ANDROID32
+        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x3a0d82 - 0x10000)), {0xe0, 0xf0, 0x0b, 0xe7}).unwrap()); // custom object count
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // object count
+        #endif
     }
 }
 
-$execute {
-    Mod::get()->hook(
-        reinterpret_cast<void*>(
-            geode::addresser::getNonVirtual(&CCDictionary::count)
-        ),
-        &dicCount,
-        "cocos2d::CCDictionary::count",
-        tulip::hook::TulipConvention::Thiscall
-    );
-}
+class ToolboxChangedDelegate : public ModuleChangeDelegate
+{
+    virtual void onModuleChanged(bool enabled)
+    {
+        updateToolboxPatches(Client::GetModuleEnabled("custom-obj-limit"));
+    }
+};
 
-#endif
+$execute
+{
+    Loader::get()->queueInMainThread([] {
+        auto del = new ToolboxChangedDelegate();
+
+        Client::GetModule("custom-obj-limit")->delegate = del;
+
+        updateToolboxPatches(Client::GetModuleEnabled("custom-obj-limit"));
+    });
+}
