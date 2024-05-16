@@ -1,6 +1,9 @@
 # 1.4.2
 
 - Added Individual X/Y scale mode in Creator Set Scale
+- Fixed being able to click on invisible text inputs
+- Added Show Level Password
+- Added Pitch Shifter
 
 # 1.4.1
 

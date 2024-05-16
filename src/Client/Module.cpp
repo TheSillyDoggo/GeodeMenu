@@ -336,3 +336,30 @@ void SetValueModule::onScaleToggle(CCObject* sender)
     mod->inpX->setVisible(!mod->inpX->isVisible());
     mod->inpY->setVisible(!mod->inpY->isVisible());
 }
+
+void InputModule::updateValue()
+{
+    lastCheckedText = text;
+    floatValue = 1;
+
+    auto x = numFromString<float>(text);
+
+    if (x.isOk())
+    {
+        floatValue = x.value();
+    }
+
+    if (floatValue < 0.01f)
+        floatValue = 0.01f;
+
+    if (floatValue > 99999)
+        floatValue = 99999;
+}
+
+float InputModule::getFloatValue()
+{
+    if (lastCheckedText != text)
+        updateValue();
+
+    return floatValue;
+}

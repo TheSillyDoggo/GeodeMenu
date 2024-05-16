@@ -180,6 +180,9 @@ class InputModule : public Module, public TextInputDelegate
         std::string format = "%";
         std::string allowedChars = "0987654321.";
 
+        std::string lastCheckedText = "";
+        float floatValue = 1;
+
         int maxSize = 5;
 
         TextInput* inputField = nullptr;
@@ -197,6 +200,10 @@ class InputModule : public Module, public TextInputDelegate
 
             this->load();
         }
+
+        void updateValue();
+
+        float getFloatValue();
 
         bool Draw(ImVec2 tileSize)
         {

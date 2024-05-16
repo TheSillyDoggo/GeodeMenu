@@ -28,15 +28,15 @@ void updateToolboxPatches(bool tpsEnabled)
         toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // object count
         #endif
 
-        #ifdef GEODE_IS_IOS
+        //#ifdef GEODE_IS_IOS
         //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa82ad)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // custom object count
         //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // object count
-        #endif
+        //#endif
 
-        #ifdef GEODE_IS_ANDROID32
-        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x3a0d82 - 0x10000)), {0xe0, 0xf0, 0x0b, 0xe7}).unwrap()); // custom object count
+        //#ifdef GEODE_IS_ANDROID32
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x3a0d82 - 0x10000)), {0xe0, 0xf0, 0x0b, 0xe7}).unwrap()); // custom object count
         //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0x99, 0x99, 0x99, 0x99}).unwrap()); // object count
-        #endif
+        //#endif
     }
 }
 

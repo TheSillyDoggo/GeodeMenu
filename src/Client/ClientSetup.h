@@ -172,6 +172,8 @@ public:
 
         bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         bypass->modules.push_back(new Module("Transition Customiser", "custom-trans", "Adjust your scene transition"));
+
+        bypass->modules.push_back(new Module("Pitch Shifter", "pitch-shifter", "Shift the pitch of the game audio"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -180,6 +182,10 @@ public:
         Client::GetModule("tps-bypass")->options.push_back(tps);
 
         Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
+
+        auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
+        pitch->maxSize = 6;
+        Client::GetModule("pitch-shifter")->options.push_back(pitch);
     }
 
     static void SetupCreator()
@@ -193,10 +199,13 @@ public:
         creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
 
         creator->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
-        creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
+        creator->modules.push_back(new Module("Show Level Password", "show-password", "Adds a button to the password input popup that shows the level password"));
 
+        creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
         creator->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
+
         creator->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
+
 
         #ifdef GEODE_IS_WINDOWS
         creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
@@ -459,6 +468,10 @@ public:
         SpeedhackTransFix::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
         SpeedhackTransFix::instance->enabled = false;
 
+        #endif
+
+        #ifndef GEODE_IS_WINDOWS
+        Client::GetModule("custom-obj-limit")->setIncompatible("This mod only supports <cl>Windows</c> <cg>currently</c>");
         #endif
     }
 
