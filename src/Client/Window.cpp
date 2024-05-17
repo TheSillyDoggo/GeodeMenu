@@ -1,6 +1,6 @@
-/*#include "Window.h"
+//#include "Window.h"
 
-void Window::cocosCreate(CCMenu* menu)
+/*void Window::cocosCreate(CCMenu* menu)
 {
     auto back = CCScale9Sprite::create("square02_small.png");
     back->setContentSize(menu->getContentSize() / 0.5f);

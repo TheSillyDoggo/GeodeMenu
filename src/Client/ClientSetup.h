@@ -5,6 +5,7 @@
 #include "../Labels/Labels.h"
 #include "../CustomWindows/Config.h"
 #include "../CustomWindows/Labels.h"
+#include "../CustomWindows/IconEffects.h"
 
 class ClientUtils
 {

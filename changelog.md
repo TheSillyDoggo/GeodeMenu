@@ -2,6 +2,7 @@
 
 - Added Individual X/Y scale mode in Creator Set Scale
 - Fixed being able to click on invisible text inputs
+- Performance Improvements
 - Added Show Level Password
 - Added Pitch Shifter
 - Fixed Being unable to scroll in some layers
