@@ -462,11 +462,10 @@ public:
 
         #ifdef GEODE_IS_IOS
 
-        SpeedhackMus::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
-        SpeedhackMus::instance->enabled = false;
-
         SpeedhackTransFix::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
         SpeedhackTransFix::instance->enabled = false;
+
+        Client::GetModule("custom-trans")->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
 
         #endif
 

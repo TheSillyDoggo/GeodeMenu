@@ -4,6 +4,7 @@
 - Fixed being able to click on invisible text inputs
 - Added Show Level Password
 - Added Pitch Shifter
+- Fixed Being unable to scroll in some layers
 
 # 1.4.1
 

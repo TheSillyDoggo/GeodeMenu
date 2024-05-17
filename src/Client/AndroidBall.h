@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/AppDelegate.hpp>
+#include <Geode/modify/CCMouseDispatcher.hpp>
 #include <Geode/modify/CCScene.hpp>
 #include "Client.h"
 #include "AndroidUI.h"

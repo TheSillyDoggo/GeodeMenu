@@ -8,11 +8,8 @@ using namespace geode::prelude;
 class $modify(LevelInfoLayer) {
     // Copy Hack
     bool init(GJGameLevel *p0, bool p1) {
-        //p0->copya
-
-        if (!LevelInfoLayer::init(p0, p1)) return false;
-
-        return true;
+        if (!LevelInfoLayer::init(p0, p1))
+            return false;
 
         if (Client::GetModuleEnabled("copy-hack")) 
         {

@@ -12,6 +12,7 @@ bool AndroidBall::init()
         return false;
 
     this->setID("android-ball");
+    this->setMouseEnabled(false);
 
     highest++;
 
@@ -49,6 +50,8 @@ bool AndroidBall::init()
 
 bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
+    CCLayer::ccTouchBegan(touch, event);
+
     if (!this->isVisible())
         return false;
 
@@ -91,8 +94,6 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
             Mod::get()->setSavedValue("posY", position.y);
         }
     }
-
-    CCLayer::ccTouchEnded(touch, event);
 }
 
 void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
@@ -249,6 +250,17 @@ class $modify (AppDelegate)
 
         p0->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
+    }
+};
+
+class $modify (CCMouseDispatcher)
+{
+    void addDelegate(CCMouseDelegate* pDelegate)
+    {
+        if (typeinfo_cast<AndroidBall*>(pDelegate))
+            return;
+
+        CCMouseDispatcher::addDelegate(pDelegate);
     }
 };
 
