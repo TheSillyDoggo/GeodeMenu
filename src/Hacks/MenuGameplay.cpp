@@ -53,15 +53,19 @@ class MenuGameDelegate : public CCLayer
 
 class $modify (MenuGameLayer)
 {   
-    void tryJump(float p0)
+    bool tryJump(float p0)
     {
-        log::info("penis");
+        log::info("asdfasdfrewqewrewqfads");
+
+        return MenuGameLayer::tryJump(p0);
     }
 
     virtual bool init()
     {
         if (!MenuGameLayer::init())
             return false;
+
+        this->setTouchEnabled(false);
 
         auto gp = MenuGameDelegate::create();
         gp->mgl = this;

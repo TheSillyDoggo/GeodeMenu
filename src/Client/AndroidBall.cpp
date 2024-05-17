@@ -257,7 +257,7 @@ class $modify (CCMouseDispatcher)
 {
     void addDelegate(CCMouseDelegate* pDelegate)
     {
-        if (typeinfo_cast<AndroidBall*>(pDelegate))
+        if (dynamic_cast<AndroidBall*>(pDelegate))
             return;
 
         CCMouseDispatcher::addDelegate(pDelegate);

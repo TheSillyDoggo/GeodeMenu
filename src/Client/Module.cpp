@@ -341,6 +341,7 @@ void InputModule::updateValue()
 {
     lastCheckedText = text;
     floatValue = 1;
+    intValue = 0;
 
     auto x = numFromString<float>(text);
 
@@ -348,6 +349,11 @@ void InputModule::updateValue()
     {
         floatValue = x.value();
     }
+
+    x = numFromString<int>(text);
+
+    if (x.isOk())
+        intValue = x.value();
 
     if (floatValue < 0.01f)
         floatValue = 0.01f;
@@ -362,4 +368,12 @@ float InputModule::getFloatValue()
         updateValue();
 
     return floatValue;
+}
+
+int InputModule::getIntValue()
+{
+    if (lastCheckedText != text)
+        updateValue();
+
+    return intValue;
 }

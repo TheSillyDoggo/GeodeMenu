@@ -182,6 +182,7 @@ class InputModule : public Module, public TextInputDelegate
 
         std::string lastCheckedText = "";
         float floatValue = 1;
+        int intValue = 0;
 
         int maxSize = 5;
 
@@ -204,6 +205,7 @@ class InputModule : public Module, public TextInputDelegate
         void updateValue();
 
         float getFloatValue();
+        int getIntValue();
 
         bool Draw(ImVec2 tileSize)
         {

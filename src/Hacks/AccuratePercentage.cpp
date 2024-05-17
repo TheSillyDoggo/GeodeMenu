@@ -45,10 +45,7 @@ class $modify (PlayLayer)
         {
             int places = 2;
 
-            auto x = numFromString<int>(accurateModPlaces->text);
-
-            if (x.has_value())
-                places = x.value();
+            places = accurateModPlaces->getIntValue();
 
             if (!accurateMod->enabled)
                 places = GameManager::sharedState()->getGameVariable("0126") ? 2 : 0;
