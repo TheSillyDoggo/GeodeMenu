@@ -4,11 +4,7 @@ ccColor3B EffectUI::getColourForSelected(int mode) // bri`ish
 {
     // 0 : primary, 1 : secondary : 2 : glow
 
-    std::stringstream ss;
-    ss << "selColour";
-    ss << mode;
-
-    int sel = Mod::get()->getSavedValue<int>(ss.str(), 0);
+    int sel = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", mode), 0);
 
     if (mode == 0)
     {
@@ -63,9 +59,9 @@ class $modify (GJBaseGameLayer)
     {
         if (m_player1)
         {
-            //m_player1->setColor(EffectUI::getColourForSelected(0));
-            //m_player1->setSecondColor(EffectUI::getColourForSelected(1));
-            //m_player1->m_glowColor = EffectUI::getColourForSelected(2);
+            m_player1->setColor(EffectUI::getColourForSelected(0));
+            m_player1->setSecondColor(EffectUI::getColourForSelected(1));
+            m_player1->m_glowColor = EffectUI::getColourForSelected(2);
             m_player1->updateGlowColor();
         }
 
@@ -73,16 +69,16 @@ class $modify (GJBaseGameLayer)
         {
             if (!Mod::get()->getSavedValue<bool>("same-dual"))
             {
-                //m_player2->setColor(EffectUI::getColourForSelected(1));
-                //m_player2->setSecondColor(EffectUI::getColourForSelected(0));
-                //m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->setColor(EffectUI::getColourForSelected(1));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(0));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
                 m_player2->updateGlowColor();
             }
             else
             {
-                //m_player2->setColor(EffectUI::getColourForSelected(0));
-                //m_player2->setSecondColor(EffectUI::getColourForSelected(1));
-                //m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->setColor(EffectUI::getColourForSelected(0));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(1));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
                 m_player2->updateGlowColor();
             }
         }

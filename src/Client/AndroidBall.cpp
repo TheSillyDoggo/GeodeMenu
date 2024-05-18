@@ -236,16 +236,9 @@ class $modify (AppDelegate)
         if (getChildOfType<LoadingLayer>(p0, 0))
             return; // fix texture ldr
 
-        for (size_t i = 0; i < p0->getChildrenCount(); i++)
+        if (auto ball = getChildOfType<AndroidBall>(p0, 0))
         {
-            auto id = as<CCLayer*>(p0->getChildren()->objectAtIndex(i))->getID();
-            
-            if (id == "android-ball")
-            {
-                CCTouchDispatcher::get()->addTargetedDelegate(as<AndroidBall*>(p0->getChildren()->objectAtIndex(i)), -514, true);
-
-                return;
-            }
+            return CCTouchDispatcher::get()->addTargetedDelegate(ball, -514, true);
         }
 
         p0->addChild(AndroidBall::create());
