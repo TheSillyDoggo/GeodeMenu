@@ -6,6 +6,7 @@
 #include <Geode/modify/CCScheduler.hpp>
 #include <Geode/modify/FMODLevelVisualizer.hpp>
 #include "../Client/Client.h"
+#include "../Utils/defines.hpp"
 
 //#define MEMBERBYOFFSET(type, class, offset) *reinterpret_cast<type*>(reinterpret_cast<uintptr_t>(class) + offset)
 //#define MBO MEMBERBYOFFSET
@@ -40,7 +41,7 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
-            #ifdef GEODE_IS_MACOS
+            #ifdef GEODE_IS_APPLE
             engine->update(dt);
             #else
             engine->updateMetering();
