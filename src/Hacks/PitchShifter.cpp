@@ -11,7 +11,7 @@ void updatePitch()
 {
     if (pitchDSP)
 #ifdef GEODE_IS_IOS
-        reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, FMOD::DSP*)>(geode::base::get() + 0x501e90)(masterGroup, pitchDsp); //removeDSP
+        reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, FMOD::DSP*)>(geode::base::get() + 0x501e90)(masterGroup, pitchDSP); //removeDSP
 #else
         masterGroup->removeDSP(pitchDSP);
 #endif
