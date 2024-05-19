@@ -30,7 +30,7 @@ float speedhackLogic(float dt)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
             #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x4ffec4)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x4ffec4)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
             #else
             masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
             #endif
@@ -57,7 +57,7 @@ class $modify (CCScheduler)
 #ifdef GEODE_IS_IOS
 
 FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name, FMOD::ChannelGroup **channelgroup) {
-    auto res = reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::System*, const char*, FMOD::ChannelGroup**)>(geode::base::get() + 0x4c8964)(self, name, channelgroup);
+    auto res = reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, const char*, FMOD::ChannelGroup**)>(geode::base::get() + 0x4c8964)(self, name, channelgroup);
 
     if (!masterGroup)
         masterGroup = *channelgroup;
@@ -72,7 +72,7 @@ $execute {
         reinterpret_cast<void*>(geode::base::get() + 0x4c8964), // address
         &FMOD_System_createChannelGroup, // detour
         "FMOD::System::createChannelGroup", // display name, shows up on the console
-        tulip::hook::TulipConvention::Thiscall // calling convention
+        tulip::hook::TulipConvention::Cdecl // calling convention
     );
 }
 

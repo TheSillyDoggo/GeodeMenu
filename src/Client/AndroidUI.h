@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "ClientSetup.h"
+#include "../Utils/defines.hpp"
 
 using namespace geode::prelude;
 

@@ -11,21 +11,21 @@ void updatePitch()
 {
     if (pitchDSP)
 #ifdef GEODE_IS_IOS
-        reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::ChannelControl*, FMOD::DSP*)>(geode::base::get() + 0x501e90)(masterGroup, pitchDsp); //removeDSP
+        reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, FMOD::DSP*)>(geode::base::get() + 0x501e90)(masterGroup, pitchDsp); //removeDSP
 #else
         masterGroup->removeDSP(pitchDSP);
 #endif
 
 #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::System*, FMOD_DSP_TYPE, FMOD::DSP**)>(geode::base::get() + 0x4c883c)(FMODAudioEngine::sharedEngine()->m_system, FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP); //createDSPByType
-    reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::ChannelControl*, int, FMOD::DSP*)>(geode::base::get() + 0x501d60)(masterGroup, 0, pitchDSP); //addDSP
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, FMOD_DSP_TYPE, FMOD::DSP**)>(geode::base::get() + 0x4c883c)(FMODAudioEngine::sharedEngine()->m_system, FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP); //createDSPByType
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, int, FMOD::DSP*)>(geode::base::get() + 0x501d60)(masterGroup, 0, pitchDSP); //addDSP
 #else
     FMODAudioEngine::sharedEngine()->m_system->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP);
     masterGroup->addDSP(0, pitchDSP);
 #endif
 
 #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__thiscall*)(FMOD::DSP*, int, float)>(geode::base::get() + 0x482a84)(pitchDSP, FMOD_DSP_PITCHSHIFT_PITCH, Client::GetModuleEnabled("pitch-shifter") ? pitchAmount->getFloatValue() : 1); //setParameterFloat
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::DSP*, int, float)>(geode::base::get() + 0x482a84)(pitchDSP, FMOD_DSP_PITCHSHIFT_PITCH, Client::GetModuleEnabled("pitch-shifter") ? pitchAmount->getFloatValue() : 1); //setParameterFloat
 #else
     pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_PITCH, Client::GetModuleEnabled("pitch-shifter") ? pitchAmount->getFloatValue() : 1);
 #endif
