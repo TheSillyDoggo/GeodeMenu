@@ -179,7 +179,7 @@ void AndroidBall::UpdateVisible(bool i)
     }
     else if (GameManager::sharedState()->m_levelEditorLayer)
     {
-        if (CCDirector::get()->getRunningScene()->getChildByID("editor-pause-layer"))
+        if (getChildOfType<EditorPauseLayer>(CCScene::get(), 0))
         {
             op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
         }
@@ -212,6 +212,7 @@ class $modify (CCScene)
         if (!getChildOfType<AndroidBall>(CCScene::get(), 0))
             return CCScene::getHighestChildZ();
 
+
         auto ins = getChildOfType<AndroidBall>(CCScene::get(), 0);
 
         auto v = ins->getZOrder();
@@ -226,22 +227,22 @@ class $modify (CCScene)
 
 class $modify (AppDelegate)
 {
-    void willSwitchToScene(CCScene* p0)
+    void willSwitchToScene(CCScene* newScene)
     {
-        AppDelegate::willSwitchToScene(p0);
+        AppDelegate::willSwitchToScene(newScene);
 
-        if (p0 == nullptr)
+        if (newScene == nullptr)
             return; // something real bad happened, gd will probably shit itself :(
 
-        if (getChildOfType<LoadingLayer>(p0, 0))
+        if (getChildOfType<LoadingLayer>(newScene, 0))
             return; // fix texture ldr
 
-        if (auto ball = getChildOfType<AndroidBall>(p0, 0))
+        if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
         {
             return CCTouchDispatcher::get()->addTargetedDelegate(ball, -514, true);
         }
 
-        p0->addChild(AndroidBall::create());
+        newScene->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
     }
 };
