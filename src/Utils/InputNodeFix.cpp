@@ -1,4 +1,4 @@
-#include <Geode/modify/CCTextInputNode.hpp>
+/*#include <Geode/modify/CCTextInputNode.hpp>
 #include <Geode/Geode.hpp>
 #include <Geode/ui/TextInput.hpp>
 
@@ -35,4 +35,4 @@ class $modify (CCTextInputNode)
         this->onClickTrackNode(false);
         return false;
     }
-};
+};*/
