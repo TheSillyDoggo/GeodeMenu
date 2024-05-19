@@ -196,6 +196,7 @@ void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
     inp->setPosition(pos + ccp(-20, 0) + ccp(230, 0));
     inp->setFilter(allowedChars);
     inp->setScale(0.8f);
+    inp->getInputNode()->setID("IGNOREBYPASSES"_spr);
 
     auto setSpr = ButtonSprite::create("Set", "bigFont.fnt", "GJ_button_05.png");
     setSpr->setScale(0.65f);
@@ -220,12 +221,14 @@ void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
         inpX->setFilter(allowedChars);
         inpX->setScale(0.8f);
         inpX->setVisible(false);
+        inpX->getInputNode()->setID("IGNOREBYPASSES"_spr);
 
         inpY = TextInput::create(50, "Y");
         inpY->setPosition(pos + ccp(-20, 0) + ccp(256, 0));
         inpY->setFilter(allowedChars);
         inpY->setScale(0.8f);
         inpY->setVisible(false);
+        inpY->getInputNode()->setID("IGNOREBYPASSES"_spr);
 
         menu->addChild(btn);
         menu->addChild(inpX);
