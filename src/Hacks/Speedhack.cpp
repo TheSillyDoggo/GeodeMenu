@@ -39,7 +39,11 @@ float speedhackLogic(float dt)
         }
     }
 
+    #ifdef GEODE_IS_IOS
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x4ffec4)(masterGroup, 1);
+    #else
     masterGroup->setPitch(1);
+    #endif
     ColourUtility::update(dt);
     return dt;
 }

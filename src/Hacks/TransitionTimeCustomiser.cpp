@@ -3,10 +3,11 @@
 #include <Geode/modify/CCTransitionFade.hpp>
 #include <Geode/modify/CCDirector.hpp>
 #include "../Client/Client.h"
+#include "../Utils/defines.hpp"
 
 using namespace geode::prelude;
 
-#ifndef GEODE_IS_MACOS
+#ifndef GEODE_IS_APPLE
 
 //{"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular" "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}
 

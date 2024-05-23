@@ -16,6 +16,9 @@ void updatePitch()
         masterGroup->removeDSP(pitchDSP);
 #endif
 
+    if (!Client::GetModuleEnabled("pitch-shifter"))
+        return;
+
 #ifdef GEODE_IS_IOS
     reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, FMOD_DSP_TYPE, FMOD::DSP**)>(geode::base::get() + 0x4c883c)(FMODAudioEngine::sharedEngine()->m_system, FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP); //createDSPByType
     reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, int, FMOD::DSP*)>(geode::base::get() + 0x501d60)(masterGroup, 0, pitchDSP); //addDSP
