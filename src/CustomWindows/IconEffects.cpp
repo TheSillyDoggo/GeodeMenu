@@ -3,8 +3,29 @@
 ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
 {
     // 0 : primary, 1 : secondary : 2 : glow : 3 : trail : 4 : wave trail
+    int sel = 0;
 
-    int sel = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", mode), 0);
+    switch (mode)
+    {
+        case 0:
+            sel = primary;
+            break;
+        case 1:
+            sel = secondary;
+            break;
+        case 2:
+            sel = glow;
+            break;
+        case 3:
+            sel = trail;
+            break;
+        case 4:
+            sel = waveTrail;
+            break;
+
+        default:
+            break;
+    }
 
     if (mode == 0)
     {
@@ -58,6 +79,15 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
     return {0, 0, 0};
 }
 
+void EffectUI::updateValues()
+{
+    primary = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 0), 0);
+    secondary = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 1), 0);
+    glow = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 2), 0);
+    trail = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 3), 0);
+    waveTrail = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 4), 0);
+}
+
 class $modify (GJBaseGameLayer)
 {
     virtual void update(float p0)
@@ -89,7 +119,7 @@ class $modify (GJBaseGameLayer)
                 m_player2->updateGlowColor();
             }
 
-            m_player1->m_regularTrail->setColor(EffectUI::getColourForSelected(3, true));
+            m_player2->m_regularTrail->setColor(EffectUI::getColourForSelected(3, true));
             m_player2->m_waveTrail->setColor(EffectUI::getColourForSelected(4, true));
         }
 
@@ -100,3 +130,8 @@ class $modify (GJBaseGameLayer)
         self.setHookPriority("GJBaseGameLayer::update", -69420);
     }
 };
+
+$execute
+{
+    EffectUI::updateValues();
+}

@@ -7,9 +7,6 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include "Replay.h"
 
-#include "../Layers/SetupFadeSetting.h"
-#include "../Layers/SetupFPSBypass.h"
-#include "../Layers/SetupTransitionCustomizer.h"
 #include "../Layers/SaveMacroPopup.h"
 #include "../Layers/LoadMacroPopup.h"
 #include "../Layers/EditStatusPositionLayer.h"
@@ -791,7 +788,7 @@ class Level : public Window
 
         void onFPS(CCObject*)
         {
-            SetupFPSBypass::addToScene();
+            
         }
 
         void onUnc(CCObject* sender)
@@ -832,7 +829,7 @@ class Universal : public Window
     public:
         void onTransCustomizer(CCObject*)
         {
-            SetupTransCustom::addToScene();
+            
         }
 
         void cocosCreate(CCMenu* menu)

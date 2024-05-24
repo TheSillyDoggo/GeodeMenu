@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Client/Client.h"
+#include "../Layers/IconOptionsLayer.h"
 
 class EffectUI : public CCNode
 {
@@ -10,6 +11,12 @@ class EffectUI : public CCNode
         std::vector<CCScale9Sprite*> chromas;
         std::vector<CCScale9Sprite*> pastels;
         std::vector<CCScale9Sprite*> fades;
+
+        static inline int primary = 0;
+        static inline int secondary = 0;
+        static inline int glow = 0;
+        static inline int trail = 0;
+        static inline int waveTrail = 0;
 
         static EffectUI* create() {
             EffectUI* ret = new EffectUI();
@@ -25,6 +32,8 @@ class EffectUI : public CCNode
         }
 
         static ccColor3B getColourForSelected(int mode, bool player2 = false);
+
+        static void updateValues();
 
         void update(float delta) {
             for (size_t i = 0; i < players.size(); i++)
@@ -132,12 +141,23 @@ class IconEffects : public Window
 
         void onFadeSettings(CCObject* sender)
         {
-            CCScene::get()->addChild(SetupFadeSetting::create(as<CCNode*>(sender)->getTag()), 99999);
+            IconOptionsLayer::addToScene(as<CCNode*>(sender)->getTag());
         }
 
         void changeDual(CCObject*)
         {
             Mod::get()->setSavedValue<bool>("same-dual", !Mod::get()->getSavedValue<bool>("same-dual"));
+        }
+
+        void updateSelections()
+        {
+            selections[0]->setPosition(parts[0][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 0), 0)]->getPosition());
+            selections[1]->setPosition(parts[1][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 1), 0)]->getPosition());
+            selections[2]->setPosition(parts[2][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 2), 0)]->getPosition());
+            selections[3]->setPosition(parts[3][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 3), 0)]->getPosition());
+            selections[4]->setPosition(parts[4][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 4), 0)]->getPosition());
+
+            EffectUI::updateValues();
         }
 
         void changeColour(CCObject* sender)
@@ -149,6 +169,8 @@ class IconEffects : public Window
             log::info("changing colour: {}", ss.str());
 
             Mod::get()->setSavedValue<int>(ss.str(), as<CCNode*>(sender)->getTag());
+
+            updateSelections();
         }
 
         void generateType(CCMenu* menu, int type)
@@ -231,53 +253,14 @@ class IconEffects : public Window
             parts.push_back(p);
 
             auto sel = CCScale9Sprite::createWithSpriteFrameName("GJ_select_001.png");
-            sel->setContentSize(faSpr->getContentSize() + ccp(-3, 0));
+            sel->setContentSize(faSpr->getContentSize() + ccp(-5, 0));
             sel->setScale(0.85f);
             menu->addChild(sel);
             selections.push_back(sel);
         }
 
-        float x = 0;
-        int selectedTab = 0;
-
-        void updateSelections()
-        {
-            selections[0]->setPosition(parts[0][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 0), 0)]->getPosition());
-            selections[1]->setPosition(parts[1][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 1), 0)]->getPosition());
-            selections[2]->setPosition(parts[2][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 2), 0)]->getPosition());
-            selections[3]->setPosition(parts[3][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 3), 0)]->getPosition());
-            selections[4]->setPosition(parts[4][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 4), 0)]->getPosition());
-        }
-
-        void onTabChanged(CCObject* sender)
-        {
-            auto v = as<CCMenuItemToggler*>(sender);
-            selectedTab = v->getTag();
-
-            for (size_t i = 0; i < v->getParent()->getChildrenCount(); i++)
-            {
-                if (auto obj = as<CCMenuItemToggler*>(v->getParent()->getChildren()->objectAtIndex(i)))
-                {
-                    if (obj != v)
-                    {
-                        obj->toggle(false);
-                    }
-
-                    if (!obj->isToggled() && selectedTab == i)
-                    {
-                        obj->toggle(true);
-                        obj->setScale(1);
-                    }
-                }
-            }
-
-            log::info("ta{}", selectedTab);
-        }
-
         void cocosCreate(CCMenu* menu)
         {
-            x = 0;
-            selectedTab = 0;
             selections.clear();
             parts.clear();
 
