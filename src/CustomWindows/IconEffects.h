@@ -7,23 +7,14 @@ class EffectUI : public CCNode
     public:
         std::vector<SimplePlayer*> players;
         std::vector<SimplePlayer*> players2;
-        std::vector<CCSprite*> chromas;
-        std::vector<CCSprite*> pastels;
-        std::vector<CCSprite*> fades;
-
-        bool init()
-        {
-            if (!CCNode::init())
-                return false;
-
-            this->scheduleUpdate();
-
-            return true;
-        }
+        std::vector<CCScale9Sprite*> chromas;
+        std::vector<CCScale9Sprite*> pastels;
+        std::vector<CCScale9Sprite*> fades;
 
         static EffectUI* create() {
             EffectUI* ret = new EffectUI();
             if (ret && ret->init()) {
+                ret->scheduleUpdate();
                 ret->autorelease();
                 return ret;
             } else {
@@ -33,7 +24,7 @@ class EffectUI : public CCNode
             }
         }
 
-        static ccColor3B getColourForSelected(int mode);
+        static ccColor3B getColourForSelected(int mode, bool player2 = false);
 
         void update(float delta) {
             for (size_t i = 0; i < players.size(); i++)
@@ -101,7 +92,10 @@ class IconEffects : public Window
             id = "icon-effects";
         }
 
-        EffectUI* ui = nullptr;        
+        EffectUI* ui = nullptr;
+        
+        static inline std::vector<CCNode*> selections = {};
+        static inline std::vector<std::vector<CCNode*>> parts = {};
 
         SimplePlayer* getPlayer(IconType type, EffectUI* ui, bool second = false)
         {
@@ -159,98 +153,101 @@ class IconEffects : public Window
 
         void generateType(CCMenu* menu, int type)
         {
-            CCPoint pos = ccp((menu->getContentSize().width / 3) * type, 0) + ccp(10, -40);
-            float width = menu->getContentSize().width / 4;
+            std::vector<CCNode*> p;
 
-            auto defSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            CCPoint pos = ccp(225 / 2, (174 + (((type - 2) * -1) * 63.625f)) / 2);
+
+            auto defSpr = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            defSpr->setContentWidth(defSpr->getContentWidth() * 1.8f);
             
             if (type == 0)
                 defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
             else if (type == 1)
                 defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
-            else
+            else if (type == 2)
                 defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value()));
+            else
+                defSpr->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
 
-            auto d = CCLabelBMFont::create("D", "bigFont.fnt");
+            auto d = CCLabelBMFont::create("Def", "bigFont.fnt");
             d->setOpacity(100);
+            d->setScale(0.8f);
             defSpr->addChild(d);
             d->setPosition(defSpr->getContentSize() / 2);
+            d->setPositionX(28.5f);
             d->setAnchorPoint(ccp(0.45f, 0.45f));
 
             defSpr->setScale(0.7f);
 
             auto dBtn = CCMenuItemSpriteExtra::create(defSpr, menu, menu_selector(IconEffects::changeColour));
             dBtn->setID(std::to_string(type));
-            dBtn->setPosition(pos + ccp(width, menu->getContentSize().height - 80));
-            menu->addChild(dBtn);
+            dBtn->setPosition(pos + ccp(30, 0));
             dBtn->setTag(0);
+            p.push_back(dBtn);
+            menu->addChild(dBtn);
+            
 
-            auto chSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            auto chSpr = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            chSpr->setContentWidth(chSpr->getContentWidth() * 1.8f);
             chSpr->setScale(defSpr->getScale());
             ui->chromas.push_back(chSpr);
             auto chBtn = CCMenuItemSpriteExtra::create(chSpr, menu, menu_selector(IconEffects::changeColour));
             chBtn->setID(std::to_string(type));
-            chBtn->setPosition(dBtn->getPosition() + ccp(0, -30));
+            chBtn->setPosition(dBtn->getPosition() + ccp(48, 0));
             //chBtn->addChild(CCSprite::createWithSpriteFrameName("GJ_select_001.png"));
             menu->addChild(chBtn);
             chBtn->setTag(1);
+            p.push_back(chBtn);
 
-            auto paSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            auto paSpr = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            paSpr->setContentWidth(paSpr->getContentWidth() * 1.8f);
             paSpr->setScale(defSpr->getScale());
             ui->pastels.push_back(paSpr);
             auto paBtn = CCMenuItemSpriteExtra::create(paSpr, menu, menu_selector(IconEffects::changeColour));
             paBtn->setID(std::to_string(type));
-            paBtn->setPosition(chBtn->getPosition() + ccp(0, -30));
+            paBtn->setPosition(chBtn->getPosition() + ccp(48, 0));
             menu->addChild(paBtn);
             paBtn->setTag(2);
+            p.push_back(paBtn);
 
-            auto faSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            auto faSpr = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+            faSpr->setContentWidth(faSpr->getContentWidth() * 1.8f);
             faSpr->setScale(paSpr->getScale());
             ui->fades.push_back(faSpr);
             auto faBtn = CCMenuItemSpriteExtra::create(faSpr, menu, menu_selector(IconEffects::changeColour));
             faBtn->setID(std::to_string(type));
-            faBtn->setPosition(paBtn->getPosition() + ccp(0, -30));
+            faBtn->setPosition(paBtn->getPosition() + ccp(48, 0));
             menu->addChild(faBtn);
             faBtn->setTag(3);
+            p.push_back(faBtn);
 
             auto faSSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
             auto faSBtn = CCMenuItemSpriteExtra::create(faSSpr, menu, menu_selector(IconEffects::onFadeSettings));
             faSBtn->setTag(type);
-            faSBtn->setPosition(faBtn->getPosition() + ccp(-25, 0));
-            faSSpr->setScale(0.45f);
+            faSBtn->setPosition(ccp(324, pos.y));
+            faSSpr->setScale(0.55f);
             menu->addChild(faSBtn);
 
-            auto def = CCLabelBMFont::create("Default:", "bigFont.fnt");
-            def->setPosition(pos + ccp(-6, dBtn->getPositionY() + 40));
-            def->setOpacity(100);
-            def->setAnchorPoint(ccp(0, 0.5f));
-            def->setScale(0.5f);
-            menu->addChild(def);
+            parts.push_back(p);
 
-            auto ch = CCLabelBMFont::create("Chroma:", "bigFont.fnt");
-            ch->setPosition(pos + ccp(-6, chBtn->getPositionY() + 40));
-            ch->setOpacity(100);
-            ch->setAnchorPoint(ccp(0, 0.5f));
-            ch->setScale(0.5f);
-            menu->addChild(ch);
-
-            auto pa = CCLabelBMFont::create("Pastel:", "bigFont.fnt");
-            pa->setPosition(pos + ccp(-6, paBtn->getPositionY() + 40));
-            pa->setOpacity(100);
-            pa->setAnchorPoint(ccp(0, 0.5f));
-            pa->setScale(0.5f);
-            menu->addChild(pa);
-
-            auto fa = CCLabelBMFont::create("Fade:", "bigFont.fnt");
-            fa->setPosition(pos + ccp(-6, faBtn->getPositionY() + 40));
-            fa->setOpacity(100);
-            fa->setAnchorPoint(ccp(0, 0.5f));
-            fa->setScale(0.5f);
-            menu->addChild(fa);
+            auto sel = CCScale9Sprite::createWithSpriteFrameName("GJ_select_001.png");
+            sel->setContentSize(faSpr->getContentSize() + ccp(-3, 0));
+            sel->setScale(0.85f);
+            menu->addChild(sel);
+            selections.push_back(sel);
         }
 
         float x = 0;
         int selectedTab = 0;
+
+        void updateSelections()
+        {
+            selections[0]->setPosition(parts[0][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 0), 0)]->getPosition());
+            selections[1]->setPosition(parts[1][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 1), 0)]->getPosition());
+            selections[2]->setPosition(parts[2][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 2), 0)]->getPosition());
+            selections[3]->setPosition(parts[3][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 3), 0)]->getPosition());
+            selections[4]->setPosition(parts[4][Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 4), 0)]->getPosition());
+        }
 
         void onTabChanged(CCObject* sender)
         {
@@ -277,27 +274,12 @@ class IconEffects : public Window
             log::info("ta{}", selectedTab);
         }
 
-        CCMenuItemToggler* createBtn(const char* text)
-        {
-            auto v = CCMenuItemToggler::create(ButtonSprite::create(text, "goldFont.fnt", "GJ_button_04.png"), ButtonSprite::create(text, "goldFont.fnt", "GJ_button_05.png"), nullptr, menu_selector(IconEffects::onTabChanged));
-            v->setPositionX(x);
-            v->setAnchorPoint(ccp(0, 0.5f));
-            v->setTag(selectedTab);
-
-            x += v->getContentWidth() + 10;
-
-            if (std::string(text) == std::string("Primary 1"))
-                v->toggle(true);
-
-            selectedTab++;
-
-            return v;
-        }
-
         void cocosCreate(CCMenu* menu)
         {
             x = 0;
             selectedTab = 0;
+            selections.clear();
+            parts.clear();
 
             ui = EffectUI::create();
             menu->addChild(ui);
@@ -378,48 +360,30 @@ class IconEffects : public Window
             sameDual->toggle(Mod::get()->getSavedValue<bool>("same-dual"));
             menu->addChild(sameDual);
 
-            for (size_t i = 0; i < 2; i++)
-            {
-                auto split = CCSprite::createWithSpriteFrameName("floorLine_001.png");
-                split->setPosition(ccp(back2->getContentSize().width / 3 * (i + 1), back2->getContentSize().height / 2));
-                split->setScaleY(2);
-                split->setScaleX(0.7f);
-                split->setRotation(-90);
-                split->setOpacity(100);
-                split->setAnchorPoint(ccp(0.5f, 0));
+            auto split = CCSprite::createWithSpriteFrameName("floorLine_001.png");
+            split->setPosition(ccp(225, back2->getContentHeight() / 2));
+            split->setScaleY(2);
+            split->setScaleX(0.7f);
+            split->setRotation(-90);
+            split->setOpacity(100);
+            split->setAnchorPoint(ccp(0.5f, 0));
 
-                auto blend = ccBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
-                split->setBlendFunc(blend);
+            auto label = CCLabelBMFont::create("Primary:\n\nSecondary:\n\nGlow:\n\nTrail:\n\nWave Trail:", "bigFont.fnt");
+            label->setAnchorPoint(ccp(0, 0.5f));
+            label->setPosition(ccp(10, back2->getContentHeight() / 2));
+            back2->addChild(label);
 
-                back2->addChild(split);
-            }
+            auto blend = ccBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
+            split->setBlendFunc(blend);
 
-            for (size_t i = 0; i < 3; i++)
-            {
-                auto title = CCLabelBMFont::create(i == 0 ? "Primary" : (i == 1 ? "Secondary" : "Glow"), "bigFont.fnt");
-                title->setPosition(ccp((back2->getContentSize().width / 3) * i + ((back2->getContentSize().width / 3) / 2), back2->getContentSize().height - 20));
+            back2->addChild(split);
 
-                back2->addChild(title);
+            generateType(menu, 0);
+            generateType(menu, 1);
+            generateType(menu, 2);
+            generateType(menu, 3);
+            generateType(menu, 4);
 
-                generateType(menu, i);
-            }
-
-            return;
-
-            auto menu2 = CCMenu::create();
-            menu2->setContentHeight(0);
-            menu2->setAnchorPoint(ccp(0, 0.5f));
-            menu2->setScale(0.5f);
-            menu2->setPosition(ccp(10, 160));
-
-            menu2->addChild(createBtn("Primary"));
-            menu2->addChild(createBtn("Secondary"));
-            menu2->addChild(createBtn("Glow"));
-            menu2->addChild(createBtn("Trail"));
-            menu2->addChild(createBtn("Wave Trail"));
-
-            menu->addChild(menu2);
-
-            selectedTab = 0;
+            updateSelections();
         }
 };
