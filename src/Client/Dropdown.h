@@ -4,7 +4,6 @@
 
 #include <Geode/Geode.hpp>
 #include "CCContentSizeTo.h"
-#include "ClippingNode.h"
 
 using namespace geode::prelude;
 

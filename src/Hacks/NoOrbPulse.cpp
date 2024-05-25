@@ -21,17 +21,51 @@ class $modify (CCCircleWave)
     }
 };
 
-/*class $modify (PlayLayer)
+#ifdef GEODE_IS_WINDOWS
+#define offset 0x178
+#elif GEODE_IS_ANDROID32
+#define offset 0x16c
+#elif GEODE_IS_ANDROID64
+#define offset 0x1f8
+#elif GEODE_IS_MACOS
+#define offset 0x1c8
+#elif GEODE_IS_IOS
+#define offset 0x1c8
+#endif
+
+class $modify (PlayLayer)
 {
     virtual void updateVisibility(float p0)
     {
-        log::info("v: {}", MBO(float, FMODAudioEngine::sharedEngine(), 0x178));
-        MBO(float, FMODAudioEngine::sharedEngine(), 0x178) = 1.0f;
-        log::info("v2: {}", MBO(float, FMODAudioEngine::sharedEngine(), 0x178));
-        ///**(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x178)) = 1.0f;
+        float v = MBO(float, FMODAudioEngine::sharedEngine(), offset);
 
-        log::info("asdf");
+        MBO(float, FMODAudioEngine::sharedEngine(), offset) = 1.0f;
 
         PlayLayer::updateVisibility(p0);
+
+        MBO(float, FMODAudioEngine::sharedEngine(), offset) = v;
     }
-};*/
+
+    static void onModify(auto& self) {
+        std::vector<geode::Hook*> hooks;
+
+        hooks.push_back(self.getHook("PlayLayer::updateVisibility").unwrap());
+
+        Loader::get()->queueInMainThread([hooks] 
+        {
+            auto modu = Client::GetModule("no-orb-pulse");
+
+            for (auto hook : hooks)
+            {
+                hook->setAutoEnable(false);
+
+                if (!modu->enabled)
+                    hook->disable();
+
+                modu->hooks.push_back(hook);
+            }
+        });
+    }
+};
+
+#undef offset

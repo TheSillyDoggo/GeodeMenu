@@ -6,16 +6,11 @@
 #endif
 
 bool showing = false;
-#ifdef GEODE_IS_ANDROID
-bool android = true;
-#else
 
 #ifdef IMGUI
 bool android = false;
 #else
 bool android = true;
-#endif
-
 #endif
 
 Client* client;
@@ -138,7 +133,8 @@ void DrawDescription()
 {
     ImVec2 pos = ImVec2(10, ImGui::GetIO().DisplaySize.y - 10);
 
-    if (!AltModuleLocation::instance->enabled)
+    //if (!AltModuleLocation::instance->enabled)
+    if (true)
     {
         pos = ImGui::GetMousePos();
 

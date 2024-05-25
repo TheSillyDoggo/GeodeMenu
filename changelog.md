@@ -3,6 +3,9 @@
 - Fixed Bass being boosted on some Samsung devices
 - Added Trail and Wave Trail options to icon effects
 - Added option to customize the colours used in the fade icon effect mode
+- Added No Orb Pulse
+- Fixed Hide Endscreen putting the button at the bottom of the end screen
+- Fixed Options Button being in the wrong Place with Full Options Menu enabled
 
 # 1.4.2
 

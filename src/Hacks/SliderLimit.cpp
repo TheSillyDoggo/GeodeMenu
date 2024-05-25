@@ -34,26 +34,3 @@ class $modify (SliderTouchLogic)
         });
     }
 };
-
-/*#ifdef GEODE_IS_ANDROID
-
-class $modify (GJScaleControl)
-{
-    virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
-    {
-        GJScaleControl::ccTouchMoved(p0, p1);
-
-        auto slider = getChildOfType<Slider>(this, -1);
-        auto lbl = getChildOfType<CCLabelBMFont>(this, 2);
-
-        if (slider && lbl && slider->isVisible())
-        {
-            slider->m_touchLogic->ccTouchMoved(p0, p1);
-
-        }
-    }
-};
-
-#else
-
-#endif*/

@@ -27,7 +27,7 @@ class EndLevelPopup
 			auto act = CCSequence::create(ar);
 
 			ins->runAction(fadeToAction);
-			safe_cast<CCNode*>(ins->getChildren()->objectAtIndex(0))->runAction(act);
+			ins->m_mainLayer->runAction(act);
 		}
 
 		void startIn(CCObject* sender)
@@ -39,7 +39,7 @@ class EndLevelPopup
 			auto fadeToAction = CCFadeTo::create(1.0f, 100);
 
 			ins->runAction(fadeToAction);
-			safe_cast<CCNode*>(ins->getChildren()->objectAtIndex(0))->runAction(easeInOutAction);
+			ins->m_mainLayer->runAction(easeInOutAction);
 
 			arr->setVisible(false);
 		}
@@ -77,62 +77,44 @@ class $modify(EndLevelLayer)
 	{
 		EndLevelLayer::customSetup();
 
-		//if (Client::GetModuleEnabled("end-screen"))
-			//return;
-
-		if (auto a = safe_cast<CCLayer*>(getChildren()->objectAtIndex(0)))
+		if (auto m_buttonMenu = getChildOfType<CCMenu>(m_mainLayer, -1))
 		{
-			CCMenu* b = nullptr;
-
-			for (size_t i = 0; i < a->getChildrenCount(); i++)
+			CCSprite* btnSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+			if (btnSpr)
 			{
-				if (auto c = safe_cast<CCMenu*>(a->getChildren()->objectAtIndex(i)))
-				{
-					if (c->isVisible())
-					{
-						b = c;
-						
-						break;
-					}
-				}
+				btnSpr->setRotation(90);
+				btnSpr->setScale(0.65f);
+
+				CCMenuItemSpriteExtra* btn = CCMenuItemSpriteExtra::create(btnSpr, m_buttonMenu, menu_selector(EndLevelPopup::toggleVisible));
+
+				btn->setPosition(ccp(0, as<CCNode*>(m_buttonMenu->getChildren()->objectAtIndex(0))->getPositionY() * -1 + 2));
+				btn->setID("hideButton");
+
+				m_buttonMenu->addChild(btn);
 			}
-			
 
-			if (b)
-			{
-				CCSprite* btnSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
-				if (btnSpr)
-				{
-					btnSpr->setRotation(90);
-					btnSpr->setScale(0.65f);
+			CCSprite* btnSpr2 = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+			btnSpr2->setRotation(-90);
+			btnSpr2->setScale(0.65f);
 
-					CCMenuItemSpriteExtra* btn = CCMenuItemSpriteExtra::create(btnSpr, b, menu_selector(EndLevelPopup::toggleVisible));
+			EndLevelPopup::ins = this;
+			//CCMenuItemSpriteExtra* btn = CCMenuItemSpriteExtra::create(btnSpr, b, menu_selector(EndLevelPopup::toggleVisible));
 
-					btn->setPosition(ccp(0, safe_cast<CCNode*>(b->getChildren()->objectAtIndex(0))->getPositionY() * -1 + 2));
-					btn->setID("hideButton");
+			CCMenuItemSpriteExtra* btn2 = CCMenuItemSpriteExtra::create(btnSpr2, m_buttonMenu, menu_selector(EndLevelPopup::bringBack));
+			btn2->setVisible(false);
+			btn2->setID("showButton");
 
-					b->addChild(btn);
-				}
+			EndLevelPopup::arr = btn2;
 
-				CCSprite* btnSpr2 = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
-				btnSpr2->setRotation(-90);
-				btnSpr2->setScale(0.65f);
+			btn2->setPosition(ccp(0, -1 * (CCDirector::get()->getWinSize().height / 2 + 20)));
 
-				EndLevelPopup::ins = this;
-				//CCMenuItemSpriteExtra* btn = CCMenuItemSpriteExtra::create(btnSpr, b, menu_selector(EndLevelPopup::toggleVisible));
-
-				CCMenuItemSpriteExtra* btn2 = CCMenuItemSpriteExtra::create(btnSpr2, b, menu_selector(EndLevelPopup::bringBack));
-				btn2->setVisible(false);
-				btn2->setID("showButton");
-
-				EndLevelPopup::arr = btn2;
-
-				btn2->setPosition(ccp(0, -1 * (CCDirector::get()->getWinSize().height / 2 + 20)));
-
-				b->addChild(btn2);
-			}
+			m_buttonMenu->addChild(btn2);
 		}
 	}
+
+	static void onModify(auto& self) {
+        self.setHookPriority("EndLevelLayer::customSetup", 69420);
+    }
 };
 
 #endif
