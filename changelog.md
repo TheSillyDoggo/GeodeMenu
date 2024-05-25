@@ -1,3 +1,7 @@
+# 1.4.4
+
+- Fixed Trail And Wave Trail having the wrong default colour in icon effects
+
 # 1.4.3
 
 - Fixed Bass being boosted on some devices

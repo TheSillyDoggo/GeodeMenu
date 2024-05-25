@@ -42,6 +42,11 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
         if (sel == 0)
             return GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value());
     }
+    else if (mode == 3)
+    {
+        if (sel == 0)
+            return GameManager::get()->colorForIdx(Mod::get()->getSavedValue<bool>("same-dual") ? GameManager::get()->m_playerColor2.value() : (player2 ? GameManager::get()->m_playerColor.value() : GameManager::get()->m_playerColor2.value()));
+    }
     else
     {
         if (sel == 0)
@@ -149,16 +154,16 @@ class $modify (GJBaseGameLayer)
         {
             if (!Mod::get()->getSavedValue<bool>("same-dual"))
             {
-                m_player2->setColor(EffectUI::getColourForSelected(1));
-                m_player2->setSecondColor(EffectUI::getColourForSelected(0));
-                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->setColor(EffectUI::getColourForSelected(1, true));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(0, true));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2, true);
                 m_player2->updateGlowColor();
             }
             else
             {
-                m_player2->setColor(EffectUI::getColourForSelected(0));
-                m_player2->setSecondColor(EffectUI::getColourForSelected(1));
-                m_player2->m_glowColor = EffectUI::getColourForSelected(2);
+                m_player2->setColor(EffectUI::getColourForSelected(0, true));
+                m_player2->setSecondColor(EffectUI::getColourForSelected(1, true));
+                m_player2->m_glowColor = EffectUI::getColourForSelected(2, true);
                 m_player2->updateGlowColor();
             }
 
