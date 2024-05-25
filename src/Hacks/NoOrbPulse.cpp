@@ -53,7 +53,13 @@ class $modify (PlayLayer)
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
 
-        hooks.push_back(self.getHook("PlayLayer::updateVisibility").unwrap());
+        Hook* hook = nullptr;
+        auto h = self.getHook("PlayLayer::updateVisibility");
+        
+        if (h.isOk())
+            hook = h.unwrap();
+
+        hooks.push_back(hook);
 
         Loader::get()->queueInMainThread([hooks] 
         {
@@ -61,12 +67,15 @@ class $modify (PlayLayer)
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
+                if (hook && modu)
+                {
+                    hook->setAutoEnable(false);
 
-                if (!modu->enabled)
-                    hook->disable();
+                    if (!modu->enabled)
+                        hook->disable();
 
-                modu->hooks.push_back(hook);
+                    modu->hooks.push_back(hook);
+                }
             }
         });
     }

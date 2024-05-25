@@ -1,6 +1,6 @@
 # 1.4.3
 
-- Fixed Bass being boosted on some Samsung devices
+- Fixed Bass being boosted on some devices
 - Added Trail and Wave Trail options to icon effects
 - Added option to customize the colours used in the fade icon effect mode
 - Added No Orb Pulse

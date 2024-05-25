@@ -71,6 +71,9 @@ public:
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {
+        if (!mod)
+            mod = Mod::get();
+
         return mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
     }
 
