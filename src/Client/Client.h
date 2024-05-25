@@ -6,6 +6,7 @@ class Client
 {
 public:
     static inline Client* instance = nullptr;
+    static inline Mod* mod = nullptr;
 
     std::vector<Window*> windows;
     ImVec2 tileSize = ImVec2(150, 30);
@@ -13,6 +14,11 @@ public:
     float animStatus = 0;
 
     bool over = false;
+
+    Client()
+    {
+        mod = Mod::get();
+    }
 
     void draw()
     {
@@ -65,27 +71,7 @@ public:
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {
-        return Mod::get()->getSavedValue<bool>(id + "_enabled");
-
-        //if (CCScene::get())
-            //CCScene::get()->addChild(TextAlertPopup::create("request to get '" + id + "'", 0.5f, 0.6f, 150, ""), 9999999);
-
-        //log::info("get module: {}", id);
-
-        for (size_t w = 0; w < instance->windows.size(); w++)
-        {
-            for (size_t m = 0; m < instance->windows[w]->modules.size(); m++)
-            {
-                if (!instance->windows[w]->modules[m]->id.compare(id))
-                {
-                    return instance->windows[w]->modules[m]->enabled;
-                }
-            }
-        }
-        
-        //geode::prelude::log::info("missing module :( {}", id);
-
-        return false;
+        return mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
     }
 
     static Module* GetModule(std::string id)

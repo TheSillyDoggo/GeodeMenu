@@ -11,22 +11,14 @@ class $modify (CCMotionStreak)
 {
     virtual void update(float delta)
     {
-        if (!on)
-            on = Client::GetModule("trail-on");
-
-        if (!off)
-            off = Client::GetModule("trail-off");
-
-        if (on->enabled)
+        if (Client::GetModuleEnabled("trail-on"))
         {
             m_bStroke = true;
-            this->setOpacity(255);
         }
 
-        if (off->enabled)
+        if (Client::GetModuleEnabled("trail-off"))
         {
             m_bStroke = false;
-            this->setOpacity(0);
         }
 
         CCMotionStreak::update(delta);

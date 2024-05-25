@@ -127,7 +127,7 @@ class $modify (cocos2d::CCTransitionFade)
 {
     static CCTransitionFade* create(float duration,CCScene* scene)
     {
-        return CCTransitionFade::create(Client::GetModuleEnabled("no-trans") ? 0 : duration, scene);
+        return CCTransitionFade::create((Client::GetModuleEnabled("no-trans") ? 0 : duration) * (SpeedhackTransFix::instance->enabled ? (1 / SpeedhackTop::instance->getFloatValue()) : 1), scene);
     }
 };
 

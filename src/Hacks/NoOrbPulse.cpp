@@ -23,13 +23,17 @@ class $modify (CCCircleWave)
 
 #ifdef GEODE_IS_WINDOWS
 #define offset 0x178
-#elif GEODE_IS_ANDROID32
+#endif
+#ifdef GEODE_IS_ANDROID32
 #define offset 0x16c
-#elif GEODE_IS_ANDROID64
+#endif
+#ifdef GEODE_IS_ANDROID64
 #define offset 0x1f8
-#elif GEODE_IS_MACOS
+#endif
+#ifdef GEODE_IS_MACOS
 #define offset 0x1c8
-#elif GEODE_IS_IOS
+#endif
+#ifdef GEODE_IS_IOS
 #define offset 0x1c8
 #endif
 
