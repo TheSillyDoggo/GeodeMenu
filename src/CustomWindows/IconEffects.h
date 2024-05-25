@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Geode/modify/MenuLayer.hpp>
 #include "../Client/Client.h"
 #include "../Layers/IconOptionsLayer.h"
 
@@ -17,6 +18,11 @@ class EffectUI : public CCNode
         static inline int glow = 0;
         static inline int trail = 0;
         static inline int waveTrail = 0;
+
+        static inline Hook* _hook = nullptr;
+
+        static bool getIncompatibleModLoaded();
+        static std::string getIncompatibleMods();
 
         static EffectUI* create() {
             EffectUI* ret = new EffectUI();

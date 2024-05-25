@@ -79,6 +79,49 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
     return {0, 0, 0};
 }
 
+std::vector<std::string> mods = 
+{
+    "rooot.custom-gamemode-colors",
+    "gdemerald.custom_icon_colors",
+    "capeling.coloured-wave-trail",
+    "weebify.seperate_dual_icons",
+    "naxrin.progress_bar_color",
+    "naxrin.rgb_icons",
+    "asaki_zuki.same_dual_color",
+    "saumondeluxe.rainbow_icon",
+    "terma.ambienticons",
+};
+
+bool EffectUI::getIncompatibleModLoaded()
+{
+    for (auto mod : mods)
+    {
+        if (Loader::get()->isModLoaded(mod))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+std::string EffectUI::getIncompatibleMods()
+{
+    std::stringstream ss;
+
+    for (auto mod : mods)
+    {
+        if (auto mod2 = Loader::get()->getLoadedMod(mod))
+        {
+            ss << "<cp>";
+            ss << mod2->getName();
+            ss << "</c>\n";
+        }
+    }
+
+    return ss.str();
+}
+
 void EffectUI::updateValues()
 {
     primary = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 0), 0);
@@ -127,11 +170,28 @@ class $modify (GJBaseGameLayer)
     }
 
     static void onModify(auto& self) {
-        self.setHookPriority("GJBaseGameLayer::update", -69420);
+        EffectUI::_hook = self.getHook("GJBaseGameLayer::update").unwrap();
+        self.setHookPriority("GJBaseGameLayer::update", 69420);
+    }
+};
+
+class $modify (MenuLayer)
+{
+    bool init()
+    {
+        if (EffectUI::getIncompatibleModLoaded())
+        {
+            EffectUI::_hook->setAutoEnable(false);
+            EffectUI::_hook->disable();
+
+            log::error("Incompatible mod loaded, disabling icon effects");
+        }
+
+        return MenuLayer::init();
     }
 };
 
 $execute
 {
     EffectUI::updateValues();
-}
+};

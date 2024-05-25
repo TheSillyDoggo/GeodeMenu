@@ -6,6 +6,7 @@
 - Added No Orb Pulse
 - Fixed Hide Endscreen putting the button at the bottom of the end screen
 - Fixed Options Button being in the wrong Place with Full Options Menu enabled
+- Icon Effects automatically disable if you have incompatible mods enabled
 
 # 1.4.2
 

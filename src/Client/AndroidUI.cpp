@@ -527,13 +527,9 @@ void AndroidUI::onPressTab(CCObject* sender)
 {
     auto btn = static_cast<CCMenuItemSprite*>(sender);
 
-    if (typeinfo_cast<_Replay*>(Client::instance->windows[btn->getTag()]))
-        return FLAlertLayer::create("Replay", "Replay bot is not available right now as i'm trying to improve it <cp>:3</c>", "OK")->show();
+    if (typeinfo_cast<IconEffects*>(Client::instance->windows[btn->getTag()]) && EffectUI::getIncompatibleModLoaded())
+        return FLAlertLayer::create(nullptr, "Icon Effects", fmt::format("Icon Effects have been disabled due to incompatibilities.\nTo use icon effects, disable the following mod:\n{}", EffectUI::getIncompatibleMods()), "OK", nullptr, 330, false, 300, 0.75f)->show();
 
-    #ifdef GEODE_IS_MACOS
-    if (typeinfo_cast<_Replay*>(Client::instance->windows[btn->getTag()]))
-        return FLAlertLayer::create("Replay", "Replay bot is not available on macos due to missing bindings, this will probably <cr>not</c> be fixed <cp>^w^</c>", "OK")->show();
-    #endif
 
     lastTab = selectedTab;
     selectedTab = btn->getTag();
