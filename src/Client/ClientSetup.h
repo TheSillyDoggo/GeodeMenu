@@ -69,8 +69,8 @@ public:
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", false, "<cr>Warning!</c>\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", true));
 
-        level->modules.push_back(new Module("Confirm Practice", "conf-prac", "confirm practice mode help"));
-        level->modules.push_back(new Module("Confirm Restart", "conf-res", "confirm restart help"));
+        level->modules.push_back(new Module("Confirm Practice", "conf-prac", "Adds a popup to confirm if you want to enter practice mode"));
+        level->modules.push_back(new Module("Confirm Restart", "conf-res", "Adds a popup to confirm if you want to restart the level"));
 
         level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));

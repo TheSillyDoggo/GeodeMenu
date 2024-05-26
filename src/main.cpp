@@ -1,5 +1,7 @@
 #include "include.h"
 #include <Geode/modify/LoadingLayer.hpp>
+#include "Keybinds/SetBindSetting.hpp"
+#include "Keybinds/RecordKeyPopup.hpp"
 
 #ifdef GEODE_IS_WINDOWS
 //#define IMGUI
@@ -22,9 +24,19 @@ class $modify (CCKeyboardDispatcher)
         if (!CCScene::get())
             return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
 
-        if (!getChildOfType<LoadingLayer>(CCScene::get(), 0))
+        if (!getChildOfType<LoadingLayer>(CCScene::get(), 0) && !getChildOfType<RecordKeyPopup>(CCScene::get(), 0))
         { 
-            if (down && (key == KEY_Tab || key == KEY_Insert || key == KEY_F12) && !idk) {
+            bool v = false;
+
+            auto btns = SetBindValue::instance->buttons;
+
+            for (auto btn : btns)
+            {
+                if (btn == key)
+                    v = true;
+            }
+
+            if (down && v && !idk) {
                 if (android)
                 {
                     #ifdef GEODE_IS_WINDOWS

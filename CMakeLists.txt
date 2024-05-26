@@ -17,8 +17,8 @@ file(GLOB SOURCES
 	src/Hacks/*.cpp
 	src/Utils/*.cpp
 	src/Hacks/*.hpp
+	src/Keybinds/*.cpp
 	src/Layers/*.cpp
-	src/Layers/*.h
 	src/Labels/*.cpp
 	src/Labels/*.h
 	src/Replay/*.cpp

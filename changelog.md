@@ -1,6 +1,8 @@
 # 1.4.4
 
 - Fixed Trail And Wave Trail having the wrong default colour in icon effects
+- Cheat indicator now properly works if Auto Safe Mode is disabled
+- Fixed Transitions being the wrong speed on macos
 
 # 1.4.3
 

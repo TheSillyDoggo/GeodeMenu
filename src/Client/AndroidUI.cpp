@@ -455,7 +455,12 @@ void AndroidUI::close(CCObject* sender)
         handleTouchPriority(pause);
     }
 
+    CCTouchDispatcher::get()->unregisterForcePrio(this);
     CCTouchDispatcher::get()->removeDelegate(this);
+
+    if (CCTouchDispatcher::get()->m_pTargetedHandlers->containsObject(this))
+        CCTouchDispatcher::get()->m_pTargetedHandlers->removeObject(this, false);
+
     this->removeFromParent();
 }
 

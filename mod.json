@@ -27,6 +27,12 @@
 			"resources/sprites/*.png"
 		]
     },
+	"settings": {
+		"set-bind": {
+			"type": "custom",
+			"platforms": [ "windows", "macos" ]
+		}
+	},
 	"tags": [
 		"Cheat",
 		"Mod Menu",

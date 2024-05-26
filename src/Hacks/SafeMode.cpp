@@ -6,13 +6,14 @@
 #include "../Labels/Labels.h"
 
 bool hasHackedAttempt = false;
+bool hasHackedAttemptReal = false;
 
 ccColor3B getColour()
 {
     if (Client::GetModuleEnabled("safe-mode"))
         return ccc3(255, 255, 0);
 
-    if (hasHackedAttempt)
+    if (hasHackedAttemptReal)
         return ccc3(255, 0, 0);
 
     return ccc3(0, 255, 0);
@@ -40,6 +41,8 @@ class HackModuleDelegate : public ModuleChangeDelegate
 {
     virtual void onModuleChanged(bool enabled)
     {
+        hasHackedAttemptReal = true;
+
         if (Client::GetModuleEnabled("auto-safe-mode"))
             hasHackedAttempt = true;
         else
@@ -89,12 +92,14 @@ void Client::onPostSetup()
 
 void updateSafemode()
 {
-    if (Client::GetModuleEnabled("auto-safe-mode"))
+    for (auto mod : hacks)
     {
-        for (auto mod : hacks)
+        if (Client::GetModule(mod)->enabled)
         {
-            if (Client::GetModule(mod)->enabled)
+            if (Client::GetModuleEnabled("auto-safe-mode"))
                 hasHackedAttempt = true;
+
+            hasHackedAttemptReal = true;
         }
     }
 
@@ -111,6 +116,7 @@ class $modify (PlayLayerExt, PlayLayer)
             return false;
         
         hasHackedAttempt = false;
+        hasHackedAttemptReal = false;
         updateSafemode();
 
         return true;
@@ -156,6 +162,7 @@ class $modify (PlayLayerExt, PlayLayer)
     void resetLevel()
     {
         hasHackedAttempt = false;
+        hasHackedAttemptReal = false;
 
         PlayLayer::resetLevel();
 
