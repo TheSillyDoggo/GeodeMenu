@@ -3,7 +3,6 @@
 #include "ColourUtility.h"
 #include "DrawUtils.h"
 
-#include "../Layers/ColouredAlertLayer.h"
 
 #include <Geode/ui/TextInput.hpp>
 

@@ -72,6 +72,8 @@ void Dropdown::visit()
 {
     auto rect = CCRect(-this->size.width, -this->bg->getContentHeight() / 2 + this->size.height, this->size.width * 3, this->bg->getContentHeight() / 2);
 
+    //glEnable(0xc11);
+    //CCEGLView::sharedOpenGLView()->setScissorInPoints(rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY());
     GameToolbox::preVisitWithClippingRect(this, rect);
 
     CCMenu::visit();

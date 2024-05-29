@@ -51,7 +51,7 @@ public:
 
     static void addToScene()
     {
-        if (CCDirector::get()->getRunningScene()->getChildByID("android-ui"))
+        if (CCDirector::get()->getRunningScene()->getChildByID("AndroidUI"))
             return;
 
         auto l = AndroidUI::create();

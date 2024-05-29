@@ -1,5 +1,5 @@
 {
-	"geode": "2.0.0-beta.26",
+	"geode": "2.0.0-beta.27",
 	"version": "v1.4.3",
 	"gd": {
 		"win": "2.204",
@@ -29,8 +29,7 @@
     },
 	"settings": {
 		"set-bind": {
-			"type": "custom",
-			"platforms": [ "windows", "macos" ]
+			"type": "custom"
 		}
 	},
 	"tags": [

@@ -17,18 +17,20 @@ bool AndroidUI::init()
     if (Client::GetModuleEnabled("menu-bg-blur"))
     {
         auto blur = CCBlurLayer::create();
+        blur->setID("blur-layer");
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
         this->addChild(blur);
     }
 
     this->runAction(CCFadeTo::create(0.5f, 100));
-    this->setID("android-ui");
+    this->setID("AndroidUI");
 
     auto backMenu = CCMenu::create();
     backMenu->ignoreAnchorPointForPosition(false);
     backMenu->setContentSize(ccp(0, 0));
     backMenu->setPositionX(0);
     backMenu->setPositionY(CCDirector::get()->getWinSize().height);
+    backMenu->setID("back-menu");
 
     auto backSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
     
@@ -139,12 +141,14 @@ bool AndroidUI::init()
     windows->setPosition(ccp(10, 10));
     windows->setContentSize(ccp(110, panel->getContentSize().height - 10 - 10));
     windows->setAnchorPoint(ccp(0, 0));
+    windows->setID("windows-panel");
 
     auto windowsMenu = CCMenu::create();
     windowsMenu->setContentSize(ccp(windows->getContentSize().width, windows->getContentSize().height - 10));
     windowsMenu->setAnchorPoint(ccp(0, 0));
     windowsMenu->setPosition(ccp(5, 5));
     windowsMenu->ignoreAnchorPointForPosition(false);
+    windowsMenu->setID("windows-menu");
 
     windowsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
     windows->addChild(windowsMenu);
@@ -158,25 +162,31 @@ bool AndroidUI::init()
     {
         auto win = Client::instance->windows[i];
 
-        auto btn = CCScale9Sprite::create("square02_small.png");
+        auto btn = CCScale9Sprite::create("square02b_small.png");
         btn->setContentSize(ccp(100, 20) / 0.5f);
+        btn->setColor(ccc3(0, 0, 0));
         btn->setScale(0.5f);
         btn->setOpacity(100);
+        btn->setID("unselected");
 
         auto lbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
         lbl->setPosition(btn->getContentSize() / 2);
         lbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
         lbl->setColor({200, 200, 200});
+        lbl->setID("name");
 
         btn->addChild(lbl);
 
-        auto btn2 = CCScale9Sprite::create("square02_small.png");
+        auto btn2 = CCScale9Sprite::create("square02b_small.png");
         btn2->setContentSize(ccp(100, 20) / 0.5f);
+        btn2->setColor(ccc3(0, 0, 0));
         btn2->setScale(0.5f);
         btn2->setOpacity(100);
+        btn2->setID("selected");
 
         auto lbl2 = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
         lbl2->setPosition(btn->getContentSize() / 2);
+        lbl2->setID("name");
 
         if (selectedTab == i)
         {
@@ -200,11 +210,13 @@ bool AndroidUI::init()
         b->setUserData(this);
         b->setContentSize(btn->getContentSize() / 2);
         b->m_scaleMultiplier = 1.0f;
+        b->setID(win->id);
 
         auto outline = CCScale9Sprite::create("GJ_square07.png");
         outline->setContentSize(btn2->getContentSize());
         outline->setPosition(outline->getContentSize() / 2);
         outline->setVisible(selectedTab == i);
+        outline->setID("outline");
         btn2->addChild(outline);
 
         windowsMenu->addChild(b);
@@ -255,6 +267,12 @@ bool AndroidUI::init()
     input->setDelegate(this);
     input->getInputNode()->setID("IGNOREBYPASSES"_spr);
     input->setString("");
+    input->setID("search-input");
+    input->getInputNode()->m_cursor->setID("cursor");
+    if (auto cursor = input->getInputNode()->m_cursor->getChildren()->objectAtIndex(0))
+    {
+        as<CCNode*>(cursor)->setID("cursor-char");
+    }
     searchLabel = input->getInputNode()->m_placeholderLabel;
 
     panel->addChild(input);
@@ -296,6 +314,7 @@ bool AndroidUI::init()
         auto out = CCScale9Sprite::create("GJ_square07.png");
         out->setContentSize(panel->getContentSize());
         out->setAnchorPoint(ccp(0, 0));
+        out->setID("panel-outline");
         panel->addChild(out);
     }
 
@@ -395,9 +414,8 @@ void AndroidUI::textChanged(CCTextInputNode* p0)
         {
             if (string::toLower(module->name).find(string::toLower(std::string(p0->getString()))) != std::string::npos)
             {
-                log::info("id: {}", module->id);
-
-                modules.push_back(module);
+                if (!(module->id.starts_with("anim-speed")))
+                    modules.push_back(module);
             }
         }
     }

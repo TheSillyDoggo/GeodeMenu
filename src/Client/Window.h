@@ -225,11 +225,12 @@ public:
 
     virtual void cocosCreate(CCMenu* menu)
     {
-        auto back = CCScale9Sprite::create("square02_small.png");
+        auto back = CCScale9Sprite::create("square02b_small.png");
         back->setContentSize(menu->getContentSize() / 0.5f);
         back->setPosition(ccp(0, 0));
         back->setAnchorPoint(ccp(0, 0));
         back->setScale(0.5f);
+        back->setColor(ccc3(0, 0, 0));
         back->setOpacity(100);
 
         menu->addChild(back);
@@ -441,11 +442,12 @@ class Speedhack : public Window//, public TextInputDelegate
             if (v > 99999)
                 v = 99999;            
             
-            auto back = CCScale9Sprite::create("square02_small.png");
+            auto back = CCScale9Sprite::create("square02b_small.png");
             back->setContentSize(menu->getContentSize() / 0.5f);
             back->setPosition(ccp(0, 0));
             back->setAnchorPoint(ccp(0, 0));
             back->setScale(0.5f);
+            back->setColor(ccc3(0, 0, 0));
             back->setOpacity(100);
             menu->addChild(back);
 
@@ -922,12 +924,13 @@ class _Replay : public Window
 
         void cocosCreate(CCMenu* menu)
         {
-            auto back = CCScale9Sprite::create("square02_small.png");
+            auto back = CCScale9Sprite::create("square02b_small.png");
             back->setContentSize(menu->getContentSize() / 0.5f);
             back->setPosition(ccp(0, 0));
             back->setAnchorPoint(ccp(0, 0));
             back->setScale(0.5f);
             back->setOpacity(100);
+            back->setColor(ccc3(0, 0, 0));
             menu->addChild(back);
 
             lbl = CCLabelBMFont::create("Status", "bigFont.fnt");
