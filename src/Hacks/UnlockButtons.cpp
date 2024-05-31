@@ -23,7 +23,7 @@ class $modify(CCSpriteGrayscale)
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
 
-        if (!(self.m_hooks.size() > 0))
+        if (self.m_hooks.empty())
             return;
 
         auto it = self.m_hooks.begin();

@@ -16,7 +16,6 @@ class $modify (PlayLayer)
     std::vector<GameObject*> coins;
 
     CCDrawNode* dn;
-    CCLayer* mainLayer = nullptr;
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
@@ -26,19 +25,8 @@ class $modify (PlayLayer)
         coinTracers = Client::GetModule("coin-tracers");
         coinColour = as<ColourModule*>(coinTracers->options[0]);
 
-        if (!m_fields->mainLayer)
-        {
-            if (auto mainNode = getChildOfType<CCNode>(this, 1))
-            {
-                if (auto l = getChildOfType<CCLayer>(mainNode, 0))
-                {
-                    m_fields->mainLayer = l;
-                }
-            }
-        }
-
         auto dn = CCDrawNode::create();
-        m_debugDrawNode->getParent()->addChild(dn);
+        m_objectLayer->addChild(dn);
 
         m_fields->dn = dn;
 

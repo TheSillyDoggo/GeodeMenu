@@ -47,6 +47,9 @@ class $modify (NoclipLayer, PlayLayer)
             return PlayLayer::destroyPlayer(p0, p1);
         }
 
+        if (p1 && p1->getID() == "kys"_spr)
+            return PlayLayer::destroyPlayer(p0, p1);
+
         if (!m_fields->ac)
             m_fields->ac = p1;
 

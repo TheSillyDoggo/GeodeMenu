@@ -50,7 +50,7 @@ public:
         clipRect.x = wp.x + tileSize.x;
         clipRect.y = wp.y + tileSize.y * (1 + (modules.size() * quadraticEaseInOut(v)));
 
-        //ImGui::PushClipRect(wp, clipRect, true);
+        ImGui::PushClipRect(wp, clipRect, true);
 
         //DrawUtils::drawRect(wp, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(wp.x, wp.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
         DrawUtils::drawGradient(wp, tileSize, ColourUtility::GetColour(ColourUtility::ClientColour::GradientLeft), ColourUtility::GetColour(ColourUtility::ClientColour::GradientRight));
@@ -89,7 +89,7 @@ public:
             }
         }
 
-        //ImGui::PopClipRect();
+        ImGui::PopClipRect();
 
         #endif
 

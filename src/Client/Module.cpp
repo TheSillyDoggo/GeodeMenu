@@ -108,8 +108,10 @@ void Module::setIncompatible(std::string str)
 
 void Module::addHookRaw(Result<Hook*> hook)
 {
-    if (!hook.isOk())
+    if (!hook.isOk() || !hook.has_value())
         return log::error("Error adding hook: {}", hook.err());
+
+    addHook(hook.unwrap());
 }
 
 void Module::addHook(Hook* hook)

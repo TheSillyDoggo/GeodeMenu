@@ -34,14 +34,18 @@ class $modify (PlayLayer)
 
                 if (x.isOk() && x.value() > v)
                 {
-                    this->PlayLayer::destroyPlayer(m_player1, nullptr);
+                    auto g = GameObject::createWithKey(420);
+                    g->setID("kys"_spr);
+                    this->PlayLayer::destroyPlayer(m_player1, g);
                 }
             }
             else
             {
                 if (this->getCurrentPercent() > v)
                 {
-                    this->PlayLayer::destroyPlayer(m_player1, nullptr);
+                    auto g = GameObject::createWithKey(420);
+                    g->setID("kys"_spr);
+                    this->PlayLayer::destroyPlayer(m_player1, g);
                 }
             }
         }
