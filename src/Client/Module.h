@@ -266,6 +266,9 @@ class InputModule : public Module, public TextInputDelegate
         void load()
         {
             text = geode::prelude::Mod::get()->getSavedValue<std::string>(id + "_value", text);
+            
+            if (this->text.size() > 12)
+                this->text = this->text.substr(0, 12);
         }
 
         void makeAndroid(CCNode* menu, CCPoint pos)
