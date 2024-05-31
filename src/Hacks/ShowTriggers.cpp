@@ -21,13 +21,13 @@ class $modify (PlayLayer)
             this->m_objectLayer->addChild(m_fields->customNode);
         }
 
-        if (!m_fields->mod)
-            m_fields->mod = Client::GetModule("show-triggers");
-
-        if (m_fields->mod && m_fields->mod->enabled)
-        {            
+        if (Client::GetModuleEnabled("show-triggers"))
+        {
             if (p0->m_objectType == GameObjectType::Modifier || p0->m_objectType == GameObjectType::Special)
+            {
                 m_fields->customNode->addChild(p0);
+                p0->setVisible(true);
+            }
         }
     }
 
@@ -56,15 +56,7 @@ class $modify (CCNode)
 
             for (auto hook : hooks)
             {
-                if (hook)
-                {
-                    hook->setAutoEnable(false);
-
-                    if (!modu->enabled)
-                        hook->disable();
-
-                    modu->hooks.push_back(hook);
-                }
+                modu->addHook(hook);
             }
         });
     }

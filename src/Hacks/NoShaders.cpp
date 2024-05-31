@@ -15,23 +15,12 @@ class $modify (ShaderLayer)
     }
     
     static void onModify(auto& self) {
-        std::vector<geode::Hook*> hooks;
+        auto hook = self.getHook("ShaderLayer::performCalculations");
 
-        hooks.push_back(self.getHook("ShaderLayer::performCalculations").unwrap());
-
-        Loader::get()->queueInMainThread([hooks] 
+        Loader::get()->queueInMainThread([hook]
         {
             auto modu = Client::GetModule("no-shaders");
-
-            for (auto hook : hooks)
-            {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
-            }
+            modu->addHookRaw(hook);
         });
     }
 };

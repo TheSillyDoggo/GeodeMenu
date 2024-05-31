@@ -31,23 +31,12 @@ class $modify (GJBaseGameLayer)
     }
 
     static void onModify(auto& self) {
-        std::vector<geode::Hook*> hooks;
+        auto hook = self.getHook("GJBaseGameLayer::collisionCheckObjects");
 
-        hooks.push_back(self.getHook("GJBaseGameLayer::collisionCheckObjects").unwrap());
-
-        Loader::get()->queueInMainThread([hooks] 
+        Loader::get()->queueInMainThread([hook]
         {
             auto modu = Client::GetModule("all-plat");
-
-            for (auto hook : hooks)
-            {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
-            }
+            modu->addHookRaw(hook);
         });
     }
 };

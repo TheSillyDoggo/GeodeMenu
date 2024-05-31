@@ -28,13 +28,7 @@ $execute {
     Loader::get()->queueInMainThread([hook]
     {
         auto modu = Client::GetModule("no-particles");
-    
-        hook->setAutoEnable(false);
-
-        if (!modu->enabled)
-            hook->disable();
-
-        modu->hooks.push_back(hook);
+        modu->addHook(hook);
     });
 }
 

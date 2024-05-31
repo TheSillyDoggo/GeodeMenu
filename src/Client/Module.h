@@ -34,12 +34,13 @@ class ModuleChangeDelegate
 
 class Module
 {
+    protected:
+        std::vector<geode::Hook*> hooks = {};
+        std::vector<geode::Patch*> patches = {};
     public:
-
         static inline std::string descMod = "";
 
         std::vector<Module*> options = {};
-        std::vector<geode::Hook*> hooks = {};
 
         std::string name;
         std::string id;
@@ -58,14 +59,16 @@ class Module
 
         ModuleChangeDelegate* delegate = nullptr;
 
-        enum kModuleType
-        {
-            Toggle,
-            Button,
-            Float
-        };
+        void addHookRaw(Result<Hook*> hook);
 
-        kModuleType moduleType = kModuleType::Toggle;
+        void addHook(Hook* hook);
+        void addPatch(Patch* hook);
+
+        void disableHooks();
+        void enableHooks();
+
+        void disablePatches();
+        void enablePatches();
 
         Module()
         {
@@ -94,25 +97,11 @@ class Module
             this->load();
         }
 
-        Module(std::string n, std::string i, kModuleType type)
-        {
-            name = n;
-            id = i;
-            moduleType = type;
-
-            this->load();
-        }
-
         virtual bool Draw(ImVec2 tileSize)
         {
             ImVec2 pos = ImGui::GetCursorPos();
 
             DrawUtils::drawRect(pos, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
-
-            if (moduleType == kModuleType::Float)
-            {
-                DrawUtils::drawRect(pos, ImVec2(tileSize.x * value, tileSize.y), ColourUtility::GetColour(ColourUtility::ClientColour::Accent));
-            }
 
             DrawUtils::anchoredText(DrawUtils::addImVec2(pos, ImVec2(3, 0)), tileSize, name.c_str(), ColourUtility::GetColour(enabled ? ColourUtility::Accent : ColourUtility::Text), ImVec2(0, 0.5f));
 
@@ -121,22 +110,12 @@ class Module
             {
                 descMod = description;
 
-                if (moduleType == kModuleType::Float)
+                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
                 {
-                    if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-                    {
-                        value = (ImGui::GetIO().MousePos.x - pos.x) / tileSize.x;
-                    }
-                }
-                else
-                {
-                    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                    {
-                        enabled = !enabled;
+                    enabled = !enabled;
 
-                        this->save();
-                        return true;
-                    }
+                    this->save();
+                    return true;
                 }
             }
 

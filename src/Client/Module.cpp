@@ -44,22 +44,10 @@ void Module::onToggleAndroid(CCObject* sender)
     dat->save();
     dat->OnChange();
 
-    if (dat->hooks.size() > 0)
-    {
-        for (auto hook : dat->hooks)
-        {
-            if (hook->isEnabled())
-            {
-                if (!dat->enabled)
-                    hook->disable();
-            }
-            else
-            {
-                if (dat->enabled)
-                    hook->enable();
-            }
-        }
-    }
+    if (dat->enabled)
+        dat->enableHooks();
+    else
+        dat->disableHooks();
 }
 
 void Module::makeAndroid(CCNode* menu, CCPoint pos)
@@ -116,6 +104,69 @@ void Module::setIncompatible(std::string str)
 {
     this->isInComp = true;
     this->inCompAlert = str;
+}
+
+void Module::addHookRaw(Result<Hook*> hook)
+{
+    if (!hook.isOk())
+        return log::error("Error adding hook: {}", hook.err());
+}
+
+void Module::addHook(Hook* hook)
+{
+    if (hook)
+    {
+        hooks.push_back(hook);
+        hook->setAutoEnable(false);
+
+        if (!enabled)
+            hook->disable();
+    }
+}
+
+void Module::addPatch(Patch* hook)
+{
+
+}
+
+void Module::disableHooks()
+{
+    for (auto hook : hooks)
+    {
+        if (hook)
+        {
+            auto v = hook->disable();
+            if (v.has_error())
+            {
+                log::error("Error Disabling hook: {}, {}", hook->getDisplayName(), v.err());
+            }
+        }
+    }
+}
+
+void Module::enableHooks()
+{
+    for (auto hook : hooks)
+    {
+        if (hook)
+        {
+            auto v = hook->enable();
+            if (v.has_error())
+            {
+                log::error("Error Enabling hook: {}, {}", hook->getDisplayName(), v.err());
+            }
+        }
+    }
+}
+
+void Module::disablePatches()
+{
+
+}
+
+void Module::enablePatches()
+{
+
 }
 
 void ColourDelegate::updateColor(cocos2d::ccColor4B const& color)

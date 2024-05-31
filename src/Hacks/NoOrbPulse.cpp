@@ -51,32 +51,12 @@ class $modify (PlayLayer)
     }
 
     static void onModify(auto& self) {
-        std::vector<geode::Hook*> hooks;
+        auto hook = self.getHook("PlayLayer::updateVisibility");
 
-        Hook* hook = nullptr;
-        auto h = self.getHook("PlayLayer::updateVisibility");
-        
-        if (h.isOk())
-            hook = h.unwrap();
-
-        hooks.push_back(hook);
-
-        Loader::get()->queueInMainThread([hooks] 
+        Loader::get()->queueInMainThread([hook]
         {
             auto modu = Client::GetModule("no-orb-pulse");
-
-            for (auto hook : hooks)
-            {
-                if (hook && modu)
-                {
-                    hook->setAutoEnable(false);
-
-                    if (!modu->enabled)
-                        hook->disable();
-
-                    modu->hooks.push_back(hook);
-                }
-            }
+            modu->addHookRaw(hook);
         });
     }
 };

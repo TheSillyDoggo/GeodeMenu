@@ -19,18 +19,12 @@ class $modify (SliderTouchLogic)
     }
 
     static void onModify(auto& self) {
-        geode::Hook* hook = self.getHook("SliderTouchLogic::ccTouchMoved").unwrap();
+        auto hook = self.getHook("SliderTouchLogic::ccTouchMoved");
 
-        Loader::get()->queueInMainThread([hook] 
+        Loader::get()->queueInMainThread([hook]
         {
             auto modu = Client::GetModule("slider-limit");
-
-            hook->setAutoEnable(false);
-
-            if (!modu->enabled)
-                hook->disable();
-
-            modu->hooks.push_back(hook);
+            modu->addHookRaw(hook);
         });
     }
 };

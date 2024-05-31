@@ -68,23 +68,12 @@ class $modify (PlayLayer)
     Ref<CCNode> customNode;
 
     static void onModify(auto& self) {
-        std::vector<geode::Hook*> hooks;
+        auto hook = self.getHook("PlayLayer::postUpdate");
 
-        hooks.push_back(self.getHook("PlayLayer::postUpdate").unwrap());
-
-        Loader::get()->queueInMainThread([hooks] 
+        Loader::get()->queueInMainThread([hook]
         {
             auto modu = Client::GetModule("show-layout");
-
-            for (auto hook : hooks)
-            {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
-            }
+            modu->addHookRaw(hook);
         });
     }
 
@@ -160,12 +149,7 @@ class $modify (GJBaseGameLayer)
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }
@@ -236,15 +220,7 @@ class $modify (CCNode)
 
             for (auto hook : hooks)
             {
-                if (hook)
-                {
-                    hook->setAutoEnable(false);
-
-                    if (!modu->enabled)
-                        hook->disable();
-
-                    modu->hooks.push_back(hook);
-                }
+                modu->addHook(hook);
             }
         });
     }
@@ -272,12 +248,7 @@ class $modify(EffectGameObject) {
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }
@@ -322,12 +293,7 @@ class $modify (GJGroundLayer)
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }
@@ -358,12 +324,7 @@ class $modify(GameObject) {
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }

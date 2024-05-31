@@ -90,12 +90,7 @@ class $modify (GJBaseGameLayer)
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }
@@ -135,12 +130,7 @@ class $modify (PlayLayer)
 
             for (auto hook : hooks)
             {
-                hook->setAutoEnable(false);
-
-                if (!modu->enabled)
-                    hook->disable();
-
-                modu->hooks.push_back(hook);
+                modu->addHook(hook);
             }
         });
     }

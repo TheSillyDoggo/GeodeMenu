@@ -4,6 +4,7 @@
 - Cheat indicator now properly works if Auto Safe Mode is disabled
 - Fixed Transitions being the wrong speed on macos
 - Added Menu Keybind customizer in the mod settings
+- Changed mod id to **thesillydoggo.qolmod** to comply with new index rules
 
 # 1.4.3
 

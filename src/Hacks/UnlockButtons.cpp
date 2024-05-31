@@ -23,6 +23,9 @@ class $modify(CCSpriteGrayscale)
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
 
+        if (!(self.m_hooks.size() > 0))
+            return;
+
         auto it = self.m_hooks.begin();
         std::advance(it, 0);
 
@@ -36,12 +39,7 @@ class $modify(CCSpriteGrayscale)
             {
                 if (hook)
                 {
-                    hook->setAutoEnable(false);
-
-                    if (!modu->enabled)
-                        hook->disable();
-
-                    modu->hooks.push_back(hook);
+                    modu->addHook(hook);
                 }
             }
         });
