@@ -8,7 +8,7 @@
 		"ios": "2.205"
 	},
 	"early-load": true,
-	"id": "TheSillyDoggo.Cheats",
+	"id": "thesillydoggo.qolmod",
 	"name": "QOLMod",
 	"developer": "TheSillyDoggo",
 	"description": "The Best Free Geode Mod Menu!",
@@ -32,6 +32,13 @@
 			"type": "custom"
 		}
 	},
+	"incompatibilities": [
+		{
+			"id": "TheSillyDoggo.Cheats",
+			"version": "*",
+			"importance": "superseded"
+		}
+	],
 	"tags": [
 		"Cheats",
 		"Utility"
