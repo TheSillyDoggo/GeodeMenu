@@ -13,6 +13,8 @@
 #include "../Layers/ConfirmFLAlertLayer.h"
 #include "../Layers/ReplayOptionsLayer.h"
 
+#include "../Utils/Utils.hpp"
+
 class Client;
 
 class Window
@@ -286,6 +288,11 @@ public:
         scroll->m_contentLayer->setContentHeight(height);
         scroll->moveToTop();
         scroll->enableScrollWheel();
+
+        //auto scrollbar = geode::Scrollbar::create(scroll);
+        //scrollbar->setPositionY(menu->getContentHeight() / 2);
+        //scrollbar->setPositionX(menu->getContentWidth() + 0.5f);
+        //menu->addChild(scrollbar);
     }
 };
 

@@ -42,4 +42,6 @@ class AndroidBall : public CCLayer
         void UpdateVisible(bool i);
 
         CREATE_FUNC(AndroidBall);
+
+        ~AndroidBall();
 };

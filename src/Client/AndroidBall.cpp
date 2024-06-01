@@ -50,7 +50,8 @@ bool AndroidBall::init()
 
 bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
-    CCLayer::ccTouchBegan(touch, event);
+    if (!CCLayer::ccTouchBegan(touch, event))
+        return false;
 
     if (!this->isVisible())
         return false;
@@ -204,6 +205,11 @@ void AndroidBall::UpdateVisible(bool i)
     }
 }
 
+AndroidBall::~AndroidBall()
+{
+    instance = nullptr;
+}
+
 
 class $modify (CCScene)
 {
@@ -211,7 +217,6 @@ class $modify (CCScene)
     {
         if (!getChildOfType<AndroidBall>(CCScene::get(), 0))
             return CCScene::getHighestChildZ();
-
 
         auto ins = getChildOfType<AndroidBall>(CCScene::get(), 0);
 
@@ -238,9 +243,7 @@ class $modify (AppDelegate)
             return; // fix texture ldr
 
         if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
-        {
-            return CCTouchDispatcher::get()->addTargetedDelegate(ball, -514, true);
-        }
+            ball->removeFromParent();
 
         newScene->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);

@@ -5,7 +5,6 @@
 - Fixed Transitions being the wrong speed on macos
 - Added Menu Keybind customizer in the mod settings
 - Adjusted Pastel Colour code to be more optimised
-- Kill After now kills if noclip is enabled
 - Changed mod id to **thesillydoggo.qolmod** to comply with new index rules
 
 # 1.4.3
