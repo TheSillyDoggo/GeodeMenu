@@ -1,14 +1,14 @@
 {
 	"geode": "2.0.0-beta.27",
-	"version": "v1.4.4",
+	"version": "v1.4.4-beta.1",
 	"gd": {
 		"win": "2.204",
 		"mac": "2.200",
-		"android": "2.205",
+		"android": "2.206",
 		"ios": "2.205"
 	},
 	"early-load": true,
-	"id": "thesillydoggo.qolmod",
+	"id": "TheSillyDoggo.Cheats",
 	"name": "QOLMod",
 	"developer": "TheSillyDoggo",
 	"description": "The Best Free Geode Mod Menu!",
@@ -32,13 +32,6 @@
 			"type": "custom"
 		}
 	},
-	"incompatibilities": [
-		{
-			"id": "TheSillyDoggo.Cheats",
-			"version": "*",
-			"importance": "superseded"
-		}
-	],
 	"tags": [
 		"Cheats",
 		"Utility"
