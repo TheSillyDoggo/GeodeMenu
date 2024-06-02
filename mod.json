@@ -4,7 +4,7 @@
 	"gd": {
 		"win": "2.204",
 		"mac": "2.200",
-		"android": "2.206",
+		"android": "*",
 		"ios": "2.205"
 	},
 	"early-load": true,
