@@ -1,4 +1,4 @@
-# 1.4.4
+# 1.4.4-beta.1
 
 - Fixed Trail And Wave Trail having the wrong default colour in icon effects
 - Cheat indicator now properly works if Auto Safe Mode is disabled
