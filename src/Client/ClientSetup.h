@@ -482,6 +482,10 @@ public:
         #ifndef QOLMOD_AUTOSONG
         Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
+
+        #ifdef QOLMOD_NOJUSTDONT
+        Client::GetModule("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        #endif
     }
 
 #pragma endregion

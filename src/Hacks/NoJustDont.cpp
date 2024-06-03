@@ -1,3 +1,5 @@
+#ifdef QOLMOD_NOJUSTDONT
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
@@ -38,3 +40,5 @@ class $modify (EndLevelLayer)
             spr->setFlipX(false);
     }
 };
+
+#endif
