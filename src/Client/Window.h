@@ -683,7 +683,7 @@ class Variables : public Window
             log::info("button");
 
             //PlayLayer::get()->m_player1->toggleDartMode(true, true);
-            PlayLayer::get()->m_player1->m_position += ccp(30, 150);
+            //PlayLayer::get()->m_player1->m_position += ccp(30, 150);
 
             //PlayLayer::get()->m_player1->playerDestroyed(false);
 
