@@ -478,6 +478,10 @@ public:
         #ifndef GEODE_IS_WINDOWS
         Client::GetModule("custom-obj-limit")->setIncompatible("This mod only supports <cl>Windows</c> <cg>currently</c>");
         #endif
+
+        #ifndef QOLMOD_AUTOSONG
+        Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        #endif
     }
 
 #pragma endregion

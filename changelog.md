@@ -5,6 +5,7 @@
 - Fixed Transitions being the wrong speed on macos
 - Added Menu Keybind customizer in the mod settings
 - Adjusted Pastel Colour code to be more optimised
+- Removed hide endscreen button as it was added in 2.206
 - Added support for 2.206 ON ANDROID ONLY
 - THIS BUILD DOES NOT HAVE SUPPORT FOR ANY OTHER PLATFORMS
 

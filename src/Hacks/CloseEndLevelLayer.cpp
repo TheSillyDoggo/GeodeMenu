@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_MACOS
+/*#ifndef GEODE_IS_MACOS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
@@ -117,4 +117,4 @@ class $modify(EndLevelLayer)
     }
 };
 
-#endif
+#endif*/

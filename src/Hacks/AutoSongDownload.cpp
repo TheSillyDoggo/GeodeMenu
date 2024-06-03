@@ -13,10 +13,14 @@ class $modify (LevelInfoLayer)
 
         if (Client::GetModuleEnabled("auto-song"))
         {
+            #ifdef QOLMOD_AUTOSONG
+
             Loader::get()->queueInMainThread([this] {
                 if(m_songWidget && m_songWidget->m_downloadBtn && m_songWidget->m_downloadBtn->isVisible())
                     m_songWidget->onDownload(nullptr);
             });
+            
+            #endif
         }
 
         return true;
