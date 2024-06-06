@@ -13,10 +13,6 @@ float speedhackLogic(float dt)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
     #endif
 
-    FMODAudioEngine::sharedEngine()->m_globalChannel->setPitch(4);
-
-    log::info("masterGroup: {}", masterGroup == nullptr);
-
     if (!masterGroup)
         return dt;
 
@@ -29,7 +25,6 @@ float speedhackLogic(float dt)
             bool m = SpeedhackMus::instance->enabled;
 
             float v = SpeedhackTop::instance->getFloatValue();
-            log::info("v: {}", v);
 
             if (SpeedhackGameplay::instance->enabled)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
