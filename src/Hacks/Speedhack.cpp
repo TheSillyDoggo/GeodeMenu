@@ -13,6 +13,10 @@ float speedhackLogic(float dt)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
     #endif
 
+    FMODAudioEngine::sharedEngine()->m_globalChannel->setPitch(4);
+
+    log::info("masterGroup: {}", masterGroup == nullptr);
+
     if (!masterGroup)
         return dt;
 
@@ -25,6 +29,7 @@ float speedhackLogic(float dt)
             bool m = SpeedhackMus::instance->enabled;
 
             float v = SpeedhackTop::instance->getFloatValue();
+            log::info("v: {}", v);
 
             if (SpeedhackGameplay::instance->enabled)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
@@ -48,6 +53,8 @@ float speedhackLogic(float dt)
     return dt;
 }
 
+#ifdef GEODE_IS_MACOS
+
 class $modify (CCScheduler)
 {
     virtual void update(float dt)
@@ -57,6 +64,28 @@ class $modify (CCScheduler)
         CCScheduler::update(dt);
     }
 };
+
+#else
+
+void myUpdate(CCScheduler* ins, float dt)
+{
+    dt = speedhackLogic(dt);
+    
+    ins->update(dt);
+}
+
+$execute {
+    Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getVirtual(&CCScheduler::update)
+        ),
+        &myUpdate,
+        "cocos2d::CCScheduler::update",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
+
+#endif
 
 #ifdef GEODE_IS_IOS
 

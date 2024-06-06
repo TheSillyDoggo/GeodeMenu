@@ -132,7 +132,7 @@ class $modify (PlayLayerExt, PlayLayer)
 
         if (hasHackedAttempt)
         {
-            return this->onQuit();
+            return this->onQuit();/*
 
             if (m_isPracticeMode)
             {
@@ -143,7 +143,7 @@ class $modify (PlayLayerExt, PlayLayer)
                 showCompleteEffect();
             }
 
-            return;
+            return;*/
         }
 
         PlayLayer::levelComplete();
@@ -182,36 +182,6 @@ class $modify(GJGameLevel) {
 
 class $modify(EndLevelLayerExt, EndLevelLayer)
 {
-    void playCoinEffect(float p0)
-    {
-        if (!hasHackedAttempt)
-            EndLevelLayer::playCoinEffect(p0);
-    }
-
-    void playCurrencyEffect(float p0)
-    {
-        if (!hasHackedAttempt)
-            EndLevelLayer::playCurrencyEffect(p0);
-    }
-
-    void playDiamondEffect(float p0)
-    {
-        if (!hasHackedAttempt)
-            EndLevelLayer::playDiamondEffect(p0);
-    }
-
-    void playEndEffect()
-    {
-        if (!hasHackedAttempt)
-            EndLevelLayer::playEndEffect();
-    }
-
-    void playStarEffect(float p0)
-    {
-        if (!hasHackedAttempt)
-            EndLevelLayer::playStarEffect(p0);
-    }
-
     void onInfo(CCObject*)
     {
         std::stringstream ss;

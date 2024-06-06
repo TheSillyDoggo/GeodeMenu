@@ -1,3 +1,5 @@
+#ifdef QOLMOD_VERIFYHACK
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/ShareLevelLayer.hpp>
 #include "../Client/Client.h"
@@ -17,6 +19,7 @@ class $modify(ShareLevelLayer)
 
     void onShare(cocos2d::CCObject* sender)
     {
+        #ifdef QOLMOD_GOODVERIFYHACK
         if (Client::GetModuleEnabled("verify-hack"))
         {
             auto pop = UploadPopup::create(m_fields->m_level);
@@ -29,5 +32,20 @@ class $modify(ShareLevelLayer)
         }
 
         ShareLevelLayer::onShare(sender);
+        #else
+        auto level = m_fields->m_level;
+		auto p1 = level->m_isVerifiedRaw;
+		auto p2 = level->m_isVerified.value();
+
+		level->m_isVerifiedRaw = true;
+		level->m_isVerified = true;
+
+		ShareLevelLayer::onShare(sender);
+
+		level->m_isVerifiedRaw = p1;
+		level->m_isVerified = p2;
+        #endif
     }
 };
+
+#endif

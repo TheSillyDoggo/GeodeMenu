@@ -7,11 +7,11 @@
 
 class $modify(CCSpriteGrayscale)
 {
-    static CCSpriteGrayscale* createWithSpriteFrame(CCSpriteFrame* spr)
+    static CCSpriteGrayscale* createWithSpriteFrameName(gd::string const& spr)
     {
-        auto res = CCSpriteGrayscale::createWithSpriteFrame(spr);
+        auto res = CCSpriteGrayscale::createWithSpriteFrameName(spr);
 
-        auto spr2 = CCSprite::createWithSpriteFrame(spr);
+        auto spr2 = CCSprite::createWithSpriteFrameName(spr.c_str());
         spr2->setPosition(res->getContentSize() / 2);
 
         res->addChild(spr2);

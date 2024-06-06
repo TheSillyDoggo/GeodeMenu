@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_MACOS
+/*#ifndef GEODE_IS_MACOS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -14,7 +14,9 @@ Module* trajectoryMod = nullptr;
 
 class $modify (PlayerObjectExt, PlayerObject)
 {
-    bool isHeld;
+    struct Fields {
+        bool isHeld;
+    };
 
     void pushButton(PlayerButton p0)
     {
@@ -40,7 +42,7 @@ class $modify (PlayerObjectExt, PlayerObject)
         if (!ignoreStuff)
             EffectGameObject::triggerObject(p0, p1, p2);
     }
-};*/
+};* /
 
 
 class $modify (GJBaseGameLayer)
@@ -228,7 +230,7 @@ class $modify (PlayLayer)
 
         bool held = as<PlayerObjectExt*>(m_player1)->m_fields->isHeld == first;
 
-        CCPoint point = /*(first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : */m_player1->getPosition();
+        CCPoint point = /*(first && (getGamemode(m_player1) == 0 || getGamemode(m_player1) == 5)) ? m_player1->m_lastGroundedPos : * /m_player1->getPosition();
         plr->setPosition(point);
         plr->m_isPlatformer = m_player1->m_isPlatformer;
         plr->m_isUpsideDown = m_player1->m_isUpsideDown;
@@ -313,4 +315,4 @@ class $modify (PlayLayer)
     }
 };
 
-#endif
+#endif*/

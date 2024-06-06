@@ -10,7 +10,9 @@ InputModule* accurateModPlaces = nullptr;
 
 class $modify (PlayLayer)
 {
-    CCLabelBMFont* title;
+    struct Fields {
+        CCLabelBMFont* title;
+    };
 
     float getPerc()
     {

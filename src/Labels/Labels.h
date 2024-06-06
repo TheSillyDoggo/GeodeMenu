@@ -13,7 +13,9 @@ using namespace geode::prelude;
 
 class $modify (AttemptPlayLayer, PlayLayer)
 {
-    int attemptCount = 0;
+    struct Fields {
+        int attemptCount = 0;
+    };
 
     void resetLevel()
     {

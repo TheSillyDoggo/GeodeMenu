@@ -8,7 +8,9 @@ InputModule* tm = nullptr;
 
 class $modify (PlayLayer)
 {
-    CCLabelBMFont* time;
+    struct Fields {
+        CCLabelBMFont* time;
+    };
 
     virtual void postUpdate(float p0)
     {

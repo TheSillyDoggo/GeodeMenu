@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/CCNode.hpp>
@@ -41,11 +39,7 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
-            #ifdef GEODE_IS_APPLE
             engine->update(dt);
-            #else
-            engine->updateMetering();
-            #endif
             
             #ifdef GEODE_IS_WINDOWS
             float met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(engine) + 0x178));
@@ -68,7 +62,6 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-            
         #ifdef GEODE_IS_WINDOWS
         *(reinterpret_cast<bool*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x188)) = true;
         #else
@@ -83,5 +76,3 @@ class $modify (MenuLayer)
         return true;
     }
 };
-
-#endif

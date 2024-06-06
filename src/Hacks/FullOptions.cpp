@@ -50,9 +50,9 @@ class $modify (PauseLayer)
     {
         if (Client::GetModuleEnabled("full-options") && !ignore)
         {
-            auto layer = OptionsLayer::create();
-            CCDirector::sharedDirector()->getRunningScene()->addChild(layer, 69);
-            layer->showLayer(false);
+            //auto layer = OptionsLayer::create();
+            //CCDirector::sharedDirector()->getRunningScene()->addChild(layer, 69);
+            //layer->showLayer(false);
         }
         else
             PauseLayer::onSettings(sender);

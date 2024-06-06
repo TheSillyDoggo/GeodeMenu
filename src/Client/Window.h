@@ -871,12 +871,12 @@ class _Replay : public Window
 
         void onSave(CCObject*)
         {
-            SaveMacroPopup::addToScene();
+            //SaveMacroPopup::addToScene();
         }
 
         void onLoad(CCObject*)
         {
-            LoadMacroPopup::addToScene();
+            //LoadMacroPopup::addToScene();
         }
 
         void onClear(CCObject*)
@@ -926,7 +926,7 @@ class _Replay : public Window
 
         void onConfig(CCObject*)
         {
-            ReplayOptionsLayer::addToScene();
+            //ReplayOptionsLayer::addToScene();
         }
 
         void cocosCreate(CCMenu* menu)
@@ -1015,7 +1015,7 @@ class Status : public Window
     public:
         void onEditPositions(CCObject*)
         {
-            EditStatusPositionLayer::addToScene();
+            //EditStatusPositionLayer::addToScene();
         }
 
         void cocosCreate(CCMenu* menu)

@@ -8,7 +8,9 @@ Module* instant = nullptr;
 
 class $modify (GJBaseGameLayer)
 {
-    bool fix = false;
+    struct Fields {
+        bool fix = false;
+    };
 
     virtual void update(float dt)
     {

@@ -474,13 +474,14 @@ void Config::onDisableGP(CCObject* sender)
 
 void Config::onChangeFile(CCObject*)
 {
+    /*
     file::FilePickOptions options = {
         std::nullopt,
         {}
     };
 
-    auto callback = [this](ghc::filesystem::path result) {
-        auto path = ghc::filesystem::path(result.c_str());
+    auto callback = [this](std::filesystem::path result) {
+        auto path = std::filesystem::path(result.c_str());
         #ifdef GEODE_IS_WINDOWS
         auto strPath = geode::utils::string::wideToUtf8(result.c_str());
         #else
@@ -494,5 +495,5 @@ void Config::onChangeFile(CCObject*)
         FLAlertLayer::create("Error", "Failed to open file", "Ok")->show();
     };
 
-    file::pickFile(file::PickMode::OpenFile, options, callback, failedCallback);
+    file::pickFile(file::PickMode::OpenFile, options, callback, failedCallback);*/
 }

@@ -6,8 +6,10 @@
 
 class $modify (PlayLayer)
 {
-    Module* mod = nullptr;
-    Ref<CCNode> customNode;
+    struct Fields {
+        Module* mod = nullptr;
+        Ref<CCNode> customNode = nullptr;
+    };
 
     void addObject(GameObject* p0)
     {

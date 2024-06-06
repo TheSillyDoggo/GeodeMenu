@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_MACOS
+#ifdef QOLMOD_SHOWLAYOUT
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>

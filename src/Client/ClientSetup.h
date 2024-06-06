@@ -483,9 +483,19 @@ public:
         Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
 
-        #ifdef QOLMOD_NOJUSTDONT
+        #ifndef QOLMOD_NOJUSTDONT
         Client::GetModule("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
+
+        #ifndef QOLMOD_VERIFYHACK
+        Client::GetModule("verify-hack")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        #endif
+
+        #ifndef QOLMOD_FREESCROLL
+        Client::GetModule("free-scroll")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        #endif
+
+        Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
     }
 
 #pragma endregion

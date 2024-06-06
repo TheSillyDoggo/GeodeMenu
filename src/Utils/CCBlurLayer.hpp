@@ -23,7 +23,7 @@ class CCBlurLayer : public CCLayerColor
         void draw();
 
         GLuint compileShader(GLenum type, const char* source);
-        GLuint loadShaderProgram(ghc::filesystem::path vertShaderPath, ghc::filesystem::path fragShaderPath);
+        GLuint loadShaderProgram(std::filesystem::path vertShaderPath, std::filesystem::path fragShaderPath);
 
         static CCBlurLayer* create();
 };

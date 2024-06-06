@@ -6,7 +6,10 @@ using namespace geode::prelude;
 
 class $modify (PauseLayer)
 {
-    bool v = false;
+    struct Fields {
+        bool v = false;
+        bool a = false;
+    };
 
     void onPracticeMode(cocos2d::CCObject* sender)
     {
@@ -36,8 +39,6 @@ class $modify (PauseLayer)
             }
         );
     }
-
-    bool a = false;
 
     void onRestart(cocos2d::CCObject* sender)
     {

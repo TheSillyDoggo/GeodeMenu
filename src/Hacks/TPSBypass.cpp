@@ -40,7 +40,7 @@ void updateTPSPatches(bool tpsEnabled)
     if (tpsEnabled)
     {
         #ifdef GEODE_IS_WINDOWS
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x49D548), getBytes<float>(1.0f / tps)).unwrap());
+        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x49D548), getBytes<float>(1.0f / tps)).unwrap());
         #endif
 
         #ifdef GEODE_IS_ANDROID32
@@ -52,11 +52,11 @@ void updateTPSPatches(bool tpsEnabled)
         #endif
 
         #ifdef GEODE_IS_MACOS
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x7e9c60), getBytes<double>(1.0f / tps)).unwrap());
+        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x7e9c60), getBytes<double>(1.0f / tps)).unwrap());
         #endif
 
         #ifdef GEODE_IS_IOS
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x648b80), getBytes<double>(1.0f / tps)).unwrap());
+        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x648b80), getBytes<double>(1.0f / tps)).unwrap());
         #endif
     }
 }

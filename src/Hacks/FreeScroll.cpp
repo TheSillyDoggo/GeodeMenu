@@ -1,4 +1,4 @@
-#ifdef GEODE_IS_WINDOWS
+#ifdef QOLMOD_FREESCROLL
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/EditorUI.hpp>
@@ -8,7 +8,9 @@ using namespace geode::prelude;
 
 class $modify (EditorUI)
 {
-    Module* mod = nullptr;
+    struct Fields {
+        Module* mod = nullptr;
+    };
 
     void constrainGameLayerPosition()
     {

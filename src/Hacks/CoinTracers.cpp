@@ -13,9 +13,11 @@ ColourModule* coinColour = nullptr;
 
 class $modify (PlayLayer)
 {
-    std::vector<GameObject*> coins;
+    struct Fields {
+        std::vector<GameObject*> coins;
 
-    CCDrawNode* dn;
+        CCDrawNode* dn;
+    };
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {

@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "../Client/Dropdown.h"
 #include <Geode/ui/GeodeUI.hpp>
@@ -260,4 +260,4 @@ class EditStatusPositionLayer : public FLAlertLayer
 
             CCScene::get()->addChild(pRet, 99999);
         }
-};
+};*/

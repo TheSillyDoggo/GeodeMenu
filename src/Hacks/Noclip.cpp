@@ -7,20 +7,19 @@ using namespace geode::prelude;
 
 class $modify (NoclipLayer, PlayLayer)
 {
-    GameObject* ac;
+    struct Fields {
+        GameObject* ac;
+        GameObject* last;
 
-    GameObject* last;
+        int t = 0;
+        int d = 0;
+        bool isDead = false;
 
-    //std::vector<GameObject*> dies;
+        CCLayerColor* tint;
 
-    int t = 0;
-    int d = 0;
-    bool isDead = false;
-
-    CCLayerColor* tint;
-
-    Module* tintOnDeath;
-    SliderModule* tintOpacity;
+        Module* tintOnDeath;
+        SliderModule* tintOpacity;
+    };
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
