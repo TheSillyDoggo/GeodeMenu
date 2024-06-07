@@ -159,16 +159,16 @@ class $modify (PlayLayerExt, PlayLayer)
             return PlayLayer::showNewBest(p0, p1, p2, p3, p4, p5);
     }
 
-    /*void resetLevel()
+    void resetLevel()
     {
         hasHackedAttempt = false;
         hasHackedAttemptReal = false;
 
         PlayLayer::resetLevel();
 
-        hasHackedAttempt = Client::GetModule("safe-mode")->enabled;
+        hasHackedAttempt = Client::GetModuleEnabled("safe-mode");
         updateSafemode();
-    }*/
+    }
 };
 
 class $modify(GJGameLevel) {
