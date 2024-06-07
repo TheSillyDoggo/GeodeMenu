@@ -101,7 +101,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
     }
 };
 
-class $modify (PlayLayer)
+/*class $modify (PlayLayer)
 {
     void resetLevel()
     {
@@ -112,7 +112,7 @@ class $modify (PlayLayer)
         points.clear();
         sizes.clear();
     }
-};
+};*/
 
 class $modify (LevelEditorLayer)
 {

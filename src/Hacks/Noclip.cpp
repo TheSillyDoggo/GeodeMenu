@@ -74,7 +74,7 @@ class $modify (NoclipLayer, PlayLayer)
         }
     }
 
-    void resetLevel()
+    /*void resetLevel()
     {
         PlayLayer::resetLevel();
 
@@ -83,5 +83,5 @@ class $modify (NoclipLayer, PlayLayer)
         m_fields->d = 0;
         m_fields->t = 0;
         m_fields->isDead = false;
-    }
+    }*/
 };

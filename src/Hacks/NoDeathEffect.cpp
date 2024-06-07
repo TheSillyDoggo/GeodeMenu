@@ -6,14 +6,14 @@
 using namespace geode::prelude;
 
 //#ifndef GEODE_IS_ANDROID32
-class $modify (PlayLayer)
+/*class $modify (PlayLayer)
 {
     void delayedResetLevel()
     {
         if (!Client::GetModuleEnabled("instant-restart"))
             PlayLayer::delayedResetLevel();
     }
-};
+};*/
 //#endif
 
 class $modify (PlayerObject)
