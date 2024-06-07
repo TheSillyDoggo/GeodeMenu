@@ -15,8 +15,7 @@ class $modify (ShaderLayer)
     {
         noLevel = Client::GetModule("no-level");
 
-        //return ShaderLayer::init();
-        return false;
+        return ShaderLayer::init();
     }
 
     virtual void visit()
@@ -25,7 +24,7 @@ class $modify (ShaderLayer)
         {
             this->setVisible(true);
 
-            //ShaderLayer::visit();
+            ShaderLayer::visit();
         }
     }
 };

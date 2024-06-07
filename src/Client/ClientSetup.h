@@ -495,7 +495,19 @@ public:
         Client::GetModule("free-scroll")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
 
+        #ifndef QOLMOD_PULSINGMENU
+        Client::GetModule("menu-pulse")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        #endif
+
+        #ifdef GEODE_IS_WINDOWS
+        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        Client::GetModule("no-shake")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        Client::GetModule("custom-obj-limit")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        #endif
+
         Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
     }
 
 #pragma endregion

@@ -20,9 +20,9 @@ class $modify (MusicDownloadManager)
 {
     gd::string pathForSFX(int p0)
     {
-        //if (!Client::GetModuleEnabled("fire-in-the-hole"))
-            //return MusicDownloadManager::pathForSFX(p0);
-        //else
+        if (!Client::GetModuleEnabled("fire-in-the-hole"))
+            return MusicDownloadManager::pathForSFX(p0);
+        else
             return "sfx/s4451.ogg";
     }
 };

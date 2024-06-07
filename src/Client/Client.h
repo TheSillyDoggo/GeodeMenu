@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "../Defines/Platform.h"
 
 class Client
 {

@@ -1,3 +1,5 @@
+#ifdef QOLMOD_PULSINGMENU
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/CCNode.hpp>
@@ -5,9 +7,6 @@
 #include <Geode/modify/FMODLevelVisualizer.hpp>
 #include "../Client/Client.h"
 #include "../Utils/defines.hpp"
-
-//#define MEMBERBYOFFSET(type, class, offset) *reinterpret_cast<type*>(reinterpret_cast<uintptr_t>(class) + offset)
-//#define MBO MEMBERBYOFFSET
 
 using namespace geode::prelude;
 
@@ -39,10 +38,11 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
+            engine->enableMetering();
             engine->update(dt);
             
             #ifdef GEODE_IS_WINDOWS
-            float met = *(reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(engine) + 0x178));
+            float met = engine->m_pulse3;
             #else
             float met = engine->getMeteringValue();
             #endif
@@ -62,11 +62,7 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        #ifdef GEODE_IS_WINDOWS
-        *(reinterpret_cast<bool*>(reinterpret_cast<uintptr_t>(FMODAudioEngine::sharedEngine()) + 0x188)) = true;
-        #else
         FMODAudioEngine::sharedEngine()->enableMetering();
-        #endif
 
         auto mp = MenuPulse::create();
         mp->node = getChildOfType<CCSprite>(this, 0);
@@ -76,3 +72,5 @@ class $modify (MenuLayer)
         return true;
     }
 };
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_WINDOWS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -9,7 +11,7 @@ class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
     {    
-        for (size_t i = 0; i < p2; i++)
+        for (size_t i = 0; i < p1->size(); i++)
         {
             auto obj = p1->at(i);
 
@@ -20,7 +22,7 @@ class $modify (GJBaseGameLayer)
                     if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                     {
                         this->playerWillSwitchMode(p0, obj);
-                        this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
+                        this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));                        
                         obj->playShineEffect();
                     }
                 }
@@ -40,3 +42,5 @@ class $modify (GJBaseGameLayer)
         });
     }
 };
+
+#endif

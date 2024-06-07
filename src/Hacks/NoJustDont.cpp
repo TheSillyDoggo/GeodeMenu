@@ -1,9 +1,9 @@
-#ifdef QOLMOD_NOJUSTDONT
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/EndLevelLayer.hpp>
 #include "../Client/Client.h"
+
+#ifdef QOLMOD_NOJUSTDONT
 
 using namespace geode::prelude;
 
@@ -32,12 +32,14 @@ class $modify (EndLevelLayer)
         if (!Client::GetModuleEnabled("just-dont"))
             return;
 
-        m_mainLayer->sortAllChildren();
+        Loader::get()->queueInMainThread([this] {
+            m_mainLayer->sortAllChildren();
 
-        auto spr = getChildOfType<CCSprite>(m_mainLayer, -1);
+            auto spr = getChildOfType<CCSprite>(m_mainLayer, -1);
 
-        if (spr)
-            spr->setFlipX(false);
+            if (spr)
+                spr->setFlipX(false);
+        });
     }
 };
 

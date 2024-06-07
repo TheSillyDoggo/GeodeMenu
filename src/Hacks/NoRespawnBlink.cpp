@@ -15,7 +15,7 @@ class $modify (CCNode)
         if (!mod)
             mod = Client::GetModule("no-blink");
 
-        if (mod->enabled && PlayLayer::get() && PlayLayer::get()->m_player1 == as<CCNode*>(this) && action->getTag() == 11)
+        if (mod->enabled && PlayLayer::get() && (PlayLayer::get()->m_player1 == as<CCNode*>(this) || PlayLayer::get()->m_player2 == as<CCNode*>(this)) && action->getTag() == 11)
             return action;
 
         return CCNode::runAction(action);

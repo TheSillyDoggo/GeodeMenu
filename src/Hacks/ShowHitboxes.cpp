@@ -1,4 +1,4 @@
-#ifdef GEODE_IS_MACOS
+#ifndef GEODE_IS_MACOS
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
@@ -12,7 +12,7 @@ class $modify (PlayLayer)
     struct Fields {
         Module* mod = nullptr;
         Module* mod2 = nullptr;
-    }
+    };
 
     void updateVisibility(float p0) {
         PlayLayer::updateVisibility(p0);

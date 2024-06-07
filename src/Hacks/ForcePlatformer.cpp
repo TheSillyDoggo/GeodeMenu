@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
-#include <Geode/modify/DashRingObject.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../Client/Client.h"
 
@@ -29,14 +28,11 @@ class $modify (UILayer)
 
 #endif
 
-class $modify (DashRingObject)
-{
-
-};
-
 class $modify (PlayerObject)
 {
-    bool f;
+    struct Fields {
+        bool f;
+    };
 
     virtual void update(float dt)
     {
@@ -48,12 +44,12 @@ class $modify (PlayerObject)
 
             this->togglePlatformerMode(true);
             #ifdef GEODE_IS_ANDROID
-            //if (!m_fields->f)
-            //{
-            //    m_fields->f = true;
-            //    if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
-            //        PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
-            //}
+            if (!m_fields->f)
+            {
+                m_fields->f = true;
+                if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
+                    PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
+            }
             #endif
 
         }

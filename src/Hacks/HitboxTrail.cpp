@@ -31,41 +31,18 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 
         hitboxTrail = Client::GetModule("show-hitboxes")->options[6];
 
-        dn = getNode();
-
         return true;
-    }
-
-    CCDrawNode* getNode()
-    {
-        CCArrayExt<CCNode*> children = this->getChildren();
-
-        for (auto node : children)
-        {
-            if (typeinfo_cast<CCNode*>(node) && node->getChildrenCount() == 1)
-            {
-                if (auto l = getChildOfType<CCLayer>(node, 0))
-                {
-                    if (auto n = getChildOfType<CCDrawNode>(l, 0))
-                        return n;
-                }
-            }
-        }
-
-        return nullptr;
     }
 
     virtual void update(float dt)
     {
         GJBaseGameLayer::update(dt);
 
-        #ifdef GEODE_IS_WINDOWS
         if (!dn)
             dn = m_debugDrawNode;
-        #endif
 
         if (!dn)
-            dn = getNode();
+            return;
 
         if (hitboxTrail->enabled)
             drawTrail();

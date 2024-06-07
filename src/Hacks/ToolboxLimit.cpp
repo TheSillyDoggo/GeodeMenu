@@ -24,8 +24,8 @@ void updateToolboxPatches(bool tpsEnabled)
         log::info("patching toolbox");
 
         #ifdef GEODE_IS_WINDOWS
-        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa82ad)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // custom object count
-        toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // object count
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa82ad)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // custom object count
+        //toolboxpatches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0xa820f)), {0x3d, 0xFF, 0xFF, 0xFF, 0xFF}).unwrap()); // object count
         #endif
 
         //#ifdef GEODE_IS_IOS

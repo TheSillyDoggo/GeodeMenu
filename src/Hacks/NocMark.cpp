@@ -13,7 +13,7 @@ class $modify(EditLevelLayer) {
             this->m_level->m_originalLevel = 0;
         }
         
-        //EditLevelLayer::onShare(sender);
+        EditLevelLayer::onShare(sender);
     }
 
 };

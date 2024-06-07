@@ -1,14 +1,16 @@
-#ifdef QOLMOD_VERIFYHACK
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/ShareLevelLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
+#ifdef QOLMOD_VERIFYHACK
+
 class $modify(ShareLevelLayer)
 {
-    GJGameLevel* m_level = nullptr;
+    struct Fields {
+        GJGameLevel* m_level = nullptr;
+    };
 
     bool init(GJGameLevel* p0)
     {
@@ -37,8 +39,11 @@ class $modify(ShareLevelLayer)
 		auto p1 = level->m_isVerifiedRaw;
 		auto p2 = level->m_isVerified.value();
 
-		level->m_isVerifiedRaw = true;
-		level->m_isVerified = true;
+        if (Client::GetModuleEnabled("verify-hack"))
+        {
+		    level->m_isVerifiedRaw = true;
+		    level->m_isVerified = true;
+        }
 
 		ShareLevelLayer::onShare(sender);
 

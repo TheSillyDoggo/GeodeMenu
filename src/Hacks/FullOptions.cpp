@@ -50,9 +50,16 @@ class $modify (PauseLayer)
     {
         if (Client::GetModuleEnabled("full-options") && !ignore)
         {
-            //auto layer = OptionsLayer::create();
-            //CCDirector::sharedDirector()->getRunningScene()->addChild(layer, 69);
-            //layer->showLayer(false);
+            #ifdef GEODE_IS_WINDOWS
+            auto event = menu_selector(MenuLayer::onOptions);
+
+            if (event)
+                (this->*event)(sender);
+            #else
+            auto layer = OptionsLayer::create();
+            CCDirector::sharedDirector()->getRunningScene()->addChild(layer, 69);
+            layer->showLayer(false);
+            #endif
         }
         else
             PauseLayer::onSettings(sender);
