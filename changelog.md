@@ -7,6 +7,7 @@
 - Adjusted Pastel Colour code to be more optimised
 - Removed hide endscreen button as it was added in 2.206
 - Fixed Conditional Auto Retry triggering in practice or platformer mode
+- Changed mod id from **TheSillyDoggo.Cheats** to **thesillydoggo.qolmod** to comply with new index
 - **Added support for 2.206**
 
 # 1.4.3

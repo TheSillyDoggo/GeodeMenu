@@ -28,7 +28,10 @@ class $modify (CCKeyboardDispatcher)
         { 
             bool v = false;
 
-            auto btns = SetBindValue::instance->buttons;
+            std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_F12, enumKeyCodes::KEY_Insert };
+
+            if (SetBindValue::instance)
+                btns = SetBindValue::instance->buttons;
 
             for (auto btn : btns)
             {
@@ -130,9 +133,39 @@ class $modify (CCKeyboardDispatcher)
     }
 };
 
-//$on_mod(Loaded)
+void migrateData()
+{
+    if (Mod::get()->getSavedValue<bool>("migrated"))
+        return;
+    
+    auto path = Mod::get()->getSaveDir().string();
+    path = utils::string::replace(path, Mod::get()->getID(), "TheSillyDoggo.Cheats");
+
+    log::debug("Config Import Path: {}", path);
+    log::debug("Config Path Exists: {}", std::filesystem::exists(path));
+
+    auto saved = path + "\\saved.json";
+    auto savedNew = Mod::get()->getSaveDir().string() + "\\saved.json";
+
+    if (std::filesystem::exists(saved))
+    {
+        auto res = std::filesystem::copy_file(saved, savedNew, std::filesystem::copy_options::skip_existing);
+
+        log::debug("Copy saved results: {}", res);
+    }
+
+    auto res = Mod::get()->loadData();
+
+    if (res.has_error())
+        log::error("Error loading: {}", res.error());
+
+    Mod::get()->setSavedValue<bool>("migrated", true);
+}
+
 $execute
 {
+    migrateData();
+
     client = new Client();
     Client::instance = client;
 
