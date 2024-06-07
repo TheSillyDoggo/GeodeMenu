@@ -21,6 +21,8 @@ class $modify (AttemptPlayLayer, PlayLayer)
     {
         PlayLayer::resetLevel();
 
+        log::info("attempt");
+
         m_fields->attemptCount++;
     }
 };

@@ -107,6 +107,8 @@ class $modify (PlayLayer)
     {
         PlayLayer::resetLevel();
 
+        log::info("hitbox trail");
+
         points.clear();
         sizes.clear();
     }

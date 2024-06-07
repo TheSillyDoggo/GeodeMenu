@@ -500,14 +500,14 @@ public:
         Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("no-shake")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("custom-obj-limit")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
-        Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
 
         #ifndef QOLMOD_FREESCROLL
         Client::GetModule("free-scroll")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
-        
+
         #endif
 
+        Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
     }
