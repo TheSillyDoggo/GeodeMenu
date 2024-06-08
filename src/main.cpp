@@ -141,11 +141,14 @@ void migrateData()
     auto path = Mod::get()->getSaveDir().string();
     path = utils::string::replace(path, Mod::get()->getID(), "TheSillyDoggo.Cheats");
 
-    log::debug("Config Import Path: {}", path);
-    log::debug("Config Path Exists: {}", std::filesystem::exists(path));
-
     auto saved = path + "\\saved.json";
     auto savedNew = Mod::get()->getSaveDir().string() + "\\saved.json";
+
+    log::debug("Old Config Path: {}", saved);
+    log::debug("Old Config Path Exists: {}", std::filesystem::exists(saved));
+
+    log::debug("Old Config Path: {}", savedNew);
+    log::debug("Old Config Path Exists: {}", std::filesystem::exists(savedNew));
 
     if (std::filesystem::exists(saved))
     {

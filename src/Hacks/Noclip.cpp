@@ -74,14 +74,12 @@ class $modify (NoclipLayer, PlayLayer)
         }
     }
 
-    /*void resetLevel()
+    void resetLevel()
     {
         PlayLayer::resetLevel();
-
-        log::info("noclip");
 
         m_fields->d = 0;
         m_fields->t = 0;
         m_fields->isDead = false;
-    }*/
+    }
 };
