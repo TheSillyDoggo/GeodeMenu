@@ -1,20 +1,10 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/CCActionManager.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
-
-//#ifndef GEODE_IS_ANDROID32
-class $modify (PlayLayer)
-{
-    void delayedResetLevel()
-    {
-        if (!Client::GetModuleEnabled("instant-restart"))
-            PlayLayer::delayedResetLevel();
-    }
-};
-//#endif
 
 class $modify (PlayerObject)
 {
@@ -29,6 +19,7 @@ class $modify (PlayerObject)
         if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
         {
             PlayLayer::get()->resetLevel();
+            PlayLayer::get()->stopActionByTag(16);
             this->setVisible(true);
         }
 
