@@ -48,7 +48,7 @@ class $modify (CCKeyboardDispatcher)
 
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
-                        ui->close(nullptr);
+                        ui->onClose(nullptr);
                     }
                     else
                     {

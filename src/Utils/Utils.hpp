@@ -14,3 +14,5 @@
 	} c; \
 	return c.get(reinterpret_cast<FriendeeClass__*>(v)); \
 }(value)
+
+float roundUpToMultipleOf2(float num);

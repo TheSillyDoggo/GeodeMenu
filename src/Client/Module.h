@@ -585,6 +585,8 @@ class SpeedhackTop : public InputModule
 
             this->load();
         }
+
+        static float getAdjustedValue();
 };
 
 class SpeedhackEnabled : public Module

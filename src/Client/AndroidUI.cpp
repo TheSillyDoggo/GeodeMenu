@@ -7,12 +7,13 @@ bool AndroidUI::init()
         return false;
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
 
     this->setTouchEnabled(true);
-    this->setMouseEnabled(true);
     this->setKeypadEnabled(true);
-
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
+    this->scheduleUpdate();
+    this->setID("AndroidUI");
+    this->runAction(CCFadeTo::create(0.5f, 100));
 
     if (Client::GetModuleEnabled("menu-bg-blur"))
     {
@@ -22,9 +23,6 @@ bool AndroidUI::init()
         this->addChild(blur);
     }
 
-    this->runAction(CCFadeTo::create(0.5f, 100));
-    this->setID("AndroidUI");
-
     auto backMenu = CCMenu::create();
     backMenu->ignoreAnchorPointForPosition(false);
     backMenu->setContentSize(ccp(0, 0));
@@ -33,109 +31,20 @@ bool AndroidUI::init()
     backMenu->setID("back-menu");
 
     auto backSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
-    
-    float v = 1.0f;
-
-    if (SpeedhackTop::instance)
-    {
-        if (SpeedhackEnabled::instance->enabled)
-        {
-            auto x = numFromString<float>(SpeedhackTop::instance->text);
-
-            if (x.isOk())
-            {
-                v = x.value();
-                
-                if (v < 0.01f)
-                    v = 0.01f;
-
-                if (v > 99999)
-                    v = 99999;
-            }
-            else
-                v = 1;
-
-            bool m = SpeedhackMus::instance->enabled;
-
-            if (SpeedhackGameplay::instance->enabled)
-                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
-
-            v /= CCDirector::get()->getScheduler()->getTimeScale();
-        }
-    }
 
     #ifdef GEODE_IS_APPLE
     backSpr->runAction(CCFadeIn::create(0.5f));
     #else
-    backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / v));
+    backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / SpeedhackTop::getAdjustedValue()));
     #endif
 
-    auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::close));
+    auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::onClose));
     backBtn->setPosition(ccp(24, -23));
     backBtn->setSizeMult(1.15f);
-
     backMenu->addChild(backBtn);
-    this->addChild(backMenu);
 
+    auto panel = getBGNode();
     
-    int theme = Mod::get()->getSavedValue<int>("theme", 5);
-
-    std::stringstream ss;
-    ss << "GJ_square0";
-    ss << (theme < 0 ? 6 : theme);
-    ss << ".png";
-
-    panel = CCScale9Sprite::create(ss.str().c_str());
-    panel->setContentSize(ccp(475, 280));
-    panel->setID("panel");
-
-    as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
-
-    if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
-    {
-        auto size = panel->getContentSize();
-
-        auto gradient = CCLayerGradient::create(ccc4(0, 0, 0, 0), ccc4(0, 0, 0, 0));
-        gradient->setContentSize(size);
-        gradient->setZOrder(-1);
-        gradient->setID("gradient"_spr);
-
-        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("use-custom-colours"))
-        {
-            gradient->setStartColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("primary-colour"));
-            gradient->setEndColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("secondary-colour"));
-        }
-        else
-        {
-            gradient->setStartColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
-            gradient->setEndColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
-        }
-
-        gradient->setStartOpacity(255);
-        gradient->setEndOpacity(255);
-
-        gradient->setPosition(CCDirector::get()->getWinSize() / 2);
-        gradient->ignoreAnchorPointForPosition(false);
-
-        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("reverse-order"))
-            gradient->setScaleY(-1);
-
-        auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
-        outline->setPosition(size / 2);
-        outline->setContentSize(size);
-        outline->setZOrder(1);
-        outline->setID("outline"_spr);
-        
-        gradient->addChild(outline);
-
-        panel->addChild(gradient);
-
-        gradient->setAnchorPoint(ccp(0, 0));
-        gradient->setPosition(ccp(0, 0));
-
-        gradient->setVisible(theme == -1);
-    }
-
     auto windows = CCScale9Sprite::create("square02_small.png");
     windows->setOpacity(100);
     windows->setPosition(ccp(10, 10));
@@ -153,77 +62,65 @@ bool AndroidUI::init()
     windowsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
     windows->addChild(windowsMenu);
 
-    labels.clear();
-    buttons.clear();
-    pages.clear();
-    outlines.clear();
-
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
     {
         auto win = Client::instance->windows[i];
 
-        auto btn = CCScale9Sprite::create("square02b_small.png");
-        btn->setContentSize(ccp(100, 20) / 0.5f);
-        btn->setColor(ccc3(0, 0, 0));
-        btn->setScale(0.5f);
-        btn->setOpacity(100);
-        btn->setID("unselected");
+        auto selectedBtn = CCScale9Sprite::create("square02b_small.png");
+        selectedBtn->setContentSize(ccp(100, 20) / 0.5f);
+        selectedBtn->setColor(ccc3(0, 0, 0));
+        selectedBtn->setScale(0.5f);
+        selectedBtn->setOpacity(100);
+        selectedBtn->setID("selected");
 
-        auto lbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-        lbl->setPosition(btn->getContentSize() / 2);
-        lbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
-        lbl->setColor({200, 200, 200});
-        lbl->setID("name");
+        auto selectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
+        selectedLbl->setPosition(selectedBtn->getContentSize() / 2);
+        selectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
+        selectedLbl->setColor(selectedTab == i ? ccc3(255, 255, 255) : ccc3(150, 150, 150));
+        selectedLbl->setOpacity(selectedTab == i ? 255 : 150);
+        selectedLbl->setID("name");
 
-        btn->addChild(lbl);
-
-        auto btn2 = CCScale9Sprite::create("square02b_small.png");
-        btn2->setContentSize(ccp(100, 20) / 0.5f);
-        btn2->setColor(ccc3(0, 0, 0));
-        btn2->setScale(0.5f);
-        btn2->setOpacity(100);
-        btn2->setID("selected");
-
-        auto lbl2 = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-        lbl2->setPosition(btn->getContentSize() / 2);
-        lbl2->setID("name");
-
-        if (selectedTab == i)
+        if (true) // maybe make a way to turn this off oneday?
         {
-            lbl2->setColor({255, 255, 255});
-            lbl2->setOpacity(255);
-        }
-        else
-        {
-            lbl2->setColor({150, 150, 150});
-            lbl2->setOpacity(150);
+            auto outline = CCScale9Sprite::create("GJ_square07.png");
+            outline->setContentSize(selectedBtn->getContentSize());
+            outline->setPosition(outline->getContentSize() / 2);
+            outline->setVisible(selectedTab == i);
+            outline->setID("outline");
+
+            selectedBtn->addChild(outline);
+            outlines.push_back(outline);
         }
 
-        lbl2->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
+        auto unselectedBtn = CCScale9Sprite::create("square02b_small.png");
+        unselectedBtn->setContentSize(ccp(100, 20) / 0.5f);
+        unselectedBtn->setColor(ccc3(0, 0, 0));
+        unselectedBtn->setScale(0.5f);
+        unselectedBtn->setOpacity(100);
+        unselectedBtn->setID("unselected");
 
-        btn2->addChild(lbl2);
+        auto unselectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
+        unselectedLbl->setPosition(unselectedBtn->getContentSize() / 2);
+        unselectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
+        unselectedLbl->setColor({200, 200, 200});
+        unselectedLbl->setID("name");
+
+        selectedBtn->addChild(selectedLbl);
+        unselectedBtn->addChild(unselectedLbl);
         
-        auto b = CCMenuItemSpriteExtra::create(btn2, btn, windowsMenu, menu_selector(AndroidUI::onPressTab));
-        b->setTag(i);
-        b->setEnabled(i != selectedTab);
-        b->setSelectedImage(btn);
-        b->setUserData(this);
-        b->setContentSize(btn->getContentSize() / 2);
-        b->m_scaleMultiplier = 1.0f;
-        b->setID(win->id);
+        auto btn = CCMenuItemSpriteExtra::create(selectedBtn, unselectedBtn, this, menu_selector(AndroidUI::onPressTab));
+        btn->setTag(i);
+        btn->setEnabled(i != selectedTab);
+        btn->setSelectedImage(unselectedBtn); // this is required on everything other than ios?? wtf cocos
+        btn->setUserData(this);
+        btn->setContentSize(unselectedBtn->getContentSize() / 2);
+        btn->m_scaleMultiplier = 1.0f;
+        btn->setID(win->id);
 
-        auto outline = CCScale9Sprite::create("GJ_square07.png");
-        outline->setContentSize(btn2->getContentSize());
-        outline->setPosition(outline->getContentSize() / 2);
-        outline->setVisible(selectedTab == i);
-        outline->setID("outline");
-        btn2->addChild(outline);
+        windowsMenu->addChild(btn);
 
-        windowsMenu->addChild(b);
-
-        labels.push_back(lbl2);
-        outlines.push_back(outline);
-        buttons.push_back(b);
+        labels.push_back(selectedLbl);
+        buttons.push_back(btn);
     }
 
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
@@ -306,6 +203,65 @@ bool AndroidUI::init()
         as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
     }
 
+    panel->runAction(getEnterAction(panel));
+
+    this->addChild(panel);
+    this->addChild(backMenu);
+    return true;
+}
+
+CCNode* AndroidUI::getBGNode()
+{
+    int theme = Mod::get()->getSavedValue<int>("theme", 5);
+
+    panel = CCScale9Sprite::create(fmt::format("GJ_square0{}.png", (theme < 0 ? 6 : theme)).c_str());
+    panel->setContentSize(ccp(475, 280));
+    panel->setID("panel");
+
+    as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
+
+    if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages") && theme == -1)
+    {
+        auto gradient = CCLayerGradient::create(ccc4(0, 0, 0, 0), ccc4(0, 0, 0, 0));
+        gradient->setContentSize(panel->getContentSize());
+        gradient->setZOrder(-1);
+        gradient->setID("gradient"_spr);
+
+        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("use-custom-colours"))
+        {
+            gradient->setStartColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("primary-colour"));
+            gradient->setEndColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("secondary-colour"));
+        }
+        else
+        {
+            auto gm = GameManager::get();
+
+            gradient->setStartColor(gm->colorForIdx(gm->m_playerColor.value()));
+            gradient->setEndColor(gm->colorForIdx(gm->m_playerColor2.value()));
+        }
+
+        gradient->setStartOpacity(255);
+        gradient->setEndOpacity(255);
+
+        gradient->setPosition(CCDirector::get()->getWinSize() / 2);
+        gradient->ignoreAnchorPointForPosition(false);
+
+        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("reverse-order"))
+            gradient->setScaleY(-1);
+
+        auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
+        outline->setPosition(panel->getContentSize() / 2);
+        outline->setContentSize(panel->getContentSize());
+        outline->setZOrder(1);
+        outline->setID("outline"_spr);
+        
+        gradient->addChild(outline);
+        panel->addChild(gradient);
+
+        gradient->setAnchorPoint(ccp(0, 0));
+        gradient->setPosition(ccp(0, 0));
+    }
+
     if (theme == -2)
     {
         panel->setColor(ccc3(0, 0, 0));
@@ -331,16 +287,7 @@ bool AndroidUI::init()
         }
     }
 
-    this->addChild(panel);
-    panel->runAction(getEnterAction(panel));
-
-    this->scheduleUpdate();
-
-    //handleTouchPriority(this);
-
-    cocos2d::CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
-
-    return true;
+    return panel;
 }
 
 CCMenu* AndroidUI::getSearchPanel()
@@ -389,7 +336,7 @@ CCMenu* AndroidUI::getSearchPanel()
 
 void AndroidUI::keyBackClicked()
 {
-    close(nullptr);
+    onClose(nullptr);
 }
 
 void AndroidUI::update(float dt)
@@ -466,7 +413,7 @@ void AndroidUI::goToPage(int p, bool transition)
     }
 }
 
-void AndroidUI::close(CCObject* sender)
+void AndroidUI::onClose(CCObject* sender)
 {
     if (auto pause = getChildOfType<PauseLayer>(CCScene::get(), 0))
     {
@@ -553,7 +500,6 @@ void AndroidUI::onPressTab(CCObject* sender)
     if (typeinfo_cast<IconEffects*>(Client::instance->windows[btn->getTag()]) && EffectUI::getIncompatibleModLoaded())
         return FLAlertLayer::create(nullptr, "Icon Effects", fmt::format("Icon Effects have been disabled due to incompatibilities.\nTo use icon effects, disable the following mod:\n{}", EffectUI::getIncompatibleMods()), "OK", nullptr, 330, false, 300, 0.75f)->show();
 
-
     lastTab = selectedTab;
     selectedTab = btn->getTag();
 
@@ -582,8 +528,18 @@ void AndroidUI::onPressTab(CCObject* sender)
         labels[i]->updateLabel();
     }
     
-    log::info("Changed tab to {}", selectedTab);
     goToPage(selectedTab);
+}
+
+AndroidUI* AndroidUI::addToScene()
+{
+    if (auto existing = getChildOfType<AndroidUI>(CCScene::get(), 0))
+        return existing;
+
+    auto pRet = AndroidUI::create();
+
+    CCScene::get()->addChild(pRet, 69420);
+    return pRet;
 }
 
 AndroidUI::~AndroidUI()

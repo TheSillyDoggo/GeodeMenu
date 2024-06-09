@@ -433,3 +433,23 @@ int InputModule::getIntValue()
 
     return intValue;
 }
+
+float SpeedhackTop::getAdjustedValue()
+{
+    float v = 1;
+
+    if (SpeedhackTop::instance)
+    {
+        if (SpeedhackEnabled::instance->enabled)
+        {
+            SpeedhackTop::instance->getFloatValue();
+
+            if (SpeedhackGameplay::instance->enabled)
+                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
+
+            v /= CCDirector::get()->getScheduler()->getTimeScale();
+        }
+    }
+
+    return v;
+}
