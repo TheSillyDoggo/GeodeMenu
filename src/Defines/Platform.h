@@ -1,7 +1,10 @@
+#include <Geode/Geode.hpp>
+
 #define QOLMOD_VERIFYHACK
 #define QOLMOD_AUTOSONG
 #define QOLMOD_NOJUSTDONT
 
 #ifdef GEODE_IS_ANDROID
 #define QOLMOD_SHOWLAYOUT
+#define QOLMOD_PULSINGMENU
 #endif
