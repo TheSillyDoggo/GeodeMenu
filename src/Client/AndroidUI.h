@@ -22,8 +22,6 @@ class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
         static inline int lastTab = 0;
         static inline int selectedTab = 0;
 
-        int secret = 0;
-        
         void goToPage(int p, bool transition = false);
         
         void onClose(CCObject* sender);

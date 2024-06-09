@@ -12,7 +12,7 @@ bool AndroidUI::init()
     this->setTouchEnabled(true);
     this->setKeypadEnabled(true);
     this->scheduleUpdate();
-    this->setID("AndroidUI");
+    this->setID("QOLModUI");
     this->runAction(CCFadeTo::create(0.5f, 100));
 
     if (Client::GetModuleEnabled("menu-bg-blur"))

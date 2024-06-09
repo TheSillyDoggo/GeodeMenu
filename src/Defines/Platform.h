@@ -2,6 +2,6 @@
 #define QOLMOD_AUTOSONG
 #define QOLMOD_NOJUSTDONT
 
-#ifndef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_ANDROID
 #define QOLMOD_SHOWLAYOUT
 #endif
