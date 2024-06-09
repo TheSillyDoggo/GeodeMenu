@@ -1,5 +1,3 @@
-#ifdef QOLMOD_SHOWLAYOUT
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -10,6 +8,8 @@
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
+
+#ifdef QOLMOD_SHOWLAYOUT
 
 Module* showLayout = nullptr;
 Module* showLayoutCamera = nullptr;
@@ -62,10 +62,12 @@ std::vector<std::string> camera = {
 
 class $modify (PlayLayer)
 {
-    CCSprite* background;
-    Ref<GJGroundLayer> ground1;
-    Ref<GJGroundLayer> ground2;
-    Ref<CCNode> customNode;
+    struct Fields {
+        CCSprite* background;
+        Ref<GJGroundLayer> ground1;
+        Ref<GJGroundLayer> ground2;
+        Ref<CCNode> customNode;
+    };
 
     static void onModify(auto& self) {
         auto hook = self.getHook("PlayLayer::postUpdate");

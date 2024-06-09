@@ -1,3 +1,10 @@
+# 1.4.4-beta.2
+
+- Fixed tags not showing on the mod index page
+- Added "Menu" to the end of the name to show that this is a **mod menu**
+- Fixed **No Respawn Blink** not working on the second player
+- Added Show Layout on android
+
 # 1.4.4-beta.1
 
 - Fixed Trail And Wave Trail having the wrong default colour in icon effects
