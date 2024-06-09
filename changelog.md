@@ -4,6 +4,7 @@
 - Fixed **No Respawn Blink** not working on the second player
 - Fixed being able to click invisible inputs
 - Added Show Layout on android
+- Added Pulsing Menu on android
 
 # 1.4.4-beta.1
 

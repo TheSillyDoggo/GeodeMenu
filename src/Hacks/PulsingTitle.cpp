@@ -1,5 +1,3 @@
-#ifdef QOLMOD_PULSINGMENU
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/CCNode.hpp>
@@ -9,6 +7,8 @@
 #include "../Utils/defines.hpp"
 
 using namespace geode::prelude;
+
+#ifdef QOLMOD_PULSINGMENU
 
 Module* pulseAll = nullptr;
 
