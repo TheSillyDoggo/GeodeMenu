@@ -1,3 +1,7 @@
+# 1.4.4-beta.3
+
+- Fixed the mod not loading on the latest geode alpha
+
 # 1.4.4-beta.2
 
 - Fixed tags not showing on the mod index page

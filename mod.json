@@ -1,6 +1,6 @@
 {
-	"geode": "3.0.0-alpha.1",
-	"version": "v1.4.4-beta.2",
+	"geode": "3.0.0-alpha.2",
+	"version": "v1.4.4-beta.3",
 	"gd": {
 		"win": "2.206",
 		"mac": "2.206",
@@ -28,7 +28,7 @@
 		]
     },
 	"settings": {
-		"set-bind": {
+		"set-bind": { 
 			"type": "custom"
 		}
 	},
