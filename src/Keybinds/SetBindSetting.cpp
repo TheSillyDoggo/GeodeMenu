@@ -32,7 +32,7 @@ bool SetBindNode::init(SetBindValue* value, float width)
     {
         auto lbl = CCLabelBMFont::create(nameForKey(btn).c_str(), "bigFont.fnt");
 
-        auto lblBG = CCScale9Sprite::create("white-square.png");
+        auto lblBG = CCScale9Sprite::create("geode.loader/white-square.png");
         lblBG->setColor(ccc3(0, 0, 0));
         lblBG->setContentWidth(lbl->getScaledContentSize().width + 5);
         lblBG->addChildAtPosition(lbl, Anchor::Center);

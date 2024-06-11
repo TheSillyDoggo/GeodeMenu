@@ -20,11 +20,11 @@ void KeyInfoPopup::customSetup()
 {
     auto lbl = CCLabelBMFont::create(CCKeyboardDispatcher::get()->keyToString(as<enumKeyCodes>(key)), "bigFont.fnt");
 
-    auto lblBG = CCScale9Sprite::create("black-square.png");
+    auto lblBG = CCScale9Sprite::create("geode.loader/black-square.png");
     lblBG->setContentWidth(lbl->getScaledContentSize().width + 5);
     lblBG->addChildAtPosition(lbl, Anchor::Center);
 
-    auto removeSpr = CCScale9Sprite::create("white-square.png");
+    auto removeSpr = CCScale9Sprite::create("geode.loader/white-square.png");
     removeSpr->setColor(ccc3(255, 0, 0));
     removeSpr->setScale(30.0f / 32.5f);
 
