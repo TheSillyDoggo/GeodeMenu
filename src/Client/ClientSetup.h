@@ -153,7 +153,7 @@ public:
         bypass->modules.push_back(new Module("Practice Music Sync", "practice-bypass", "Unlocks the Practice Music Sync button in the pause menu options"));
         bypass->modules.push_back(new Module("Unlock All Icons", "icon-bypass", "It... Unlocks all the icons, You should know what this does"));
 
-        bypass->modules.push_back(new Module("Music Unlocker", "music-bypass", "Unlocks the menu and practice music buttons"));
+        bypass->modules.push_back(new Module("Music Customiser Bypass", "music-bypass", "Unlocks the menu and practice music buttons"));
         bypass->modules.push_back(new Module("Fire in the hole!", "fire-in-the-hole", "Replaces every single sfx with\n<cr>FIRE IN THE HOLE!</c>"));
 
         bypass->modules.push_back(new Module("Auto Safe mode", "auto-safe-mode", "Automatically enables safe mode if you have cheats enabled", true));
@@ -422,6 +422,8 @@ public:
 
     static void setupDevtools()
     {
+        return;
+
         Window* devtools = new Window();
         devtools->name = "Developer";
         devtools->id = "devtools-window";

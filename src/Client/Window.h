@@ -209,14 +209,14 @@ public:
             case DrawUtils::animType::SlideUp:
                 return ImVec2(0, wndSize.y * (1 - time));
 
-            case DrawUtils::animType::v6:
-                return ImVec2(0, (wndSize.y * ((i % 2 == 0) ? 1 : -1)) * (1 - time));
+            //case DrawUtils::animType::v6:
+                //return ImVec2(0, (wndSize.y * ((i % 2 == 0) ? 1 : -1)) * (1 - time));
 
             default:
                 break;
         }
 
-        return ImVec2(0, 0);
+        return ImVec2(0, wndSize.y * (1 - quadraticEaseInOut(time)));
     }
 
     int roundUpToMultipleOf2(float num) { // def not stolen

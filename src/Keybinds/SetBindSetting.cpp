@@ -86,7 +86,7 @@ void SetBindNode::onKeySubmit(CCObject* sender)
 
     auto lbl = CCLabelBMFont::create(ins->nameForKey(key).c_str(), "bigFont.fnt");
 
-    auto lblBG = CCScale9Sprite::create("black-square.png");
+    auto lblBG = CCScale9Sprite::create("geode.loader/black-square.png");
     lblBG->setContentWidth(lbl->getScaledContentSize().width + 5);
     lblBG->addChildAtPosition(lbl, Anchor::Center);
     lblBG->setScale(0.65f);

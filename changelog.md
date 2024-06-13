@@ -1,6 +1,7 @@
 # 1.4.4-beta.4
 
 - Fixed pressing the mod settings button crashing the game
+- Fixed the mod not loading on the latest geode alpha
 
 # 1.4.4-beta.3
 
