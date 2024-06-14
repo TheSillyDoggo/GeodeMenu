@@ -15,6 +15,7 @@ file(GLOB SOURCES
 	src/Client/*.cpp
 	src/Hacks/*.cpp
 	src/Utils/*.cpp
+	src/UI/*.cpp
 	src/Keybinds/*.cpp
 	src/Layers/*.cpp
 	src/Labels/*.cpp

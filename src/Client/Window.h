@@ -358,70 +358,6 @@ class Speedhack : public Window//, public TextInputDelegate
             SpeedhackTop::instance->save();
         }
 
-        void onDebug(CCObject*)
-        {
-            float v = 1.0f;
-
-            auto x = numFromString<float>(SpeedhackTop::instance->text);
-
-            if (x.isOk())
-            {
-                v = x.value();
-            }
-
-            if (v < 0.01f)
-                v = 0.01f;
-
-            if (v > 99999)
-                v = 99999;
-
-            bool m = SpeedhackMus::instance->enabled;
-
-            if (SpeedhackGameplay::instance->enabled)
-                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
-
-            v /= CCDirector::get()->getScheduler()->getTimeScale();
-
-            std::stringstream ss;
-
-            ss << "String: <ca>";
-            ss << SpeedhackTop::instance->text;
-            ss << "</c>\n";
-
-            ss << "Value: <ca>";
-            ss << v;
-            ss << "</c>\n";
-            
-            ss << "Value UN-TS: <cy>";
-            ss << v * CCDirector::get()->getScheduler()->getTimeScale();
-            ss << "</c>\n";
-            
-            ss << "isOk: <cg>";
-            ss << x.isOk();
-            ss << "</c>\n";
-            
-            ss << "isErr: <cb>";
-            ss << x.isErr();
-            ss << "</c>\n";
-
-            if (x.isErr())
-            {
-                ss << "Error: <cp>";
-                ss << x.err().value();
-                ss << "</c>\n";
-            }
-
-            ss << "Has Value: <cl>";
-            ss << x.has_value();
-            ss << "</c>\n";
-
-            //ss << "Value RES: <cr>";
-            //ss << x.value();
-            //ss << "</c>\n";
-
-            FLAlertLayer::create("Macro Info", ss.str(), "OK")->show();
-        }
-
         void onPreset(CCObject* sender)
         {
             float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).value();
@@ -430,6 +366,8 @@ class Speedhack : public Window//, public TextInputDelegate
             auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent()->getParent(), 0);
             inp->setString(as<CCNode*>(sender)->getID());
             slider->setValue(unscaleValue(value));
+            
+            SpeedhackTop::instance->save();
         }
 
         void cocosCreate(CCMenu* menu)
@@ -499,21 +437,6 @@ class Speedhack : public Window//, public TextInputDelegate
 
             presetMenu->updateLayout();
             menu->addChild(presetMenu);
-
-            return;
-
-            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22) * 0.5f;
-
-            auto btnS = ButtonSprite::create("Debug", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
-            //as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Speedhack::onDebug));
-            btn->m_baseScale = 0.5f;
-            btn->setScale(btn->m_baseScale);
-            btn->setSizeMult(1.15f);
-            btn->setPosition(pos);
-            menu->addChild(btn);
         }
 
         virtual void textChanged(CCTextInputNode* p0)
@@ -856,181 +779,6 @@ class Universal : public Window
             as<CCLabelBMFont*>(btnUnc->getChildren()->objectAtIndex(0))->updateLabel();
 
             btn = CCMenuItemSpriteExtra::create(btnUnc, menu, menu_selector(Level::onUnc));
-            btn->setSizeMult(1.15f);
-            btn->setPosition(pos);
-            menu->addChild(btn);
-        }
-};
-
-class _Replay : public Window
-{
-    public:
-        static inline CCMenuItemToggler* btnRec = nullptr;
-        static inline CCMenuItemToggler* btnPlay = nullptr;
-        static inline CCLabelBMFont* lbl = nullptr;
-
-        void onSave(CCObject*)
-        {
-            //SaveMacroPopup::addToScene();
-        }
-
-        void onLoad(CCObject*)
-        {
-            //LoadMacroPopup::addToScene();
-        }
-
-        void onClear(CCObject*)
-        {
-            auto pop = geode::createQuickPopup(
-                "Clear Replay",
-                "Are you sure you want to <cr>clear</c> this replay?\nIf you haven't saved the <cg>replay</c>\n it will be <cr>DELETED</c>.",
-                "Cancel", "Clear",
-                [this](FLAlertLayer* tis, bool btn2) {
-                    log::info("click clear");
-
-                    if (btn2) {
-                        log::info("right btn");
-
-                        GJReplayManager::replay = MyReplay();
-
-                        CCScene::get()->addChild(TextAlertPopup::create("Cleared Replay", 0.5f, 0.6f, 150, ""), 9999999);
-                    }
-                }
-            );
-
-            pop->m_button2->updateBGImage("GJ_button_06.png");
-        }
-
-        void onRecord(CCObject*)
-        {
-            GJReplayManager::playing = false;
-            GJReplayManager::recording = !GJReplayManager::recording;
-
-            //btnRec->toggle(GJReplayManager::recording);
-            btnPlay->toggle(GJReplayManager::playing);
-        }
-
-        void onPlay(CCObject*)
-        {
-            GJReplayManager::recording = false;
-            GJReplayManager::playing = !GJReplayManager::playing;
-
-            btnRec->toggle(GJReplayManager::recording);
-            //btnPlay->toggle(GJReplayManager::playing);
-        }
-
-        void onManage(CCObject*)
-        {
-            FLAlertLayer::create("Macro Manager", "Macro Manager is not added yet as I wanted to get the update out as fast as I could, hope you understand <cl>^w^</c>", "OK")->show();
-        }
-
-        void onConfig(CCObject*)
-        {
-            //ReplayOptionsLayer::addToScene();
-        }
-
-        void cocosCreate(CCMenu* menu)
-        {
-            auto back = CCScale9Sprite::create("square02b_small.png");
-            back->setContentSize(menu->getContentSize() / 0.5f);
-            back->setPosition(ccp(0, 0));
-            back->setAnchorPoint(ccp(0, 0));
-            back->setScale(0.5f);
-            back->setOpacity(100);
-            back->setColor(ccc3(0, 0, 0));
-            menu->addChild(back);
-
-            lbl = CCLabelBMFont::create("Status", "bigFont.fnt");
-            lbl->setPosition(ccp(5, menu->getContentSize().height - 2));
-            lbl->setScale(0.725f);
-            lbl->setAnchorPoint(ccp(0, 1));
-            lbl->setOpacity(100);
-
-            auto menuRow = CCMenu::create();
-            menuRow->ignoreAnchorPointForPosition(false);
-            menuRow->setContentSize(ccp(9999, 0));
-            menuRow->setScale(0.625f);
-            menuRow->setPosition(menu->getContentSize() / 2 + ccp(0, -30) + ccp(0, -25));
-
-            auto btnRecSpr1 = ButtonSprite::create("Record", 105, false, "bigFont.fnt", "GJ_button_05.png", 40, 0.65f);
-            getChildOfType<CCLabelBMFont>(btnRecSpr1, 0)->setOpacity(100);
-            getChildOfType<CCLabelBMFont>(btnRecSpr1, 0)->setPositionX(105 / 2);
-            getChildOfType<CCScale9Sprite>(btnRecSpr1, 0)->setPositionX(105 / 2);
-            
-            btnRecSpr1->setContentWidth(105);
-            getChildOfType<CCScale9Sprite>(btnRecSpr1, 0)->setContentWidth(105);
-            
-            auto btnRecSpr2 = ButtonSprite::create("Recording", 105, false, "bigFont.fnt", "GJ_button_01.png", 40, 0.5f);
-            btnRecSpr2->setContentWidth(105);
-            getChildOfType<CCScale9Sprite>(btnRecSpr2, 0)->setContentWidth(105);
-            getChildOfType<CCLabelBMFont>(btnRecSpr2, 0)->setPositionX(105 / 2);
-            getChildOfType<CCScale9Sprite>(btnRecSpr2, 0)->setPositionX(105 / 2);
-
-            btnRec = CCMenuItemToggler::create(btnRecSpr1, btnRecSpr2, menu, menu_selector(_Replay::onRecord));
-            btnRec->toggle(GJReplayManager::recording);
-
-            auto btnPlaySpr1 = ButtonSprite::create("Play", 105, false, "bigFont.fnt", "GJ_button_05.png", 40, 0.65f);
-            getChildOfType<CCLabelBMFont>(btnPlaySpr1, 0)->setOpacity(100);
-            getChildOfType<CCLabelBMFont>(btnPlaySpr1, 0)->setPositionX(105 / 2);
-            getChildOfType<CCScale9Sprite>(btnPlaySpr1, 0)->setPositionX(105 / 2);
-
-            btnPlaySpr1->setContentWidth(105);
-            getChildOfType<CCScale9Sprite>(btnPlaySpr1, 0)->setContentWidth(105);
-
-            auto btnPlaySpr2 = ButtonSprite::create("Playing", 105, false, "bigFont.fnt", "GJ_button_01.png", 40, 0.5f);
-            btnPlaySpr2->setContentWidth(105);
-            getChildOfType<CCScale9Sprite>(btnPlaySpr2, 0)->setContentWidth(105);
-            getChildOfType<CCLabelBMFont>(btnPlaySpr2, 0)->setPositionX(105 / 2);
-            getChildOfType<CCScale9Sprite>(btnPlaySpr2, 0)->setPositionX(105 / 2);
-
-            btnPlay = CCMenuItemToggler::create(btnPlaySpr1, btnPlaySpr2, menu, menu_selector(_Replay::onPlay));
-            btnPlay->toggle(GJReplayManager::playing);
-
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Save", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onSave)));
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Load", "bigFont.fnt", "GJ_button_04.png"), menu, menu_selector(_Replay::onLoad)));
-            menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Clear", "bigFont.fnt", "GJ_button_06.png"), menu, menu_selector(_Replay::onClear)));
-            //menuRow->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("More", "bigFont.fnt", "GJ_button_04.png"), menu, nullptr));
-
-            menuRow->setLayout(RowLayout::create()->setAutoScale(false)->setGap(55));
-
-            auto pos = ccp(menu->getContentSize().width, 0) + ccp(-55, 22);
-
-            auto options = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png"), menu, menu_selector(_Replay::onConfig));
-            options->m_baseScale = 0.6f;
-            options->setScale(options->m_baseScale);
-            menu->addChildAtPosition(options, Anchor::TopRight, ccp(-18, -18));
-
-            auto manager = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("folderIcon_001.png"), menu, menu_selector(_Replay::onManage));
-
-            //menu->addChild(lbl);
-            menu->addChild(menuRow);
-            menu->addChildAtPosition(btnRec, Anchor::Center, ccp(-70, 0));
-            menu->addChildAtPosition(btnPlay, Anchor::Center, ccp(70, 0));
-            menu->addChildAtPosition(manager, Anchor::BottomLeft, ccp(25, 23));
-        }
-};
-
-class Status : public Window
-{
-    public:
-        void onEditPositions(CCObject*)
-        {
-            //EditStatusPositionLayer::addToScene();
-        }
-
-        void cocosCreate(CCMenu* menu)
-        {
-            Window::cocosCreate(menu);
-
-            return;
-
-            auto pos = ccp(58, 22);
-
-            auto btnS = ButtonSprite::create("Edit\nPositions", 90, false, "bigFont.fnt", "GJ_button_05.png", 35, 0.75f);
-            as<CCNode*>(btnS->getChildren()->objectAtIndex(0))->setScale(0.375f);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-            as<CCLabelBMFont*>(btnS->getChildren()->objectAtIndex(0))->updateLabel();
-            auto btn = CCMenuItemSpriteExtra::create(btnS, menu, menu_selector(Status::onEditPositions));
             btn->setSizeMult(1.15f);
             btn->setPosition(pos);
             menu->addChild(btn);

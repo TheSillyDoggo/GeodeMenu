@@ -1,3 +1,8 @@
+# 1.4.4-beta.5
+
+- Fixed pressing presets in speedhack section not saving the value
+- Fixed the mod not loading on the latest geode beta
+
 # 1.4.4-beta.4
 
 - Fixed pressing the mod settings button crashing the game
