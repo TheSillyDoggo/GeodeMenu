@@ -206,6 +206,7 @@ public:
         creator->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
 
         creator->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
+        creator->modules.push_back(new Module("Default Song Bypass", "default-song-bypass", "Removes the main level song limit"));
 
         #ifdef GEODE_IS_WINDOWS
         creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
