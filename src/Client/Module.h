@@ -462,7 +462,7 @@ class SliderModule : public Module
             label->limitLabelWidth(80, 0.575f, 0.1f);
 
             slider = Slider::create(menu, menu_selector(SliderModule::onSliderChanged));
-            slider->getThumb()->setValue(value);
+            slider->setValue(value);
             slider->updateBar();
             slider->getThumb()->setUserData(this);
 
