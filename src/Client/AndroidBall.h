@@ -30,13 +30,10 @@ class AndroidBall : public CCLayer
         virtual bool init();
 
         virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
-
         virtual void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
-
         virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 
         virtual void update(float dt);
-
         static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);

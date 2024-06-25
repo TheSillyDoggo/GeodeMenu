@@ -2,6 +2,8 @@
 
 - Fixed a game softlock when opening the RecordKeyPopup on mobile
 - Fixed the gradient theme not working
+- Fixed not being able to click in the shop
+- Added Main Level Song Bypass (thanks @Capeling)
 
 # 1.4.4-beta.5
 

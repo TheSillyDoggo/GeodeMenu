@@ -1,11 +1,5 @@
 #include "AndroidBall.h"
 
-
-void AndroidBall::onOpenMenu()
-{
-    AndroidUI::addToScene();
-}
-
 bool AndroidBall::init()
 {
     if (!CCLayer::init())
@@ -13,23 +7,19 @@ bool AndroidBall::init()
 
     this->setID("android-ball");
     this->setMouseEnabled(false);
+    this->setTouchEnabled(true);
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512 - 1, true);
 
     highest++;
+    this->setTag(highest);
+    instance = this;
 
     mod = Client::GetModule("hide-btn");
     mod2 = Client::GetModule("instant-fade");
     canDrag = Client::GetModule("allow-dragging");
 
-    this->setTag(highest);
-    instance = this;
-
-    this->setTouchEnabled(true);
-    this->setMouseEnabled(true);
-
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512 - 1, true);
-
     menu = CCMenu::create();
-    menu->setPosition(ccp(0, 0));
+    menu->setPosition(position);
     menu->setContentSize(ccp(0, 0));
 
     l = CCLabelBMFont::create(">_", "bigFont.fnt");
@@ -37,15 +27,19 @@ bool AndroidBall::init()
 
     btn = CircleButtonSprite::create(l, CircleBaseColor::Gray);
     menu->addChild(btn);
+    
     this->addChild(menu);
     this->setZOrder(69420 - 1);
     this->scheduleUpdate();
 
-    menu->setPosition(position);
-
     UpdateVisible(true);
 
     return true;
+}
+
+void AndroidBall::onOpenMenu()
+{
+    AndroidUI::addToScene();
 }
 
 bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
@@ -205,6 +199,16 @@ AndroidBall::~AndroidBall()
     instance = nullptr;
 }
 
+float AndroidBall::clampf(float v, float min, float max)
+{
+    if (v < min)
+        v = min;
+
+    if (v > max)
+        v = max;
+
+    return v;
+}
 
 class $modify (CCScene)
 {
@@ -242,27 +246,10 @@ class $modify (AppDelegate)
 
         newScene->addChild(AndroidBall::create());
         cocos::handleTouchPriority(AndroidBall::instance);
+
+        if (auto shop = getChildOfType<GJShopLayer>(newScene, 0))
+        {
+            cocos::handleTouchPriority(shop);
+        }
     }
 };
-
-class $modify (CCMouseDispatcher)
-{
-    void addDelegate(CCMouseDelegate* pDelegate)
-    {
-        if (dynamic_cast<AndroidBall*>(pDelegate))
-            return;
-
-        CCMouseDispatcher::addDelegate(pDelegate);
-    }
-};
-
-float AndroidBall::clampf(float v, float min, float max)
-{
-    if (v < min)
-        v = min;
-
-    if (v > max)
-        v = max;
-
-    return v;
-}
