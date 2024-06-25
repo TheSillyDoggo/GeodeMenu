@@ -58,6 +58,7 @@ class $modify (CCKeyboardDispatcher)
                 else
                 {
                     showing = !showing;
+                    Client::instance->open = showing;
                 }
             }
         }
@@ -168,6 +169,18 @@ void migrateData()
 $execute
 {
     migrateData();
+
+    //android = !Mod::get()->getSettingValue<bool>("use-new-ui");
+    /*
+    ,
+    "use-new-ui": {
+        "type": "bool",
+        "name": "[BETA] Use PC Gui",
+        "default": false,
+        "description": "Uses a UI more comfortable for pc users, like Mega Hack. Requires Game Restart",
+        "platforms": [ "win", "macos" ]
+    }
+    */
 
     client = new Client();
     Client::instance = client;

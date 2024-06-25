@@ -1,3 +1,8 @@
+# 1.4.4
+
+- Fixed a game softlock when opening the RecordKeyPopup on mobile
+- Fixed the gradient theme not working
+
 # 1.4.4-beta.5
 
 - Fixed pressing presets in speedhack section not saving the value

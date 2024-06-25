@@ -315,11 +315,11 @@ void Config::changeTheme(CCObject* sender)
 
     if (v == -1)
     {
-        if (!Loader::get()->getInstalledMod("TheSillyDoggo.GradientPages"))
+        if (!Loader::get()->getInstalledMod("thesillydoggo.gradientpages"))
         {
             return FLAlertLayer::create("Gradient Pages", "The <cg>Gradient</c> Theme option requires the mod, <cl>Gradient Pages</c> to be installed. Install <cl>Gradient Pages</c> to use gradient mode.", "OK")->show();
         }
-        else if (!Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
+        else if (!Loader::get()->getLoadedMod("thesillydoggo.gradientpages"))
         {
             return FLAlertLayer::create("Gradient Pages", "The <cg>Gradient</c> Theme option requires the mod, <cl>Gradient Pages</c> to be enabled. Enable <cl>Gradient Pages</c> to use gradient mode.", "OK")->show();
         }

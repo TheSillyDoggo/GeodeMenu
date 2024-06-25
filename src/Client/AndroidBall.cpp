@@ -56,18 +56,13 @@ bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     if (!this->isVisible())
         return false;
 
-    auto space = btn->convertTouchToNodeSpace(touch);
-
     doingThing = false;
     dragging = false;
 
-    if (space.x > 0 && space.y > 0)
+    if (btn->boundingBox().containsPoint(btn->convertTouchToNodeSpace(touch)))
     {
-        if (space.x < btn->getContentSize().width && space.y < btn->getContentSize().height)
-        {
-            btn->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
-            doingThing = true;
-        }
+        btn->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
+        doingThing = true;
     }
 
     return doingThing;

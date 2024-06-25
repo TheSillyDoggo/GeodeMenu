@@ -10,9 +10,11 @@ public:
     static inline Mod* mod = nullptr;
 
     std::vector<Window*> windows;
-    ImVec2 tileSize = ImVec2(150, 30);
-    ImVec2 tileSizeCompact = ImVec2(150, 25.5f);
+    static inline CCPoint tileSize = CCPoint(42, 9);
     float animStatus = 0;
+    float delta = 0;
+    
+    bool open;
 
     bool over = false;
 
@@ -49,8 +51,8 @@ public:
             //windows[i]->i = windows[i]->getIndex(v, windows[i]->windowPos.x);
             //a = !a;
 
-            if (windows[i]->draw(false/*CompactMode::instance->enabled*/ ? tileSizeCompact : tileSize, animStatus))
-                over = true;
+            //if (windows[i]->draw(false/*CompactMode::instance->enabled*/ ? tileSizeCompact : tileSize, animStatus))
+                //over = true;
         }
 
         ImGui::SetNextWindowFocus();

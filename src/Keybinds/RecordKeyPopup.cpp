@@ -8,6 +8,7 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
 
     this->setOpacity(100);
     this->setKeyboardEnabled(true);
+    this->setKeypadEnabled(true);
     this->handler = obj;
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
@@ -60,6 +61,11 @@ void RecordKeyPopup::keyDown(enumKeyCodes key)
     obj->release();
 
     this->removeFromParent();
+}
+
+void RecordKeyPopup::keyBackClicked()
+{
+    this->keyDown(enumKeyCodes::KEY_Escape);
 }
 
 RecordKeyPopup* RecordKeyPopup::create(SEL_MenuHandler obj)

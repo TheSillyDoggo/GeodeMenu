@@ -220,17 +220,17 @@ CCNode* AndroidUI::getBGNode()
 
     as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
 
-    if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages") && theme == -1)
+    if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages") && theme == -1)
     {
         auto gradient = CCLayerGradient::create(ccc4(0, 0, 0, 0), ccc4(0, 0, 0, 0));
         gradient->setContentSize(panel->getContentSize());
         gradient->setZOrder(-1);
         gradient->setID("gradient"_spr);
 
-        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("use-custom-colours"))
+        if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<bool>("use-custom-colours"))
         {
-            gradient->setStartColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("primary-colour"));
-            gradient->setEndColor(Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<ccColor3B>("secondary-colour"));
+            gradient->setStartColor(Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<ccColor3B>("primary-colour"));
+            gradient->setEndColor(Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<ccColor3B>("secondary-colour"));
         }
         else
         {
@@ -246,10 +246,10 @@ CCNode* AndroidUI::getBGNode()
         gradient->setPosition(CCDirector::get()->getWinSize() / 2);
         gradient->ignoreAnchorPointForPosition(false);
 
-        if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages")->getSettingValue<bool>("reverse-order"))
+        if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<bool>("reverse-order"))
             gradient->setScaleY(-1);
 
-        auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
+        auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("thesillydoggo.gradientpages/") + std::string("square-outline.png")).c_str());
         outline->setPosition(panel->getContentSize() / 2);
         outline->setContentSize(panel->getContentSize());
         outline->setZOrder(1);

@@ -24,13 +24,17 @@ public:
     std::string id;
     bool excludeAndroid = false;
     std::vector<Module*> modules;
-    ImVec2 windowPos = ImVec2(100, 100);
+    CCPoint windowPos = CCPoint(100, 100);
 
     bool dragging = false;
-    ImVec2 offset = ImVec2(0, 0);
+    CCPoint offset = CCPoint(0, 0);
 
     bool isClosed = false;
     float v = 1.0f;
+
+    bool touchBegan(CCPoint point, CCTouch* touch);
+    bool touchMoved(CCPoint point, CCTouch* touch);
+    bool touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled);
 
     float quadraticEaseInOut(float t) {
         if (t < 0.5f)
@@ -44,7 +48,7 @@ public:
         if (modules.size() == 0)
             return false;
 
-        ImVec2 wp = DrawUtils::addImVec2(windowPos, getOffsetForTime(anim));
+        /*ImVec2 wp = DrawUtils::addImVec2(windowPos, getOffsetForTime(anim));
 
         #ifdef GEODE_IS_WINDOWS
 
@@ -102,8 +106,13 @@ public:
         v += (ImGui::GetIO().DeltaTime * (isClosed ? -1 : 1)) / 0.2f;
         v = clampf(v, 0, 1);
 
-        return o;
+        return o;*/
+        return false;
     }
+
+    void preDraw();
+    void drawWindow();
+    void postDraw();
 
     void move(bool o, ImVec2 tileSize)
     {
@@ -115,7 +124,7 @@ public:
                 {
                     dragging = true;
 
-                    offset = ImVec2(windowPos.x - ImGui::GetIO().MousePos.x, windowPos.y - ImGui::GetIO().MousePos.y);
+                    //offset = ImVec2(windowPos.x - ImGui::GetIO().MousePos.x, windowPos.y - ImGui::GetIO().MousePos.y);
                 }
             }
         }
@@ -127,7 +136,7 @@ public:
 
         if (dragging)
         {
-            windowPos = DrawUtils::addImVec2(ImGui::GetIO().MousePos, offset);
+            //windowPos = DrawUtils::addImVec2(ImGui::GetIO().MousePos, offset);
         }
 
         if (windowPos.x < 0)
@@ -196,6 +205,8 @@ public:
     bool a = false;
     int i = 0;
 
+    CCPoint offsetForTime(float time);
+
     /// <summary>
     /// a time value of 1 is where we desire for the window to be at
     /// </summary>
@@ -217,12 +228,6 @@ public:
         }
 
         return ImVec2(0, wndSize.y * (1 - quadraticEaseInOut(time)));
-    }
-
-    int roundUpToMultipleOf2(float num) { // def not stolen
-        //float roundedNum = std::ceil(num / 2.0f) * 2.0f;
-        //return roundedNum;
-        return static_cast<int>(std::ceil(num));
     }
 
     virtual void cocosCreate(CCMenu* menu)

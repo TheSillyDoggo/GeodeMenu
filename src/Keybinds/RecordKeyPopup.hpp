@@ -11,6 +11,7 @@ class RecordKeyPopup : public CCLayerColor
 
         bool init(SEL_MenuHandler obj);
         virtual void keyDown(enumKeyCodes key);
+        virtual void keyBackClicked();
 
         static RecordKeyPopup* create(SEL_MenuHandler obj);
 };

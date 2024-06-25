@@ -100,7 +100,8 @@ void CCBlurLayer::draw()
 
     CCLayerColor::draw();
 
-    getParent()->setVisible(false);
+    if (getParent())
+        getParent()->setVisible(false);
     
     CCNode* parent = CCScene::get();
     if (parent && !visiting) {
@@ -116,7 +117,8 @@ void CCBlurLayer::draw()
         visiting = false;
     }
 
-    getParent()->setVisible(true);
+    if (getParent())
+        getParent()->setVisible(true);
 
 
     glBindVertexArray(ppVao);

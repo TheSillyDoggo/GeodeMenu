@@ -155,7 +155,7 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
 
             as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
 
-            if (Loader::get()->getLoadedMod("TheSillyDoggo.GradientPages"))
+            if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages"))
             {
                 auto size = panel->getContentSize();
 
@@ -181,13 +181,13 @@ class SaveMacroPopup : public FLAlertLayer, TextInputDelegate
                 if (Mod::get()->getSettingValue<bool>("reverse-order"))
                 gradient->setScaleY(-1);
 
-                auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-fill.png")).c_str());
+                auto darken = CCScale9Sprite::createWithSpriteFrameName((std::string("thesillydoggo.gradientpages/") + std::string("square-fill.png")).c_str());
                 darken->setID("darken"_spr);
                 darken->setContentSize(size - ccp(15, 15));
                 darken->setZOrder(0);
                 darken->setPosition(size / 2);
 
-                auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("TheSillyDoggo.GradientPages/") + std::string("square-outline.png")).c_str());
+                auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("thesillydoggo.gradientpages/") + std::string("square-outline.png")).c_str());
                 outline->setPosition(size / 2);
                 outline->setContentSize(size);
                 outline->setZOrder(1);
