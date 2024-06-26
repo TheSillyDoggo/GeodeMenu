@@ -111,9 +111,9 @@ class $modify (StartposPlayLayer, PlayLayer)
         m_fields->label->setString(fmt::format("{}/{}", m_fields->selectedIndex + 1, m_fields->objs.size()).c_str());
         m_fields->label->limitLabelWidth(100, 0.65f, 0);
 
-        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 75), nullptr);
-        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 75), nullptr);
-        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 75), nullptr);
+        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
+        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
+        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
         
         m_fields->label->runAction(action);
         m_fields->left->runAction(action2);
