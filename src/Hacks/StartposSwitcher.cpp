@@ -25,7 +25,7 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (index < -1)
             index = m_fields->objs.size() - 1;
 
-        if (index > m_fields->objs.size())
+        if (index >= m_fields->objs.size())
             index = -1;
 
         m_fields->selectedIndex = index;
