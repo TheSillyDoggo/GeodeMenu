@@ -59,13 +59,10 @@ class $modify (StartposPlayLayer, PlayLayer)
     {
         if (obj->m_objectID == 31)
         {
-            if (auto sp = as<StartPosObject*>(obj))
-            {
-                m_fields->objs.push_back(sp);
+            m_fields->objs.push_back(as<StartPosObject*>(obj));
 
-                if (!sp->m_startSettings->m_disableStartPos)
-                    m_fields->selectedIndex++;
-            }
+            //if (!as<StartPosObject*>(obj)->m_startSettings->m_disableStartPos)
+                //m_fields->selectedIndex++;
         }
 
         PlayLayer::addObject(obj);
