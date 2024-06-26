@@ -56,7 +56,7 @@ bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     auto point = btn->boundingBox();
     point.origin += ccp(btn->getContentWidth() / 2, btn->getContentHeight() / 2);
 
-    if (point.containsPoint(btn->convertTouchToNodeSpace(touch)))
+    if (point.containsPoint(btn->convertToNodeSpace(touch->getLocation())))
     {
         auto scale = CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2);
         scale->setTag(69);
