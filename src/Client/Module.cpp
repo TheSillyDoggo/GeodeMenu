@@ -399,10 +399,7 @@ void InputModule::updateValue()
 
     auto x = numFromString<float>(text);
 
-    if (x.isOk())
-    {
-        floatValue = x.value();
-    }
+    floatValue = x.unwrapOr(1);
 
     x = numFromString<int>(text);
 

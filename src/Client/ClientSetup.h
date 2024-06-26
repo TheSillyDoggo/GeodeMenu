@@ -79,7 +79,7 @@ public:
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
-        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
+        level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
@@ -100,6 +100,7 @@ public:
         level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
 
         level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
+        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -128,6 +129,8 @@ public:
         seed->allowedChars = "1234567890";
         seed->maxSize = 16;
         Client::GetModule("rand-seed")->options.push_back(seed);
+
+        Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
     }
 
     static void SetupBypass()

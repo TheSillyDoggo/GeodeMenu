@@ -1,6 +1,6 @@
 # Join the [Discord Server](https://discord.gg/DfQSTEnQKK)
 
-QOLMod is The **Best** Free Mod Menu, It has a user friendly interface with over <cr>70 features</c> to help improve your <cg>Geometry Dash</c> experience such as Speedhack, Show Hitboxes, Show Layout, Solid Wave Trail and <cl>much</c> more.
+QOLMod is The **Best** Free Mod Menu, It has a user friendly interface with over <cr>70 features</c> to help improve your <cg>Geometry Dash</c> experience such as **Speedhack**, **Show Hitboxes**, **Startpos Switcher**, **Solid Wave Trail** and **much** more.
 
 # How to use.
 On Windows / Mac:

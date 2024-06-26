@@ -117,22 +117,4 @@ class StatusNode : public CCNode
         void updateCPS(float dt);
 };
 
-class $modify (PlayLayer)
-{
-    bool init(GJGameLevel* p0, bool p1, bool p2)
-    {
-        if (!PlayLayer::init(p0, p1, p2))
-            return false;
-
-        if (getChildByID("status-node"_spr))
-            return true;
-
-        auto stn = StatusNode::create();
-        stn->attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
-        this->addChild(stn);
-        
-        return true;
-    }
-};
-
 #endif

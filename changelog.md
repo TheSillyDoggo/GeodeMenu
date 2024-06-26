@@ -3,8 +3,9 @@
 - Fixed a game softlock when opening the RecordKeyPopup on mobile
 - Fixed the gradient theme not working
 - Fixed not being able to click in the shop
+- Fixed CPS Label not working on Windows
 - Added Main Level Song Bypass (thanks @Capeling)
-- Added Startpos Switcher
+- **Added Startpos Switcher**
 
 # 1.4.4-beta.5
 

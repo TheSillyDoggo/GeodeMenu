@@ -319,11 +319,7 @@ class $modify (PlayerObject)
     {
         PlayerObject::pushButton(p0);
 
-        #ifdef GEODE_IS_WINDOWS
-        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
-        #else
         if (p0 == PlayerButton::Jump && PlayLayer::get())
-        #endif
         {
             if (auto stn = StatusNode::get())
             {
@@ -339,11 +335,7 @@ class $modify (PlayerObject)
     {
         PlayerObject::releaseButton(p0);
 
-        #ifdef GEODE_IS_WINDOWS
-        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_started)
-        #else
         if (p0 == PlayerButton::Jump && PlayLayer::get())
-        #endif
         {
             if (auto stn = StatusNode::get())
             {
@@ -351,6 +343,24 @@ class $modify (PlayerObject)
                 stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }
+    }
+};
+
+class $modify (PlayLayer)
+{
+    bool init(GJGameLevel* p0, bool p1, bool p2)
+    {
+        if (!PlayLayer::init(p0, p1, p2))
+            return false;
+
+        if (getChildByID("status-node"_spr))
+            return true;
+
+        auto stn = StatusNode::create();
+        stn->attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
+        this->addChild(stn);
+        
+        return true;
     }
 };
 

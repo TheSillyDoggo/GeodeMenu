@@ -135,7 +135,7 @@ class Module
 
         virtual void load()
         {
-            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", enabled);
+            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
             save();
         }
 

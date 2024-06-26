@@ -100,6 +100,8 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (m_fields->objs.empty())
             m_fields->menu->setScale(0);
 
+        m_fields->menu->setVisible(Client::GetModuleEnabled("startpos-switcher"));
+
         updateUI();
     }
 
@@ -111,9 +113,11 @@ class $modify (StartposPlayLayer, PlayLayer)
         m_fields->label->setString(fmt::format("{}/{}", m_fields->selectedIndex + 1, m_fields->objs.size()).c_str());
         m_fields->label->limitLabelWidth(100, 0.65f, 0);
 
-        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
-        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
-        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 50), nullptr);
+        float opacity = as<SliderModule*>(Client::GetModule("startpos-switcher")->options[0])->value * 255;
+
+        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
+        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
+        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
         
         m_fields->label->runAction(action);
         m_fields->left->runAction(action2);
@@ -125,7 +129,7 @@ class $modify (UILayer)
 {
     virtual void keyDown(enumKeyCodes key)
     {
-        if (auto pl = PlayLayer::get())
+        if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
         {
             if (key == enumKeyCodes::KEY_Q)
                 as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
