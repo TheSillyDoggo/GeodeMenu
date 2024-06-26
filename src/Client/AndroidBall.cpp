@@ -53,9 +53,15 @@ bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     doingThing = false;
     dragging = false;
 
-    if (btn->boundingBox().containsPoint(btn->convertTouchToNodeSpace(touch)))
+    auto point = btn->boundingBox();
+    point.origin += ccp(btn->getContentWidth() / 2, btn->getContentHeight() / 2);
+
+    if (point.containsPoint(btn->convertTouchToNodeSpace(touch)))
     {
-        btn->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
+        auto scale = CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2);
+        scale->setTag(69);
+
+        btn->runAction(scale);
         doingThing = true;
     }
 
@@ -74,7 +80,10 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
         if (!dragging)
             onOpenMenu();
 
-        btn->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
+        auto scale = CCEaseBackOut::create(CCScaleTo::create(0.35f, 1));
+        scale->setTag(69);
+
+        btn->runAction(scale);
 
         doingThing = false;
 
@@ -92,7 +101,7 @@ void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
         return CCLayer::ccTouchMoved(touch, event);
     #endif
 
-    if (doingThing && (btn->numberOfRunningActions() == 0))
+    if (doingThing && !btn->getActionByTag(69))
     {
         if (btn->getPosition().getDistance(touch->getLocation()) > 7.5f)
         {
@@ -140,7 +149,7 @@ void AndroidBall::UpdateVisible(bool i)
     l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
     instance = this;
 
-    if (btn->numberOfRunningActions() != 0)
+    if (btn->getActionByTag(69))
         return;
 
     if (i)
@@ -188,8 +197,14 @@ void AndroidBall::UpdateVisible(bool i)
         }
         else
         {
-            btn->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
-            l->runAction(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
+            auto action = CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2);
+            action->setTag(69);
+
+            auto action2 = CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2);
+            action2->setTag(69);
+
+            btn->runAction(action);
+            l->runAction(action2);
         }
     }
 }

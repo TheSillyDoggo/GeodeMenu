@@ -14,7 +14,7 @@ class Dropdown : public CCMenu {
         CCScale9Sprite* bg;
         CCSprite* sprBtn;
         CCSprite* sprBtn2;
-        CCMenuItemSprite* btn;
+        CCMenuItemSpriteExtra* btn;
 
         int selected = 0;
         bool open;

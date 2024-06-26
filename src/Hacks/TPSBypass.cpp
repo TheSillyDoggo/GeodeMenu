@@ -57,6 +57,14 @@ void updateTPSPatches(bool tpsEnabled)
         patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x9384b8 - 0x100000)), getBytes<double>(1.0f / tps)).unwrap());
         #endif
 
+        #ifdef GEODE_IS_INTEL_MAC
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x823b00), getBytes<double>(1.0f / tps)).unwrap());
+        #endif
+
+        #ifdef GEODE_IS_ARM_MAC
+        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x823b00), getBytes<double>(1.0f / tps)).unwrap());
+        #endif
+
         #ifdef GEODE_IS_MACOS
         //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x7e9c60), getBytes<double>(1.0f / tps)).unwrap());
         #endif

@@ -104,7 +104,9 @@ bool Dropdown::init(CCSize size, std::vector<std::string> strs, cocos2d::SEL_Men
     sprBtn = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
     sprBtn->setColor({200, 200, 200});
     sprBtn2 = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
-    btn = CCMenuItemSprite::create(sprBtn, sprBtn2, this, menu_selector(Dropdown::onToggleVisible));
+    btn = CCMenuItemSpriteExtra::create(sprBtn, sprBtn2, this, menu_selector(Dropdown::onToggleVisible));
+    btn->setSelectedImage(sprBtn2);
+    btn->m_scaleMultiplier = 1;
     btn->setPosition(size + ccp(-7.5f - sprBtn->getContentSize().width / 2, -1 * (size.height / 2)));
     this->addChild(btn);
 
