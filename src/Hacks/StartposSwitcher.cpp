@@ -57,12 +57,15 @@ class $modify (StartposPlayLayer, PlayLayer)
 
     void addObject(GameObject* obj)
     {
-        if (auto sp = typeinfo_cast<StartPosObject*>(obj))
+        if (obj->m_objectID == 31)
         {
-            m_fields->objs.push_back(sp);
+            if (auto sp = as<StartPosObject*>(obj))
+            {
+                m_fields->objs.push_back(sp);
 
-            if (!sp->m_startSettings->m_disableStartPos)
-                m_fields->selectedIndex++;
+                if (!sp->m_startSettings->m_disableStartPos)
+                    m_fields->selectedIndex++;
+            }
         }
 
         PlayLayer::addObject(obj);
