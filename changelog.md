@@ -4,6 +4,7 @@
 - Fixed the gradient theme not working
 - Fixed not being able to click in the shop
 - Added Main Level Song Bypass (thanks @Capeling)
+- Added Startpos Switcher
 - **Added Intel & ARM MacOS support for 2.206**
 
 # 1.4.4-beta.5
