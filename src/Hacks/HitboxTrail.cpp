@@ -13,8 +13,6 @@ std::vector<CCPoint> sizes;
 Module* hitboxTrail = nullptr;
 CCPoint lastPos = CCPointZero;
 CCPoint lastPos2 = CCPointZero;
-Ref<CCDrawNode> dn = nullptr;
-
 
 class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
 {
@@ -37,12 +35,6 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
     virtual void update(float dt)
     {
         GJBaseGameLayer::update(dt);
-
-        if (!dn)
-            dn = m_debugDrawNode;
-
-        if (!dn)
-            return;
 
         if (hitboxTrail->enabled)
             drawTrail();
@@ -72,7 +64,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
             }
         }
 
-        if (dn)
+        if (m_debugDrawNode)
         {
             int i = 0;
             for (auto point : points)
@@ -87,7 +79,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
                     ccp(squarePosition.x - squareSize.x / 2, squarePosition.y + squareSize.y / 2)  // Top-left
                 };
 
-                dn->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
+                m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
 
                 i++;
             }
