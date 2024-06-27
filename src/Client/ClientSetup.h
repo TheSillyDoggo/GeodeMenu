@@ -6,6 +6,7 @@
 #include "../CustomWindows/Config.h"
 #include "../CustomWindows/Labels.h"
 #include "../CustomWindows/IconEffects.h"
+#include "../Hacks/SafeMode/SafeMode.hpp"
 
 class ClientUtils
 {
@@ -34,9 +35,8 @@ public:
         if (!android)
             setupDevtools();
 
-        Client::instance->onPostSetup();
-
         registerIncompatibilitys();
+        SafeMode::get()->addDelegateToModules();
 	}
 
 #pragma region Setup Windows
@@ -81,7 +81,7 @@ public:
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
         level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
 
-        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels."));
+        level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nReopen level to apply."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
         level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));

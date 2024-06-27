@@ -1,59 +1,24 @@
 #include <Geode/Geode.hpp>
-#include <Geode/modify/PlayerObject.hpp>
-#include <Geode/modify/UILayer.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-Module* platMod = nullptr;
-
-#ifdef GEODE_IS_ANDROID
-
-class $modify (UILayer)
+class $modify (PlayLayer)
 {
-    bool init(GJBaseGameLayer* p0)
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
-        if (!UILayer::init(p0))
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        if (!platMod)
-            platMod = Client::GetModule("force-plat");
-
-        if (platMod->enabled)
-            togglePlatformerMode(true);
-
-        return true;
-    }
-};
-
-#endif
-
-class $modify (PlayerObject)
-{
-    struct Fields {
-        bool f;
-    };
-
-    virtual void update(float dt)
-    {
-        if (!platMod)
-            platMod = Client::GetModule("force-plat");
-
-        if (platMod->enabled)
+        if (Client::GetModuleEnabled("force-plat"))
         {
+            m_player1->togglePlatformerMode(true);
 
-            this->togglePlatformerMode(true);
-            #ifdef GEODE_IS_ANDROID
-            if (!m_fields->f)
-            {
-                m_fields->f = true;
-                if (PlayLayer::get() && PlayLayer::get()->m_uiLayer)
-                    PlayLayer::get()->m_uiLayer->togglePlatformerMode(true);
-            }
-            #endif
-
+            if (m_player2)
+                m_player2->togglePlatformerMode(true);
         }
 
-        PlayerObject::update(dt);
+        return true;
     }
 };

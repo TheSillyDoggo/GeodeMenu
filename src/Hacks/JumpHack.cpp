@@ -21,4 +21,14 @@ class $modify (GJBaseGameLayer)
         if (jumpHack->enabled)
             m_player1->m_isOnGround = true;
     }
+
+    static void onModify(auto& self) {
+        auto hook = self.getHook("GJBaseGameLayer::update");
+
+        Loader::get()->queueInMainThread([hook]
+        {
+            auto modu = Client::GetModule("jump-hack");
+            modu->addHookRaw(hook);
+        });
+    }
 };

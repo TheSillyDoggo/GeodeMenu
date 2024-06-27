@@ -24,6 +24,8 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (m_fields->objs.empty())
             return;
 
+        std::sort(m_fields->objs.begin(), m_fields->objs.end(), [](auto* a, auto* b) { return a->getPositionX() < b->getPositionX(); });
+
         if (index < -1)
             index = m_fields->objs.size() - 1;
 

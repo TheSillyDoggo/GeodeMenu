@@ -122,7 +122,7 @@ class Module
             return false;
         }
 
-        virtual void OnChange()
+        virtual void onChange()
         {
             if (delegate)
                 delegate->onModuleChanged(this->enabled);
@@ -229,7 +229,7 @@ class InputModule : public Module, public TextInputDelegate
             if (selected == this)
                 this->save();
 
-            OnChange();
+            onChange();
 
             if (DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)))
                 Module::descMod = description;

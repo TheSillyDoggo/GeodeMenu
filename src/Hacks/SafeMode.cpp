@@ -5,109 +5,7 @@
 #include "../Client/Client.h"
 #include "../Labels/Labels.h"
 
-bool hasHackedAttempt = false;
-bool hasHackedAttemptReal = false;
-
-ccColor3B getColour()
-{
-    if (Client::GetModuleEnabled("safe-mode"))
-        return ccc3(255, 255, 0);
-
-    if (hasHackedAttemptReal)
-        return ccc3(255, 0, 0);
-
-    return ccc3(0, 255, 0);
-}
-
-void updateInd()
-{
-    if (!PlayLayer::get())
-        return;
-
-    #ifdef STATUS_TEXTS
-
-    if (auto a = PlayLayer::get()->getChildByID("status-node"_spr))
-    {
-        //log::info("{}", a);
-
-        if (auto l = as<StatusNode*>(a)->sLabels[0])
-            l->setColor(getColour());
-    }
-
-    #endif
-}
-
-class HackModuleDelegate : public ModuleChangeDelegate
-{
-    virtual void onModuleChanged(bool enabled)
-    {
-        hasHackedAttemptReal = true;
-
-        if (Client::GetModuleEnabled("auto-safe-mode"))
-            hasHackedAttempt = true;
-        else
-            hasHackedAttempt = false;
-
-        updateInd();
-
-        #ifdef STATUS_TEXTS
-
-        if (PlayLayer::get())
-        {
-            if (auto stn = StatusNode::get())
-            {
-                stn->update(1);
-                stn->reorderSides();
-                stn->reorderPosition();
-            }
-        }
-
-        #endif
-    }
-};
-
-std::vector<std::string> hacks = {
-    "speedhack-enabled",
-    "force-plat",
-    "noclip",
-    "instant",
-    "no-reverse",
-    "no-static",
-    "show-hitboxes",
-    "show-triggers",
-    "coin-tracers",
-    "show-trajectory",
-    "rand-seed",
-    "jump-hack",
-    "tps-bypass"
-};
-
-void Client::onPostSetup()
-{
-    for (auto mod : hacks)
-    {
-        Client::GetModule(mod)->delegate = new HackModuleDelegate();
-    }
-}
-
-void updateSafemode()
-{
-    for (auto mod : hacks)
-    {
-        if (Client::GetModule(mod)->enabled)
-        {
-            if (Client::GetModuleEnabled("auto-safe-mode"))
-                hasHackedAttempt = true;
-
-            hasHackedAttemptReal = true;
-        }
-    }
-
-    hasHackedAttempt = (Client::GetModule("safe-mode")->enabled) ? true : hasHackedAttempt;
-
-    updateInd();
-}
-
+/*
 class $modify (PlayLayerExt, PlayLayer)
 {
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
@@ -132,7 +30,7 @@ class $modify (PlayLayerExt, PlayLayer)
 
         if (hasHackedAttempt)
         {
-            return this->onQuit();/*
+            return this->onQuit();
 
             if (m_isPracticeMode)
             {
@@ -143,7 +41,7 @@ class $modify (PlayLayerExt, PlayLayer)
                 showCompleteEffect();
             }
 
-            return;*/
+            return;* /
         }
 
         PlayLayer::levelComplete();
@@ -242,4 +140,4 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
 
         getChildOfType<CCLayer>(this, 0)->addChild(menu);
     }
-};
+};*/

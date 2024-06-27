@@ -2,6 +2,9 @@
 
 - Fixed Separate Dual Icons and Pride Trails not working
 - Fixed Crash pressing physical keyboard keys on Android
+- Fixed Startpos Switcher not sorting startpos's by X position
+- Rewrote Safe Mode system
+- Improved Performance by making Force Platformer only apply on level open
 
 # 1.4.4
 

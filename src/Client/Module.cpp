@@ -42,7 +42,7 @@ void Module::onToggleAndroid(CCObject* sender)
 
     dat->enabled = !dat->enabled;
     dat->save();
-    dat->OnChange();
+    dat->onChange();
 
     if (dat->enabled)
         dat->enableHooks();

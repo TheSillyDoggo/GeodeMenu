@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCSpriteGrayscale.hpp>
 #include <Geode/modify/CCSpriteWithHue.hpp>
@@ -45,5 +43,3 @@ class $modify(CCSpriteGrayscale)
         });
     }
 };
-
-#endif

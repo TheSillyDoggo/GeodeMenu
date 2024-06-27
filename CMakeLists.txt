@@ -14,6 +14,7 @@ project(CheatClient VERSION 1.0.0)
 file(GLOB SOURCES
 	src/Client/*.cpp
 	src/Hacks/*.cpp
+	src/Hacks/*/*.cpp
 	src/Utils/*.cpp
 	src/UI/*.cpp
 	src/Keybinds/*.cpp
