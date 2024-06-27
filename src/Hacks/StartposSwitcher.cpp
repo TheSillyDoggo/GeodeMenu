@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_INTEL_MAC
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
@@ -60,9 +62,6 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (obj->m_objectID == 31)
         {
             m_fields->objs.push_back(as<StartPosObject*>(obj));
-
-            //if (!as<StartPosObject*>(obj)->m_startSettings->m_disableStartPos)
-                //m_fields->selectedIndex++;
         }
 
         PlayLayer::addObject(obj);
@@ -144,3 +143,5 @@ class $modify (UILayer)
         UILayer::handleKeypress(key, down);
     }
 };
+
+#endif
