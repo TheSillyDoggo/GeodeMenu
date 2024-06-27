@@ -1,3 +1,8 @@
+# 1.4.5
+
+- Fixed Separate Dual Icons and Pride Trails not working
+- Fixed Crash pressing physical keyboard keys on Android
+
 # 1.4.4
 
 - Fixed a game softlock when opening the RecordKeyPopup on mobile

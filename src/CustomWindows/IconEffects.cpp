@@ -89,12 +89,13 @@ std::vector<std::string> mods =
     "rooot.custom-gamemode-colors",
     "gdemerald.custom_icon_colors",
     "capeling.coloured-wave-trail",
-    "weebify.seperate_dual_icons",
+    "weebify.separate_dual_icons",
     "naxrin.progress_bar_color",
     "naxrin.rgb_icons",
     "asaki_zuki.same_dual_color",
     "saumondeluxe.rainbow_icon",
     "terma.ambienticons",
+    "acaruso.pride",
 };
 
 bool EffectUI::getIncompatibleModLoaded()
