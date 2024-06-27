@@ -487,7 +487,7 @@ CCAction* AndroidUI::getEnterAction(CCNode* panel)
     }
 
     #ifdef GEODE_IS_APPLE
-    return CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2));
+    return CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.3f);
     #else
     return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
     #endif
