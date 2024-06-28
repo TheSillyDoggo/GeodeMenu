@@ -1,7 +1,6 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCDrawNode.hpp>
+#include <Geode/modify/HardStreak.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -11,8 +10,7 @@ Module* solidWave = nullptr;
 
 class $modify (CCDrawNode)
 {
-    bool 
-    drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
     {
         if (typeinfo_cast<HardStreak*>(this))
         {
@@ -43,5 +41,3 @@ class $modify (CCDrawNode)
         return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
     }
 };
-
-#endif

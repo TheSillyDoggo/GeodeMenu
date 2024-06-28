@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
@@ -14,5 +12,3 @@ class $modify (PlayerObject)
             PlayerObject::fadeOutStreak2(p0);
     }
 };
-
-#endif

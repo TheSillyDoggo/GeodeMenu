@@ -78,7 +78,7 @@ class $modify (StartposPlayLayer, PlayLayer)
 
         m_fields->menu = CCMenu::create();
         m_fields->menu->setContentSize(ccp(0, 0));
-        m_fields->menu->setPosition(CCDirector::get()->getWinSize().width / 2, 50);
+        m_fields->menu->setPosition(CCDirector::get()->getWinSize().width / 2, 25);
 
         m_fields->label = CCLabelBMFont::create("among us sex", "bigFont.fnt");
 

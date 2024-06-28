@@ -120,7 +120,6 @@ void CCBlurLayer::draw()
     if (getParent())
         getParent()->setVisible(true);
 
-
     glBindVertexArray(ppVao);
     ccGLUseProgram(ppShader.program);
     glUniform1i(ppShaderFast, true);

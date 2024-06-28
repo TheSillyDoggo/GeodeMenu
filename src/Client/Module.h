@@ -283,8 +283,7 @@ class InputModule : public Module, public TextInputDelegate
 
             this->save();
 
-            if (delegate)
-                delegate->onModuleChanged(false);
+            onChange();
         }
 };
 

@@ -275,6 +275,7 @@ public:
         cosmetic->modules.push_back(new Module("No Wave Reset", "no-wave-reset", "Stops the wave trail from disappearing when you change gamemode"));
 
         cosmetic->modules.push_back(new Module("No Orb Pulse", "no-orb-pulse", "Disables orb's from pulsing, Doesn't work on main levels made before 2.2"));
+        cosmetic->modules.push_back(new Module("Main Menu Gameplay", "main-menu-gameplay", "Allows you to control the icons on the main menu.\nI honestly have no idea what category to put it in so its cosmetic now :3"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
@@ -443,18 +444,12 @@ public:
         #ifdef GEODE_IS_MACOS
 
         std::vector<std::string> macInc = {
-            "show-hitboxes",
-            "show-hitboxes-on-death",
-            "no-static",
             "show-trajectory",
             "show-layout",
-            "coin-tracers",
             "no-wave",
             "no-particles",
             "solid-wave",
             "no-shake",
-            "conditional-retry",
-            "no-wave-reset",
             "custom-trans",
             "menu-bg-blur",
         };
@@ -519,6 +514,10 @@ public:
 
         Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+
+        #ifdef GEODE_IS_ARM_MAC
+        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        #endif
     }
 
 #pragma endregion

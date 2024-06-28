@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/EffectGameObject.hpp>
@@ -17,7 +15,7 @@ Module* stati = nullptr;
 
 class $modify (GJBaseGameLayer)
 {
-    #ifndef GEODE_IS_WINDOWS
+    #ifdef GEODE_IS_ANDROID
     void applyShake(cocos2d::CCPoint& p0)
     {
         if (!shake)
@@ -36,11 +34,4 @@ class $modify (GJBaseGameLayer)
         if (!stati->enabled)
             GJBaseGameLayer::updateStaticCameraPos(p0, p1, p2, p3, p4, p5, p6);
     }
-    /*TodoReturn updateCamera(float p0) // delta probably ?
-    {
-        if (!Client::GetModuleEnabled("no-camera"))
-            GJBaseGameLayer::updateCamera(p0);
-    }*/
 };
-
-#endif

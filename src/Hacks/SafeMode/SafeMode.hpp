@@ -13,6 +13,11 @@ class HackModuleDelegate : public ModuleChangeDelegate
     virtual void onModuleChanged(bool enabled);
 };
 
+class SpeedhackDelegate : public ModuleChangeDelegate
+{
+    virtual void onModuleChanged(bool enabled);
+};
+
 class SafeMode
 {
     private:
@@ -23,14 +28,14 @@ class SafeMode
         static inline SafeMode* instance = nullptr;
 
     public:
+        bool speedhackKick;
+
         std::vector<std::string> hacks = {
-            "speedhack-enabled",
             "noclip",
             "instant",
             "no-reverse",
             "no-static",
             "show-hitboxes",
-            "show-triggers",
             "coin-tracers",
             "show-trajectory",
             "rand-seed",
@@ -45,6 +50,8 @@ class SafeMode
 
         void setHackedLoad();
         void setHackedAttempt();
+
+        void updateSpeedhackShouldKick();
 
         void addDelegateToModules();
         ccColor3B colourForState();

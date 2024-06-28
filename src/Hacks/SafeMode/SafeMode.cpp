@@ -60,6 +60,11 @@ void SafeMode::addDelegateToModules()
     {
         Client::GetModule(hack)->delegate = new HackModuleDelegate();
     }
+
+    SpeedhackEnabled::instance->delegate = new SpeedhackDelegate();
+    SpeedhackTop::instance->delegate = new SpeedhackDelegate();
+
+    updateSpeedhackShouldKick();
 }
 
 ccColor3B SafeMode::colourForState()
@@ -67,7 +72,7 @@ ccColor3B SafeMode::colourForState()
     if (Client::GetModuleEnabled("safe-mode"))
         return ccc3(255, 255, 0);
 
-    if (hackedAttemptReal || hackedLevelLoad)
+    if (hackedAttemptReal || hackedLevelLoad || speedhackKick)
         return ccc3(255, 0, 0);
 
     return ccc3(0, 255, 0);
@@ -75,7 +80,7 @@ ccColor3B SafeMode::colourForState()
 
 bool SafeMode::shouldKickFromLevel()
 {
-    return hackedAttempt || hackedLevelLoad || Client::GetModuleEnabled("safe-mode");
+    return hackedAttempt || hackedLevelLoad || speedhackKick || Client::GetModuleEnabled("safe-mode");
 }
 
 void SafeMode::updateIndicator()
@@ -98,9 +103,24 @@ void SafeMode::updateIndicator()
     #endif
 }
 
+void SafeMode::updateSpeedhackShouldKick()
+{
+    speedhackKick = Client::GetModuleEnabled("auto-safe-mode") ? (SpeedhackEnabled::instance->enabled ? (SpeedhackTop::instance->getFloatValue() < 1) : false) : false;
+}
+
 void HackModuleDelegate::onModuleChanged(bool enabled)
 {
     SafeMode::get()->setHackedAttempt();
+    SafeMode::get()->updateIndicator();
+}
+
+void SpeedhackDelegate::onModuleChanged(bool enabled)
+{
+    SafeMode::get()->updateSpeedhackShouldKick();
+
+    if (SafeMode::get()->speedhackKick)
+        SafeMode::get()->setHackedAttempt();
+    
     SafeMode::get()->updateIndicator();
 }
 
@@ -117,6 +137,9 @@ bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObje
     if (Client::GetModuleEnabled("force-plat"))
         SafeMode::get()->setHackedLoad();
 
+    if (Client::GetModuleEnabled("show-triggers"))
+        SafeMode::get()->setHackedLoad();
+
     return true;
 }
 
@@ -130,8 +153,6 @@ void SafePlayLayer::resetLevel()
 void SafePlayLayer::levelComplete()
 {
     auto kick = SafeMode::get()->shouldKickFromLevel();
-
-    log::info("should kick: {}", kick);
 
     if (kick)
     {

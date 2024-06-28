@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/PlayLayer.hpp>
@@ -14,7 +12,8 @@ class $modify (PlayLayer)
         Module* mod2 = nullptr;
     };
 
-    void updateVisibility(float p0) {
+    void updateVisibility(float p0)
+    {
         PlayLayer::updateVisibility(p0);
 
         if (!m_debugDrawNode)
@@ -39,7 +38,4 @@ class $modify (PlayLayer)
         
         m_debugDrawNode->setVisible(shouldVis);
     }
-
 };
-
-#endif

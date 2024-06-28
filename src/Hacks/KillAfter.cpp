@@ -48,4 +48,14 @@ class $modify (PlayLayer)
             }
         }
     }
+
+    static void onModify(auto& self) {
+        auto hook = self.getHook("PlayLayer::postUpdate");
+
+        Loader::get()->queueInMainThread([hook]
+        {
+            auto modu = Client::GetModule("kill-after");
+            modu->addHookRaw(hook);
+        });
+    }
 };

@@ -361,6 +361,7 @@ class Speedhack : public Window//, public TextInputDelegate
             SpeedhackTop::instance->text = ss.str();
 
             SpeedhackTop::instance->save();
+            SpeedhackTop::instance->onChange();
         }
 
         void onPreset(CCObject* sender)
@@ -373,6 +374,7 @@ class Speedhack : public Window//, public TextInputDelegate
             slider->setValue(unscaleValue(value));
             
             SpeedhackTop::instance->save();
+            SpeedhackTop::instance->onChange();
         }
 
         void cocosCreate(CCMenu* menu)

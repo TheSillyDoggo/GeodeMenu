@@ -26,31 +26,3 @@ class $modify (MusicDownloadManager)
             return "sfx/s4451.ogg";
     }
 };
-
-/*
-class $modify (CCSprite)
-{
-    static CCSprite* create(const char *pszFileName)
-    {
-        if (PlayLayer::get())
-        {
-            return CCSprite::createWithSpriteFrameName("diffIcon_02_btn_001.png");
-        }
-        else
-        {
-            return CCSprite::create(pszFileName);
-        }
-    }
-
-    static CCSprite* createWithSpriteFrameName(const char *pszFileName)
-    {
-        if (PlayLayer::get())
-        {
-            return CCSprite::createWithSpriteFrameName("diffIcon_02_btn_001.png");
-        }
-        else
-        {
-            return CCSprite::createWithSpriteFrameName(pszFileName);
-        }
-    }
-};  */
