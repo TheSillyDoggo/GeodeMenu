@@ -7,6 +7,7 @@
 - Lowered Default Position of Startpos Switcher UI
 - Rewrote Safe Mode system
 - Improved Performance by making Force Platformer only apply on level open
+- Added Main Menu Gameplay
 
 # 1.4.4
 

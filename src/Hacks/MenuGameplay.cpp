@@ -22,7 +22,6 @@ class MenuGameDelegate : public CCLayer
             this->setKeyboardEnabled(true);
             this->setTouchEnabled(true);
 
-            CCKeyboardDispatcher::get()->forceAddDelegate(this);
             CCTouchDispatcher::get()->addTargetedDelegate(this, -69, true);
 
             return true;
