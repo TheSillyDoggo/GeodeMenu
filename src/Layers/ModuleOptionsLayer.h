@@ -8,8 +8,6 @@
 
 using namespace geode::prelude;
 
-//class Module;
-
 class ModuleOptionsLayer : public SillyBaseLayer
 {
     public:

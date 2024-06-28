@@ -4,6 +4,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../Client/Client.h"
+#include "../Layers/EditPositionLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -145,5 +146,21 @@ class $modify (UILayer)
         UILayer::handleKeypress(key, down);
     }
 };
+
+class StartposUIDelegate : public ModuleChangeDelegate
+{
+    virtual void initOptionsLayer(CCLayer* options)
+    {
+        options->addChild(EditPositionLayer::create(EditPositionType::StartposSwitcher));
+        as<SillyBaseLayer*>(options)->blur->removeFromParent();
+    }
+};
+
+$execute
+{
+    Loader::get()->queueInMainThread([] {
+        Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
+    });
+}
 
 #endif

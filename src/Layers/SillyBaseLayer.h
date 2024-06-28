@@ -13,10 +13,11 @@ class SillyBaseLayer : public CCLayerColor
         CCMenu* baseLayer = nullptr;
         CCMenuItemSpriteExtra* ok = nullptr;
         CCPoint size = CCPointZero;
+        CCBlurLayer* blur;
 
         ~SillyBaseLayer();
 
-        void onClose(CCObject*)
+        virtual void onClose(CCObject*)
         {
             CCTouchDispatcher::get()->unregisterForcePrio(this);
             CCTouchDispatcher::get()->removeDelegate(this);

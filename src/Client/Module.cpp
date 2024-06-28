@@ -7,7 +7,10 @@ void Module::onOptionsAndroid(CCObject* sender)
 {
     auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
-    ModuleOptionsLayer::addToScene(dat);
+    auto pop = ModuleOptionsLayer::addToScene(dat);
+
+    if (dat->delegate)
+        dat->delegate->initOptionsLayer(pop);
 }
 
 void Module::onInfoAndroid(CCObject* sender)

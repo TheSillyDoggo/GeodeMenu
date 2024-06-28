@@ -3,7 +3,6 @@
 #include "ColourUtility.h"
 #include "DrawUtils.h"
 
-
 #include <Geode/ui/TextInput.hpp>
 
 #define public_cast(value, member) [](auto* v) { \
@@ -27,6 +26,11 @@ class ModuleChangeDelegate
 {
     public:
         virtual void onModuleChanged(bool enabled)
+        {
+
+        }
+
+        virtual void initOptionsLayer(CCLayer* options)
         {
 
         }

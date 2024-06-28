@@ -11,7 +11,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     if (Client::GetModuleEnabled("menu-bg-blur"))
     {
-        auto blur = CCBlurLayer::create();
+        blur = CCBlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
         this->addChild(blur);
     }
