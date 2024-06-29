@@ -16,12 +16,16 @@ enum EditPositionType
 class EditPositionLayer : public SillyBaseLayer
 {
     public:
+        CCLayerColor* bg;
         EditPositionType type;
         CCMenu* node;
         CCSprite* left;
         CCSprite* right;
+        CCSprite* previewBG;
         CCLabelBMFont* label;
         CCMenu* nodeOuter;
+        Slider* scaleSlider;
+        Slider* opacitySlider;
         CCPoint position;
         float scale;
         float opacity;
@@ -38,8 +42,13 @@ class EditPositionLayer : public SillyBaseLayer
 
         void onClose(CCObject*);
         void onReset(CCObject*);
+        void onTogglePreview(CCObject*);
+        void sliderValueChanged(CCObject* sender);
 
         CCMenu* getNodeForType();
+
+        float scaleValue(float originalValue);
+        float unscaleValue(float scaledValue);
 
         static EditPositionLayer* create(EditPositionType type)
         {

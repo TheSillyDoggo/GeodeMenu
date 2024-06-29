@@ -29,13 +29,15 @@ class MenuGameDelegate : public CCLayer
 
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
         {
-            if (Client::GetModuleEnabled("main-menu-gameplay"))
+            if (Client::GetModuleEnabled("main-menu-gameplay") && mgl->ccTouchBegan(pTouch, pEvent))
             {
                 if (mgl->m_playerObject && !mgl->m_playerObject->m_isSpider)
                     mgl->m_playerObject->pushButton(PlayerButton::Jump);
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
@@ -68,7 +70,7 @@ class $modify (MenuGameLayer)
         if (!MenuGameLayer::init())
             return false;
 
-        this->setTouchEnabled(false);
+        this->setTouchEnabled(true);
 
         auto gp = MenuGameDelegate::create();
         gp->mgl = this;

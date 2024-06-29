@@ -18,6 +18,10 @@ class $modify (StartposPlayLayer, PlayLayer)
         CCSprite* left;
         CCSprite* right;
         CCLabelBMFont* label;
+
+        CCPoint position;
+        float scale;
+        float opacity;
     };
 
     void setStartpos(int index)
@@ -99,10 +103,7 @@ class $modify (StartposPlayLayer, PlayLayer)
 
         m_uiLayer->addChild(m_fields->menu);
 
-        if (m_fields->objs.empty())
-            m_fields->menu->setScale(0);
-
-        m_fields->menu->setVisible(Client::GetModuleEnabled("startpos-switcher"));
+        m_fields->menu->setVisible(Client::GetModuleEnabled("startpos-switcher") ? !m_fields->objs.empty() : false);
 
         updateUI();
     }
@@ -112,18 +113,32 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (!m_fields->menu || !m_fields->label)
             return;
 
+        m_fields->position = ccp(Mod::get()->getSavedValue<float>("startpos-position.x", CCDirector::get()->getWinSize().width / 2), Mod::get()->getSavedValue<float>("startpos-position.y", 25));
+        m_fields->scale = Mod::get()->getSavedValue<float>("startpos-scale", 1);
+        m_fields->opacity = Mod::get()->getSavedValue<float>("startpos-opacity", 75.0f / 255.0f);
+
         m_fields->label->setString(fmt::format("{}/{}", m_fields->selectedIndex + 1, m_fields->objs.size()).c_str());
         m_fields->label->limitLabelWidth(100, 0.65f, 0);
 
-        float opacity = as<SliderModule*>(Client::GetModule("startpos-switcher")->options[0])->value * 255;
-
-        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
-        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
-        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, opacity), nullptr);
+        auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
+        auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
+        auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
         
         m_fields->label->runAction(action);
         m_fields->left->runAction(action2);
         m_fields->right->runAction(action3);
+    }
+
+    virtual void postUpdate(float dt)
+    {
+        PlayLayer::postUpdate(dt);
+
+        m_fields->position = ccp(Mod::get()->getSavedValue<float>("startpos-position.x", CCDirector::get()->getWinSize().width / 2), Mod::get()->getSavedValue<float>("startpos-position.y", 25));
+        m_fields->scale = Mod::get()->getSavedValue<float>("startpos-scale", 1);
+        m_fields->opacity = Mod::get()->getSavedValue<float>("startpos-opacity", 1);
+
+        m_fields->menu->setPosition(m_fields->position);
+        m_fields->menu->setScale(m_fields->scale);
     }
 };
 
