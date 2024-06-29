@@ -167,7 +167,6 @@ class StartposUIDelegate : public ModuleChangeDelegate
     virtual void initOptionsLayer(CCLayer* options)
     {
         options->addChild(EditPositionLayer::create(EditPositionType::StartposSwitcher));
-        as<SillyBaseLayer*>(options)->blur->removeFromParent();
     }
 };
 

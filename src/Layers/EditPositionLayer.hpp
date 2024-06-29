@@ -56,7 +56,7 @@ class EditPositionLayer : public SillyBaseLayer
             
             pRet->type = type;
 
-            if (pRet && pRet->initWithSizeAndName(ccp(0, 0), "")) {
+            if (pRet && pRet->initWithSizeAndName(ccp(0, 0), "", false, false, true)) {
                 pRet->autorelease();
                 return pRet;
             } else {

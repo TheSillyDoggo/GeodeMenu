@@ -2,10 +2,7 @@
 
 void EditPositionLayer::customSetup()
 {
-    if (blur)
-        blur->removeFromParent();
-
-    baseLayer->removeFromParent();
+    this->removeAllChildren();
     this->setZOrder(69);
     this->setTouchEnabled(true);
     this->scheduleUpdate();

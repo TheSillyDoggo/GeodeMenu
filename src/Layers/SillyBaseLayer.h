@@ -13,7 +13,7 @@ class SillyBaseLayer : public CCLayerColor
         CCMenu* baseLayer = nullptr;
         CCMenuItemSpriteExtra* ok = nullptr;
         CCPoint size = CCPointZero;
-        CCBlurLayer* blur;
+        CCBlurLayer* blur = nullptr;
 
         ~SillyBaseLayer();
 
@@ -38,5 +38,5 @@ class SillyBaseLayer : public CCLayerColor
 
         }
 
-        bool initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK = true, bool animate = true);
+        bool initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK = true, bool animate = true, bool noBlur = false);
 };

@@ -1,6 +1,6 @@
 #include "SillyBaseLayer.h"
 
-bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK, bool animate)
+bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK, bool animate, bool noBlur)
 {
     if (!CCLayerColor::init())
         return false;
@@ -9,7 +9,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
 
-    if (Client::GetModuleEnabled("menu-bg-blur"))
+    if (!noBlur && Client::GetModuleEnabled("menu-bg-blur"))
     {
         blur = CCBlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
