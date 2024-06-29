@@ -10,6 +10,7 @@
 - Rewrote Safe Mode system
 - Improved Performance by making Force Platformer only apply on level open
 - Added Main Menu Gameplay
+- Added **[BETA] Support for Intel And ARM MacOS**
 
 # 1.4.4
 

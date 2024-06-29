@@ -66,8 +66,9 @@ void EditPositionLayer::customSetup()
         this->addChild(opacityLabel, 5);
     }
     
-    auto topRightMenu = CCMenu::create(CCMenuItemToggler::createWithStandardSprites(this, menu_selector(EditPositionLayer::onTogglePreview), 0.75f), nullptr);
+    auto topRightMenu = CCMenu::create();
     topRightMenu->setPosition(CCDirector::get()->getWinSize() + ccp(-32, -35));
+    topRightMenu->addChild(CCMenuItemToggler::createWithStandardSprites(this, menu_selector(EditPositionLayer::onTogglePreview), 0.75f));
 
     auto previewLabel = CCLabelBMFont::create("Preview", "bigFont.fnt");
     previewLabel->setPosition(topRightMenu->getPosition() + ccp(0, 23));
