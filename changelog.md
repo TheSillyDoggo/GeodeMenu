@@ -5,6 +5,7 @@
 - Fixed Startpos Switcher not sorting startpos's by X position
 - Fixed Speedhack Triggering Safe Mode even if it is above 1.0
 - Fixed Hitbox Trail not working
+- Fixed Incompatible Modules not being able to be disabled
 - Lowered Default Position of Startpos Switcher UI
 - Added Moveable Startpos Switcher UI
 - Rewrote Safe Mode system

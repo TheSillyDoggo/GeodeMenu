@@ -107,6 +107,11 @@ void Module::setIncompatible(std::string str)
 {
     this->isInComp = true;
     this->inCompAlert = str;
+    if (this->enabled)
+    {
+        this->enabled = false;
+        this->onChange();
+    }
 }
 
 void Module::addHookRaw(Result<Hook*> hook)
