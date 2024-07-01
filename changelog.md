@@ -1,3 +1,8 @@
+# 1.4.6
+
+- Fixed Startpos switcher not switching using keybinds if you have the mod **Custom Keybinds** installed
+- Added No Short Numbers
+
 # 1.4.5
 
 - Fixed Separate Dual Icons and Pride Trails not working

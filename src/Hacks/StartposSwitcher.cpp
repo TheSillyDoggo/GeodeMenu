@@ -144,6 +144,21 @@ class $modify (StartposPlayLayer, PlayLayer)
 
 class $modify (UILayer)
 {
+    #ifdef GEODE_IS_WINDOWS
+    virtual void keyDown(cocos2d::enumKeyCodes key)
+    {
+        UILayer::keyDown(key);
+
+        if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
+        {
+            if (key == enumKeyCodes::KEY_Q)
+                as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
+
+            if (key == enumKeyCodes::KEY_E)
+                as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex + 1);
+        }
+    }
+    #else
     void handleKeypress(cocos2d::enumKeyCodes key, bool down)
     {
         if (down)
@@ -160,6 +175,7 @@ class $modify (UILayer)
 
         UILayer::handleKeypress(key, down);
     }
+    #endif
 };
 
 class StartposUIDelegate : public ModuleChangeDelegate
