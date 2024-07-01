@@ -7,7 +7,7 @@
 
 using namespace geode::prelude;
 
-class SillyBaseLayer : public CCLayerColor
+class SillyBaseLayer : public FLAlertLayer
 {
     public:
         CCMenu* baseLayer = nullptr;
@@ -19,12 +19,6 @@ class SillyBaseLayer : public CCLayerColor
 
         virtual void onClose(CCObject*)
         {
-            CCTouchDispatcher::get()->unregisterForcePrio(this);
-            CCTouchDispatcher::get()->removeDelegate(this);
-
-            if (CCTouchDispatcher::get()->m_pTargetedHandlers->containsObject(this))
-                CCTouchDispatcher::get()->m_pTargetedHandlers->removeObject(this, false);
-
             this->removeFromParent();
         }
 

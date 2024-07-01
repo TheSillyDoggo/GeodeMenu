@@ -7,7 +7,6 @@ bool AndroidUI::init()
         return false;
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
 
     this->setTouchEnabled(true);
     this->setKeypadEnabled(true);
@@ -545,5 +544,4 @@ AndroidUI* AndroidUI::addToScene()
 AndroidUI::~AndroidUI()
 {
     CCTouchDispatcher::get()->unregisterForcePrio(this);
-    CCTouchDispatcher::get()->removeDelegate(this);
 }

@@ -19,17 +19,12 @@ class $modify (GameStatsManager)
         }
         
         if (id == 16 && Client::GetModuleEnabled("music-bypass"))
-        {
             return true;
-        }
-        else if (id == 17 && Client::GetModuleEnabled("practice-bypass"))
-        {
+        
+        if (id == 17 && Client::GetModuleEnabled("practice-bypass"))
             return true;
-        }
-        else
-        {
-            return GameStatsManager::isItemUnlocked(type, id);
-        }
+        
+        return GameStatsManager::isItemUnlocked(type, id);
     }
 };
 
