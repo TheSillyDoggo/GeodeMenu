@@ -2,6 +2,7 @@
 
 - Fixed Startpos switcher not switching using keybinds if you have the mod **Custom Keybinds** installed
 - Added No Short Numbers
+- **Added [BETA] Support for ARM macOS**
 
 # 1.4.5
 
