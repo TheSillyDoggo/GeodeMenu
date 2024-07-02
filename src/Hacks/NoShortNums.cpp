@@ -8,6 +8,6 @@ class $modify (GameToolbox)
 {
     static gd::string intToShortString(int num)
     {
-        return Client::GetModuleEnabled("no-short-nums") ? fmt::format("{}", num) : GameToolbox::intToShortString(num);
+        return Client::GetModuleEnabled("no-short-nums") ? gd::string(fmt::format("{}", num).c_str()) : GameToolbox::intToShortString(num);
     }
 };
