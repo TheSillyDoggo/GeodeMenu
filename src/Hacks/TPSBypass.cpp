@@ -40,13 +40,7 @@ void updateTPSPatches(bool tpsEnabled)
     if (tpsEnabled)
     {
         #ifdef GEODE_IS_WINDOWS
-        //auto p = Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), geode::toByteArray<float>(1.0f / tps));
-
-        //if (p.has_error())
-            //log::error("error patching, heres the error: {}", p.error());
-
-        //if (p.has_value())
-            //patches.push_back(p.unwrap());
+        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), geode::toByteArray<double>(1.0f / tps)).unwrap());
         #endif
 
         #ifdef GEODE_IS_ANDROID32

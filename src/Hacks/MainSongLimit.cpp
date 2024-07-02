@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/SongSelectNode.hpp>
+#include <Geode/modify/MoreSearchLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -31,4 +32,9 @@ class $modify (SongSelectNode)
 
         SongSelectNode::audioPrevious(p0);
     }
+};
+
+class $modify (MoreSearchLayer)
+{
+
 };
