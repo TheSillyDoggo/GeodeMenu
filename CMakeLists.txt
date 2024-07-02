@@ -47,12 +47,10 @@ foreach(MODULE ${MODULES_LIST})
     endif()
 endforeach()
 
-#if("$ENV{USERNAME}" STREQUAL "talgo")
-    #add_definitions(-DFREEMOVE)
-#endif()
-
 CPMAddPackage("gh:matcool/gd-imgui-cocos#4eb5777") # specify a commit!
+CPMAddPackage("gh:EclipseMenu/RIFT#327c270") # specify a commit!
 
 target_link_libraries(${PROJECT_NAME} imgui-cocos)
+target_link_libraries(${PROJECT_NAME} rift)
 
 setup_geode_mod(${PROJECT_NAME})

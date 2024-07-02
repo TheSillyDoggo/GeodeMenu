@@ -6,64 +6,43 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
-
+#include "LabelNode.hpp"
 #include "../Hacks/Noclip.cpp"
 
 using namespace geode::prelude;
 
-class $modify (AttemptPlayLayer, PlayLayer)
+class $modify (LabelPlayLayer, PlayLayer)
 {
     struct Fields {
         int attemptCount = 0;
     };
 
-    void resetLevel()
-    {
-        PlayLayer::resetLevel();
-
-        m_fields->attemptCount++;
-    }
+    bool init(GJGameLevel* p0, bool p1, bool p2);
+    void resetLevel();
 };
 
 class StatusNode : public CCNode
 {
+    private:
+        static inline StatusNode* instance = nullptr;
+        float _updateInterval = 0.5f;
+        float _timeLeft = _updateInterval;
+        float _accum;
+        int _frames;
+    
     public:
-        static StatusNode* create() {
-            auto ret = new (std::nothrow) StatusNode;
-            if (ret && ret->init()) {
-                ret->autorelease();
-                return ret;
-            }
-            delete ret;
-            return nullptr;
-        }
+        int fps;
+        std::vector<LabelNode*> labels;
+
+        static StatusNode* create();
+        static StatusNode* get();
 
         ~StatusNode()
         {
             instance = nullptr;
         }
 
-        static inline StatusNode* instance = nullptr;
-
-        static StatusNode* get() { return instance; }
-
-        //NoclipLayer* v;
-
-        bool mods;
-
-        AttemptPlayLayer* attPL = nullptr;
-
-        static inline Module* fps = nullptr;
-        static inline Module* cheat = nullptr;
-        static inline Module* accuracy = nullptr;
-        static inline Module* deaths = nullptr;
-        static inline Module* replay = nullptr;
-        static inline Module* attempt = nullptr;
-        static inline Module* message = nullptr;
-        static inline Module* session = nullptr;
-        static inline Module* cpsM = nullptr;
-
-        static inline Module* noclip = nullptr;
+        LabelPlayLayer* attPL = nullptr;
 
         CCMenu* topLeft = nullptr;
         CCMenu* topRight = nullptr;
@@ -72,14 +51,7 @@ class StatusNode : public CCNode
 
         static inline Window* window = nullptr;
 
-        std::vector<CCLabelBMFont*> sLabels = {};
-
         static inline bool hidden = false;
-
-        float _updateInterval = 0.5f;
-        float _timeLeft = _updateInterval;
-        float _accum;
-        int _frames;
 
         std::vector<float> cps;
 
@@ -113,7 +85,7 @@ class StatusNode : public CCNode
         void reorderSides();
         void reorderPosition();
 
-        void update(float dt);
+        virtual void update(float dt);
         void updateCPS(float dt);
 };
 
