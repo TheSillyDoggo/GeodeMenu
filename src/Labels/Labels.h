@@ -21,11 +21,16 @@ class $modify (LabelPlayLayer, PlayLayer)
     void resetLevel();
 };
 
+class LabelModuleDelegate : public ModuleChangeDelegate
+{
+    virtual void onModuleChanged(bool enabled);
+};
+
 class StatusNode : public CCNode
 {
     private:
         static inline StatusNode* instance = nullptr;
-        float _updateInterval = 0.5f;
+        float _updateInterval = 0.1f;
         float _timeLeft = _updateInterval;
         float _accum;
         int _frames;
@@ -36,11 +41,9 @@ class StatusNode : public CCNode
 
         static StatusNode* create();
         static StatusNode* get();
-
-        ~StatusNode()
-        {
-            instance = nullptr;
-        }
+        
+        static void postSetup(Window* wnd);
+        ~StatusNode();
 
         LabelPlayLayer* attPL = nullptr;
 
@@ -48,9 +51,18 @@ class StatusNode : public CCNode
         CCMenu* topRight = nullptr;
         CCMenu* bottomLeft = nullptr;
         CCMenu* bottomRight = nullptr;
+        CCMenu* bottomCenter = nullptr;
+
+        bool init();
+
+        AxisLayout* getLayout();
+        void reorderSides();
+
+        virtual void update(float dt);
+
+        CCNode* getNodeForSide(LabelSide side);
 
         static inline Window* window = nullptr;
-
         static inline bool hidden = false;
 
         std::vector<float> cps;
@@ -74,19 +86,6 @@ class StatusNode : public CCNode
             
             return formattedTime.str();
         }
-
-
-        bool init();
-
-        void updateVis();
-
-        static void postSetup(Window* wnd);
-
-        void reorderSides();
-        void reorderPosition();
-
-        virtual void update(float dt);
-        void updateCPS(float dt);
 };
 
 #endif

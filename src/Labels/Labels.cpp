@@ -15,35 +15,54 @@ bool StatusNode::init()
 
     topLeft = CCMenu::create();
     topLeft->ignoreAnchorPointForPosition(false);
+    topLeft->setAnchorPoint(ccp(0, 1));
+    topLeft->setPosition(CCDirector::get()->getWinSize() * ccp(0, 1) + ccp(2, 0));
+    topLeft->setLayout(getLayout());
     topLeft->setID("top-left");
-    this->addChild(topLeft);
 
     topRight = CCMenu::create();
     topRight->ignoreAnchorPointForPosition(false);
+    topRight->setAnchorPoint(ccp(1, 1));
+    topRight->setPosition(CCDirector::get()->getWinSize() * ccp(1, 1) + ccp(-2, 0));
+    topRight->setLayout(getLayout()->setCrossAxisAlignment(AxisAlignment::End)->setCrossAxisLineAlignment(AxisAlignment::End));
     topRight->setID("top-right");
-    this->addChild(topRight);
 
     bottomLeft = CCMenu::create();
     bottomLeft->ignoreAnchorPointForPosition(false);
+    bottomLeft->setAnchorPoint(ccp(0, 0));
+    bottomLeft->setPosition(ccp(2, 2));
+    bottomLeft->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start));
     bottomLeft->setID("bottom-left");
-    this->addChild(bottomLeft);
 
     bottomRight = CCMenu::create();
     bottomRight->ignoreAnchorPointForPosition(false);
+    bottomRight->setAnchorPoint(ccp(1, 0));
+    bottomRight->setPosition(CCDirector::get()->getWinSize() * ccp(1, 0) + ccp(-2, 2));
+    bottomRight->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisAlignment(AxisAlignment::End)->setCrossAxisLineAlignment(AxisAlignment::End));
     bottomRight->setID("bottom-right");
-    this->addChild(bottomRight);
+
+    bottomCenter = CCMenu::create();
+    bottomCenter->ignoreAnchorPointForPosition(false);
+    bottomCenter->setAnchorPoint(ccp(0.5f, 0));
+    bottomCenter->setPosition(CCDirector::get()->getWinSize() * ccp(0.5f, 0) + ccp(0, 2));
+    bottomCenter->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisAlignment(AxisAlignment::Center)->setCrossAxisLineAlignment(AxisAlignment::Center));
+    bottomCenter->setID("bottom-center");
 
     hidden = Mod::get()->getSavedValue<bool>("hide-labels");
 
-    labels.push_back(LabelNode::create(new LabelModule("Test #{number * 2}, Hello {name}!")));
-    topLeft->addChild(labels[0]);
-
-    update(1.0f);
-    updateVis();
+    for (auto label : window->modules)
+    {
+        labels.push_back(LabelNode::create(as<LabelModule*>(label)));
+    }
 
     reorderSides();
-    reorderPosition();
+    update(1.0f);
 
+    this->addChild(topLeft);
+    this->addChild(topRight);
+    this->addChild(bottomLeft);
+    this->addChild(bottomRight);
+    this->addChild(bottomCenter);
     return true;
 }
 
@@ -68,7 +87,7 @@ StatusNode* StatusNode::get()
 
 void StatusNode::update(float dt)
 {
-    auto timeScale = CCScheduler::get()->getTimeScale() / SpeedhackTop::instance->getFloatValue();
+    auto timeScale = CCScheduler::get()->getTimeScale() / (SpeedhackEnabled::instance->enabled ? SpeedhackTop::instance->getFloatValue() : 1);
 
     _timeLeft -= dt / timeScale;
     _accum += 1 / (dt / timeScale);
@@ -86,37 +105,75 @@ void StatusNode::update(float dt)
     {
         label->update(dt);
     }
-}
 
-void StatusNode::updateVis()
-{
-    
+    topLeft->updateLayout();
+    topRight->updateLayout();
+    bottomLeft->updateLayout();
+    bottomRight->updateLayout();
+    bottomCenter->updateLayout();
 }
 
 void StatusNode::reorderSides()
 {
-    
-}
-
-void StatusNode::reorderPosition()
-{
-    
-}
-
-class LabelModuleDelegate : public ModuleChangeDelegate
-{
-    virtual void onModuleChanged(bool enabled)
+    for (auto label : labels)
     {
-        if (PlayLayer::get())
-        {
-            if (auto stn = StatusNode::get())
-            {
-                stn->reorderSides();
-                stn->reorderPosition();
-            }
-        }
+        label->retain();
     }
-};
+
+    topLeft->removeAllChildren();
+    topRight->removeAllChildren();
+    bottomLeft->removeAllChildren();
+    bottomRight->removeAllChildren();
+    bottomCenter->removeAllChildren();
+    
+    for (auto label : labels)
+    {
+        getNodeForSide(label->module->getSide())->addChild(label);
+
+        label->release();
+    }
+}
+
+CCNode* StatusNode::getNodeForSide(LabelSide side)
+{
+    switch(side)
+    {
+        default:
+            return topLeft;
+
+        case LabelSide::TopRight:
+            return topRight;
+
+        case LabelSide::BottomLeft:
+            return bottomLeft;
+
+        case LabelSide::BottomRight:
+            return bottomRight;
+
+        case LabelSide::BottomCenter:
+            return bottomCenter;
+    }
+}
+
+AxisLayout* StatusNode::getLayout()
+{
+    return AxisLayout::create()->setAxis(Axis::Column)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisAlignment(AxisAlignment::Start)->setCrossAxisLineAlignment(AxisAlignment::Start)->setAutoScale(false)->setGap(1);
+}
+
+StatusNode::~StatusNode()
+{
+    instance = nullptr;
+}
+
+// delegate :3
+
+void LabelModuleDelegate::onModuleChanged(bool enabled)
+{
+    if (PlayLayer::get(); auto stn = StatusNode::get())
+    {
+        stn->reorderSides();
+    }
+}
 
 void StatusNode::postSetup(Window* wnd)
 {
@@ -131,10 +188,7 @@ void StatusNode::postSetup(Window* wnd)
     }
 }
 
-void StatusNode::updateCPS(float dt)
-{
-    
-}
+// hooks :3
 
 void LabelPlayLayer::resetLevel()
 {

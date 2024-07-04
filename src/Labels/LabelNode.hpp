@@ -11,9 +11,10 @@ class LabelNode : public CCLabelBMFont
 {
     public:
         LabelModule* module;
-        rift::Script* script;        
+        rift::Script* script;
 
         static LabelNode* create(LabelModule* module);
+        ~LabelNode();
 
         bool init(LabelModule* module);
 

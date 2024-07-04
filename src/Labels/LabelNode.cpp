@@ -1,4 +1,5 @@
 #include "LabelNode.hpp"
+#include "Labels.h"
 
 LabelNode* LabelNode::create(LabelModule* module)
 {
@@ -16,10 +17,14 @@ LabelNode* LabelNode::create(LabelModule* module)
 
 bool LabelNode::init(LabelModule* module)
 {
-    if (!CCLabelBMFont::initWithString("", "bigFont.fnt"))
+    if (!CCLabelBMFont::initWithString("", module->getFont().c_str()))
         return false;
 
     this->module = module;
+    module->labelNode = this;
+
+    this->setScale(module->getScale() * 0.5f);
+    this->setOpacity(module->getOpacity() * 255);
 
     return true;
 }
@@ -33,10 +38,15 @@ void LabelNode::update(float delta)
         return this->setString("Error Compiling Script");
     }
     
-    script->setVariable("number", 210);
+    script->setVariable("fps", StatusNode::get()->fps);
     script->setVariable("name", "World");
 
     auto res = script->run();
 
     this->setString(res.c_str());
+}
+
+LabelNode::~LabelNode()
+{
+    module->labelNode = nullptr;
 }

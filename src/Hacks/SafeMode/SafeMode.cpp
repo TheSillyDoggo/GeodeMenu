@@ -97,7 +97,6 @@ void SafeMode::updateIndicator()
 
         a->update(1);
         a->reorderSides();
-        a->reorderPosition();
     }
 
     #endif
