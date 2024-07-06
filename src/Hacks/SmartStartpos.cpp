@@ -177,4 +177,14 @@ class $modify (SmartPlayLayer, PlayLayer)
             case 1933: return 7;
         }
     }
+
+    static void onModify(auto& self) {
+        auto hook = self.getHook("PlayLayer::createObjectsFromSetupFinished");
+
+        Loader::get()->queueInMainThread([hook]
+        {
+            auto modu = Client::GetModule("smart-startpos");
+            modu->addHookRaw(hook);
+        });
+    }
 };

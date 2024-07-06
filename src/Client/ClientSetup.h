@@ -72,14 +72,14 @@ public:
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "Adds a popup to confirm if you want to enter practice mode"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "Adds a popup to confirm if you want to restart the level"));
 
+        level->modules.push_back(new Module("StartPos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
+        level->modules.push_back(new Module("Smart StartPos", "smart-startpos", "Automatically adjusts the settings of a startpos to correctly set the gamemode, speed, and more", true));
+
         level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Hitboxes());
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
-
-        level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
-        level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nReopen level to apply."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
@@ -91,7 +91,7 @@ public:
         level->modules.push_back(new Module("Classic Percentage", "classic-percentage", "Percentage is calculated like in 2.1, The percentage for new best is still calculated like 2.2"));
 
         level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
-        level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
+        level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
 
         level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
         level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
@@ -101,6 +101,8 @@ public:
 
         level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
         level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
+
+        level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
