@@ -233,7 +233,7 @@ void StatusNode::update(float dt)
     if (!attPL)
         attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
     
-    float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_currentProgress == 0 ? 0 : as<NoclipLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_currentProgress)));
+    float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_currentProgress == 0 ? 0 : as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_currentProgress)));
     
 
     sLabels[0]->setVisible(cheat->enabled);
@@ -250,7 +250,7 @@ void StatusNode::update(float dt)
 
 
     sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
-    sLabels[3]->setString((numToString(as<NoclipLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
+    sLabels[3]->setString((numToString(as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
     sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
 
     std::stringstream ss;
@@ -267,7 +267,7 @@ void StatusNode::update(float dt)
     sLabels[6]->setString(v2);
     sLabels[7]->setString(formatTime(ColourUtility::totalSessionTime).c_str());
 
-    if (as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead)
+    if (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead)
     {
         sLabels[2]->stopAllActions();
         sLabels[2]->setColor(ccc3(255, 0, 0));
@@ -277,7 +277,7 @@ void StatusNode::update(float dt)
         sLabels[3]->setColor(ccc3(255, 0, 0));
         sLabels[3]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
 
-        as<NoclipLayer*>(PlayLayer::get())->m_fields->isDead = false;
+        as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead = false;
     }
 
     _timeLeft -= dt / CCScheduler::get()->getTimeScale();

@@ -7,7 +7,7 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
 
-#include "../Hacks/Noclip.cpp"
+#include "../Hacks/Noclip/Noclip.cpp"
 
 using namespace geode::prelude;
 
