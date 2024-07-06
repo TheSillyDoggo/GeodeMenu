@@ -32,6 +32,11 @@ class SillyBaseLayer : public geode::Popup<>
 
         }
 
+        virtual bool ccTouchBegan(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1);
+        virtual void ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1);
+        virtual void ccTouchEnded(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1);
+        virtual void ccTouchCancelled(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1);
+
         virtual bool setup();
 
         bool initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK = true, bool animate = true, bool noBlur = false);
