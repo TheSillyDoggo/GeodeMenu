@@ -1,6 +1,7 @@
 #ifdef STATUS_TEXTS
 
 #include "Labels.h"
+#include "../Hacks/Noclip/Noclip.hpp"
 
 bool StatusNode::init()
 {

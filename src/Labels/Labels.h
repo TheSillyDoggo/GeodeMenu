@@ -7,8 +7,6 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include "../Client/Client.h"
 
-#include "../Hacks/Noclip/Noclip.cpp"
-
 using namespace geode::prelude;
 
 class $modify (AttemptPlayLayer, PlayLayer)

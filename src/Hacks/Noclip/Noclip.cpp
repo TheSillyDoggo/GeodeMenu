@@ -1,4 +1,5 @@
 #include "Noclip.hpp"
+#include "../SafeMode/SafeMode.hpp"
 
 bool NoclipPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
