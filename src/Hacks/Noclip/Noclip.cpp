@@ -77,7 +77,7 @@ float NoclipPlayLayer::getNoclipAccuracy()
     if (m_gameState.m_currentProgress == 0)
         return 1;
 
-    return 1 - (m_fields->timeDead / as<float>(m_gameState.m_unkDouble2));
+    return 1 - (m_fields->timeDead / as<float>(m_gameState.m_levelTime));
 }
 
 void NoclipBaseGameLayer::update(float dt)
