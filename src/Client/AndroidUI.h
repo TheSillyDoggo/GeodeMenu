@@ -20,6 +20,8 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         TextInput* inputField = nullptr;
         ScrollLayer* scroll = nullptr;
 
+        static inline AndroidUI* instance;
+
         static inline int lastTab = 0;
         static inline int selectedTab = 0;
 

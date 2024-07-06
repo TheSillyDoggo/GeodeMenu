@@ -5,10 +5,9 @@ bool AndroidBall::init()
     if (!CCLayer::init())
         return false;
 
-    this->setID("android-ball");
+    this->setID("QOLModButton"_spr);
     this->setMouseEnabled(false);
     this->setTouchEnabled(true);
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512 - 1, true);
 
     highest++;
     this->setTag(highest);
@@ -42,7 +41,7 @@ void AndroidBall::onOpenMenu()
     AndroidUI::addToScene();
 }
 
-bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+bool AndroidBall::_ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     if (!CCLayer::ccTouchBegan(touch, event))
         return false;
@@ -68,11 +67,11 @@ bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     return doingThing;
 }
 
-void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+bool AndroidBall::_ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return CCLayer::ccTouchEnded(touch, event);
+        return false;
     #endif
 
     if (doingThing)
@@ -93,12 +92,14 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
             Mod::get()->setSavedValue("posY", position.y);
         }
     }
+
+    return doingThing;
 }
 
-void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+bool AndroidBall::_ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return CCLayer::ccTouchMoved(touch, event);
+        return false;
     #endif
 
     if (doingThing && !btn->getActionByTag(69))
@@ -119,6 +120,7 @@ void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     }
 
     CCLayer::ccTouchMoved(touch, event);
+    return doingThing;
 }
 
 void AndroidBall::update(float dt)
@@ -268,3 +270,28 @@ class $modify (AppDelegate)
         }
     }
 };
+
+void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
+{
+    bool thIgn;
+
+    if (AndroidUI::instance)
+        return CCTouchDispatcher::touches(touches, event, type);
+
+    if (AndroidBall::instance)
+    {
+        auto t = as<CCTouch*>(touches->anyObject());
+
+        if (type == ccTouchType::CCTOUCHBEGAN)
+            thIgn = AndroidBall::instance->_ccTouchBegan(t, event);
+
+        if (type == ccTouchType::CCTOUCHMOVED)
+            thIgn = AndroidBall::instance->_ccTouchMoved(t, event);
+
+        if (type == ccTouchType::CCTOUCHENDED)
+            thIgn = AndroidBall::instance->_ccTouchEnded(t, event);
+    }
+
+    if (!thIgn)
+        CCTouchDispatcher::touches(touches, event, type);
+}

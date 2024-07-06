@@ -1,14 +1,18 @@
 #include "SillyBaseLayer.h"
 
+bool SillyBaseLayer::setup()
+{
+    return true;
+}
+
 bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK, bool animate, bool noBlur)
 {
-    if (!FLAlertLayer::init(100))
+    if (!initAnchored(69, 420))
         return false;
-    
-    this->setOpacity(0);
 
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
-    // registerWithTouchDispatcher: CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
+    this->removeAllChildren();
+    this->stopAllActions();
+    this->setOpacity(0);
 
     if (!noBlur && Client::GetModuleEnabled("menu-bg-blur"))
     {
@@ -136,5 +140,5 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
 SillyBaseLayer::~SillyBaseLayer()
 {
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
+    
 }

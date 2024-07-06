@@ -234,7 +234,7 @@ void StatusNode::update(float dt)
     if (!attPL)
         attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
     
-    float v = 100 * (1 - (PlayLayer::get()->m_gameState.m_currentProgress == 0 ? 0 : as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->t / static_cast<float>(PlayLayer::get()->m_gameState.m_currentProgress)));
+    float v = 100 * as<NoclipPlayLayer*>(PlayLayer::get())->getNoclipAccuracy();
     
 
     sLabels[0]->setVisible(cheat->enabled);

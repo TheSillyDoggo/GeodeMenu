@@ -3,6 +3,7 @@
 
 bool AndroidUI::setup()
 {
+    instance = this;
     this->removeAllChildren();
 
     this->setTouchEnabled(false);
@@ -531,7 +532,7 @@ AndroidUI* AndroidUI::create()
 {
     auto pRet = new AndroidUI();
 
-    if (pRet->init(240.f, 160.f)) {
+    if (pRet->initAnchored(240.f, 160.f)) {
         pRet->autorelease();
         return pRet;
     }
@@ -553,5 +554,5 @@ AndroidUI* AndroidUI::addToScene()
 
 AndroidUI::~AndroidUI()
 {
-    
+    instance = nullptr;
 }

@@ -1,9 +1,13 @@
 # 1.4.6
 
+- Fixed Touch Issues (now uses geode::Popup<>)
 - Fixed Startpos switcher not switching using keybinds if you have the mod **Custom Keybinds** installed
-- AndroidUI now uses geode::Popup<>
 - Noclip no longer triggers safe mode if you haven't died this attempt
-- Added No Short Numbers
+- Quests in Pause is now enabled by default
+- Fixed Noclip Accuracy being VERY wrong
+- Fixed Instant Respawn killing the player twice
+- Added **No Short Numbers**
+- Added **Respawn Time Customizer**
 - Added **Smart Startpos**
 - **Added [BETA] Support for ARM macOS**
 

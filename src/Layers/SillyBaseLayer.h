@@ -7,7 +7,7 @@
 
 using namespace geode::prelude;
 
-class SillyBaseLayer : public FLAlertLayer
+class SillyBaseLayer : public geode::Popup<>
 {
     public:
         CCMenu* baseLayer = nullptr;
@@ -31,6 +31,8 @@ class SillyBaseLayer : public FLAlertLayer
         {
 
         }
+
+        virtual bool setup();
 
         bool initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK = true, bool animate = true, bool noBlur = false);
 };

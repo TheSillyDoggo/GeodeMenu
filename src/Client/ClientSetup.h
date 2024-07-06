@@ -75,7 +75,7 @@ public:
         level->modules.push_back(new Module("StartPos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
         level->modules.push_back(new Module("Smart StartPos", "smart-startpos", "Automatically adjusts the settings of a startpos to correctly set the gamemode, speed, and more", true));
 
-        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
+        level->modules.push_back(new Module("Custom Respawn Time", "custom-respawn-time", "Customize the time taken to respawn"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Hitboxes());
@@ -84,7 +84,7 @@ public:
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nReopen level to apply."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
-        level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
+        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Coin Finder", "coin-tracers", "Draws a line to secret / user coins in the level"));
 
         level->modules.push_back(new Module("Accurate Percentage", "accurate-percentage", "Allows you to have any amount of decimal places in your percentage text"));
@@ -93,15 +93,16 @@ public:
         level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
         level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
 
+        level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu", true));
         level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
+
         level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
-
         level->modules.push_back(new Module("Random Seed", "rand-seed", "Sets the seed for random triggers to a value of your choice"));
+
         level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
-
         level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
-        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
 
+        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
@@ -133,6 +134,8 @@ public:
         Client::GetModule("rand-seed")->options.push_back(seed);
 
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+
+        Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
     }
 
     static void SetupBypass()
