@@ -26,7 +26,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     this->runAction(CCFadeTo::create(1, 100));
     this->setKeypadEnabled(true);
-    this->setTouchEnabled(true);
+    this->setTouchEnabled(false);
 
     auto l = CCMenu::create();
     l->setContentSize(size);
@@ -140,5 +140,5 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
 SillyBaseLayer::~SillyBaseLayer()
 {
-    
+
 }
