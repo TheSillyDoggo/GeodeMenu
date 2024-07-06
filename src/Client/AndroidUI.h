@@ -6,7 +6,8 @@
 
 using namespace geode::prelude;
 
-class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
+class AndroidUI : public geode::Popup<>, TextInputDelegate
+{
     public:
         std::vector<CCLabelBMFont*> labels = {};
         std::vector<CCScale9Sprite*> outlines = {};
@@ -27,7 +28,7 @@ class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
         void onClose(CCObject* sender);
         void onPressTab(CCObject* sender);
 
-        virtual bool init();
+        virtual bool setup();
         virtual void textChanged(CCTextInputNode* p0);
         virtual void update(float dt);
         virtual void keyBackClicked();
@@ -37,7 +38,7 @@ class AndroidUI : public cocos2d::CCLayerColor, TextInputDelegate {
         CCMenu* getSearchPanel();
 
         static AndroidUI* addToScene();
+        static AndroidUI* create();
 
-        CREATE_FUNC(AndroidUI);
         ~AndroidUI();
 };

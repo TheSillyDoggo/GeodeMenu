@@ -1,6 +1,8 @@
 # 1.4.6
 
 - Fixed Startpos switcher not switching using keybinds if you have the mod **Custom Keybinds** installed
+- AndroidUI now uses geode::Popup<>
+- Noclip no longer triggers safe mode if you haven't died this attempt
 - Added No Short Numbers
 - Added **Smart Startpos**
 - **Added [BETA] Support for ARM macOS**

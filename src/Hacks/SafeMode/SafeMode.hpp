@@ -31,7 +31,6 @@ class SafeMode
         bool speedhackKick;
 
         std::vector<std::string> hacks = {
-            "noclip",
             "instant",
             "no-reverse",
             "no-static",

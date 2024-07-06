@@ -1,6 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
+#include "SafeMode/SafeMode.hpp"
 
 using namespace geode::prelude;
 
@@ -53,6 +54,8 @@ class $modify (NoclipLayer, PlayLayer)
             PlayLayer::destroyPlayer(p0, p1);
         else
         {
+            SafeMode::get()->setHackedAttempt();
+            
             m_fields->isDead = true;
 
             if (m_fields->last != p1)

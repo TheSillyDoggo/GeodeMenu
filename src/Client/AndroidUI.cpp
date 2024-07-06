@@ -1,14 +1,11 @@
 #include "AndroidUI.h"
 #include "../Utils/CCBlurLayer.hpp"
 
-bool AndroidUI::init()
+bool AndroidUI::setup()
 {
-    if (!CCLayerColor::init())
-        return false;
+    this->removeAllChildren();
 
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
-
-    this->setTouchEnabled(true);
+    this->setTouchEnabled(false);
     this->setKeypadEnabled(true);
     this->scheduleUpdate();
     this->setID("QOLModUI");
@@ -530,6 +527,19 @@ void AndroidUI::onPressTab(CCObject* sender)
     goToPage(selectedTab);
 }
 
+AndroidUI* AndroidUI::create()
+{
+    auto pRet = new AndroidUI();
+
+    if (pRet->init(240.f, 160.f)) {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
 AndroidUI* AndroidUI::addToScene()
 {
     if (auto existing = getChildOfType<AndroidUI>(CCScene::get(), 0))
@@ -543,5 +553,5 @@ AndroidUI* AndroidUI::addToScene()
 
 AndroidUI::~AndroidUI()
 {
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
+    
 }
