@@ -142,14 +142,17 @@ bool SillyBaseLayer::ccTouchBegan(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
 {
     return false;
 }
+
 void SillyBaseLayer::ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
 {
 
 }
+
 void SillyBaseLayer::ccTouchEnded(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
 {
 
 }
+
 void SillyBaseLayer::ccTouchCancelled(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
 {
 
