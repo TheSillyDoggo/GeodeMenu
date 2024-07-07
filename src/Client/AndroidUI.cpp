@@ -4,7 +4,7 @@
 bool AndroidUI::setup()
 {
     instance = this;
-    this->removeAllChildren();
+    m_mainLayer->setVisible(false);
 
     this->setTouchEnabled(false);
     this->setKeypadEnabled(true);

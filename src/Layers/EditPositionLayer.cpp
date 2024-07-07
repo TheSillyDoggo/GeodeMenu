@@ -2,7 +2,7 @@
 
 void EditPositionLayer::customSetup()
 {
-    this->removeAllChildren();
+    m_mainLayer->setVisible(false);
     this->setZOrder(69);
     this->setTouchEnabled(true);
     this->scheduleUpdate();
