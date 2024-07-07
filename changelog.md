@@ -9,7 +9,6 @@
 - Added **No Short Numbers**
 - Added **Respawn Time Customizer**
 - Added **Smart Startpos**
-- **Added [BETA] Support for ARM macOS**
 
 # 1.4.5
 
