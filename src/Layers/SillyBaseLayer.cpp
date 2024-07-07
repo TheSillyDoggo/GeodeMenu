@@ -10,7 +10,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
     if (!initAnchored(69, 420))
         return false;
 
-    this->removeAllChildren();
+    m_mainLayer->setVisible(false);
     this->stopAllActions();
     this->setOpacity(0);
 
