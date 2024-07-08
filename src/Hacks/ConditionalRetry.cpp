@@ -10,7 +10,7 @@ class $modify (PlayLayer)
     {
         bool v = GameManager::get()->getGameVariable("0026");
 
-        if (PlayLayer::getCurrentPercentInt() > m_level->m_normalPercent.value() && Client::GetModuleEnabled("conditional-retry") && !m_isPracticeMode && !m_player1->m_isPlatformer)
+        if (PlayLayer::getCurrentPercentInt() > m_level->m_normalPercent.value() && !m_isPracticeMode && !m_player1->m_isPlatformer)
         {
             GameManager::get()->setGameVariable("0026", false);
         }
@@ -19,4 +19,6 @@ class $modify (PlayLayer)
 
         GameManager::get()->setGameVariable("0026", v);
     }
+
+    QOLMOD_MOD_HOOK("conditional-retry", "PlayLayer::destroyPlayer")
 };

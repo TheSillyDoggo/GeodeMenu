@@ -1,11 +1,11 @@
-#ifndef GEODE_IS_WINDOWS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
+
+#ifndef GEODE_IS_WINDOWS
 
 class $modify (GJBaseGameLayer)
 {
@@ -32,15 +32,7 @@ class $modify (GJBaseGameLayer)
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
     }
 
-    static void onModify(auto& self) {
-        auto hook = self.getHook("GJBaseGameLayer::collisionCheckObjects");
-
-        Loader::get()->queueInMainThread([hook]
-        {
-            auto modu = Client::GetModule("all-plat");
-            modu->addHookRaw(hook);
-        });
-    }
+    QOLMOD_MOD_HOOK("all-plat", "GJBaseGameLayer::collisionCheckObjects")
 };
 
 #endif

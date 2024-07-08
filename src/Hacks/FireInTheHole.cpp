@@ -9,20 +9,18 @@ class $modify (FMODAudioEngine)
 {
     void playEffect(gd::string p0, float p1, float p2, float p3)
     {
-        if (!Client::GetModuleEnabled("fire-in-the-hole"))
-            FMODAudioEngine::playEffect(p0, p1, p2, p3);
-        else        
-            FMODAudioEngine::playEffect("sfx/s4451.ogg", p1, p2, p3);
+        FMODAudioEngine::playEffect("sfx/s4451.ogg", p1, p2, p3);
     }
+
+    QOLMOD_MOD_HOOK("fire-in-the-hole", "FMODAudioEngine::playEffect")
 };
 
 class $modify (MusicDownloadManager)
 {
     gd::string pathForSFX(int p0)
     {
-        if (!Client::GetModuleEnabled("fire-in-the-hole"))
-            return MusicDownloadManager::pathForSFX(p0);
-        else
-            return "sfx/s4451.ogg";
+        return "sfx/s4451.ogg";
     }
+
+    QOLMOD_MOD_HOOK("fire-in-the-hole", "MusicDownloadManager::pathForSFX")
 };

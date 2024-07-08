@@ -1,6 +1,7 @@
 # 1.4.7
 
 - Fixed the UI Button disappearing if you have Transition Customizer enabled
+- Lowered the Hitbox Trail limit to hopefully fix lag
 - Added **Hide Pause Button**
 
 # 1.4.6

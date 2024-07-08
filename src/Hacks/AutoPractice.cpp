@@ -11,9 +11,10 @@ class $modify (PlayLayer)
         if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        if (Client::GetModuleEnabled("auto-practice"))
-            this->togglePracticeMode(true);
+        this->togglePracticeMode(true);
 
         return true;
     }
+
+    QOLMOD_MOD_HOOK("auto-practice", "PlayLayer::init")
 };

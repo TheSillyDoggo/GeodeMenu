@@ -15,9 +15,6 @@ class $modify (CCLayerColor)
         if (!CCLayerColor::initWithColor(color, width, height))
             return false;
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return true;
-
         if (typeinfo_cast<GJListLayer*>(this))
         {
             if (color == ccc4(191, 114, 62, 255))
@@ -26,6 +23,8 @@ class $modify (CCLayerColor)
 
         return true;
     }
+
+    QOLMOD_MOD_HOOK("trans-lists", "CCLayerColor::initWithColor")
 };
 
 class $modify (CommentCell)
@@ -34,11 +33,10 @@ class $modify (CommentCell)
     {
         CommentCell::loadFromComment(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
-
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+
+    QOLMOD_MOD_HOOK("trans-lists", "CommentCell::loadFromComment")
 };
 
 class $modify (LevelListCell)
@@ -52,6 +50,8 @@ class $modify (LevelListCell)
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+
+    QOLMOD_MOD_HOOK("trans-lists", "LevelListCell::loadFromList")
 };
 
 class $modify (LevelCell)
@@ -65,12 +65,16 @@ class $modify (LevelCell)
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+
+    QOLMOD_MOD_HOOK("trans-lists", "LevelCell::loadFromLevel")
 };
 
 class $modify (GJCommentListLayer)
 {
     bool init(BoomListView* p0, char const* p1, cocos2d::ccColor4B p2, float p3, float p4, int p5)
     {
-        return GJCommentListLayer::init(p0, p1, Client::GetModuleEnabled("trans-lists") ? ccc4(0, 0, 0, 0) : p2, p3, p4, p5);
+        return GJCommentListLayer::init(p0, p1, ccc4(0, 0, 0, 0), p3, p4, p5);
     }
+
+    QOLMOD_MOD_HOOK("trans-lists", "GJCommentListLayer::init")
 };
