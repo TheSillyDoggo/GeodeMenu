@@ -15,4 +15,13 @@
 	return c.get(reinterpret_cast<FriendeeClass__*>(v)); \
 }(value)
 
+#define QOLMOD_MOD_HOOK(_modid, _hookname) \
+static void onModify(auto& self) { \
+    auto hook = self.getHook(_hookname); \
+    Loader::get()->queueInMainThread([hook] { \
+        auto modu = Client::GetModule(_modid); \
+        modu->addHookRaw(hook); \
+    }); \
+}
+
 float roundUpToMultipleOf2(float num);

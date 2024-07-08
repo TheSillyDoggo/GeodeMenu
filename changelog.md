@@ -1,3 +1,8 @@
+# 1.4.7
+
+- Fixed the UI Button disappearing if you have Transition Customizer enabled
+- Added **Hide Pause Button**
+
 # 1.4.6
 
 - Fixed Touch Issues (now uses geode::Popup<>)

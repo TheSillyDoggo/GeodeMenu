@@ -2,6 +2,51 @@
 
 #include "../Layers/ModuleOptionsLayer.h"
 #include "Dropdown.h"
+#include "../UI/PCDrawUtils.hpp"
+
+bool Module::touchBegan(CCPoint point, CCTouch* touch)
+{
+    if (CCRectMake(0, 0, Client::tileSize.x, Client::tileSize.y).containsPoint(point))
+    {
+        log::info("id: {}", id);
+        mouseHeldDown = true;
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Module::touchMoved(CCPoint point, CCTouch* touch)
+{
+    return false;
+}
+
+bool Module::touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled)
+{
+    if (mouseHeldDown)
+    {
+        enabled = !enabled;
+        save();
+        onChange();
+
+        if (enabled)
+            enableHooks();
+        else
+            disableHooks();
+
+        mouseHeldDown = false;
+    }
+
+    return false;
+}
+
+
+void Module::drawModule(CCPoint pointTopLeft)
+{
+    PCDrawUtils::drawRect(pointTopLeft, Client::tileSize, ccc4(0, 0, 255, 255));
+}
+
 
 void Module::onOptionsAndroid(CCObject* sender)
 {

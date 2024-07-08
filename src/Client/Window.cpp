@@ -8,13 +8,15 @@ void Window::drawWindow()
 
     auto pos = windowPos + offsetForTime(Client::instance->animStatus);
 
-    PCDrawUtils::drawRect(pos, Client::tileSize, ccc4(255, 0, 0, 100));
+    PCDrawUtils::drawRect(pos, Client::tileSize, ccc4(255, 0, 0, 255));
 
     int i = 0;
 
     for (auto module : modules)
     {
-        PCDrawUtils::drawRect(pos + ccp(0, Client::tileSize.y * (i + 1)), Client::tileSize, ccc4(0, 255 - (5 * i), 0, 100));
+        auto point = pos + ccp(0, Client::tileSize.y * (i + 1));
+
+        module->drawModule(point);
 
         i++;
     }
@@ -35,6 +37,7 @@ bool Window::touchBegan(CCPoint point, CCTouch* touch)
 {
     auto pos = windowPos + offsetForTime(Client::instance->animStatus);
     auto rect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y);
+    auto wndRect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y * (modules.size() + 1));
 
     if (rect.containsPoint(PCDrawUtils::getMousePosition()))
     {
@@ -43,12 +46,27 @@ bool Window::touchBegan(CCPoint point, CCTouch* touch)
 
         return true;
     }
+    else
+    {
+        int i = 0;
+
+        for (auto mod : modules)
+        {
+            if (mod->touchBegan((pos - point) + ccp(0, Client::tileSize.y * i), touch))
+                return true;
+
+            i++;
+        }
+    }
 
     return false;
 }
 
 bool Window::touchMoved(CCPoint point, CCTouch* touch)
 {
+    auto pos = windowPos + offsetForTime(Client::instance->animStatus);
+    auto wndRect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y * (modules.size() + 1));
+
     if (dragging)
     {
         windowPos = PCDrawUtils::getMousePosition() + offset;
@@ -56,6 +74,19 @@ bool Window::touchMoved(CCPoint point, CCTouch* touch)
         windowPos.y = clampf(windowPos.y, 0, CCDirector::get()->getWinSize().height - (Client::tileSize.y * (modules.size() + 1)));
 
         return true;
+    }
+
+    if (true)
+    {
+        int i = 0;
+
+        for (auto mod : modules)
+        {
+            if (mod->touchMoved((pos - point) + ccp(0, Client::tileSize.y * i), touch))
+                return true;
+
+            i++;
+        }
     }
 
     return false;

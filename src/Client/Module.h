@@ -5,21 +5,6 @@
 
 #include <Geode/ui/TextInput.hpp>
 
-#define public_cast(value, member) [](auto* v) { \
-	class FriendClass__; \
-	using T = std::remove_pointer<decltype(v)>::type; \
-	class FriendeeClass__: public T { \
-	protected: \
-		friend FriendClass__; \
-	}; \
-	class FriendClass__ { \
-	public: \
-		auto& get(FriendeeClass__* v) { return v->member; } \
-	} c; \
-	return c.get(reinterpret_cast<FriendeeClass__*>(v)); \
-}(value)
-
-
 using namespace geode::prelude;
 
 class ModuleChangeDelegate
@@ -61,6 +46,8 @@ class Module
         bool def;
         float value = 1.0f;
 
+        bool mouseHeldDown = false;
+
         ModuleChangeDelegate* delegate = nullptr;
 
         void addHookRaw(Result<Hook*> hook);
@@ -100,6 +87,16 @@ class Module
 
             this->load();
         }
+
+        /// @brief 
+        /// @param point the position of the touch relative to where the module should be drawn
+        /// @param touch touch
+        /// @return should stop input passing to gd
+        bool touchBegan(CCPoint point, CCTouch* touch);
+        bool touchMoved(CCPoint point, CCTouch* touch);
+        bool touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled);
+
+        void drawModule(CCPoint pointTopLeft);
 
         virtual bool Draw(ImVec2 tileSize)
         {
