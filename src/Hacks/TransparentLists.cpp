@@ -24,7 +24,7 @@ class $modify (CCLayerColor)
         return true;
     }
 
-    QOLMOD_MOD_HOOK("trans-lists", "CCLayerColor::initWithColor")
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (CommentCell)
@@ -35,8 +35,8 @@ class $modify (CommentCell)
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
-
-    QOLMOD_MOD_HOOK("trans-lists", "CommentCell::loadFromComment")
+    
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (LevelListCell)
@@ -51,7 +51,7 @@ class $modify (LevelListCell)
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
 
-    QOLMOD_MOD_HOOK("trans-lists", "LevelListCell::loadFromList")
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (LevelCell)
@@ -66,7 +66,7 @@ class $modify (LevelCell)
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
 
-    QOLMOD_MOD_HOOK("trans-lists", "LevelCell::loadFromLevel")
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (GJCommentListLayer)
@@ -76,5 +76,5 @@ class $modify (GJCommentListLayer)
         return GJCommentListLayer::init(p0, p1, ccc4(0, 0, 0, 0), p3, p4, p5);
     }
 
-    QOLMOD_MOD_HOOK("trans-lists", "GJCommentListLayer::init")
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };

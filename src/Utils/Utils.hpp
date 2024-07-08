@@ -24,4 +24,26 @@ static void onModify(auto& self) { \
     }); \
 }
 
+#define QOLMOD_MOD_ALL_HOOKS(_modid) \
+static void onModify(auto& self) { \
+	std::vector<geode::Hook*> hooks; \
+	if (self.m_hooks.empty()) \
+		return; \
+	for (auto hook : self.m_hooks) \
+	{ \
+		hooks.push_back(hook.second.get()); \
+	} \
+	Loader::get()->queueInMainThread([hooks] \
+	{ \
+		auto modu = Client::GetModule(_modid); \
+		for (auto hook : hooks) \
+		{ \
+			if (hook) \
+			{ \
+				modu->addHook(hook); \
+			} \
+		} \
+	}); \
+}
+
 float roundUpToMultipleOf2(float num);
