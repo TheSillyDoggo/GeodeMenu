@@ -2,7 +2,9 @@
 
 - Fixed the UI Button disappearing if you have Transition Customizer enabled
 - Lowered the Hitbox Trail limit to hopefully fix lag
+- Slider Limit Bypass now works on the scale slider in the editor
 - Added **Hide Pause Button**
+- Added **Pause Countdown**
 
 # 1.4.6
 
