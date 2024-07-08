@@ -12,17 +12,9 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES
-	src/Client/*.cpp
-	src/Hacks/*.cpp
-	src/Hacks/*/*.cpp
-	src/Utils/*.cpp
-	src/UI/*.cpp
-	src/Keybinds/*.cpp
-	src/Layers/*.cpp
-	src/Labels/*.cpp
-	src/Replay/*.cpp
-	src/CustomWindows/*.cpp
 	src/*.cpp
+	src/*/*.cpp
+	src/*/*/*.cpp
 )
 
 #add_library(${PROJECT_NAME} SHARED ${SOURCES}  "src/Client/Module.h" "src/Client/Window.h" "src/Client/Client.h" "src/Client/DrawUtils.h" "src/Client/ColourUtility.cpp" "src/Client/ClientSetup.h" "src/Hacks/UnlockHacks.cpp" "src/Hacks/CloseEndLevelLayer.cpp" "src/Hacks/TransitionTimeCustomiser.cpp" "src/Hacks/Speedhack.cpp" "src/Hacks/Noclip.cpp" "src/Hacks/Hitbox.cpp" "src/Hacks/NoRotation.cpp" "src/Hacks/Variables.cpp" "src/Hacks/FullOptions.cpp" "src/Hacks/StatusText.cpp" "src/Hacks/FireInTheHole.cpp" "src/Hacks/InstantComplete.cpp" "src/Hacks/ForcePlatformer.cpp" "src/Hacks/CopyHack.cpp" "src/Hacks/NocMark.cpp" "src/Hacks/SafeMode.cpp" "src/Hacks/SliderLimit.cpp" "src/Hacks/PracticeAlert.cpp" "src/Hacks/TextLimitBypass.cpp")
