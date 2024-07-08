@@ -50,4 +50,6 @@ class $modify (GJScaleControl)
             }
         }
     }
+
+    QOLMOD_MOD_ALL_HOOKS("slider-limit")
 };
