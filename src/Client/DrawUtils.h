@@ -1,10 +1,13 @@
 #pragma once
 
+#ifdef QOLMOD_IMGUI
 #include <imgui-cocos.hpp>
+#endif
 
 class DrawUtils
 {
     public:
+        #ifdef QOLMOD_IMGUI
         static inline ImFont* title = nullptr;
         static inline ImFont* mod = nullptr;
 
@@ -23,9 +26,7 @@ class DrawUtils
 
         static void drawRect(ImVec2 pos, ImVec2 size, ImColor colour)
         {
-            #ifdef GEODE_IS_WINDOWS
             ImGui::GetWindowDrawList()->AddRectFilled(pos, addImVec2(pos, size), colour, 0.0f);
-            #endif
         }
 
         static ImColor LerpColor(const ImColor& c1, const ImColor& c2, float t) {
@@ -41,7 +42,6 @@ class DrawUtils
 
         static void drawGradient(ImVec2 apos, ImVec2 size, ImColor colour, ImColor colour2)
         {
-            #ifdef GEODE_IS_WINDOWS
             auto list = ImGui::GetWindowDrawList();
 
             for (size_t i = 0; i < size.x; i++)
@@ -51,12 +51,10 @@ class DrawUtils
                 list->AddLine(pos, addImVec2(pos, ImVec2(0, size.y)), LerpColor(colour, colour2, i / size.x));
             }
 
-            #endif
         }
 
         static void anchoredText(ImVec2 pos, ImVec2 size, std::string text, ImColor colour = ImColor(ImVec4(255, 255, 255, 255)), ImVec2 anchor = ImVec2(0.5f, 0.5f))
         {
-            #ifdef GEODE_IS_WINDOWS
             float s = size.x / ImGui::CalcTextSize(text.c_str()).x;
             if (s > 1)
                 s = 1;
@@ -65,7 +63,6 @@ class DrawUtils
             
             
             ImGui::TextColored(colour, text.c_str());
-            #endif
         }
 
         static ImColor imColorFromccColor3B(geode::prelude::ccColor3B col)
@@ -91,21 +88,11 @@ class DrawUtils
             return false;
         }
 
+        #endif
+
         /// <summary>
         /// z = width, w = height
         /// </summary>
-        static bool pointWithinRect(ImVec2 point, ImVec4 rect)
-        {
-            if (point.x > rect.x && point.y > rect.y)
-            {
-                if (point.x < rect.x + rect.z && point.y < rect.y + rect.w)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         enum animType
         {

@@ -1,3 +1,5 @@
+#ifdef QOLMOD_IMGUI
+
 #include "ColourUtility.h"
 
 ImColor ColourUtility::GetColour(ClientColour colour)
@@ -37,3 +39,5 @@ ImColor ColourUtility::GetColour(ClientColour colour)
 
 	return ImColor(255, 0, 255);
 }
+
+#endif

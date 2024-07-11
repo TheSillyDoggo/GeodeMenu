@@ -98,31 +98,6 @@ class Module
 
         void drawModule(CCPoint pointTopLeft);
 
-        virtual bool Draw(ImVec2 tileSize)
-        {
-            ImVec2 pos = ImGui::GetCursorPos();
-
-            DrawUtils::drawRect(pos, tileSize, ColourUtility::GetColour(DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)) ? (ImGui::IsMouseDown(ImGuiMouseButton_Left) ? ColourUtility::ClientColour::Pressed : ColourUtility::ClientColour::Hovered) : ColourUtility::ClientColour::WindowBG));
-
-            DrawUtils::anchoredText(DrawUtils::addImVec2(pos, ImVec2(3, 0)), tileSize, name.c_str(), ColourUtility::GetColour(enabled ? ColourUtility::Accent : ColourUtility::Text), ImVec2(0, 0.5f));
-
-            ImGui::SetCursorPos(pos);
-            if (DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)))
-            {
-                descMod = description;
-
-                if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                {
-                    enabled = !enabled;
-
-                    this->save();
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         virtual void onChange()
         {
             if (delegate)
@@ -185,58 +160,6 @@ class InputModule : public Module, public TextInputDelegate
 
         float getFloatValue();
         int getIntValue();
-
-        bool Draw(ImVec2 tileSize)
-        {
-            ImVec2 pos = ImGui::GetCursorPos();
-
-            DrawUtils::drawRect(pos, tileSize, ColourUtility::GetColour(ColourUtility::ClientColour::WindowBG));
-            DrawUtils::drawRect(ImVec2(pos.x + 4, pos.y + 4), ImVec2(tileSize.x - 4 - 4, tileSize.y - 4 - 4), ColourUtility::GetColour(ColourUtility::ClientColour::InputField));
-
-            if (selected == this)
-            {
-                if ((int)(round(ImGui::GetTime() / 0.5f)) % 2 == 0)
-                {
-                    DrawUtils::drawRect(ImVec2(pos.x + 4 + 2 + (ImGui::CalcTextSize(text.c_str()).x), pos.y + 4 + 4), ImVec2(2, tileSize.y - 4 - 4 - 4 - 4), ColourUtility::GetColour(ColourUtility::ClientColour::InputCarot));
-                }
-            }
-
-            std::stringstream s;
-            
-            for (size_t i = 0; i < format.size(); i++)
-            {
-                if (format[i] == '%')
-                {
-                    s << text;
-                }
-                else
-                {
-                    s << format[i];
-                }
-            }
-
-            DrawUtils::anchoredText(ImVec2(pos.x + 4 + 2, pos.y + 4), ImVec2(tileSize.x - (4 + 4) - (2 + 2), tileSize.y - 4 - 4), s.str(), ImColor(255, 255, 255), ImVec2(0.0f, 0.5f));
-
-            ImGui::SetCursorPos(pos);
-
-            if (DrawUtils::mouseWithinRect(ImVec4(pos.x + 4, pos.y + 4, tileSize.x - 4 - 4, tileSize.y - 4 - 4)))
-            {
-                if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-                {
-                    selected = this;
-                }
-            }
-
-            if (selected == this)
-                this->save();
-
-            onChange();
-
-            if (DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)))
-                Module::descMod = description;
-
-            return false;
-        }
 
         void save()
         {
@@ -316,22 +239,6 @@ class ColourModule : public Module
             this->def = def;
 
             this->load();
-        }
-
-        bool Draw(ImVec2 tileSize)
-        {
-            ImVec2 pos = ImGui::GetCursorPos();
-
-            auto v = name;
-            //name = "";            
-            auto res = Module::Draw(tileSize);
-            //name = v;
-
-            float height = tileSize.y - 10;
-
-            DrawUtils::drawRect(DrawUtils::addImVec2(DrawUtils::addImVec2(pos, tileSize), ImVec2(-(5 + height), -(5 + height))), ImVec2(height, height), DrawUtils::imColorFromccColor3B(colour));
-
-            return res;
         }
 
         void save()
@@ -546,19 +453,6 @@ class InfoModule : public Module
         {
             name = n;
             description = d;
-        }
-
-        bool Draw(ImVec2 tileSize)
-        {
-            ImVec2 pos = ImGui::GetCursorPos();
-
-            DrawUtils::drawRect(pos, tileSize, ColourUtility::GetColour(ColourUtility::ClientColour::WindowBG));
-            DrawUtils::anchoredText(pos, tileSize, name.c_str(), ColourUtility::GetColour(ColourUtility::Text));
-
-            if (DrawUtils::mouseWithinRect(ImVec4(pos.x, pos.y, tileSize.x, tileSize.y)))
-                Module::descMod = description;
-
-            return false;
         }
 
         void save()

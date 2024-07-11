@@ -1,3 +1,7 @@
+# 1.4.8
+
+- Removed all imgui code so that wine players can use qolmod
+
 # 1.4.7
 
 - Fixed the UI Button disappearing if you have Transition Customizer enabled

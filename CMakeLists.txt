@@ -39,12 +39,4 @@ foreach(MODULE ${MODULES_LIST})
     endif()
 endforeach()
 
-#if("$ENV{USERNAME}" STREQUAL "talgo")
-    #add_definitions(-DFREEMOVE)
-#endif()
-
-CPMAddPackage("gh:matcool/gd-imgui-cocos#4eb5777") # specify a commit!
-
-target_link_libraries(${PROJECT_NAME} imgui-cocos)
-
 setup_geode_mod(${PROJECT_NAME})

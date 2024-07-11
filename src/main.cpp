@@ -188,29 +188,6 @@ $execute
     ClientUtils::Setup(android);
 }
 
-#ifdef IMGUI
-
-void DrawDescription()
-{
-    ImVec2 pos = ImVec2(10, ImGui::GetIO().DisplaySize.y - 10);
-
-    //if (!AltModuleLocation::instance->enabled)
-    if (true)
-    {
-        pos = ImGui::GetMousePos();
-
-        if (pos.x + ImGui::CalcTextSize(Module::descMod.c_str()).x + 20 > ImGui::GetIO().DisplaySize.x)
-        {
-            pos.x -= ImGui::CalcTextSize(Module::descMod.c_str()).x + 20;
-        }
-    }
-
-    DrawUtils::drawRect(ImVec2(pos.x, pos.y - (ImGui::CalcTextSize(Module::descMod.c_str()).y + 20)), ImVec2(ImGui::CalcTextSize(Module::descMod.c_str()).x + 20, ImGui::CalcTextSize(Module::descMod.c_str()).y + 20), ColourUtility::GetColour(ColourUtility::ClientColour::InputField));
-    DrawUtils::anchoredText(ImVec2(pos.x + 10, pos.y - 10 - (ImGui::CalcTextSize(Module::descMod.c_str()).y)), ImVec2(ImGui::CalcTextSize(Module::descMod.c_str()).x, ImGui::CalcTextSize(Module::descMod.c_str()).y), Module::descMod.c_str(), ImColor(255, 255, 255, 255), ImVec2(0, 0));
-}
-
-#endif
-
 bool v = false;
 
 class $modify (MenuLayer)
@@ -243,54 +220,6 @@ class $modify (MenuLayer)
                 AndroidBall::position = ccp(32, CCDirector::get()->getWinSize().height / 2);
             }
             
-            #ifdef IMGUI
-
-            ImGuiCocos::get().setup([] {
-                // this runs after imgui has been setup,
-                // its a callback as imgui will be re initialized when toggling fullscreen,
-                // so use this to setup any themes and or fonts!
-
-                //auto* font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "verdana.ttf").string().c_str(), 32.0f);
-
-                float mult = 1.0f;
-
-                DrawUtils::mod = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "OpenSans-Regular.ttf").string().c_str(), 18.0f * mult);
-                DrawUtils::title = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "OpenSans-Regular.ttf").string().c_str(), 24.0f * mult);
-                ImGui::GetIO().FontDefault = DrawUtils::mod;
-                ImGui::GetIO().FontGlobalScale = 1 / mult;
-
-            }).draw([] {
-
-                if (!android)
-                {
-                    if (client->animStatus == 0)
-                    {
-                        InputModule::selected = nullptr;
-                    }
-
-                    if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
-                        InputModule::selected = nullptr;
-
-                    client->animStatus += ((showing ? 1 : -1) * ImGui::GetIO().DeltaTime) / 0.25f;
-                    client->animStatus = clampf(client->animStatus, 0, 1);
-
-                    client->draw();
-
-                    if (!showing)
-                        ImGui::GetIO().WantCaptureMouse = false;
-
-                    if (showing)
-                    {
-                        if (Module::descMod != "")
-                            DrawDescription();
-                    }
-
-                    ImGui::End();
-                }
-            });
-
-            #endif
-
             v = true;
         }
 
