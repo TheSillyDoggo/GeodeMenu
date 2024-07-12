@@ -1,4 +1,4 @@
-#include "Credits.h"
+#include "Credits.hpp"
 
 using namespace geode::prelude;
 

@@ -1,4 +1,4 @@
-#include "Speedhack.h"
+#include "Speedhack.hpp"
 
 using namespace geode::prelude;
 
