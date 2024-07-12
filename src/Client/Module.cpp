@@ -148,8 +148,28 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
     menu->addChild(btn);
     menu->addChild(label);
 #else
-    auto onSpr = ButtonSprite::create(name.c_str(), 115, true, "bigFont.fnt", "GJ_button_01.png", 28, 0.55);
-    auto offSpr = ButtonSprite::create(name.c_str(), 115, true, "bigFont.fnt", "GJ_button_04.png", 28, 0.55);
+
+
+    auto onSpr = ButtonSprite::create(name.c_str(), 140, true, "bigFont.fnt", "square02b_small.png", 27, 0.65);
+    onSpr->m_BGSprite->setColor({0, 0, 0});
+    onSpr->m_BGSprite->setOpacity(100);
+    onSpr->m_label->setOpacity(255);
+
+    auto outline = CCScale9Sprite::create("GJ_square07.png");
+    outline->setContentSize(onSpr->m_BGSprite->getContentSize());
+    outline->setPosition(onSpr->m_BGSprite->getPosition());
+    onSpr->addChild(outline);
+
+    auto offSpr = ButtonSprite::create(name.c_str(), 140, true, "bigFont.fnt", "square02b_small.png", 27, 0.65);
+    offSpr->m_BGSprite->setColor({0, 0, 0});
+    offSpr->m_BGSprite->setOpacity(100);
+    offSpr->m_label->setOpacity(150);
+
+    auto outline2 = CCScale9Sprite::create("GJ_square07.png");
+    outline2->setContentSize(offSpr->m_BGSprite->getContentSize());
+    outline2->setPosition(offSpr->m_BGSprite->getPosition());
+    offSpr->addChild(outline2);
+    outline2->setOpacity(150);
 
     auto btn = CCMenuItemToggler::create(offSpr, onSpr, menu, menu_selector(Module::onToggleAndroid));
     btn->setUserData(this);

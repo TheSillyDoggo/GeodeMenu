@@ -149,10 +149,10 @@ void Window::cocosCreate(CCMenu* menu) {
     int y = 0;
 
     float gap = 28;
-    float extraGap = 9.69f;
 #ifdef ENABLE_NEW_UI
-    gap = 33;
+    gap = 29.5;
 #endif
+    float extraGap = 9.69f;
     float height = gap * roundUpToMultipleOf2((modules.size() - 1) / 2);
     height += gap;
 
