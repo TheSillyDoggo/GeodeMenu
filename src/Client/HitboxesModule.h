@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Module.h"
+#include "Types/ColourPickModule.hpp"
+#include "Types/SliderModule.hpp"
 
 class Hitboxes : public Module
 {

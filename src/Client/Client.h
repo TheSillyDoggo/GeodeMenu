@@ -1,7 +1,17 @@
 #pragma once
 
-#include "Window.h"
 #include "../Defines/Platform.h"
+
+#include "Types/InputModule.hpp"
+#include "Types/ColourPickModule.hpp"
+#include "Types/DropdownModule.hpp"
+#include "Types/SliderModule.hpp"
+#include "Types/TransitionCustomizerUI.hpp"
+#include "Types/SetValueModule.hpp"
+
+#include "idkwhattocallthis.hpp"
+
+#include "Window.h"
 
 class Client
 {

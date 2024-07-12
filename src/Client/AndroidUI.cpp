@@ -428,35 +428,7 @@ void AndroidUI::onClose(CCObject* sender)
 
 CCAction* AndroidUI::getEnterAction(CCNode* panel)
 {
-    float v = 1.0f;
-
-    if (SpeedhackTop::instance)
-    {
-        if (SpeedhackEnabled::instance->enabled)
-        {
-            auto x = numFromString<float>(SpeedhackTop::instance->text);
-
-            if (x.isOk())
-            {
-                v = x.value();
-                
-                if (v < 0.01f)
-                    v = 0.01f;
-
-                if (v > 99999)
-                    v = 99999;
-            }
-            else
-                v = 1;
-
-            bool m = SpeedhackMus::instance->enabled;
-
-            if (SpeedhackGameplay::instance->enabled)
-                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
-
-            v /= CCDirector::get()->getScheduler()->getTimeScale();
-        }
-    }
+    float v = SpeedhackTop::getAdjustedValue();
 
     int e = Mod::get()->getSavedValue<int>("anim-mode", 2);
 

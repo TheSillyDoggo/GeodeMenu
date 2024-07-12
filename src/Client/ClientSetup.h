@@ -15,6 +15,8 @@
 #include "../Labels/Labels.h"
 #include "../Hacks/SafeMode/SafeMode.hpp"
 
+#include "idkwhattocallthis.hpp"
+
 class ClientUtils
 {
 public:

@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
-#include <Geode/modify/GJBaseGameLayer.hpp>
-#include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/CCCircleWave.hpp>
 #include "../Client/Client.h"
 #include "../Utils/Utils.hpp"

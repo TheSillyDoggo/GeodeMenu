@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client.h"
 #include "../../Layers/IconOptionsLayer.h"
 

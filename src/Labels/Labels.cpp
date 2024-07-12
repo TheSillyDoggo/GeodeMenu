@@ -242,7 +242,7 @@ void StatusNode::update(float dt)
     sLabels[2]->setVisible(noclip->enabled && accuracy->enabled);
     sLabels[3]->setVisible(noclip->enabled && deaths->enabled);
     sLabels[4]->setVisible(attempt->enabled);
-    sLabels[5]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
+    sLabels[5]->setVisible(replay->enabled);
     //sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
     //sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
     sLabels[6]->setVisible(message->enabled);
@@ -255,10 +255,10 @@ void StatusNode::update(float dt)
     sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
 
     std::stringstream ss;
-    ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
+    //ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
 
     std::stringstream inp;
-    inp << GJReplayManager::replay.inputs.size() << (GJReplayManager::replay.inputs.size() == 1 ? " Input" : " Inputs") << ", " << GJReplayManager::replay.frames.size() << (GJReplayManager::replay.frames.size() == 1 ? " Frame" : " Frames");
+    //inp << GJReplayManager::replay.inputs.size() << (GJReplayManager::replay.inputs.size() == 1 ? " Input" : " Inputs") << ", " << GJReplayManager::replay.frames.size() << (GJReplayManager::replay.frames.size() == 1 ? " Frame" : " Frames");
 
     std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
     sLabels[5]->setString(ss.str().c_str());

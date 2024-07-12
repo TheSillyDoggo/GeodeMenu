@@ -104,7 +104,7 @@ class $modify (SmartPlayLayer, PlayLayer)
 
             if (auto gravity = latestObjectForVector(m_fields->gravityObjects, sp))
             {
-                sp->m_startSettings->m_isFlipped = getFlippedGravity(m_fields->gravityObjects, sp);
+                //sp->m_startSettings->m_isFlipped = getFlippedGravity(m_fields->gravityObjects, sp);
             }
         }
     }
@@ -178,13 +178,5 @@ class $modify (SmartPlayLayer, PlayLayer)
         }
     }
 
-    static void onModify(auto& self) {
-        auto hook = self.getHook("PlayLayer::createObjectsFromSetupFinished");
-
-        Loader::get()->queueInMainThread([hook]
-        {
-            auto modu = Client::GetModule("smart-startpos");
-            modu->addHookRaw(hook);
-        });
-    }
+    QOLMOD_MOD_HOOK("smart-startpos", "PlayLayer::createObjectsFromSetupFinished")
 };
