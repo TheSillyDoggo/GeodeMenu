@@ -1,12 +1,18 @@
 #pragma once
 
-#include "Windows/all.hpp"
-#include "../CustomWindows/Config.h"
+#include "Windows/Credits.hpp"
+#include "Windows/Level.hpp"
+#include "Windows/Speedhack.hpp"
+#include "Windows/Uncomplete.hpp"
+#include "Windows/Universal.hpp"
+#include "Windows/Variables.hpp"
+#include "Windows/Labels.hpp"
+#include "Windows/Config.hpp"
+#include "Windows/IconEffects.hpp"
+
 #include "Client.h"
 #include "HitboxesModule.h"
 #include "../Labels/Labels.h"
-#include "../CustomWindows/Labels.h"
-#include "../CustomWindows/IconEffects.h"
 #include "../Hacks/SafeMode/SafeMode.hpp"
 
 class ClientUtils

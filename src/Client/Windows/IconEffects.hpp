@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Geode/modify/MenuLayer.hpp>
-#include "../Client/Client.h"
-#include "../Layers/IconOptionsLayer.h"
+#include "../Client.h"
+#include "../../Layers/IconOptionsLayer.h"
 
 class EffectUI : public CCNode
 {

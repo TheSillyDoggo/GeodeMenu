@@ -1,4 +1,4 @@
-#include "Labels.h"
+#include "Labels.hpp"
 
 void Labels::cocosCreate(CCMenu* menu)
 {

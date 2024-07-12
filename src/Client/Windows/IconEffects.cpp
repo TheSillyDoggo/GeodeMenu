@@ -1,4 +1,4 @@
-#include "IconEffects.h"
+#include "IconEffects.hpp"
 
 ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
 {
