@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Windows/all.h"
+#include "Windows/all.hpp"
 #include "../CustomWindows/Config.h"
 #include "Client.h"
 #include "HitboxesModule.h"
