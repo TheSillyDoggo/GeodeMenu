@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Windows/all.hpp"
+#include "../CustomWindows/Config.h"
 #include "Client.h"
 #include "HitboxesModule.h"
 #include "../Labels/Labels.h"
-#include "../CustomWindows/Config.h"
 #include "../CustomWindows/Labels.h"
 #include "../CustomWindows/IconEffects.h"
 #include "../Hacks/SafeMode/SafeMode.hpp"
