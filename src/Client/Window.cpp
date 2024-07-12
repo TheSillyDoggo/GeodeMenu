@@ -150,6 +150,9 @@ void Window::cocosCreate(CCMenu* menu) {
 
     float gap = 28;
     float extraGap = 9.69f;
+#ifdef ENABLE_NEW_UI
+    gap = 33;
+#endif
     float height = gap * roundUpToMultipleOf2((modules.size() - 1) / 2);
     height += gap;
 
@@ -171,12 +174,17 @@ void Window::cocosCreate(CCMenu* menu) {
     for (size_t m = 0; m < modules.size(); m++)
     {
         float x = 20;
+        float offsetX = 0;
+
+    #ifdef ENABLE_NEW_UI
+        offsetX = 65;
+    #endif
 
         if (!(v % 2 == 0))
             x = 188;
 
         if (modules[m])
-            modules[m]->makeAndroid(btnMenu, {x, height - (gap * y) - (gap / 2) - (extraGap / 2)});
+            modules[m]->makeAndroid(btnMenu, {x + offsetX, height - (gap * y) - (gap / 2) - (extraGap / 2)});
 
         if (dynamic_cast<SetValueModule*>(modules[m]))
         {

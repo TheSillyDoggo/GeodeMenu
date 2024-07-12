@@ -9,6 +9,12 @@ endif()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+option(UI_REVAMP "UI Revamp" OFF)
+
+if (UI_REVAMP)
+    add_compile_definitions(ENABLE_NEW_UI=1)
+endif()
+
 project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES

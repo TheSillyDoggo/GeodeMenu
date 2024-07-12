@@ -100,6 +100,7 @@ void Module::onToggleAndroid(CCObject* sender)
 
 void Module::makeAndroid(CCNode* menu, CCPoint pos)
 {
+#ifndef ENABLE_NEW_UI
     if (inCompAlert.empty())
         this->isInComp = false;
 
@@ -146,6 +147,19 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
 
     menu->addChild(btn);
     menu->addChild(label);
+#else
+    auto onSpr = ButtonSprite::create(name.c_str(), 115, true, "bigFont.fnt", "GJ_button_01.png", 28, 0.55);
+    auto offSpr = ButtonSprite::create(name.c_str(), 115, true, "bigFont.fnt", "GJ_button_04.png", 28, 0.55);
+
+    auto btn = CCMenuItemToggler::create(offSpr, onSpr, menu, menu_selector(Module::onToggleAndroid));
+    btn->setUserData(this);
+    btn->setID(id);
+    btn->toggle(enabled);
+    btn->setPosition(pos);
+    btn->m_fSizeMult = 1.f;
+
+    menu->addChild(btn);
+#endif
 }
 
 void Module::setIncompatible(std::string str)
