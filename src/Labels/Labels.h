@@ -80,6 +80,7 @@ class StatusNode : public CCNode
         int _frames;
 
         std::vector<float> cps;
+        int totalCPS = 0;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds

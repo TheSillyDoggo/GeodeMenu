@@ -1,6 +1,9 @@
 # 1.4.8
 
 - Removed all imgui code so that wine players can use qolmod
+- Fixed multiple CPS Counter bugs
+- Added Total CPS option to CPS Counter
+- Changed how FPS is counted, should be more accurate
 
 # 1.4.7
 

@@ -349,8 +349,9 @@ public:
         //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
         replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
         replay->modules.push_back(new Module("Session Time", "status-session", "Shows the time you've had the game open for in the format <cg>hh::mm::ss</c>"));
-        replay->modules.push_back(new Module("Clicks Per Second", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
+        replay->modules.push_back(new Module("CPS Counter", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
         //replay->modules.push_back(new StatusMessage());
+
 
         Client::instance->windows.push_back(replay);
 
@@ -363,6 +364,7 @@ public:
         messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
+        Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
 
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
