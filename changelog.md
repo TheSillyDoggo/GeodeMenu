@@ -4,6 +4,8 @@
 - Fixed multiple CPS Counter bugs
 - Added Total CPS option to CPS Counter
 - Changed how FPS is counted, should be more accurate
+- Removed F12 keybind by default
+- Fixed more touch issues
 
 # 1.4.7
 

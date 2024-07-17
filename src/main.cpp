@@ -28,7 +28,7 @@ class $modify (CCKeyboardDispatcher)
         { 
             bool v = false;
 
-            std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_F12, enumKeyCodes::KEY_Insert };
+            std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
 
             if (SetBindValue::instance)
                 btns = SetBindValue::instance->buttons;

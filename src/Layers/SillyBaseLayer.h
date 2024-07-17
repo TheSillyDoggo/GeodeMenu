@@ -14,6 +14,10 @@ class SillyBaseLayer : public geode::Popup<>
         CCMenuItemSpriteExtra* ok = nullptr;
         CCPoint size = CCPointZero;
         CCBlurLayer* blur = nullptr;
+        std::string _title;
+        bool createWithOK;
+        bool animate;
+        bool noBlur;
 
         ~SillyBaseLayer();
 

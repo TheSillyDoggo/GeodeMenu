@@ -5,23 +5,13 @@
 
 using namespace geode::prelude;
 
-class ColourModuleDelegate : public ColorPickPopupDelegate
-{
-    public:
-        Module* mod;
-        
-        virtual void updateColor(cocos2d::ccColor4B const& color);
-};
-
-class ColourModule : public Module
+class ColourModule : public Module, public ColorPickPopupDelegate
 {
     public:
         static inline ColourModule* selected = nullptr;
 
         ccColor3B colour = ccc3(255, 255, 255);
         ccColor3B def = ccc3(255, 255, 255);
-
-        ColourModuleDelegate* delegate;
 
         CCSprite* btnSpr = nullptr;
 
@@ -33,4 +23,6 @@ class ColourModule : public Module
         void onPickColourAndroid(cocos2d::CCObject* sender);
 
         void makeAndroid(CCNode* menu, CCPoint pos);
+
+        virtual void updateColor(cocos2d::ccColor4B const& color);
 };

@@ -2,8 +2,8 @@
 
 #include "ColourUtility.h"
 #include "DrawUtils.h"
-
 #include <Geode/ui/TextInput.hpp>
+#include "../UI/UIComponent.hpp"
 
 using namespace geode::prelude;
 
@@ -21,7 +21,7 @@ class ModuleChangeDelegate
         }
 };
 
-class Module
+class Module : public UIComponent
 {
     protected:
         std::vector<geode::Hook*> hooks = {};
