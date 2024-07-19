@@ -195,6 +195,8 @@ public:
 
         bypass->modules.push_back(new Module("Pitch Shifter", "pitch-shifter", "Shift the pitch of the game audio"));
         bypass->modules.push_back(new Module("No Short Numbers", "no-short-nums", "Show the full value instead of the short value in level cells"));
+
+        bypass->modules.push_back(new Module("Show Touches", "show-touches", "Shows a circle on the screen whenever you touch"));
         
         Client::instance->windows.push_back(bypass);
 
