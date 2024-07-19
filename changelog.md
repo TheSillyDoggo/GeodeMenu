@@ -6,6 +6,8 @@
 - Changed how FPS is counted, should be more accurate
 - Removed F12 keybind by default
 - Fixed more touch issues
+- Renamed TPS Bypass to Physics Bypass
+- Added **Show Touches**
 
 # 1.4.7
 
