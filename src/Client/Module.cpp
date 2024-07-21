@@ -164,7 +164,7 @@ void Module::addHookRaw(Result<Hook*> hook)
     if (!hook.isOk() || !hook.has_value())
         return log::error("Error adding hook: {}", hook.err());
 
-    addHook(hook.unwrap());
+    addHook(hook.unwrapOr(nullptr));
 }
 
 void Module::addHook(Hook* hook)

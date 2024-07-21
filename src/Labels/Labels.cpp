@@ -52,7 +52,7 @@ bool StatusNode::init()
 
     hidden = Mod::get()->getSavedValue<bool>("hide-labels");
 
-    update(1.0f);
+    update(-1.0f);
     updateVis();
 
     reorderSides();
@@ -254,14 +254,9 @@ void StatusNode::update(float dt)
     sLabels[3]->setString((numToString(as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
     sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
 
-    std::stringstream ss;
-    //ss << "Frame: " << numToString(GJReplayManager::frame) << ", Delta: " << numToString(GJReplayManager::dt, 4);
-
-    std::stringstream inp;
-    //inp << GJReplayManager::replay.inputs.size() << (GJReplayManager::replay.inputs.size() == 1 ? " Input" : " Inputs") << ", " << GJReplayManager::replay.frames.size() << (GJReplayManager::replay.frames.size() == 1 ? " Frame" : " Frames");
 
     std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
-    sLabels[5]->setString(ss.str().c_str());
+    sLabels[5]->setString("");
     //sLabels[6]->setString(b.c_str());
     //sLabels[7]->setString(inp.str().c_str());
     auto v2 = as<InputModule*>(message->options[1])->text.c_str();
@@ -281,7 +276,23 @@ void StatusNode::update(float dt)
         as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead = false;
     }
 
-    sLabels[1]->setString(std::to_string((int)roundf(CCDirector::sharedDirector()->m_fFrameRate)).append(" FPS").c_str());
+    if (dt != -1)
+    {
+        _timeLeft -= dt / CCScheduler::get()->getTimeScale();
+        _accum += 1 / (dt / CCScheduler::get()->getTimeScale());
+        _frames++;
+
+        if (_timeLeft <= 0) {
+            float fps = _accum / _frames;
+
+            sLabels[1]->setString((std::to_string(as<int>(roundf(fps))) + std::string(" FPS")).c_str());
+            //CCLOG("Average FPS: %.2f", fps);
+
+            _timeLeft = _updateInterval;
+            _accum = 0;
+            _frames = 0;
+        }
+    }
 
     for (size_t i = 0; i < cps.size(); i++)
     {
@@ -290,10 +301,7 @@ void StatusNode::update(float dt)
 
     cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
 
-
-    auto cpsTotalStr = cpsM->options[1]->enabled ? "/" + std::to_string(totalCPS) : "";
-
-    sLabels[8]->setString((std::to_string(as<int>(cps.size()))).append(cpsTotalStr).append(" CPS").c_str());
+    sLabels[8]->setString((cpsM->options[1]->enabled ? fmt::format("{} / {} CPS", cps.size(), totalClicks) : fmt::format("{} CPS", cps.size(), totalClicks)).c_str());
 
     updateVis();
 }
@@ -303,24 +311,35 @@ void StatusNode::updateCPS(float dt)
     
 }
 
-class $modify (GJBaseGameLayer) {
-    void handleButton(bool down, int button, bool isPlayer1) {
-        GJBaseGameLayer::handleButton(down, button, isPlayer1);
-        if (!PlayLayer::get()) return;
-        if (down) {
-            if (button == 1 && isPlayer1) {
-                if (auto stn = StatusNode::get()) {
-                    stn->cps.push_back(1);
-                    stn->totalCPS++;
+class $modify (PlayerObject)
+{
+    void pushButton(PlayerButton p0)
+    {
+        PlayerObject::pushButton(p0);
 
-                    stn->sLabels[8]->stopAllActions();
-                    stn->sLabels[8]->setColor(ccc3(0, 255, 0));
-                }
-            }
-        } else if (button == 1 && isPlayer1) {
-            if (auto stn = StatusNode::get()) {
+        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_player1 == this)
+        {
+            if (auto stn = StatusNode::get())
+            {
+                stn->cps.push_back(1);
+                stn->totalClicks++;
+
                 stn->sLabels[8]->stopAllActions();
-                stn->sLabels[8]->runAction(CCTintTo::create(0.1, 255, 255, 255));
+                stn->sLabels[8]->setColor(ccc3(0, 255, 0));
+            }
+        }
+    }
+
+    void releaseButton(PlayerButton p0)
+    {
+        PlayerObject::releaseButton(p0);
+
+        if (p0 == PlayerButton::Jump && PlayLayer::get())
+        {
+            if (auto stn = StatusNode::get())
+            {
+                stn->sLabels[8]->stopAllActions();
+                stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }
     }
@@ -342,11 +361,13 @@ class $modify (PlayLayer)
         
         return true;
     }
-    void resetLevel() {
+
+    void resetLevel()
+    {
         PlayLayer::resetLevel();
-        if(auto stn = StatusNode::get()) {
-            stn->totalCPS = 0;
-        }
+
+        if (StatusNode::get())
+            StatusNode::get()->totalClicks = 0;
     }
 };
 

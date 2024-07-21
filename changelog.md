@@ -1,3 +1,9 @@
+# 1.4.9
+
+- Fixed CPS and FPS counter being broken
+- Fixed dying in noclip causing fps to be wrong
+- Added **One Attempt Practice Complete**
+
 # 1.4.8
 
 - Removed all imgui code so that wine players can use qolmod

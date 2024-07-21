@@ -22,7 +22,8 @@ void updateTPSPatches(bool tpsEnabled)
     {
         for (auto catgirl : patches)
         {
-            Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
+            if (catgirl)
+                Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
         }
 
         patches.clear();
@@ -40,7 +41,12 @@ void updateTPSPatches(bool tpsEnabled)
     if (tpsEnabled)
     {
         #ifdef GEODE_IS_WINDOWS
-        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), geode::toByteArray<double>(1.0f / tps)).unwrap());
+        //auto array = geode::toByteArray<float>(1.0f / tps);
+
+        //DWORD old_prot;
+        //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), PAGE_EXECUTE_READWRITE, &old_prot);
+        //patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array));
+        //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), old_prot, &old_prot);
         #endif
 
         #ifdef GEODE_IS_ANDROID32

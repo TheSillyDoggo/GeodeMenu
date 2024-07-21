@@ -115,6 +115,7 @@ public:
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
 
         level->modules.push_back(new Module("Pause Countdown", "pause-countdown", "Shows a countdown for 3 seconds when you unpause a level"));
+        level->modules.push_back(new Module("1 Attempt Practice", "practice-complete", "Allows you to complete a level in practice mode if you beat it in >cr>one<c/> attempt", true));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
