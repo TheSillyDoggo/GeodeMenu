@@ -2,6 +2,7 @@
 #include <Geode/modify/CommentCell.hpp>
 #include <Geode/modify/LevelListCell.hpp>
 #include <Geode/modify/LevelCell.hpp>
+#include <Geode/modify/MapPackCell.hpp>
 #include <Geode/modify/CCLayerColor.hpp>
 #include <Geode/modify/GJCommentListLayer.hpp>
 #include "../Client/Client.h"
@@ -59,6 +60,21 @@ class $modify (LevelCell)
     void loadFromLevel(GJGameLevel* p0)
     {
         LevelCell::loadFromLevel(p0);
+
+        if (!Client::GetModuleEnabled("trans-lists"))
+            return;
+
+        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
+};
+
+class $modify (MapPackCell)
+{
+    void loadFromMapPack(GJMapPack* p0)
+    {
+        MapPackCell::loadFromMapPack(p0);
 
         if (!Client::GetModuleEnabled("trans-lists"))
             return;

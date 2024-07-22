@@ -2,7 +2,9 @@
 
 - Fixed CPS and FPS counter being broken
 - Fixed dying in noclip causing fps to be wrong
+- Fixed Transparent Lists not applying to Map Packs
 - Added **One Attempt Practice Complete**
+- Added **Coins In Practice**
 
 # 1.4.8
 

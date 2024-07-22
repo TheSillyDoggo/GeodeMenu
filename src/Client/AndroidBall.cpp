@@ -1,5 +1,10 @@
 #include "AndroidBall.h"
 
+AndroidBall* AndroidBall::get()
+{
+    return instance;
+}
+
 bool AndroidBall::init()
 {
     if (!CCLayer::init())
@@ -231,10 +236,10 @@ class $modify (CCScene)
 {
     int getHighestChildZ()
     {
-        if (!getChildOfType<AndroidBall>(CCScene::get(), 0))
+        if (!AndroidBall::get())
             return CCScene::getHighestChildZ();
 
-        auto ins = getChildOfType<AndroidBall>(CCScene::get(), 0);
+        auto ins = AndroidBall::get();
 
         auto v = ins->getZOrder();
         ins->setZOrder(-1);
@@ -252,17 +257,16 @@ class $modify (AppDelegate)
     {
         AppDelegate::willSwitchToScene(newScene);
 
-        if (newScene == nullptr)
-            return; // something real bad happened, gd will probably shit itself :(
+        if (!newScene)
+            return;
 
         if (getChildOfType<LoadingLayer>(newScene, 0))
-            return; // fix texture ldr
+            return; // fixes texture ldr
 
-        if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
-            ball->removeFromParent();
+        if (AndroidBall::get())
+            AndroidBall::get()->removeFromParent();
 
         newScene->addChild(AndroidBall::create());
-        cocos::handleTouchPriority(AndroidBall::instance);
 
         if (auto shop = getChildOfType<GJShopLayer>(newScene, 0))
         {
@@ -278,18 +282,18 @@ void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int
     if (AndroidUI::instance)
         return CCTouchDispatcher::touches(touches, event, type);
 
-    if (AndroidBall::instance)
+    if (AndroidBall::get())
     {
         auto t = as<CCTouch*>(touches->anyObject());
 
         if (type == ccTouchType::CCTOUCHBEGAN)
-            thIgn = AndroidBall::instance->_ccTouchBegan(t, event);
+            thIgn = AndroidBall::get()->_ccTouchBegan(t, event);
 
         if (type == ccTouchType::CCTOUCHMOVED)
-            thIgn = AndroidBall::instance->_ccTouchMoved(t, event);
+            thIgn = AndroidBall::get()->_ccTouchMoved(t, event);
 
         if (type == ccTouchType::CCTOUCHENDED)
-            thIgn = AndroidBall::instance->_ccTouchEnded(t, event);
+            thIgn = AndroidBall::get()->_ccTouchEnded(t, event);
     }
 
     if (!thIgn)

@@ -298,6 +298,7 @@ public:
         cosmetic->modules.push_back(new Module("Main Menu Gameplay", "main-menu-gameplay", "Allows you to control the icons on the main menu.\nI honestly have no idea what category to put it in so its cosmetic now :3"));
 
         cosmetic->modules.push_back(new Module("Hide Pause Button", "hide-pause-button", "Hides the pause button in game, requires reopening level to apply"));
+        cosmetic->modules.push_back(new Module("Coins In Practice", "practice-coins-visual", "Allows you to visually collect coins in practice mode"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));

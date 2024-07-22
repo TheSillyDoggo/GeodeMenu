@@ -25,6 +25,9 @@ class AndroidBall : public CCLayer
         Module* mod2 = nullptr;
         Module* canDrag = nullptr;
 
+        CREATE_FUNC(AndroidBall);
+        static AndroidBall* get();
+
         void onOpenMenu();
 
         virtual bool init();
@@ -37,8 +40,6 @@ class AndroidBall : public CCLayer
         static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);
-
-        CREATE_FUNC(AndroidBall);
 
         ~AndroidBall();
 };

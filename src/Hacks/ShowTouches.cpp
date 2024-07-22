@@ -14,13 +14,15 @@ class $modify (CCTouchDispatcher)
         {
             if (auto touch = as<CCTouch*>(touches->anyObject()))
             {
-                auto circle = CCCircleWave::create(0, 20, 0.2f, true);
-                circle->m_opacity = 0.8f;
-                circle->m_lineWidth = 3;
-                circle->m_blendAdditive = true;
-                circle->setPosition(touch->getLocation());
-                
-                CCScene::get()->addChild(circle, CCScene::get()->getHighestChildZ());
+                if (CCScene::get(); auto circle = CCCircleWave::create(0, 20, 0.2f, true))
+                {    
+                    circle->m_opacity = 0.8f;
+                    circle->m_lineWidth = 3;
+                    circle->m_blendAdditive = true;
+                    circle->setPosition(touch->getLocation());
+                    
+                    CCScene::get()->addChild(circle, CCScene::get()->getHighestChildZ() + 1);
+                }
             }
         }
     }
