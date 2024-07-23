@@ -254,6 +254,7 @@ void StatusNode::update(float dt)
     sLabels[6]->setVisible(message->enabled);
     sLabels[7]->setVisible(session->enabled);
     sLabels[8]->setVisible(cpsM->enabled);
+    sLabels[9]->setVisible(bestRun->enabled);
 
 
     sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
