@@ -309,7 +309,9 @@ void StatusNode::update(float dt)
     cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
 
     sLabels[8]->setString((cpsM->options[1]->enabled ? fmt::format("{} / {} CPS", cps.size(), totalClicks) : fmt::format("{} CPS", cps.size(), totalClicks)).c_str());
-    sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
+
+    if (bestRunPlayLayer)
+        sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
 
     updateVis();
 }

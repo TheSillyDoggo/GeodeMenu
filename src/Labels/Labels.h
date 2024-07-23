@@ -84,7 +84,7 @@ class StatusNode : public CCNode
         std::vector<float> cps;
         int totalClicks = 0;
 
-        BestPlayLayer* bestRunPlayLayer;
+        Ref<BestPlayLayer> bestRunPlayLayer = nullptr;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds
