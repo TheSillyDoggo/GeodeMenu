@@ -38,7 +38,7 @@ bool StatusNode::init()
 
     for (size_t i = 0; i < count; i++)
     {
-        auto lbl = CCLabelBMFont::create("boobs", "bigFont.fnt");
+        auto lbl = CCLabelBMFont::create("", "bigFont.fnt");
         lbl->setAnchorPoint(ccp(0, 1));
         lbl->setPositionX(3);
         lbl->setTag(i);

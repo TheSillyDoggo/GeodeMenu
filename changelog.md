@@ -3,6 +3,9 @@
 - Fixed Show Hitboxes Colours not loading correctly
 - Fixed Transparent Lists not applying to Leaderboards
 - Fixed Shaders breaking Noclip Tint On Death
+- Fixed Unlock Buttons applying on list pages
+- Fixed Confirm Practice Mode not working for exiting practice mode
+- Fixed the FPS label text appearing as (a body part on girls that i dont think hjfod will let me say on new index) for the first few seconds
 - Ported **All Modes Platformer** on Windows
 - Ported **Random Seed**
 - Added **No Robot Fire**
@@ -11,6 +14,7 @@
 - Added **Auto Collect Coins**
 - Added **No Spider Dash Effect**
 - Added **Longer Trail**
+- Added **Suicide**
 
 # 1.4.9
 
@@ -21,7 +25,7 @@
 - Added **Coins In Practice**
 
 # 1.4.8
-
+A
 - Removed all imgui code so that wine players can use qolmod
 - Fixed multiple CPS Counter bugs
 - Added Total CPS option to CPS Counter

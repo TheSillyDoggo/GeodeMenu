@@ -119,6 +119,8 @@ public:
 
         level->modules.push_back(new Module("Best In Percentage", "best-in-percentage", "Shows the best percentage in the progress bar"));
         level->modules.push_back(new Module("Auto Collect Coins", "auto-coins", "Automatically collect coins in level"));
+
+        level->modules.push_back(new Module("Suicide", "you-should-kill-yourself-now", "Kills the player instantly"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -293,7 +295,7 @@ public:
         cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
         #endif
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
-        cosmetic->modules.push_back(new Module("No Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
+        cosmetic->modules.push_back(new Module("Hide Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
 
         cosmetic->modules.push_back(new Module("Unlock Buttons", "unlock-buttons", "Visually Unlocks the greyed out buttons in the online page"));
         cosmetic->modules.push_back(new Module("No Wave Reset", "no-wave-reset", "Stops the wave trail from disappearing when you change gamemode"));

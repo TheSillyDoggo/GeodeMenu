@@ -11,9 +11,38 @@ class $modify (PauseLayer)
         bool a = false;
     };
 
+    void onNormalMode(cocos2d::CCObject* sender)
+    {
+        if (m_fields->v || !Client::GetModuleEnabled("conf-prac"))
+        {
+            PauseLayer::onNormalMode(sender);
+
+            return;
+        }        
+
+        geode::createQuickPopup(
+            "Practice Mode",
+            std::string("Are you sure you want to\n") + std::string(PlayLayer::get()->m_isPracticeMode ? "exit" : "enter") + std::string(" <cg>practice mode</c>?"),
+            "Cancel", "Practice",
+            [this, sender](FLAlertLayer* tis, bool btn2) {
+                log::info("click practice");
+
+                if (btn2) {
+                    log::info("right btn");
+
+                    this->m_fields->v = true;
+
+                    this->onPracticeMode(sender);
+
+                    this->m_fields->v = false;
+                }
+            }
+        );
+    }
+
     void onPracticeMode(cocos2d::CCObject* sender)
     {
-        if (/*PlayLayer::get()->m_isPracticeMode || */m_fields->v || !Client::GetModuleEnabled("conf-prac"))
+        if (m_fields->v || !Client::GetModuleEnabled("conf-prac"))
         {
             PauseLayer::onPracticeMode(sender);
 
