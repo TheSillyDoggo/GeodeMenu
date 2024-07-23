@@ -1,28 +1,17 @@
-#ifndef GEODE_IS_ANDROID32
-
 #include <Geode/Geode.hpp>
-#include <Geode/modify/GameObject.hpp>
-#include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-Module* noGlow = nullptr;
-
-class $modify(GameObject) {
-    
-    void commonSetup() 
+class $modify(PlayLayer)
+{
+    void addObject(GameObject* obj)
     {
-        GameObject::commonSetup();
+        obj->m_hasNoGlow = true;
 
-        if (!noGlow)
-            noGlow = Client::GetModule("no-glow");
-
-        if (PlayLayer::get())
-        {
-            if (noGlow->enabled)
-                m_hasNoGlow = true;
-        }
+        PlayLayer::addObject(obj);
     }
+
+    QOLMOD_MOD_HOOK("no-glow", "PlayLayer::addObject")
 };
-#endif

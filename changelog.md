@@ -6,6 +6,7 @@
 - Fixed Unlock Buttons applying on list pages
 - Fixed Confirm Practice Mode not working for exiting practice mode
 - Fixed the FPS label text appearing as (a body part on girls that i dont think hjfod will let me say on new index) for the first few seconds
+- Fixed No Glow not working
 - Ported **All Modes Platformer** on Windows
 - Ported **Random Seed**
 - Added **No Robot Fire**
@@ -15,6 +16,7 @@
 - Added **No Spider Dash Effect**
 - Added **Longer Trail**
 - Added **Suicide**
+- Added **Best Run Label**
 
 # 1.4.9
 

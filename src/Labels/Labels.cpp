@@ -34,7 +34,7 @@ bool StatusNode::init()
     bottomRight->setID("bottom-right");
     this->addChild(bottomRight);
 
-    int count = 9;
+    int count = 10;
 
     for (size_t i = 0; i < count; i++)
     {
@@ -230,9 +230,15 @@ void StatusNode::update(float dt)
 
     if (!cpsM)
         cpsM = Client::GetModule("status-cps");
+
+    if (!bestRun)
+        bestRun = Client::GetModule("best-run");
         
     if (!attPL)
         attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
+
+    if (!bestRunPlayLayer)
+        bestRunPlayLayer = static_cast<BestPlayLayer*>(PlayLayer::get());
     
     float v = 100 * as<NoclipPlayLayer*>(PlayLayer::get())->getNoclipAccuracy();
     
@@ -302,6 +308,7 @@ void StatusNode::update(float dt)
     cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
 
     sLabels[8]->setString((cpsM->options[1]->enabled ? fmt::format("{} / {} CPS", cps.size(), totalClicks) : fmt::format("{} CPS", cps.size(), totalClicks)).c_str());
+    sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
 
     updateVis();
 }
@@ -357,6 +364,7 @@ class $modify (PlayLayer)
 
         auto stn = StatusNode::create();
         stn->attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
+        stn->bestRunPlayLayer = as<BestPlayLayer*>(PlayLayer::get());
         this->addChild(stn);
         
         return true;

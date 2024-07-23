@@ -365,6 +365,7 @@ public:
         replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
         replay->modules.push_back(new Module("Session Time", "status-session", "Shows the time you've had the game open for in the format <cg>hh::mm::ss</c>"));
         replay->modules.push_back(new Module("CPS Counter", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
+        replay->modules.push_back(new Module("Best Run", "best-run", "Shows your best run"));
         //replay->modules.push_back(new StatusMessage());
 
 

@@ -5,6 +5,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include "BestRun.hpp"
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -60,6 +61,7 @@ class StatusNode : public CCNode
         static inline Module* message = nullptr;
         static inline Module* session = nullptr;
         static inline Module* cpsM = nullptr;
+        static inline Module* bestRun = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -81,6 +83,8 @@ class StatusNode : public CCNode
 
         std::vector<float> cps;
         int totalClicks = 0;
+
+        BestPlayLayer* bestRunPlayLayer;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds
