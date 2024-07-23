@@ -17,8 +17,8 @@ class ColourModule : public Module, public ColorPickPopupDelegate
 
         ColourModule(std::string name, std::string id, ccColor3B def);
 
-        void save();
-        void load();
+        virtual void save();
+        virtual void load();
 
         void onPickColourAndroid(cocos2d::CCObject* sender);
 

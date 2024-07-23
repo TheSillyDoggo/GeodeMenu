@@ -1,3 +1,17 @@
+# 1.5.0
+
+- Fixed Show Hitboxes Colours not loading correctly
+- Fixed Transparent Lists not applying to Leaderboards
+- Fixed Shaders breaking Noclip Tint On Death
+- Ported **All Modes Platformer** on Windows
+- Ported **Random Seed**
+- Added **No Robot Fire**
+- Added **Best In Percentage**
+- Added **Auto LDM**
+- Added **Auto Collect Coins**
+- Added **No Spider Dash Effect**
+- Added **Longer Trail**
+
 # 1.4.9
 
 - Fixed CPS and FPS counter being broken

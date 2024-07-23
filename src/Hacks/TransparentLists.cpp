@@ -3,6 +3,7 @@
 #include <Geode/modify/LevelListCell.hpp>
 #include <Geode/modify/LevelCell.hpp>
 #include <Geode/modify/MapPackCell.hpp>
+#include <Geode/modify/GJScoreCell.hpp>
 #include <Geode/modify/CCLayerColor.hpp>
 #include <Geode/modify/GJCommentListLayer.hpp>
 #include "../Client/Client.h"
@@ -46,9 +47,6 @@ class $modify (LevelListCell)
     {
         LevelListCell::loadFromList(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
-
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
 
@@ -60,9 +58,6 @@ class $modify (LevelCell)
     void loadFromLevel(GJGameLevel* p0)
     {
         LevelCell::loadFromLevel(p0);
-
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
@@ -76,8 +71,17 @@ class $modify (MapPackCell)
     {
         MapPackCell::loadFromMapPack(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
+        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
+};
+
+class $modify (GJScoreCell)
+{
+    void loadFromScore(GJUserScore* p0)
+    {
+        GJScoreCell::loadFromScore(p0);
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }

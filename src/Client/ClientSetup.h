@@ -115,7 +115,10 @@ public:
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
 
         level->modules.push_back(new Module("Pause Countdown", "pause-countdown", "Shows a countdown for 3 seconds when you unpause a level"));
-        level->modules.push_back(new Module("1 Attempt Practice", "practice-complete", "Allows you to complete a level in practice mode if you beat it in >cr>one<c/> attempt", true));
+        level->modules.push_back(new Module("1 Attempt Practice", "practice-complete", "Allows you to complete a level in practice mode if you beat it in <cr>one</c> attempt", true));
+
+        level->modules.push_back(new Module("Best In Percentage", "best-in-percentage", "Shows the best percentage in the progress bar"));
+        level->modules.push_back(new Module("Auto Collect Coins", "auto-coins", "Automatically collect coins in level"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -191,13 +194,14 @@ public:
         bypass->modules.push_back(new Module("Physics Bypass", "tps-bypass", "Allows your physics to run at values other than 240"));
         bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
 
-        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider"));
         bypass->modules.push_back(new Module("Transition Customiser", "custom-trans", "Adjust your scene transition"));
 
         bypass->modules.push_back(new Module("Pitch Shifter", "pitch-shifter", "Shift the pitch of the game audio"));
         bypass->modules.push_back(new Module("No Short Numbers", "no-short-nums", "Show the full value instead of the short value in level cells"));
 
         bypass->modules.push_back(new Module("Show Touches", "show-touches", "Shows a circle on the screen whenever you touch"));
+        bypass->modules.push_back(new Module("Auto LDM", "auto-ldm", "Automatically enable Low Detail Mode in levels when you view them"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -299,6 +303,11 @@ public:
 
         cosmetic->modules.push_back(new Module("Hide Pause Button", "hide-pause-button", "Hides the pause button in game, requires reopening level to apply"));
         cosmetic->modules.push_back(new Module("Coins In Practice", "practice-coins-visual", "Allows you to visually collect coins in practice mode"));
+
+        cosmetic->modules.push_back(new Module("No Robot Fire", "no-robot-fire", "Hides the fire under the robot while it's boosting"));
+        cosmetic->modules.push_back(new Module("No Spider Dash Effect", "no-spider-dash", "Hides the spider dash effect when you teleport"));
+
+        cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
@@ -522,8 +531,8 @@ public:
         #endif
 
         #ifdef GEODE_IS_WINDOWS
-        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>Windows 2.206</c>");
+        //Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("no-shake")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("custom-obj-limit")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
 
@@ -537,7 +546,7 @@ public:
         Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
 
-        Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
 
         #ifdef GEODE_IS_ARM_MAC

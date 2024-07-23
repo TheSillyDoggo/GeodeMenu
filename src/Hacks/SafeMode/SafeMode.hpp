@@ -39,7 +39,8 @@ class SafeMode
             "show-trajectory",
             "rand-seed",
             "jump-hack",
-            "tps-bypass"
+            "tps-bypass",
+            "auto-coins",
         };
 
         static SafeMode* get();

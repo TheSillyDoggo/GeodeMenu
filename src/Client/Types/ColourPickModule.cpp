@@ -51,5 +51,6 @@ void ColourModule::save()
 
 void ColourModule::load()
 {
-    Mod::get()->getSavedValue<ccColor3B>(id + "_value", colour);
+    colour = Mod::get()->getSavedValue<ccColor3B>(id + "_value", colour);
+    save();
 }

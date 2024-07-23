@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
@@ -26,7 +26,7 @@ class $modify (GJBaseGameLayer)
                 seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            //*(int*)((char*)geode::base::get() + 0x4f24a8) = seed;
+            *(int*)((char*)geode::base::get() + 0x687dd0) = seed;
             #else
             GameToolbox::fast_srand(seed);
             #endif
@@ -47,16 +47,16 @@ class $modify (PlayLayer)
         {
             int seed = 69420;
 
-            //auto x = numFromString<int>(as<InputModule*>(randMod->options[0])->text);
+            auto x = numFromString<int>(as<InputModule*>(randMod->options[0])->text);
 
-            //if (x.has_value())
-                //seed = x.value();
+            if (x.has_value())
+                seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            //*(int*)((char*)geode::base::get() + 0x4f24a8) = seed;
+            *(int*)((char*)geode::base::get() + 0x687dd0) = seed;
             #else
-            //GameToolbox::fast_srand(seed);
+            GameToolbox::fast_srand(seed);
             #endif
         }
     }
-};*/
+};

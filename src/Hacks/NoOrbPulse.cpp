@@ -21,7 +21,7 @@ class $modify (CCCircleWave)
 };
 
 #ifdef GEODE_IS_WINDOWS
-#define offset 0x178
+#define offset 0x210
 #endif
 #ifdef GEODE_IS_ANDROID32
 #define offset 0x16c

@@ -12,6 +12,22 @@ using namespace geode::prelude;
 
 Module* pulseAll = nullptr;
 
+#ifdef GEODE_IS_WINDOWS
+#define offset 0x210
+#endif
+#ifdef GEODE_IS_ANDROID32
+#define offset 0x16c
+#endif
+#ifdef GEODE_IS_ANDROID64
+#define offset 0x1f8
+#endif
+#ifdef GEODE_IS_MACOS
+#define offset 0x1c8
+#endif
+#ifdef GEODE_IS_IOS
+#define offset 0x1c8
+#endif
+
 class MenuPulse : public CCNode
 {
     public:
@@ -41,11 +57,7 @@ class MenuPulse : public CCNode
             engine->enableMetering();
             engine->update(dt);
             
-            #ifdef GEODE_IS_WINDOWS
-            float met = engine->m_pulse3;
-            #else
-            float met = engine->getMeteringValue();
-            #endif
+            float met = MBO(float, engine, offset);
 
             v = as<float>(std::lerp(as<float>(v), as<float>(met), dt * 6.9420f));
             if (node)
@@ -73,4 +85,5 @@ class $modify (MenuLayer)
     }
 };
 
+#undef offset
 #endif

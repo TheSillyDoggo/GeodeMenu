@@ -4,14 +4,14 @@
 #include "ClientSetup.h"
 #include "../Utils/defines.hpp"
 #include "idkwhattocallthis.hpp"
+#include "../UI/CategoryTabSprite.hpp"
 
 using namespace geode::prelude;
 
 class AndroidUI : public geode::Popup<>, TextInputDelegate
 {
     public:
-        std::vector<CCLabelBMFont*> labels = {};
-        std::vector<CCScale9Sprite*> outlines = {};
+        std::vector<CategoryTabSprite*> sprites = {};
         std::vector<CCMenuItemSpriteExtra*> buttons = {};
         std::vector<CCMenu*> pages = {};
         CCScale9Sprite* panel = nullptr;
@@ -29,7 +29,9 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         void goToPage(int p, bool transition = false);
         
         void onClose(CCObject* sender);
+
         void onPressTab(CCObject* sender);
+        void updateTabs();
 
         virtual bool setup();
         virtual void textChanged(CCTextInputNode* p0);

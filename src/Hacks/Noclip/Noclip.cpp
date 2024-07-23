@@ -11,6 +11,7 @@ bool NoclipPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
 
     m_fields->tint = CCLayerColor::create(ccc4(255, 0, 0, 0));
     m_fields->tint->setID("noclip-tint-popup"_spr);
+    m_fields->tint->setZOrder(1);
 
     this->addChild(m_fields->tint);
 
