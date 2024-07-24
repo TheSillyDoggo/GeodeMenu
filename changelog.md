@@ -3,6 +3,8 @@
 - Fixed Globed already loaded level bug
 - Fixed not being able to exit practice mode with Comfirm Practice enabled
 - Added **Editor Wave Trail**
+- Added **Smooth Editor Trail**
+- Added **No Checkpoint Limit**
 
 # 1.5.0
 

@@ -121,6 +121,7 @@ public:
         level->modules.push_back(new Module("Auto Collect Coins", "auto-coins", "Automatically collect coins in level"));
 
         level->modules.push_back(new Module("Suicide", "you-should-kill-yourself-now", "Kills the player instantly"));
+        level->modules.push_back(new Module("No Checkpoint Limit", "no-checkpoint-limit", "Removes the 50 checkpoint limit from practice mode"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -243,6 +244,7 @@ public:
         creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
 
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
+        creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
