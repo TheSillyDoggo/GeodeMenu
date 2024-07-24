@@ -242,6 +242,8 @@ public:
         #endif
         creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
 
+        creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
+
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
         //creator->modules.push_back(misc);

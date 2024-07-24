@@ -2,6 +2,7 @@
 
 - Fixed Globed already loaded level bug
 - Fixed not being able to exit practice mode with Comfirm Practice enabled
+- Added **Editor Wave Trail**
 
 # 1.5.0
 
