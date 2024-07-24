@@ -2,6 +2,7 @@
 
 - Fixed Globed already loaded level bug
 - Fixed not being able to exit practice mode with Comfirm Practice enabled
+- Fixed not being able to open a level in the editor
 - Added **Editor Wave Trail**
 - Added **Smooth Editor Trail**
 - Added **No Checkpoint Limit**
