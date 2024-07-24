@@ -1,3 +1,8 @@
+# 1.5.1
+
+- Fixed Globed already loaded level bug
+- Fixed not being able to exit practice mode with Comfirm Practice enabled
+
 # 1.5.0
 
 - Fixed Show Hitboxes Colours not loading correctly
