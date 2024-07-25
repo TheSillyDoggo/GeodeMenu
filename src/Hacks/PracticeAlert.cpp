@@ -29,7 +29,7 @@ class $modify (PauseLayer)
                 {
                     this->m_fields->v = true;
 
-                    this->onPracticeMode(sender);
+                    this->onNormalMode(sender);
 
                     this->m_fields->v = false;
                 }
