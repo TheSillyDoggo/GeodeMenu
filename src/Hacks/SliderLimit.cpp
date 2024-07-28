@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/SliderTouchLogic.hpp>
-#include <Geode/modify/SliderThumb.hpp>
 #include <Geode/modify/GJScaleControl.hpp>
 #include "../Client/Client.h"
 
@@ -27,4 +26,30 @@ class $modify (SliderTouchLogic)
             modu->addHookRaw(hook);
         });
     }
+};
+
+class $modify (GJScaleControl)
+{
+    virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+    {
+        GJScaleControl::ccTouchMoved(touch, event);
+
+        if (m_sliderXY && m_sliderXY->m_touchLogic->m_activateThumb)
+        {
+            m_sliderXY->getThumb()->setPositionX(this->convertToNodeSpace(touch->getLocation()).x);
+            m_sliderXY->updateBar();
+
+            float value = scaleFloat(m_sliderXY->getThumb()->getValue(), m_lowerBound, m_upperBound);
+
+            updateLabelXY(value);
+            this->sliderChanged(m_sliderXY->getThumb());
+
+            if (EditorUI::get())
+            {
+                EditorUI::get()->scaleXYChanged(value, value, m_scaleLocked);
+            }
+        }
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("slider-limit")
 };

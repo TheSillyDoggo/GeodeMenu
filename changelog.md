@@ -1,8 +1,79 @@
+# 1.5.2
+
+- Fixed Crash removing checkpoints with checkpoint limit bypass enabled (thanks @hiimjustin000)
+- Actually fixed not being able to exit practice mode with Comfirm Practice enabled
+- Fixed not being able to scroll in the qolmod popup
+- Fixed dying in noclip breaking the cps counter
+- FINALLY fixed the touch issues with popups
+- Added **No Dash Fire**
+
+# 1.5.1
+
+- Fixed Globed already loaded level bug
+- Fixed not being able to exit practice mode with Comfirm Practice enabled
+- Fixed not being able to open a level in the editor
+- Added **Editor Wave Trail**
+- Added **Smooth Editor Trail**
+- Added **No Checkpoint Limit**
+
+# 1.5.0
+
+- Fixed Show Hitboxes Colours not loading correctly
+- Fixed Transparent Lists not applying to Leaderboards
+- Fixed Shaders breaking Noclip Tint On Death
+- Fixed Unlock Buttons applying on list pages
+- Fixed Confirm Practice Mode not working for exiting practice mode
+- Fixed the FPS label text appearing as (a body part on girls that i dont think hjfod will let me say on new index) for the first few seconds
+- Fixed No Glow not working
+- Ported **All Modes Platformer** on Windows
+- Ported **Random Seed**
+- Added **No Robot Fire**
+- Added **Best In Percentage**
+- Added **Auto LDM**
+- Added **Auto Collect Coins**
+- Added **No Spider Dash Effect**
+- Added **Longer Trail**
+- Added **Suicide**
+- Added **Best Run Label**
+
+# 1.4.9
+
+- Fixed CPS and FPS counter being broken
+- Fixed dying in noclip causing fps to be wrong
+- Fixed Transparent Lists not applying to Map Packs
+- Added **One Attempt Practice Complete**
+- Added **Coins In Practice**
+
+# 1.4.8
+
+- Removed all imgui code so that wine players can use qolmod
+- Fixed multiple CPS Counter bugs
+- Added Total CPS option to CPS Counter
+- Changed how FPS is counted, should be more accurate
+- Removed F12 keybind by default
+- Fixed more touch issues
+- Renamed TPS Bypass to Physics Bypass
+- Added **Show Touches**
+
+# 1.4.7
+
+- Fixed the UI Button disappearing if you have Transition Customizer enabled
+- Lowered the Hitbox Trail limit to hopefully fix lag
+- Slider Limit Bypass now works on the scale slider in the editor
+- Added **Hide Pause Button**
+- Added **Pause Countdown**
+
 # 1.4.6
 
+- Fixed Touch Issues (now uses geode::Popup<>)
 - Fixed Startpos switcher not switching using keybinds if you have the mod **Custom Keybinds** installed
-- Added No Short Numbers
-- **Added [BETA] Support for ARM macOS**
+- Noclip no longer triggers safe mode if you haven't died this attempt
+- Quests in Pause is now enabled by default
+- Fixed Noclip Accuracy being VERY wrong
+- Fixed Instant Respawn killing the player twice
+- Added **No Short Numbers**
+- Added **Respawn Time Customizer**
+- Added **Smart Startpos**
 
 # 1.4.5
 

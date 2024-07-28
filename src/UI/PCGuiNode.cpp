@@ -1,4 +1,4 @@
-#//include "PCGuiNode.hpp"
+//#include "PCGuiNode.hpp"
 //
 //PCGuiNode* PCGuiNode::create()
 //{
@@ -156,12 +156,12 @@
 //            return CCTouchDispatcher::touches(touches, event, type);
 //	}
 //};
-//
-///*
-//CCTOUCHBEGAN = 0,
-//CCTOUCHMOVED = 1,
-//CCTOUCHENDED = 2,
-//CCTOUCHCANCELLED = 3,
-//
-//ccTouchMax = 4,
-//*/
+
+/*
+CCTOUCHBEGAN = 0,
+CCTOUCHMOVED = 1,
+CCTOUCHENDED = 2,
+CCTOUCHCANCELLED = 3,
+
+ccTouchMax = 4,
+*/

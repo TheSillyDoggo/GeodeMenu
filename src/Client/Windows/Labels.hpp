@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Client/Client.h"
-#include "../Labels/Labels.h"
-#include "../Labels/LabelModule.hpp"
+#include "../Client.h"
+#include "../../Labels/Labels.h"
+#include "../../Labels/LabelModule.hpp"
 
 class Labels : public Window
 {

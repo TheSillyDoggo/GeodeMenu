@@ -1,6 +1,7 @@
 #ifdef STATUS_TEXTS
 
 #include "Labels.h"
+#include "../Hacks/Noclip/Noclip.hpp"
 
 bool StatusNode::init()
 {
@@ -220,6 +221,7 @@ class $modify (PlayerObject)
             if (auto stn = StatusNode::get())
             {
                 stn->cps.push_back(1);
+                stn->totalClicks++;
 
                 stn->sLabels[8]->stopAllActions();
                 stn->sLabels[8]->setColor(ccc3(0, 255, 0));
@@ -239,6 +241,14 @@ class $modify (PlayerObject)
                 stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }*/
+    }
+
+    void resetLevel()
+    {
+        PlayLayer::resetLevel();
+
+        if (StatusNode::get())
+            StatusNode::get()->totalClicks = 0;
     }
 };
 

@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
-#include <Geode/modify/GJBaseGameLayer.hpp>
-#include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/CCCircleWave.hpp>
 #include "../Client/Client.h"
 #include "../Utils/Utils.hpp"
@@ -22,7 +21,7 @@ class $modify (CCCircleWave)
 };
 
 #ifdef GEODE_IS_WINDOWS
-#define offset 0x178
+#define offset 0x210
 #endif
 #ifdef GEODE_IS_ANDROID32
 #define offset 0x16c

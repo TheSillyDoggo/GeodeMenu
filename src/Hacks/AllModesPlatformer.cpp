@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_WINDOWS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
@@ -22,7 +20,17 @@ class $modify (GJBaseGameLayer)
                     if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                     {
                         this->playerWillSwitchMode(p0, obj);
-                        this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));                        
+                        #ifdef GEODE_IS_WINDOWS
+                        p0->switchedToMode(obj->m_objectType);
+
+                        if (obj->m_objectType == GameObjectType::SwingPortal)
+                            p0->toggleSwingMode(true, false);
+                        else
+                            p0->toggleDartMode(true, false);
+                        
+                        #else
+                        this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
+                        #endif
                         obj->playShineEffect();
                     }
                 }
@@ -32,15 +40,5 @@ class $modify (GJBaseGameLayer)
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
     }
 
-    static void onModify(auto& self) {
-        auto hook = self.getHook("GJBaseGameLayer::collisionCheckObjects");
-
-        Loader::get()->queueInMainThread([hook]
-        {
-            auto modu = Client::GetModule("all-plat");
-            modu->addHookRaw(hook);
-        });
-    }
+    QOLMOD_MOD_HOOK("all-plat", "GJBaseGameLayer::collisionCheckObjects")
 };
-
-#endif

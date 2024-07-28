@@ -1,14 +1,18 @@
 #include "AndroidBall.h"
 
+AndroidBall* AndroidBall::get()
+{
+    return instance;
+}
+
 bool AndroidBall::init()
 {
     if (!CCLayer::init())
         return false;
 
-    this->setID("android-ball");
+    this->setID("QOLModButton"_spr);
     this->setMouseEnabled(false);
     this->setTouchEnabled(true);
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -512 - 1, true);
 
     highest++;
     this->setTag(highest);
@@ -42,7 +46,7 @@ void AndroidBall::onOpenMenu()
     AndroidUI::addToScene();
 }
 
-bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+bool AndroidBall::_ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     if (!CCLayer::ccTouchBegan(touch, event))
         return false;
@@ -68,11 +72,11 @@ bool AndroidBall::ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     return doingThing;
 }
 
-void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+bool AndroidBall::_ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return CCLayer::ccTouchEnded(touch, event);
+        return false;
     #endif
 
     if (doingThing)
@@ -93,12 +97,14 @@ void AndroidBall::ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
             Mod::get()->setSavedValue("posY", position.y);
         }
     }
+
+    return doingThing;
 }
 
-void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
+bool AndroidBall::_ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) {
     #ifdef GEODE_IS_DESKTOP
     if (mod->enabled)
-        return CCLayer::ccTouchMoved(touch, event);
+        return false;
     #endif
 
     if (doingThing && !btn->getActionByTag(69))
@@ -119,6 +125,7 @@ void AndroidBall::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
     }
 
     CCLayer::ccTouchMoved(touch, event);
+    return doingThing;
 }
 
 void AndroidBall::update(float dt)
@@ -229,10 +236,10 @@ class $modify (CCScene)
 {
     int getHighestChildZ()
     {
-        if (!getChildOfType<AndroidBall>(CCScene::get(), 0))
+        if (!AndroidBall::get())
             return CCScene::getHighestChildZ();
 
-        auto ins = getChildOfType<AndroidBall>(CCScene::get(), 0);
+        auto ins = AndroidBall::get();
 
         auto v = ins->getZOrder();
         ins->setZOrder(-1);
@@ -250,17 +257,16 @@ class $modify (AppDelegate)
     {
         AppDelegate::willSwitchToScene(newScene);
 
-        if (newScene == nullptr)
-            return; // something real bad happened, gd will probably shit itself :(
+        if (!newScene)
+            return;
 
         if (getChildOfType<LoadingLayer>(newScene, 0))
-            return; // fix texture ldr
+            return; // fixes texture ldr
 
-        if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
-            ball->removeFromParent();
+        if (AndroidBall::get())
+            AndroidBall::get()->removeFromParent();
 
         newScene->addChild(AndroidBall::create());
-        cocos::handleTouchPriority(AndroidBall::instance);
 
         if (auto shop = getChildOfType<GJShopLayer>(newScene, 0))
         {
@@ -268,3 +274,28 @@ class $modify (AppDelegate)
         }
     }
 };
+
+void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
+{
+    bool thIgn;
+
+    if (AndroidUI::instance)
+        return CCTouchDispatcher::touches(touches, event, type);
+
+    if (AndroidBall::get())
+    {
+        auto t = as<CCTouch*>(touches->anyObject());
+
+        if (type == ccTouchType::CCTOUCHBEGAN)
+            thIgn = AndroidBall::get()->_ccTouchBegan(t, event);
+
+        if (type == ccTouchType::CCTOUCHMOVED)
+            thIgn = AndroidBall::get()->_ccTouchMoved(t, event);
+
+        if (type == ccTouchType::CCTOUCHENDED)
+            thIgn = AndroidBall::get()->_ccTouchEnded(t, event);
+    }
+
+    if (!thIgn)
+        CCTouchDispatcher::touches(touches, event, type);
+}

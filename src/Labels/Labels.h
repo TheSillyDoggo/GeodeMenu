@@ -5,9 +5,9 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include "BestRun.hpp"
 #include "../Client/Client.h"
 #include "LabelNode.hpp"
-#include "../Hacks/Noclip.cpp"
 
 using namespace geode::prelude;
 
@@ -66,6 +66,9 @@ class StatusNode : public CCNode
         static inline bool hidden = false;
 
         std::vector<float> cps;
+        int totalClicks = 0;
+
+        BestPlayLayer* bestRunPlayLayer = nullptr;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds

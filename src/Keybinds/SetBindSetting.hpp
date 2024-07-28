@@ -12,7 +12,7 @@ class SetBindValue : public SettingValue
     public:
         static inline SetBindValue* instance = nullptr;
         
-        std::vector<int> buttons = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert, enumKeyCodes::KEY_F12 };
+        std::vector<int> buttons = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
 
         SetBindValue(std::string const& key, std::string const& modID)
         : SettingValue(key, modID) {}
@@ -97,9 +97,6 @@ class SetBindNode : public SettingNode
             if (as<SetBindValue*>(m_value)->buttons[0] != enumKeyCodes::KEY_Insert)
                 return true;
 
-            if (as<SetBindValue*>(m_value)->buttons[0] != enumKeyCodes::KEY_F12)
-                return true;
-
             return false;
         }
 
@@ -109,7 +106,7 @@ class SetBindNode : public SettingNode
         }
 
         void resetToDefault() override {
-            as<SetBindValue*>(m_value)->buttons = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert, enumKeyCodes::KEY_F12 };
+            as<SetBindValue*>(m_value)->buttons = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
         }
         
         static SetBindNode* create(SetBindValue* value, float width) {

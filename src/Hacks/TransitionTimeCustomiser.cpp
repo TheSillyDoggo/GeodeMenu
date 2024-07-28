@@ -13,6 +13,8 @@ using namespace geode::prelude;
 
 CCScene* getSceneForSel(int i, float f, CCScene* s)
 {
+    AppDelegate::get()->willSwitchToScene(s);
+
     switch (i)
     {
         default:

@@ -9,6 +9,9 @@ class $modify(CCSpriteGrayscale)
     {
         auto res = CCSpriteGrayscale::createWithSpriteFrameName(spr);
 
+        if (spr == "GJ_rewardBtn_001.png")
+            return res;
+
         auto spr2 = CCSprite::createWithSpriteFrameName(spr.c_str());
         spr2->setPosition(res->getContentSize() / 2);
 

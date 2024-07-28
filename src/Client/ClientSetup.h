@@ -1,12 +1,21 @@
 #pragma once
 
+#include "Windows/Credits.hpp"
+#include "Windows/Level.hpp"
+#include "Windows/Speedhack.hpp"
+#include "Windows/Uncomplete.hpp"
+#include "Windows/Universal.hpp"
+#include "Windows/Variables.hpp"
+#include "Windows/Labels.hpp"
+#include "Windows/Config.hpp"
+#include "Windows/IconEffects.hpp"
+
 #include "Client.h"
 #include "HitboxesModule.h"
 #include "../Labels/Labels.h"
-#include "../CustomWindows/Config.h"
-#include "../CustomWindows/Labels.h"
-#include "../CustomWindows/IconEffects.h"
 #include "../Hacks/SafeMode/SafeMode.hpp"
+
+#include "idkwhattocallthis.hpp"
 
 class ClientUtils
 {
@@ -72,35 +81,47 @@ public:
         level->modules.push_back(new Module("Confirm Practice", "conf-prac", "Adds a popup to confirm if you want to enter practice mode"));
         level->modules.push_back(new Module("Confirm Restart", "conf-res", "Adds a popup to confirm if you want to restart the level"));
 
-        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
+        level->modules.push_back(new Module("StartPos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
+        level->modules.push_back(new Module("Smart StartPos", "smart-startpos", "Automatically adjusts the settings of a startpos to correctly set the gamemode, speed, and more", true));
+
+        level->modules.push_back(new Module("Custom Respawn Time", "custom-respawn-time", "Customize the time taken to respawn"));
         level->modules.push_back(new Module("Instant Restart", "instant-restart", "Restarts the level instantly upon death"));
 
         level->modules.push_back(new Hitboxes());
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
-        level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
-        level->modules.push_back(new Module("Startpos Switcher", "startpos-switcher", "Switch between start positions in levels", true));
-
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nReopen level to apply."));
         level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
 
-        level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu"));
+        level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
         level->modules.push_back(new Module("Coin Finder", "coin-tracers", "Draws a line to secret / user coins in the level"));
 
         level->modules.push_back(new Module("Accurate Percentage", "accurate-percentage", "Allows you to have any amount of decimal places in your percentage text"));
         level->modules.push_back(new Module("Classic Percentage", "classic-percentage", "Percentage is calculated like in 2.1, The percentage for new best is still calculated like 2.2"));
 
         level->modules.push_back(new Module("Show Layout", "show-layout", "Shows the layout of the level, its as <cr>shrimple</c> as that"));
+        level->modules.push_back(new Module("Show Triggers", "show-triggers", "Shows the triggers in normal mode like you're playtesting"));
+
+        level->modules.push_back(new Module("Quests in Pause", "pause-quests", "Adds a button to open the quests menu in the pause menu", true));
+        level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
+
+        level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
+        level->modules.push_back(new Module("Random Seed", "rand-seed", "Sets the seed for random triggers to a value of your choice"));
+
+        level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
+        level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
+
+        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
         level->modules.push_back(new Module("Jump Hack", "jump-hack", "Allows you to jump infinitely"));
 
-        level->modules.push_back(new Module("Show Trajectory", "show-trajectory", "Shows the players trajectory, This is broken for Ship and Ufo, in those gamemodes the trajectory may disappear unexpectedly"));
-        level->modules.push_back(new Module("All Modes Platformer", "all-plat", "Allows all gamemodes in platformer mode"));
+        level->modules.push_back(new Module("Pause Countdown", "pause-countdown", "Shows a countdown for 3 seconds when you unpause a level"));
+        level->modules.push_back(new Module("1 Attempt Practice", "practice-complete", "Allows you to complete a level in practice mode if you beat it in <cr>one</c> attempt", true));
 
-        level->modules.push_back(new Module("Random Seed", "rand-seed", "Sets the seed for random triggers to a value of your choice"));
-        level->modules.push_back(new Module("Conditional Auto-Retry", "conditional-retry", "Shows the retry level popup ONLY when you get a new best"));
+        level->modules.push_back(new Module("Best In Percentage", "best-in-percentage", "Shows the best percentage in the progress bar"));
+        level->modules.push_back(new Module("Auto Collect Coins", "auto-coins", "Automatically collect coins in level"));
 
-        level->modules.push_back(new Module("Auto Practice Mode", "auto-practice", "Automatically puts you into practice mode when you open a level"));
-        level->modules.push_back(new Module("Kill at %", "kill-after", "Kills the player after a set percentage"));
+        level->modules.push_back(new Module("Suicide", "you-should-kill-yourself-now", "Kills the player instantly"));
+        level->modules.push_back(new Module("No Checkpoint Limit", "no-checkpoint-limit", "Removes the 50 checkpoint limit from practice mode"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -131,6 +152,8 @@ public:
         Client::GetModule("rand-seed")->options.push_back(seed);
 
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+
+        Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
     }
 
     static void SetupBypass()
@@ -171,14 +194,17 @@ public:
         bypass->modules.push_back(new Module("Auto Song Download", "auto-song", "Automatically downloads songs when you open a level"));
         bypass->modules.push_back(new Module("Full Options Menu", "full-options", "Replaces the mini options menu in the pause menu with the full options menu"));
 
-        bypass->modules.push_back(new Module("TPS Bypass", "tps-bypass", "Ticks per second bypass, allows your physics to run at values other than 240"));
+        bypass->modules.push_back(new Module("Physics Bypass", "tps-bypass", "Allows your physics to run at values other than 240"));
         bypass->modules.push_back(new Module("Comment History Bypass", "comment-history", "Allows you to view the comment history of any user, rob still hasn't fixed this"));
 
-        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
+        bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider"));
         bypass->modules.push_back(new Module("Transition Customiser", "custom-trans", "Adjust your scene transition"));
 
         bypass->modules.push_back(new Module("Pitch Shifter", "pitch-shifter", "Shift the pitch of the game audio"));
         bypass->modules.push_back(new Module("No Short Numbers", "no-short-nums", "Show the full value instead of the short value in level cells"));
+
+        bypass->modules.push_back(new Module("Show Touches", "show-touches", "Shows a circle on the screen whenever you touch"));
+        bypass->modules.push_back(new Module("Auto LDM", "auto-ldm", "Automatically enable Low Detail Mode in levels when you view them"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -216,6 +242,9 @@ public:
         creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
         #endif
         creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
+
+        creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
+        creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
@@ -270,13 +299,22 @@ public:
         cosmetic->modules.push_back(new Module("No Player Rotation", "no-rot", "Disables rotation on players"));
         #endif
         cosmetic->modules.push_back(new Module("No Particles", "no-particles", "Disables particles, seems pretty obvious what this does imo"));
-        cosmetic->modules.push_back(new Module("No Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
+        cosmetic->modules.push_back(new Module("Hide Level", "no-level", "Disables the level visually, good for hitbox only showcases ig"));
 
         cosmetic->modules.push_back(new Module("Unlock Buttons", "unlock-buttons", "Visually Unlocks the greyed out buttons in the online page"));
         cosmetic->modules.push_back(new Module("No Wave Reset", "no-wave-reset", "Stops the wave trail from disappearing when you change gamemode"));
 
         cosmetic->modules.push_back(new Module("No Orb Pulse", "no-orb-pulse", "Disables orb's from pulsing, Doesn't work on main levels made before 2.2"));
         cosmetic->modules.push_back(new Module("Main Menu Gameplay", "main-menu-gameplay", "Allows you to control the icons on the main menu.\nI honestly have no idea what category to put it in so its cosmetic now :3"));
+
+        cosmetic->modules.push_back(new Module("Hide Pause Button", "hide-pause-button", "Hides the pause button in game, requires reopening level to apply"));
+        cosmetic->modules.push_back(new Module("Coins In Practice", "practice-coins-visual", "Allows you to visually collect coins in practice mode"));
+
+        cosmetic->modules.push_back(new Module("No Robot Fire", "no-robot-fire", "Hides the fire under the robot while it's boosting"));
+        cosmetic->modules.push_back(new Module("No Spider Dash Effect", "no-spider-dash", "Hides the spider dash effect when you teleport"));
+
+        cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
+        cosmetic->modules.push_back(new Module("No Dash Fire", "no-dash-fire", "Hides the fire behind your icon when using a dash orb"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
@@ -464,8 +502,8 @@ public:
         #endif
 
         #ifdef GEODE_IS_WINDOWS
-        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
+        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>Windows 2.206</c>");
+        //Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("no-shake")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("custom-obj-limit")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
 
@@ -479,11 +517,12 @@ public:
         Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
 
-        Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
 
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         #endif
     }
 

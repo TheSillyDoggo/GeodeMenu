@@ -7,26 +7,14 @@
 
 using namespace geode::prelude;
 
-Module* noLevel = nullptr;
-
 class $modify (ShaderLayer)
 {
-    virtual bool init()
-    {
-        noLevel = Client::GetModule("no-level");
-
-        return ShaderLayer::init();
-    }
-
     virtual void visit()
     {
-        if (!noLevel->enabled)
-        {
-            this->setVisible(true);
-
-            ShaderLayer::visit();
-        }
+        
     }
+
+    QOLMOD_MOD_ALL_HOOKS("no-level")
 };
 
 class $modify (GJBaseGameLayer)
@@ -35,7 +23,9 @@ class $modify (GJBaseGameLayer)
     {
         GJBaseGameLayer::update(p0);
 
-        if (noLevel)
-            m_objectLayer->getParent()->setVisible(!noLevel->enabled);
+        if (m_objectLayer && m_objectLayer->getParent())
+            m_objectLayer->getParent()->setVisible(false);
     }
+
+    QOLMOD_MOD_ALL_HOOKS("no-level")
 };

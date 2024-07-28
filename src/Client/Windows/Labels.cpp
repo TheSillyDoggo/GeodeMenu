@@ -1,4 +1,4 @@
-#include "Labels.h"
+#include "Labels.hpp"
 
 /*
 replay->modules.push_back(new StatusOpacity());

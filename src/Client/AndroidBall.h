@@ -2,7 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/AppDelegate.hpp>
-#include <Geode/modify/CCMouseDispatcher.hpp>
+#include <Geode/modify/CCTouchDispatcher.hpp>
 #include <Geode/modify/CCScene.hpp>
 #include "Client.h"
 #include "AndroidUI.h"
@@ -25,20 +25,26 @@ class AndroidBall : public CCLayer
         Module* mod2 = nullptr;
         Module* canDrag = nullptr;
 
+        CREATE_FUNC(AndroidBall);
+        static AndroidBall* get();
+
         void onOpenMenu();
 
         virtual bool init();
 
-        virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
-        virtual void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
-        virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
+        bool _ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
+        bool _ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
+        bool _ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 
         virtual void update(float dt);
         static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);
 
-        CREATE_FUNC(AndroidBall);
-
         ~AndroidBall();
+};
+
+class $modify (QOLModTouchDispatcher, CCTouchDispatcher)
+{
+    void touches(CCSet* touches, CCEvent* event, unsigned int type);
 };

@@ -2,6 +2,8 @@
 #include <Geode/modify/CommentCell.hpp>
 #include <Geode/modify/LevelListCell.hpp>
 #include <Geode/modify/LevelCell.hpp>
+#include <Geode/modify/MapPackCell.hpp>
+#include <Geode/modify/GJScoreCell.hpp>
 #include <Geode/modify/CCLayerColor.hpp>
 #include <Geode/modify/GJCommentListLayer.hpp>
 #include "../Client/Client.h"
@@ -15,9 +17,6 @@ class $modify (CCLayerColor)
         if (!CCLayerColor::initWithColor(color, width, height))
             return false;
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return true;
-
         if (typeinfo_cast<GJListLayer*>(this))
         {
             if (color == ccc4(191, 114, 62, 255))
@@ -26,6 +25,8 @@ class $modify (CCLayerColor)
 
         return true;
     }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (CommentCell)
@@ -34,11 +35,10 @@ class $modify (CommentCell)
     {
         CommentCell::loadFromComment(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
-
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+    
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (LevelListCell)
@@ -47,11 +47,10 @@ class $modify (LevelListCell)
     {
         LevelListCell::loadFromList(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
-
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (LevelCell)
@@ -60,17 +59,42 @@ class $modify (LevelCell)
     {
         LevelCell::loadFromLevel(p0);
 
-        if (!Client::GetModuleEnabled("trans-lists"))
-            return;
+        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
+};
+
+class $modify (MapPackCell)
+{
+    void loadFromMapPack(GJMapPack* p0)
+    {
+        MapPackCell::loadFromMapPack(p0);
 
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
     }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
+};
+
+class $modify (GJScoreCell)
+{
+    void loadFromScore(GJUserScore* p0)
+    {
+        GJScoreCell::loadFromScore(p0);
+
+        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setVisible(false);
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };
 
 class $modify (GJCommentListLayer)
 {
     bool init(BoomListView* p0, char const* p1, cocos2d::ccColor4B p2, float p3, float p4, int p5)
     {
-        return GJCommentListLayer::init(p0, p1, Client::GetModuleEnabled("trans-lists") ? ccc4(0, 0, 0, 0) : p2, p3, p4, p5);
+        return GJCommentListLayer::init(p0, p1, ccc4(0, 0, 0, 0), p3, p4, p5);
     }
+
+    QOLMOD_MOD_ALL_HOOKS("trans-lists")
 };

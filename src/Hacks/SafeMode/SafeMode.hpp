@@ -31,7 +31,6 @@ class SafeMode
         bool speedhackKick;
 
         std::vector<std::string> hacks = {
-            "noclip",
             "instant",
             "no-reverse",
             "no-static",
@@ -40,7 +39,8 @@ class SafeMode
             "show-trajectory",
             "rand-seed",
             "jump-hack",
-            "tps-bypass"
+            "tps-bypass",
+            "auto-coins",
         };
 
         static SafeMode* get();

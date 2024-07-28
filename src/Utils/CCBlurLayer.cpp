@@ -43,6 +43,13 @@ CCBlurLayer::~CCBlurLayer()
 
 bool CCBlurLayer::init()
 {
+    if (!setup)
+    {
+        setup = true;
+
+        doSetup();
+    }
+
     if (!CCLayerColor::init())
         return false;
 
@@ -380,8 +387,8 @@ class $modify(CCEGLViewProtocol) {
         CCEGLViewProtocol::setFrameSize(width, height);
         if (!CCDirector::get()->getOpenGLView())
             return;
-        cleanupPostProcess();
-        setupPostProcess();
+        
+        CCBlurLayer::setup = false;
     }
 };
 
@@ -390,17 +397,16 @@ class $modify(CCEGLViewProtocol) {
 class $modify(GameManager) {
     void reloadAllStep5() {
         GameManager::reloadAllStep5();
-        cleanupPostProcess();
-        setupPostProcess();
+        CCBlurLayer::setup = false;
     }
 };
 
-$on_mod(Loaded) {
-    Loader::get()->queueInMainThread([]() {
-        cleanupPostProcess();
-        setupPostProcess();
-    });
-}
 $on_mod(Unloaded) {
     cleanupPostProcess();
+}
+
+void CCBlurLayer::doSetup()
+{
+    cleanupPostProcess();
+    setupPostProcess();
 }

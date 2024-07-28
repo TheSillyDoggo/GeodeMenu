@@ -1,15 +1,14 @@
 #include "AndroidUI.h"
 #include "../Utils/CCBlurLayer.hpp"
 
-bool AndroidUI::init()
+bool AndroidUI::setup()
 {
-    if (!CCLayerColor::init())
-        return false;
+    instance = this;
+    m_mainLayer->setVisible(false);
 
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
-
-    this->setTouchEnabled(true);
+    this->setTouchEnabled(false);
     this->setKeypadEnabled(true);
+    this->setMouseEnabled(false);
     this->scheduleUpdate();
     this->setID("QOLModUI");
     this->runAction(CCFadeTo::create(0.5f, 100));
@@ -64,63 +63,31 @@ bool AndroidUI::init()
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
     {
         auto win = Client::instance->windows[i];
+        auto tabSize = ccp(100, 20);
 
-        auto selectedBtn = CCScale9Sprite::create("square02b_small.png");
-        selectedBtn->setContentSize(ccp(100, 20) / 0.5f);
-        selectedBtn->setColor(ccc3(0, 0, 0));
-        selectedBtn->setScale(0.5f);
-        selectedBtn->setOpacity(100);
-        selectedBtn->setID("selected");
+        auto normal = CategoryTabSprite::create(CategoryTabType::Text, win->name);
+        normal->setContentSize(tabSize);
 
-        auto selectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-        selectedLbl->setPosition(selectedBtn->getContentSize() / 2);
-        selectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
-        selectedLbl->setColor(selectedTab == i ? ccc3(255, 255, 255) : ccc3(150, 150, 150));
-        selectedLbl->setOpacity(selectedTab == i ? 255 : 150);
-        selectedLbl->setID("name");
+        auto hovered = CategoryTabSprite::create(CategoryTabType::Text, win->name);
+        hovered->setContentSize(tabSize);
+        hovered->updateSelection(CategorySelectionType::Hovered);
 
-        if (true) // maybe make a way to turn this off oneday?
-        {
-            auto outline = CCScale9Sprite::create("GJ_square07.png");
-            outline->setContentSize(selectedBtn->getContentSize());
-            outline->setPosition(outline->getContentSize() / 2);
-            outline->setVisible(selectedTab == i);
-            outline->setID("outline");
+        auto button = CCMenuItemSpriteExtra::create(normal, hovered, this, menu_selector(AndroidUI::onPressTab));
+        button->setTag(i);
+        button->setSelectedImage(hovered); // this is required on everything other than ios?? wtf cocos
+        button->setContentSize(tabSize);
+        button->m_animationEnabled = false;
+        button->setID(win->id);
 
-            selectedBtn->addChild(outline);
-            outlines.push_back(outline);
-        }
+        normal->setAnchorPoint(CCPointZero);
+        hovered->setAnchorPoint(CCPointZero);
+        hovered->setPosition(tabSize / 2);
 
-        auto unselectedBtn = CCScale9Sprite::create("square02b_small.png");
-        unselectedBtn->setContentSize(ccp(100, 20) / 0.5f);
-        unselectedBtn->setColor(ccc3(0, 0, 0));
-        unselectedBtn->setScale(0.5f);
-        unselectedBtn->setOpacity(100);
-        unselectedBtn->setID("unselected");
-
-        auto unselectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-        unselectedLbl->setPosition(unselectedBtn->getContentSize() / 2);
-        unselectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
-        unselectedLbl->setColor({200, 200, 200});
-        unselectedLbl->setID("name");
-
-        selectedBtn->addChild(selectedLbl);
-        unselectedBtn->addChild(unselectedLbl);
-        
-        auto btn = CCMenuItemSpriteExtra::create(selectedBtn, unselectedBtn, this, menu_selector(AndroidUI::onPressTab));
-        btn->setTag(i);
-        btn->setEnabled(i != selectedTab);
-        btn->setSelectedImage(unselectedBtn); // this is required on everything other than ios?? wtf cocos
-        btn->setUserData(this);
-        btn->setContentSize(unselectedBtn->getContentSize() / 2);
-        btn->m_scaleMultiplier = 1.0f;
-        btn->setID(win->id);
-
-        windowsMenu->addChild(btn);
-
-        labels.push_back(selectedLbl);
-        buttons.push_back(btn);
+        sprites.push_back(normal);
+        windowsMenu->addChild(button);
     }
+
+    updateTabs();
 
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
     {
@@ -430,35 +397,7 @@ void AndroidUI::onClose(CCObject* sender)
 
 CCAction* AndroidUI::getEnterAction(CCNode* panel)
 {
-    float v = 1.0f;
-
-    if (SpeedhackTop::instance)
-    {
-        if (SpeedhackEnabled::instance->enabled)
-        {
-            auto x = numFromString<float>(SpeedhackTop::instance->text);
-
-            if (x.isOk())
-            {
-                v = x.value();
-                
-                if (v < 0.01f)
-                    v = 0.01f;
-
-                if (v > 99999)
-                    v = 99999;
-            }
-            else
-                v = 1;
-
-            bool m = SpeedhackMus::instance->enabled;
-
-            if (SpeedhackGameplay::instance->enabled)
-                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
-
-            v /= CCDirector::get()->getScheduler()->getTimeScale();
-        }
-    }
+    float v = SpeedhackTop::getAdjustedValue();
 
     int e = Mod::get()->getSavedValue<int>("anim-mode", 2);
 
@@ -502,32 +441,38 @@ void AndroidUI::onPressTab(CCObject* sender)
     lastTab = selectedTab;
     selectedTab = btn->getTag();
 
-    auto input = as<AndroidUI*>(as<CCNode*>(sender)->getUserData())->inputField;
+    auto input = inputField;
     input->setString("");
 
-    as<AndroidUI*>(as<CCNode*>(sender)->getUserData())->searchResultsPanel->setVisible(false);
+    searchResultsPanel->setVisible(false);
 
-    for (size_t i = 0; i < labels.size(); i++)
-    {
-        buttons[i]->setEnabled(i != selectedTab);
-
-        if (selectedTab == i)
-        {
-            outlines[i]->setVisible(true);
-            labels[i]->setColor({255, 255, 255});
-            labels[i]->setOpacity(255);
-        }
-        else
-        {
-            outlines[i]->setVisible(false);
-            labels[i]->setColor({150, 150, 150});
-            labels[i]->setOpacity(150);
-        }
-
-        labels[i]->updateLabel();
-    }
+    updateTabs();
     
     goToPage(selectedTab);
+}
+
+void AndroidUI::updateTabs()
+{
+    int i = 0;
+    for (auto sprite : sprites)
+    {
+        sprite->updateSelection(i == selectedTab ? CategorySelectionType::Selected : CategorySelectionType::Deselected);
+        as<CCMenuItemSpriteExtra*>(sprite->getParent())->setEnabled(i != selectedTab);
+        i++;
+    }
+}
+
+AndroidUI* AndroidUI::create()
+{
+    auto pRet = new AndroidUI();
+
+    if (pRet->initAnchored(240.f, 160.f)) {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
 }
 
 AndroidUI* AndroidUI::addToScene()
@@ -543,5 +488,5 @@ AndroidUI* AndroidUI::addToScene()
 
 AndroidUI::~AndroidUI()
 {
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
+    instance = nullptr;
 }

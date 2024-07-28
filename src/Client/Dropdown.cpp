@@ -107,6 +107,7 @@ bool Dropdown::init(CCSize size, std::vector<std::string> strs, cocos2d::SEL_Men
     btn = CCMenuItemSpriteExtra::create(sprBtn, sprBtn2, this, menu_selector(Dropdown::onToggleVisible));
     btn->setSelectedImage(sprBtn2);
     btn->m_scaleMultiplier = 1;
+    btn->m_animationEnabled = false;
     btn->setPosition(size + ccp(-7.5f - sprBtn->getContentSize().width / 2, -1 * (size.height / 2)));
     this->addChild(btn);
 
@@ -131,9 +132,10 @@ bool Dropdown::init(CCSize size, std::vector<std::string> strs, cocos2d::SEL_Men
         btns.push_back(btn);
     }            
 
-    this->registerWithTouchDispatcher();
     this->scheduleUpdate();
-    cocos::handleTouchPriority(this);
+
+    this->setTouchPriority(-503);
+    this->registerWithTouchDispatcher();
 
     return true;
 }

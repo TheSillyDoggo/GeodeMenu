@@ -6,6 +6,7 @@ using namespace geode::prelude;
 
 Module* accurateMod = nullptr;
 Module* inaccurateMod = nullptr;
+Module* bestMod = nullptr;
 InputModule* accurateModPlaces = nullptr;
 
 class $modify (PlayLayer)
@@ -43,7 +44,10 @@ class $modify (PlayLayer)
         if (!accurateModPlaces)
             accurateModPlaces = as<InputModule*>(accurateMod->options[0]);
 
-        if (accurateMod->enabled || inaccurateMod->enabled)
+        if (!bestMod)
+            bestMod = Client::GetModule("best-in-percentage");
+
+        if (accurateMod->enabled || inaccurateMod->enabled || bestMod->enabled)
         {
             int places = 2;
 
@@ -53,6 +57,9 @@ class $modify (PlayLayer)
                 places = GameManager::sharedState()->getGameVariable("0126") ? 2 : 0;
 
             m_fields->title->setString((utils::numToString<float>(getPerc(), places) + std::string("%")).c_str());
+
+            if (bestMod->enabled)
+                m_fields->title->setString(fmt::format("{} / {}%", m_fields->title->getString(), m_isPracticeMode ? m_level->m_practicePercent : m_level->m_normalPercent.value()).c_str());
         }
     }
 };

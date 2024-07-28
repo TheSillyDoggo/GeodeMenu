@@ -16,14 +16,40 @@ class $modify (PlayerObject)
     {
         m_isDead = true;
         
-        if (Client::GetModuleEnabled("instant-restart") && PlayLayer::get())
-        {
-            PlayLayer::get()->resetLevel();
-            PlayLayer::get()->stopActionByTag(16);
-            this->setVisible(true);
-        }
-
         if (!Client::GetModuleEnabled("no-death"))
             PlayerObject::playDeathEffect();
+    }
+};
+
+class $modify (PlayLayer)
+{
+    virtual void destroyPlayer(PlayerObject* p0, GameObject* p1)
+    {
+        PlayLayer::destroyPlayer(p0, p1);
+
+        if (!p0)
+            return;
+
+        if (Client::GetModuleEnabled("instant-restart") || Client::GetModuleEnabled("custom-respawn-time"))
+        {
+            if (auto action = getActionByTag(0x10))
+            {
+                this->stopAction(action);
+
+                if (Client::GetModuleEnabled("instant-restart"))
+                {
+                    this->resetLevel();
+                    p0->setVisible(true);
+                    return;
+                }
+                else
+                {
+                    auto act = CCSequence::create(CCDelayTime::create(as<InputModule*>(Client::GetModule("custom-respawn-time")->options[0])->getFloatValue()), CCCallFunc::create(this, callfunc_selector(PlayLayer::delayedResetLevel)), nullptr);
+                    act->setTag(0x10);
+
+                    this->runAction(act);
+                }
+            }
+        }
     }
 };

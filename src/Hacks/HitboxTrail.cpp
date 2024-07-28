@@ -83,7 +83,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
             }
         }
 
-        if (points.size() > 1500)
+        if (points.size() > 500)
         {
             points.erase(points.begin());
             sizes.erase(sizes.begin());

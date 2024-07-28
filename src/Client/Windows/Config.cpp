@@ -1,5 +1,5 @@
-#include "Config.h"
-#include "../Client/AndroidBall.h"
+#include "Config.hpp"
+#include "../AndroidBall.h"
 
 void Config::cocosCreate(CCMenu* menu)
 {

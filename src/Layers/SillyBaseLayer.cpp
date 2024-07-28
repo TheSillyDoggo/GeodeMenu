@@ -1,14 +1,10 @@
 #include "SillyBaseLayer.h"
 
-bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK, bool animate, bool noBlur)
+bool SillyBaseLayer::setup()
 {
-    if (!FLAlertLayer::init(100))
-        return false;
-    
+    m_mainLayer->setVisible(false);
+    this->stopAllActions();
     this->setOpacity(0);
-
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
-    // registerWithTouchDispatcher: CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
 
     if (!noBlur && Client::GetModuleEnabled("menu-bg-blur"))
     {
@@ -16,9 +12,6 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
         this->addChild(blur);
     }
-
-    this->size = size;
-    int priority = -504;
 
     this->runAction(CCFadeTo::create(1, 100));
     this->setKeypadEnabled(true);
@@ -28,7 +21,6 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
     l->setContentSize(size);
     l->setPosition(CCDirector::get()->getWinSize() / 2);
     l->ignoreAnchorPointForPosition(false);
-    l->setTouchPriority(priority);
 
     int theme = Mod::get()->getSavedValue<int>("theme", 5);
 
@@ -129,12 +121,44 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
     this->customSetup();
 
-    handleTouchPriority(this); // sets the priority after setting up the custom layer, this will come back to fuck me in the ass
+    return true;
+}
+
+bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool createWithOK, bool animate, bool noBlur)
+{
+    this->_title = _title;
+    this->createWithOK = createWithOK;
+    this->animate = animate;
+    this->noBlur = noBlur;
+    this->size = size;
+
+    if (!initAnchored(69, 420))
+        return false;
 
     return true;
 }
 
+bool SillyBaseLayer::ccTouchBegan(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+{
+    return true;
+}
+
+void SillyBaseLayer::ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+{
+
+}
+
+void SillyBaseLayer::ccTouchEnded(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+{
+
+}
+
+void SillyBaseLayer::ccTouchCancelled(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
+{
+
+}
+
 SillyBaseLayer::~SillyBaseLayer()
 {
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
+
 }

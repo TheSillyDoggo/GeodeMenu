@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../Client/Client.h"
-#include "../Utils/CCPastelLabelBMFont.hpp"
+#include "../Client.h"
+#include "../Dropdown.h"
+#include "../../Utils/CCPastelLabelBMFont.hpp"
 
 class Config : public Window
 {

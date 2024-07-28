@@ -12,20 +12,19 @@ class $modify(LevelInfoLayer)
         if (!LevelInfoLayer::init(p0, p1))
             return false;
 
-        if (Client::GetModuleEnabled("copy-hack")) 
-        {
-            auto gm = GameManager::sharedState();
-            if (gm->m_playerUserID == p0->m_userID) return true;
-            if (m_cloneBtn == nullptr) return true;
+        auto gm = GameManager::sharedState();
+        if (gm->m_playerUserID == p0->m_userID) return true;
+        if (m_cloneBtn == nullptr) return true;
 
-            auto aCloneBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_duplicateBtn_001.png"), this, menu_selector(LevelInfoLayer::confirmClone));
-            aCloneBtn->setPosition(m_cloneBtn->getPosition());
-            m_cloneBtn->getParent()->addChild(aCloneBtn);
-            m_cloneBtn->setVisible(false);
-        }
+        auto aCloneBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_duplicateBtn_001.png"), this, menu_selector(LevelInfoLayer::confirmClone));
+        aCloneBtn->setPosition(m_cloneBtn->getPosition());
+        m_cloneBtn->getParent()->addChild(aCloneBtn);
+        m_cloneBtn->setVisible(false);
         
         return true;
     }
+
+    QOLMOD_MOD_HOOK("copy-hack", "LevelInfoLayer::init")
 };
 
 class $modify (ShowPasswordLayer, NumberInputLayer)
