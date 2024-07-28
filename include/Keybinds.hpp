@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 
 #include <Geode/DefaultInclude.hpp>
 #include <Geode/utils/MiniFunction.hpp>
@@ -29,7 +29,7 @@ namespace keybinds {
 
     /**
      * Base class for implementing bindings for different input devices
-     * /
+     */
     class CUSTOM_KEYBINDS_DLL Bind : public cocos2d::CCObject {
     protected:
         friend class BindManager;
@@ -37,21 +37,19 @@ namespace keybinds {
     public:
         /**
          * Get the hash for this bind
-         * /
+         */
         virtual size_t getHash() const = 0;
         /**
          * Check if this bind is equal to another. By default compares hashes
-         * /
+         */
         virtual bool isEqual(Bind* other) const;
         /**
          * Get the bind's representation as a human-readable string
-         * /
+         */
         virtual std::string toString() const = 0;
         virtual cocos2d::CCNode* createLabel() const;
         virtual DeviceID getDeviceID() const = 0;
         virtual matjson::Value save() const = 0;
-
-        virtual ~Bind() = delete;
 
         cocos2d::CCNodeRGBA* createBindSprite() const;
     };
@@ -89,7 +87,7 @@ namespace keybinds {
         Modifier m_modifiers;
 
     public:
-        static Keybind* create(cocos2d::enumKeyCodes key, Modifier modifiers = Modifier::None);
+        static Keybind* create(cocos2d::enumKeyCodes key, Modifier modifiers = Modifier::None) { return nullptr; }
         static Keybind* parse(matjson::Value const&);
 
         cocos2d::enumKeyCodes getKey() const;
@@ -162,15 +160,24 @@ namespace keybinds {
         std::string m_value;
 
     public:
-        Category() = default;
-        Category(const char* path);
-        Category(std::string const& path);
+        Category()
+        {
+            
+        }
+        Category(const char* path)
+        {
+            m_value = path;
+        }
+        Category(std::string const& path)
+        {
+            m_value = path;
+        }
         std::vector<std::string> getPath() const;
         std::optional<Category> getParent() const;
-        bool hasParent(Category const& parent) const;
-        std::string toString() const;
+        bool hasParent(Category const& parent) const { return false; }
+        std::string toString() const { return m_value; }
 
-        bool operator==(Category const&) const;
+        bool operator==(Category const&) const { return false; }
 
         static constexpr auto PLAY { "Play" };
         static constexpr auto PLAY_PAUSE { "Play/Pause" };
@@ -201,15 +208,16 @@ namespace keybinds {
         bool isRepeatable() const;
 
         BindableAction() = default;
-        BindableAction(
-            ActionID const& id,
-            std::string const& name,
-            std::string const& description = "",
-            std::vector<geode::Ref<Bind>> const& defaults = {},
-            Category const& category = Category(),
-            bool repeatable = true,
-            geode::Mod* owner = geode::Mod::get()
-        );
+        BindableAction(ActionID const& id, std::string const& name, std::string const& description, std::vector<geode::Ref<Bind>> const& defaults, Category const& category, bool repeatable = true, geode::Mod* owner = geode::Mod::get())
+        {
+            m_id = id;
+            m_name = name;
+            m_description = description;
+            m_defaults = defaults;
+            m_category = category;
+            m_repeatable = repeatable;
+            m_owner = owner;
+        }
     };
 
     class CUSTOM_KEYBINDS_DLL InvokeBindEvent : public geode::Event {
@@ -221,9 +229,13 @@ namespace keybinds {
         friend class InvokeBindFilter;
 
     public:
-        InvokeBindEvent(ActionID const& id, bool down);
-        ActionID getID() const;
-        bool isDown() const;
+        InvokeBindEvent(ActionID const& id, bool down) 
+        {
+            m_id = id;
+            m_down = down;
+        }
+        ActionID getID() const { return m_id; }
+        bool isDown() const { return false; }
     };
 
     class CUSTOM_KEYBINDS_DLL InvokeBindFilter : public geode::EventFilter<InvokeBindEvent> {
@@ -234,8 +246,8 @@ namespace keybinds {
     public:
         using Callback = geode::ListenerResult(InvokeBindEvent*);
 
-        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, InvokeBindEvent* event);
-        InvokeBindFilter(cocos2d::CCNode* target, ActionID const& id);
+        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, InvokeBindEvent* event) { return geode::ListenerResult::Propagate; }
+        InvokeBindFilter(cocos2d::CCNode* target, ActionID const& id) { }
     };
 
     class CUSTOM_KEYBINDS_DLL PressBindEvent : public geode::Event {
@@ -244,17 +256,24 @@ namespace keybinds {
         bool m_down;
 
     public:
-        PressBindEvent(Bind* bind, bool down);
-        Bind* getBind() const;
-        bool isDown() const;
+        PressBindEvent(Bind* bind, bool down)
+        {
+            m_bind = bind;
+            m_down = down;
+        }
+        Bind* getBind() const { return m_bind; }
+        bool isDown() const { return false; }
     };
 
     class CUSTOM_KEYBINDS_DLL PressBindFilter : public geode::EventFilter<PressBindEvent> {
     public:
         using Callback = geode::ListenerResult(PressBindEvent*);
 
-        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, PressBindEvent* event);
-        PressBindFilter();
+        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, PressBindEvent* event) { return geode::ListenerResult::Propagate; }
+        PressBindFilter()
+        {
+
+        }
     };
 
     class CUSTOM_KEYBINDS_DLL DeviceEvent : public geode::Event {
@@ -263,10 +282,14 @@ namespace keybinds {
         bool m_attached;
 
     public:
-        DeviceEvent(DeviceID const& id, bool attached);
-        DeviceID getID() const;
-        bool wasAttached() const;
-        bool wasDetached() const;
+        DeviceEvent(DeviceID const& id, bool attached)
+        {
+            m_id = id;
+            m_attached = attached;
+        }
+        DeviceID getID() const { return m_id; }
+        bool wasAttached() const { return false; }
+        bool wasDetached() const { return false; }
     };
 
     class CUSTOM_KEYBINDS_DLL DeviceFilter : public geode::EventFilter<DeviceEvent> {
@@ -276,8 +299,10 @@ namespace keybinds {
     public:
         using Callback = void(DeviceEvent*);
 
-        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, DeviceEvent* event);
-        DeviceFilter(std::optional<DeviceID> id = std::nullopt);
+        geode::ListenerResult handle(geode::utils::MiniFunction<Callback> fn, DeviceEvent* event) { return geode::ListenerResult::Propagate; }
+        DeviceFilter(std::optional<DeviceID> id = std::nullopt) {
+            m_id = id;
+        }
     };
 
     struct CUSTOM_KEYBINDS_DLL RepeatOptions {
@@ -309,47 +334,50 @@ namespace keybinds {
         std::unordered_map<ActionID, float> m_repeating;
         std::unordered_map<ActionID, std::unordered_set<size_t>> m_downActionBinds;
 
-        BindManager();
+        BindManager()
+        {
+
+        }
 
         geode::ListenerResult onDispatch(PressBindEvent* event);
-        void onRepeat(float dt);
-        void repeat(ActionID const& action);
-        void unrepeat(ActionID const& action);
+        void onRepeat(float dt) { }
+        void repeat(ActionID const& action) { }
+        void unrepeat(ActionID const& action) { }
 
-        bool loadActionBinds(ActionID const& action);
-        void saveActionBinds(ActionID const& action);
+        bool loadActionBinds(ActionID const& action) { return false; }
+        void saveActionBinds(ActionID const& action) { }
 
         /// Checks if a specific Bind + Action combo is being held.
         /// @param action the action ID we are checking
         /// @param bind the bind we are checking
         /// @returns true if the action bind is being held, false otherwise
-        bool isActionBindHeld(ActionID const& action, Bind* bind);
+        bool isActionBindHeld(ActionID const& action, Bind* bind) { return false; }
 
         /// Marks a bind that belongs to an action as held. No changes will be made if the action doesn't use the bind.
         /// @param action the action ID
         /// @param bind the bind we are marking as held, has to belong to the action
-        void markActionBindHeld(ActionID const& action, Bind* bind);
+        void markActionBindHeld(ActionID const& action, Bind* bind) { }
 
         /// Marks a bind that belongs to an action as released. No changes will be made if the action doesn't use the bind.
         /// @param action the action ID
         /// @param bind the bind we are marking as released, has to belong to the action
-        void unmarkActionBindHeld(ActionID const& action, Bind* bind);
+        void unmarkActionBindHeld(ActionID const& action, Bind* bind) { }
 
         friend class InvokeBindFilter;
         friend struct matjson::Serialize<BindSaveData>;
 
     public:
-        static BindManager* get();
-        void save();
+        static BindManager* get() { return nullptr; }
+        void save() { }
 
-        void attachDevice(DeviceID const& device, BindParser parser);
-        void detachDevice(DeviceID const& device);
+        void attachDevice(DeviceID const& device, BindParser parser) { }
+        void detachDevice(DeviceID const& device) { }
 
         matjson::Value saveBind(Bind* bind) const;
         Bind* loadBind(matjson::Value const& json) const;
 
-        bool registerBindable(BindableAction const& action, ActionID const& after = "");
-        void removeBindable(ActionID const& action);
+        bool registerBindable(BindableAction const& action, ActionID const& after = "") { return true; }
+        void removeBindable(ActionID const& action) { }
         std::optional<BindableAction> getBindable(ActionID const& action) const;
         std::vector<BindableAction> getAllBindables() const;
         std::vector<BindableAction> getBindablesIn(Category const& category, bool sub = false) const;
@@ -362,22 +390,22 @@ namespace keybinds {
          * its parent's last subcategory
          * @param category The category to add. Specify a subcategory by
          * including a slash in the name (like "Editor/Modify")
-         * /
-        void addCategory(Category const& category);
+         */
+        void addCategory(Category const& category) { }
         /**
          * @note Also removes all the bindables in this category
-         * /
-        void removeCategory(Category const& category);
+         */
+        void removeCategory(Category const& category) { }
 
-        void addBindTo(ActionID const& action, Bind* bind);
-        void removeBindFrom(ActionID const& action, Bind* bind);
-        void removeAllBindsFrom(ActionID const& action);
-        void resetBindsToDefault(ActionID const& action);
-        bool hasDefaultBinds(ActionID const& action) const;
-        std::vector<geode::Ref<Bind>> getBindsFor(ActionID const& action) const;
+        void addBindTo(ActionID const& action, Bind* bind) { }
+        void removeBindFrom(ActionID const& action, Bind* bind) { }
+        void removeAllBindsFrom(ActionID const& action) { }
+        void resetBindsToDefault(ActionID const& action) { }
+        bool hasDefaultBinds(ActionID const& action) const { return false; }
+        std::vector<geode::Ref<Bind>> getBindsFor(ActionID const& action) const { return {}; }
 
         std::optional<RepeatOptions> getRepeatOptionsFor(ActionID const& action);
-        void setRepeatOptionsFor(ActionID const& action, RepeatOptions const& options);
-        void stopAllRepeats();
+        void setRepeatOptionsFor(ActionID const& action, RepeatOptions const& options) { }
+        void stopAllRepeats() { }
     };
-}*/
+}

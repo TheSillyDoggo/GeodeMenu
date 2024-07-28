@@ -17,6 +17,14 @@ file(GLOB SOURCES
 	src/*/*/*.cpp
 )
 
+if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
+    file(
+        src/*.mm
+        src/*/*.mm
+        src/*/*/*.mm
+    )
+endif()
+
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 if (NOT DEFINED ENV{GEODE_SDK})

@@ -1,10 +1,10 @@
 #include "CategoryTabSprite.hpp"
 
-CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name)
+CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon)
 {
     auto pRet = new CategoryTabSprite();
 
-    if (pRet && pRet->init(type, name))
+    if (pRet && pRet->init(type, name, icon))
     {
         pRet->autorelease();
         return pRet;
@@ -14,7 +14,7 @@ CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string n
     return nullptr;
 }
 
-bool CategoryTabSprite::init(CategoryTabType type, std::string name)
+bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string icon)
 {
     if (!CCNode::init())
         return false;
@@ -26,6 +26,15 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name)
     background->setColor(ccc3(0, 0, 0));
     background->setOpacity(100);
     background->setScale(0.5f);
+
+    if (!icon.empty())
+    {
+        if (sprite = CCSprite::createWithSpriteFrameName(icon.c_str()))
+        {
+            sprite->setZOrder(4);
+            this->addChildAtPosition(sprite, Anchor::Center);
+        }
+    }
 
     label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
 
@@ -67,6 +76,12 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
 
     outline->setContentSize(contentSize * 2);
     background->setContentSize(contentSize * 2);
+
+    if (sprite)
+        as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(ccp(-label->getContentWidth() / 2 - sprite->getScaledContentWidth(), 0));
+
+    if (sprite && label->getString() == "")
+        as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(CCPointZero);
 }
 
 /*

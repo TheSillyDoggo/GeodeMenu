@@ -5,8 +5,6 @@ bool KeybindsMenuLayer::init()
     if (QOLModKeybinds::isKeybindsLoaded() && !QOLModKeybinds::hasSetupKeybinds)
         QOLModKeybinds::setupKeybinds();
 
-    log::info("loaded keybinds: {}", QOLModKeybinds::isKeybindsLoaded());
-
     return MenuLayer::init();
 }
 
@@ -19,9 +17,9 @@ void QOLModKeybinds::setupKeybinds()
 {
     hasSetupKeybinds = true;
 
-    log::info("setting up keybinds");
+    /*Category category;
 
-    /*BindManager::get()->registerBindable({
+    BindManager::get()->registerBindable({
         // ID, should be prefixed with mod ID
         "backlip"_spr,
         // Name
@@ -32,9 +30,10 @@ void QOLModKeybinds::setupKeybinds()
         { Keybind::create(KEY_Q, Modifier::None) },
         // Category; use slashes for specifying subcategories. See the
         // Category class for default categories
-        "My Mod/Awesome Tricks"
-    });
+        category
+    });*/
 
+    /*
     new EventListener([=](InvokeBindEvent* event) {
         
 

@@ -8,6 +8,7 @@ bool AndroidUI::setup()
 
     this->setTouchEnabled(false);
     this->setKeypadEnabled(true);
+    this->setMouseEnabled(false);
     this->scheduleUpdate();
     this->setID("QOLModUI");
     this->runAction(CCFadeTo::create(0.5f, 100));

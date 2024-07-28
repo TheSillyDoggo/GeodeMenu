@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "../UI/PCDrawUtils.hpp"
+#include <Geode/modify/CCMouseDispatcher.hpp>
 #include "../Utils/Utils.hpp"
 
 #include "Module.h"
@@ -14,6 +15,7 @@ class Window
         bool excludeAndroid = false;
         std::vector<Module*> modules;
         CCPoint windowPos = CCPoint(100, 100);
+        Ref<ScrollLayer> scroll;
 
         bool dragging = false;
         CCPoint offset = CCPoint(0, 0);
@@ -41,4 +43,9 @@ class Window
         CCPoint offsetForTime(float time);
 
         virtual void cocosCreate(CCMenu* menu);
+};
+
+class $modify (WindowMouseDispatcher, CCMouseDispatcher)
+{
+    bool dispatchScrollMSG(float x, float y);
 };

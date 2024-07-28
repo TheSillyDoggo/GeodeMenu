@@ -8,3 +8,7 @@
 #define QOLMOD_PULSINGMENU
 #define QOLMOD_SHOWLAYOUT
 #endif
+
+#ifdef GEODE_IS_WINDOWS
+#define QOLMOD_TPS_BYPASS_HOOK
+#endif

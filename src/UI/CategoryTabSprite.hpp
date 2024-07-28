@@ -7,7 +7,7 @@ using namespace geode::prelude;
 enum CategoryTabType
 {
     Text,
-    Favourite,
+    Image,
 };
 
 enum CategorySelectionType
@@ -23,10 +23,11 @@ class CategoryTabSprite : public CCNode
         CCScale9Sprite* outline;
         CCScale9Sprite* background;
         CCLabelBMFont* label;
+        CCSprite* sprite;
 
-        static CategoryTabSprite* create(CategoryTabType type, std::string name = "");
+        static CategoryTabSprite* create(CategoryTabType type, std::string name = "", std::string icon = "");
 
-        bool init(CategoryTabType type, std::string name);
+        bool init(CategoryTabType type, std::string name, std::string icon);
 
         void updateSelection(CategorySelectionType type);
 

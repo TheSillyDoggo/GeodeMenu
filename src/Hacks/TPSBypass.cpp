@@ -4,6 +4,53 @@
 
 using namespace geode::prelude;
 
+#ifdef QOLMOD_TPS_BYPASS_HOOK
+
+/*class $modify (GJBaseGameLayer)
+{
+    struct Fields
+    {
+        InputModule* input;
+    };
+
+    virtual bool init()
+    {
+        if (!GJBaseGameLayer::init())
+            return false;
+
+        m_fields->input = as<InputModule*>(Client::GetModule("tps-bypass")->options[0]);
+
+        return true;
+    }
+
+    float getModifiedDelta(float dt)
+    {
+        auto m_resumeTimer = MBO(double, this, 0x329c);
+        auto m_physDeltaBuffer = MBO(double, this, 0x3248);
+
+        #define _resumeTimer = MBO(float, this, 0x329c)
+        #define _physDeltaBuffer MBO(double, this, 0x3248)
+
+        if (m_resumeTimer-- > 0)
+        { 
+            dt = 0.f;
+        }
+
+        float modifier = fminf(1.0, this->m_gameState.m_timeWarp) / 30.f;
+        float total = dt + m_physDeltaBuffer;
+        double result = (double)llroundf(total / modifier) * modifier;
+        _physDeltaBuffer = total - result;
+
+        log::info("m_resumeTimer: {}, m_physDeltaBuffer: {}, modifier: {}, result: {}", m_resumeTimer, m_physDeltaBuffer, modifier, result);
+
+        return result;
+    }
+
+    QOLMOD_MOD_HOOK("tps-bypass", "GJBaseGameLayer::getModifiedDelta")
+};*/
+
+#else
+
 template <typename T>
 inline std::vector<uint8_t> getBytes(T value) {
     return std::vector<uint8_t>((uint8_t *) &value, (uint8_t *) &value + sizeof(T));
@@ -64,13 +111,7 @@ void updateTPSPatches(bool tpsEnabled)
         #ifdef GEODE_IS_ARM_MAC
         
         #endif
-
-        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x823b00), getBytes<double>(1.0f / tps)).unwrap());
-
-        #ifdef GEODE_IS_MACOS
-        //patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x7e9c60), getBytes<double>(1.0f / tps)).unwrap());
-        #endif
-
+        
         #ifdef GEODE_IS_IOS
         patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x642b60), getBytes<double>(1.0f / tps)).unwrap());
         #endif
@@ -96,3 +137,5 @@ $execute
         updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
     });
 }
+
+#endif

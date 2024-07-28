@@ -3,7 +3,7 @@
 #include <Keybinds.hpp>
 
 using namespace geode::prelude;
-// using namespace keybinds;
+using namespace keybinds;
 
 class $modify (KeybindsMenuLayer, MenuLayer)
 {
