@@ -196,6 +196,11 @@ void LabelPlayLayer::resetLevel()
     PlayLayer::resetLevel();
 
     m_fields->attemptCount++;
+
+    if (auto status = StatusNode::get())
+    {
+        status->totalClicks = 0;
+    }
 }
 
 bool LabelPlayLayer::init(GJGameLevel* p0, bool p1, bool p2)
@@ -241,14 +246,6 @@ class $modify (PlayerObject)
                 stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }*/
-    }
-
-    void resetLevel()
-    {
-        PlayLayer::resetLevel();
-
-        if (StatusNode::get())
-            StatusNode::get()->totalClicks = 0;
     }
 };
 
