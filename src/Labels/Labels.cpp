@@ -301,12 +301,15 @@ void StatusNode::update(float dt)
         }
     }
 
-    for (size_t i = 0; i < cps.size(); i++)
+    if (dt != -1)
     {
-        cps[i] -= dt / CCScheduler::get()->getTimeScale();
-    }
+        for (size_t i = 0; i < cps.size(); i++)
+        {
+            cps[i] -= dt / CCScheduler::get()->getTimeScale();
+        }
 
-    cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
+        cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
+    }
 
     sLabels[8]->setString((cpsM->options[1]->enabled ? fmt::format("{} / {} CPS", cps.size(), totalClicks) : fmt::format("{} CPS", cps.size(), totalClicks)).c_str());
 

@@ -15,7 +15,7 @@ bool SillyBaseLayer::setup()
 
     this->runAction(CCFadeTo::create(1, 100));
     this->setKeypadEnabled(true);
-    this->setTouchEnabled(false);
+    this->setTouchEnabled(true);
 
     auto l = CCMenu::create();
     l->setContentSize(size);
@@ -140,7 +140,7 @@ bool SillyBaseLayer::initWithSizeAndName(CCPoint size, std::string _title, bool 
 
 bool SillyBaseLayer::ccTouchBegan(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
 {
-    return false;
+    return true;
 }
 
 void SillyBaseLayer::ccTouchMoved(cocos2d::CCTouch* p0, cocos2d::CCEvent* p1)
