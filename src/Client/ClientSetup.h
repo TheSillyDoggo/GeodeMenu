@@ -314,6 +314,7 @@ public:
         cosmetic->modules.push_back(new Module("No Spider Dash Effect", "no-spider-dash", "Hides the spider dash effect when you teleport"));
 
         cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
+        cosmetic->modules.push_back(new Module("No Dash Fire", "no-dash-fire", "Hides the fire behind your icon when using a dash orb"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));

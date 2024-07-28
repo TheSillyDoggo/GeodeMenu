@@ -3,6 +3,7 @@
 - Fixed Crash removing checkpoints with checkpoint limit bypass enabled (thanks @hiimjustin000)
 - Actually fixed not being able to exit practice mode with Comfirm Practice enabled
 - Fixed not being able to scroll in the qolmod popup
+- Added **No Dash Fire**
 
 # 1.5.1
 
@@ -42,7 +43,7 @@
 - Added **Coins In Practice**
 
 # 1.4.8
-A
+
 - Removed all imgui code so that wine players can use qolmod
 - Fixed multiple CPS Counter bugs
 - Added Total CPS option to CPS Counter
