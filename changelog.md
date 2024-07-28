@@ -3,8 +3,6 @@
 - Fixed Crash removing checkpoints with checkpoint limit bypass enabled (thanks @hiimjustin000)
 - Actually fixed not being able to exit practice mode with Comfirm Practice enabled
 - Fixed not being able to scroll in the qolmod popup
-- Added **Force Don't Fade**
-- Added **Force Don't Enter**
 
 # 1.5.1
 

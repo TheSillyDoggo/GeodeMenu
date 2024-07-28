@@ -151,7 +151,7 @@ void Window::cocosCreate(CCMenu* menu)
 
     float gap = 28;
     float extraGap = 9.69f;
-    float height = gap * (roundUpToMultipleOf2((modules.size() - 1) / 2) - 1);
+    float height = gap * roundUpToMultipleOf2((modules.size() - 1) / 2);
     height += gap;
 
     height = std::max<float>(menu->getContentHeight(), height + extraGap);

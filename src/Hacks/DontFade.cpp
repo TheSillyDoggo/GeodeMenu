@@ -1,4 +1,4 @@
-#include <Geode/Geode.hpp>
+/*#include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Client/Client.h"
 
@@ -26,4 +26,4 @@ class $modify(PlayLayer)
     }
 
     QOLMOD_MOD_HOOK("dont-enter", "PlayLayer::addObject")
-};
+};*/

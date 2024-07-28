@@ -22,7 +22,7 @@ class $modify (PauseLayer)
 
         geode::createQuickPopup(
             "Practice Mode",
-            std::string("Are you sure you want to\n") + std::string(PlayLayer::get()->m_isPracticeMode ? "exit" : "enter") + std::string(" <cg>practice mode</c>?"),
+            "Are you sure you want to\n<cr>exit</c> <cg>Practice Mode</c>?",
             "Cancel", "Practice",
             [this, sender](FLAlertLayer* tis, bool btn2) {
                 if (btn2)
@@ -48,7 +48,7 @@ class $modify (PauseLayer)
 
         geode::createQuickPopup(
             "Practice Mode",
-            "Are you sure you want to\n<cr>exit</c> <cg>practice mode</c>",
+            "Are you sure you want to\n<cy>enter</c> <cg>Practice Mode</c>?",
             "Cancel", "Exit",
             [this, sender](FLAlertLayer* tis, bool btn2) {
                 if (btn2)
@@ -77,11 +77,7 @@ class $modify (PauseLayer)
             "Are you sure you want to\n<cr>restart this level</c>?",
             "Cancel", "Restart",
             [this, sender](FLAlertLayer* tis, bool btn2) {
-                log::info("click restart");
-
                 if (btn2) {
-                    log::info("right btn");
-
                     this->m_fields->a = true;
 
                     this->onRestart(sender);
@@ -106,11 +102,7 @@ class $modify (PauseLayer)
             "Are you sure you want to\n<cr>restart this level</c>?",
             "Cancel", "Restart",
             [this, sender](FLAlertLayer* tis, bool btn2) {
-                log::info("click restart");
-
                 if (btn2) {
-                    log::info("right btn");
-
                     this->m_fields->a = true;
 
                     this->onRestartFull(sender);
