@@ -16,175 +16,165 @@ bool StatusNode::init()
 
     topLeft = CCMenu::create();
     topLeft->ignoreAnchorPointForPosition(false);
+    topLeft->setAnchorPoint(ccp(0, 1));
+    topLeft->setPosition(CCDirector::get()->getWinSize() * ccp(0, 1) + ccp(2, 0));
+    topLeft->setLayout(getLayout());
     topLeft->setID("top-left");
-    this->addChild(topLeft);
 
     topRight = CCMenu::create();
     topRight->ignoreAnchorPointForPosition(false);
+    topRight->setAnchorPoint(ccp(1, 1));
+    topRight->setPosition(CCDirector::get()->getWinSize() * ccp(1, 1) + ccp(-2, 0));
+    topRight->setLayout(getLayout()->setCrossAxisAlignment(AxisAlignment::End)->setCrossAxisLineAlignment(AxisAlignment::End));
     topRight->setID("top-right");
-    this->addChild(topRight);
 
     bottomLeft = CCMenu::create();
     bottomLeft->ignoreAnchorPointForPosition(false);
+    bottomLeft->setAnchorPoint(ccp(0, 0));
+    bottomLeft->setPosition(ccp(2, 2));
+    bottomLeft->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start));
     bottomLeft->setID("bottom-left");
-    this->addChild(bottomLeft);
 
     bottomRight = CCMenu::create();
     bottomRight->ignoreAnchorPointForPosition(false);
+    bottomRight->setAnchorPoint(ccp(1, 0));
+    bottomRight->setPosition(CCDirector::get()->getWinSize() * ccp(1, 0) + ccp(-2, 2));
+    bottomRight->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisAlignment(AxisAlignment::End)->setCrossAxisLineAlignment(AxisAlignment::End));
     bottomRight->setID("bottom-right");
-    this->addChild(bottomRight);
 
-    int count = 10;
-
-    for (size_t i = 0; i < count; i++)
-    {
-        auto lbl = CCLabelBMFont::create("", "bigFont.fnt");
-        lbl->setAnchorPoint(ccp(0, 1));
-        lbl->setPositionX(3);
-        lbl->setTag(i);
-
-        sLabels.push_back(lbl);
-    }
-
-    sLabels[0]->setString(".");
-    as<CCNode*>(sLabels[0]->getChildren()->objectAtIndex(0))->setScale(2.25f);
-    as<CCNode*>(sLabels[0]->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0.2f, 0.35f));
+    bottomCenter = CCMenu::create();
+    bottomCenter->ignoreAnchorPointForPosition(false);
+    bottomCenter->setAnchorPoint(ccp(0.5f, 0));
+    bottomCenter->setPosition(CCDirector::get()->getWinSize() * ccp(0.5f, 0) + ccp(0, 2));
+    bottomCenter->setLayout(getLayout()->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisAlignment(AxisAlignment::Center)->setCrossAxisLineAlignment(AxisAlignment::Center));
+    bottomCenter->setID("bottom-center");
 
     hidden = Mod::get()->getSavedValue<bool>("hide-labels");
 
-    update(-1.0f);
-    updateVis();
+    for (auto label : window->modules)
+    {
+        labels.push_back(LabelNode::create(as<LabelModule*>(label)));
+    }
 
     reorderSides();
-    reorderPosition();
+    update(1.0f);
 
+    this->addChild(topLeft);
+    this->addChild(topRight);
+    this->addChild(bottomLeft);
+    this->addChild(bottomRight);
+    this->addChild(bottomCenter);
     return true;
 }
 
-void StatusNode::updateVis()
+StatusNode* StatusNode::create()
 {
-    float op = 0.9f, scale = 1.0f;
+    auto ret = new StatusNode();
 
-    auto o = numFromString<float>(StatusOpacity::instance->text);
-    if (o.isOk())
-        op = o.value();
-
-    auto s = numFromString<float>(StatusScale::instance->text);
-    if (s.isOk())
-        scale = s.value();
-
-    op = clamp<float>(op, 0.0f, 1.0f);
-
-    int y = 0;
-
-    for (size_t i = 0; i < sLabels.size(); i++)
+    if (ret && ret->init())
     {
-        sLabels[i]->setScale(0.5f * scale);
-        sLabels[i]->setOpacity((int)round(255 * op));
-
-        if (hidden)
-            sLabels[i]->setVisible(false);
+        ret->autorelease();
+        return ret;
     }
+
+    CC_SAFE_DELETE(ret);
+    return nullptr;
+}
+
+StatusNode* StatusNode::get()
+{
+    return instance;
+}
+
+void StatusNode::update(float dt)
+{
+    auto timeScale = CCScheduler::get()->getTimeScale() / (SpeedhackEnabled::instance->enabled ? SpeedhackTop::instance->getFloatValue() : 1);
+
+    _timeLeft -= dt / timeScale;
+    _accum += 1 / (dt / timeScale);
+    _frames++;
+
+    if (_timeLeft <= 0) {
+        this->fps = _accum / _frames;
+
+        _timeLeft = _updateInterval;
+        _accum = 0;
+        _frames = 0;
+    }
+
+    for (auto label : labels)
+    {
+        label->update(dt);
+    }
+
+    topLeft->updateLayout();
+    topRight->updateLayout();
+    bottomLeft->updateLayout();
+    bottomRight->updateLayout();
+    bottomCenter->updateLayout();
 }
 
 void StatusNode::reorderSides()
 {
-    for (auto label : sLabels)
+    for (auto label : labels)
     {
         label->retain();
     }
 
-    topLeft->removeAllChildrenWithCleanup(false);
-    topRight->removeAllChildrenWithCleanup(false);
-    bottomLeft->removeAllChildrenWithCleanup(false);
-    bottomRight->removeAllChildrenWithCleanup(false);
-
-    int i = 0;
-
-    for (auto label : sLabels)
+    topLeft->removeAllChildren();
+    topRight->removeAllChildren();
+    bottomLeft->removeAllChildren();
+    bottomRight->removeAllChildren();
+    bottomCenter->removeAllChildren();
+    
+    for (auto label : labels)
     {
-        int side = as<DropdownModule*>(window->modules[i + 2]->options[0])->index;
-
-        label->setAnchorPoint(ccp((side == 0 || side == 2) ? 0 : 1, (side == 2 || side == 3) ? 0 : 1));
-        label->setAlignment((side == 0 || side == 2) ? CCTextAlignment::kCCTextAlignmentLeft : CCTextAlignment::kCCTextAlignmentRight);
-
-        (side == 0 ? topLeft : (side == 1 ? topRight : (side == 2 ? bottomLeft : bottomRight)))->addChild(label);
-
-        i++;
+        getNodeForSide(label->module->getSide())->addChild(label);
 
         label->release();
     }
 }
 
-void StatusNode::reorderPosition()
+CCNode* StatusNode::getNodeForSide(LabelSide side)
 {
-    float op = 0.9f, scale = 1.0f;
-
-    auto o = numFromString<float>(StatusOpacity::instance->text);
-    if (o.isOk())
-        op = o.value();
-
-    auto s = numFromString<float>(StatusScale::instance->text);
-    if (s.isOk())
-        scale = s.value();
-
-    op = clamp<float>(op, 0.0f, 1.0f);
-
-    int v = 0;
-
-    for (size_t i = 0; i < bottomLeft->getChildrenCount(); i++)
+    switch(side)
     {
-        as<CCNode*>(bottomLeft->getChildren()->objectAtIndex(i))->setPosition(ccp(3, 3 + (32.5f * scale * 0.5f) * v));
+        default:
+            return topLeft;
 
-        if (as<CCNode*>(bottomLeft->getChildren()->objectAtIndex(i))->isVisible())
-            v++;
-    }
+        case LabelSide::TopRight:
+            return topRight;
 
-    v = 0;
+        case LabelSide::BottomLeft:
+            return bottomLeft;
 
-    for (size_t i = 0; i < bottomRight->getChildrenCount(); i++)
-    {
-        as<CCNode*>(bottomRight->getChildren()->objectAtIndex(i))->setPosition(ccp(CCDirector::get()->getWinSize().width - 3, 3 + (32.5f * scale * 0.5f) * v));
+        case LabelSide::BottomRight:
+            return bottomRight;
 
-        if (as<CCNode*>(bottomRight->getChildren()->objectAtIndex(i))->isVisible())
-            v++;
-    }
-
-    v = 0;
-
-    for (size_t i = 0; i < topLeft->getChildrenCount(); i++)
-    {
-        as<CCNode*>(topLeft->getChildren()->objectAtIndex(i))->setPosition(ccp(3, CCDirector::get()->getWinSize().height - (3 + (32.5f * scale * 0.5f) * v)));
-
-        if (as<CCNode*>(topLeft->getChildren()->objectAtIndex(i))->isVisible())
-            v++;
-    }
-
-    v = 0;
-
-    for (size_t i = 0; i < topRight->getChildrenCount(); i++)
-    {
-        as<CCNode*>(topRight->getChildren()->objectAtIndex(i))->setPosition(ccp(CCDirector::get()->getWinSize().width - 3, CCDirector::get()->getWinSize().height - (3 + (32.5f * scale * 0.5f) * v)));
-
-        if (as<CCNode*>(topRight->getChildren()->objectAtIndex(i))->isVisible())
-            v++;
+        case LabelSide::BottomCenter:
+            return bottomCenter;
     }
 }
 
-class LabelModuleDelegate : public ModuleChangeDelegate
+AxisLayout* StatusNode::getLayout()
 {
-    virtual void onModuleChanged(bool enabled)
+    return AxisLayout::create()->setAxis(Axis::Column)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisAlignment(AxisAlignment::Start)->setCrossAxisLineAlignment(AxisAlignment::Start)->setAutoScale(false)->setGap(1);
+}
+
+StatusNode::~StatusNode()
+{
+    instance = nullptr;
+}
+
+// delegate :3
+
+void LabelModuleDelegate::onModuleChanged(bool enabled)
+{
+    if (PlayLayer::get(); auto stn = StatusNode::get())
     {
-        if (PlayLayer::get())
-        {
-            if (auto stn = StatusNode::get())
-            {
-                stn->reorderSides();
-                stn->reorderPosition();
-            }
-        }
+        stn->reorderSides();
     }
-};
+}
 
 void StatusNode::postSetup(Window* wnd)
 {
@@ -199,129 +189,30 @@ void StatusNode::postSetup(Window* wnd)
     }
 }
 
-void StatusNode::update(float dt)
+// hooks :3
+
+void LabelPlayLayer::resetLevel()
 {
-    if (!cheat)
-        cheat = Client::GetModule("cheat-indicator");
-    
-    if (!fps)
-        fps = Client::GetModule("status-fps");
+    PlayLayer::resetLevel();
 
-    if (!accuracy)
-        accuracy = Client::GetModule("status-accuracy");
+    m_fields->attemptCount++;
 
-    if (!deaths)
-        deaths = Client::GetModule("status-deaths");
-
-    if (!noclip)
-        noclip = Client::GetModule("noclip");
-
-    if (!replay)
-        replay = Client::GetModule("status-replay");
-
-    if (!attempt)
-        attempt = Client::GetModule("status-attempt");
-
-    if (!message)
-        message = Client::GetModule("status-message");
-
-    if (!session)
-        session = Client::GetModule("status-session");
-
-    if (!cpsM)
-        cpsM = Client::GetModule("status-cps");
-
-    if (!bestRun)
-        bestRun = Client::GetModule("best-run");
-        
-    if (!attPL)
-        attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
-
-    if (!bestRunPlayLayer)
-        bestRunPlayLayer = static_cast<BestPlayLayer*>(PlayLayer::get());
-    
-    float v = 100 * as<NoclipPlayLayer*>(PlayLayer::get())->getNoclipAccuracy();
-    
-
-    sLabels[0]->setVisible(cheat->enabled);
-    sLabels[1]->setVisible(fps->enabled);
-    sLabels[2]->setVisible(noclip->enabled && accuracy->enabled);
-    sLabels[3]->setVisible(noclip->enabled && deaths->enabled);
-    sLabels[4]->setVisible(attempt->enabled);
-    sLabels[5]->setVisible(replay->enabled);
-    //sLabels[6]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
-    //sLabels[7]->setVisible(replay->enabled && (GJReplayManager::recording || GJReplayManager::playing));
-    sLabels[6]->setVisible(message->enabled);
-    sLabels[7]->setVisible(session->enabled);
-    sLabels[8]->setVisible(cpsM->enabled);
-    sLabels[9]->setVisible(bestRun->enabled);
-
-
-    sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
-    sLabels[3]->setString((numToString(as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
-    sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
-
-
-    std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
-    sLabels[5]->setString("");
-    //sLabels[6]->setString(b.c_str());
-    //sLabels[7]->setString(inp.str().c_str());
-    auto v2 = as<InputModule*>(message->options[1])->text.c_str();
-    sLabels[6]->setString(v2);
-    sLabels[7]->setString(formatTime(ColourUtility::totalSessionTime).c_str());
-
-    if (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead)
+    if (auto status = StatusNode::get())
     {
-        sLabels[2]->stopAllActions();
-        sLabels[2]->setColor(ccc3(255, 0, 0));
-        sLabels[2]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
-
-        sLabels[3]->stopAllActions();
-        sLabels[3]->setColor(ccc3(255, 0, 0));
-        sLabels[3]->runAction(CCTintTo::create(0.5f, 255, 255, 255));
-
-        as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead = false;
+        status->totalClicks = 0;
     }
-
-    if (dt != -1)
-    {
-        _timeLeft -= dt / CCScheduler::get()->getTimeScale();
-        _accum += 1 / (dt / CCScheduler::get()->getTimeScale());
-        _frames++;
-
-        if (_timeLeft <= 0) {
-            float fps = _accum / _frames;
-
-            sLabels[1]->setString((std::to_string(as<int>(roundf(fps))) + std::string(" FPS")).c_str());
-            //CCLOG("Average FPS: %.2f", fps);
-
-            _timeLeft = _updateInterval;
-            _accum = 0;
-            _frames = 0;
-        }
-    }
-
-    if (dt != -1)
-    {
-        for (size_t i = 0; i < cps.size(); i++)
-        {
-            cps[i] -= dt / CCScheduler::get()->getTimeScale();
-        }
-
-        cps.erase(std::remove_if(cps.begin(), cps.end(), [](float i){ return i < 0; }), cps.end());
-    }
-
-    sLabels[8]->setString((cpsM->options[1]->enabled ? fmt::format("{} / {} CPS", cps.size(), totalClicks) : fmt::format("{} CPS", cps.size(), totalClicks)).c_str());
-
-    if (bestRunPlayLayer)
-        sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
-
-    updateVis();
 }
 
-void StatusNode::updateCPS(float dt)
+bool LabelPlayLayer::init(GJGameLevel* p0, bool p1, bool p2)
 {
-    
+    if (!PlayLayer::init(p0, p1, p2))
+        return false;
+
+    auto stn = StatusNode::create();
+    stn->attPL = this;
+    m_uiLayer->addChild(stn);
+
+    return true;
 }
 
 class $modify (PlayerObject)
@@ -330,7 +221,7 @@ class $modify (PlayerObject)
     {
         PlayerObject::pushButton(p0);
 
-        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_player1 == this)
+        /*if (p0 == PlayerButton::Jump && PlayLayer::get())
         {
             if (auto stn = StatusNode::get())
             {
@@ -340,48 +231,21 @@ class $modify (PlayerObject)
                 stn->sLabels[8]->stopAllActions();
                 stn->sLabels[8]->setColor(ccc3(0, 255, 0));
             }
-        }
+        }*/
     }
 
     void releaseButton(PlayerButton p0)
     {
         PlayerObject::releaseButton(p0);
 
-        if (p0 == PlayerButton::Jump && PlayLayer::get())
+        /*if (p0 == PlayerButton::Jump && PlayLayer::get())
         {
             if (auto stn = StatusNode::get())
             {
                 stn->sLabels[8]->stopAllActions();
                 stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
-        }
-    }
-};
-
-class $modify (PlayLayer)
-{
-    bool init(GJGameLevel* p0, bool p1, bool p2)
-    {
-        if (!PlayLayer::init(p0, p1, p2))
-            return false;
-
-        if (getChildByID("status-node"_spr))
-            return true;
-
-        auto stn = StatusNode::create();
-        stn->attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
-        stn->bestRunPlayLayer = as<BestPlayLayer*>(PlayLayer::get());
-        this->addChild(stn);
-        
-        return true;
-    }
-
-    void resetLevel()
-    {
-        PlayLayer::resetLevel();
-
-        if (StatusNode::get())
-            StatusNode::get()->totalClicks = 0;
+        }*/
     }
 };
 

@@ -92,12 +92,11 @@ void SafeMode::updateIndicator()
 
     if (auto a = StatusNode::get())
     {
-        if (auto l = a->sLabels[0])
-            l->setColor(colourForState());
+        //if (auto l = a->sLabels[0])
+            //l->setColor(colourForState());
 
         a->update(-1);
         a->reorderSides();
-        a->reorderPosition();
     }
 
     #endif

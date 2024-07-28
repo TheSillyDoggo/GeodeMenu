@@ -47,4 +47,8 @@ foreach(MODULE ${MODULES_LIST})
     endif()
 endforeach()
 
+CPMAddPackage("gh:EclipseMenu/RIFT#b00bf2b") # specify a commit!
+
+target_link_libraries(${PROJECT_NAME} rift)
+
 setup_geode_mod(${PROJECT_NAME})
