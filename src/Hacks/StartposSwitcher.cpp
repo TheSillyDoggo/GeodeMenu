@@ -148,8 +148,8 @@ class $modify (UILayer)
     virtual void keyDown(cocos2d::enumKeyCodes key)
     {
         UILayer::keyDown(key);
-
-        if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
+        auto pl = PlayLayer::get();
+        if (pl && Client::GetModuleEnabled("startpos-switcher"))
         {
             if (key == enumKeyCodes::KEY_Q)
                 as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
@@ -163,7 +163,8 @@ class $modify (UILayer)
     {
         if (down)
         {
-            if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
+            auto pl = PlayLayer::get();
+            if (pl && Client::GetModuleEnabled("startpos-switcher"))
             {
                 if (key == enumKeyCodes::KEY_Q)
                     as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
