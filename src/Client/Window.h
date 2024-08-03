@@ -45,7 +45,11 @@ class Window
         virtual void cocosCreate(CCMenu* menu);
 };
 
+#ifndef GEODE_IS_IOS
+
 class $modify (WindowMouseDispatcher, CCMouseDispatcher)
 {
     bool dispatchScrollMSG(float x, float y);
 };
+
+#endif
