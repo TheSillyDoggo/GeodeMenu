@@ -17,7 +17,8 @@ class AndroidBall : public CCLayer
 
         bool doingThing = false;
         static inline bool dragging = false;
-        CircleButtonSprite* btn;
+        CCSprite* btnOverlay;
+        CCSprite* btn;
         CCLabelBMFont* l;
         CCMenu* menu;
 

@@ -1,3 +1,9 @@
+# 1.5.3
+
+- Fixed Crash pressing Q or E in the editor with startpos switcher enabled
+- Fixed the Button disappearing when switching scenes
+- Changed the Button to use textures instead of labels
+
 # 1.5.2
 
 - Fixed Crash removing checkpoints with checkpoint limit bypass enabled (thanks @hiimjustin000)
