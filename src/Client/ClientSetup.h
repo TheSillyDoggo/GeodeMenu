@@ -355,6 +355,8 @@ public:
         replay->modules.push_back(new StatusScale());
 
         //replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
+        replay->modules.push_back(new Module("Labels In Editor", "labels-in-editor", "Shows your labels in the level editor <cr>[EXPERIMENTAL]</c>"));
+
         replay->modules.push_back(new Module("Cheat Indicator", "cheat-indicator", "Shows if you are cheating"));
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
         replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
@@ -378,7 +380,8 @@ public:
 
         for (auto mod : replay->modules)
         {
-            mod->options.push_back(new DropdownModule({"Top Left", "Top Right", "Bottom Left", "Bottom Right"}, mod->id + "-side", 0));
+            if (mod->id != "labels-in-editor")
+                mod->options.push_back(new DropdownModule({"Top Left", "Top Right", "Bottom Left", "Bottom Right"}, mod->id + "-side", 0));
         }
 
         auto messageOption = new InputModule("Message Text: ", "status-message-text", "Default Message");

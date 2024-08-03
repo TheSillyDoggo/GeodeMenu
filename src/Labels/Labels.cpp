@@ -2,6 +2,7 @@
 
 #include "Labels.h"
 #include "../Hacks/Noclip/Noclip.hpp"
+#include "../Hacks/SafeMode/SafeMode.hpp"
 
 bool StatusNode::init()
 {
@@ -103,7 +104,7 @@ void StatusNode::reorderSides()
 
     for (auto label : sLabels)
     {
-        int side = as<DropdownModule*>(window->modules[i + 2]->options[0])->index;
+        int side = as<DropdownModule*>(window->modules[i + 3]->options[0])->index;
 
         label->setAnchorPoint(ccp((side == 0 || side == 2) ? 0 : 1, (side == 2 || side == 3) ? 0 : 1));
         label->setAlignment((side == 0 || side == 2) ? CCTextAlignment::kCCTextAlignmentLeft : CCTextAlignment::kCCTextAlignmentRight);
@@ -175,13 +176,10 @@ class LabelModuleDelegate : public ModuleChangeDelegate
 {
     virtual void onModuleChanged(bool enabled)
     {
-        if (PlayLayer::get())
+        if (auto stn = StatusNode::get())
         {
-            if (auto stn = StatusNode::get())
-            {
-                stn->reorderSides();
-                stn->reorderPosition();
-            }
+            stn->reorderSides();
+            stn->reorderPosition();
         }
     }
 };
@@ -194,8 +192,11 @@ void StatusNode::postSetup(Window* wnd)
 
     for (auto mod : wnd->modules)
     {
-        mod->delegate = del;
-        mod->options[0]->delegate = del;
+        if (mod->id != "labels-in-editor")
+        {
+            mod->delegate = del;
+            mod->options[0]->delegate = del;
+        }
     }
 }
 
@@ -235,13 +236,15 @@ void StatusNode::update(float dt)
         bestRun = Client::GetModule("best-run");
         
     if (!attPL)
-        attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
+        attPL = static_cast<AttemptBaseGameLayer*>(GJBaseGameLayer::get());
 
     if (!bestRunPlayLayer)
         bestRunPlayLayer = static_cast<BestPlayLayer*>(PlayLayer::get());
+
+    if (!noclipLayer)
+        noclipLayer = static_cast<NoclipBaseGameLayer*>(GJBaseGameLayer::get());
     
-    float v = 100 * as<NoclipPlayLayer*>(PlayLayer::get())->getNoclipAccuracy();
-    
+    float v = 100 * noclipLayer->getNoclipAccuracy();
 
     sLabels[0]->setVisible(cheat->enabled);
     sLabels[1]->setVisible(fps->enabled);
@@ -256,13 +259,21 @@ void StatusNode::update(float dt)
     sLabels[8]->setVisible(cpsM->enabled);
     sLabels[9]->setVisible(bestRun->enabled);
 
+    if (PlayLayer::get())
+    {
+        sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
+        sLabels[3]->setString((numToString(as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
+    }
+    else
+    {
+        sLabels[2]->setString("");
+        sLabels[3]->setString("");
+    }
 
-    sLabels[2]->setString((numToString(v, 2) + std::string("%")).c_str());
-    sLabels[3]->setString((numToString(as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d, 0) + (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->d == 1 ? std::string(" Death") : std::string(" Deaths"))).c_str());
     sLabels[4]->setString((std::string("Attempt ") + std::to_string(attPL->m_fields->attemptCount)).c_str());
 
 
-    std::string b = (std::string("Frame Fixes: ") + (Mod::get()->getSavedValue<bool>("frame-fixes") ? "Enabled" : "Disabled") + std::string(", Click Fixes: ") + (Mod::get()->getSavedValue<bool>("click-fixes") ? "Enabled" : "Disabled"));
+    
     sLabels[5]->setString("");
     //sLabels[6]->setString(b.c_str());
     //sLabels[7]->setString(inp.str().c_str());
@@ -270,7 +281,7 @@ void StatusNode::update(float dt)
     sLabels[6]->setString(v2);
     sLabels[7]->setString(formatTime(ColourUtility::totalSessionTime).c_str());
 
-    if (as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead)
+    if (PlayLayer::get() && as<NoclipPlayLayer*>(PlayLayer::get())->m_fields->isDead)
     {
         sLabels[2]->stopAllActions();
         sLabels[2]->setColor(ccc3(255, 0, 0));
@@ -315,6 +326,8 @@ void StatusNode::update(float dt)
 
     if (bestRunPlayLayer)
         sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
+    else
+        sLabels[9]->setString("Best Run: Editor");
 
     updateVis();
 }
@@ -330,7 +343,7 @@ class $modify (PlayerObject)
     {
         PlayerObject::pushButton(p0);
 
-        if (p0 == PlayerButton::Jump && PlayLayer::get() && PlayLayer::get()->m_player1 == this)
+        if (p0 == PlayerButton::Jump && GJBaseGameLayer::get() && GJBaseGameLayer::get()->m_player1 == this)
         {
             if (auto stn = StatusNode::get())
             {
@@ -347,7 +360,7 @@ class $modify (PlayerObject)
     {
         PlayerObject::releaseButton(p0);
 
-        if (p0 == PlayerButton::Jump && PlayLayer::get())
+        if (p0 == PlayerButton::Jump && GJBaseGameLayer::get())
         {
             if (auto stn = StatusNode::get())
             {
@@ -369,20 +382,49 @@ class $modify (PlayLayer)
             return true;
 
         auto stn = StatusNode::create();
-        stn->attPL = static_cast<AttemptPlayLayer*>(PlayLayer::get());
-        stn->bestRunPlayLayer = as<BestPlayLayer*>(PlayLayer::get());
+        stn->attPL = base_cast<AttemptBaseGameLayer*>(this);
+        stn->bestRunPlayLayer = base_cast<BestPlayLayer*>(this);
         this->addChild(stn);
         
         return true;
     }
+};
 
-    void resetLevel()
+class $modify (LevelEditorLayer)
+{
+    bool init(GJGameLevel* p0, bool p1)
     {
-        PlayLayer::resetLevel();
+        if (!LevelEditorLayer::init(p0, p1))
+            return false;
 
-        if (StatusNode::get())
-            StatusNode::get()->totalClicks = 0;
+        if (!Client::GetModuleEnabled("labels-in-editor"))
+            return true;
+
+        if (getChildByID("status-node"_spr))
+            return true;
+
+        if (m_uiLayer)
+        {
+            auto stn = StatusNode::create();
+            stn->attPL = base_cast<AttemptBaseGameLayer*>(this);
+            m_uiLayer->addChild(stn);
+        }
+
+        return true;
     }
 };
+
+void AttemptBaseGameLayer::resetLevelVariables()
+{
+    if (LevelEditorLayer::get() ? !LevelEditorLayer::get()->m_editorUI->m_playtestStopBtn->isVisible() : true)
+        m_fields->attemptCount++;
+
+    if (StatusNode::get())
+        StatusNode::get()->totalClicks = 0;
+
+    GJBaseGameLayer::resetLevelVariables();
+
+    SafeMode::get()->resetOnNewAttempt();
+}
 
 #endif

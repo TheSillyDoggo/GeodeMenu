@@ -2,7 +2,9 @@
 
 - Fixed Crash pressing Q or E in the editor with startpos switcher enabled
 - Fixed the Button disappearing when switching scenes
+- Fixed Noclip not working in the editor
 - Changed the Button to use textures instead of labels
+- Added **Labels In Editor**
 
 # 1.5.2
 

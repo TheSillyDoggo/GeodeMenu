@@ -85,9 +85,6 @@ bool SafeMode::shouldKickFromLevel()
 
 void SafeMode::updateIndicator()
 {
-    if (!PlayLayer::get())
-        return;
-
     #ifdef STATUS_TEXTS
 
     if (auto a = StatusNode::get())

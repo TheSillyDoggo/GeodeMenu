@@ -5,23 +5,22 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include "BestRun.hpp"
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (AttemptPlayLayer, PlayLayer)
+class NoclipBaseGameLayer;
+
+class $modify (AttemptBaseGameLayer, GJBaseGameLayer)
 {
     struct Fields {
         int attemptCount = 0;
     };
 
-    void resetLevel()
-    {
-        PlayLayer::resetLevel();
-
-        m_fields->attemptCount++;
-    }
+    void resetLevelVariables();
 };
 
 class StatusNode : public CCNode
@@ -50,7 +49,7 @@ class StatusNode : public CCNode
 
         bool mods;
 
-        AttemptPlayLayer* attPL = nullptr;
+        AttemptBaseGameLayer* attPL = nullptr;
 
         static inline Module* fps = nullptr;
         static inline Module* cheat = nullptr;
@@ -84,6 +83,7 @@ class StatusNode : public CCNode
         std::vector<float> cps;
         int totalClicks = 0;
 
+        NoclipBaseGameLayer* noclipLayer = nullptr;
         BestPlayLayer* bestRunPlayLayer = nullptr;
 
         std::string formatTime(float time) {

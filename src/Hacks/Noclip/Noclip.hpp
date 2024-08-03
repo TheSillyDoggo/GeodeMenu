@@ -1,6 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 #include "../../Client/Client.h"
 
 using namespace geode::prelude;
@@ -8,11 +9,7 @@ using namespace geode::prelude;
 class $modify (NoclipPlayLayer, PlayLayer)
 {
     struct Fields {
-        GameObject* ac;
         GameObject* last;
-
-        bool hasDied = false;
-        float timeDead = 0;
 
         int t = 0;
         int d = 0;
@@ -27,11 +24,25 @@ class $modify (NoclipPlayLayer, PlayLayer)
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
     void destroyPlayer(PlayerObject* p0, GameObject* p1);
     void resetLevel();
-
-    float getNoclipAccuracy();
 };
 
 class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
 {
+    struct Fields {
+        GameObject* ac;
+        
+        float timeDead = 0;
+        bool hasDied = false;
+    };
+
     virtual void update(float dt);
+    void resetLevelVariables();
+
+    float getNoclipAccuracy();
+};
+
+class $modify (NoclipEditorLayer, LevelEditorLayer)
+{
+    virtual void playerTookDamage(PlayerObject* p0);
+    virtual void postUpdate(float p0);
 };
