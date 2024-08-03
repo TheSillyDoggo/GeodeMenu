@@ -15,13 +15,13 @@ file(GLOB SOURCES
 	src/*.cpp
 	src/*/*.cpp
 	src/*/*/*.cpp
-    
-if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
-    src/*.mm
-    src/*/*.mm
-    src/*/*/*.mm
-endif()
 )
+
+#if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
+#    src/*.mm
+#    src/*/*.mm
+#    src/*/*/*.mm
+#endif()
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
