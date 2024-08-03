@@ -564,6 +564,10 @@ public:
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         #endif
+
+        #ifndef QOLMOD_ALL_MODES_PLATFORMER
+        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>.");
+        #endif
     }
 
 #pragma endregion
