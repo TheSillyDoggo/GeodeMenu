@@ -4,6 +4,7 @@
 - Fixed the Button disappearing when switching scenes
 - Fixed Noclip not working in the editor
 - Changed the Button to use textures instead of labels
+- Changed Windows to export function symbols for easier crash fixing
 - Added **Labels In Editor**
 - **Added [EXPERIMENTAL] ARM / M1 macOS support**
 

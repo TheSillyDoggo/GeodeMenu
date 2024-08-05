@@ -23,6 +23,15 @@ file(GLOB SOURCES
 #    src/*/*/*.mm
 #endif()
 
+# Windows specific settings
+if (WIN32)
+  # Disable annoying warnings
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+
+  # Export all symbols for better debugging
+  set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 if (NOT DEFINED ENV{GEODE_SDK})
