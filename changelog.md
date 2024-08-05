@@ -5,6 +5,7 @@
 - Fixed Noclip not working in the editor
 - Changed the Button to use textures instead of labels
 - Added **Labels In Editor**
+- **Added [EXPERIMENTAL] ARM / M1 macOS support**
 
 # 1.5.2
 
