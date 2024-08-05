@@ -3,6 +3,8 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
 
+#ifdef QOLMOD_ALL_MODES_PLATFORMER
+
 using namespace geode::prelude;
 
 class $modify (GJBaseGameLayer)
@@ -42,3 +44,5 @@ class $modify (GJBaseGameLayer)
 
     QOLMOD_MOD_HOOK("all-plat", "GJBaseGameLayer::collisionCheckObjects")
 };
+
+#endif

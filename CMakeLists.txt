@@ -17,15 +17,22 @@ file(GLOB SOURCES
 	src/*/*/*.cpp
 )
 
-if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
-    file(
-        src/*.mm
-        src/*/*.mm
-        src/*/*/*.mm
-    )
-endif()
+#if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
+#    src/*.mm
+#    src/*/*.mm
+#    src/*/*/*.mm
+#endif()
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+# Windows specific settings
+if (WIN32)
+  # Disable annoying warnings
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+
+  # Export all symbols for better debugging
+  set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 
 if (NOT DEFINED ENV{GEODE_SDK})
     message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")

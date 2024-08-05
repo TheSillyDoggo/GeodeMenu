@@ -1,3 +1,13 @@
+# 1.5.3
+
+- Fixed Crash pressing Q or E in the editor with startpos switcher enabled
+- Fixed the Button disappearing when switching scenes
+- Fixed Noclip not working in the editor
+- Changed the Button to use textures instead of labels
+- Changed Windows to export function symbols for easier crash fixing
+- Added **Labels In Editor**
+- **Added [EXPERIMENTAL] ARM / M1 macOS support**
+
 # 1.5.2
 
 - Fixed Crash removing checkpoints with checkpoint limit bypass enabled (thanks @hiimjustin000)

@@ -16,3 +16,7 @@
 #ifndef GEODE_IS_ARM_MAC
 #define QOLMOD_EDITOR_WAVE_TRAIL
 #endif
+
+#ifndef GEODE_IS_IOS
+#define QOLMOD_ALL_MODES_PLATFORMER
+#endif
