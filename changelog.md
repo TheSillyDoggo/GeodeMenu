@@ -1,3 +1,11 @@
+# 1.5.4
+
+- Fixed Dropdown's not being clickable
+- Fixed not being able to search for module options
+- Added **Customizable Noclip Tint Colour**
+- Added **CPS Counter instant colour fade**
+- Added **Customizable Pause Countdown Time**
+
 # 1.5.3
 
 - Fixed Crash pressing Q or E in the editor with startpos switcher enabled

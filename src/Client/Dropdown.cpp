@@ -140,6 +140,11 @@ bool Dropdown::init(CCSize size, std::vector<std::string> strs, cocos2d::SEL_Men
     return true;
 }
 
+void Dropdown::registerWithTouchDispatcher()
+{
+    CCTouchDispatcher::get()->addTargetedDelegate(this, -512, true);
+}
+
 Dropdown* Dropdown::create(CCSize size, std::vector<std::string> strs, cocos2d::SEL_MenuHandler callback, int sel) {
     Dropdown* ret = new Dropdown();
     if (ret && ret->init(size, strs, callback, sel)) {

@@ -1,9 +1,19 @@
 #include "CountdownLayer.hpp"
 
+CountdownLayer* countdownInstance;
+
+CountdownLayer* CountdownLayer::get()
+{
+    return countdownInstance;
+}
+
 bool CountdownLayer::init()
 {
     if (!CCLayer::init())
         return false;
+
+    countdownInstance = this;
+    count = as<InputModule*>(Client::GetModule("pause-countdown")->options[0])->getIntValue();
 
     this->setKeypadEnabled(true);
     this->schedule(schedule_selector(CountdownLayer::onDecrement), 1);
@@ -51,4 +61,9 @@ void CountdownLayer::keyBackClicked()
     PlayLayer::get()->pauseGame(false);
 
     this->removeFromParent();
+}
+
+CountdownLayer::~CountdownLayer()
+{
+    countdownInstance = nullptr;
 }

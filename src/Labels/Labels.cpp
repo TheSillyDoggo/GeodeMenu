@@ -365,7 +365,11 @@ class $modify (PlayerObject)
             if (auto stn = StatusNode::get())
             {
                 stn->sLabels[8]->stopAllActions();
-                stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
+
+                if (Client::GetModuleEnabled("status-cps-instant-fade"))
+                    stn->sLabels[8]->setColor(ccc3(255, 255, 255));
+                else
+                    stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }
     }

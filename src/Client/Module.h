@@ -53,7 +53,7 @@ class Module : public UIComponent
         void addHookRaw(Result<Hook*> hook);
 
         void addHook(Hook* hook);
-        void addPatch(Patch* hook);
+        void addPatch(Patch* patch);
 
         void disableHooks();
         void enableHooks();

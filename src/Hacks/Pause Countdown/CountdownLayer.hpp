@@ -16,5 +16,8 @@ class CountdownLayer : public CCLayer
         virtual void onCountReachedZero();
         virtual void keyBackClicked();
 
+        ~CountdownLayer();
+
         CREATE_FUNC(CountdownLayer);
+        static CountdownLayer* get();
 };

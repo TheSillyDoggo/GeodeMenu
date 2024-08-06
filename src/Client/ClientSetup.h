@@ -130,6 +130,7 @@ public:
 
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
+        Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
 
 
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
@@ -150,6 +151,11 @@ public:
         seed->allowedChars = "1234567890";
         seed->maxSize = 16;
         Client::GetModule("rand-seed")->options.push_back(seed);
+
+        auto cdownT = new InputModule("Time:", "countdown-time", "3");
+        cdownT->allowedChars = "1234567890";
+        cdownT->maxSize = 4;
+        Client::GetModule("pause-countdown")->options.push_back(cdownT);
 
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
 
@@ -245,6 +251,8 @@ public:
 
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
         creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
+
+        //creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Editor Extension Help :)"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
@@ -389,6 +397,7 @@ public:
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
         Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
+        Client::GetModule("status-cps")->options.push_back(new Module("Instant Fade Transition", "status-cps-instant-fade", "Makes the green fade transition when clicking instant"));
 
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
