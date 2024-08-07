@@ -18,7 +18,7 @@ class $modify (CCParticleSystem)
         this->setScale(0);
     }
 
-    QOLMOD_MOD_HOOK_ALL("no-particles")
+    QOLMOD_MOD_ALL_HOOKS("no-particles")
 };
 
 #else
