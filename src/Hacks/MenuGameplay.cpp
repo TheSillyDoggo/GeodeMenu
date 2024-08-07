@@ -83,6 +83,8 @@ class $modify (MenuGameLayer)
     }
 };
 
+#ifndef GEODE_IS_IOS
+
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat)
@@ -111,3 +113,5 @@ class $modify (CCKeyboardDispatcher)
         });
     }
 };
+
+#endif

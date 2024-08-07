@@ -17,6 +17,8 @@ bool android = true;
 
 Client* client;
 
+#ifndef GEODE_IS_IOS
+
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
@@ -133,6 +135,8 @@ class $modify (CCKeyboardDispatcher)
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }
 };
+
+#endif
 
 void migrateData()
 {
