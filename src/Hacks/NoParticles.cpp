@@ -2,7 +2,6 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCParticleSystem.hpp>
-#include <Geode/modify/CCParticleSystemQuad.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
