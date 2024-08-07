@@ -2,6 +2,7 @@
 
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <tuple>
 #include "../Client.h"
 #include "../../Layers/IconOptionsLayer.h"
 
@@ -22,7 +23,7 @@ class EffectUI : public CCNode
 
         static inline Hook* _hook = nullptr;
 
-        static bool getIncompatibleModLoaded();
+        static std::tuple<std::string, bool> getIncompatibleModLoaded();
         static std::string getIncompatibleMods();
 
         static EffectUI* create() {

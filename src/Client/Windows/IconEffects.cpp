@@ -1,4 +1,5 @@
 #include "IconEffects.hpp"
+#include <tuple>
 
 ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
 {
@@ -99,17 +100,20 @@ std::vector<std::string> mods =
     "the_bearodactyl.gay-wave-trail",
 };
 
-bool EffectUI::getIncompatibleModLoaded()
+std::tuple<std::string, bool> EffectUI::getIncompatibleModLoaded()
 {
+    std::tuple<std::string, bool> return_val;
     for (auto mod : mods)
     {
         if (Loader::get()->isModLoaded(mod))
         {
-            return true;
+            return_val = std::tuple<std::string, bool>(mod, true);
+        } else {
+            return_val = std::tuple<std::string, bool>(mod, false);
         }
     }
-    
-    return false;
+
+    return return_val;    
 }
 
 std::string EffectUI::getIncompatibleMods()
@@ -186,10 +190,12 @@ class $modify (MenuLayer)
 {
     bool init()
     {
-        if (EffectUI::getIncompatibleModLoaded())
+        auto [mod, loaded] = EffectUI::getIncompatibleModLoaded();
+        if (loaded)
         {
             EffectUI::_hook->setAutoEnable(false);
-            EffectUI::_hook->disable();
+            auto hook = EffectUI::_hook;
+            hook->disable().expect("failed to disable hook");
 
             log::error("Incompatible mod loaded, disabling icon effects");
         }

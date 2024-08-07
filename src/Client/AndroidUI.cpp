@@ -1,5 +1,6 @@
 #include "AndroidUI.h"
 #include "../Utils/CCBlurLayer.hpp"
+#include "Geode/ui/GeodeUI.hpp"
 
 bool AndroidUI::setup()
 {
@@ -443,9 +444,10 @@ CCAction* AndroidUI::getEnterAction(CCNode* panel)
 void AndroidUI::onPressTab(CCObject* sender)
 {
     auto btn = static_cast<CCMenuItemSprite*>(sender);
+    auto [incompat_mod, loaded] = EffectUI::getIncompatibleModLoaded();
 
-    if (typeinfo_cast<IconEffects*>(Client::instance->windows[btn->getTag()]) && EffectUI::getIncompatibleModLoaded())
-        return FLAlertLayer::create(nullptr, "Icon Effects", fmt::format("Icon Effects have been disabled due to incompatibilities.\nTo use icon effects, disable the following mod:\n{}", EffectUI::getIncompatibleMods()), "OK", nullptr, 330, false, 300, 0.75f)->show();
+    if (typeinfo_cast<IconEffects*>(Client::instance->windows[btn->getTag()]) && loaded)
+        openSettingsPopup(Loader::get()->getLoadedMod(incompat_mod));
 
     lastTab = selectedTab;
     selectedTab = btn->getTag();
