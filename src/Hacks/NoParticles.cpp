@@ -9,6 +9,20 @@ using namespace geode::prelude;
 
 Module* part = nullptr;
 
+#ifdef GEODE_IS_IOS
+
+class $modify (CCParticleSystem)
+{
+    virtual void update(float dt)
+    {
+        this->setScale(0);
+    }
+
+    QOLMOD_MOD_HOOK_ALL("no-particles")
+};
+
+#else
+
 void myParticleUpdate(CCParticleSystem* ins, float dt)
 {
     ins->update(dt);
@@ -31,5 +45,7 @@ $execute {
         modu->addHook(hook);
     });
 }
+
+#endif
 
 #endif
