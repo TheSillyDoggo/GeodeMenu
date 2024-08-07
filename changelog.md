@@ -5,7 +5,7 @@
 - Added **Customizable Noclip Tint Colour**
 - Added **CPS Counter instant colour fade**
 - Added **Customizable Pause Countdown Time**
-- **Added Intel macOS support**
+- **Added [EXPERIMENTAL] Intel macOS support**
 
 # 1.5.3
 
