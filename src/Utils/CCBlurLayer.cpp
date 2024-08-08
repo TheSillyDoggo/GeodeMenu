@@ -74,6 +74,8 @@ CCBlurLayer* CCBlurLayer::create()
 
 void CCBlurLayer::visit()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     if (this->getOpacity())
     {
         float v = this->getOpacity() / 255.0f;
@@ -86,6 +88,12 @@ void CCBlurLayer::visit()
     }
 
     CCLayerColor::visit();
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    log::info("visit took {}ms", duration.count());
 }
 
 void CCBlurLayer::draw()
@@ -94,6 +102,8 @@ void CCBlurLayer::draw()
     
     if (blurStrength == 0)
         return CCLayerColor::draw();
+
+    auto startwhole = std::chrono::high_resolution_clock::now();
 
     auto start1 = std::chrono::high_resolution_clock::now();
 
@@ -184,6 +194,12 @@ void CCBlurLayer::draw()
     log::info("scene end took {}ms", duration2.count());
 
     #endif
+
+    auto endwhole = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> durationwhole = endwhole - startwhole;
+
+    log::info("whole render took {}ms", durationwhole.count());
 }
 
 Result<std::string> Shader::compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath) {
