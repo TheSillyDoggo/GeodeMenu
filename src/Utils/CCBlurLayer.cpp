@@ -109,7 +109,7 @@ void CCBlurLayer::draw()
 
     GLint drawFbo = 0;
     GLint readFbo = 0;
-    //glGetIntegerv(0x8CA6, &drawFbo);
+    glGetIntegerv(0x8CA6, &drawFbo);
     //glGetIntegerv(0x8CAA, &readFbo);
 
     glBindFramebuffer(0x8D40, ppRt0.fbo);
