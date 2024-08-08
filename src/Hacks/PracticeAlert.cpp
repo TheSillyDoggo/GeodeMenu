@@ -23,7 +23,7 @@ class $modify (PauseLayer)
         geode::createQuickPopup(
             "Practice Mode",
             "Are you sure you want to\n<cr>exit</c> <cg>Practice Mode</c>?",
-            "Cancel", "Practice",
+            "Cancel", "Exit",
             [this, sender](FLAlertLayer* tis, bool btn2) {
                 if (btn2)
                 {
@@ -49,7 +49,7 @@ class $modify (PauseLayer)
         geode::createQuickPopup(
             "Practice Mode",
             "Are you sure you want to\n<cy>enter</c> <cg>Practice Mode</c>?",
-            "Cancel", "Exit",
+            "Cancel", "Practice",
             [this, sender](FLAlertLayer* tis, bool btn2) {
                 if (btn2)
                 {
