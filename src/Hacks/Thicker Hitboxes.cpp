@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/CCDrawNode.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -15,77 +16,71 @@ ColourModule* interact = nullptr;
 ColourModule* player = nullptr;
 ColourModule* playerRot = nullptr;
 
-bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, ccColor4F &borderColor) {
-    if (!thicker)
-        thicker = Client::GetModule("show-hitboxes")->options[7];
+class $modify (CCDrawNode)
+{
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
+        if (!thicker)
+            thicker = Client::GetModule("show-hitboxes")->options[7];
 
-    if (!fill)
-        fill = Client::GetModule("show-hitboxes")->options[8];
+        if (!fill)
+            fill = Client::GetModule("show-hitboxes")->options[8];
 
-    if (!fillOpacity)
-        fillOpacity = as<SliderModule*>(Client::GetModule("show-hitboxes")->options[9]);
+        if (!fillOpacity)
+            fillOpacity = as<SliderModule*>(Client::GetModule("show-hitboxes")->options[9]);
 
-    if (!solid)
-        solid = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[0]);
+        if (!solid)
+            solid = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[0]);
 
-    if (!hazard)
-        hazard = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[1]);
+        if (!hazard)
+            hazard = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[1]);
 
-    if (!passable)
-        passable = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[2]);
+        if (!passable)
+            passable = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[2]);
 
-    if (!interact)
-        interact = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[3]);
+        if (!interact)
+            interact = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[3]);
 
-    if (!player)
-        player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
+        if (!player)
+            player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
 
-    if (!playerRot)
-        playerRot = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[5]);
+        if (!playerRot)
+            playerRot = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[5]);
 
-    if (ins->getTag() == -9999)
-    {
-        if (borderColor.r == 0 && borderColor.g == 0.25f && borderColor.b == 1)
-            borderColor = ccc4FFromccc3B(solid->colour);
+        if (this->getTag() == -9999)
+        {
+            auto b = borderColor;
 
-        else if (borderColor.r == 1 && borderColor.g == 0 && borderColor.b == 0)
-            borderColor = ccc4FFromccc3B(hazard->colour);
+            if (borderColor.r == 0 && borderColor.g == 0.25f && borderColor.b == 1)
+                b = ccc4FFromccc3B(solid->colour);
 
-        else if (borderColor.r == 0 && borderColor.g == 1 && borderColor.b == 0)
-            borderColor = ccc4FFromccc3B(interact->colour);
+            else if (borderColor.r == 1 && borderColor.g == 0 && borderColor.b == 0)
+                b = ccc4FFromccc3B(hazard->colour);
 
-        else if (borderColor.r == 0 && borderColor.g == 1 && borderColor.b == 1)
-            borderColor = ccc4FFromccc3B(passable->colour);
+            else if (borderColor.r == 0 && borderColor.g == 1 && borderColor.b == 0)
+                b = ccc4FFromccc3B(interact->colour);
 
-        else if (borderColor.r == 1 && borderColor.g == 1 && borderColor.b == 0)
-            borderColor = ccc4FFromccc3B(playerRot->colour);
+            else if (borderColor.r == 0 && borderColor.g == 1 && borderColor.b == 1)
+                b = ccc4FFromccc3B(passable->colour);
 
-        else if (borderColor.r == -1 && borderColor.g == -1 && borderColor.b == -1)
-            borderColor = ccc4FFromccc3B(player->colour);
+            else if (borderColor.r == 1 && borderColor.g == 1 && borderColor.b == 0)
+                b = ccc4FFromccc3B(playerRot->colour);
 
-        auto c = borderColor;
+            else if (borderColor.r == -1 && borderColor.g == -1 && borderColor.b == -1)
+                b = ccc4FFromccc3B(player->colour);
 
-        c.a = fillOpacity->value;
+            auto c = b;
 
-        if (borderWidth == 0)
-            borderWidth = 1;
+            c.a = fillOpacity->value;
 
-        return ins->drawPolygon(verts, count, fill->enabled ? c : fillColor, borderWidth * (thicker->enabled ? 2.2f : 1), borderColor);
+            if (borderWidth == 0)
+                borderWidth = 1;
+
+            return CCDrawNode::drawPolygon(verts, count, fill->enabled ? c : fillColor, borderWidth * (thicker->enabled ? 2.2f : 1), borderColor);
+        }
+        else
+            return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
     }
-    else
-        return ins->drawPolygon(verts, count, fillColor, borderWidth, borderColor);
-}
-
-$execute {
-    Mod::get()->hook(
-        reinterpret_cast<void*>(
-            geode::addresser::getNonVirtual(&CCDrawNode::drawPolygon)
-        ),
-        &myDrawPoly,
-        "cocos2d::CCDrawNode::drawPolygon",
-        tulip::hook::TulipConvention::Thiscall
-    );
-}
+};
 
 class $modify (GJBaseGameLayer)
 {
