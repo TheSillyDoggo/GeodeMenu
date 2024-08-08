@@ -105,10 +105,14 @@ std::string SetBindNode::nameForKey(int key)
     if (key == -1)
         return "Unknown";
 
+    #ifndef GEODE_IS_IOS
+    
     auto k = CCKeyboardDispatcher::get()->keyToString(as<enumKeyCodes>(key));
 
     if (k == nullptr)
         return "Unknown";
+
+    #endif
 
     return std::string(k);
 }

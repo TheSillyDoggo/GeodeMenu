@@ -18,6 +18,8 @@ KeyInfoPopup* KeyInfoPopup::createWithKeyAndBind(int key, SetBindNode* node)
 
 void KeyInfoPopup::customSetup()
 {
+    #ifndef GEODE_IS_IOS
+    
     auto lbl = CCLabelBMFont::create(CCKeyboardDispatcher::get()->keyToString(as<enumKeyCodes>(key)), "bigFont.fnt");
 
     auto lblBG = CCScale9Sprite::create("geode.loader/black-square.png");
@@ -39,6 +41,8 @@ void KeyInfoPopup::customSetup()
     baseLayer->addChildAtPosition(lblBG, Anchor::Center, ccp(0, 10));
 
     ok->setPositionX(ok->getPositionX() - removeBtn->getContentWidth() / 2);
+
+    #endif
 }
 
 void KeyInfoPopup::onRemove(CCObject* sender)
