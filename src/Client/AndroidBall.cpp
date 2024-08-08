@@ -254,11 +254,19 @@ class $modify (CCScene)
     }
 };
 
+#ifdef GEODE_IS_IOS
+class $modify (AchievementNotifier)
+#else
 class $modify (AppDelegate)
+#endif
 {
     void willSwitchToScene(CCScene* newScene)
     {
+        #ifdef GEODE_IS_IOS
+        AchievementNotifier::willSwitchToScene(newScene);
+        #else
         AppDelegate::willSwitchToScene(newScene);
+        #endif
 
         if (!newScene)
             return;
