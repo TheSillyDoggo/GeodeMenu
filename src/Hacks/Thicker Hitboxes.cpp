@@ -18,7 +18,8 @@ ColourModule* playerRot = nullptr;
 
 class $modify (CCDrawNode)
 {
-    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor) {
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    {
         if (!thicker)
             thicker = Client::GetModule("show-hitboxes")->options[7];
 
