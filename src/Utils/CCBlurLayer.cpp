@@ -109,11 +109,11 @@ void CCBlurLayer::draw()
 
     GLint drawFbo = 0;
     GLint readFbo = 0;
-    glGetIntegerv(0x8CA6, &drawFbo);
-    glGetIntegerv(0x8CAA, &readFbo);
+    //glGetIntegerv(0x8CA6, &drawFbo);
+    //glGetIntegerv(0x8CAA, &readFbo);
 
     glBindFramebuffer(0x8D40, ppRt0.fbo);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     auto end1 = std::chrono::high_resolution_clock::now();
 
