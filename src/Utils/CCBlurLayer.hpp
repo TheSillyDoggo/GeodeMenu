@@ -1,7 +1,6 @@
 #pragma once
 
 #include <numbers>
-#include <chrono>
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/modify/CCScheduler.hpp>

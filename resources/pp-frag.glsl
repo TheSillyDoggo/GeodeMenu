@@ -16,33 +16,38 @@
 
 uniform sampler2D screen;
 uniform vec2 screenSize;
-uniform bool fast;
-uniform bool first;
 uniform float radius;
+uniform bool first;
 
 void main() {
-    float scaledRadius = radius * screenSize.y * 0.5;
-    vec2 texOffset = 1.0 / screenSize; // gets size of single texel
+    // Compute scaled radius
+    float scaledRadius = clamp(radius * screenSize.y * 0.5, 1.0, 25.0);
+    vec2 texOffset = 1.0 / screenSize;
 
+    // Initialize result with the center pixel
     vec3 result = texture2D(screen, TexCoords).rgb;
-    scaledRadius *= radius * 10.0 / ((radius * 10.0 + 1.0) * (radius * 10.0 + 1.0) - 1.0);
+    float weightSum = 1.0;
     float weight = 1.0;
-    float weightSum = weight;
-    if (first) {
-        for (int i = 1; float(i) < scaledRadius; i++) {
-            weight -= 1.0 / scaledRadius;
-            weightSum += weight * 2.0;
-            result += texture2D(screen, TexCoords + vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-            result += texture2D(screen, TexCoords - vec2(texOffset.x * float(i), 0.0)).rgb * weight;
-        }
-    } else {
-        for (int i = 1; float(i) < scaledRadius; i++) {
-            weight -= 1.0 / scaledRadius;
-            weightSum += weight * 2.0;
-            result += texture2D(screen, TexCoords + vec2(0.0, texOffset.y * float(i))).rgb * weight;
-            result += texture2D(screen, TexCoords - vec2(0.0, texOffset.y * float(i))).rgb * weight;
+
+    // Precompute inverse radius for weight reduction
+    float inverseRadius = 1.0 / scaledRadius;
+
+    for (float i = 1.0; i < scaledRadius; i++) {
+        weight -= inverseRadius;
+        weightSum += weight * 2.0;
+
+        if (first) {
+            vec2 offset = vec2(texOffset.x * i, 0.0);
+            result += texture2D(screen, TexCoords + offset).rgb * weight;
+            result += texture2D(screen, TexCoords - offset).rgb * weight;
+        } else {
+            vec2 offset = vec2(0.0, texOffset.y * i);
+            result += texture2D(screen, TexCoords + offset).rgb * weight;
+            result += texture2D(screen, TexCoords - offset).rgb * weight;
         }
     }
+
+    // Normalize the result by the total weight
     result /= weightSum;
 
 #if __VERSION__ == 300
