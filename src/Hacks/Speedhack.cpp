@@ -30,7 +30,7 @@ float speedhackLogic(float dt)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
             #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 50c47c)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
             #else
             masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
             #endif
