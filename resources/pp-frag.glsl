@@ -21,7 +21,7 @@ uniform bool first;
 
 void main() {
     // Compute scaled radius
-    float scaledRadius = clamp(radius * screenSize.y * 0.5, 1.0, 25.0);
+    float scaledRadius = clamp(radius * screenSize.y * 0.5, 1.0, 32.0);
     vec2 texOffset = 1.0 / screenSize;
 
     // Initialize result with the center pixel
