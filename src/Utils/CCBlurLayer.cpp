@@ -95,6 +95,8 @@ void CCBlurLayer::draw()
     if (blurStrength == 0)
         return CCLayerColor::draw();
 
+    auto start1 = std::chrono::high_resolution_clock::now();
+
     GLint drawFbo = 0;
     GLint readFbo = 0;
     glGetIntegerv(0x8CA6, &drawFbo);
@@ -103,7 +105,11 @@ void CCBlurLayer::draw()
     glBindFramebuffer(0x8D40, ppRt0.fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+    auto end1 = std::chrono::high_resolution_clock::now();
 
+    std::chrono::duration<double, std::milli> duration1 = end1 - start1;
+
+    log::info("link 1 took {}ms", duration1.count());
 
     CCLayerColor::draw();
 
@@ -120,8 +126,16 @@ void CCBlurLayer::draw()
         kmGLPushMatrix();
         #endif
 
+        auto start = std::chrono::high_resolution_clock::now();
+
         parent->transform();
         parent->visit();
+
+        auto end = std::chrono::high_resolution_clock::now();
+
+        std::chrono::duration<double, std::milli> duration = end - start;
+
+        log::info("scene render took {}ms", duration.count());
 
 
         #ifdef GEODE_IS_IOS
@@ -135,6 +149,8 @@ void CCBlurLayer::draw()
 
     if (getParent())
         getParent()->setVisible(true);
+
+    auto start2 = std::chrono::high_resolution_clock::now();
 
     glBindVertexArray(ppVao);
     #ifdef GEODE_IS_IOS
@@ -160,6 +176,12 @@ void CCBlurLayer::draw()
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);
+
+    auto end2 = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration2 = end2 - start2;
+
+    log::info("scene end took {}ms", duration2.count());
 
     #endif
 }
