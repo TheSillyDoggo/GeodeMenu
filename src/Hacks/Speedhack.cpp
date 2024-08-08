@@ -48,7 +48,7 @@ float speedhackLogic(float dt)
     return dt;
 }
 
-#ifdef GEODE_IS_MACOS
+#if (defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
 
 class $modify (CCScheduler)
 {
