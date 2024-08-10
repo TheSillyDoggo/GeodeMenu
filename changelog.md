@@ -1,6 +1,7 @@
 # 1.5.5
 
 - Fixed Crashing almost all the time on macOS / iOS
+- Fixed mouse cursor not appearing when opening up the mod menu while in a level
 
 # 1.5.4
 
