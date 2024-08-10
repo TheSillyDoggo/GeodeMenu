@@ -1,6 +1,6 @@
 # 1.5.5
 
-- Fixed GD Crashing almost all the time on macOS / iOS
+- Fixed Crashing almost all the time on macOS / iOS
 
 # 1.5.4
 
