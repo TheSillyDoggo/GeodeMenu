@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_INTEL_MAC
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
@@ -195,5 +193,3 @@ $execute
         Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
     });
 }
-
-#endif
