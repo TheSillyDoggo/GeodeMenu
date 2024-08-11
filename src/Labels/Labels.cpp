@@ -35,7 +35,7 @@ bool StatusNode::init()
     bottomRight->setID("bottom-right");
     this->addChild(bottomRight);
 
-    int count = 10;
+    int count = 11;
 
     for (size_t i = 0; i < count; i++)
     {
@@ -234,6 +234,9 @@ void StatusNode::update(float dt)
 
     if (!bestRun)
         bestRun = Client::GetModule("best-run");
+
+    if (!clock)
+        clock = Client::GetModule("status-clock");
         
     if (!attPL)
         attPL = static_cast<AttemptBaseGameLayer*>(GJBaseGameLayer::get());
@@ -258,6 +261,7 @@ void StatusNode::update(float dt)
     sLabels[7]->setVisible(session->enabled);
     sLabels[8]->setVisible(cpsM->enabled);
     sLabels[9]->setVisible(bestRun->enabled);
+    sLabels[10]->setVisible(clock->enabled);
 
     if (PlayLayer::get())
     {
@@ -328,6 +332,8 @@ void StatusNode::update(float dt)
         sLabels[9]->setString(bestRunPlayLayer->getRunString().c_str());
     else
         sLabels[9]->setString("Best Run: Editor");
+
+    sLabels[10]->setString(formatTime().c_str());
 
     updateVis();
 }

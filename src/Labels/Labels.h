@@ -8,6 +8,11 @@
 #include <Geode/modify/LevelEditorLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "BestRun.hpp"
+#include <chrono>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -61,6 +66,7 @@ class StatusNode : public CCNode
         static inline Module* session = nullptr;
         static inline Module* cpsM = nullptr;
         static inline Module* bestRun = nullptr;
+        static inline Module* clock = nullptr;
 
         static inline Module* noclip = nullptr;
 
@@ -104,6 +110,23 @@ class StatusNode : public CCNode
                         << std::setfill('0') << std::setw(2) << seconds.count();
             
             return formattedTime.str();
+        }
+
+        std::string formatTime() {
+            // Get current time
+            std::time_t currentTime = std::time(nullptr);
+            
+            // Convert to local time
+            std::tm* localTime = std::localtime(&currentTime);
+            
+            // Create a string stream to format the time
+            std::ostringstream oss;
+            
+            // Format time as HH:MM:SS AM/PM
+            oss << std::put_time(localTime, "%I:%M:%S %p");
+
+            // Return the formatted time as a string
+            return oss.str();
         }
 
 
