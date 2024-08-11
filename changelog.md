@@ -1,6 +1,11 @@
 # 1.5.6
 
 - Fixed Force Platformer not showing platformer UI on mobile
+- Fixed All Modes Platformer causing crash playtesting
+- Fixed Crash With All Modes Platformer
+- Fixed Crash when tapping really early on the loading screen with Show Touches enabled
+- Made Pause Countdown have a minimum countdown of 1 second
+- Added A Pause Button to the Pause Countdown menu to repause the game on mobile
 
 # 1.5.5
 

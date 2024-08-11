@@ -158,6 +158,8 @@ public:
         Client::GetModule("pause-countdown")->options.push_back(cdownT);
 
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+        //Client::GetModule("smart-startpos")->options.push_back(new SmartStartposUIModule());
+        //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 
         Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
     }

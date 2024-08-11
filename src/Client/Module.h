@@ -49,6 +49,7 @@ class Module : public UIComponent
         bool mouseHeldDown = false;
 
         ModuleChangeDelegate* delegate = nullptr;
+        CCSize optionSizeForce = CCSizeZero;
 
         void addHookRaw(Result<Hook*> hook);
 
@@ -87,6 +88,11 @@ class Module : public UIComponent
 
             this->load();
         }
+
+
+        // options
+        CCSize sizeForOptionsPage();
+        
 
         /// @brief 
         /// @param point the position of the touch relative to where the module should be drawn

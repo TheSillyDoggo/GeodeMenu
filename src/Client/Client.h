@@ -7,6 +7,7 @@
 #include "Types/DropdownModule.hpp"
 #include "Types/SliderModule.hpp"
 #include "Types/TransitionCustomizerUI.hpp"
+#include "Types/SmartStartposUI.hpp"
 #include "Types/SetValueModule.hpp"
 
 #include "idkwhattocallthis.hpp"
