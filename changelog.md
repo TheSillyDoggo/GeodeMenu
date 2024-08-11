@@ -1,3 +1,7 @@
+# 1.5.6
+
+- Fixed Force Platformer not showing platformer UI on mobile
+
 # 1.5.5
 
 - Fixed Crashing almost all the time on macOS / iOS
