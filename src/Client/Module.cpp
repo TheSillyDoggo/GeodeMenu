@@ -35,6 +35,11 @@ bool Module::touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled
         else
             disableHooks();
 
+        if (enabled)
+            enablePatches();
+        else
+            disablePatches();
+
         mouseHeldDown = false;
     }
 
@@ -179,9 +184,16 @@ void Module::addHook(Hook* hook)
     }
 }
 
-void Module::addPatch(Patch* hook)
+void Module::addPatch(Patch* patch)
 {
+    if (patch)
+    {
+        patches.push_back(patch);
+        patch->setAutoEnable(false);
 
+        if (!enabled)
+            patch->disable();
+    }
 }
 
 void Module::disableHooks()
@@ -216,10 +228,36 @@ void Module::enableHooks()
 
 void Module::disablePatches()
 {
-
+    for (auto patch : patches)
+    {
+        if (patch)
+        {
+            auto v = patch->disable();
+            if (v.has_error())
+            {
+                log::error("Error Disabling patch: {}, {}", patch->getAddress(), v.err());
+            }
+        }
+    }
 }
 
 void Module::enablePatches()
 {
+    for (auto patch : patches)
+    {
+        if (patch)
+        {
+            auto v = patch->enable();
+            if (v.has_error())
+            {
+                log::error("Error Enabling patch: {}, {}", patch->getAddress(), v.err());
+            }
+        }
+    }
+}
 
+CCSize Module::sizeForOptionsPage()
+{
+    // idk man
+    return optionSizeForce == CCSizeZero ? CCSizeMake(350, std::ceil((std::max<int  >(options.size(), 3) - 1) / 2) * 35 + 110) : optionSizeForce;
 }

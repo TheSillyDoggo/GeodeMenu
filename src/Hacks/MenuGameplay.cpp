@@ -9,7 +9,6 @@ using namespace geode::prelude;
 class MenuGameDelegate : public CCLayer
 {
     public:
-        MenuGameLayer* mgl = nullptr;
         static inline MenuGameDelegate* instance = nullptr;
 
         bool init()
@@ -29,8 +28,8 @@ class MenuGameDelegate : public CCLayer
 
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
         {
-            if (mgl)
-            {
+            if (auto mgl = getGameLayer())
+            {    
                 if (Client::GetModuleEnabled("main-menu-gameplay") && (pTouch ? mgl->ccTouchBegan(pTouch, pEvent) : true))
                 {
                     if (mgl->m_playerObject && !mgl->m_playerObject->m_isSpider)
@@ -47,9 +46,22 @@ class MenuGameDelegate : public CCLayer
         {
             if (Client::GetModuleEnabled("main-menu-gameplay"))
             {
-                if (mgl->m_playerObject && !mgl->m_playerObject->m_isSpider)
-                    mgl->m_playerObject->releaseButton(PlayerButton::Jump);
+                if (auto mgl = getGameLayer())
+                {
+                    if (mgl->m_playerObject && !mgl->m_playerObject->m_isSpider)
+                        mgl->m_playerObject->releaseButton(PlayerButton::Jump);
+                }
             }
+        }
+
+        MenuGameLayer* getGameLayer()
+        {
+            if (!getParent())
+            {
+                return nullptr;
+            }
+
+            return as<MenuGameLayer*>(getParent());
         }
 
         ~MenuGameDelegate()
@@ -74,14 +86,14 @@ class $modify (MenuGameLayer)
             return false;
 
         this->setTouchEnabled(true);
-
         auto gp = MenuGameDelegate::create();
-        gp->mgl = this;
-        this->addChild(gp);
 
+        this->addChild(gp);
         return true;
     }
 };
+
+#ifndef GEODE_IS_IOS
 
 class $modify (CCKeyboardDispatcher)
 {
@@ -111,3 +123,5 @@ class $modify (CCKeyboardDispatcher)
         });
     }
 };
+
+#endif

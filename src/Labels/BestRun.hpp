@@ -16,6 +16,8 @@ class $modify (BestPlayLayer, PlayLayer)
         float bestFrom;
         float bestTo;
         float bestLength;
+
+        bool ignoreBest;
 	};
 
 	void resetLevel();

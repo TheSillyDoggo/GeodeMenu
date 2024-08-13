@@ -1,10 +1,9 @@
-#ifndef GEODE_IS_INTEL_MAC
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../Client/Client.h"
 #include "../Layers/EditPositionLayer.hpp"
+#include "../Labels/BestRun.hpp"
 
 using namespace geode::prelude;
 
@@ -48,8 +47,12 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (m_isPracticeMode)
             resetLevelFromStart();
 
+        base_cast<BestPlayLayer*>(this)->m_fields->ignoreBest = true;
+
         resetLevel();
         startMusic();
+
+        base_cast<BestPlayLayer*>(this)->m_fields->ignoreBest = false;
 
         updateUI();
     }
@@ -195,5 +198,3 @@ $execute
         Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
     });
 }
-
-#endif

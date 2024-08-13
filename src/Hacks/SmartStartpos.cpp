@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_MACOS
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
@@ -180,3 +182,5 @@ class $modify (SmartPlayLayer, PlayLayer)
 
     QOLMOD_MOD_HOOK("smart-startpos", "PlayLayer::createObjectsFromSetupFinished")
 };
+
+#endif

@@ -17,6 +17,8 @@ bool android = true;
 
 Client* client;
 
+#ifndef GEODE_IS_IOS
+
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
@@ -42,9 +44,7 @@ class $modify (CCKeyboardDispatcher)
             if (down && v && !idk) {
                 if (android)
                 {
-                    #ifdef GEODE_IS_WINDOWS
-                    CCDirector::get()->getOpenGLView()->showCursor(true);
-                    #endif
+                    PlatformToolbox::showCursor();
 
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
@@ -133,6 +133,8 @@ class $modify (CCKeyboardDispatcher)
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }
 };
+
+#endif
 
 void migrateData()
 {

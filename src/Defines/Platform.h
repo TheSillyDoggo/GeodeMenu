@@ -20,3 +20,5 @@
 #ifndef GEODE_IS_IOS
 #define QOLMOD_ALL_MODES_PLATFORMER
 #endif
+
+#define QOLMOD_NO_SPIDER_DASH

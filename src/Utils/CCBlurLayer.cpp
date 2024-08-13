@@ -114,12 +114,21 @@ void CCBlurLayer::draw()
     if (parent && !visiting) {
         visiting = true;
 
+        #ifdef GEODE_IS_IOS
+        reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x17420c)();
+        #else
         kmGLPushMatrix();
+        #endif
 
         parent->transform();
         parent->visit();
 
+
+        #ifdef GEODE_IS_IOS
+        reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x174250)();
+        #else
         kmGLPopMatrix();
+        #endif
 
         visiting = false;
     }
@@ -128,7 +137,11 @@ void CCBlurLayer::draw()
         getParent()->setVisible(true);
 
     glBindVertexArray(ppVao);
+    #ifdef GEODE_IS_IOS
+    reinterpret_cast<void(__cdecl*)(GLuint)>(geode::base::get() + 0x19a4f8)(ppShader.program);
+    #else
     ccGLUseProgram(ppShader.program);
+    #endif
     glUniform1i(ppShaderFast, true);
     glUniform1f(ppShaderRadius, blurStrength);
 
@@ -353,7 +366,11 @@ void setupPostProcess() {
     }
     log::info("{}", res.unwrap());
 
+    #ifdef GEODE_IS_IOS
+    reinterpret_cast<void(__cdecl*)(GLuint)>(geode::base::get() + 0x19a4f8)(ppShader.program);
+    #else
     ccGLUseProgram(ppShader.program);
+    #endif
     glUniform1i(glGetUniformLocation(ppShader.program, "screen"), 0);
     glUniform2f(glGetUniformLocation(ppShader.program, "screenSize"), size.width, size.height);
     ppShaderFast = glGetUniformLocation(ppShader.program, "fast");

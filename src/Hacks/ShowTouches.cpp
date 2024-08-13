@@ -10,6 +10,9 @@ class $modify (CCTouchDispatcher)
     {
         CCTouchDispatcher::touches(touches, event, type);
 
+        if (!CCScene::get())
+            return;
+
         if (type == CCTOUCHBEGAN)
         {
             if (auto touch = as<CCTouch*>(touches->anyObject()))

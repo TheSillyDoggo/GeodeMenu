@@ -130,6 +130,7 @@ public:
 
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
+        Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
 
 
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
@@ -151,7 +152,14 @@ public:
         seed->maxSize = 16;
         Client::GetModule("rand-seed")->options.push_back(seed);
 
+        auto cdownT = new InputModule("Time:", "countdown-time", "3");
+        cdownT->allowedChars = "1234567890";
+        cdownT->maxSize = 4;
+        Client::GetModule("pause-countdown")->options.push_back(cdownT);
+
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+        //Client::GetModule("smart-startpos")->options.push_back(new SmartStartposUIModule());
+        //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 
         Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
     }
@@ -245,6 +253,8 @@ public:
 
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
         creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
+
+        //creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Editor Extension Help :)"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
@@ -373,6 +383,7 @@ public:
         replay->modules.push_back(new Module("Session Time", "status-session", "Shows the time you've had the game open for in the format <cg>hh::mm::ss</c>"));
         replay->modules.push_back(new Module("CPS Counter", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
         replay->modules.push_back(new Module("Best Run", "best-run", "Shows your best run"));
+        replay->modules.push_back(new Module("Clock", "status-clock", "Shows your current device time"));
         //replay->modules.push_back(new StatusMessage());
 
 
@@ -389,6 +400,7 @@ public:
         messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
         Client::GetModule("status-message")->options.push_back(messageOption);
         Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
+        Client::GetModule("status-cps")->options.push_back(new Module("Instant Fade Transition", "status-cps-instant-fade", "Makes the green fade transition when clicking instant"));
 
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
@@ -563,6 +575,10 @@ public:
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        #endif
+
+        #ifdef GEODE_IS_MACOS
+        Client::GetModule("smart-startpos")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>MacOS</c>");
         #endif
 
         #ifndef QOLMOD_ALL_MODES_PLATFORMER

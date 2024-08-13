@@ -1,3 +1,27 @@
+# 1.5.6
+
+- Fixed Force Platformer not showing platformer UI on mobile
+- Fixed All Modes Platformer causing crash playtesting
+- Fixed Crash With All Modes Platformer
+- Fixed Crash when tapping really early on the loading screen with Show Touches enabled
+- Made Pause Countdown have a minimum countdown of 1 second
+- Added The Pause Button to the Pause Countdown menu to repause the game on mobile
+- Added **Clock Label**
+
+# 1.5.5
+
+- Fixed Crashing almost all the time on macOS / iOS
+- Fixed mouse cursor not appearing when opening up the mod menu while in a level on macOS
+
+# 1.5.4
+
+- Fixed Dropdown's not being clickable
+- Fixed not being able to search for module options
+- Added **Customizable Noclip Tint Colour**
+- Added **CPS Counter instant colour fade**
+- Added **Customizable Pause Countdown Time**
+- **Added [EXPERIMENTAL] Intel macOS support**
+
 # 1.5.3
 
 - Fixed Crash pressing Q or E in the editor with startpos switcher enabled

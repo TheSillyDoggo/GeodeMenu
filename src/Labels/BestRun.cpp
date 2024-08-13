@@ -2,6 +2,9 @@
 
 void BestPlayLayer::resetLevel()
 {
+    if (m_fields->ignoreBest)
+        return PlayLayer::resetLevel();
+
     m_fields->toPercent = getCurrentPercent();
 
     auto length = m_fields->toPercent - m_fields->fromPercent;

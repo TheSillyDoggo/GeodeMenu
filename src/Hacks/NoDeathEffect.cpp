@@ -34,7 +34,7 @@ class $modify (PlayLayer)
         {
             if (auto action = getActionByTag(0x10))
             {
-                this->stopAction(action);
+                this->stopActionByTag(0x10);
 
                 if (Client::GetModuleEnabled("instant-restart"))
                 {

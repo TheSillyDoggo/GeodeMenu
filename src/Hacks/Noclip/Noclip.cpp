@@ -59,6 +59,8 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
             m_fields->tint->stopAllActions();
             m_fields->tint->setOpacity(m_fields->tintOpacity->value * 255);
             m_fields->tint->runAction(CCFadeTo::create(0.35f, 0));
+
+            m_fields->tint->setColor(as<ColourModule*>(Client::GetModule("noclip")->options[2])->colour);
         }
     }
 }
