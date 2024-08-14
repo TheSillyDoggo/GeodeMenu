@@ -1,3 +1,5 @@
+#ifndef __APPLE__
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/SecretLayer2.hpp>
 #include "Client/AndroidBall.h"
@@ -62,3 +64,5 @@ class $modify (SecretLayer2)
         updateMessageLabel(getColonThreeLabel());
     }
 };
+
+#endif

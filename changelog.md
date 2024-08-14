@@ -1,7 +1,7 @@
 # 1.5.7
 
 - Fixed Mouse Cursor not disappearing when closing the menu while in a level
-- Added a secret if you type ":3" into the vault of secrets
+- Fixed not being able to move in platformer mode on arm / m1 macOS
 - Added **Force Ghost Trail On and Off**
 
 # 1.5.6
