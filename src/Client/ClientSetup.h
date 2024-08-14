@@ -293,6 +293,9 @@ public:
         cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
 
+        cosmetic->modules.push_back(new Module("Force Ghost On", "ghost-on", "Forces the ghost trail on"));
+        cosmetic->modules.push_back(new Module("Force Ghost Off", "ghost-off", "Forces the ghost trail off"));
+
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
 

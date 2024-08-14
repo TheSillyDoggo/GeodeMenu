@@ -1,3 +1,9 @@
+# 1.5.7
+
+- Fixed Mouse Cursor not disappearing when closing the menu while in a level
+- Added a secret if you type ":3" into the vault of secrets
+- Added **Force Ghost Trail On and Off**
+
 # 1.5.6
 
 - Fixed Force Platformer not showing platformer UI on mobile

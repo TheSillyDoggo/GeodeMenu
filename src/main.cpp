@@ -27,7 +27,7 @@ class $modify (CCKeyboardDispatcher)
             return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
 
         if (!getChildOfType<LoadingLayer>(CCScene::get(), 0) && !getChildOfType<RecordKeyPopup>(CCScene::get(), 0))
-        { 
+        {
             bool v = false;
 
             std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
@@ -49,6 +49,9 @@ class $modify (CCKeyboardDispatcher)
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
                         ui->onClose(nullptr);
+
+                        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !GameManager::sharedState()->getGameVariable("0024"))
+                            PlatformToolbox::hideCursor();
                     }
                     else
                     {

@@ -30,6 +30,9 @@ class AndroidBall : public CCLayer
         CREATE_FUNC(AndroidBall);
         static AndroidBall* get();
 
+        bool isColonThreeEnabled();
+        void setColonThreeEnabled();
+
         void onOpenMenu();
 
         virtual bool init();

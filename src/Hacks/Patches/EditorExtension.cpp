@@ -9,9 +9,11 @@ $execute
     std::vector<geode::Patch*> patches = {};
 
     #ifdef GEODE_IS_WINDOWS
+    //patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ed33c), { 0x1, 0x0, 0x0, 0x0 }));
+    #endif
 
+    #ifdef GEODE_IS_ANDROID32
     patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ed33c), { 0x1, 0x0, 0x0, 0x0 }));
-
     #endif
 
     Loader::get()->queueInMainThread([patches]{

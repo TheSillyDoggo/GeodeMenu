@@ -29,7 +29,7 @@ bool AndroidBall::init()
     //l = CCLabelBMFont::create(">_", "bigFont.fnt");
     //l->setAnchorPoint(ccp(0.5f, 0.35f));
 
-    btnOverlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
+    btnOverlay = CCSprite::create(isColonThreeEnabled() ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr);
 
     btn = CCSprite::create("qolmodButtonBG.png"_spr);
     btn->addChildAtPosition(btnOverlay, Anchor::Center);
@@ -233,6 +233,34 @@ float AndroidBall::clampf(float v, float min, float max)
         v = max;
 
     return v;
+}
+
+bool AndroidBall::isColonThreeEnabled()
+{
+    return Mod::get()->getSavedValue<bool>("colon-three-secwet-uwu-:3", false);
+}
+
+void AndroidBall::setColonThreeEnabled()
+{
+    Mod::get()->setSavedValue<bool>("colon-three-secwet-uwu-:3", !isColonThreeEnabled());
+
+    auto spr = CCSprite::create(isColonThreeEnabled() ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr)->getTexture();
+    btnOverlay->setTexture(spr);
+    
+#ifndef GEODE_IS_IOS
+    auto over = CCClippingNode::create(btn);
+    over->setAlphaThreshold(0.9f);
+    
+    auto inner = CCLayerColor::create(ccc4(255, 255, 255, 255));
+    inner->setAnchorPoint(ccp(0.5f, 0.5f));
+    inner->setContentSize(ccp(100, 100));
+    inner->ignoreAnchorPointForPosition(false);
+    inner->runAction(CCFadeOut::create(1));
+
+    over->addChild(inner);
+
+    menu->addChild(over);
+#endif
 }
 
 class $modify (CCScene)
