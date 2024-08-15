@@ -122,8 +122,10 @@ class StatusNode : public CCNode
             // Create a string stream to format the time
             std::ostringstream oss;
             
-            // Format time as HH:MM:SS AM/PM
-            oss << std::put_time(localTime, "%I:%M:%S %p");
+            if (Client::GetModuleEnabled("status-clock-24h-time"))
+                oss << std::put_time(localTime, "%H:%M:%S");
+            else
+                oss << std::put_time(localTime, "%I:%M:%S %p");
 
             // Return the formatted time as a string
             return oss.str();

@@ -1,3 +1,9 @@
+# 1.5.9
+
+- Added **Gold User Coins**
+- Added **No Ship Fire**
+- Added **24 Hour Time** for clock label
+
 # 1.5.8
 
 - Fixed not being able to use checkpoints in platformer with all modes platformer enabled

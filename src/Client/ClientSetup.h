@@ -329,6 +329,9 @@ public:
         cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
         cosmetic->modules.push_back(new Module("No Dash Fire", "no-dash-fire", "Hides the fire behind your icon when using a dash orb"));
 
+        cosmetic->modules.push_back(new Module("Gold User Coins", "gold-user-coins", "Makes user coins appear as if they are gold robtop coins"));
+        cosmetic->modules.push_back(new Module("No Ship Fire", "no-ship-fire", "Hides the fire behind the ship while it's flying"));
+
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
@@ -404,6 +407,8 @@ public:
         Client::GetModule("status-message")->options.push_back(messageOption);
         Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
         Client::GetModule("status-cps")->options.push_back(new Module("Instant Fade Transition", "status-cps-instant-fade", "Makes the green fade transition when clicking instant"));
+
+        Client::GetModule("status-clock")->options.push_back(new Module("24 Hour Time", "status-clock-24h-time", "Uses 24 hour time instead of 12 hour time"));
 
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
