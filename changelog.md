@@ -1,6 +1,7 @@
 # 1.5.8
 
 - Fixed not being able to use checkpoints in platformer with all modes platformer enabled
+- Fixed crash when playtesting with **Force Ghost On** enabled
 - Coins are now collected if you complete a level with 1 attempt practice complete
 
 # 1.5.7
