@@ -1,3 +1,7 @@
+# 1.5.8
+
+- Fixed not being able to use checkpoints in platformer with all modes platformer enabled
+
 # 1.5.7
 
 - Fixed Mouse Cursor not disappearing when closing the menu while in a level
