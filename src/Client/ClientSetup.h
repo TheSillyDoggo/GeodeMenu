@@ -221,6 +221,9 @@ public:
         Client::GetModule("tps-bypass")->options.push_back(tps);
 
         Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
+        //Client::GetModule("custom-trans")->options.push_back(nullptr);
+        //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
+        //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
 
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;

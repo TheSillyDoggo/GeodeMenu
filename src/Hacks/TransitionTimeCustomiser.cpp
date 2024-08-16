@@ -11,7 +11,7 @@ using namespace geode::prelude;
 
 //{"Fade", "Cross Fade", "Fade Bottom Left", "Fade Top Right", "Fade Up", "Fade Down", "Flip Angular", "Flip X", "Flip Y", "Zoom Flip Angular" "Zoom Flip X", "Zoom Flip Y", "Jump Zoom", "Move In Top", "Move In Bottom", "Move In Left", "Move In Right", "Rotate Zoom", "Shrink Grow", "Slide In Top", "Slide In Bottom", "Slide In Left", "Slide In Right", "Split Rows", "Split Columns", "Tiles"}
 
-CCScene* getSceneForSel(int i, float f, CCScene* s)
+CCScene* getSceneForSel(int i, float f, CCScene* s, const ccColor3B& color)
 {
     AppDelegate::get()->willSwitchToScene(s);
 
@@ -74,14 +74,14 @@ CCScene* getSceneForSel(int i, float f, CCScene* s)
 
 class $modify (cocos2d::CCTransitionFade)
 {
-    static CCTransitionFade* create(float duration,CCScene* scene)
+    static CCTransitionFade* create(float duration, CCScene* scene, const ccColor3B& color)
     {
         float mod = 1;
 
         if (Client::GetModuleEnabled("no-trans"))
         {
             mod = 0;
-        }
+        }  
 
         if (SpeedhackTop::instance && SpeedhackTransFix::instance->enabled)
         {
@@ -95,7 +95,7 @@ class $modify (cocos2d::CCTransitionFade)
             }
         }
 
-        return as<CCTransitionFade*>(getSceneForSel(Client::GetModuleEnabled("custom-trans") ? Mod::get()->getSavedValue<int>("transition", 0) : 0, duration * mod, scene));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
+        return as<CCTransitionFade*>(getSceneForSel(Client::GetModuleEnabled("custom-trans") ? Mod::get()->getSavedValue<int>("transition", 0) : 0, duration * mod, scene, color));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };
 
@@ -103,9 +103,9 @@ class $modify (cocos2d::CCTransitionFade)
 
 class $modify (cocos2d::CCTransitionFade)
 {
-    static CCTransitionFade* create(float duration,CCScene* scene)
+    static CCTransitionFade* create(float duration,CCScene* scene, const ccColor3B& color)
     {
-        return CCTransitionFade::create((Client::GetModuleEnabled("no-trans") ? 0 : duration) * (SpeedhackTransFix::instance->enabled ? (SpeedhackEnabled::instance->enabled ? (1 / SpeedhackTop::instance->getFloatValue()) : 1) : 1), scene);
+        return CCTransitionFade::create((Client::GetModuleEnabled("no-trans") ? 0 : duration) * (SpeedhackTransFix::instance->enabled ? (SpeedhackEnabled::instance->enabled ? (1 / SpeedhackTop::instance->getFloatValue()) : 1) : 1), scene, color);
     }
 };
 
