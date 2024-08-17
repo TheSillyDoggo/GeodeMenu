@@ -1,3 +1,8 @@
+# 1.6.0
+
+- Fixed Transparent BG not working on apple devices
+- Added **Ball Rotation Bug**
+
 # 1.5.9
 
 - Added **Gold User Coins**

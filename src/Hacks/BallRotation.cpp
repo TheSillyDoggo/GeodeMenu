@@ -17,4 +17,6 @@ class $modify (PlayerObject)
             this->runAction(CCEaseOut::create(CCRotateBy::create(0.5f, 360 - this->getRotation()), 2));
         }
     }
+
+    QOLMOD_MOD_ALL_HOOKS("ball-rotation-bug")
 };

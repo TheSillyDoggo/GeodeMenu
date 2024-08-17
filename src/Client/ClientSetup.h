@@ -335,6 +335,8 @@ public:
         cosmetic->modules.push_back(new Module("Gold User Coins", "gold-user-coins", "Makes user coins appear as if they are gold robtop coins"));
         cosmetic->modules.push_back(new Module("No Ship Fire", "no-ship-fire", "Hides the fire behind the ship while it's flying"));
 
+        cosmetic->modules.push_back(new Module("Ball Rotation Bug", "ball-rotation-bug", "EMULATES the old rotation bug when switching gamemodes from the ball"));
+
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
