@@ -23,6 +23,9 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
                 if (module->keybind.key == enumKeyCodes::KEY_Unknown)
                     shouldSend = false;
 
+                if (module->keybind.key != key)
+                    shouldSend = false;
+
                 if (module->keybind.shift && !CCKeyboardDispatcher::get()->getShiftKeyPressed())
                     shouldSend = false;
 

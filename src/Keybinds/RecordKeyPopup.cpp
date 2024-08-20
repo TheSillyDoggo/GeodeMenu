@@ -1,5 +1,6 @@
 #include "RecordKeyPopup.hpp"
 #include <Geode/ui/GeodeUI.hpp>
+#include "../Utils/CCBlurLayer.hpp"
 
 bool RecordKeyPopup::init(SEL_MenuHandler obj)
 {
@@ -10,6 +11,13 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
     this->setKeyboardEnabled(true);
     this->setKeypadEnabled(true);
     this->handler = obj;
+
+    if (Client::GetModuleEnabled("menu-bg-blur"))
+    {
+        auto blur = CCBlurLayer::create();
+        blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
+        this->addChild(blur);
+    }
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);

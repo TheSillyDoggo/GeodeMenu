@@ -15,6 +15,7 @@ class ManageKeybindsLayer : public SillyBaseLayer
         virtual void customSetup();
 
         void onSet(CCObject* sender);
+        void onDelete(CCObject* sender);
 
         static ManageKeybindsLayer* create();
         static ManageKeybindsLayer* addToScene()

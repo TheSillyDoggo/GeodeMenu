@@ -25,3 +25,28 @@ void KeyStruct::saveToModule(std::string id)
     Mod::get()->setSavedValue<bool>(fmt::format("{}_bind-cmd"       , id), command);
     Mod::get()->setSavedValue<bool>(fmt::format("{}_bind-ctrl"      , id), control);
 }
+
+std::string KeyStruct::toString()
+{
+    if (key == enumKeyCodes::KEY_Unknown)
+        return "";
+
+    std::stringstream ss;
+
+    if (control)
+        ss << "Ctrl + ";
+
+    if (alt)
+        ss << "Alt + ";
+
+    if (shift)
+        ss << "Shift + ";
+
+    if (command)
+        ss << "Cmd + ";
+
+    if (auto k = CCKeyboardDispatcher::get()->keyToString(key))
+        ss << k;
+
+    return ss.str();
+}

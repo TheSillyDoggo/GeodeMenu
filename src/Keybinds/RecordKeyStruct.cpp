@@ -1,5 +1,6 @@
 #include "RecordKeyStruct.hpp"
 #include <Geode/ui/GeodeUI.hpp>
+#include "../Utils/CCBlurLayer.hpp"
 
 bool RecordKeyStruct::init(geode::utils::MiniFunction<void(KeyStruct)> obj)
 {
@@ -11,6 +12,13 @@ bool RecordKeyStruct::init(geode::utils::MiniFunction<void(KeyStruct)> obj)
     this->setKeypadEnabled(true);
     this->scheduleUpdate();
     this->callback = obj;
+
+    if (Client::GetModuleEnabled("menu-bg-blur"))
+    {
+        auto blur = CCBlurLayer::create();
+        blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
+        this->addChild(blur);
+    }
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);

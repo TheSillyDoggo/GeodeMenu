@@ -72,17 +72,36 @@ void ManageKeybindsLayer::customSetup()
                 auto label = CCLabelBMFont::create(module->name.c_str(), "bigFont.fnt");
                 label->setAnchorPoint(ccp(0, 0.5f));
                 label->setPosition(ccp(7.5f, CELL_HEIGHT / 2));
-                label->limitLabelWidth(170, 0.45f, 0);
+                label->limitLabelWidth(130, 0.45f, 0);
                 label->setOpacity(225);
 
                 auto setSpr = ButtonSprite::create("Set", 100, 0, 1.0f, false);
                 setSpr->setScale(0.6f);
 
+                auto bnd = CCLabelBMFont::create(module->keybind.toString().c_str(), "chatFont.fnt");
+                bnd->setAnchorPoint(ccp(1, 0.5f));
+                bnd->setPositionX(-3);
+                bnd->limitLabelWidth(70, 1, 0);
+
+                auto del = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"), this, menu_selector(ManageKeybindsLayer::onDelete));
+                del->getNormalImage()->setScale(0.7f);
+                del->setPositionX(10);
+                del->setVisible(module->keybind.key != enumKeyCodes::KEY_Unknown);
+                del->setUserData(module);
+
                 auto set = CCMenuItemSpriteExtra::create(setSpr, this, menu_selector(ManageKeybindsLayer::onSet));
                 set->setUserData(module);
+                set->setUserObject("delete", del);
+                set->setUserObject("label", bnd);
+                set->setVisible(module->keybind.key == enumKeyCodes::KEY_Unknown);
+
+                del->setUserObject("set", set);
+                del->setUserObject("label", bnd);
 
                 auto menu = CCMenu::create();
                 menu->addChild(set);
+                menu->addChild(del);
+                menu->addChild(bnd);
 
                 bar->addChild(label);
                 bar->addChildAtPosition(menu, Anchor::Right, ccp(-25, 0));
@@ -99,8 +118,32 @@ void ManageKeybindsLayer::customSetup()
 void ManageKeybindsLayer::onSet(CCObject* sender)
 {
     auto popup = RecordKeyStruct::create([this, sender](KeyStruct key){
-        log::info("key: {}", CCKeyboardDispatcher::get()->keyToString(key.key));
+        auto mod = as<Module*>(as<CCNode*>(sender)->getUserData());
+
+        mod->keybind = key;
+        mod->save();
+
+        as<CCNode*>(sender)->setVisible(false);
+        as<CCNode*>(as<CCNode*>(sender)->getUserObject("delete"))->setVisible(true);
+        as<CCNode*>(as<CCNode*>(sender)->getUserObject("label"))->setVisible(true);
+        as<CCLabelBMFont*>(as<CCNode*>(sender)->getUserObject("label"))->setString(key.toString().c_str());
+        as<CCLabelBMFont*>(as<CCNode*>(sender)->getUserObject("label"))->limitLabelWidth(70, 1, 0);
     });
 
-    this->addChild(popup, 69);
+    CCScene::get()->addChild(popup, this->getZOrder() + 1);
+}
+
+void ManageKeybindsLayer::onDelete(CCObject* sender)
+{
+    auto popup = geode::createQuickPopup(as<Module*>(as<CCNode*>(sender)->getUserData())->name.c_str(), "Are you sure you want to <cr>delete</c>\nthis bind?", "Cancel", "Delete", [this, sender](FLAlertLayer*, bool right){
+        if (right)
+        {
+            as<Module*>(as<CCNode*>(sender)->getUserData())->keybind = KeyStruct();
+            as<CCNode*>(sender)->setVisible(false);
+            as<CCNode*>(as<CCNode*>(sender)->getUserObject("label"))->setVisible(false);
+            as<CCNode*>(as<CCNode*>(sender)->getUserObject("set"))->setVisible(true);
+        }
+    });
+
+    popup->m_button2->updateBGImage("GJ_button_06.png");
 }
