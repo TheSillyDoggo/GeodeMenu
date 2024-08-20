@@ -1,10 +1,11 @@
 {
-	"geode": "3.3.1",
-	"version": "v1.5.2",
+	"geode": "3.4.0",
+	"version": "v1.6.0",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206",
-		"mac": "2.206"
+		"mac": "2.206",
+		"ios": "2.206"
 	},
 	"early-load": true,
 	"id": "thesillydoggo.qolmod",

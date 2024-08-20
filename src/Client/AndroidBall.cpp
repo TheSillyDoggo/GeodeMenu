@@ -26,10 +26,13 @@ bool AndroidBall::init()
     menu->setPosition(position);
     menu->setContentSize(ccp(0, 0));
 
-    l = CCLabelBMFont::create(">_", "bigFont.fnt");
-    l->setAnchorPoint(ccp(0.5f, 0.35f));
+    //l = CCLabelBMFont::create(">_", "bigFont.fnt");
+    //l->setAnchorPoint(ccp(0.5f, 0.35f));
 
-    btn = CircleButtonSprite::create(l, CircleBaseColor::Gray);
+    btnOverlay = CCSprite::create(isColonThreeEnabled() ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr);
+
+    btn = CCSprite::create("qolmodButtonBG.png"_spr);
+    btn->addChildAtPosition(btnOverlay, Anchor::Center);
     menu->addChild(btn);
     
     this->addChild(menu);
@@ -153,7 +156,7 @@ void AndroidBall::UpdateVisible(bool i)
 
     ColourUtility::pastel++;
 
-    l->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
+    btnOverlay->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
     instance = this;
 
     if (btn->getActionByTag(69))
@@ -164,7 +167,7 @@ void AndroidBall::UpdateVisible(bool i)
         if (PlayLayer::get())
         {
             btn->setOpacity(50);
-            l->setOpacity(50);
+            btnOverlay->setOpacity(50);
 
             i = false;
         }
@@ -200,7 +203,7 @@ void AndroidBall::UpdateVisible(bool i)
         if (i)
         {
             btn->setOpacity(op);
-            l->setOpacity(op);
+            btnOverlay->setOpacity(op);
         }
         else
         {
@@ -211,7 +214,7 @@ void AndroidBall::UpdateVisible(bool i)
             action2->setTag(69);
 
             btn->runAction(action);
-            l->runAction(action2);
+            btnOverlay->runAction(action2);
         }
     }
 }
@@ -230,6 +233,34 @@ float AndroidBall::clampf(float v, float min, float max)
         v = max;
 
     return v;
+}
+
+bool AndroidBall::isColonThreeEnabled()
+{
+    return Mod::get()->getSavedValue<bool>("colon-three-secwet-uwu-:3", false);
+}
+
+void AndroidBall::setColonThreeEnabled()
+{
+    Mod::get()->setSavedValue<bool>("colon-three-secwet-uwu-:3", !isColonThreeEnabled());
+
+    auto spr = CCSprite::create(isColonThreeEnabled() ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr)->getTexture();
+    btnOverlay->setTexture(spr);
+    
+#ifndef GEODE_IS_IOS
+    auto over = CCClippingNode::create(btn);
+    over->setAlphaThreshold(0.9f);
+    
+    auto inner = CCLayerColor::create(ccc4(255, 255, 255, 255));
+    inner->setAnchorPoint(ccp(0.5f, 0.5f));
+    inner->setContentSize(ccp(100, 100));
+    inner->ignoreAnchorPointForPosition(false);
+    inner->runAction(CCFadeOut::create(1));
+
+    over->addChild(inner);
+
+    menu->addChild(over);
+#endif
 }
 
 class $modify (CCScene)
@@ -251,11 +282,19 @@ class $modify (CCScene)
     }
 };
 
+#ifdef GEODE_IS_IOS
+class $modify (AchievementNotifier)
+#else
 class $modify (AppDelegate)
+#endif
 {
     void willSwitchToScene(CCScene* newScene)
     {
+        #ifdef GEODE_IS_IOS
+        AchievementNotifier::willSwitchToScene(newScene);
+        #else
         AppDelegate::willSwitchToScene(newScene);
+        #endif
 
         if (!newScene)
             return;
@@ -263,8 +302,8 @@ class $modify (AppDelegate)
         if (getChildOfType<LoadingLayer>(newScene, 0))
             return; // fixes texture ldr
 
-        if (AndroidBall::get())
-            AndroidBall::get()->removeFromParent();
+        if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
+            ball->removeFromParent();
 
         newScene->addChild(AndroidBall::create());
 

@@ -1,10 +1,9 @@
-#ifndef GEODE_IS_INTEL_MAC
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../Client/Client.h"
 #include "../Layers/EditPositionLayer.hpp"
+#include "../Labels/BestRun.hpp"
 
 using namespace geode::prelude;
 
@@ -48,8 +47,12 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (m_isPracticeMode)
             resetLevelFromStart();
 
+        base_cast<BestPlayLayer*>(this)->m_fields->ignoreBest = true;
+
         resetLevel();
         startMusic();
+
+        base_cast<BestPlayLayer*>(this)->m_fields->ignoreBest = false;
 
         updateUI();
     }
@@ -149,21 +152,24 @@ class $modify (UILayer)
     {
         UILayer::keyDown(key);
 
-        if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
+        if (Client::GetModuleEnabled("startpos-switcher"))
         {
-            if (key == enumKeyCodes::KEY_Q)
-                as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
+            if (auto pl = PlayLayer::get())
+            {
+                if (key == enumKeyCodes::KEY_Q)
+                    as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
 
-            if (key == enumKeyCodes::KEY_E)
-                as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex + 1);
+                if (key == enumKeyCodes::KEY_E)
+                    as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex + 1);
+            }
         }
     }
     #else
     void handleKeypress(cocos2d::enumKeyCodes key, bool down)
     {
-        if (down)
+        if (down && Client::GetModuleEnabled("startpos-switcher"))
         {
-            if (auto pl = PlayLayer::get(); Client::GetModuleEnabled("startpos-switcher"))
+            if (auto pl = PlayLayer::get())
             {
                 if (key == enumKeyCodes::KEY_Q)
                     as<StartposPlayLayer*>(pl)->setStartpos(as<StartposPlayLayer*>(pl)->m_fields->selectedIndex - 1);
@@ -192,5 +198,3 @@ $execute
         Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
     });
 }
-
-#endif

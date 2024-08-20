@@ -16,6 +16,13 @@ class $modify (PlayLayer)
         if (m_player2)
             m_player2->togglePlatformerMode(true);
 
+        #ifdef GEODE_IS_MOBILE
+
+        if (m_uiLayer)
+            m_uiLayer->togglePlatformerMode(true);
+
+        #endif
+
         return true;
     }
 

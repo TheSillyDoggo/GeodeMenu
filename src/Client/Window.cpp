@@ -199,6 +199,8 @@ void Window::cocosCreate(CCMenu* menu)
     scroll->moveToTop();
 }
 
+#ifndef GEODE_IS_IOS
+
 bool WindowMouseDispatcher::dispatchScrollMSG(float y, float x)
 {
     for (auto window : Client::instance->windows)
@@ -209,3 +211,5 @@ bool WindowMouseDispatcher::dispatchScrollMSG(float y, float x)
 
     return CCMouseDispatcher::dispatchScrollMSG(y, x);
 }
+
+#endif

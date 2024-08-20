@@ -30,7 +30,7 @@ float speedhackLogic(float dt)
                 if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
 
             #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x4ffec4)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
             #else
             masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
             #endif
@@ -40,7 +40,7 @@ float speedhackLogic(float dt)
     }
 
     #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x4ffec4)(masterGroup, 1);
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, 1);
     #else
     masterGroup->setPitch(1);
     #endif
@@ -48,7 +48,7 @@ float speedhackLogic(float dt)
     return dt;
 }
 
-#ifdef GEODE_IS_MACOS
+#if (defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
 
 class $modify (CCScheduler)
 {
@@ -85,7 +85,7 @@ $execute {
 #ifdef GEODE_IS_IOS
 
 FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name, FMOD::ChannelGroup **channelgroup) {
-    auto res = reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, const char*, FMOD::ChannelGroup**)>(geode::base::get() + 0x4c8964)(self, name, channelgroup);
+    auto res = reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, const char*, FMOD::ChannelGroup**)>(geode::base::get() + 0x4d4f1c)(self, name, channelgroup);
 
     if (!masterGroup)
         masterGroup = *channelgroup;
@@ -97,7 +97,7 @@ FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name,
 
 $execute {
     Mod::get()->hook(
-        reinterpret_cast<void*>(geode::base::get() + 0x4c8964), // address
+        reinterpret_cast<void*>(geode::base::get() + 0x4d4f1c), // address
         &FMOD_System_createChannelGroup, // detour
         "FMOD::System::createChannelGroup", // display name, shows up on the console
         tulip::hook::TulipConvention::Cdecl // calling convention

@@ -5,7 +5,14 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include "BestRun.hpp"
+#include <chrono>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 #include "../Client/Client.h"
 #include "LabelNode.hpp"
 
@@ -68,6 +75,7 @@ class StatusNode : public CCNode
         std::vector<float> cps;
         int totalClicks = 0;
 
+        NoclipBaseGameLayer* noclipLayer = nullptr;
         BestPlayLayer* bestRunPlayLayer = nullptr;
 
         std::string formatTime(float time) {

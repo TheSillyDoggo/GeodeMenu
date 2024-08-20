@@ -17,20 +17,7 @@ class ModuleOptionsLayer : public SillyBaseLayer
 
         void onInfoButton(CCObject*);
 
-        static ModuleOptionsLayer* create(Module* module)
-        {
-            ModuleOptionsLayer* pRet = new ModuleOptionsLayer();
-            
-            pRet->mod = module;
-
-            if (pRet && pRet->initWithSizeAndName(ccp(350, std::ceil((std::max<int  >(module->options.size(), 3) - 1) / 2) * 35 + 110), module->name)) {
-                pRet->autorelease();
-                return pRet;
-            } else {
-                delete pRet;
-                return nullptr;
-            }
-        }
+        static ModuleOptionsLayer* create(Module* module);
 
         static ModuleOptionsLayer* addToScene(Module* module)
         {

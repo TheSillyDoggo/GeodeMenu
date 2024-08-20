@@ -2,6 +2,7 @@
 
 #include "Labels.h"
 #include "../Hacks/Noclip/Noclip.hpp"
+#include "../Hacks/SafeMode/SafeMode.hpp"
 
 bool StatusNode::init()
 {
@@ -184,8 +185,11 @@ void StatusNode::postSetup(Window* wnd)
 
     for (auto mod : wnd->modules)
     {
-        mod->delegate = del;
-        mod->options[0]->delegate = del;
+        if (mod->id != "labels-in-editor")
+        {
+            mod->delegate = del;
+            mod->options[0]->delegate = del;
+        }
     }
 }
 
@@ -243,10 +247,27 @@ class $modify (PlayerObject)
             if (auto stn = StatusNode::get())
             {
                 stn->sLabels[8]->stopAllActions();
-                stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
+
+                if (Client::GetModuleEnabled("status-cps-instant-fade"))
+                    stn->sLabels[8]->setColor(ccc3(255, 255, 255));
+                else
+                    stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }*/
     }
 };
+
+void AttemptBaseGameLayer::resetLevelVariables()
+{
+    if (LevelEditorLayer::get() ? !LevelEditorLayer::get()->m_editorUI->m_playtestStopBtn->isVisible() : true)
+        m_fields->attemptCount++;
+
+    if (StatusNode::get())
+        StatusNode::get()->totalClicks = 0;
+
+    GJBaseGameLayer::resetLevelVariables();
+
+    SafeMode::get()->resetOnNewAttempt();
+}
 
 #endif

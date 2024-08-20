@@ -27,19 +27,19 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
         return PlayLayer::destroyPlayer(p0, p1);
     }
 
-    if (!m_fields->ac)
-        m_fields->ac = p1;
+    if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac)
+        base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac = p1;
 
-    if (!Client::GetModuleEnabled("noclip") || (m_fields->ac == p1))
+    if (!Client::GetModuleEnabled("noclip") || (base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac == p1))
         PlayLayer::destroyPlayer(p0, p1);
     else
     {
         SafeMode::get()->setHackedAttempt();
 
-        if (!m_fields->hasDied)
+        if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied)
         {
-            m_fields->hasDied = true;
-            m_fields->timeDead += CCDirector::get()->getDeltaTime();
+            base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied = true;
+            base_cast<NoclipBaseGameLayer*>(this)->m_fields->timeDead += CCDirector::get()->getDeltaTime();
         }
         
         m_fields->isDead = true;
@@ -51,7 +51,7 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
             m_fields->d++;
         }
 
-        if (m_fields->ac != p1)
+        if (base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac != p1)
             m_fields->t++;
 
         if (m_fields->tintOnDeath->enabled)
@@ -59,6 +59,8 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
             m_fields->tint->stopAllActions();
             m_fields->tint->setOpacity(m_fields->tintOpacity->value * 255);
             m_fields->tint->runAction(CCFadeTo::create(0.35f, 0));
+
+            m_fields->tint->setColor(as<ColourModule*>(Client::GetModule("noclip")->options[2])->colour);
         }
     }
 }
@@ -69,11 +71,25 @@ void NoclipPlayLayer::resetLevel()
 
     m_fields->d = 0;
     m_fields->t = 0;
-    m_fields->timeDead = 0;
+    base_cast<NoclipBaseGameLayer*>(this)->m_fields->timeDead = 0;
     m_fields->isDead = false;
 }
 
-float NoclipPlayLayer::getNoclipAccuracy()
+void NoclipBaseGameLayer::update(float dt)
+{
+    GJBaseGameLayer::update(dt);
+
+    m_fields->hasDied = false;
+}
+
+void NoclipBaseGameLayer::resetLevelVariables()
+{
+    GJBaseGameLayer::resetLevelVariables();
+
+    m_fields->timeDead = 0;
+}
+
+float NoclipBaseGameLayer::getNoclipAccuracy()
 {
     if (m_gameState.m_currentProgress == 0)
         return 1;
@@ -81,12 +97,51 @@ float NoclipPlayLayer::getNoclipAccuracy()
     return 1 - (m_fields->timeDead / as<float>(m_gameState.m_levelTime));
 }
 
-void NoclipBaseGameLayer::update(float dt)
+void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
 {
-    GJBaseGameLayer::update(dt);
-
-    if (auto layer = typeinfo_cast<PlayLayer*>(this))
+    if (Client::GetModuleEnabled("noclip"))
     {
-        as<NoclipPlayLayer*>(layer)->m_fields->hasDied = false;
+        auto nbgl = base_cast<NoclipBaseGameLayer*>(this);
+
+        if (!nbgl->m_fields->ac)
+            nbgl->m_fields->ac = p0->m_collidedObject;
+
+        if (p0 == nbgl->m_fields->ac)
+            return LevelEditorLayer::playerTookDamage(p0);
+
+        if (!nbgl->m_fields->hasDied)
+        {
+            nbgl->m_fields->hasDied = true;
+            nbgl->m_fields->timeDead += CCDirector::get()->getDeltaTime();
+        }
+
+        SafeMode::get()->setHackedAttempt();
+        return;
     }
+
+    LevelEditorLayer::playerTookDamage(p0);
+}
+
+void NoclipEditorLayer::postUpdate(float p0)
+{
+    if (Client::GetModuleEnabled("noclip"))
+    {
+        auto nbgl = base_cast<NoclipBaseGameLayer*>(this);
+
+        if (!nbgl->m_fields->hasDied)
+        {
+            nbgl->m_fields->hasDied = true;
+            nbgl->m_fields->timeDead += CCDirector::get()->getDeltaTime();
+        }
+
+        SafeMode::get()->setHackedAttempt();
+        
+        if (m_player1)
+            m_player1->m_maybeIsColliding = false;
+
+        if (m_player2)
+            m_player2->m_maybeIsColliding = false;
+    }
+
+    LevelEditorLayer::postUpdate(p0);
 }

@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/AppDelegate.hpp>
+#include <Geode/modify/AchievementNotifier.hpp>
 #include <Geode/modify/CCTouchDispatcher.hpp>
 #include <Geode/modify/CCScene.hpp>
 #include "Client.h"
@@ -17,7 +18,8 @@ class AndroidBall : public CCLayer
 
         bool doingThing = false;
         static inline bool dragging = false;
-        CircleButtonSprite* btn;
+        CCSprite* btnOverlay;
+        CCSprite* btn;
         CCLabelBMFont* l;
         CCMenu* menu;
 
@@ -27,6 +29,9 @@ class AndroidBall : public CCLayer
 
         CREATE_FUNC(AndroidBall);
         static AndroidBall* get();
+
+        bool isColonThreeEnabled();
+        void setColonThreeEnabled();
 
         void onOpenMenu();
 

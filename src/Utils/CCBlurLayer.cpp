@@ -38,7 +38,8 @@ using namespace Blur;
 
 CCBlurLayer::~CCBlurLayer()
 {
-
+    if (rtex)
+        rtex->release();
 }
 
 bool CCBlurLayer::init()
@@ -74,6 +75,14 @@ CCBlurLayer* CCBlurLayer::create()
 
 void CCBlurLayer::visit()
 {
+    if (rtex)
+    {
+        if (rtex->getSprite() && getOpacity())
+            rtex->getSprite()->setOpacity(getOpacity());
+
+        return rtex->visit();
+    }
+
     if (this->getOpacity())
     {
         float v = this->getOpacity() / 255.0f;
@@ -95,6 +104,20 @@ void CCBlurLayer::draw()
     if (blurStrength == 0)
         return CCLayerColor::draw();
 
+    bool once = false;
+
+    if (once)
+    {
+        blurStrength = 1;
+
+        rtex = CCRenderTexture::create(as<int>(CCDirector::get()->getWinSize().width), as<int>(CCDirector::get()->getWinSize().height));
+        rtex->beginWithClear(0, 0, 0, 0);
+        rtex->setAnchorPoint(ccp(0, 0));
+        rtex->retain();
+
+        this->addChild(rtex);
+    }
+
     GLint drawFbo = 0;
     GLint readFbo = 0;
     glGetIntegerv(0x8CA6, &drawFbo);
@@ -114,12 +137,21 @@ void CCBlurLayer::draw()
     if (parent && !visiting) {
         visiting = true;
 
+        #ifdef GEODE_IS_IOS
+        reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x17420c)();
+        #else
         kmGLPushMatrix();
+        #endif
 
         parent->transform();
         parent->visit();
 
+
+        #ifdef GEODE_IS_IOS
+        reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x174250)();
+        #else
         kmGLPopMatrix();
+        #endif
 
         visiting = false;
     }
@@ -128,7 +160,11 @@ void CCBlurLayer::draw()
         getParent()->setVisible(true);
 
     glBindVertexArray(ppVao);
+    #ifdef GEODE_IS_IOS
+    reinterpret_cast<void(__cdecl*)(GLuint)>(geode::base::get() + 0x19a4f8)(ppShader.program);
+    #else
     ccGLUseProgram(ppShader.program);
+    #endif
     glUniform1i(ppShaderFast, true);
     glUniform1f(ppShaderRadius, blurStrength);
 
@@ -147,6 +183,9 @@ void CCBlurLayer::draw()
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);
+
+    if (rtex)
+        rtex->end();
 
     #endif
 }
@@ -353,7 +392,11 @@ void setupPostProcess() {
     }
     log::info("{}", res.unwrap());
 
+    #ifdef GEODE_IS_IOS
+    reinterpret_cast<void(__cdecl*)(GLuint)>(geode::base::get() + 0x19a4f8)(ppShader.program);
+    #else
     ccGLUseProgram(ppShader.program);
+    #endif
     glUniform1i(glGetUniformLocation(ppShader.program, "screen"), 0);
     glUniform2f(glGetUniformLocation(ppShader.program, "screenSize"), size.width, size.height);
     ppShaderFast = glGetUniformLocation(ppShader.program, "fast");

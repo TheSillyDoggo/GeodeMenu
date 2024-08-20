@@ -17,6 +17,8 @@ bool android = true;
 
 Client* client;
 
+#ifndef GEODE_IS_IOS
+
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool idk)
@@ -25,7 +27,7 @@ class $modify (CCKeyboardDispatcher)
             return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
 
         if (!getChildOfType<LoadingLayer>(CCScene::get(), 0) && !getChildOfType<RecordKeyPopup>(CCScene::get(), 0))
-        { 
+        {
             bool v = false;
 
             std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
@@ -42,13 +44,14 @@ class $modify (CCKeyboardDispatcher)
             if (down && v && !idk) {
                 if (android)
                 {
-                    #ifdef GEODE_IS_WINDOWS
-                    CCDirector::get()->getOpenGLView()->showCursor(true);
-                    #endif
+                    PlatformToolbox::showCursor();
 
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
                         ui->onClose(nullptr);
+
+                        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !GameManager::sharedState()->getGameVariable("0024"))
+                            PlatformToolbox::hideCursor();
                     }
                     else
                     {
@@ -133,6 +136,8 @@ class $modify (CCKeyboardDispatcher)
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }
 };
+
+#endif
 
 void migrateData()
 {

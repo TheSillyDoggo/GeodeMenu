@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PauseLayer.hpp>
+#include <Geode/modify/UILayer.hpp>
 #include "../../Client/Client.h"
 #include "CountdownLayer.hpp"
 
@@ -17,4 +18,15 @@ class $modify (PauseLayer)
     }
 
     QOLMOD_MOD_ALL_HOOKS("pause-countdown")
+};
+
+class $modify (UILayer)
+{
+    void onPause(cocos2d::CCObject* sender)
+    {
+        if (CountdownLayer::get())
+            return CountdownLayer::get()->keyBackClicked();
+
+        UILayer::onPause(sender);
+    }
 };

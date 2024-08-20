@@ -130,6 +130,7 @@ public:
 
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
+        Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
 
 
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
@@ -151,7 +152,14 @@ public:
         seed->maxSize = 16;
         Client::GetModule("rand-seed")->options.push_back(seed);
 
+        auto cdownT = new InputModule("Time:", "countdown-time", "3");
+        cdownT->allowedChars = "1234567890";
+        cdownT->maxSize = 4;
+        Client::GetModule("pause-countdown")->options.push_back(cdownT);
+
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+        //Client::GetModule("smart-startpos")->options.push_back(new SmartStartposUIModule());
+        //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 
         Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
     }
@@ -213,6 +221,9 @@ public:
         Client::GetModule("tps-bypass")->options.push_back(tps);
 
         Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
+        //Client::GetModule("custom-trans")->options.push_back(nullptr);
+        //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
+        //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
 
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;
@@ -245,6 +256,8 @@ public:
 
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
         creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
+
+        //creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Editor Extension Help :)"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
@@ -283,6 +296,9 @@ public:
         cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
 
+        cosmetic->modules.push_back(new Module("Force Ghost On", "ghost-on", "Forces the ghost trail on"));
+        cosmetic->modules.push_back(new Module("Force Ghost Off", "ghost-off", "Forces the ghost trail off"));
+
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
 
@@ -315,6 +331,11 @@ public:
 
         cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
         cosmetic->modules.push_back(new Module("No Dash Fire", "no-dash-fire", "Hides the fire behind your icon when using a dash orb"));
+
+        cosmetic->modules.push_back(new Module("Gold User Coins", "gold-user-coins", "Makes user coins appear as if they are gold robtop coins"));
+        cosmetic->modules.push_back(new Module("No Ship Fire", "no-ship-fire", "Hides the fire behind the ship while it's flying"));
+
+        cosmetic->modules.push_back(new Module("Ball Rotation Bug", "ball-rotation-bug", "EMULATES the old rotation bug when switching gamemodes from the ball"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
@@ -523,6 +544,14 @@ public:
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        #endif
+
+        #ifdef GEODE_IS_MACOS
+        Client::GetModule("smart-startpos")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>MacOS</c>");
+        #endif
+
+        #ifndef QOLMOD_ALL_MODES_PLATFORMER
+        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>.");
         #endif
     }
 

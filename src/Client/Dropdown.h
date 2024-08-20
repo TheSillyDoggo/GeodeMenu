@@ -44,6 +44,7 @@ class Dropdown : public CCMenu {
         }
 
         void visit();
+        virtual void registerWithTouchDispatcher();
 
         static Dropdown* create(CCSize size, std::vector<std::string> strs, cocos2d::SEL_MenuHandler callback, int sel = 0);
 };

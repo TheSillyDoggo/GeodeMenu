@@ -96,6 +96,7 @@ std::vector<std::string> mods =
     "saumondeluxe.rainbow_icon",
     "terma.ambienticons",
     "acaruso.pride",
+    "the_bearodactyl.gay-wave-trail"
 };
 
 bool EffectUI::getIncompatibleModLoaded()

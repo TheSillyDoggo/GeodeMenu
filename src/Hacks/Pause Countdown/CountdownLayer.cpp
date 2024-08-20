@@ -1,17 +1,35 @@
 #include "CountdownLayer.hpp"
 
+CountdownLayer* countdownInstance;
+
+CountdownLayer* CountdownLayer::get()
+{
+    return countdownInstance;
+}
+
 bool CountdownLayer::init()
 {
     if (!CCLayer::init())
         return false;
 
+    auto down = as<InputModule*>(Client::GetModule("pause-countdown")->options[0])->getIntValue();
+
+    countdownInstance = this;
+    count = std::clamp<int>(down, 1, down);
+
     this->setKeypadEnabled(true);
+    this->setTouchEnabled(true);
     this->schedule(schedule_selector(CountdownLayer::onDecrement), 1);
 
     label = CCLabelBMFont::create(fmt::format("{}", count).c_str(), "goldFont.fnt");
     label->setPosition(CCDirector::get()->getWinSize() / 2);
 
     applyAnimation();
+
+    if (auto gjbgl = GJBaseGameLayer::get())
+    {
+        this->addChild(gjbgl->m_uiLayer->m_pauseBtn->getParent());
+    }
 
     this->addChild(label);
     return true;
@@ -51,4 +69,14 @@ void CountdownLayer::keyBackClicked()
     PlayLayer::get()->pauseGame(false);
 
     this->removeFromParent();
+}
+
+void CountdownLayer::visit()
+{
+    label->visit();
+}
+
+CountdownLayer::~CountdownLayer()
+{
+    countdownInstance = nullptr;
 }

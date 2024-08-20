@@ -330,6 +330,15 @@ void AndroidUI::textChanged(CCTextInputNode* p0)
                 if (!(module->id.starts_with("anim-speed")))
                     modules.push_back(module);
             }
+
+            for (auto option : module->options)
+            {
+                if (string::toLower(option->name).find(string::toLower(std::string(p0->getString()))) != std::string::npos)
+                {
+                    if (!(option->id.starts_with("anim-speed")))
+                        modules.push_back(option);
+                }
+            }
         }
     }
 

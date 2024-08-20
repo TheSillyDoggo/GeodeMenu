@@ -2,6 +2,7 @@
 #include <Geode/modify/CCSprite.hpp>
 #include <Geode/modify/LoadingLayer.hpp>
 #include <Geode/modify/AppDelegate.hpp>
+#include <Geode/modify/AchievementNotifier.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -51,11 +52,19 @@ std::string getNodeName(CCObject* node) {
 #endif
 }
 
+#ifdef __APPLE__
+class $modify (AchievementNotifier)
+#else
 class $modify (AppDelegate)
+#endif
 {
     virtual void willSwitchToScene(CCScene* scene)
     {
+        #ifdef __APPLE__
+        AchievementNotifier::willSwitchToScene(scene);
+        #else
         AppDelegate::willSwitchToScene(scene);
+        #endif
 
         if (!Client::GetModuleEnabled("trans-bg"))
             return;
