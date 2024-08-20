@@ -5,6 +5,7 @@
 #include "../Utils/defines.hpp"
 #include "idkwhattocallthis.hpp"
 #include "../UI/CategoryTabSprite.hpp"
+#include "../Layers/ManageKeybindsLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -29,8 +30,9 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         void goToPage(int p, bool transition = false);
         
         void onClose(CCObject* sender);
-
+        void onKeybinds(CCObject*);
         void onPressTab(CCObject* sender);
+
         void updateTabs();
 
         virtual bool setup();

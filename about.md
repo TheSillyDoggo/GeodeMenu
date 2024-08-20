@@ -4,7 +4,7 @@ QOLMod is The **Best** Free Mod Menu, It has a user friendly interface with over
 
 # How to use.
 On Windows / Mac:
-- Press **Tab**, **F12**, or **Insert** on your keyboard
+- Press **Tab** or **Insert** on your keyboard
 - The keybinds for opening the mod menu can be changed in the Mod Settings
 
 On Android:

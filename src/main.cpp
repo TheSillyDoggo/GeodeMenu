@@ -1,4 +1,10 @@
-#include "include.h"
+#include <Geode/modify/CCKeyboardDispatcher.hpp>
+#include "Client/AndroidUI.h"
+#include <Geode/modify/MenuLayer.hpp>
+#include "Client/AndroidBall.h"
+#include "Layers/SillyBaseLayer.h"
+
+using namespace geode::prelude;
 #include <Geode/modify/LoadingLayer.hpp>
 #include "Keybinds/SetBindSetting.hpp"
 #include "Keybinds/RecordKeyPopup.hpp"
@@ -64,74 +70,15 @@ class $modify (CCKeyboardDispatcher)
                     Client::instance->open = showing;
                 }
             }
-        }
 
-        if (!android)
-        {
-            if (key == KEY_Escape)
+            if (!getChildOfType<AndroidUI>(CCScene::get(), 0))
             {
-                if (InputModule::selected)
-                {
-                    InputModule::selected = nullptr;
-                    return true;
-                }
-            }
-
-            if (InputModule::selected)
-            {
-                if (down)
-                {    
-                    if (key >= 48)
-                    {
-                        if (key <= 90)
-                        {
-                            std::stringstream ss;
-
-                            if (CCKeyboardDispatcher::getShiftKeyPressed())
-                                ss << CCKeyboardDispatcher::keyToString(key);
-                            else
-                            {
-                                ss << CCKeyboardDispatcher::keyToString(key);
-                            }
-
-                            if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                            {
-                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                                {
-                                    if (InputModule::selected->allowedChars[i] == ss.str()[0])
-                                    {
-                                        InputModule::selected->text += ss.str();
-                                    }
-                                }
-                            }
-
-                            return true;
-                        }
-                    }
-
-                    if (key == KEY_Backspace)
-                    {
-                        InputModule::selected->text = InputModule::selected->text.substr(0, InputModule::selected->text.length() - 1);
-                    }
-
-                    if (key == 190)
-                    {
-                        if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                            {
-                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                                {
-                                    if (InputModule::selected->allowedChars[i] == "."[0])
-                                    {
-                                        InputModule::selected->text += ".";
-                                    }
-                                }
-                            }
-                    }
-
-                    return true;
-                }
+                if (Client::get()->handleKeybinds(key, down, idk))
+                    return false;
             }
         }
+
+        
 
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }
@@ -174,18 +121,6 @@ void migrateData()
 $execute
 {
     migrateData();
-
-    //android = !Mod::get()->getSettingValue<bool>("use-new-ui");
-    /*
-    ,
-    "use-new-ui": {
-        "type": "bool",
-        "name": "[BETA] Use PC Gui",
-        "default": false,
-        "description": "Uses a UI more comfortable for pc users, like Mega Hack. Requires Game Restart",
-        "platforms": [ "win", "macos" ]
-    }
-    */
 
     client = new Client();
     Client::instance = client;

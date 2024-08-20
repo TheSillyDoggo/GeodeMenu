@@ -34,6 +34,10 @@ public:
         mod = Mod::get();
     }
 
+    static Client* get();
+
+    bool handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey);
+
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
     {

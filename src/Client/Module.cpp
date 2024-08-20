@@ -76,6 +76,20 @@ void Module::onInfoAndroid(CCObject* sender)
 
 void Module::onToggleAndroid(CCObject* sender)
 {
+    if (!sender)
+    {
+        enabled = !enabled;
+        save();
+        onChange();
+
+        if (enabled)
+            enableHooks();
+        else
+            disableHooks();
+
+        return;
+    }
+
     auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
     if (dat->isInComp)

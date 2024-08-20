@@ -28,6 +28,9 @@ bool AndroidUI::setup()
     backMenu->setPositionY(CCDirector::get()->getWinSize().height);
     backMenu->setID("back-menu");
 
+    backMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Button that turns you into a catboy", 1), this, menu_selector(AndroidUI::onKeybinds)));
+    as<CCNode*>(backMenu->getChildren()->objectAtIndex(0))->setPosition(ccp(280, -100));
+
     auto backSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png");
 
     #ifdef GEODE_IS_APPLE
@@ -493,6 +496,11 @@ AndroidUI* AndroidUI::addToScene()
 
     CCScene::get()->addChild(pRet, 69420);
     return pRet;
+}
+
+void AndroidUI::onKeybinds(CCObject*)
+{
+    ManageKeybindsLayer::addToScene();
 }
 
 AndroidUI::~AndroidUI()

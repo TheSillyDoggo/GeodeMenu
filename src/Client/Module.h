@@ -4,6 +4,7 @@
 #include "DrawUtils.h"
 #include <Geode/ui/TextInput.hpp>
 #include "../UI/UIComponent.hpp"
+#include "../Keybinds/KeyStruct.hpp"
 
 using namespace geode::prelude;
 
@@ -40,6 +41,8 @@ class Module : public UIComponent
         bool useAlert;
         bool onceAlert;
         bool isInComp;
+
+        KeyStruct keybind;
 
         bool vAlert;
 
@@ -113,10 +116,12 @@ class Module : public UIComponent
         virtual void save()
         {
             geode::prelude::Mod::get()->setSavedValue<bool>(id + "_enabled", enabled);
+            keybind.saveToModule(id);
         }
 
         virtual void load()
         {
+            keybind = KeyStruct::loadFromModule(id);
             enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
             save();
         }

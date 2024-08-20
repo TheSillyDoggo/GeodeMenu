@@ -15,7 +15,7 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, -500, true);
 
     auto bg = CCScale9Sprite::create("square02_small.png");
-    bg->setOpacity(100);
+    bg->setOpacity(200);
     bg->setContentSize(ccp(245, 70));
     bg->setPosition(CCDirector::get()->getWinSize() / 2);
     this->addChild(bg);
