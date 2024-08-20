@@ -17,6 +17,7 @@ class CCBlurLayer : public CCLayerColor
         static inline bool setup;
         bool visiting = false;
         float blurStrength = 1;
+        CCRenderTexture* rtex;
 
         ~CCBlurLayer();
         bool init();
