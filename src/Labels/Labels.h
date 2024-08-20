@@ -75,9 +75,6 @@ class StatusNode : public CCNode
         std::vector<float> cps;
         int totalClicks = 0;
 
-        NoclipBaseGameLayer* noclipLayer = nullptr;
-        BestPlayLayer* bestRunPlayLayer = nullptr;
-
         std::string formatTime(float time) {
             // Convert float time to milliseconds
             std::chrono::milliseconds duration(static_cast<long long>(time * 1000));

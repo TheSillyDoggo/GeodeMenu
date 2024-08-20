@@ -55,7 +55,7 @@ foreach(MODULE ${MODULES_LIST})
     endif()
 endforeach()
 
-CPMAddPackage("gh:EclipseMenu/RIFT#b00bf2b") # specify a commit!
+CPMAddPackage("gh:EclipseMenu/RIFT#c3f1c29") # specify a commit!
 
 target_link_libraries(${PROJECT_NAME} rift)
 

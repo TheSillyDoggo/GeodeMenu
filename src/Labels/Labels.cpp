@@ -1,8 +1,8 @@
 #ifdef STATUS_TEXTS
 
 #include "Labels.h"
-#include "../Hacks/Noclip/Noclip.hpp"
 #include "../Hacks/SafeMode/SafeMode.hpp"
+#include "../Hacks/Noclip/Noclip.hpp"
 
 bool StatusNode::init()
 {
@@ -257,7 +257,7 @@ class $modify (PlayerObject)
     }
 };
 
-void AttemptBaseGameLayer::resetLevelVariables()
+/*void AttemptBaseGameLayer::resetLevelVariables()
 {
     if (LevelEditorLayer::get() ? !LevelEditorLayer::get()->m_editorUI->m_playtestStopBtn->isVisible() : true)
         m_fields->attemptCount++;
@@ -268,6 +268,6 @@ void AttemptBaseGameLayer::resetLevelVariables()
     GJBaseGameLayer::resetLevelVariables();
 
     SafeMode::get()->resetOnNewAttempt();
-}
+}*/
 
 #endif

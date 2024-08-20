@@ -31,19 +31,21 @@ bool LabelNode::init(LabelModule* module)
 
 void LabelNode::update(float delta)
 {
-    script = rift::compile(module->format);
+    auto res = rift::compile(module->format);
+
+    script = res.unwrapOr(nullptr);
     
     if (!script)
     {
-        return this->setString("Error Compiling Script");
+        return this->setString(fmt::format("Error Compiling Script: {}", res.getMessage()).c_str());
     }
     
-    script->setVariable("fps", StatusNode::get()->fps);
-    script->setVariable("name", "World");
+    script->setVariable("fps", rift::Value::integer(StatusNode::get()->fps));
+    //script->setVariable("name", "World");
 
-    auto res = script->run();
+    auto res2 = script->run();
 
-    this->setString(res.c_str());
+    this->setString(res2.c_str());
 }
 
 LabelNode::~LabelNode()
