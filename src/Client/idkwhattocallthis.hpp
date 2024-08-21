@@ -190,7 +190,7 @@ class SpeedhackTop : public InputModule
             {
                 if (SpeedhackEnabled::instance->enabled)
                 {
-                    SpeedhackTop::instance->getFloatValue();
+                    v = SpeedhackTop::instance->getFloatValue();
 
                     if (SpeedhackGameplay::instance->enabled)
                         if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }

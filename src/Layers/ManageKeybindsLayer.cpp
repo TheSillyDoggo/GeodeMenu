@@ -139,6 +139,7 @@ void ManageKeybindsLayer::onDelete(CCObject* sender)
         if (right)
         {
             as<Module*>(as<CCNode*>(sender)->getUserData())->keybind = KeyStruct();
+            as<Module*>(as<CCNode*>(sender)->getUserData())->save();
             as<CCNode*>(sender)->setVisible(false);
             as<CCNode*>(as<CCNode*>(sender)->getUserObject("label"))->setVisible(false);
             as<CCNode*>(as<CCNode*>(sender)->getUserObject("set"))->setVisible(true);

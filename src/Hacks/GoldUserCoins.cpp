@@ -2,6 +2,8 @@
 #include <Geode/modify/CCSpriteFrameCache.hpp>
 #include <Geode/modify/EnhancedGameObject.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/CCCircleWave.hpp>
+#include <Geode/modify/GameObject.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -50,6 +52,35 @@ class $modify (EnhancedGameObject)
 
         is = false;
         m_objectID = objID;
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("gold-user-coins")
+};
+
+CCCircleWave* lastWave;
+
+class $modify (CCCircleWave)
+{
+    static CCCircleWave* create(float startRadius, float endRadius, float duration, bool fadeIn, bool easeOut)
+    {
+        auto pRet = CCCircleWave::create(startRadius, endRadius, duration, fadeIn, easeOut);
+
+        lastWave = pRet;
+
+        return pRet;
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("gold-user-coins")
+};
+
+class $modify (GameObject)
+{
+    void playDestroyObjectAnim(GJBaseGameLayer* p0)
+    {
+        GameObject::playDestroyObjectAnim(p0);
+
+        if (lastWave)
+            lastWave->m_color = ccc3(255, 255, 0);
     }
 
     QOLMOD_MOD_ALL_HOOKS("gold-user-coins")
