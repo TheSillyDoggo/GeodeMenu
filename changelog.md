@@ -3,7 +3,7 @@
 - Fixed Transparent BG not working on apple devices
 - Fixed the button not appearing in a new scene on apple devices
 - Fixed Coin Collect Circle effect being the wrong colour with Gold User Coins
-- Added **Ball Rotation Bug**
+- Added **Fake Ball Rotation Bug**
 - Added **Mod Keybinds**
 
 # 1.5.9

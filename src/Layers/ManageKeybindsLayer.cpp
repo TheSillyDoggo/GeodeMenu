@@ -1,5 +1,6 @@
 #include "ManageKeybindsLayer.hpp"
 #include "../Keybinds/RecordKeyStruct.hpp"
+#include "../Client/Windows/IconEffects.hpp"
 
 #define CELL_HEIGHT 25
 
@@ -21,15 +22,36 @@ void ManageKeybindsLayer::customSetup()
 {
     auto scroll = ScrollLayer::create(ccp(250, 170));
     scroll->setPosition(size / 2 - scroll->getContentSize() / 2 + ccp(0, 6));
+
+    auto bar = Scrollbar::create(scroll);
+
+    auto border = geode::ListBorders::create();
+    border->setContentSize(scroll->getContentSize() + ccp(0, -2));
+    border->setZOrder(69);
+    border->setSpriteFrames("geode.loader/geode-list-top.png", "geode.loader/geode-list-side.png", 2.25f);
+    
+    for (auto child : CCArrayExt<CCNodeRGBA*>(border->getChildren()))
+    {
+        child->setColor(ccc3(0, 0, 0));
+        //child->setOpacity(100);
+    }
+
+    baseLayer->addChildAtPosition(border, Anchor::Center, ccp(0, 6));
     
     int count = 0;
 
     for (auto window : Client::get()->windows)
     {
+        if (typeinfo_cast<IconEffects*>(window))
+            continue;
+
         count++;
 
         for (auto module : window->modules)
         {
+            if (typeinfo_cast<SliderModule*>(module) || typeinfo_cast<InputModule*>(module))
+                continue;
+
             if (typeinfo_cast<Module*>(module))
                 count++;
         }
@@ -42,17 +64,20 @@ void ManageKeybindsLayer::customSetup()
 
     for (auto window : Client::get()->windows)
     {
+        if (typeinfo_cast<IconEffects*>(window))
+            continue;
+
         auto bar = CCLayerColor::create(ccc4(0, 0, 0, 125));
         bar->setAnchorPoint(ccp(0, 1));
         bar->ignoreAnchorPointForPosition(false);
         bar->setPositionY(CELL_HEIGHT * count - (CELL_HEIGHT * i));
         bar->setContentSize(ccp(scroll->getContentWidth(), CELL_HEIGHT));
 
-        auto label = CCLabelBMFont::create(window->name.c_str(), "bigFont.fnt");
+        auto label = CCLabelBMFont::create(window->name.c_str(), "goldFont.fnt");
         label->setAnchorPoint(ccp(0, 0.5f));
         label->setPosition(ccp(7.5f, CELL_HEIGHT / 2));
         label->limitLabelWidth(100, 0.6f, 0);
-        label->setOpacity(175);
+        //label->setOpacity(175);
         bar->addChild(label);
 
         scroll->m_contentLayer->addChild(bar);
@@ -61,7 +86,10 @@ void ManageKeybindsLayer::customSetup()
         int e = 0;
         for (auto module : window->modules)
         {
-            if (dynamic_cast<Module*>(module))
+            if (typeinfo_cast<SliderModule*>(module) || typeinfo_cast<InputModule*>(module))
+                continue;
+
+            if (typeinfo_cast<Module*>(module))
             {
                 auto bar = CCLayerColor::create(ccc4(0, 0, 0, !(e % 2) ? 25 : 75));
                 bar->setAnchorPoint(ccp(0, 1));
@@ -113,6 +141,7 @@ void ManageKeybindsLayer::customSetup()
     }
 
     baseLayer->addChild(scroll);
+    baseLayer->addChildAtPosition(bar, Anchor::Right, ccp(-18.5f, 6));
 }
 
 void ManageKeybindsLayer::onSet(CCObject* sender)
