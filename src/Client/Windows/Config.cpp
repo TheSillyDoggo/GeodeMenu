@@ -81,7 +81,9 @@ void Config::cocosCreate(CCMenu* menu)
     auto btnk = CCMenuItemSpriteExtra::create(kbs, menu, menu_selector(Config::onManageKeybinds));
     btnk->m_animationEnabled = false;
     btnk->setSelectedImage(kbs2);
+    #ifdef QOLMOD_KEYBINDS
     menuTab->addChildAtPosition(btnk, Anchor::BottomLeft, p + ccp(65, -30));
+    #endif
 
     kbs->setPosition(kbs->getContentSize() / 2);
     kbs->setAnchorPoint(CCPointZero);

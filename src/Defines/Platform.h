@@ -22,3 +22,8 @@
 #endif
 
 #define QOLMOD_NO_SPIDER_DASH
+
+
+#ifndef GEODE_IS_IOS
+#define QOLMOD_KEYBINDS
+#endif

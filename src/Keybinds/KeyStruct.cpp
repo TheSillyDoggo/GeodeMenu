@@ -28,6 +28,8 @@ void KeyStruct::saveToModule(std::string id)
 
 std::string KeyStruct::toString()
 {
+    #ifdef QOLMOD_KEYBINDS
+
     if (key == enumKeyCodes::KEY_Unknown)
         return "";
 
@@ -49,4 +51,10 @@ std::string KeyStruct::toString()
         ss << k;
 
     return ss.str();
+
+    #else
+
+    return "";
+
+    #endif
 }
