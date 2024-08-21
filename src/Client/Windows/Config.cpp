@@ -56,14 +56,36 @@ void Config::cocosCreate(CCMenu* menu)
     animDropdown->setZOrder(42069);
     menuTab->addChildAtPosition(animDropdown, Anchor::TopLeft, ccp(5 + animTitle->getScaledContentSize().width + 2, -2 - 25));
 
+    CCPoint p;
+
     #ifdef GEODE_IS_DESKTOP
     for (size_t i = 1; i < 4; i++)
     #else
     for (size_t i = 1; i < 3; i++)
     #endif
     {
-        modules[i]->makeAndroid(menuTab, ccp(20, menuTab->getContentHeight() - 45 - (28 * (i - 1))));
+        p = ccp(20, menuTab->getContentHeight() - 45 - (28 * (i - 1)));
+        modules[i]->makeAndroid(menuTab, p);
     }
+
+    auto kbs = CategoryTabSprite::create(CategoryTabType::Text, "Manage Keybinds");
+    kbs->updateSelection(CategorySelectionType::Deselected);
+    kbs->setContentSize(animDropdown->getContentSize());
+    kbs->setContentWidth(150);
+
+    auto kbs2 = CategoryTabSprite::create(CategoryTabType::Text, "Manage Keybinds");
+    kbs2->updateSelection(CategorySelectionType::Hovered);
+    kbs2->setContentSize(animDropdown->getContentSize());
+    kbs2->setContentWidth(150);
+
+    auto btnk = CCMenuItemSpriteExtra::create(kbs, menu, menu_selector(Config::onManageKeybinds));
+    btnk->m_animationEnabled = false;
+    btnk->setSelectedImage(kbs2);
+    menuTab->addChildAtPosition(btnk, Anchor::BottomLeft, p + ccp(65, -30));
+
+    kbs->setPosition(kbs->getContentSize() / 2);
+    kbs->setAnchorPoint(CCPointZero);
+    kbs2->setPosition(kbs2->getContentSize() / 2);
     
     auto buttonTab = CCMenu::create();
     buttonTab->setContentWidth(menu->getContentWidth());
@@ -496,4 +518,9 @@ void Config::onChangeFile(CCObject*)
     };
 
     file::pickFile(file::PickMode::OpenFile, options, callback, failedCallback);*/
+}
+
+void Config::onManageKeybinds(CCObject*)
+{
+    ManageKeybindsLayer::addToScene();
 }

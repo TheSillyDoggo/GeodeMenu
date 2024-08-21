@@ -282,7 +282,7 @@ class $modify (CCScene)
     }
 };
 
-#ifdef GEODE_IS_IOS
+#ifdef __APPLE__
 class $modify (AchievementNotifier)
 #else
 class $modify (AppDelegate)
@@ -290,7 +290,7 @@ class $modify (AppDelegate)
 {
     void willSwitchToScene(CCScene* newScene)
     {
-        #ifdef GEODE_IS_IOS
+        #ifdef __APPLE__
         AchievementNotifier::willSwitchToScene(newScene);
         #else
         AppDelegate::willSwitchToScene(newScene);
