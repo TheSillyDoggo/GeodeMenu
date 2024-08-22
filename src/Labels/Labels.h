@@ -14,83 +14,66 @@
 #include <ctime>
 #include <sstream>
 #include "../Client/Client.h"
+#include "LabelNode.hpp"
 
 using namespace geode::prelude;
 
-class NoclipBaseGameLayer;
-
-class $modify (AttemptBaseGameLayer, GJBaseGameLayer)
+class $modify (LabelPlayLayer, PlayLayer)
 {
     struct Fields {
         int attemptCount = 0;
     };
 
-    void resetLevelVariables();
+    bool init(GJGameLevel* p0, bool p1, bool p2);
+    void resetLevel();
+};
+
+class LabelModuleDelegate : public ModuleChangeDelegate
+{
+    virtual void onModuleChanged(bool enabled);
 };
 
 class StatusNode : public CCNode
 {
-    public:
-        static StatusNode* create() {
-            auto ret = new (std::nothrow) StatusNode;
-            if (ret && ret->init()) {
-                ret->autorelease();
-                return ret;
-            }
-            delete ret;
-            return nullptr;
-        }
-
-        ~StatusNode()
-        {
-            instance = nullptr;
-        }
-
+    private:
         static inline StatusNode* instance = nullptr;
+        float _updateInterval = 0.1f;
+        float _timeLeft = _updateInterval;
+        float _accum;
+        int _frames;
+    
+    public:
+        int fps;
+        std::vector<LabelNode*> labels;
 
-        static StatusNode* get() { return instance; }
+        static StatusNode* create();
+        static StatusNode* get();
+        
+        static void postSetup(Window* wnd);
+        ~StatusNode();
 
-        //NoclipLayer* v;
-
-        bool mods;
-
-        AttemptBaseGameLayer* attPL = nullptr;
-
-        static inline Module* fps = nullptr;
-        static inline Module* cheat = nullptr;
-        static inline Module* accuracy = nullptr;
-        static inline Module* deaths = nullptr;
-        static inline Module* replay = nullptr;
-        static inline Module* attempt = nullptr;
-        static inline Module* message = nullptr;
-        static inline Module* session = nullptr;
-        static inline Module* cpsM = nullptr;
-        static inline Module* bestRun = nullptr;
-        static inline Module* clock = nullptr;
-
-        static inline Module* noclip = nullptr;
+        LabelPlayLayer* attPL = nullptr;
 
         CCMenu* topLeft = nullptr;
         CCMenu* topRight = nullptr;
         CCMenu* bottomLeft = nullptr;
         CCMenu* bottomRight = nullptr;
+        CCMenu* bottomCenter = nullptr;
+
+        bool init();
+
+        AxisLayout* getLayout();
+        void reorderSides();
+
+        virtual void update(float dt);
+
+        CCNode* getNodeForSide(LabelSide side);
 
         static inline Window* window = nullptr;
-
-        std::vector<CCLabelBMFont*> sLabels = {};
-
         static inline bool hidden = false;
-
-        float _updateInterval = 0.5f;
-        float _timeLeft = _updateInterval;
-        float _accum;
-        int _frames;
 
         std::vector<float> cps;
         int totalClicks = 0;
-
-        NoclipBaseGameLayer* noclipLayer = nullptr;
-        BestPlayLayer* bestRunPlayLayer = nullptr;
 
         std::string formatTime(float time) {
             // Convert float time to milliseconds
@@ -111,38 +94,6 @@ class StatusNode : public CCNode
             
             return formattedTime.str();
         }
-
-        std::string formatTime() {
-            // Get current time
-            std::time_t currentTime = std::time(nullptr);
-            
-            // Convert to local time
-            std::tm* localTime = std::localtime(&currentTime);
-            
-            // Create a string stream to format the time
-            std::ostringstream oss;
-            
-            if (Client::GetModuleEnabled("status-clock-24h-time"))
-                oss << std::put_time(localTime, "%H:%M:%S");
-            else
-                oss << std::put_time(localTime, "%I:%M:%S %p");
-
-            // Return the formatted time as a string
-            return oss.str();
-        }
-
-
-        bool init();
-
-        void updateVis();
-
-        static void postSetup(Window* wnd);
-
-        void reorderSides();
-        void reorderPosition();
-
-        void update(float dt);
-        void updateCPS(float dt);
 };
 
 #endif
