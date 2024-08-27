@@ -55,7 +55,7 @@ public:
         Window* speedhack = new Speedhack();
         speedhack->name = "Speedhack";
         speedhack->id = "speedhack-window";
-        speedhack->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 2, 50);
+        //speedhack->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 2, 50);
 
         speedhack->modules.push_back(new SpeedhackTop());
         speedhack->modules.push_back(new SpeedhackEnabled());
@@ -73,7 +73,7 @@ public:
         Window* level = new Level();
         level->name = "Level";
         level->id = "level-window";
-        level->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
+        //level->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", false, "<cr>Warning!</c>\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", true));
@@ -122,6 +122,8 @@ public:
 
         level->modules.push_back(new Module("Suicide", "you-should-kill-yourself-now", "Kills the player instantly"));
         level->modules.push_back(new Module("No Checkpoint Limit", "no-checkpoint-limit", "Removes the 50 checkpoint limit from practice mode"));
+        
+        level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -162,6 +164,13 @@ public:
         //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 
         Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
+
+        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Interval", "auto-clicker-delay", "6"));
+        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Hold For", "auto-clicker-hold-for", "3"));
+        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 1", "auto-clicker-player1", "Should it click for player 1", true));
+        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 2", "auto-clicker-player2", "Should it click for player 2", true));
+        as<InputModule*>(Client::GetModule("auto-clicker")->options[0])->allowedChars = "0123456789";
+        as<InputModule*>(Client::GetModule("auto-clicker")->options[1])->allowedChars = "0123456789";
     }
 
     static void SetupBypass()
@@ -169,7 +178,7 @@ public:
         Window* bypass = new Window();
         bypass->name = "Bypass";
         bypass->id = "bypass-window";
-        bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
@@ -181,7 +190,7 @@ public:
         Window* bypass = new Universal();
         bypass->name = "Universal";
         bypass->id = "universal-window";
-        bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
 
         bypass->modules.push_back(new Module("Practice Music Sync", "practice-bypass", "Unlocks the Practice Music Sync button in the pause menu options"));
@@ -213,6 +222,8 @@ public:
 
         bypass->modules.push_back(new Module("Show Touches", "show-touches", "Shows a circle on the screen whenever you touch"));
         bypass->modules.push_back(new Module("Auto LDM", "auto-ldm", "Automatically enable Low Detail Mode in levels when you view them"));
+
+        bypass->modules.push_back(new Module("Hide Pause Menu", "hide-pause-menu", "Hides the pause menu :3"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -235,7 +246,7 @@ public:
         Window* creator = new Window();
         creator->name = "Creator";
         creator->id = "creator-window";
-        creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
         creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
         creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
@@ -278,7 +289,7 @@ public:
         Window* cosmetic = new Window();
         cosmetic->name = "Cosmetic";
         cosmetic->id = "cosmetic-window";
-        cosmetic->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 3, 50);
+        //cosmetic->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 3, 50);
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
@@ -357,7 +368,7 @@ public:
         Window* misc = new Window();
         misc->name = "Misc";
         misc->id = "misc-window";
-        misc->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
+        //misc->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
         //misc->modules.push_back(new Module("Use Full Options", "full-options", "Opens the full options menu instead of the mini options in the pause menu.\nAlso adds a button to the normal pause menu to open the mini options."));
 
@@ -448,7 +459,7 @@ public:
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
-        replay->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
+        //replay->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
         if (android)
         {
@@ -488,7 +499,7 @@ public:
         Window* theming = new Window();
         theming->name = "Theming";
         theming->id = "themes-window";
-        theming->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+        //theming->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
 
         theming->modules.push_back(new ColourModule("Accent", "accent-colour", ccc3(10, 0, 0)));
 
@@ -502,7 +513,7 @@ public:
         Window* devtools = new Window();
         devtools->name = "Developer";
         devtools->id = "devtools-window";
-        devtools->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+        //devtools->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
 
         devtools->modules.push_back(new Module("Recompile Shader", "recomp-shaders", "Recompiles blur shader"));
 

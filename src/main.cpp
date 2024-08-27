@@ -139,6 +139,15 @@ class $modify (MenuLayer)
 
         if (!v)
         {
+            if (Client::get()->useImGuiUI())
+            {
+                ImGuiCocos::get().setup([] {
+                    Client::get()->initImGui();
+                }).draw([] {
+                    Client::get()->drawImGui();
+                });
+            }
+
             if (Client::GetModuleEnabled("save-pos"))
             {
                 AndroidBall::position = ccp(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));

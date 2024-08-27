@@ -2,56 +2,11 @@
 
 #include "../Layers/ModuleOptionsLayer.h"
 #include "Dropdown.h"
-#include "../UI/PCDrawUtils.hpp"
 
-bool Module::touchBegan(CCPoint point, CCTouch* touch)
+void Module::drawImGui()
 {
-    if (CCRectMake(0, 0, Client::tileSize.x, Client::tileSize.y).containsPoint(point))
-    {
-        log::info("id: {}", id);
-        mouseHeldDown = true;
-
-        return true;
-    }
-
-    return false;
+    ImGui::Button(this->name.c_str());
 }
-
-bool Module::touchMoved(CCPoint point, CCTouch* touch)
-{
-    return false;
-}
-
-bool Module::touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled)
-{
-    if (mouseHeldDown)
-    {
-        enabled = !enabled;
-        save();
-        onChange();
-
-        if (enabled)
-            enableHooks();
-        else
-            disableHooks();
-
-        if (enabled)
-            enablePatches();
-        else
-            disablePatches();
-
-        mouseHeldDown = false;
-    }
-
-    return false;
-}
-
-
-void Module::drawModule(CCPoint pointTopLeft)
-{
-    PCDrawUtils::drawRect(pointTopLeft, Client::tileSize, ccc4(0, 0, 255, 255));
-}
-
 
 void Module::onOptionsAndroid(CCObject* sender)
 {
@@ -87,6 +42,9 @@ void Module::onToggleAndroid(CCObject* sender)
         else
             disableHooks();
 
+        if (onToggle)
+            onToggle(enabled);
+
         return;
     }
 
@@ -115,6 +73,9 @@ void Module::onToggleAndroid(CCObject* sender)
         dat->enableHooks();
     else
         dat->disableHooks();
+
+    if (dat->onToggle)
+        dat->onToggle(dat->enabled);
 }
 
 void Module::makeAndroid(CCNode* menu, CCPoint pos)

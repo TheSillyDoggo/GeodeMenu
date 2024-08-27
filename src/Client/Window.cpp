@@ -1,102 +1,33 @@
 #include "Client.h"
 #include "Types/SetValueModule.hpp"
 
-void Window::drawWindow()
+void Window::drawImGui()
 {
-    if (modules.size() == 0)
-        return;
+    ImGui::SetNextWindowPos(windowPos);
+    ImGui::SetNextWindowSize(ImVec2(215, 25 * (modules.size() + 1)));
 
-    auto pos = windowPos + offsetForTime(Client::instance->animStatus);
-
-    PCDrawUtils::drawRect(pos, Client::tileSize, ccc4(255, 0, 0, 255));
-
-    int i = 0;
+    ImGui::Begin(this->name.c_str(), nullptr, ImGuiWindowFlags_NoResize);
 
     for (auto module : modules)
     {
-        auto point = pos + ccp(0, Client::tileSize.y * (i + 1));
-
-        module->drawModule(point);
-
-        i++;
+        module->drawImGui();
     }
+
+    ImGui::End();
 }
 
-// do clipping stuff:
-void Window::preDraw() {}
-void Window::postDraw() {}
+void Window::setPosition(const CCPoint &position)
+{
+    CCNode::setPosition(position);
+
+    windowPos = ImVec2(position.x, position.y);
+}
 
 CCPoint Window::offsetForTime(float time)
 {
     CCPoint wndSize = CCDirector::get()->getWinSize();
 
     return ccp(0, wndSize.y * (1 - quadraticEaseInOut(time)));
-}
-
-bool Window::touchBegan(CCPoint point, CCTouch* touch)
-{
-    auto pos = windowPos + offsetForTime(Client::instance->animStatus);
-    auto rect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y);
-    auto wndRect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y * (modules.size() + 1));
-
-    if (rect.containsPoint(PCDrawUtils::getMousePosition()))
-    {
-        dragging = true;
-        offset = rect.origin - PCDrawUtils::getMousePosition();
-
-        return true;
-    }
-    else
-    {
-        int i = 0;
-
-        for (auto mod : modules)
-        {
-            if (mod->touchBegan((pos - point) + ccp(0, Client::tileSize.y * i), touch))
-                return true;
-
-            i++;
-        }
-    }
-
-    return false;
-}
-
-bool Window::touchMoved(CCPoint point, CCTouch* touch)
-{
-    auto pos = windowPos + offsetForTime(Client::instance->animStatus);
-    auto wndRect = CCRectMake(pos.x, pos.y, Client::tileSize.x, Client::tileSize.y * (modules.size() + 1));
-
-    if (dragging)
-    {
-        windowPos = PCDrawUtils::getMousePosition() + offset;
-        windowPos.x = clampf(windowPos.x, 0, CCDirector::get()->getWinSize().width - Client::tileSize.x);
-        windowPos.y = clampf(windowPos.y, 0, CCDirector::get()->getWinSize().height - (Client::tileSize.y * (modules.size() + 1)));
-
-        return true;
-    }
-
-    if (true)
-    {
-        int i = 0;
-
-        for (auto mod : modules)
-        {
-            if (mod->touchMoved((pos - point) + ccp(0, Client::tileSize.y * i), touch))
-                return true;
-
-            i++;
-        }
-    }
-
-    return false;
-}
-
-bool Window::touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled)
-{
-    dragging = false;
-
-    return false;
 }
 
 float Window::quadraticEaseInOut(float t) {

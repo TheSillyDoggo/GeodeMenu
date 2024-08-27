@@ -1,3 +1,11 @@
+# 1.6.1
+
+- Fixed game loading slowly if speedhack was turned to really low (<0.01)
+- Fixed Editor Wave Trail changing the position while not the wave
+- Transparent BG Now updates live when you change it
+- Added **Hide Pause Menu**
+- Added **Auto Clicker**
+
 # 1.6.0
 
 - Fixed Transparent BG not working on apple devices

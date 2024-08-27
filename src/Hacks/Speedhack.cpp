@@ -8,6 +8,9 @@ FMOD::ChannelGroup* masterGroup;
 
 float speedhackLogic(float dt)
 {
+    if (CCScene::get() && getChildOfType<LoadingLayer>(CCScene::get(), 0))
+        return dt;
+
     #ifndef GEODE_IS_IOS
     if (!masterGroup)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);

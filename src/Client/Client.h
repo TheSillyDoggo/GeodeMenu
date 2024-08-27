@@ -1,5 +1,6 @@
 #pragma once
 
+#include <imgui-cocos.hpp>
 #include "../Defines/Platform.h"
 
 #include "Types/InputModule.hpp"
@@ -37,6 +38,11 @@ public:
     static Client* get();
 
     bool handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey);
+    
+    bool useImGuiUI();
+    void initImGui();
+    void drawImGui();
+    void sortWindows();
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)

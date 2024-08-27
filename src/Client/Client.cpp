@@ -53,3 +53,34 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
 
     return false;
 }
+
+bool Client::useImGuiUI()
+{
+    return false;
+}
+
+void Client::initImGui()
+{
+    ImGuiStyle* style = &ImGui::GetStyle();
+    ImGuiIO* io = &ImGui::GetIO();
+
+    io->ConfigWindowsMoveFromTitleBarOnly = true;
+
+    style->FramePadding = ImVec2(3, 6);
+    style->Colors[ImGuiCol_TitleBg] = ImVec4(20.0f / 255, 20.0f / 255, 20.0f / 255, 1);
+}
+
+void Client::drawImGui()
+{
+    for (auto window : windows)
+    {
+        window->drawImGui();
+    }
+
+    ImGui::ShowStyleEditor();
+}
+
+void Client::sortWindows()
+{
+
+}

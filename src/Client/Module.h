@@ -51,7 +51,9 @@ class Module : public UIComponent
 
         bool mouseHeldDown = false;
 
+        geode::utils::MiniFunction<void(bool)> onToggle;
         ModuleChangeDelegate* delegate = nullptr;
+
         CCSize optionSizeForce = CCSizeZero;
 
         void addHookRaw(Result<Hook*> hook);
@@ -64,6 +66,8 @@ class Module : public UIComponent
 
         void disablePatches();
         void enablePatches();
+
+        virtual void drawImGui();
 
         Module()
         {
@@ -95,17 +99,6 @@ class Module : public UIComponent
 
         // options
         CCSize sizeForOptionsPage();
-        
-
-        /// @brief 
-        /// @param point the position of the touch relative to where the module should be drawn
-        /// @param touch touch
-        /// @return should stop input passing to gd
-        bool touchBegan(CCPoint point, CCTouch* touch);
-        bool touchMoved(CCPoint point, CCTouch* touch);
-        bool touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled);
-
-        void drawModule(CCPoint pointTopLeft);
 
         virtual void onChange()
         {

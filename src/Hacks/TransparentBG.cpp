@@ -7,32 +7,6 @@
 
 using namespace geode::prelude;
 
-/*class $modify (CCSprite)
-{
-    bool grad;
-
-    virtual bool initWithFile(const char *pszFilename)
-    {
-        if (!CCSprite::initWithFile(pszFilename))
-            return false;
-
-        if (std::string(pszFilename).starts_with("GJ_gradientBG.png"))
-        {
-            m_fields->grad = true;
-        }
-
-        return true;
-    }
-
-    virtual void setColor(const ccColor3B& color3)
-    {
-        if (m_fields->grad && Client::GetModuleEnabled("trans-bg"))
-            CCSprite::setColor({255, 255, 255});
-        else
-            CCSprite::setColor(color3);
-    }
-};*/
-
 std::string getNodeName(CCObject* node) {
 #ifdef GEODE_IS_WINDOWS
     return typeid(*node).name() + 6;
@@ -51,6 +25,8 @@ std::string getNodeName(CCObject* node) {
     }
 #endif
 }
+
+ccColor3B oldColour = ccc3(0, 102, 255);
 
 #ifdef __APPLE__
 class $modify (AchievementNotifier)
@@ -87,6 +63,7 @@ class $modify (AppDelegate)
                     {
                         if (b->getColor().r == 0 && b->getColor().g == 102 && b->getColor().b == 255)
                         {
+                            oldColour = b->getColor();
                             b->setColor({255, 255, 255});
                         }
                     }
@@ -95,3 +72,41 @@ class $modify (AppDelegate)
         }
     }
 };
+
+$execute
+{
+    Loader::get()->queueInMainThread([] {
+        Client::GetModule("trans-bg")->onToggle = [](bool enabled){
+            if (auto scene = CCScene::get())
+            {
+                if (scene->getChildrenCount() > 0)
+                {
+                    if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)); l->getChildrenCount() > 0)
+                    {
+                        if (getChildOfType<LevelEditorLayer>(scene, 0))
+                            return;
+
+                        if (getChildOfType<LoadingLayer>(scene, 0))
+                            return;
+
+                        l->sortAllChildren();
+
+                        if (auto b = typeinfo_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
+                        {
+                            if (getNodeName(b).starts_with("cocos2d::CCSprite"))
+                            {
+                                if ((b->getColor().r == 0 && b->getColor().g == 102 && b->getColor().b == 255) || (b->getColor() == ccc3(255, 255, 255)))
+                                {
+                                    if (enabled)
+                                        b->setColor({255, 255, 255});
+                                    else
+                                        b->setColor(oldColour);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    });
+}
