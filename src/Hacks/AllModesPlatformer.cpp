@@ -17,10 +17,10 @@ class $modify (GJBaseGameLayer)
             {
                 if (auto obj = p1->at(i))
                 {
+if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
+                        {
                     if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
                     {
-                        if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
-                        {
                             if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
                             {
                                 this->playerWillSwitchMode(p0, obj);
