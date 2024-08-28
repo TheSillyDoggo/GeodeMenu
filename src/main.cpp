@@ -47,8 +47,13 @@ class $modify (CCKeyboardDispatcher)
                     v = true;
             }
 
-            if (down && v && !idk) {
-                if (android)
+            if (down && v && !idk)
+            {
+                if (Client::get()->useImGuiUI())
+                {
+                    Client::get()->toggleWindowVisibility(WindowTransitionType::Vertical);
+                }
+                else
                 {
                     PlatformToolbox::showCursor();
 
@@ -64,11 +69,6 @@ class $modify (CCKeyboardDispatcher)
                         AndroidUI::addToScene();
                     }
                 }
-                else
-                {
-                    showing = !showing;
-                    Client::instance->open = showing;
-                }
             }
 
             if (!getChildOfType<AndroidUI>(CCScene::get(), 0))
@@ -77,8 +77,6 @@ class $modify (CCKeyboardDispatcher)
                     return false;
             }
         }
-
-        
 
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
     }

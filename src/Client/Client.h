@@ -15,6 +15,14 @@
 
 #include "Window.h"
 
+enum class WindowTransitionType
+{
+    None,
+    UserSelected, // Only used for calling the function
+    Fade,
+    Vertical,
+};
+
 class Client
 {
 public:
@@ -26,13 +34,16 @@ public:
     float animStatus = 0;
     float delta = 0;
     
-    bool open;
+    bool isWindowOpen = true;
 
+    Ref<CCNodeRGBA> bgOpacity;
     bool over = false;
 
     Client()
     {
         mod = Mod::get();
+
+        bgOpacity = CCNodeRGBA::create();
     }
 
     static Client* get();
@@ -42,7 +53,8 @@ public:
     bool useImGuiUI();
     void initImGui();
     void drawImGui();
-    void sortWindows();
+    void sortWindows(bool instant);
+    void toggleWindowVisibility(WindowTransitionType type);
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)

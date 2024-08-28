@@ -13,18 +13,24 @@ class Window : public UIComponent
         std::string id;
         bool excludeAndroid = false;
         std::vector<Module*> modules;
-        ImVec2 windowPos;
         Ref<ScrollLayer> scroll;
 
         bool dragging = false;
         CCPoint offset = CCPoint(0, 0);
 
         bool isClosed = false;
-        float v = 1.0f;
+        float closedTimer = 1;
+        ImVec2 windowPos;
+        ImVec2 actualWindowPos;
+        ImVec2 dragOffset;
 
         float quadraticEaseInOut(float t);
 
+        ImVec2 getDesiredWindowSize();
+
+        virtual const CCPoint& getPosition();
         virtual void setPosition(const CCPoint &position);
+
         virtual void drawImGui();
 
         //stolen from stack overflow

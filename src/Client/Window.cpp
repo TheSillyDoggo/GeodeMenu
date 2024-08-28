@@ -3,17 +3,50 @@
 
 void Window::drawImGui()
 {
-    ImGui::SetNextWindowPos(windowPos);
-    ImGui::SetNextWindowSize(ImVec2(215, 25 * (modules.size() + 1)));
+    if (auto action = typeinfo_cast<CCActionInterval*>(getActionByTag(69)))
+    {
+        action->step(CCDirector::get()->getDeltaTime());
 
-    ImGui::Begin(this->name.c_str(), nullptr, ImGuiWindowFlags_NoResize);
+        if (action->isDone())
+            this->stopAction(action);
+    }
+
+    ImGui::SetNextWindowPos(ImVec2(getPosition().x, getPosition().y));
+    ImGui::SetNextWindowSize(getDesiredWindowSize());
+
+    ImGui::Begin(this->name.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+
+    if (ImGui::IsWindowHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
+    {
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+        {
+            dragOffset = windowPos;
+        }        
+
+        setPosition(ccp(dragOffset.x + ImGui::GetMouseDragDelta().x, dragOffset.y + ImGui::GetMouseDragDelta().y));
+        actualWindowPos = ImVec2(dragOffset.x + ImGui::GetMouseDragDelta().x, dragOffset.y + ImGui::GetMouseDragDelta().y);
+    }
 
     for (auto module : modules)
     {
+        ImGui::PushItemWidth(215);
         module->drawImGui();
     }
 
+    closedTimer += (ImGui::GetIO().DeltaTime * (ImGui::IsWindowCollapsed() ? -1.0f : 1.0f)) / 0.5f;
+    closedTimer = std::clamp<float>(closedTimer, 0, 1);
     ImGui::End();
+}
+
+ImVec2 Window::getDesiredWindowSize()
+{
+    return ImVec2(215, 25 * ((std::min<int>(modules.size(), 40) * closedTimer) + 1));
+}
+
+const CCPoint& Window::getPosition()
+{
+    return CCNode::getPosition();
+    //return ccp(windowPos.x, windowPos.y);
 }
 
 void Window::setPosition(const CCPoint &position)

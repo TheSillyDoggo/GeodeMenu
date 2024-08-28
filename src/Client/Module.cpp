@@ -5,7 +5,22 @@
 
 void Module::drawImGui()
 {
-    ImGui::Button(this->name.c_str());
+    bool f = false;
+    if (!enabled)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(40 / 255.0f, 40 / 255.0f, 40 / 255.0f, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(50 / 255.0f, 50 / 255.0f, 50 / 255.0f, 1));
+
+        f = true;
+    }
+
+    if (ImGui::Button(this->name.c_str(), ImVec2(215, 25)))
+    {
+        onToggleAndroid(nullptr);
+    }
+
+    if (f)
+        ImGui::PopStyleColor(2);
 }
 
 void Module::onOptionsAndroid(CCObject* sender)
