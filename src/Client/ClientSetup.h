@@ -406,7 +406,6 @@ public:
         replay->modules.push_back(new Module("CPS Counter", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
         replay->modules.push_back(new Module("Best Run", "best-run", "Shows your best run"));
         replay->modules.push_back(new Module("Clock", "status-clock", "Shows your current device time"));
-        replay->modules.push_back(new Module("Percentage", "status-percentage", "Copies the text from the percentage label in-game"));
         //replay->modules.push_back(new StatusMessage());
 
 
