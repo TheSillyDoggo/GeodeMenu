@@ -23,7 +23,7 @@ class $modify (PlayLayer)
         if (!m_debugDrawNode)
             return;
 
-        bool shouldVis = m_debugDrawNode->isVisible();
+        bool shouldVis = GameManager::sharedState()->getGameVariable("0166") && m_isPracticeMode;
 
         if (!m_fields->mod)
             m_fields->mod = Client::GetModule("show-hitboxes");

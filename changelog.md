@@ -2,7 +2,6 @@
 
 - Fixed infamous all modes platformer crash
 - Fixed Hitbox Trail saving the trail when show hitboxes is disabled
-- Fixed Show Hitboxes not working if prism menu is enabled
 - Fixed incompatibility with XDBot rewrite
 - Lowered Max Hitbox Trail count to 200 instead of 500 for performance reasons
 - Added **Decimals to Best Run**
