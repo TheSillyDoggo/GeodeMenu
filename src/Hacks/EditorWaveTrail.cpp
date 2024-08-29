@@ -11,7 +11,7 @@ class $modify (HardStreak)
 {
     void updateStroke(float p0)
     {
-        if (LevelEditorLayer::get())
+        if (auto lel = LevelEditorLayer::get())
             m_drawStreak = true;
 
         HardStreak::updateStroke(p0);
@@ -34,8 +34,16 @@ class $modify (PlayerObject)
     {
         PlayerObject::update(dt);
 
-        if (LevelEditorLayer::get())
+        if (LevelEditorLayer::get() && m_isDart)
             m_waveTrail->m_currentPoint = this->getPosition();
+    }
+
+    void fadeOutStreak2(float p0)
+    {
+        PlayerObject::fadeOutStreak2(p0);
+
+        if (LevelEditorLayer::get())
+            m_waveTrail->runAction(CCFadeTo::create(p0, 0));
     }
 
     QOLMOD_MOD_ALL_HOOKS("editor-wave-trail")

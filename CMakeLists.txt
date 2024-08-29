@@ -18,11 +18,11 @@ file(GLOB SOURCES
 	src/*/*/*.cpp
 )
 
-#if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
-#    src/*.mm
-#    src/*/*.mm
-#    src/*/*/*.mm
-#endif()
+file(GLOB OBJC_SOURCES
+    src/*.mm
+    src/*/*.mm
+    src/*/*/*.mm
+)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
@@ -44,15 +44,10 @@ endif()
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 include_directories(include)
 
-file(READ "modules.txt" MODULES_CONTENT)
+add_definitions(-DSTATUS_TEXTS)
 
-string(REGEX REPLACE "\n$" "" MODULES_CONTENT "${MODULES_CONTENT}")
-string(REPLACE "\n" ";" MODULES_LIST "${MODULES_CONTENT}")
+CPMAddPackage("gh:matcool/gd-imgui-cocos#09a9555")
 
-foreach(MODULE ${MODULES_LIST})
-    if(NOT MODULE MATCHES "^//")
-        add_definitions(-D${MODULE})
-    endif()
-endforeach()
+target_link_libraries(${PROJECT_NAME} imgui-cocos)
 
 setup_geode_mod(${PROJECT_NAME})

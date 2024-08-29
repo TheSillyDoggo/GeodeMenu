@@ -2,56 +2,26 @@
 
 #include "../Layers/ModuleOptionsLayer.h"
 #include "Dropdown.h"
-#include "../UI/PCDrawUtils.hpp"
 
-bool Module::touchBegan(CCPoint point, CCTouch* touch)
+void Module::drawImGui()
 {
-    if (CCRectMake(0, 0, Client::tileSize.x, Client::tileSize.y).containsPoint(point))
+    bool f = false;
+    if (!enabled)
     {
-        log::info("id: {}", id);
-        mouseHeldDown = true;
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(40 / 255.0f, 40 / 255.0f, 40 / 255.0f, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(50 / 255.0f, 50 / 255.0f, 50 / 255.0f, 1));
 
-        return true;
+        f = true;
     }
 
-    return false;
-}
-
-bool Module::touchMoved(CCPoint point, CCTouch* touch)
-{
-    return false;
-}
-
-bool Module::touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled)
-{
-    if (mouseHeldDown)
+    if (ImGui::Button(this->name.c_str(), ImVec2(215, 25)))
     {
-        enabled = !enabled;
-        save();
-        onChange();
-
-        if (enabled)
-            enableHooks();
-        else
-            disableHooks();
-
-        if (enabled)
-            enablePatches();
-        else
-            disablePatches();
-
-        mouseHeldDown = false;
+        onToggleAndroid(nullptr);
     }
 
-    return false;
+    if (f)
+        ImGui::PopStyleColor(2);
 }
-
-
-void Module::drawModule(CCPoint pointTopLeft)
-{
-    PCDrawUtils::drawRect(pointTopLeft, Client::tileSize, ccc4(0, 0, 255, 255));
-}
-
 
 void Module::onOptionsAndroid(CCObject* sender)
 {
@@ -76,6 +46,23 @@ void Module::onInfoAndroid(CCObject* sender)
 
 void Module::onToggleAndroid(CCObject* sender)
 {
+    if (!sender)
+    {
+        enabled = !enabled;
+        save();
+        onChange();
+
+        if (enabled)
+            enableHooks();
+        else
+            disableHooks();
+
+        if (onToggle)
+            onToggle(enabled);
+
+        return;
+    }
+
     auto dat = static_cast<Module*>(static_cast<CCNode*>(sender)->getUserData());
 
     if (dat->isInComp)
@@ -101,6 +88,9 @@ void Module::onToggleAndroid(CCObject* sender)
         dat->enableHooks();
     else
         dat->disableHooks();
+
+    if (dat->onToggle)
+        dat->onToggle(dat->enabled);
 }
 
 void Module::makeAndroid(CCNode* menu, CCPoint pos)

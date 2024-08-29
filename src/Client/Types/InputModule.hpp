@@ -35,5 +35,7 @@ class InputModule : public Module, public TextInputDelegate
 
         void makeAndroid(CCNode* menu, CCPoint pos);
 
+        virtual void drawImGui();
+
         virtual void textChanged(CCTextInputNode* input);
 };

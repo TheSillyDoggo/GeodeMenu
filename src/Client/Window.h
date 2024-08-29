@@ -1,37 +1,37 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include "../UI/PCDrawUtils.hpp"
 #include <Geode/modify/CCMouseDispatcher.hpp>
 #include "../Utils/Utils.hpp"
-
+#include <imgui-cocos.hpp>
 #include "Module.h"
 
-class Window
+class Window : public UIComponent
 {
     public:
         std::string name;
         std::string id;
         bool excludeAndroid = false;
         std::vector<Module*> modules;
-        CCPoint windowPos = CCPoint(100, 100);
         Ref<ScrollLayer> scroll;
 
         bool dragging = false;
         CCPoint offset = CCPoint(0, 0);
 
         bool isClosed = false;
-        float v = 1.0f;
-
-        bool touchBegan(CCPoint point, CCTouch* touch);
-        bool touchMoved(CCPoint point, CCTouch* touch);
-        bool touchEndedOrCancelled(CCPoint point, CCTouch* touch, bool cancelled);
+        float closedTimer = 1;
+        ImVec2 windowPos;
+        ImVec2 actualWindowPos;
+        ImVec2 dragOffset;
 
         float quadraticEaseInOut(float t);
 
-        void preDraw();
-        void drawWindow();
-        void postDraw();
+        ImVec2 getDesiredWindowSize();
+
+        virtual const CCPoint& getPosition();
+        virtual void setPosition(const CCPoint &position);
+
+        virtual void drawImGui();
 
         //stolen from stack overflow
         int getIndex(std::vector<float> v, float K);

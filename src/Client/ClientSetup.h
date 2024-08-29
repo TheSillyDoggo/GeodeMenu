@@ -55,7 +55,7 @@ public:
         Window* speedhack = new Speedhack();
         speedhack->name = "Speedhack";
         speedhack->id = "speedhack-window";
-        speedhack->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 2, 50);
+        //speedhack->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 2, 50);
 
         speedhack->modules.push_back(new SpeedhackTop());
         speedhack->modules.push_back(new SpeedhackEnabled());
@@ -73,7 +73,7 @@ public:
         Window* level = new Level();
         level->name = "Level";
         level->id = "level-window";
-        level->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
+        //level->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 1, 50);
 
         level->modules.push_back(new Module("Noclip", "noclip", "Prevents the player from dying"));
         level->modules.push_back(new Module("Instant Complete", "instant", "Instantly completes a level.\nMay not work because of the <cg>Geometry Dash</c> anti-cheat.\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", false, "<cr>Warning!</c>\nUsing this cheat on a <co>rated level</c> <cr>WILL GET YOU LEADERBOARD BANNED</c>", true));
@@ -122,6 +122,8 @@ public:
 
         level->modules.push_back(new Module("Suicide", "you-should-kill-yourself-now", "Kills the player instantly"));
         level->modules.push_back(new Module("No Checkpoint Limit", "no-checkpoint-limit", "Removes the 50 checkpoint limit from practice mode"));
+        
+        level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -162,6 +164,13 @@ public:
         //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 
         Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
+
+        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Interval", "auto-clicker-delay", "6"));
+        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Hold For", "auto-clicker-hold-for", "3"));
+        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 1", "auto-clicker-player1", "Should it click for player 1", true));
+        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 2", "auto-clicker-player2", "Should it click for player 2", true));
+        as<InputModule*>(Client::GetModule("auto-clicker")->options[0])->allowedChars = "0123456789";
+        as<InputModule*>(Client::GetModule("auto-clicker")->options[1])->allowedChars = "0123456789";
     }
 
     static void SetupBypass()
@@ -169,7 +178,7 @@ public:
         Window* bypass = new Window();
         bypass->name = "Bypass";
         bypass->id = "bypass-window";
-        bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
         //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
         
@@ -181,7 +190,7 @@ public:
         Window* bypass = new Universal();
         bypass->name = "Universal";
         bypass->id = "universal-window";
-        bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //bypass->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
 
         bypass->modules.push_back(new Module("Practice Music Sync", "practice-bypass", "Unlocks the Practice Music Sync button in the pause menu options"));
@@ -213,6 +222,8 @@ public:
 
         bypass->modules.push_back(new Module("Show Touches", "show-touches", "Shows a circle on the screen whenever you touch"));
         bypass->modules.push_back(new Module("Auto LDM", "auto-ldm", "Automatically enable Low Detail Mode in levels when you view them"));
+
+        bypass->modules.push_back(new Module("Hide Pause Menu", "hide-pause-menu", "Hides the pause menu :3"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -221,6 +232,9 @@ public:
         Client::GetModule("tps-bypass")->options.push_back(tps);
 
         Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
+        //Client::GetModule("custom-trans")->options.push_back(nullptr);
+        //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
+        //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
 
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;
@@ -232,7 +246,7 @@ public:
         Window* creator = new Window();
         creator->name = "Creator";
         creator->id = "creator-window";
-        creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
+        //creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
         creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
         creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
@@ -275,7 +289,7 @@ public:
         Window* cosmetic = new Window();
         cosmetic->name = "Cosmetic";
         cosmetic->id = "cosmetic-window";
-        cosmetic->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 3, 50);
+        //cosmetic->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 3, 50);
 
         //cosmetic->modules.push_back(new Module("Hide Endscreen BTN", "end-screen", "Adds an arrow to hide the end screen"));
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
@@ -292,6 +306,9 @@ public:
 
         cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
+
+        cosmetic->modules.push_back(new Module("Force Ghost On", "ghost-on", "Forces the ghost trail on"));
+        cosmetic->modules.push_back(new Module("Force Ghost Off", "ghost-off", "Forces the ghost trail off"));
 
         cosmetic->modules.push_back(new Module("No Glow", "no-glow", "Disables Object Glow"));
         cosmetic->modules.push_back(new Module("No Respawn Blink", "no-blink", "Disables the blinking when the player respawns"));
@@ -326,6 +343,11 @@ public:
         cosmetic->modules.push_back(new Module("Longer Trail", "longer-trail", "Lengthens your player's trail length by a factor of 3x"));
         cosmetic->modules.push_back(new Module("No Dash Fire", "no-dash-fire", "Hides the fire behind your icon when using a dash orb"));
 
+        cosmetic->modules.push_back(new Module("Gold User Coins", "gold-user-coins", "Makes user coins appear as if they are gold robtop coins"));
+        cosmetic->modules.push_back(new Module("No Ship Fire", "no-ship-fire", "Hides the fire behind the ship while it's flying"));
+
+        cosmetic->modules.push_back(new Module("Ball Rotation Bug", "ball-rotation-bug", "EMULATES the old rotation bug when switching gamemodes from the ball"));
+
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));
@@ -346,7 +368,7 @@ public:
         Window* misc = new Window();
         misc->name = "Misc";
         misc->id = "misc-window";
-        misc->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
+        //misc->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
         //misc->modules.push_back(new Module("Use Full Options", "full-options", "Opens the full options menu instead of the mini options in the pause menu.\nAlso adds a button to the normal pause menu to open the mini options."));
 
@@ -402,6 +424,11 @@ public:
         Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
         Client::GetModule("status-cps")->options.push_back(new Module("Instant Fade Transition", "status-cps-instant-fade", "Makes the green fade transition when clicking instant"));
 
+        Client::GetModule("status-clock")->options.push_back(new Module("24 Hour Time", "status-clock-24h-time", "Uses 24 hour time instead of 12 hour time"));
+
+        Client::GetModule("best-run")->options.push_back(new Module("Always Show From", "best-run-always-show-from", "Always shows the from percent even if it's from 0%"));
+        Client::GetModule("best-run")->options.push_back(new Module("Show Decimal Places", "best-run-decimals", "Shows decimal places in the run", true));
+
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
         #endif
@@ -435,7 +462,7 @@ public:
         Window* replay = new Window();
         replay->name = "Config";
         replay->id = "options-window";
-        replay->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
+        //replay->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
 
         if (android)
         {
@@ -475,7 +502,7 @@ public:
         Window* theming = new Window();
         theming->name = "Theming";
         theming->id = "themes-window";
-        theming->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+        //theming->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
 
         theming->modules.push_back(new ColourModule("Accent", "accent-colour", ccc3(10, 0, 0)));
 
@@ -489,7 +516,7 @@ public:
         Window* devtools = new Window();
         devtools->name = "Developer";
         devtools->id = "devtools-window";
-        devtools->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
+        //devtools->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
 
         devtools->modules.push_back(new Module("Recompile Shader", "recomp-shaders", "Recompiles blur shader"));
 
@@ -501,7 +528,6 @@ public:
         #ifdef GEODE_IS_MACOS
 
         std::vector<std::string> macInc = {
-            "show-trajectory",
             "show-layout",
             "no-wave",
             "no-particles",
@@ -570,7 +596,7 @@ public:
         #endif
 
         //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
 
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");

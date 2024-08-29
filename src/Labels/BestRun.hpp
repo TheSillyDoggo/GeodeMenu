@@ -21,5 +21,7 @@ class $modify (BestPlayLayer, PlayLayer)
 	};
 
 	void resetLevel();
+
+    std::string getRoundedString(float f);
     std::string getRunString();
 };

@@ -1,3 +1,52 @@
+# 1.6.3
+
+- Fixed Custom Message Label text being cut off to 12 characters
+- Ported **Show Trajectory** to 2.206
+- This is a COMPLETE REWRITE of Show Trajectory, Fixing many issues such as portals activating early and the trail disappearing sometimes
+
+# 1.6.2
+
+- Fixed infamous all modes platformer crash
+- Fixed Hitbox Trail saving the trail when show hitboxes is disabled
+- Fixed incompatibility with XDBot rewrite
+- Lowered Max Hitbox Trail count to 200 instead of 500 for performance reasons
+- Added **Decimals to Best Run**
+- Added **Hide From % from 0 to Best Run**
+
+# 1.6.1
+
+- Fixed game loading slowly if speedhack was turned to really low (<0.01)
+- Fixed Editor Wave Trail changing the position while not the wave
+- Transparent BG Now updates live when you change it
+- Added **Hide Pause Menu**
+- Added **Auto Clicker**
+
+# 1.6.0
+
+- Fixed Transparent BG not working on apple devices
+- Fixed the button not appearing in a new scene on apple devices
+- Fixed Coin Collect Circle effect being the wrong colour with Gold User Coins
+- Added **Fake Ball Rotation Bug**
+- Added **Mod Keybinds**
+
+# 1.5.9
+
+- Added **Gold User Coins**
+- Added **No Ship Fire**
+- Added **24 Hour Time** for clock label
+
+# 1.5.8
+
+- Fixed not being able to use checkpoints in platformer with all modes platformer enabled
+- Fixed crash when playtesting with **Force Ghost On** enabled
+- Coins are now collected if you complete a level with 1 attempt practice complete
+
+# 1.5.7
+
+- Fixed Mouse Cursor not disappearing when closing the menu while in a level
+- Fixed not being able to move in platformer mode on arm / m1 macOS
+- Added **Force Ghost Trail On and Off**
+
 # 1.5.6
 
 - Fixed Force Platformer not showing platformer UI on mobile

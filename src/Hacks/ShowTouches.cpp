@@ -13,6 +13,9 @@ class $modify (CCTouchDispatcher)
         if (!CCScene::get())
             return;
 
+        if (getChildOfType<LoadingLayer>(CCScene::get(), 0))
+            return;
+
         if (type == CCTOUCHBEGAN)
         {
             if (auto touch = as<CCTouch*>(touches->anyObject()))

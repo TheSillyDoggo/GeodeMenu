@@ -1,8 +1,10 @@
 #include "BestRun.hpp"
 
+Module* _accurateMod;
+
 void BestPlayLayer::resetLevel()
 {
-    if (m_fields->ignoreBest)
+    if (m_fields->ignoreBest || (m_startPosObject && getCurrentPercent() == 0))
         return PlayLayer::resetLevel();
 
     m_fields->toPercent = getCurrentPercent();
@@ -20,10 +22,36 @@ void BestPlayLayer::resetLevel()
     m_fields->fromPercent = getCurrentPercent();
 }
 
+std::string BestPlayLayer::getRoundedString(float f)
+{
+    int places = 0;
+
+    if (!_accurateMod)
+        _accurateMod = Client::GetModule("accurate-percentage");
+
+    if (Client::GetModuleEnabled("best-run-decimals") && _accurateMod)
+    {
+        places = as<InputModule*>(_accurateMod->options[0])->getIntValue();
+
+        if (!_accurateMod->enabled)
+            places = GameManager::sharedState()->getGameVariable("0126") ? 2 : 0;
+    }
+
+    if (places == 0)
+        return fmt::format("{}", as<int>(f));
+    
+    return utils::numToString<float>(f, places);
+}
+
 std::string BestPlayLayer::getRunString()
 {
-    if (m_fields->bestLength == 0)
+    auto fields = m_fields.self();
+
+    if (fields->bestLength == 0)
         return "Best Run: None";
 
-    return fmt::format("Best Run: {} - {}%", as<int>(m_fields->bestFrom), as<int>(m_fields->bestTo));
+    if (!Client::GetModuleEnabled("best-run-always-show-from") && (as<int>(fields->fromPercent) == 0))
+        return fmt::format("Best Run: {}%", getRoundedString(fields->bestTo));
+
+    return fmt::format("Best Run: {} - {}%", getRoundedString(fields->bestFrom), getRoundedString(fields->bestTo));
 }

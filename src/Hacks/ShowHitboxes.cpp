@@ -12,6 +12,10 @@ class $modify (PlayLayer)
         Module* mod2 = nullptr;
     };
 
+    static void onModify(auto& self) {
+        self.setHookPriority("PlayLayer::updateVisibility", -6969);
+    }
+
     void updateVisibility(float p0)
     {
         PlayLayer::updateVisibility(p0);

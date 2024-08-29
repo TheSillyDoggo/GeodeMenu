@@ -495,6 +495,11 @@ AndroidUI* AndroidUI::addToScene()
     return pRet;
 }
 
+void AndroidUI::onKeybinds(CCObject*)
+{
+    ManageKeybindsLayer::addToScene();
+}
+
 AndroidUI::~AndroidUI()
 {
     instance = nullptr;

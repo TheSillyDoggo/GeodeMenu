@@ -1,4 +1,10 @@
-#include "include.h"
+#include <Geode/modify/CCKeyboardDispatcher.hpp>
+#include "Client/AndroidUI.h"
+#include <Geode/modify/MenuLayer.hpp>
+#include "Client/AndroidBall.h"
+#include "Layers/SillyBaseLayer.h"
+
+using namespace geode::prelude;
 #include <Geode/modify/LoadingLayer.hpp>
 #include "Keybinds/SetBindSetting.hpp"
 #include "Keybinds/RecordKeyPopup.hpp"
@@ -27,7 +33,7 @@ class $modify (CCKeyboardDispatcher)
             return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
 
         if (!getChildOfType<LoadingLayer>(CCScene::get(), 0) && !getChildOfType<RecordKeyPopup>(CCScene::get(), 0))
-        { 
+        {
             bool v = false;
 
             std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
@@ -41,92 +47,34 @@ class $modify (CCKeyboardDispatcher)
                     v = true;
             }
 
-            if (down && v && !idk) {
-                if (android)
+            if (down && v && !idk)
+            {
+                if (Client::get()->useImGuiUI())
+                {
+                    Client::get()->toggleWindowVisibility(WindowTransitionType::None);
+                }
+                else
                 {
                     PlatformToolbox::showCursor();
 
                     if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
                     {
                         ui->onClose(nullptr);
+
+                        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !GameManager::sharedState()->getGameVariable("0024"))
+                            PlatformToolbox::hideCursor();
                     }
                     else
                     {
                         AndroidUI::addToScene();
                     }
                 }
-                else
-                {
-                    showing = !showing;
-                    Client::instance->open = showing;
-                }
-            }
-        }
-
-        if (!android)
-        {
-            if (key == KEY_Escape)
-            {
-                if (InputModule::selected)
-                {
-                    InputModule::selected = nullptr;
-                    return true;
-                }
             }
 
-            if (InputModule::selected)
+            if (!getChildOfType<AndroidUI>(CCScene::get(), 0))
             {
-                if (down)
-                {    
-                    if (key >= 48)
-                    {
-                        if (key <= 90)
-                        {
-                            std::stringstream ss;
-
-                            if (CCKeyboardDispatcher::getShiftKeyPressed())
-                                ss << CCKeyboardDispatcher::keyToString(key);
-                            else
-                            {
-                                ss << CCKeyboardDispatcher::keyToString(key);
-                            }
-
-                            if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                            {
-                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                                {
-                                    if (InputModule::selected->allowedChars[i] == ss.str()[0])
-                                    {
-                                        InputModule::selected->text += ss.str();
-                                    }
-                                }
-                            }
-
-                            return true;
-                        }
-                    }
-
-                    if (key == KEY_Backspace)
-                    {
-                        InputModule::selected->text = InputModule::selected->text.substr(0, InputModule::selected->text.length() - 1);
-                    }
-
-                    if (key == 190)
-                    {
-                        if (InputModule::selected->text.length() < InputModule::selected->maxSize)
-                            {
-                                for (size_t i = 0; i < InputModule::selected->allowedChars.length(); i++)
-                                {
-                                    if (InputModule::selected->allowedChars[i] == "."[0])
-                                    {
-                                        InputModule::selected->text += ".";
-                                    }
-                                }
-                            }
-                    }
-
-                    return true;
-                }
+                if (Client::get()->handleKeybinds(key, down, idk))
+                    return false;
             }
         }
 
@@ -172,18 +120,6 @@ $execute
 {
     migrateData();
 
-    //android = !Mod::get()->getSettingValue<bool>("use-new-ui");
-    /*
-    ,
-    "use-new-ui": {
-        "type": "bool",
-        "name": "[BETA] Use PC Gui",
-        "default": false,
-        "description": "Uses a UI more comfortable for pc users, like Mega Hack. Requires Game Restart",
-        "platforms": [ "win", "macos" ]
-    }
-    */
-
     client = new Client();
     Client::instance = client;
 
@@ -201,6 +137,15 @@ class $modify (MenuLayer)
 
         if (!v)
         {
+            if (Client::get()->useImGuiUI())
+            {
+                ImGuiCocos::get().setup([] {
+                    Client::get()->initImGui();
+                }).draw([] {
+                    Client::get()->drawImGui();
+                });
+            }
+
             if (Client::GetModuleEnabled("save-pos"))
             {
                 AndroidBall::position = ccp(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));

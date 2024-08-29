@@ -38,16 +38,12 @@ class Config : public Window
         void createBtn(CCNode* menu, int i);
         
         void onDisableGP(CCObject* sender);
-
         void onSliderChanged(CCObject* sender);
-
         void onLink(CCObject* sender);
-
         void onDropdownChanged(CCObject*);
-
+        void onChangeFile(CCObject*);
         void onChangeTab(CCObject*);
+        void onManageKeybinds(CCObject*);
 
         void cocosCreate(CCMenu* menu);
-
-        void onChangeFile(CCObject*);
 };

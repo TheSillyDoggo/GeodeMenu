@@ -1,4 +1,28 @@
 #include "InputModule.hpp"
+#include <imgui-cocos.hpp>
+
+int imguiTextInputChanged(ImGuiInputTextCallbackData* data)
+{
+    if (data && data->EventKey == ImGuiKey_Backspace)
+    {
+log::info("callback");
+    }
+    
+return 0;
+}
+
+void InputModule::drawImGui()
+{
+    auto t = text.c_str();
+if (ImGui::InputText(name.c_str(), (char*)text.c_str(), text.capacity() + 1, ImGuiInputTextFlags_CallbackAlways, imguiTextInputChanged))
+{
+    if (text.c_str() == t)
+    log::info("same");
+
+log::info("inputted");
+}
+//text = t;
+}
 
 void InputModule::makeAndroid(CCNode* menu, CCPoint pos)
 {
@@ -54,8 +78,10 @@ void InputModule::load()
 {
     text = Mod::get()->getSavedValue<std::string>(id + "_value", text);
     
-    if (this->text.size() > 12)
-        this->text = this->text.substr(0, 12);
+    Loader::get()->queueInMainThread([this]{
+        if (this->text.size() > maxSize)
+            this->text = this->text.substr(0, maxSize);
+    });
 }
 
 void InputModule::updateValue()

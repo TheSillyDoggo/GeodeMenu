@@ -1,5 +1,10 @@
 #include "UIComponent.hpp"
 
+void UIComponent::drawImGui()
+{
+    
+}
+
 void UIComponent::refreshNode()
 {
     

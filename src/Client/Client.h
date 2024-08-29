@@ -1,5 +1,6 @@
 #pragma once
 
+#include <imgui-cocos.hpp>
 #include "../Defines/Platform.h"
 
 #include "Types/InputModule.hpp"
@@ -14,6 +15,14 @@
 
 #include "Window.h"
 
+enum class WindowTransitionType
+{
+    None,
+    UserSelected, // Only used for calling the function
+    Fade,
+    Vertical,
+};
+
 class Client
 {
 public:
@@ -25,14 +34,29 @@ public:
     float animStatus = 0;
     float delta = 0;
     
-    bool open;
+    bool isWindowOpen = true;
 
+    Ref<CCNodeRGBA> bgOpacity;
     bool over = false;
 
     Client()
     {
         mod = Mod::get();
+
+        #ifndef GEODE_IS_MACOS
+        bgOpacity = CCNodeRGBA::create();
+        #endif
     }
+
+    static Client* get();
+
+    bool handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey);
+    
+    bool useImGuiUI();
+    void initImGui();
+    void drawImGui();
+    void sortWindows(bool instant);
+    void toggleWindowVisibility(WindowTransitionType type);
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)
