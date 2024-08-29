@@ -597,7 +597,7 @@ public:
         #endif
 
         //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
 
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");

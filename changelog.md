@@ -1,3 +1,8 @@
+# 1.6.3
+
+- Ported **Show Trajectory** to 2.206
+- This is a COMPLETE REWRITE of Show Trajectory, Fixing many issues such as portals activating early and the trail disappearing sometimes
+
 # 1.6.2
 
 - Fixed infamous all modes platformer crash
