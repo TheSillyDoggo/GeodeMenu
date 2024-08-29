@@ -43,7 +43,9 @@ public:
     {
         mod = Mod::get();
 
+        #ifndef GEODE_IS_MACOS
         bgOpacity = CCNodeRGBA::create();
+        #endif
     }
 
     static Client* get();

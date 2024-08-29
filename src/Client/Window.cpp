@@ -3,6 +3,7 @@
 
 void Window::drawImGui()
 {
+    #ifndef GEODE_IS_MACOS
     if (auto action = typeinfo_cast<CCActionInterval*>(getActionByTag(69)))
     {
         action->step(CCDirector::get()->getDeltaTime());
@@ -10,6 +11,7 @@ void Window::drawImGui()
         if (action->isDone())
             this->stopAction(action);
     }
+    #endif
 
     ImGui::SetNextWindowPos(ImVec2(getPosition().x, getPosition().y));
     ImGui::SetNextWindowSize(getDesiredWindowSize());
