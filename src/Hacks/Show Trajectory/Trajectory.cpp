@@ -5,6 +5,8 @@
 
 void drawSegmentAlternative(CCDrawNode* drawNode, const CCPoint& startPoint, const CCPoint& endPoint, float radius, const ccColor4F& color) // taken from the depths of google
 {
+    return;
+
     CCPoint direction = ccpNormalize(ccpSub(endPoint, startPoint));
     CCPoint perpendicular = ccp(-direction.y, direction.x);
 
