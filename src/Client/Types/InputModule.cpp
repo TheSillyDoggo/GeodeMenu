@@ -78,8 +78,10 @@ void InputModule::load()
 {
     text = Mod::get()->getSavedValue<std::string>(id + "_value", text);
     
-    if (this->text.size() > 12)
-        this->text = this->text.substr(0, 12);
+    Loader::get()->queueInMainThread([this]{
+        if (this->text.size() > maxSize)
+            this->text = this->text.substr(0, maxSize);
+    });
 }
 
 void InputModule::updateValue()
