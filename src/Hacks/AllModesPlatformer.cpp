@@ -11,10 +11,10 @@ class $modify (GJBaseGameLayer)
 {
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
     {
-GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
+        GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 
-if (!m_isPlatformer)
- return;
+        if (!m_isPlatformer)
+            return;
 
         if (p0 && p1)
         {
@@ -22,25 +22,28 @@ if (!m_isPlatformer)
             {
                 if (auto obj = p1->at(i))
                 {
-if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
-                        {
-                    if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
+                    if (typeinfo_cast<EffectGameObject*>(obj))
                     {
-                            if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
+                        if (obj->m_objectType == GameObjectType::WavePortal || obj->m_objectType == GameObjectType::SwingPortal)
+                        {
+                            if (p0->getObjectRect().intersectsRect(obj->getObjectRect()))
                             {
-                                this->playerWillSwitchMode(p0, obj);
-                                #ifdef GEODE_IS_WINDOWS
-                                p0->switchedToMode(obj->m_objectType);
+                                if(this->canBeActivatedByPlayer(p0, as<EffectGameObject*>(obj)))
+                                {
+                                    this->playerWillSwitchMode(p0, obj);
+                                    #ifdef GEODE_IS_WINDOWS
+                                    p0->switchedToMode(obj->m_objectType);
 
-                                if (obj->m_objectType == GameObjectType::SwingPortal)
-                                    p0->toggleSwingMode(true, false);
-                                else
-                                    p0->toggleDartMode(true, false);
-                                
-                                #else
-                                this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
-                                #endif
-                                obj->playShineEffect();
+                                    if (obj->m_objectType == GameObjectType::SwingPortal)
+                                        p0->toggleSwingMode(true, false);
+                                    else
+                                        p0->toggleDartMode(true, false);
+                                    
+                                    #else
+                                    this->switchToFlyMode(p0, obj, false, as<int>(obj->m_objectType));
+                                    #endif
+                                    obj->playShineEffect();
+                                }
                             }
                         }
                     }

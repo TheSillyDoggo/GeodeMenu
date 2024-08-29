@@ -26,6 +26,10 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         lastPos2 = CCPointZero;
 
         hitboxTrail = Client::GetModule("show-hitboxes")->options[6];
+        hitboxTrail->onToggle = [](bool enabled){
+            points.clear();
+            sizes.clear();
+        };
 
         return true;
     }
@@ -34,7 +38,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
     {
         GJBaseGameLayer::update(dt);
 
-        if (hitboxTrail->enabled)
+        if (hitboxTrail->enabled && m_debugDrawNode->isVisible())
             drawTrail();
     }
 
@@ -83,7 +87,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
             }
         }
 
-        if (points.size() > 500)
+        if (points.size() > 200)
         {
             points.erase(points.begin());
             sizes.erase(sizes.begin());

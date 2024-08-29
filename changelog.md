@@ -1,3 +1,12 @@
+# 1.6.2
+
+- Fixed infamous all modes platformer crash
+- Fixed Hitbox Trail saving the trail when show hitboxes is disabled
+- Fixed Show Hitboxes not working if prism menu is enabled
+- Lowered Max Hitbox Trail count to 200 instead of 500 for performance reasons
+- Added **Decimals to Best Run**
+- Added **Hide From % from 0 to Best Run**
+
 # 1.6.1
 
 - Fixed game loading slowly if speedhack was turned to really low (<0.01)

@@ -426,6 +426,9 @@ public:
 
         Client::GetModule("status-clock")->options.push_back(new Module("24 Hour Time", "status-clock-24h-time", "Uses 24 hour time instead of 12 hour time"));
 
+        Client::GetModule("best-run")->options.push_back(new Module("Always Show From", "best-run-always-show-from", "Always shows the from percent even if it's from 0%"));
+        Client::GetModule("best-run")->options.push_back(new Module("Show Decimal Places", "best-run-decimals", "Shows decimal places in the run", true));
+
         #ifdef STATUS_TEXTS
         StatusNode::postSetup(replay);
         #endif
