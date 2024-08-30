@@ -103,8 +103,20 @@ void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObjec
         {
             bool del = true;
             
-            if (obj->m_objectType == GameObjectType::Solid || obj->m_objectType == GameObjectType::Hazard || obj->m_objectType == GameObjectType::AnimatedHazard || obj->m_objectType == GameObjectType::Slope)
-                del = false;
+            if (typeinfo_cast<GameObject*>(obj))
+            {
+                if (obj->m_objectType == GameObjectType::Solid)
+                    del = false;
+
+                if (obj->m_objectType == GameObjectType::Hazard)
+                    del = false;
+
+                if (obj->m_objectType == GameObjectType::AnimatedHazard)
+                    del = false;
+
+                if (obj->m_objectType == GameObjectType::Slope)
+                    del = false;
+            }
             
             return del;
         });
@@ -390,8 +402,8 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
 
 void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 {
-    float delta = 0.75f;
-    int iterations = 120;
+    float delta = 0.45f;
+    int iterations = 240;
 
     m_fields->trajectoryPlayer->releaseButton(PlayerButton::Jump);
 
