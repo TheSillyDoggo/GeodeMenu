@@ -93,7 +93,7 @@ void TrajectoryPlayerObject::playSpiderDashEffect(cocos2d::CCPoint from, cocos2d
     PlayerObject::playSpiderDashEffect(from, to);
 }
 
-void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+/*void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
     if (p0 == m_fields->trajectoryPlayer)
     {
@@ -119,7 +119,7 @@ void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObjec
     }
 
     GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
-}
+}*/
 
 void TrajectoryBGL::checkRepellPlayer()
 {
