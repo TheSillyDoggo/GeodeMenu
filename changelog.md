@@ -1,6 +1,7 @@
 # 1.6.3
 
 - Fixed Custom Message Label text being cut off to 12 characters
+- Added **Percentage Label**
 - Ported **Show Trajectory** to 2.206
 - This is a COMPLETE REWRITE of Show Trajectory, Fixing many issues such as portals activating early and the trail disappearing sometimes
 

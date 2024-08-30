@@ -67,6 +67,7 @@ class StatusNode : public CCNode
         static inline Module* cpsM = nullptr;
         static inline Module* bestRun = nullptr;
         static inline Module* clock = nullptr;
+        static inline Module* percentage = nullptr;
 
         static inline Module* noclip = nullptr;
 
