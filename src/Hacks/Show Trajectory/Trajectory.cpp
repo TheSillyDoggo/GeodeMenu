@@ -127,7 +127,7 @@ void TrajectoryBGL::checkRepellPlayer()
 
     if (m_fields->trajectoryPlayer)
     {
-        m_fields->trajectoryDraw->clear();
+        //m_fields->trajectoryDraw->clear();
 
         resetSimulation(m_player1);
         simulateTrajectory(true, m_player1);
@@ -421,6 +421,8 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 
         m_fields->trajectoryPlayer->update(delta);
         this->checkCollisions(m_fields->trajectoryPlayer, delta, false);
+
+        /*
         
         drawSegmentAlternative(m_fields->trajectoryDraw, m_fields->trajectoryPlayer->getPosition(), m_fields->point, 0.5f, m_fields->trajectoryPlayer->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, press ? 1 : 0.45f, 0, 1));
         m_fields->point = m_fields->trajectoryPlayer->getPosition();
@@ -439,7 +441,7 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 
             m_fields->trajectoryDraw->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(1, 0, 0, 1));
             return;
-        }
+        }*/
     }
 }
 
