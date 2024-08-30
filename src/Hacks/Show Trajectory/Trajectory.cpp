@@ -153,6 +153,8 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
     fields->trajectoryPlayer->m_lastCollisionLeft = 0;
     fields->trajectoryPlayer->m_lastCollisionRight = 0;
 
+    return;
+
     RM(m_yVelocity)
     RM(m_fallSpeed)
     RM(m_isOnSlope)
@@ -196,9 +198,7 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
     RM(m_collidedObject)
     RM(m_lastGroundObject)
     RM(m_collidingWithLeft)
-    RM(m_collidingWithRight)
-
-    return;
+    RM(m_collidingWithRight)    
 
     
     RM(m_unk50C)
@@ -395,25 +395,25 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
 
 void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 {
-    float delta = 0.5f;
-    int iterations = 240;
+    float delta = 0.75f;
+    int iterations = 120;
 
     m_fields->trajectoryPlayer->releaseButton(PlayerButton::Jump);
 
     if (press)
         m_fields->trajectoryPlayer->pushButton(PlayerButton::Jump);
 
-    if (m_fields->trajectoryPlayer->m_dashFireSprite)
-        m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
+    //if (m_fields->trajectoryPlayer->m_dashFireSprite)
+        //m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
 
-    if (m_fields->trajectoryPlayer->m_dashParticles)
-        m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
+    //if (m_fields->trajectoryPlayer->m_dashParticles)
+        //m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
 
-    if (m_fields->trajectoryPlayer->m_regularTrail)
-        m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
+    //if (m_fields->trajectoryPlayer->m_regularTrail)
+        //m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
 
-    if (m_fields->trajectoryPlayer->m_ghostTrail)
-        m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
+    //if (m_fields->trajectoryPlayer->m_ghostTrail)
+        //m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
 
     for (size_t i = 0; i < iterations; i++)
     {
@@ -421,6 +421,7 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 
         m_fields->trajectoryPlayer->update(delta);
         this->checkCollisions(m_fields->trajectoryPlayer, delta, false);
+
 
         /*
         
