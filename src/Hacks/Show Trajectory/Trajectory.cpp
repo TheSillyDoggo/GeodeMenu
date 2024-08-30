@@ -5,8 +5,6 @@
 
 void drawSegmentAlternative(CCDrawNode* drawNode, const CCPoint& startPoint, const CCPoint& endPoint, float radius, const ccColor4F& color) // taken from the depths of google
 {
-    return;
-
     CCPoint direction = ccpNormalize(ccpSub(endPoint, startPoint));
     CCPoint perpendicular = ccp(-direction.y, direction.x);
 
@@ -155,239 +153,241 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
     fields->trajectoryPlayer->m_lastCollisionLeft = 0;
     fields->trajectoryPlayer->m_lastCollisionRight = 0;
 
-    RM(m_wasTeleported)
-    RM(m_fixGravityBug)
-    RM(m_reverseSync)
-    RM(m_yVelocityBeforeSlope)
-    RM(m_dashX)
-    RM(m_dashY)
-    RM(m_dashAngle)
-    RM(m_dashStartTime)
-    RM(m_dashRing)
-    RM(m_slopeStartTime)
-    RM(m_justPlacedStreak)
-    RM(m_maybeLastGroundObject)
-    RM(m_unk50C)
-    RM(m_unk510)
-    RM(m_currentSlope2)
-    RM(m_preLastGroundObject)
-    RM(m_slopeAngle)
-    RM(m_slopeSlidingMaybeRotated)
-    RM(m_quickCheckpointMode)
-    RM(m_collidedObject)
-    RM(m_lastGroundObject)
-    RM(m_collidingWithLeft)
-    RM(m_collidingWithRight)
-    RM(m_maybeSavedPlayerFrame)
-    RM(m_scaleXRelated2)
-    RM(m_groundYVelocity)
-    RM(m_yVelocityRelated)
-    RM(m_scaleXRelated3)
-    RM(m_scaleXRelated4)
-    RM(m_scaleXRelated5)
-    RM(m_isCollidingWithSlope)
-    RM(m_isBallRotating)
-    RM(m_unk669)
-    RM(m_currentSlope3)
-    RM(m_currentSlope)
-    RM(unk_584)
-    RM(m_collidingWithSlopeId)
-    RM(m_slopeFlipGravityRelated)
-    RM(m_slopeAngleRadians)
-    // RM(m_rotateObjectsRelated)
-    // RM(m_maybeRotatedObjectsMap)
-    RM(m_rotationSpeed)
-    RM(m_rotateSpeed)
-    RM(m_isRotating)
-    RM(m_isBallRotating2)
-    RM(m_hasGlow)
-    RM(m_isHidden)
-    RM(m_speedMultiplier)
-    RM(m_yStart)
-    RM(m_gravity)
-    RM(m_trailingParticleLife)
-    RM(m_unk648)
-    RM(m_gameModeChangedTime)
-    RM(m_padRingRelated)
-    RM(m_maybeReducedEffects)
-    RM(m_maybeIsFalling)
-    RM(m_shouldTryPlacingCheckpoint)
-    RM(m_playEffects)
-    RM(m_maybeCanRunIntoBlocks)
-    RM(m_hasGroundParticles)
-    RM(m_hasShipParticles)
-    RM(m_isOnGround3)
-    RM(m_checkpointTimeout)
-    RM(m_lastCheckpointTime)
-    RM(m_lastJumpTime)
-    RM(m_lastFlipTime)
-    RM(m_flashTime)
-    RM(m_flashRelated)
-    RM(m_flashRelated1)
-    RM(m_colorRelated2)
-    RM(m_flashRelated3)
-    RM(m_lastSpiderFlipTime)
-    RM(m_unkBool5)
-    RM(m_maybeIsVehicleGlowing)
-    RM(m_gv0096)
-    RM(m_gv0100)
-    RM(m_accelerationOrSpeed)
-    RM(m_snapDistance)
-    RM(m_ringJumpRelated)
-    // RM(m_ringRelatedSet)
-    RM(m_objectSnappedTo)
-    RM(m_pendingCheckpoint)
-    RM(m_maybeSpriteRelated)
-    RM(m_slopeRotation)
-    RM(m_currentSlopeYVelocity)
-    RM(m_unk3d0)
-    RM(m_blackOrbRelated)
-    RM(m_unk3e0)
-    RM(m_unk3e1)
-    RM(m_isAccelerating)
-    RM(m_isCurrentSlopeTop)
-    RM(m_collidedTopMinY)
-    RM(m_collidedBottomMaxY)
-    RM(m_collidedLeftMaxX)
-    RM(m_collidedRightMinX)
-    RM(m_streakRelated4)
-    RM(m_canPlaceCheckpoint)
-    RM(m_colorRelated)
-    RM(m_secondColorRelated)
-    RM(m_hasCustomGlowColor)
-    RM(m_glowColor)
-    RM(m_maybeIsColliding)
-    RM(m_jumpBuffered)
-    RM(m_stateRingJump)
-    RM(m_wasJumpBuffered)
-    RM(m_wasRobotJump)
-    RM(m_stateJumpBuffered)
-    RM(m_stateRingJump2)
-    RM(m_touchedRing)
-    RM(m_touchedCustomRing)
-    RM(m_touchedGravityPortal)
-    RM(m_maybeTouchedBreakableBlock)
-    RM(m_jumpRelatedAC2)
-    RM(m_touchedPad)
-    RM(m_yVelocity)
-    RM(m_fallSpeed)
-    RM(m_isOnSlope)
-    RM(m_wasOnSlope)
-    RM(m_slopeVelocity)
-    RM(m_maybeUpsideDownSlope)
-    RM(m_isShip)
-    RM(m_isBird)
-    RM(m_isBall)
-    RM(m_isDart)
-    RM(m_isRobot)
-    RM(m_isSpider)
-    RM(m_isUpsideDown)
-    RM(m_isDead)
-    RM(m_isOnGround)
-    RM(m_isGoingLeft)
-    RM(m_isSideways)
-    RM(m_isSwing)
-    RM(m_reverseRelated)
-    RM(m_maybeReverseSpeed)
-    RM(m_maybeReverseAcceleration)
-    RM(m_xVelocityRelated2)
-    RM(m_isDashing)
-    RM(m_unk9e8)
-    RM(m_groundObjectMaterial)
-    RM(m_vehicleSize)
-    RM(m_playerSpeed)
-    RM(m_shipRotation)
-    RM(m_lastPortalPos)
-    RM(m_unkUnused3)
-    RM(m_isOnGround2)
-    RM(m_lastLandTime)
-    RM(m_platformerVelocityRelated)
-    RM(m_maybeIsBoosted)
-    RM(m_scaleXRelatedTime)
-    RM(m_decreaseBoostSlide)
-    RM(m_unkA29)
-    RM(m_isLocked)
-    RM(m_controlsDisabled)
-    RM(m_lastGroundedPos)
-    // RM(m_touchedRings)
-    RM(m_lastActivatedPortal)
-    RM(m_hasEverJumped)
-    RM(m_ringOrStreakRelated)
-    RM(m_playerColor1)
-    RM(m_playerColor2)
-    RM(m_position)
-    RM(m_isSecondPlayer)
-    RM(m_unkA99)
-    RM(m_totalTime)
-    RM(m_isBeingSpawnedByDualPortal)
-    RM(m_unkAAC)
-    RM(m_unkAngle1)
-    RM(m_yVelocityRelated3)
-    RM(m_gamevar0060)
-    RM(m_swapColors)
-    RM(m_gamevar0062)
-    RM(m_followRelated)
-    RM(m_playerFollowFloats)
-    RM(m_isOutOfBounds)
-    RM(m_fallStartY)
-    RM(m_disablePlayerSqueeze)
-    RM(m_robotHasRun3)
-    RM(m_robotHasRun2)
-    RM(m_item20)
-    RM(m_ignoreDamage)
-    RM(m_enable22Changes)
-    RM(m_unk838)
-    RM(m_stateOnGround)
-    RM(m_stateUnk)
-    RM(m_stateNoStickX)
-    RM(m_stateNoStickY)
-    RM(m_stateUnk2)
-    RM(m_stateBoostX)
-    RM(m_stateBoostY)
-    RM(m_maybeStateForce2)
-    RM(m_stateScale)
-    RM(m_platformerXVelocity)
-    RM(m_holdingRight)
-    RM(m_holdingLeft)
-    RM(m_leftPressedFirst)
-    RM(m_scaleXRelated)
-    RM(m_maybeHasStopped)
-    RM(m_xVelocityRelated)
-    RM(m_maybeGoingCorrectSlopeDirection)
-    RM(m_isSliding)
-    RM(m_maybeSlopeForce)
-    RM(m_isOnIce)
-    RM(m_physDeltaRelated)
-    RM(m_isOnGround4)
-    RM(m_maybeSlidingTime)
-    RM(m_maybeSlidingStartTime)
-    RM(m_changedDirectionsTime)
-    RM(m_slopeEndTime)
-    RM(m_isMoving)
-    RM(m_platformerMovingLeft)
-    RM(m_platformerMovingRight)
-    RM(m_isSlidingRight)
-    RM(m_maybeChangedDirectionAngle)
-    RM(m_unkUnused2)
-    RM(m_isPlatformer)
-    RM(m_stateNoAutoJump)
-    RM(m_stateDartSlide)
-    RM(m_stateHitHead)
-    RM(m_stateFlipGravity)
-    RM(m_gravityMod)
-    RM(m_stateForce)
-    RM(m_stateForceVector)
-    RM(m_affectedByForces)
-    RM(m_jumpPadRelated)
-    RM(m_somethingPlayerSpeedTime)
-    RM(m_playerSpeedAC)
-    RM(m_fixRobotJump)
-    RM(m_holdingButtons)
-    RM(m_inputsLocked)
-    RM(m_currentRobotAnimation)
-    RM(m_gv0123)
-    RM(m_iconRequestID)
-    RM(m_unkUnused)
+    int i = 0;
+
+    RM(m_wasTeleported)  log::info("a: {}", i++);
+    RM(m_fixGravityBug)  log::info("a: {}", i++);
+    RM(m_reverseSync)  log::info("a: {}", i++);
+    RM(m_yVelocityBeforeSlope)  log::info("a: {}", i++);
+    RM(m_dashX)  log::info("a: {}", i++);
+    RM(m_dashY)  log::info("a: {}", i++);
+    RM(m_dashAngle)  log::info("a: {}", i++);
+    RM(m_dashStartTime)  log::info("a: {}", i++);
+    RM(m_dashRing)  log::info("a: {}", i++);
+    RM(m_slopeStartTime)  log::info("a: {}", i++);
+    RM(m_justPlacedStreak)  log::info("a: {}", i++);
+    RM(m_maybeLastGroundObject)  log::info("a: {}", i++);
+    RM(m_unk50C)  log::info("a: {}", i++);
+    RM(m_unk510)  log::info("a: {}", i++);
+    RM(m_currentSlope2)  log::info("a: {}", i++);
+    RM(m_preLastGroundObject)  log::info("a: {}", i++);
+    RM(m_slopeAngle)  log::info("a: {}", i++);
+    RM(m_slopeSlidingMaybeRotated)  log::info("a: {}", i++);
+    RM(m_quickCheckpointMode)  log::info("a: {}", i++);
+    RM(m_collidedObject)  log::info("a: {}", i++);
+    RM(m_lastGroundObject)  log::info("a: {}", i++);
+    RM(m_collidingWithLeft)  log::info("a: {}", i++);
+    RM(m_collidingWithRight)  log::info("a: {}", i++);
+    RM(m_maybeSavedPlayerFrame)  log::info("a: {}", i++);
+    RM(m_scaleXRelated2)  log::info("a: {}", i++);
+    RM(m_groundYVelocity)  log::info("a: {}", i++);
+    RM(m_yVelocityRelated)  log::info("a: {}", i++);
+    RM(m_scaleXRelated3)  log::info("a: {}", i++);
+    RM(m_scaleXRelated4)  log::info("a: {}", i++);
+    RM(m_scaleXRelated5)  log::info("a: {}", i++);
+    RM(m_isCollidingWithSlope)  log::info("a: {}", i++);
+    RM(m_isBallRotating)  log::info("a: {}", i++);
+    RM(m_unk669)  log::info("a: {}", i++);
+    RM(m_currentSlope3)  log::info("a: {}", i++);
+    RM(m_currentSlope)  log::info("a: {}", i++);
+    RM(unk_584)  log::info("a: {}", i++);
+    RM(m_collidingWithSlopeId)  log::info("a: {}", i++);
+    RM(m_slopeFlipGravityRelated)  log::info("a: {}", i++);
+    RM(m_slopeAngleRadians)  log::info("a: {}", i++);
+    // RM(m_rotateObjectsRelated)  log::info("a: {}", i++);
+    // RM(m_maybeRotatedObjectsMap)  log::info("a: {}", i++);
+    RM(m_rotationSpeed)  log::info("a: {}", i++);
+    RM(m_rotateSpeed)  log::info("a: {}", i++);
+    RM(m_isRotating)  log::info("a: {}", i++);
+    RM(m_isBallRotating2)  log::info("a: {}", i++);
+    RM(m_hasGlow)  log::info("a: {}", i++);
+    RM(m_isHidden)  log::info("a: {}", i++);
+    RM(m_speedMultiplier)  log::info("a: {}", i++);
+    RM(m_yStart)  log::info("a: {}", i++);
+    RM(m_gravity)  log::info("a: {}", i++);
+    RM(m_trailingParticleLife)  log::info("a: {}", i++);
+    RM(m_unk648)  log::info("a: {}", i++);
+    RM(m_gameModeChangedTime)  log::info("a: {}", i++);
+    RM(m_padRingRelated)  log::info("a: {}", i++);
+    RM(m_maybeReducedEffects)  log::info("a: {}", i++);
+    RM(m_maybeIsFalling)  log::info("a: {}", i++);
+    RM(m_shouldTryPlacingCheckpoint)  log::info("a: {}", i++);
+    RM(m_playEffects)  log::info("a: {}", i++);
+    RM(m_maybeCanRunIntoBlocks)  log::info("a: {}", i++);
+    RM(m_hasGroundParticles)  log::info("a: {}", i++);
+    RM(m_hasShipParticles)  log::info("a: {}", i++);
+    RM(m_isOnGround3)  log::info("a: {}", i++);
+    RM(m_checkpointTimeout)  log::info("a: {}", i++);
+    RM(m_lastCheckpointTime)  log::info("a: {}", i++);
+    RM(m_lastJumpTime)  log::info("a: {}", i++);
+    RM(m_lastFlipTime)  log::info("a: {}", i++);
+    RM(m_flashTime)  log::info("a: {}", i++);
+    RM(m_flashRelated)  log::info("a: {}", i++);
+    RM(m_flashRelated1)  log::info("a: {}", i++);
+    RM(m_colorRelated2)  log::info("a: {}", i++);
+    RM(m_flashRelated3)  log::info("a: {}", i++);
+    RM(m_lastSpiderFlipTime)  log::info("a: {}", i++);
+    RM(m_unkBool5)  log::info("a: {}", i++);
+    RM(m_maybeIsVehicleGlowing)  log::info("a: {}", i++);
+    RM(m_gv0096)  log::info("a: {}", i++);
+    RM(m_gv0100)  log::info("a: {}", i++);
+    RM(m_accelerationOrSpeed)  log::info("a: {}", i++);
+    RM(m_snapDistance)  log::info("a: {}", i++);
+    RM(m_ringJumpRelated)  log::info("a: {}", i++);
+    // RM(m_ringRelatedSet)  log::info("a: {}", i++);
+    RM(m_objectSnappedTo)  log::info("a: {}", i++);
+    RM(m_pendingCheckpoint)  log::info("a: {}", i++);
+    RM(m_maybeSpriteRelated)  log::info("a: {}", i++);
+    RM(m_slopeRotation)  log::info("a: {}", i++);
+    RM(m_currentSlopeYVelocity)  log::info("a: {}", i++);
+    RM(m_unk3d0)  log::info("a: {}", i++);
+    RM(m_blackOrbRelated)  log::info("a: {}", i++);
+    RM(m_unk3e0)  log::info("a: {}", i++);
+    RM(m_unk3e1)  log::info("a: {}", i++);
+    RM(m_isAccelerating)  log::info("a: {}", i++);
+    RM(m_isCurrentSlopeTop)  log::info("a: {}", i++);
+    RM(m_collidedTopMinY)  log::info("a: {}", i++);
+    RM(m_collidedBottomMaxY)  log::info("a: {}", i++);
+    RM(m_collidedLeftMaxX)  log::info("a: {}", i++);
+    RM(m_collidedRightMinX)  log::info("a: {}", i++);
+    RM(m_streakRelated4)  log::info("a: {}", i++);
+    RM(m_canPlaceCheckpoint)  log::info("a: {}", i++);
+    RM(m_colorRelated)  log::info("a: {}", i++);
+    RM(m_secondColorRelated)  log::info("a: {}", i++);
+    RM(m_hasCustomGlowColor)  log::info("a: {}", i++);
+    RM(m_glowColor)  log::info("a: {}", i++);
+    RM(m_maybeIsColliding)  log::info("a: {}", i++);
+    RM(m_jumpBuffered)  log::info("a: {}", i++);
+    RM(m_stateRingJump)  log::info("a: {}", i++);
+    RM(m_wasJumpBuffered)  log::info("a: {}", i++);
+    RM(m_wasRobotJump)  log::info("a: {}", i++);
+    RM(m_stateJumpBuffered)  log::info("a: {}", i++);
+    RM(m_stateRingJump2)  log::info("a: {}", i++);
+    RM(m_touchedRing)  log::info("a: {}", i++);
+    RM(m_touchedCustomRing)  log::info("a: {}", i++);
+    RM(m_touchedGravityPortal)  log::info("a: {}", i++);
+    RM(m_maybeTouchedBreakableBlock)  log::info("a: {}", i++);
+    RM(m_jumpRelatedAC2)  log::info("a: {}", i++);
+    RM(m_touchedPad)  log::info("a: {}", i++);
+    RM(m_yVelocity)  log::info("a: {}", i++);
+    RM(m_fallSpeed)  log::info("a: {}", i++);
+    RM(m_isOnSlope)  log::info("a: {}", i++);
+    RM(m_wasOnSlope)  log::info("a: {}", i++);
+    RM(m_slopeVelocity)  log::info("a: {}", i++);
+    RM(m_maybeUpsideDownSlope)  log::info("a: {}", i++);
+    RM(m_isShip)  log::info("a: {}", i++);
+    RM(m_isBird)  log::info("a: {}", i++);
+    RM(m_isBall)  log::info("a: {}", i++);
+    RM(m_isDart)  log::info("a: {}", i++);
+    RM(m_isRobot)  log::info("a: {}", i++);
+    RM(m_isSpider)  log::info("a: {}", i++);
+    RM(m_isUpsideDown)  log::info("a: {}", i++);
+    RM(m_isDead)  log::info("a: {}", i++);
+    RM(m_isOnGround)  log::info("a: {}", i++);
+    RM(m_isGoingLeft)  log::info("a: {}", i++);
+    RM(m_isSideways)  log::info("a: {}", i++);
+    RM(m_isSwing)  log::info("a: {}", i++);
+    RM(m_reverseRelated)  log::info("a: {}", i++);
+    RM(m_maybeReverseSpeed)  log::info("a: {}", i++);
+    RM(m_maybeReverseAcceleration)  log::info("a: {}", i++);
+    RM(m_xVelocityRelated2)  log::info("a: {}", i++);
+    RM(m_isDashing)  log::info("a: {}", i++);
+    RM(m_unk9e8)  log::info("a: {}", i++);
+    RM(m_groundObjectMaterial)  log::info("a: {}", i++);
+    RM(m_vehicleSize)  log::info("a: {}", i++);
+    RM(m_playerSpeed)  log::info("a: {}", i++);
+    RM(m_shipRotation)  log::info("a: {}", i++);
+    RM(m_lastPortalPos)  log::info("a: {}", i++);
+    RM(m_unkUnused3)  log::info("a: {}", i++);
+    RM(m_isOnGround2)  log::info("a: {}", i++);
+    RM(m_lastLandTime)  log::info("a: {}", i++);
+    RM(m_platformerVelocityRelated)  log::info("a: {}", i++);
+    RM(m_maybeIsBoosted)  log::info("a: {}", i++);
+    RM(m_scaleXRelatedTime)  log::info("a: {}", i++);
+    RM(m_decreaseBoostSlide)  log::info("a: {}", i++);
+    RM(m_unkA29)  log::info("a: {}", i++);
+    RM(m_isLocked)  log::info("a: {}", i++);
+    RM(m_controlsDisabled)  log::info("a: {}", i++);
+    RM(m_lastGroundedPos)  log::info("a: {}", i++);
+    // RM(m_touchedRings)  log::info("a: {}", i++);
+    RM(m_lastActivatedPortal)  log::info("a: {}", i++);
+    RM(m_hasEverJumped)  log::info("a: {}", i++);
+    RM(m_ringOrStreakRelated)  log::info("a: {}", i++);
+    RM(m_playerColor1)  log::info("a: {}", i++);
+    RM(m_playerColor2)  log::info("a: {}", i++);
+    RM(m_position)  log::info("a: {}", i++);
+    RM(m_isSecondPlayer)  log::info("a: {}", i++);
+    RM(m_unkA99)  log::info("a: {}", i++);
+    RM(m_totalTime)  log::info("a: {}", i++);
+    RM(m_isBeingSpawnedByDualPortal)  log::info("a: {}", i++);
+    RM(m_unkAAC)  log::info("a: {}", i++);
+    RM(m_unkAngle1)  log::info("a: {}", i++);
+    RM(m_yVelocityRelated3)  log::info("a: {}", i++);
+    RM(m_gamevar0060)  log::info("a: {}", i++);
+    RM(m_swapColors)  log::info("a: {}", i++);
+    RM(m_gamevar0062)  log::info("a: {}", i++);
+    RM(m_followRelated)  log::info("a: {}", i++);
+    RM(m_playerFollowFloats)  log::info("a: {}", i++);
+    RM(m_isOutOfBounds)  log::info("a: {}", i++);
+    RM(m_fallStartY)  log::info("a: {}", i++);
+    RM(m_disablePlayerSqueeze)  log::info("a: {}", i++);
+    RM(m_robotHasRun3)  log::info("a: {}", i++);
+    RM(m_robotHasRun2)  log::info("a: {}", i++);
+    RM(m_item20)  log::info("a: {}", i++);
+    RM(m_ignoreDamage)  log::info("a: {}", i++);
+    RM(m_enable22Changes)  log::info("a: {}", i++);
+    RM(m_unk838)  log::info("a: {}", i++);
+    RM(m_stateOnGround)  log::info("a: {}", i++);
+    RM(m_stateUnk)  log::info("a: {}", i++);
+    RM(m_stateNoStickX)  log::info("a: {}", i++);
+    RM(m_stateNoStickY)  log::info("a: {}", i++);
+    RM(m_stateUnk2)  log::info("a: {}", i++);
+    RM(m_stateBoostX)  log::info("a: {}", i++);
+    RM(m_stateBoostY)  log::info("a: {}", i++);
+    RM(m_maybeStateForce2)  log::info("a: {}", i++);
+    RM(m_stateScale)  log::info("a: {}", i++);
+    RM(m_platformerXVelocity)  log::info("a: {}", i++);
+    RM(m_holdingRight)  log::info("a: {}", i++);
+    RM(m_holdingLeft)  log::info("a: {}", i++);
+    RM(m_leftPressedFirst)  log::info("a: {}", i++);
+    RM(m_scaleXRelated)  log::info("a: {}", i++);
+    RM(m_maybeHasStopped)  log::info("a: {}", i++);
+    RM(m_xVelocityRelated)  log::info("a: {}", i++);
+    RM(m_maybeGoingCorrectSlopeDirection)  log::info("a: {}", i++);
+    RM(m_isSliding)  log::info("a: {}", i++);
+    RM(m_maybeSlopeForce)  log::info("a: {}", i++);
+    RM(m_isOnIce)  log::info("a: {}", i++);
+    RM(m_physDeltaRelated)  log::info("a: {}", i++);
+    RM(m_isOnGround4)  log::info("a: {}", i++);
+    RM(m_maybeSlidingTime)  log::info("a: {}", i++);
+    RM(m_maybeSlidingStartTime)  log::info("a: {}", i++);
+    RM(m_changedDirectionsTime)  log::info("a: {}", i++);
+    RM(m_slopeEndTime)  log::info("a: {}", i++);
+    RM(m_isMoving)  log::info("a: {}", i++);
+    RM(m_platformerMovingLeft)  log::info("a: {}", i++);
+    RM(m_platformerMovingRight)  log::info("a: {}", i++);
+    RM(m_isSlidingRight)  log::info("a: {}", i++);
+    RM(m_maybeChangedDirectionAngle)  log::info("a: {}", i++);
+    RM(m_unkUnused2)  log::info("a: {}", i++);
+    RM(m_isPlatformer)  log::info("a: {}", i++);
+    RM(m_stateNoAutoJump)  log::info("a: {}", i++);
+    RM(m_stateDartSlide)  log::info("a: {}", i++);
+    RM(m_stateHitHead)  log::info("a: {}", i++);
+    RM(m_stateFlipGravity)  log::info("a: {}", i++);
+    RM(m_gravityMod)  log::info("a: {}", i++);
+    RM(m_stateForce)  log::info("a: {}", i++);
+    RM(m_stateForceVector)  log::info("a: {}", i++);
+    RM(m_affectedByForces)  log::info("a: {}", i++);
+    RM(m_jumpPadRelated)  log::info("a: {}", i++);
+    RM(m_somethingPlayerSpeedTime)  log::info("a: {}", i++);
+    RM(m_playerSpeedAC)  log::info("a: {}", i++);
+    RM(m_fixRobotJump)  log::info("a: {}", i++);
+    RM(m_holdingButtons)  log::info("a: {}", i++);
+    RM(m_inputsLocked)  log::info("a: {}", i++);
+    RM(m_currentRobotAnimation)  log::info("a: {}", i++);
+    RM(m_gv0123)  log::info("a: {}", i++);
+    RM(m_iconRequestID)  log::info("a: {}", i++);
+    RM(m_unkUnused)  log::info("a: {}", i++);
 }
 
 void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
