@@ -127,7 +127,7 @@ void TrajectoryBGL::checkRepellPlayer()
 
     if (m_fields->trajectoryPlayer)
     {
-        //m_fields->trajectoryDraw->clear();
+        m_fields->trajectoryDraw->clear();
 
         resetSimulation(m_player1);
         simulateTrajectory(true, m_player1);
@@ -403,17 +403,17 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
     if (press)
         m_fields->trajectoryPlayer->pushButton(PlayerButton::Jump);
 
-    //if (m_fields->trajectoryPlayer->m_dashFireSprite)
-        //m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_dashFireSprite)
+        m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_dashParticles)
-        //m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_dashParticles)
+        m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_regularTrail)
-        //m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_regularTrail)
+        m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_ghostTrail)
-        //m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_ghostTrail)
+        m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
 
     for (size_t i = 0; i < iterations; i++)
     {
