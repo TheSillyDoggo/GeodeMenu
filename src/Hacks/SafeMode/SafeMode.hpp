@@ -41,6 +41,7 @@ class SafeMode
             "jump-hack",
             "tps-bypass",
             "auto-coins",
+            "auto-clicker",
         };
 
         static SafeMode* get();
