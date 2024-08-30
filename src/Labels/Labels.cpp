@@ -339,8 +339,8 @@ void StatusNode::update(float dt)
 
     sLabels[10]->setString(formatTime().c_str());
 
-    if (bestRunPlayLayer && bestRunPlayLayer->m_percentageLabel)
-        sLabels[11]->setString(bestRunPlayLayer->m_percentageLabel->getString());
+    //if (bestRunPlayLayer && bestRunPlayLayer->m_percentageLabel)
+    //    sLabels[11]->setString(bestRunPlayLayer->m_percentageLabel->getString());
 
     updateVis();
 }

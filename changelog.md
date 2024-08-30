@@ -1,3 +1,7 @@
+# 1.6.4
+
+- Removed Percentage Label because it caused the game to crash whenever loading a level on some devices (for some reason idk)
+
 # 1.6.3
 
 - Fixed Custom Message Label text being cut off to 12 characters
