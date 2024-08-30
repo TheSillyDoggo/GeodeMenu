@@ -400,17 +400,17 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
     if (press)
         m_fields->trajectoryPlayer->pushButton(PlayerButton::Jump);
 
-    //if (m_fields->trajectoryPlayer->m_dashFireSprite)
-    //    m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_dashFireSprite)
+        m_fields->trajectoryPlayer->m_dashFireSprite->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_dashParticles)
-    //    m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_dashParticles)
+        m_fields->trajectoryPlayer->m_dashParticles->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_regularTrail)
-    //    m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_regularTrail)
+        m_fields->trajectoryPlayer->m_regularTrail->setVisible(false);
 
-    //if (m_fields->trajectoryPlayer->m_ghostTrail)
-    //    m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
+    if (m_fields->trajectoryPlayer->m_ghostTrail)
+        m_fields->trajectoryPlayer->m_ghostTrail->setVisible(false);
 
     for (size_t i = 0; i < iterations; i++)
     {
@@ -419,14 +419,11 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
         m_fields->trajectoryPlayer->update(delta);
         this->checkCollisions(m_fields->trajectoryPlayer, delta, false);
         
-        //drawSegmentAlternative(m_fields->trajectoryDraw, m_fields->trajectoryPlayer->getPosition(), m_fields->point, 0.5f, m_fields->trajectoryPlayer->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, press ? 1 : 0.45f, 0, 1));
-        //m_fields->point = m_fields->trajectoryPlayer->getPosition();
+        drawSegmentAlternative(m_fields->trajectoryDraw, m_fields->trajectoryPlayer->getPosition(), m_fields->point, 0.5f, m_fields->trajectoryPlayer->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, press ? 1 : 0.45f, 0, 1));
+        m_fields->point = m_fields->trajectoryPlayer->getPosition();
 
         if (m_fields->trajectoryPlayer->m_isDead)
         {
-            log::info("died 3:");
-            return;
-
             CCPoint squareSize = m_fields->trajectoryPlayer->getObjectRect().size;
             CCPoint squarePosition = m_fields->trajectoryPlayer->getPosition();
 
