@@ -93,33 +93,33 @@ void TrajectoryPlayerObject::playSpiderDashEffect(cocos2d::CCPoint from, cocos2d
     PlayerObject::playSpiderDashEffect(from, to);
 }
 
-/*void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
 {
     if (p0 == m_fields->trajectoryPlayer)
     {
-        gd::vector<GameObject*> objsOld = *p1;
+        gd::vector<GameObject*> p1old = *p1;
 
-        p1->clear();
-
-        for (auto obj : objsOld)
+        auto new_end = std::remove_if(p1->begin(), p1->end(), [](GameObject* obj)
         {
+            bool del = true;
+            
             if (obj->m_objectType == GameObjectType::Solid || obj->m_objectType == GameObjectType::Hazard || obj->m_objectType == GameObjectType::AnimatedHazard || obj->m_objectType == GameObjectType::Slope)
-            {
-                p1->push_back(obj);
-            }
-        }
+                del = false;
+            
+            return del;
+        });
 
+        p1->erase(new_end, p1->end());
         p2 = p1->size();
 
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 
-        *p1 = objsOld;
-
+        *p1 = p1old;
         return;
     }
 
     GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
-}*/
+}
 
 void TrajectoryBGL::checkRepellPlayer()
 {

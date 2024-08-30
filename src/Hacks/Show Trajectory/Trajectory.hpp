@@ -33,7 +33,7 @@ class $modify (TrajectoryBGL, GJBaseGameLayer)
     void resetSimulation(PlayerObject* player);
     void simulateTrajectory(bool press, PlayerObject* player);
 
-    //void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3);
+    void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3);
     void checkRepellPlayer(); // Runs every tick
 
     QOLMOD_MOD_ALL_HOOKS("show-trajectory")
