@@ -153,6 +153,8 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
     fields->trajectoryPlayer->m_lastCollisionLeft = 0;
     fields->trajectoryPlayer->m_lastCollisionRight = 0;
 
+    return;
+
     RM(m_wasTeleported)
     RM(m_fixGravityBug)
     RM(m_reverseSync)
@@ -417,14 +419,14 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
         m_fields->trajectoryPlayer->update(delta);
         this->checkCollisions(m_fields->trajectoryPlayer, delta, false);
         
-        drawSegmentAlternative(m_fields->trajectoryDraw, m_fields->trajectoryPlayer->getPosition(), m_fields->point, 0.5f, m_fields->trajectoryPlayer->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, press ? 1 : 0.45f, 0, 1));
-        m_fields->point = m_fields->trajectoryPlayer->getPosition();
+        //drawSegmentAlternative(m_fields->trajectoryDraw, m_fields->trajectoryPlayer->getPosition(), m_fields->point, 0.5f, m_fields->trajectoryPlayer->m_isDead ? ccc4f(1, 0, 0, 1) : ccc4f(0, press ? 1 : 0.45f, 0, 1));
+        //m_fields->point = m_fields->trajectoryPlayer->getPosition();
 
         if (m_fields->trajectoryPlayer->m_isDead)
         {
             log::info("died 3:");
             return;
-            
+
             CCPoint squareSize = m_fields->trajectoryPlayer->getObjectRect().size;
             CCPoint squarePosition = m_fields->trajectoryPlayer->getPosition();
 
