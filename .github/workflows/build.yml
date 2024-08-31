@@ -14,6 +14,7 @@ jobs:
         config:
         - name: Windows
           os: windows-latest
+          build-config: RelWithDebInfo
         - name: Android32
           os: ubuntu-latest
           target: Android32
@@ -34,7 +35,7 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           bindings: 'TheSillyDoggo/bindings'
-          build-config: 'RelWithDebInfo'
+          build-config: ${{ matrix.config.build-config || 'Release' }}
           export-pdb: true
           combine: true
           sdk: 'nightly'
