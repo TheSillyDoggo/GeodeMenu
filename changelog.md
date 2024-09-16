@@ -1,3 +1,7 @@
+# 1.6.5
+
+- Rewrote old bad code to help improve code readibility
+
 # 1.6.4
 
 - Removed Percentage Label because it caused the game to crash whenever loading a level on some devices (for some reason idk)

@@ -1,6 +1,6 @@
 {
-	"geode": "3.4.0",
-	"version": "v1.6.4",
+	"geode": "3.6.1",
+	"version": "v1.6.5",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206",
@@ -21,7 +21,8 @@
             "resources/fonts/*.ttf",
 			"resources/*.png",
 			"resources/*.glsl",
-			"resources/*.hlsl"
+			"resources/*.hlsl",
+			"resources/*.wav"
         ],
 		"sprites": [
 			"resources/sprites/*.png"
@@ -29,7 +30,7 @@
     },
 	"settings": {
 		"set-bind": { 
-			"type": "custom"
+			"type": "custom:menu-keybinds"
 		}
 	},
 	"tags": [

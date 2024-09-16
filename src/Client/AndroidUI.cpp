@@ -41,7 +41,14 @@ bool AndroidUI::setup()
     backBtn->setSizeMult(1.15f);
     backMenu->addChild(backBtn);
 
-    auto panel = getBGNode();
+    panel = CCNode::create();
+    panel->setContentSize(ccp(475, 280));
+    panel->setAnchorPoint(ccp(0.5f, 0.5f));
+
+    bg = QOLModMenuBG::create();
+    bg->setGradientDarkenVisible(false);
+    bg->setContentSize(panel->getContentSize());
+    panel->addChildAtPosition(bg, Anchor::Center);
     
     auto windows = CCScale9Sprite::create("square02_small.png");
     windows->setOpacity(100);
@@ -162,12 +169,12 @@ bool AndroidUI::setup()
 
     goToPage(selectedTab);
 
-    if (Client::GetModuleEnabled("npesta-width"))
-    {
-        panel->setPositionX(panel->getPositionX() + 5);
-        panel->setContentSize(panel->getContentSize() + ccp(10, 0));
-        as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
-    }
+    //if (Client::GetModuleEnabled("npesta-width"))
+    //{
+    //    panel->setPositionX(panel->getPositionX() + 5);
+    //    panel->setContentSize(panel->getContentSize() + ccp(10, 0));
+    //    as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setPositionX(-5);
+    //}
 
     panel->runAction(getEnterAction(panel));
 
@@ -230,8 +237,8 @@ CCNode* AndroidUI::getBGNode()
 
     if (theme == -2)
     {
-        panel->setColor(ccc3(0, 0, 0));
-        panel->setOpacity(175);
+        //panel->setColor(ccc3(0, 0, 0));
+        //panel->setOpacity(175);
 
         auto out = CCScale9Sprite::create("GJ_square07.png");
         out->setContentSize(panel->getContentSize());

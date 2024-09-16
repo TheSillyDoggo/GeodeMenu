@@ -6,6 +6,7 @@
 #include "idkwhattocallthis.hpp"
 #include "../UI/CategoryTabSprite.hpp"
 #include "../Layers/ManageKeybindsLayer.hpp"
+#include "../UI/QOLModMenuBG.hpp"
 
 using namespace geode::prelude;
 
@@ -15,12 +16,14 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         std::vector<CategoryTabSprite*> sprites = {};
         std::vector<CCMenuItemSpriteExtra*> buttons = {};
         std::vector<CCMenu*> pages = {};
-        CCScale9Sprite* panel = nullptr;
+        CCNode* panel = nullptr;
         CCLabelBMFont* searchLabel = nullptr;
         CCMenu* searchResultsPanel = nullptr;
         CCMenu* btnMenu = nullptr;
         TextInput* inputField = nullptr;
         ScrollLayer* scroll = nullptr;
+
+        QOLModMenuBG* bg;
 
         static inline AndroidUI* instance;
 

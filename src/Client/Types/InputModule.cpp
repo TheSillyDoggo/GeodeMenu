@@ -1,27 +1,42 @@
 #include "InputModule.hpp"
 #include <imgui-cocos.hpp>
 
+InputModule* mod;
+
+void playSound()
+{
+    FMODAudioEngine::get()->playEffect("start.wav"_spr);
+}
+
 int imguiTextInputChanged(ImGuiInputTextCallbackData* data)
 {
-    if (data && data->EventKey == ImGuiKey_Backspace)
+    int ret = 0;
+
+    if (ImGui::IsKeyPressed(ImGuiKey_Backspace) && data->BufTextLen == 0)
+        playSound();
+
+    if (data->BufTextLen > mod->maxSize)
     {
-log::info("callback");
+        mod->text = mod->text.substr(0, mod->maxSize);
+
+        playSound();
+        return 0;
     }
     
-return 0;
+    return ret;
 }
 
 void InputModule::drawImGui()
 {
-    auto t = text.c_str();
-if (ImGui::InputText(name.c_str(), (char*)text.c_str(), text.capacity() + 1, ImGuiInputTextFlags_CallbackAlways, imguiTextInputChanged))
-{
-    if (text.c_str() == t)
-    log::info("same");
+    mod = this;
 
-log::info("inputted");
-}
-//text = t;
+    auto t = text.c_str();
+
+    if (ImGui::InputText(name.c_str(), (char*)text.c_str(), maxSize, ImGuiInputTextFlags_CallbackAlways, imguiTextInputChanged))
+    {
+        
+    }
+    //text = t;
 }
 
 void InputModule::makeAndroid(CCNode* menu, CCPoint pos)

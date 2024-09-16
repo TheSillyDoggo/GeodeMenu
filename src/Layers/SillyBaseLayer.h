@@ -4,6 +4,7 @@
 #include <Geode/modify/TextAlertPopup.hpp>
 #include "../Client/Client.h"
 #include "../Utils/CCBlurLayer.hpp"
+#include "../UI/QOLModMenuBG.hpp"
 
 using namespace geode::prelude;
 
@@ -18,6 +19,7 @@ class SillyBaseLayer : public geode::Popup<>
         bool createWithOK;
         bool animate;
         bool noBlur;
+        QOLModMenuBG* bg;
 
         ~SillyBaseLayer();
 

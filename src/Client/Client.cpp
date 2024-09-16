@@ -72,7 +72,7 @@ void Client::initImGui()
     style->Colors[ImGuiCol_TitleBg] = ImVec4(20.0f / 255, 20.0f / 255, 20.0f / 255, 1);
     style->ScrollbarSize = 8;
 
-    auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "Poppins-Regular.ttf").string().c_str(), 24.0f);
+    auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "Poppins-Regular.ttf").string().c_str(), 20.0f);
     io->FontDefault = font;
 
     sortWindows(true);

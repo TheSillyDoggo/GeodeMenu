@@ -51,7 +51,7 @@ class $modify (CCKeyboardDispatcher)
             {
                 if (Client::get()->useImGuiUI())
                 {
-                    Client::get()->toggleWindowVisibility(WindowTransitionType::None);
+                    Client::get()->toggleWindowVisibility(WindowTransitionType::Vertical);
                 }
                 else
                 {
