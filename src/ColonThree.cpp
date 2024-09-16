@@ -14,9 +14,9 @@ class $modify (SecretLayer2)
         if (!AndroidBall::get()->isColonThreeEnabled())
             return "No more :3 :(";
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distr(1, 9);
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> distr(1, 9);
 
         switch (distr(gen))
         {

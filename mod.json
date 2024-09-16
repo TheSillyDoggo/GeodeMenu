@@ -1,5 +1,5 @@
 {
-	"geode": "3.6.1",
+	"geode": "3.7.1",
 	"version": "v1.6.5",
 	"gd": {
 		"win": "2.206",
@@ -30,7 +30,7 @@
     },
 	"settings": {
 		"set-bind": { 
-			"type": "custom:menu-keybinds"
+			"type": "custom"
 		}
 	},
 	"tags": [

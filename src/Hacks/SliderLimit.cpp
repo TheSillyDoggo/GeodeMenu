@@ -17,7 +17,8 @@ class $modify (SliderTouchLogic)
         this->m_thumb->activate();
     }
 
-    static void onModify(auto& self) {
+    static void onModify(auto& self)
+    {
         auto hook = self.getHook("SliderTouchLogic::ccTouchMoved");
 
         Loader::get()->queueInMainThread([hook]

@@ -10,7 +10,7 @@
 #endif
 
 #ifdef GEODE_IS_WINDOWS
-#define QOLMOD_TPS_BYPASS_HOOK
+//#define QOLMOD_TPS_BYPASS_HOOK
 #endif
 
 #ifndef GEODE_IS_ARM_MAC

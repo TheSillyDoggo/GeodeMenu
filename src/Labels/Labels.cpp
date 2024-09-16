@@ -437,7 +437,12 @@ void AttemptBaseGameLayer::resetLevelVariables()
         m_fields->attemptCount++;
 
     if (StatusNode::get())
+    {
         StatusNode::get()->totalClicks = 0;
+
+        StatusNode::get()->sLabels[8]->stopAllActions();
+        StatusNode::get()->sLabels[8]->setColor(ccWHITE);
+    }
 
     GJBaseGameLayer::resetLevelVariables();
 

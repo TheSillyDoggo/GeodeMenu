@@ -1,6 +1,8 @@
 # 1.6.5
 
 - Rewrote old bad code to help improve code readibility
+- Fixed CPS Counter not being reset to white when restarting
+- Ported **Physics Bypass** to Windows
 
 # 1.6.4
 

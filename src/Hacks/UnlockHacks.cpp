@@ -28,16 +28,18 @@ class $modify (GameStatsManager)
     }
 };
 
-class $modify(GameManager) {
-
-    bool isIconUnlocked(int id, IconType type) {
+class $modify (GameManager)
+{
+    bool isIconUnlocked(int id, IconType type)
+    {
         if (Client::GetModuleEnabled("icon-bypass"))
             return true;
 
         return GameManager::isIconUnlocked(id, type);
     }
 
-    bool isColorUnlocked(int id, UnlockType type) {
+    bool isColorUnlocked(int id, UnlockType type)
+    {
         if (Client::GetModuleEnabled("icon-bypass"))
             return true;
 
