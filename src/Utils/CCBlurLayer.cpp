@@ -100,6 +100,8 @@ void CCBlurLayer::visit()
 void CCBlurLayer::draw()
 {
     #ifndef GEODE_IS_MACOS
+
+    ccBlendFunc(this->getBlendFunc());
     
     if (blurStrength == 0)
         return CCLayerColor::draw();

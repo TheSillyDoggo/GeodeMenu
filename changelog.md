@@ -2,7 +2,10 @@
 
 - Rewrote old bad code to help improve code readibility
 - Fixed CPS Counter not being reset to white when restarting
+- Fixed blur background looking weird when a blending layer is visible on screen (like loading circles)
 - Ported **Physics Bypass** to Windows
+- Ported **Custom Object Limit Bypass** to All Platforms
+- Added **Stop Triggers on Death**
 
 # 1.6.4
 
