@@ -57,6 +57,11 @@ void Module::onToggleAndroid(CCObject* sender)
         else
             disableHooks();
 
+        if (enabled)
+            enablePatches();
+        else
+            disablePatches();
+
         if (onToggle)
             onToggle(enabled);
 
@@ -88,6 +93,11 @@ void Module::onToggleAndroid(CCObject* sender)
         dat->enableHooks();
     else
         dat->disableHooks();
+
+    if (dat->enabled)
+        dat->enablePatches();
+    else
+        dat->disablePatches();
 
     if (dat->onToggle)
         dat->onToggle(dat->enabled);
