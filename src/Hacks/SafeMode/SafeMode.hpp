@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJGameLevel.hpp>
+#include <Geode/modify/EndLevelLayer.hpp>
 #include "../../Client/Client.h"
 #include "../../Labels/Labels.h"
 
@@ -29,6 +30,7 @@ class SafeMode
 
     public:
         bool speedhackKick;
+        bool safeEndScreen;
 
         std::vector<std::string> hacks = {
             "instant",
@@ -73,4 +75,9 @@ class $modify (SafePlayLayer, PlayLayer)
 class $modify (SafeGJGameLevel, GJGameLevel)
 {
     void savePercentage(int p0, bool p1, int p2, int p3, bool p4);
+};
+
+class $modify (SafeEndLevelLayer, EndLevelLayer)
+{
+    virtual void customSetup();
 };

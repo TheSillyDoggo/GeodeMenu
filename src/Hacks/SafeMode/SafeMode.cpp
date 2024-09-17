@@ -150,13 +150,15 @@ void SafePlayLayer::resetLevel()
 void SafePlayLayer::levelComplete()
 {
     auto kick = SafeMode::get()->shouldKickFromLevel();
+    SafeMode::get()->safeEndScreen = kick;
+    auto v = m_isTestMode;
 
     if (kick)
-    {
-        return this->onQuit();
-    }
+        m_isTestMode = true;
 
     PlayLayer::levelComplete();
+
+    m_isTestMode = v;
 }
 
 void SafePlayLayer::showNewBest(bool p0, int p1, int p2, bool p3, bool p4, bool p5)
@@ -169,4 +171,23 @@ void SafeGJGameLevel::savePercentage(int p0, bool p1, int p2, int p3, bool p4)
 {
     if (!SafeMode::get()->shouldKickFromLevel())
         GJGameLevel::savePercentage(p0, p1, p2, p3, p4);
+}
+
+void SafeEndLevelLayer::customSetup()
+{
+    EndLevelLayer::customSetup();
+
+    if (SafeMode::get()->safeEndScreen)
+    {
+        if (auto area = getChildOfType<TextArea>(m_mainLayer, -1))
+        {
+            area->setString("Safe Mode :3");
+            area->setScale(0.7f);
+        }
+        else if (auto lbl = getChildOfType<CCLabelBMFont>(m_mainLayer, -1))
+        {
+            lbl->setString("Safe Mode :3");
+            lbl->setScale(0.7f);
+        }
+    }
 }

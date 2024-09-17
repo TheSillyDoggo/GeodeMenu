@@ -1,3 +1,8 @@
+# 1.6.6
+
+- Changed Safe Mode to show the endscreen instead of kicking out of the level
+- Added **Editor Extension**
+
 # 1.6.5
 
 - Rewrote old bad code to help improve code readibility

@@ -269,7 +269,7 @@ public:
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
         creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
 
-        //creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Editor Extension Help :)"));
+        creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Increases the length of the editor by <cs>17895</c> times :3"));
 
         //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
         //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
@@ -603,6 +603,7 @@ public:
         #ifdef GEODE_IS_ARM_MAC
         Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        Client::GetModule("editor-extension")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         #endif
 
         #ifdef GEODE_IS_MACOS
