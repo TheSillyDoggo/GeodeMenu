@@ -14,6 +14,14 @@ float scaleFloat(float v, float min, float max)
 	return (max - min) * v + min;
 }
 
+float unscaleFloat(float v, float min, float max)
+{
+	float minValue = min;
+	float maxValue = max;
+	float originalValue = (v - minValue) / (maxValue - minValue);
+	return originalValue;
+}
+
 geode::Patch* createPatchSafe(void *address, const geode::ByteVector &data)
 {
 	auto patch = geode::Mod::get()->patch(address, data);

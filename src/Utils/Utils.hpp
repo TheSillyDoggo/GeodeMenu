@@ -48,6 +48,7 @@ static void onModify(auto& self) { \
 
 float roundUpToMultipleOf2(float num);
 float scaleFloat(float v, float min, float max);
+float unscaleFloat(float v, float min, float max);
 geode::Patch* createPatchSafe(void *address, const geode::ByteVector &data);
 cocos2d::CCRect getScreenSafeArea();
 cocos2d::CCRect getScreenSafeAreaiOS();

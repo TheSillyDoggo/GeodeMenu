@@ -252,8 +252,8 @@ public:
         creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
         creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
 
-        creator->modules.push_back(new Module("Copy any level", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
-        creator->modules.push_back(new Module("Show Level Password", "show-password", "Adds a button to the password input popup that shows the level password"));
+        creator->modules.push_back(new Module("Copy Hack", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
+        creator->modules.push_back(new Module("Show Level Password", "show-password", "Adds a button to the password input popup that shows the level password", true));
 
         creator->modules.push_back(new Module("No Copy Mark", "noc-hack", "Hides the (c) mark from your levels on publish.\nCode by <co>Firee</c>"));
         creator->modules.push_back(new Module("Level Edit", "level-edit", "Allows you to edit any level"));
@@ -270,16 +270,9 @@ public:
         creator->modules.push_back(new Module("Smooth Editor Trail", "smooth-editor-trail", "Updates the editor trail at your screen refresh rate instead of 30 fps"));
 
         creator->modules.push_back(new Module("Editor Extension", "editor-extension", "Increases the length of the editor by <cs>17895</c> times :3"));
+        creator->modules.push_back(new Module("Toolbox Button Bypass", "toolbox-buttons", "Unlimited <cc>Rows</c> and <cc>Columns</c> in your <cl>Object Toolbox</c>"));
 
-        //auto misc = new Module("Misc Bypasses", "misc-bypass", "Random <cl>Client Side</c> bypasses / unlocks to random editor limits");
-        //misc->options.push_back(new Module("Zoom Limit", "zoom-limit", "Bypass the editor zoom limit", true));
-        //creator->modules.push_back(misc);
-
-        //creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
-
-        #ifdef GEODE_IS_ANDROID
-        //bypass->modules.push_back(new Module("Slider Limit Bypass", "slider-limit", "Allows sliders to go beyond the limit of the slider. <cr>Doesn't work for scaling in the editor currently</c>"));
-        #endif
+        creator->modules.push_back(new Module("Scale Input", "scale-input-control", "Adds an input field to the object scale control", true));
 
 
         Client::instance->windows.push_back(creator);

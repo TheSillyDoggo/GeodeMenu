@@ -1,3 +1,8 @@
+# 1.6.7
+
+- Added **Toolbox Button Bypass**
+- Added **Scale Text Input**
+
 # 1.6.6
 
 - Changed Safe Mode to show the endscreen instead of kicking out of the level
