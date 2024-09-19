@@ -125,6 +125,8 @@ public:
         
         level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
+
+        level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
@@ -261,9 +263,7 @@ public:
         creator->modules.push_back(new Module("Verify Hack", "verify-hack", "Lets you upload levels without verifying them"));
         creator->modules.push_back(new Module("Default Song Bypass", "default-song-bypass", "Removes the main level song limit"));
 
-        #ifdef GEODE_IS_WINDOWS
         creator->modules.push_back(new Module("Free Scroll", "free-scroll", "Allows you to scroll past the limits of the editor"));
-        #endif
         creator->modules.push_back(new Module("No Custom Object Limit", "custom-obj-limit", "Removes the custom object limit"));
 
         creator->modules.push_back(new Module("Editor Wave Trail", "editor-wave-trail", "Shows the wave trail in the editor"));
@@ -579,10 +579,6 @@ public:
         //Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         Client::GetModule("no-shake")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
         //Client::GetModule("custom-obj-limit")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c> on <cl>Windows</c>.");
-
-        #ifndef QOLMOD_FREESCROLL
-        Client::GetModule("free-scroll")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        #endif
 
         #endif
 

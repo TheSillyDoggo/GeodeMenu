@@ -46,6 +46,16 @@ static void onModify(auto& self) { \
 	}); \
 }
 
+#ifdef GEODE_IS_WINDOWS
+    #ifdef QOLMOD_EXPORTING
+        #define SILLY_DLL __declspec(dllexport)
+    #else
+        #define SILLY_DLL __declspec(dllimport)
+    #endif
+#else
+    #define SILLY_DLL __attribute__((visibility("default")))
+#endif
+
 float roundUpToMultipleOf2(float num);
 float scaleFloat(float v, float min, float max);
 float unscaleFloat(float v, float min, float max);

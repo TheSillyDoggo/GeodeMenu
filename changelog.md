@@ -2,6 +2,8 @@
 
 - Added **Toolbox Button Bypass**
 - Added **Scale Text Input**
+- Added **Free Scroll**
+- Added **Gamemode Switcher**
 
 # 1.6.6
 

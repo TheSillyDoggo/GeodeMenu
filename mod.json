@@ -46,5 +46,10 @@
             "version": "*",
             "importance": "superseded"
         }
-    ]
+    ],
+	"api": {
+		"include": [
+			"src/Hacks/SafeMode.hpp"
+		]
+	}
 }

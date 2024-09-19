@@ -134,6 +134,10 @@ class $modify (InputScaleControl, GJScaleControl)
         m_fields->scaleXLabel = scaleXLabel;
         m_fields->scaleYLabel = scaleYLabel;
         m_fields->scaleXYLabel = scaleXYLabel;
+
+        m_fields->scaleXInput->setString(fmt::format("{:.2f}", m_valueX));
+        m_fields->scaleYInput->setString(fmt::format("{:.2f}", m_valueY));
+        m_fields->scaleXYInput->setString(fmt::format("{:.2f}", m_valueX > m_valueY ? m_valueY : m_valueX));
     }
 
     void removeControl()
@@ -183,7 +187,8 @@ class $modify (InputScaleControl, GJScaleControl)
         if (!GJScaleControl::init())
             return false;
 
-        addControl();
+        if (!getChildByID("hjfod.betteredit/input-x"))
+            addControl();
 
         return true;
     }

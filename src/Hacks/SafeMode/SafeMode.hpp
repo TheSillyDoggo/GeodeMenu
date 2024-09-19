@@ -19,7 +19,7 @@ class SpeedhackDelegate : public ModuleChangeDelegate
     virtual void onModuleChanged(bool enabled);
 };
 
-class SafeMode
+class SILLY_DLL SafeMode
 {
     private:
         bool hackedLevelLoad;

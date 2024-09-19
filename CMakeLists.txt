@@ -45,6 +45,7 @@ add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 include_directories(include)
 
 add_definitions(-DSTATUS_TEXTS)
+add_definitions(-DQOLMOD_EXPORTING)
 
 CPMAddPackage("gh:matcool/gd-imgui-cocos#09a9555")
 
