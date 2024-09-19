@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include <Geode/Geode.hpp>
@@ -30,3 +31,4 @@ class SwitchGamemodePopup : public SillyBaseLayer
 
         static SwitchGamemodePopup* addToScene();
 };
+*/

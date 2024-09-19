@@ -1,3 +1,4 @@
+/*
 #include "SwitchGamemodePopup.hpp"
 
 #define speedbtn(speedid) \
@@ -240,3 +241,4 @@ SwitchGamemodePopup* SwitchGamemodePopup::addToScene()
 
     return pRet;
 }
+*/

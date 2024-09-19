@@ -126,7 +126,7 @@ public:
         level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
 
-        level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
+        //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
