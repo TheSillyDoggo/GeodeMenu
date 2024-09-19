@@ -3,6 +3,7 @@
 - Added **Toolbox Button Bypass**
 - Added **Scale Text Input**
 - Added **Free Scroll**
+- Added **No Trail Blending**
 
 # 1.6.6
 
