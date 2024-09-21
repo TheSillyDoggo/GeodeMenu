@@ -46,7 +46,14 @@ bool AndroidBall::init()
 
 void AndroidBall::onOpenMenu()
 {
-    AndroidUI::addToScene();
+    if (Client::get()->useImGuiUI())
+    {
+        Client::get()->toggleWindowVisibility(WindowTransitionType::Vertical);
+    }
+    else
+    {
+        AndroidUI::addToScene();
+    }
 }
 
 bool AndroidBall::_ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
