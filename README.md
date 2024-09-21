@@ -1,5 +1,9 @@
 # QOLMod
 
+<p align="center">
+  <img src="https://count.akame.moe/@QOLMod?theme=moebooru">
+</p>
+
 A free mod menu for [Geode](https://geode-sdk.org) made by me, with **a user friendly interface** and **over 70 features** to help improve your Geometry Dash experience such as **Speedhack, Show Hitboxes, StartPos Switcher, Solid Wave Trail** and **much** more!
 
 If you have any issues with the mod, you can join our [Discord server](https://discord.gg/DfQSTEnQKK) for help!
