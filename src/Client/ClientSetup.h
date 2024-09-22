@@ -126,6 +126,8 @@ public:
         level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
 
+        level->modules.push_back(new Module("Percentage Level Font", "percentage-level-font", "Changes the font of the <cc>percentage / time</c> label to be the <cl>level font</c>"));
+
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
         //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
@@ -381,8 +383,16 @@ public:
         replay->modules.push_back(new StatusOpacity());
         replay->modules.push_back(new StatusScale());
 
+        auto font = new FontModule("labels-font");
+        font->onToggle = [font](bool)
+        {
+            if (StatusNode::get())
+                StatusNode::get()->updateVis();
+        };
+
         //replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
         replay->modules.push_back(new Module("Labels In Editor", "labels-in-editor", "Shows your labels in the level editor <cr>[EXPERIMENTAL]</c>"));
+        replay->modules.push_back(font);
 
         replay->modules.push_back(new Module("Cheat Indicator", "cheat-indicator", "Shows if you are cheating"));
         replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));

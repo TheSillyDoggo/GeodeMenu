@@ -137,6 +137,7 @@ class StatusNode : public CCNode
 
         bool init();
 
+        void updateFont();
         void updateVis();
 
         static void postSetup(Window* wnd);

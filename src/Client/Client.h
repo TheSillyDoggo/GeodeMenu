@@ -10,6 +10,7 @@
 #include "Types/TransitionCustomizerUI.hpp"
 #include "Types/SmartStartposUI.hpp"
 #include "Types/SetValueModule.hpp"
+#include "Types/FontModule.hpp"
 
 #include "idkwhattocallthis.hpp"
 

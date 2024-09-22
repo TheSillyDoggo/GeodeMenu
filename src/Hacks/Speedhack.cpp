@@ -38,6 +38,9 @@ float speedhackLogic(float dt)
             masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
             #endif
             ColourUtility::update(dt * v);
+
+            CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * v);
+            CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * v);
             return dt * v;
         }
     }

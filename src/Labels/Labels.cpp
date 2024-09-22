@@ -86,6 +86,21 @@ void StatusNode::updateVis()
         if (hidden)
             sLabels[i]->setVisible(false);
     }
+
+    updateFont();
+}
+
+void StatusNode::updateFont()
+{
+    std::string font = as<FontModule*>(Client::GetModule("labels-font"))->getSelectedFont();
+
+    for (auto lbl : sLabels)
+    {
+        lbl->setFntFile(font.c_str());
+
+        // make sure all the labels are the same height
+        lbl->setScale((32.5f * lbl->getScale()) / lbl->getContentHeight());
+    }
 }
 
 void StatusNode::reorderSides()
@@ -104,7 +119,7 @@ void StatusNode::reorderSides()
 
     for (auto label : sLabels)
     {
-        int side = as<DropdownModule*>(window->modules[i + 3]->options[0])->index;
+        int side = as<DropdownModule*>(window->modules[i + 4]->options[0])->index;
 
         label->setAnchorPoint(ccp((side == 0 || side == 2) ? 0 : 1, (side == 2 || side == 3) ? 0 : 1));
         label->setAlignment((side == 0 || side == 2) ? CCTextAlignment::kCCTextAlignmentLeft : CCTextAlignment::kCCTextAlignmentRight);
