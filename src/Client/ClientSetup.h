@@ -229,6 +229,10 @@ public:
         bypass->modules.push_back(new Module("Auto LDM", "auto-ldm", "Automatically enable Low Detail Mode in levels when you view them"));
 
         bypass->modules.push_back(new Module("Hide Pause Menu", "hide-pause-menu", "Hides the pause menu :3"));
+        bypass->modules.push_back(new Module("Treasure Room Bypass", "treasure-room-bypass", "Allows you to enter the treasure room without having <cc>5</c> demon keys"));
+
+        bypass->modules.push_back(new Module("Vault Of Secrets Bypass", "vault-of-secrets-bypass", "Allows you to enter the vault of secrets without having <cc>50</c> diamonds"));
+        bypass->modules.push_back(new Module("The Challenge Bypass", "the-challenge-bypass", "Allows you to enter the vault of secrets without having <cc>50</c> diamonds"));
         
         Client::instance->windows.push_back(bypass);
 

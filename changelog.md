@@ -7,6 +7,9 @@
 - Added **No Trail Blending**
 - Added **Percentage Level Font**
 - Added **Label Font Customizer**
+- Added **Treasure Room Bypass**
+- Added **Vault of Secrets Bypass**
+- Added **The Challenge Bypass**
 
 # 1.6.6
 
