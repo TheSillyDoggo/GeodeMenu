@@ -16,6 +16,8 @@ class $modify (SecretLayer2)
 
     void onSecretLevel(cocos2d::CCObject* sender)
     {
+        GameManager::get()->m_sceneEnum = 12;
+
         auto scene = CCTransitionFade::create(0.5f, PlayLayer::scene(GameLevelManager::get()->getMainLevel(3001, false), false, false));
         
         CCDirector::get()->replaceScene(scene);
