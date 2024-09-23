@@ -10,6 +10,8 @@
 - Added **Treasure Room Bypass**
 - Added **Vault of Secrets Bypass**
 - Added **The Challenge Bypass**
+- Added **Basement Bypass**
+- Added **Basement Key Bypass**
 
 # 1.6.6
 

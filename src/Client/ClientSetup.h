@@ -233,6 +233,9 @@ public:
 
         bypass->modules.push_back(new Module("Vault Of Secrets Bypass", "vault-of-secrets-bypass", "Allows you to enter the vault of secrets without having <cc>50</c> diamonds"));
         bypass->modules.push_back(new Module("The Challenge Bypass", "the-challenge-bypass", "Allows you to enter the vault of secrets without having <cc>50</c> diamonds"));
+
+        bypass->modules.push_back(new Module("Basement Bypass", "basement-bypass", "Allows you to enter the monsters basement without completing <cc>The Challenge</c>"));
+        bypass->modules.push_back(new Module("Basement Key Bypass", "basement-key-bypass", "Allows you to unlock the keys in the monsters basement"));
         
         Client::instance->windows.push_back(bypass);
 
