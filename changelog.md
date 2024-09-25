@@ -1,6 +1,6 @@
 # 1.6.7
 
-- Fixed Speedhack not working with cbf enabled
+- Fixed Speedhack not working with physics bypass enabled in cbf
 - Added **Toolbox Button Bypass**
 - Added **Scale Text Input**
 - Added **Free Scroll**
