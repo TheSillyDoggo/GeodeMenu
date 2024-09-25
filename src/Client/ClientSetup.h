@@ -454,7 +454,12 @@ public:
         {
             auto cfg = new Config();
 
-            cfg->modules.push_back(new SliderModule("Anim Speed:", "anim-speed", 0.5f));
+            auto sbox = new Module("Search Box", "ui-search-box", "Adds a search box to the bottom of the ui instead of <cc>version info</c>.");
+            sbox->onToggle = [](bool enabled){
+                
+            };
+
+            cfg->modules.push_back(sbox);
             cfg->modules.push_back(new Module("Additional Border", "npesta-width", "Adds borders to the left and right sides of the mod menu to make the menu look better with some texture packs\nlike the <cg>npesta</c> pack"));
             cfg->modules.push_back(new Module("Blur Background", "menu-bg-blur", "Blurs the background of the mod menu"));
 
@@ -471,36 +476,7 @@ public:
             Client::instance->windows.push_back(cfg);
             return;
         }
-
-        Window* replay = new Window();
-        replay->name = "Config";
-        replay->id = "options-window";
-        //replay->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
-
-        if (android)
-        {
-            replay->modules.push_back(new AltModuleLocation());
-            
-        }
-        else
-        {
-            replay->modules.push_back(new Module("Draggable Ball", "allow-dragging", "Allow dragging the ball on screen"));
-        }
-
-        Client::instance->windows.push_back(replay);
     }
-
-    /*static void SetupCreator()
-    {
-        Window* creator = new Window();
-        creator->name = "Creator";
-        creator->id = "creator-window";
-        creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 4, 50);
-
-        creator->modules.push_back(new Module("Copy Hack", "copy-hack"));
-
-        Client::instance->windows.push_back(creator);
-    }*/
 
     static void SetupVariables(bool android)
     {

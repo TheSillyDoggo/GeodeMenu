@@ -1,6 +1,8 @@
 # 1.6.7
 
 - Fixed Speedhack not working with physics bypass enabled in cbf
+- Removed the search bar replacing it with version info as it was in older versions
+- If you want to bring it back you can in the <cc>Config</c> tab
 - Added **Toolbox Button Bypass**
 - Added **Scale Text Input**
 - Added **Free Scroll**

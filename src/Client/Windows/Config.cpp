@@ -59,12 +59,12 @@ void Config::cocosCreate(CCMenu* menu)
     CCPoint p;
 
     #ifdef GEODE_IS_DESKTOP
-    for (size_t i = 1; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
     #else
-    for (size_t i = 1; i < 3; i++)
+    for (size_t i = 0; i < 3; i++)
     #endif
     {
-        p = ccp(20, menuTab->getContentHeight() - 45 - (28 * (i - 1)));
+        p = ccp(20, menuTab->getContentHeight() - 45 - (28 * (i)));
         modules[i]->makeAndroid(menuTab, p);
     }
 

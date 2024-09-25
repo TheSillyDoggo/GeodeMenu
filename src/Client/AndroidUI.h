@@ -21,7 +21,15 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         CCMenu* searchResultsPanel = nullptr;
         CCMenu* btnMenu = nullptr;
         TextInput* inputField = nullptr;
+        CCLabelBMFont* versionInfo;
         ScrollLayer* scroll = nullptr;
+        CCNode* versionParent;
+        CCNode* checkingSprite;
+
+        EventListener<Mod::CheckUpdatesTask> updateListener;
+
+        static inline bool hasCheckedForUpdates = false;
+        static inline bool updateRequired = false;
 
         QOLModMenuBG* bg;
 
@@ -36,15 +44,17 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         void onKeybinds(CCObject*);
         void onPressTab(CCObject* sender);
 
+        void updateVersionLabel();
         void updateTabs();
+        void updateSearchBox();
 
         virtual bool setup();
         virtual void textChanged(CCTextInputNode* p0);
         virtual void update(float dt);
         virtual void keyBackClicked();
+        virtual void keyDown(cocos2d::enumKeyCodes key);
 
         CCAction* getEnterAction(CCNode* panel);
-        CCNode* getBGNode();
         CCMenu* getSearchPanel();
 
         static AndroidUI* addToScene();

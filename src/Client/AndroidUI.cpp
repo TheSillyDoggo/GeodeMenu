@@ -92,6 +92,8 @@ bool AndroidUI::setup()
 
         sprites.push_back(normal);
         windowsMenu->addChild(button);
+
+        buttons.push_back(button);
     }
 
     updateTabs();
@@ -148,26 +150,32 @@ bool AndroidUI::setup()
     panel->addChild(input);
     this->inputField = input;
 
-    std::stringstream ver;
-    ver << "Using version " << Mod::get()->getVersion().getMajor() << "." << Mod::get()->getVersion().getMinor() << "." << Mod::get()->getVersion().getPatch();
+    versionParent = CCNode::create();
+    versionParent->setAnchorPoint(ccp(0.5f, 0));
+    versionParent->setContentWidth(150);
+    versionParent->setPosition(windows->getPosition() + ccp(windows->getScaledContentWidth() / 2, 5));
+    versionParent->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(6));
+    versionParent->getLayout()->ignoreInvisibleChildren(true);
 
-    auto versionText = CCLabelBMFont::create(ver.str().c_str(), "chatFont.fnt");
-    versionText->setColor({0, 0, 0});
-    versionText->setOpacity(100);
-    versionText->setAnchorPoint(ccp(0.5f, 0));
-    versionText->setScale(0.45f);
-    versionText->setPosition(ccp(64, 13 + 8));
-    //panel->addChild(versionText);
+    versionInfo = CCLabelBMFont::create("L", "chatFont.fnt");
+    //versionInfo->setBlendFunc({ GL_ONE_MINUS_DST_COLOR, GL_ZERO });
+    versionInfo->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+    versionInfo->setAnchorPoint(ccp(0.5f, 0));
+    versionInfo->setScale(0.55f);
+    versionInfo->setOpacity(125);
 
-    auto devText = CCLabelBMFont::create("Mod Developed By TheSillyDoggo", "chatFont.fnt");
-    devText->setColor({0, 0, 0});
-    devText->setOpacity(100);
-    devText->setAnchorPoint(ccp(0.5f, 0));
-    devText->setScale(0.45f);
-    devText->setPosition(ccp(64, 13));
-    //panel->addChild(devText);
+    checkingSprite = LoadingCircleSprite::create();
+    checkingSprite->runAction(CCRepeatForever::create(CCRotateBy::create(1, 360)));
+    checkingSprite->setScale(versionInfo->getScaledContentHeight() / checkingSprite->getContentHeight());
+
+    versionParent->addChild(versionInfo);
+    versionParent->addChild(checkingSprite);
+
+    panel->addChild(versionParent);
 
     goToPage(selectedTab);
+    updateVersionLabel();
+    updateSearchBox();
 
     //if (Client::GetModuleEnabled("npesta-width"))
     //{
@@ -183,84 +191,54 @@ bool AndroidUI::setup()
     return true;
 }
 
-CCNode* AndroidUI::getBGNode()
+void AndroidUI::updateVersionLabel()
 {
-    int theme = Mod::get()->getSavedValue<int>("theme", 5);
+    auto ver = Mod::get()->getVersion();
+    versionInfo->setString(fmt::format("Using Version {}.{}.{}", ver.getMajor(), ver.getMinor(), ver.getPatch()).c_str());
 
-    panel = CCScale9Sprite::create(fmt::format("GJ_square0{}.png", (theme < 0 ? 6 : theme)).c_str());
-    panel->setContentSize(ccp(475, 280));
-    panel->setID("panel");
+    checkingSprite->setVisible(!hasCheckedForUpdates);
 
-    as<CCNode*>(panel->getChildren()->objectAtIndex(0))->setZOrder(-2);
-
-    if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages") && theme == -1)
+    if (!hasCheckedForUpdates)
     {
-        auto gradient = CCLayerGradient::create(ccc4(0, 0, 0, 0), ccc4(0, 0, 0, 0));
-        gradient->setContentSize(panel->getContentSize());
-        gradient->setZOrder(-1);
-        gradient->setID("gradient"_spr);
-
-        if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<bool>("use-custom-colours"))
+        updateListener.bind([this](Mod::CheckUpdatesTask::Event* event)
         {
-            gradient->setStartColor(Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<ccColor3B>("primary-colour"));
-            gradient->setEndColor(Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<ccColor3B>("secondary-colour"));
-        }
-        else
+            if (auto value = event->getValue())
+            {
+                if (value->has_value())
+                {
+                    updateRequired = value->unwrap().has_value();
+                }
+
+                hasCheckedForUpdates = true;
+                updateVersionLabel();
+            }
+            else if (event->isCancelled())
+            {
+                hasCheckedForUpdates = false;
+                updateVersionLabel();
+            }
+        });
+
+        updateListener.setFilter(Mod::get()->checkUpdates());
+
+        return;
+    }
+
+    if (updateRequired)
+    {
+        versionInfo->setString(fmt::format("{}\nUpdate Available!", versionInfo->getString()).c_str());
+
+        for (size_t i = 0; i < 17; i++)
         {
-            auto gm = GameManager::get();
-
-            gradient->setStartColor(gm->colorForIdx(gm->m_playerColor.value()));
-            gradient->setEndColor(gm->colorForIdx(gm->m_playerColor2.value()));
+            if (auto n = as<CCNodeRGBA*>(versionInfo->getChildren()->objectAtIndex(versionInfo->getChildren()->count() - i - 1)))
+            {
+                n->setColor(ccc3(87, 87, 255));
+            }
         }
-
-        gradient->setStartOpacity(255);
-        gradient->setEndOpacity(255);
-
-        gradient->setPosition(CCDirector::get()->getWinSize() / 2);
-        gradient->ignoreAnchorPointForPosition(false);
-
-        if (Loader::get()->getLoadedMod("thesillydoggo.gradientpages")->getSettingValue<bool>("reverse-order"))
-            gradient->setScaleY(-1);
-
-        auto outline = CCScale9Sprite::createWithSpriteFrameName((std::string("thesillydoggo.gradientpages/") + std::string("square-outline.png")).c_str());
-        outline->setPosition(panel->getContentSize() / 2);
-        outline->setContentSize(panel->getContentSize());
-        outline->setZOrder(1);
-        outline->setID("outline"_spr);
         
-        gradient->addChild(outline);
-        panel->addChild(gradient);
-
-        gradient->setAnchorPoint(ccp(0, 0));
-        gradient->setPosition(ccp(0, 0));
     }
 
-    if (theme == -2)
-    {
-        //panel->setColor(ccc3(0, 0, 0));
-        //panel->setOpacity(175);
-
-        auto out = CCScale9Sprite::create("GJ_square07.png");
-        out->setContentSize(panel->getContentSize());
-        out->setAnchorPoint(ccp(0, 0));
-        out->setID("panel-outline");
-        panel->addChild(out);
-    }
-
-    if (theme == -3)
-    {
-        if (auto spr = CCSprite::create(Mod::get()->getSavedValue<std::string>("image-theme-path").c_str()))
-        {
-            spr->setScaleX(panel->getContentWidth() / spr->getContentWidth());
-            spr->setScaleY(panel->getContentHeight() / spr->getContentHeight());
-            spr->setPosition(panel->getContentSize() / 2);
-            spr->setZOrder(-2);
-
-            panel->addChild(spr);
-        }
-    }
-
-    return panel;
+    versionParent->updateLayout();
 }
 
 CCMenu* AndroidUI::getSearchPanel()
@@ -510,4 +488,47 @@ void AndroidUI::onKeybinds(CCObject*)
 AndroidUI::~AndroidUI()
 {
     instance = nullptr;
+}
+
+void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
+{
+    if (key == enumKeyCodes::KEY_One)
+        onPressTab(buttons[0]);
+
+    if (key == enumKeyCodes::KEY_Two)
+        onPressTab(buttons[1]);
+
+    if (key == enumKeyCodes::KEY_Three)
+        onPressTab(buttons[2]);
+
+    if (key == enumKeyCodes::KEY_Four)
+        onPressTab(buttons[3]);
+
+    if (key == enumKeyCodes::KEY_Five)
+        onPressTab(buttons[4]);
+
+    if (key == enumKeyCodes::KEY_Six)
+        onPressTab(buttons[5]);
+
+    if (key == enumKeyCodes::KEY_Seven)
+        onPressTab(buttons[6]);
+
+    if (key == enumKeyCodes::KEY_Eight)
+        onPressTab(buttons[7]);
+
+    //if (key == enumKeyCodes::KEY_Nine)
+    //    onPressTab(buttons[8]);
+
+    //if (key == enumKeyCodes::KEY_Zero)
+    //    onPressTab(buttons[9]);
+
+    Popup<>::keyDown(key);
+}
+
+void AndroidUI::updateSearchBox()
+{
+    auto en = Client::GetModuleEnabled("ui-search-box");
+
+    versionInfo->setVisible(!en);
+    inputField->setVisible(en);
 }

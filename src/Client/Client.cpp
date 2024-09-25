@@ -56,7 +56,7 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
 
 bool Client::useImGuiUI()
 {
-    return Mod::get()->getSettingValue<bool>("use-imgui-ui");
+    return Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 
 void Client::initImGui()

@@ -80,7 +80,7 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     if (sprite)
         as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(ccp(-label->getContentWidth() / 2 - sprite->getScaledContentWidth(), 0));
 
-    if (sprite && label->getString() == "")
+    if (sprite && std::string(label->getString()).empty())
         as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(CCPointZero);
 }
 

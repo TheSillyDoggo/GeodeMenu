@@ -39,8 +39,10 @@ float speedhackLogic(float dt)
             #endif
             ColourUtility::update(dt * v);
 
+            #ifdef GEODE_IS_WINDOWS
             CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * v);
             CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * v);
+            #endif
             return dt * v;
         }
     }
