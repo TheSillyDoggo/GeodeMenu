@@ -548,6 +548,7 @@ public:
             "no-shake",
             "custom-trans",
             "menu-bg-blur",
+            "free-scroll",
         };
 
         for (auto hack : macInc)
