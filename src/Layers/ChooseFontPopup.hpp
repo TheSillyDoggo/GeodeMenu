@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "../Client/Module.h"
 #include "../Hacks/SafeMode/SafeMode.hpp"
+#include "../UI/ThreadedLabelBMFont.hpp"
 
 #include "SillyBaseLayer.h"
 

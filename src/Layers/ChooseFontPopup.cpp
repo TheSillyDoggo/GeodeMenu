@@ -2,7 +2,7 @@
 
 void ChooseFontPopup::customSetup()
 {
-    // 59 being the custom song count
+    // 59 being the custom font count
     int fontCount = 59 + 3;
     float cellSize = 30;
 
@@ -69,9 +69,12 @@ void ChooseFontPopup::customSetup()
 
         toggles.push_back(btn);
 
-        auto lbl = CCLabelBMFont::create(name.c_str(), font.c_str());
+        auto lbl = ThreadedLabelBMFont::create(name.c_str(), font.c_str(), [this](ThreadedLabelBMFont* label)
+        {
+            label->getLabel()->setScale(20 / label->getLabel()->getContentHeight());
+        });
+
         lbl->setAnchorPoint(ccp(0, 0.5f));
-        lbl->setScale(20 / lbl->getContentHeight());
 
         cell->addChildAtPosition(menu, Anchor::Right, ccp(-17.5f, 0));
         cell->addChildAtPosition(lbl, Anchor::Left, ccp(6, 0));

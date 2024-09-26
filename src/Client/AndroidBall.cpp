@@ -12,7 +12,7 @@ bool AndroidBall::init()
 
     this->setID("QOLModButton"_spr);
     this->setMouseEnabled(false);
-    this->setTouchEnabled(true);
+    this->setTouchEnabled(false);
 
     highest++;
     this->setTag(highest);

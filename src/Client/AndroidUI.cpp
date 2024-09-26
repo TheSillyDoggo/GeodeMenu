@@ -221,6 +221,7 @@ void AndroidUI::updateVersionLabel()
 
         updateListener.setFilter(Mod::get()->checkUpdates());
 
+        versionParent->updateLayout();
         return;
     }
 
@@ -235,7 +236,6 @@ void AndroidUI::updateVersionLabel()
                 n->setColor(ccc3(87, 87, 255));
             }
         }
-        
     }
 
     versionParent->updateLayout();

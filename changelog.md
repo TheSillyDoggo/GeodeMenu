@@ -1,3 +1,8 @@
+# 1.6.8
+
+- Fixed checking for updates text being positioned wrong when the Loading Circle is visible
+- Fixed freeze when opening the font picker menu for the first time
+
 # 1.6.7
 
 - Fixed Speedhack not working with physics bypass enabled in cbf
