@@ -2,6 +2,7 @@
 
 - Fixed checking for updates text being positioned wrong when the Loading Circle is visible
 - Fixed freeze when opening the font picker menu for the first time
+- Fixed Noclip Accuracy being wrong a lot of the time
 
 # 1.6.7
 

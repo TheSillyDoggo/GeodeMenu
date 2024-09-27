@@ -39,7 +39,6 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
         if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied)
         {
             base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied = true;
-            base_cast<NoclipBaseGameLayer*>(this)->m_fields->timeDead += CCDirector::get()->getDeltaTime();
         }
         
         m_fields->isDead = true;
@@ -75,11 +74,29 @@ void NoclipPlayLayer::resetLevel()
     m_fields->isDead = false;
 }
 
-void NoclipBaseGameLayer::update(float dt)
+void NoclipBaseGameLayer::checkRepellPlayer()
 {
-    GJBaseGameLayer::update(dt);
+    GJBaseGameLayer::checkRepellPlayer();
 
-    m_fields->hasDied = false;
+    m_fields->isTickUpdate = true;
+}
+
+void NoclipBaseGameLayer::updateCamera(float dt)
+{
+    GJBaseGameLayer::updateCamera(dt);
+
+    if (m_fields->isTickUpdate == true)
+    {
+        m_fields->isTickUpdate = false;
+
+        if (m_fields->hasDied)
+        {
+            m_fields->timeDead += dt / 60.0f;
+            m_fields->hasDied = false;
+        }
+
+        m_fields->timeInLevel += dt / 60.0f;
+    }
 }
 
 void NoclipBaseGameLayer::resetLevelVariables()

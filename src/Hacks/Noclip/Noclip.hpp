@@ -32,11 +32,16 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
         GameObject* ac;
         
         float timeDead = 0;
+        float timeInLevel = 0;
         bool hasDied = false;
+
+        bool isTickUpdate = false;
     };
 
-    virtual void update(float dt);
     void resetLevelVariables();
+
+    void checkRepellPlayer();
+    void updateCamera(float dt);
 
     float getNoclipAccuracy();
 };

@@ -7,7 +7,7 @@ using namespace geode::prelude;
 class $modify (PlayLayer)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("PlayLayer::storeCheckpoint", 99999999999999999);
+        self.setHookPriority("PlayLayer::storeCheckpoint", 9999999);
 
         std::vector<geode::Hook*> hooks;
 
