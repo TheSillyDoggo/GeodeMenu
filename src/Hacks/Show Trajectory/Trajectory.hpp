@@ -26,7 +26,7 @@ class $modify (TrajectoryBGL, GJBaseGameLayer)
     struct Fields
     {
         CCPoint point;
-        PlayerObject* trajectoryPlayer;
+        TrajectoryPlayerObject* trajectoryPlayer;
         CCDrawNode* trajectoryDraw;
     };
 
@@ -34,7 +34,7 @@ class $modify (TrajectoryBGL, GJBaseGameLayer)
     void simulateTrajectory(bool press, PlayerObject* player);
 
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3);
-    void checkRepellPlayer(); // Runs every tick
+    virtual void update(float dt);
 
     QOLMOD_MOD_ALL_HOOKS("show-trajectory")
 };

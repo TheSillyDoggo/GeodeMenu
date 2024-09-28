@@ -24,7 +24,7 @@ bool TrajectoryPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCrea
 
     auto tbgl = base_cast<TrajectoryBGL*>(this);
 
-    tbgl->m_fields->trajectoryPlayer = PlayerObject::create(0, 0, this, m_objectLayer, false);
+    tbgl->m_fields->trajectoryPlayer = as<TrajectoryPlayerObject*>(PlayerObject::create(0, 0, this, m_objectLayer, false));
     tbgl->m_fields->trajectoryDraw = CCDrawNode::create();
 
     tbgl->m_fields->trajectoryPlayer->setVisible(false);
@@ -58,7 +58,7 @@ bool TrajectoryEditorLayer::init(GJGameLevel* p0, bool p1)
 
     auto tbgl = base_cast<TrajectoryBGL*>(this);
 
-    tbgl->m_fields->trajectoryPlayer = PlayerObject::create(0, 0, this, m_objectLayer, false);
+    tbgl->m_fields->trajectoryPlayer = as<TrajectoryPlayerObject*>(PlayerObject::create(0, 0, this, m_objectLayer, false));
     tbgl->m_fields->trajectoryDraw = CCDrawNode::create();
 
     tbgl->m_fields->trajectoryPlayer->setVisible(false);
@@ -133,18 +133,29 @@ void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObjec
     GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 }
 
-void TrajectoryBGL::checkRepellPlayer()
+void TrajectoryBGL::update(float dt)
 {
-    GJBaseGameLayer::checkRepellPlayer();
+    GJBaseGameLayer::update(dt);
 
     if (m_fields->trajectoryPlayer)
     {
         m_fields->trajectoryDraw->clear();
 
+        bool v = false;
+        
+        if (auto clickSounds = Loader::get()->getLoadedMod("beat.click-sound"))
+        {
+            v = clickSounds->getSettingValue<bool>("enable-clicksound");
+            clickSounds->setSettingValue<bool>("enable-clicksound", false);
+        }
+
         resetSimulation(m_player1);
         simulateTrajectory(true, m_player1);
         resetSimulation(m_player1);
         simulateTrajectory(false, m_player1);
+
+        if (auto clickSounds = Loader::get()->getLoadedMod("beat.click-sound"))
+            clickSounds->setSettingValue<bool>("enable-clicksound", v);
     }
 }
 
@@ -402,8 +413,8 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
 
 void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 {
-    float delta = 0.45f;
-    int iterations = 240;
+    float delta = 0.75f;
+    int iterations = 95;
 
     m_fields->trajectoryPlayer->releaseButton(PlayerButton::Jump);
 

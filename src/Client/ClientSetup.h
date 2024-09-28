@@ -127,9 +127,9 @@ public:
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
 
         level->modules.push_back(new Module("Percentage Level Font", "percentage-level-font", "Changes the font of the <cc>percentage / time</c> label to be the <cl>level font</c>"));
+        level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
-        //level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
 
         Client::instance->windows.push_back(level);
@@ -165,6 +165,7 @@ public:
         Client::GetModule("pause-countdown")->options.push_back(cdownT);
 
         Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+        Client::GetModule("frame-stepper")->options.push_back(new Module("unused", "unused-module", "this is here because i need a module for the popup"));
         //Client::GetModule("smart-startpos")->options.push_back(new SmartStartposUIModule());
         //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
 

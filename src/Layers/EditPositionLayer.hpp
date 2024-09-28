@@ -10,7 +10,8 @@ using namespace geode::prelude;
 
 enum EditPositionType
 {
-    StartposSwitcher
+    StartposSwitcher,
+    FrameStepper
 };
 
 class EditPositionLayer : public SillyBaseLayer

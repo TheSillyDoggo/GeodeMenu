@@ -7,6 +7,7 @@
 #include "../UI/CategoryTabSprite.hpp"
 #include "../Layers/ManageKeybindsLayer.hpp"
 #include "../UI/QOLModMenuBG.hpp"
+#include <Geode/ui/GeodeUI.hpp>
 
 using namespace geode::prelude;
 
@@ -43,6 +44,7 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         void onClose(CCObject* sender);
         void onKeybinds(CCObject*);
         void onPressTab(CCObject* sender);
+        void onUpdate(CCObject*);
 
         void updateVersionLabel();
         void updateTabs();

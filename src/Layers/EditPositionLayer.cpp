@@ -62,6 +62,25 @@ void EditPositionLayer::customSetup()
         this->addChild(opacitySlider, 5);
         this->addChild(opacityLabel, 5);
     }
+
+    if (type == EditPositionType::FrameStepper)
+    {
+        scaleSlider = Slider::create(this, menu_selector(EditPositionLayer::sliderValueChanged));
+        scaleSlider->getThumb()->setTag(1);
+        scaleSlider->setValue(unscaleValue(scale));
+        scaleSlider->setScale(0.55f);
+        scaleSlider->setAnchorPoint(ccp(0, 0));
+        scaleSlider->setPosition(ccp(CCDirector::get()->getWinSize().width / 2 + 55, CCDirector::get()->getWinSize().height - 70));
+
+        auto scaleLabel = CCLabelBMFont::create("Scale:", "chatFont.fnt");
+        scaleLabel->setAnchorPoint(ccp(1, 0.5f));
+        scaleLabel->setScale(0.85f);
+        scaleLabel->setPositionY(scaleSlider->getPositionY() + 1);
+        scaleLabel->setPositionX(CCDirector::get()->getWinSize().width / 2 - 15);
+
+        this->addChild(scaleSlider, 5);
+        this->addChild(scaleLabel, 5);
+    }
     
     auto topRightMenu = CCMenu::create();
     topRightMenu->setPosition(CCDirector::get()->getWinSize() + ccp(-32, -35));
@@ -96,6 +115,15 @@ void EditPositionLayer::onClose(CCObject*)
         Mod::get()->setSavedValue<float>("startpos-opacity", opacity);
     }
 
+    if (type == EditPositionType::FrameStepper)
+    {
+        Mod::get()->setSavedValue<float>("frame-stepper-position.x", position.x);
+        Mod::get()->setSavedValue<float>("frame-stepper-position.y", position.y);
+
+        Mod::get()->setSavedValue<float>("frame-stepper-scale", scale);
+        Mod::get()->setSavedValue<float>("frame-stepper-opacity", opacity);
+    }
+
     as<SillyBaseLayer*>(this->getParent())->onClose(nullptr);
 }
 
@@ -114,6 +142,21 @@ void EditPositionLayer::onReset(CCObject*)
 
         scaleSlider->setValue(unscaleValue(1));
         opacitySlider->setValue(75.0f / 255.0f);
+    }
+
+    if (type == EditPositionType::FrameStepper)
+    {
+        Mod::get()->setSavedValue<float>("frame-stepper-position.x", 135 / 2 + 25);
+        Mod::get()->setSavedValue<float>("frame-stepper-position.y", 40 / 2 + 25);
+        Mod::get()->setSavedValue<float>("frame-stepper-scale", 1);
+        Mod::get()->setSavedValue<float>("frame-stepper-opacity", 255.0f / 255.0f);
+
+        position = ccp(Mod::get()->getSavedValue<float>("frame-stepper-position.x", 135 / 2 + 25), Mod::get()->getSavedValue<float>("frame-stepper-position.y", 40 / 2 + 25));
+        scale = Mod::get()->getSavedValue<float>("frame-stepper-scale", 1);
+        opacity = Mod::get()->getSavedValue<float>("frame-stepper-opacity", 255.0f / 255.0f);
+
+        scaleSlider->setValue(unscaleValue(1));
+        //opacitySlider->setValue(255.0f / 255.0f);
     }
 }
 
@@ -152,6 +195,55 @@ CCMenu* EditPositionLayer::getNodeForType()
         menu->addChildAtPosition(left, Anchor::Center, ccp(-65, 0));
         menu->addChildAtPosition(right, Anchor::Center, ccp(65, 0));
         menu->addChildAtPosition(label, Anchor::Center);
+
+        return menu;
+    }
+
+    if (type == EditPositionType::FrameStepper)
+    {
+        position = ccp(Mod::get()->getSavedValue<float>("frame-stepper-position.x", 135 / 2 + 25), Mod::get()->getSavedValue<float>("frame-stepper-position.y", 40 / 2 + 25));
+        scale = Mod::get()->getSavedValue<float>("frame-stepper-scale", 1);
+        opacity = Mod::get()->getSavedValue<float>("frame-stepper-opacity", 255.0f / 255.0f);
+
+        auto menu = CCMenu::create();
+        menu->setContentSize(ccp(135, 40));
+
+        auto bg = CCScale9Sprite::create("square02_001.png");
+        bg->setScale(1.0f / 3);
+        bg->setContentSize(menu->getContentSize() * 3);
+        bg->setAnchorPoint(CCPointZero);
+        bg->setOpacity(100);
+
+        auto pause = CCSprite::createWithSpriteFrameName("GJ_pauseEditorBtn_001.png");
+        pause->setScale(0.8f);
+
+        auto prev = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+        prev->setColor(ccc3(175, 175, 175));
+        prev->setScale(0.8f);
+
+        auto next = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+        next->setScale(0.8f);
+        next->setFlipX(true);
+
+        menu->addChildAtPosition(pause, Anchor::Center);
+        menu->addChildAtPosition(next, Anchor::Right, ccp(-18, 0));
+        menu->addChildAtPosition(prev, Anchor::Left, ccp(18, 0));
+        menu->addChild(bg, -1);
+
+        label = CCLabelBMFont::create("", "bigFont.fnt");
+
+        left = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+        right = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+        left->setScale(0);
+        right->setScale(0);
+
+        menu->addChildAtPosition(left, Anchor::Center);
+        menu->addChildAtPosition(right, Anchor::Center);
+        menu->addChildAtPosition(label, Anchor::Center);
+
+        auto area = TextArea::create("Keybinds are:\n<cl>N</c> : Previous Frame\n<cl>M</c> : Step Frame\n<cl>B</c> : Toggle Paused", "chatFont.fnt", 1.0f, 1000, ccp(0.5f, 0.5f), 20, false);
+        area->setPosition(ccp(CCDirector::get()->getWinSize().width / 2, CCDirector::get()->getWinSize().height - 120));
+        this->addChild(area, 12);
 
         return menu;
     }

@@ -44,6 +44,7 @@ class SILLY_DLL SafeMode
             "tps-bypass",
             "auto-coins",
             "auto-clicker",
+            "frame-stepper",
         };
 
         static SafeMode* get();

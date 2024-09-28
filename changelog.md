@@ -3,6 +3,10 @@
 - Fixed checking for updates text being positioned wrong when the Loading Circle is visible
 - Fixed freeze when opening the font picker menu for the first time
 - Fixed Noclip Accuracy being wrong a lot of the time
+- Fixed Show Trajectory unnecessarily running a lot more times than necessary
+- Fixed Click Sounds dying with Show Trajectory enabled
+- Made Update Available label clickable if an update is available, clicking it opens the mod popup to update the mod
+- Added **Frame Stepper**
 
 # 1.6.7
 

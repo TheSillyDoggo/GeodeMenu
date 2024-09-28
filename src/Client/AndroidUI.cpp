@@ -193,6 +193,43 @@ bool AndroidUI::setup()
 
 void AndroidUI::updateVersionLabel()
 {
+    /*
+    #ifdef GEODE_IS_WINDOWS
+    std::string platform = "Windows";
+
+    if (auto ntdll = GetModuleHandleA("ntdll.dll"))
+    {
+        if (auto wine = GetProcAddress(ntdll, "wine_get_version"))
+        {
+            if (getenv("STEAM_COMPAT_DATA_PATH"))
+                platform += " (Proton)";
+            else
+                platform += " (Wine)";
+        }
+    }
+    #endif
+
+    #ifdef GEODE_IS_ANDROID32
+    std::string platform = "Android 32";
+    #endif
+
+    #ifdef GEODE_IS_ANDROID64
+    std::string platform = "Android 64";
+    #endif
+
+    #ifdef GEODE_IS_ARM_MAC
+    std::string platform = "Arm MacOS";
+    #endif
+
+    #ifdef GEODE_IS_INTEL_MAC
+    std::string platform = "Intel MacOS";
+    #endif
+
+    #ifdef GEODE_IS_IOS
+    std::string platform = "iOS";
+    #endif
+    */
+
     auto ver = Mod::get()->getVersion();
     versionInfo->setString(fmt::format("Using Version {}.{}.{}", ver.getMajor(), ver.getMinor(), ver.getPatch()).c_str());
 
@@ -236,9 +273,29 @@ void AndroidUI::updateVersionLabel()
                 n->setColor(ccc3(87, 87, 255));
             }
         }
+
+        auto menu = CCMenu::create();
+        menu->setID("update-available-button");
+        menu->setPosition(versionParent->getPosition());
+        menu->ignoreAnchorPointForPosition(false);
+        menu->setAnchorPoint(ccp(0.5f, 0));
+        menu->setContentSize(ccp(110, 20));
+
+        auto btn = CCMenuItemSpriteExtra::create(CCNode::create(), this, menu_selector(AndroidUI::onUpdate));
+        btn->setContentSize(menu->getContentSize());
+        btn->setAnchorPoint(ccp(0, 0));
+        btn->setSizeMult(1);
+        
+        menu->addChild(btn);
+        panel->addChild(menu);
     }
 
     versionParent->updateLayout();
+}
+
+void AndroidUI::onUpdate(CCObject*)
+{
+    openInfoPopup(Mod::get()->getID());
 }
 
 CCMenu* AndroidUI::getSearchPanel()
