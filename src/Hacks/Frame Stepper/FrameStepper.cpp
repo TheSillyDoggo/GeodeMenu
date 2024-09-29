@@ -159,9 +159,6 @@ void SteppedUILayer::updateUI()
 
     if (!typeinfo_cast<PlayLayer*>(m_gameLayer))
     {
-        m_fields->next->setEnabled(false);
-        m_fields->next->setColor(ccc3(150, 150, 150));
-
         m_fields->prev->setEnabled(false);
         m_fields->prev->setColor(ccc3(150, 150, 150));
     }
@@ -224,8 +221,10 @@ $execute
         Client::GetModule("frame-stepper")->onToggle = [](bool enabled)
         {
             if (GJBaseGameLayer::get())
+            {
                 as<SteppedUILayer*>(GJBaseGameLayer::get()->m_uiLayer)->m_fields->menu->setVisible(enabled);
                 as<SteppedUILayer*>(GJBaseGameLayer::get()->m_uiLayer)->updateUI();
+            }
         };
     });
 }

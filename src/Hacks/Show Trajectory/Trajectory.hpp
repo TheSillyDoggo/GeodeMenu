@@ -33,6 +33,8 @@ class $modify (TrajectoryBGL, GJBaseGameLayer)
     void resetSimulation(PlayerObject* player);
     void simulateTrajectory(bool press, PlayerObject* player);
 
+    void updateSimulation();
+
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3);
     virtual void update(float dt);
 
@@ -43,5 +45,9 @@ class $modify (TrajectoryPlayLayer, PlayLayer)
 {
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
 
+    void resetLevel();
+
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1);
+
+    QOLMOD_MOD_HOOK("show-trajectory", "PlayLayer::resetLevel")
 };

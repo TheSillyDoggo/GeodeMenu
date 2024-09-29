@@ -37,6 +37,13 @@ bool TrajectoryPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCrea
     return true;
 }
 
+void TrajectoryPlayLayer::resetLevel()
+{
+    PlayLayer::resetLevel();
+
+    base_cast<TrajectoryBGL*>(this)->updateSimulation();
+}
+
 void TrajectoryPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
 {
     auto tbgl = base_cast<TrajectoryBGL*>(this);
@@ -137,6 +144,11 @@ void TrajectoryBGL::update(float dt)
 {
     GJBaseGameLayer::update(dt);
 
+    updateSimulation();
+}
+
+void TrajectoryBGL::updateSimulation()
+{
     if (m_fields->trajectoryPlayer)
     {
         m_fields->trajectoryDraw->clear();

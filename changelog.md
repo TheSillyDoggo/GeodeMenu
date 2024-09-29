@@ -5,6 +5,7 @@
 - Fixed Noclip Accuracy being wrong a lot of the time
 - Fixed Show Trajectory unnecessarily running a lot more times than necessary
 - Fixed Click Sounds dying with Show Trajectory enabled
+- Fixed Show Hitboxes not showing the hitbox of 2 monster objects (you know, those guys..)
 - Made Update Available label clickable if an update is available, clicking it opens the mod popup to update the mod
 - Added **Frame Stepper**
 
