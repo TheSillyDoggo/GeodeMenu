@@ -3,6 +3,7 @@
 - Fixed lag in game caused by custom fonts
 - Rewrote Copy Hack to work better
 - Fixed Monster Show Hitbox fix being broken with scaling
+- Added **Custom Icon Effect Speed**
 
 # 1.6.8
 
