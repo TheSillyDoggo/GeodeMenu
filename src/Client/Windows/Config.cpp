@@ -1,6 +1,19 @@
 #include "Config.hpp"
 #include "../AndroidBall.h"
 
+#define FADE_ICON(iconID, primary, secondary, glow, deathEffect) \
+plr = SimplePlayer::create(iconID); \
+plr->setContentSize(ccp(30, 30)); \
+plr->setColor(GameManager::get()->colorForIdx(primary)); \
+plr->setSecondColor(GameManager::get()->colorForIdx(secondary)); \
+if (glow != -1) \
+    plr->setGlowOutline(GameManager::get()->colorForIdx(glow)); \
+btn = CCMenuItemSpriteExtra::create(plr, this, menu_selector(Config::onRoxi)); \
+btn->setTag(deathEffect); \
+iconsMenu->addChild(btn); \
+plr->setAnchorPoint(CCPointZero); \
+iconsMenu->updateLayout(btn)
+
 void Config::cocosCreate(CCMenu* menu)
 {
     tabs.clear();
@@ -274,6 +287,27 @@ void Config::cocosCreate(CCMenu* menu)
     tabs.push_back(aboutTab);
     menu->addChild(aboutTab);
 
+    auto iconsMenu = CCMenu::create();
+    iconsMenu->setLayout(AxisLayout::create()->setGap(15)->setAutoScale(false));
+    iconsMenu->setScale(0.7f);
+    iconsMenu->setPositionX(aboutTab->getContentWidth() / 2);
+    iconsMenu->setPositionY(15 * iconsMenu->getScale());
+
+    SimplePlayer* plr;
+    CCMenuItemSpriteExtra* btn;
+
+    FADE_ICON(296, 2, 12, 12, 14);   // roxi
+    FADE_ICON(373, 35, 43, 35, 1);  // jaid
+    FADE_ICON(70, 41, 12, 12, 1);   // gaypeling
+    FADE_ICON(459, 98, 83, 12, 20);  // catgirlsarehot (anh)
+    FADE_ICON(478, 37, 21, 105, 11); // i dont remember
+    FADE_ICON(104, 21, 3, 3, 11);    // ery
+    FADE_ICON(41, 11, 70, -1, 1);   // justin
+    FADE_ICON(77, 1, 5, -1, 8);     // baby (ninxout)
+    FADE_ICON(335, 98, 41, 15, 19);  // alphalaneous
+    
+    aboutTab->addChild(iconsMenu);
+
     auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
     discord->setPosition(ccp(menu->getContentSize().width, 0) + ccp(-10, 12));
     discord->setID("https://discord.gg/DfQSTEnQKK");
@@ -302,6 +336,39 @@ CCMenuItemToggler* Config::createTabButton(std::string name, int index)
     }
 
     return btn;
+}
+
+void Config::onRoxi(CCObject* sender)
+{
+    if (auto roxi = as<SimplePlayer*>(as<CCMenuItemSpriteExtra*>(sender)->getNormalImage()))
+    {
+        as<CCMenuItemSpriteExtra*>(sender)->setEnabled(false);
+
+        roxi->runAction(CCEaseInOut::create(CCFadeOut::create(0.2f), 2));
+    }
+
+    FMODAudioEngine::get()->playEffect("explode_11.ogg");
+
+    int killed = 0;
+    int count = 0;
+
+    for (auto btn : CCArrayExt<CCNode*>(as<CCNode*>(sender)->getParent()->getChildren()))
+    {
+        if (auto b = typeinfo_cast<CCMenuItemSpriteExtra*>(btn))
+        {
+            count++;
+
+            if (!b->isEnabled())
+                killed++;
+        }
+    }
+
+    auto death = PlayerDeathAnimation::createAndRun(sender->getTag());
+    death->setPosition(as<CCNode*>(sender)->getPosition());
+    as<CCNode*>(sender)->getParent()->addChild(death);
+
+    if (killed == count)
+        AchievementNotifier::sharedState()->notifyAchievement("Murderer!", "Kill all the players in the about section", "diffIcon_03_btn_001.png", true);
 }
 
 void Config::onChangeTab(CCObject* sender)

@@ -54,6 +54,7 @@ bool StatusNode::init()
     hidden = Mod::get()->getSavedValue<bool>("hide-labels");
 
     update(-1.0f);
+    updateFont();
     updateVis();
 
     reorderSides();
@@ -87,7 +88,11 @@ void StatusNode::updateVis()
             sLabels[i]->setVisible(false);
     }
 
-    updateFont();
+    for (auto lbl : sLabels)
+    {
+        // make sure all the labels are the same height
+        lbl->setScale((32.5f * lbl->getScale()) / lbl->getContentHeight());
+    }
 }
 
 void StatusNode::updateFont()
@@ -97,10 +102,9 @@ void StatusNode::updateFont()
     for (auto lbl : sLabels)
     {
         lbl->setFntFile(font.c_str());
-
-        // make sure all the labels are the same height
-        lbl->setScale((32.5f * lbl->getScale()) / lbl->getContentHeight());
     }
+
+    log::info("updating font");
 }
 
 void StatusNode::reorderSides()

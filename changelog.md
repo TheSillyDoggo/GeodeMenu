@@ -1,3 +1,9 @@
+# 1.6.9
+
+- Fixed lag in game caused by custom fonts
+- Rewrote Copy Hack to work better
+- Fixed Monster Show Hitbox fix being broken with scaling
+
 # 1.6.8
 
 - Fixed checking for updates text being positioned wrong when the Loading Circle is visible

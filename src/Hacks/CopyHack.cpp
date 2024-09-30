@@ -12,6 +12,35 @@ class $modify(LevelInfoLayer)
         if (!LevelInfoLayer::init(p0, p1))
             return false;
 
+        if (auto menu = getChildByID("left-side-menu"))
+        {
+            if (auto locked = typeinfo_cast<CCMenuItemSpriteExtra*>(getChildBySpriteFrameName(menu, "GJ_duplicateLockedBtn_001.png")); locked && locked->isVisible())
+            {
+                locked->m_pfnSelector = menu_selector(LevelInfoLayer::confirmClone);
+                locked->setSprite(CCSprite::createWithSpriteFrameName("GJ_duplicateBtn_001.png"));
+
+                return true;
+            }
+
+            if (auto unlocked = typeinfo_cast<CCMenuItemSpriteExtra*>(getChildBySpriteFrameName(menu, "GJ_duplicateBtn_001.png")))
+            {
+                // do nothing cuz the buttons already there
+            }
+            else
+            {
+                auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_duplicateBtn_001.png"), this, menu_selector(LevelInfoLayer::confirmClone));
+                btn->setID("copy-button");
+
+                m_cloneBtn = btn;
+
+                menu->addChild(btn);
+                menu->updateLayout();
+                return true;
+            }
+        }
+
+        // fallback to bad code if node ids isn't installed
+
         auto gm = GameManager::sharedState();
         if (gm->m_playerUserID == p0->m_userID) return true;
         if (m_cloneBtn == nullptr) return true;

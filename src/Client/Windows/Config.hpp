@@ -3,6 +3,7 @@
 #include "../Client.h"
 #include "../Dropdown.h"
 #include "../../Utils/CCPastelLabelBMFont.hpp"
+#include "../../UI/PlayerDeathAnimation.hpp"
 
 class Config : public Window
 {
@@ -44,6 +45,7 @@ class Config : public Window
         void onChangeFile(CCObject*);
         void onChangeTab(CCObject*);
         void onManageKeybinds(CCObject*);
+        void onRoxi(CCObject* sender);
 
         void cocosCreate(CCMenu* menu);
 };

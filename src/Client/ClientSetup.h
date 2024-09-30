@@ -394,8 +394,11 @@ public:
         auto font = new FontModule("labels-font");
         font->onToggle = [font](bool)
         {
-            if (StatusNode::get())
-                StatusNode::get()->updateVis();
+            if (auto stn = StatusNode::get())
+            {
+                stn->updateFont();
+                stn->updateVis();
+            }
         };
 
         //replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
