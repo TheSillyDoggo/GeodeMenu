@@ -16,6 +16,7 @@ class IconOptionsLayer : public SillyBaseLayer, public ColorPickPopupDelegate
         ccColor3B endFade;
         CCScale9Sprite* spr1;
         CCScale9Sprite* spr2;
+        TextInput* input;
 
         void onClose(CCObject* sender);
 

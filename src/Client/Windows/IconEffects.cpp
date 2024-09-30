@@ -4,6 +4,9 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
 {
     // 0 : primary, 1 : secondary : 2 : glow : 3 : trail : 4 : wave trail
     int sel = 0;
+    float v = ColourUtility::va;
+
+    v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", mode), 1);
 
     switch (mode)
     {
@@ -54,10 +57,10 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
     }
 
     if (sel == 1)
-        return ColourUtility::getChromaColour();
+        return ColourUtility::getChromaColour(abs(v));
 
     if (sel == 2)
-        return ColourUtility::getPastelColour();
+        return ColourUtility::getPastelColour(abs(v));
 
     if (sel == 3)
     {
@@ -72,7 +75,7 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
         ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
         ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
 
-        return ColourUtility::lerpColour(in, out, (sinf(ColourUtility::va * 3) + 1) / 2);
+        return ColourUtility::lerpColour(in, out, (sinf(v * 3) + 1) / 2);
         //fade
     }
 

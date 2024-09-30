@@ -10,11 +10,19 @@ void IconOptionsLayer::customSetup()
     back->setContentSize(ccp(150, 100) / 0.5f);
     back->setScale(0.5f);
 
+    auto backSpeed = CCScale9Sprite::create("square02_001.png");
+    backSpeed->setOpacity(100);
+    backSpeed->setContentSize(ccp(150, 100) / 0.5f);
+    backSpeed->setScale(0.5f);
+
     auto label1 = CCLabelBMFont::create("Fade Start", "bigFont.fnt");
     label1->setScale(0.5f);
 
     auto label2 = CCLabelBMFont::create("Fade End", "bigFont.fnt");
     label2->setScale(0.5f);
+
+    auto label3 = CCLabelBMFont::create("Speed", "bigFont.fnt");
+    label3->setScale(0.5f);
 
     spr1 = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     spr1->setContentWidth(spr1->getContentWidth() * 3);
@@ -33,9 +41,16 @@ void IconOptionsLayer::customSetup()
     auto btn2 = CCMenuItemSpriteExtra::create(spr2, this, menu_selector(IconOptionsLayer::onColour));
     btn2->setTag(2);
 
-    baseLayer->addChildAtPosition(back, Anchor::Center, ccp(0, 10));
-    baseLayer->addChildAtPosition(btn1, Anchor::Center, ccp(0, 35));
-    baseLayer->addChildAtPosition(btn2, Anchor::Center, ccp(0, -15));
+    input = TextInput::create(spr1->getContentWidth(), "Speed");
+    input->setFilter("1234567890.");
+    input->setString(fmt::format("{}", Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", icon), 1)));
+
+    baseLayer->addChildAtPosition(back, Anchor::Center, ccp(-80, 10));
+    baseLayer->addChildAtPosition(backSpeed, Anchor::Center, ccp(80, 10));
+    baseLayer->addChildAtPosition(btn1, Anchor::Center, ccp(-80, 35));
+    baseLayer->addChildAtPosition(btn2, Anchor::Center, ccp(-80, -15));
+    baseLayer->addChildAtPosition(label3, Anchor::Center, ccp(80, 48));
+    baseLayer->addChildAtPosition(input, Anchor::Center, ccp(80, 20));
 
     ok->m_pfnSelector = menu_selector(IconOptionsLayer::onClose); // sexy
 }
@@ -52,6 +67,7 @@ void IconOptionsLayer::onClose(CCObject* sender)
 {
     Mod::get()->setSavedValue<ccColor3B>(fmt::format("fadeColour1{}", icon), startFade);
     Mod::get()->setSavedValue<ccColor3B>(fmt::format("fadeColour2{}", icon), endFade);
+    Mod::get()->setSavedValue<float>(fmt::format("icon-effect-speed_{}", icon), numFromString<float>(input->getString()).unwrapOr(1.0f));
 
     SillyBaseLayer::onClose(sender);
 }

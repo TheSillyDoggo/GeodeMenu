@@ -42,7 +42,8 @@ class EffectUI : public CCNode
 
         static void updateValues();
 
-        void update(float delta) {
+        void update(float delta)
+        {
             for (size_t i = 0; i < players.size(); i++)
             {
                 players[i]->setColor(getColourForSelected(0));
@@ -73,12 +74,18 @@ class EffectUI : public CCNode
             
             for (size_t i = 0; i < chromas.size(); i++)
             {
-                chromas[i]->setColor(ColourUtility::getChromaColour());
+                float v = ColourUtility::va;
+                v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", i), 1);
+
+                chromas[i]->setColor(ColourUtility::getChromaColour(abs(v)));
             }
 
             for (size_t i = 0; i < chromas.size(); i++)
             {
-                pastels[i]->setColor(ColourUtility::getPastelColour());
+                float v = ColourUtility::va;
+                v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", i), 1);
+
+                pastels[i]->setColor(ColourUtility::getPastelColour(abs(v)));
             }
 
             for (size_t i = 0; i < fades.size(); i++)
@@ -94,7 +101,10 @@ class EffectUI : public CCNode
                 ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
                 ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
 
-                fades[i]->setColor(ColourUtility::lerpColour(in, out, (sinf(ColourUtility::va * 3) + 1) / 2));
+                float v = ColourUtility::va;
+                v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", i), 1);
+
+                fades[i]->setColor(ColourUtility::lerpColour(in, out, (sinf(v * 3) + 1) / 2));
             }
         }
 };

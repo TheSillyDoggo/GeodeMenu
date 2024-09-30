@@ -87,14 +87,18 @@ class ColourUtility
 			return geode::prelude::ccc3(static_cast<uint8_t>(r * 255), static_cast<uint8_t>(g * 255), static_cast<uint8_t>(b * 255));
 		}
 
-		static geode::prelude::ccColor3B getChromaColour()
+		static geode::prelude::ccColor3B getChromaColour(float v = -1)
 		{
-			return hsvToRgb(geode::prelude::cchsv((va * 180) / 10.0f, 1.0f, 1.0f, true, true));
+			float a = v == -1 ? va : v;
+
+			return hsvToRgb(geode::prelude::cchsv((a * 180) / 10.0f, 1.0f, 1.0f, true, true));
 		}
 
-		static geode::prelude::ccColor3B getPastelColour(int i = 0)
+		static geode::prelude::ccColor3B getPastelColour(float v = -1, int i = 0)
 		{
-			return hsvToRgb(geode::prelude::cchsv((va * 180) / 10.0f, 155.0f / 255.0f, 1.0f, true, true));
+			float a = v == -1 ? va : v;
+
+			return hsvToRgb(geode::prelude::cchsv((a * 180) / 10.0f, 155.0f / 255.0f, 1.0f, true, true));
 /*
 			int v = round((va * pastelV.size()) / 10.0f);
 
