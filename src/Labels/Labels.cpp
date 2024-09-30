@@ -371,9 +371,9 @@ void StatusNode::updateCPS(float dt)
 
 class $modify (PlayerObject)
 {
-    void pushButton(PlayerButton p0)
+    bool pushButton(PlayerButton p0)
     {
-        PlayerObject::pushButton(p0);
+        auto ret = PlayerObject::pushButton(p0);
 
         if (p0 == PlayerButton::Jump && GJBaseGameLayer::get() && GJBaseGameLayer::get()->m_player1 == this)
         {
@@ -386,11 +386,13 @@ class $modify (PlayerObject)
                 stn->sLabels[8]->setColor(ccc3(0, 255, 0));
             }
         }
+
+        return ret;
     }
 
-    void releaseButton(PlayerButton p0)
+    bool releaseButton(PlayerButton p0)
     {
-        PlayerObject::releaseButton(p0);
+        auto ret = PlayerObject::releaseButton(p0);
 
         if (p0 == PlayerButton::Jump && GJBaseGameLayer::get())
         {
@@ -404,6 +406,8 @@ class $modify (PlayerObject)
                     stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
             }
         }
+
+        return ret;
     }
 };
 
