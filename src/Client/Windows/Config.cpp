@@ -367,8 +367,10 @@ void Config::onRoxi(CCObject* sender)
     death->setPosition(as<CCNode*>(sender)->getPosition());
     as<CCNode*>(sender)->getParent()->addChild(death);
 
+    #ifndef GEODE_IS_MACOS
     if (killed == count)
         AchievementNotifier::sharedState()->notifyAchievement("Murderer!", "Kill all the players in the about section", "diffIcon_03_btn_001.png", true);
+    #endif
 }
 
 void Config::onChangeTab(CCObject* sender)
