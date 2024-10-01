@@ -1,6 +1,6 @@
-# 1.7.0
+# 1.6.10
 
-- Fixed UI Button speed fading too fast
+- Fixed UI Button speed fading way too fast
 - Ported **No Camera Shake** To Windows and macOS
 - Ported **Pulsing Menu** To Windows and macOS
 
