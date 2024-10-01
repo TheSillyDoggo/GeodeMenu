@@ -1,3 +1,9 @@
+# 1.7.0
+
+- Fixed UI Button speed fading too fast
+- Ported **No Camera Shake** To Windows and macOS
+- Ported **Pulsing Menu** To Windows and macOS
+
 # 1.6.9
 
 - Fixed lag in game caused by custom fonts

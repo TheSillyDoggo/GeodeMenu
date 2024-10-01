@@ -14,15 +14,14 @@ int imguiTextInputChanged(ImGuiInputTextCallbackData* data)
 
     if (ImGui::IsKeyPressed(ImGuiKey_Backspace) && data->BufTextLen == 0)
         playSound();
-
-    if (data->BufTextLen > mod->maxSize)
+    
+    if (mod->text.size() > mod->maxSize)
     {
         mod->text = mod->text.substr(0, mod->maxSize);
 
         playSound();
-        return 0;
     }
-    
+
     return ret;
 }
 
@@ -32,9 +31,9 @@ void InputModule::drawImGui()
 
     auto t = text.c_str();
 
-    if (ImGui::InputText(name.c_str(), (char*)text.c_str(), maxSize, ImGuiInputTextFlags_CallbackAlways, imguiTextInputChanged))
+    if (ImGui::InputText(name.c_str(), (char*)text.c_str(), 127, ImGuiInputTextFlags_CallbackAlways, imguiTextInputChanged))
     {
-        
+
     }
     //text = t;
 }

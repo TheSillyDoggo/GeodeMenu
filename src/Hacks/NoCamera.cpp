@@ -5,33 +5,40 @@
 
 using namespace geode::prelude;
 
-class $modify (EffectGameObject)
-{
-    //edit_eStaticBtn_001.png
-};
-
-Module* shake = nullptr;
-Module* stati = nullptr;
+#ifdef GEODE_IS_WINDOWS
+#define APPLY_SHAKE_INLINE
+#endif
 
 class $modify (GJBaseGameLayer)
 {
-    #ifdef GEODE_IS_ANDROID
+    #ifdef APPLY_SHAKE_INLINE
+
+    void updateCamera(float physDeltaX60)
+    {
+        m_gameState.m_cameraShakeFactor = 0;
+        m_gameState.m_cameraShakeEnabled = false;
+
+        GJBaseGameLayer::updateCamera(physDeltaX60);
+    }
+
+    #else
+
     void applyShake(cocos2d::CCPoint& p0)
     {
-        if (!shake)
-            shake = Client::GetModule("no-shake");
-
-        if (!shake->enabled)
-            GJBaseGameLayer::applyShake(p0);
+        
     }
+
     #endif
 
+    QOLMOD_MOD_ALL_HOOKS("no-shake")
+};
+
+class $modify (GJBaseGameLayer)
+{
     void updateStaticCameraPos(cocos2d::CCPoint p0, bool p1, bool p2, bool p3, float p4, int p5, float p6)
     {
-        if (!stati)
-            stati = Client::GetModule("no-static");
-
-        if (!stati->enabled)
-            GJBaseGameLayer::updateStaticCameraPos(p0, p1, p2, p3, p4, p5, p6);
+        
     }
+
+    QOLMOD_MOD_ALL_HOOKS("no-static")
 };

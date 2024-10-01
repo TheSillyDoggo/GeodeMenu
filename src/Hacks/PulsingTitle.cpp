@@ -54,7 +54,12 @@ class MenuPulse : public CCNode
 
         void update(float dt)
         {
+            #ifdef GEODE_IS_WINDOWS
+            MBO(bool, engine, 0x218) = true;
+            #else
             engine->enableMetering();
+            #endif
+
             engine->update(dt);
             
             float met = MBO(float, engine, offset);
@@ -73,6 +78,7 @@ class $modify (MenuLayer)
     {
         if (!MenuLayer::init())
             return false;
+
 
         FMODAudioEngine::sharedEngine()->enableMetering();
 

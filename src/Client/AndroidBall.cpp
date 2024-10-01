@@ -163,7 +163,7 @@ void AndroidBall::UpdateVisible(bool i)
 
     ColourUtility::pastel++;
 
-    btnOverlay->setColor(ColourUtility::getPastelColour(ColourUtility::pastel));
+    btnOverlay->setColor(ColourUtility::getPastelColour());
     instance = this;
 
     if (btn->getActionByTag(69))
