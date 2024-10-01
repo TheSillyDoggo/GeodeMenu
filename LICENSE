@@ -1,1 +1,6 @@
-i do not give sorkopiko permission to use any code from this mod for their own use
+ask me to use code (my discord is @thesillydoggo).
+
+if (response.allowedToUseCode())
+    use(theCode);
+else
+    dont(use(theCode));
