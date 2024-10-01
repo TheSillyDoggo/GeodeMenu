@@ -66,7 +66,7 @@ class MenuPulse : public CCNode
 
             v = as<float>(std::lerp(as<float>(v), as<float>(met), dt * 6.9420f));
             if (node)
-                node->setScale(mod->enabled ? (0.85f + clampf(v * 0.25f, 0, 1)) : 1);
+                node->setScale(mod->enabled ? (0.85f + clamp<float>(v * 0.25f, 0, 1)) : 1);
         }
 
         CREATE_FUNC(MenuPulse);
