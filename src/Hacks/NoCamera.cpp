@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-#ifdef GEODE_IS_WINDOWS
+#ifndef GEODE_IS_ANDROID
 #define APPLY_SHAKE_INLINE
 #endif
 
