@@ -6,6 +6,7 @@
 #include <Geode/modify/UILayer.hpp>
 #include "../../Layers/EditPositionLayer.hpp"
 #include "../../Client/Client.h"
+#include "../../UI/RepeatableMenuItemSpriteExtra.hpp"
 
 using namespace geode::prelude;
 
@@ -35,9 +36,9 @@ class $modify (SteppedUILayer, UILayer)
 {
     struct Fields
     {
-        CCMenuItemSpriteExtra* next;
-        CCMenuItemSpriteExtra* prev;
-        CCMenuItemSpriteExtra* pause;
+        RepeatableMenuItemSpriteExtra* next;
+        RepeatableMenuItemSpriteExtra* prev;
+        RepeatableMenuItemSpriteExtra* pause;
         CCMenu* menu;
     };
 

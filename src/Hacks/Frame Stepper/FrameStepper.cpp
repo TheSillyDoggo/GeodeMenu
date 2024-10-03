@@ -7,6 +7,9 @@ void SteppedBaseGameLayer::storeState()
     if (!typeinfo_cast<PlayLayer*>(this))
         return;
 
+    if (m_player1 && m_player1->m_isDead)
+        return;
+
     auto fields = m_fields.self();
     
     if (fields->states.size() + 1 > MAX_STORED_STATES)
@@ -91,13 +94,13 @@ bool SteppedUILayer::init(GJBaseGameLayer* bgl)
 
     menu->setPosition(ccp(135 / 2, 40 / 2) + ccp(25, 25));
 
-    m_fields->pause = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_pauseBtn_001.png"), this, menu_selector(SteppedUILayer::onTogglePaused));
+    m_fields->pause = RepeatableMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_pauseBtn_001.png"), this, menu_selector(SteppedUILayer::onTogglePaused));
     m_fields->pause->getNormalImage()->setScale(0.8f);
 
-    m_fields->prev = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png"), this, menu_selector(SteppedUILayer::onPreviousFrame));
+    m_fields->prev = RepeatableMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png"), this, menu_selector(SteppedUILayer::onPreviousFrame));
     m_fields->prev->getNormalImage()->setScale(0.8f);
 
-    auto next = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png"), this, menu_selector(SteppedUILayer::onStepFrame));
+    auto next = RepeatableMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png"), this, menu_selector(SteppedUILayer::onStepFrame));
     next->getNormalImage()->setScale(0.8f);
     as<CCSprite*>(next->getNormalImage())->setFlipX(true);
 

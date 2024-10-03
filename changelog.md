@@ -1,6 +1,8 @@
 # 1.7.0
 
 - Made Icon Effects change colour of objects that use player colour in the level
+- Frame Stepper no longer saves ticks if you are dead
+- Frame Stepper buttons now repeat presses when being held down
 - Rewrote **Show Layout** to be better, allowing it to be ported to Windows and macOS
 - Added **Chest Unlock Bypass**
 
