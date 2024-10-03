@@ -101,6 +101,27 @@ std::vector<int> objectIDS =
     2924,
 };
 
+std::vector<int> cameraObjectIDS =
+{
+    // Zoom
+    1913,
+
+    // Static
+    1914,
+
+    // GP Offset
+    2901,
+
+    // Offset
+    1916,
+
+    // Rotate
+    2015,
+
+    // Edge ;3
+    2062,
+};
+
 void LayoutPlayLayer::addObject(GameObject* object)
 {
     bool dontAdd = false;
@@ -112,6 +133,12 @@ void LayoutPlayLayer::addObject(GameObject* object)
     if (std::find(objectIDS.begin(), objectIDS.end(), object->m_objectID) != objectIDS.end())
         dontAdd = true;
 
+    if (!Client::GetModuleEnabled("layout-retain-camera"))
+    {
+        if (std::find(cameraObjectIDS.begin(), cameraObjectIDS.end(), object->m_objectID) != cameraObjectIDS.end())
+            dontAdd = true;
+    }
+
     if (object->m_objectID == 749 || object->m_objectID == 44)
         dontAdd = false;
 
@@ -121,7 +148,7 @@ void LayoutPlayLayer::addObject(GameObject* object)
     if (object->m_isNoTouch)
         dontAdd = true;
 
-    if (object->m_groups && m_levelSettings->m_spawnGroup != 0)
+    if (object->m_groups && m_levelSettings->m_spawnGroup != 0 && object->m_groupCount > 0)
     {
         if (std::find(object->m_groups->begin(), object->m_groups->end(), m_levelSettings->m_spawnGroup) != object->m_groups->end())
             dontAdd = false;
@@ -159,9 +186,14 @@ bool LayoutPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
 
     if (Client::GetModuleEnabled("show-layout"))
     {
-        m_groundLayer->setPositionY(91);
-        m_groundLayer2->setPositionY(CCDirector::get()->getWinSize().height);
-        m_groundLayer2->setVisible(false);
+        if (m_groundLayer)
+            m_groundLayer->setPositionY(91);
+
+        if (m_groundLayer2)
+        {
+            m_groundLayer2->setPositionY(CCDirector::get()->getWinSize().height);
+            m_groundLayer2->setVisible(false);
+        }
     }
 
     m_objectLayer->addChild(m_fields->node);
