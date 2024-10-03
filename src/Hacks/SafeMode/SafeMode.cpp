@@ -137,6 +137,9 @@ bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObje
     if (Client::GetModuleEnabled("show-triggers"))
         SafeMode::get()->setHackedLoad();
 
+    if (Client::GetModuleEnabled("show-layout"))
+        SafeMode::get()->setHackedLoad();
+
     return true;
 }
 

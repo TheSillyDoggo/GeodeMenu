@@ -1,3 +1,9 @@
+# 1.7.0
+
+- Made Icon Effects change colour of objects that use player colour in the level
+- Rewrote **Show Layout** to be better, allowing it to be ported to Windows and macOS
+- Added **Chest Unlock Bypass**
+
 # 1.6.10
 
 - Fixed UI Button speed fading way too fast

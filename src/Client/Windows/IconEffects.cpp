@@ -176,6 +176,18 @@ class $modify (GJBaseGameLayer)
             m_player2->m_waveTrail->setColor(EffectUI::getColourForSelected(4, true));
         }
 
+        auto plr1 = EffectUI::getColourForSelected(0, false);
+        auto plr2 = EffectUI::getColourForSelected(1, false);
+
+        if (m_effectManager)
+        {
+            if (auto action = m_effectManager->getColorAction(1005))
+                action->m_color = plr1;
+            
+            if (auto action = m_effectManager->getColorAction(1006))
+                action->m_color = plr2;
+        }
+
         GJBaseGameLayer::update(p0);
     }
 

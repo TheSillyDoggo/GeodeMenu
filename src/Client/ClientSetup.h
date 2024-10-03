@@ -237,6 +237,8 @@ public:
 
         bypass->modules.push_back(new Module("Basement Bypass", "basement-bypass", "Allows you to enter the monsters basement without completing <cc>The Challenge</c>"));
         bypass->modules.push_back(new Module("Basement Key Bypass", "basement-key-bypass", "Allows you to unlock the keys in the monsters basement"));
+
+        bypass->modules.push_back(new Module("Treasure Room Chest Bypass", "chest-unlock-bypass", "Allows you to open any chest in the <cc>treasure room</c>"));
         
         Client::instance->windows.push_back(bypass);
 
@@ -521,7 +523,6 @@ public:
         #ifdef GEODE_IS_MACOS
 
         std::vector<std::string> macInc = {
-            "show-layout",
             "no-wave",
             "no-particles",
             "solid-wave",
@@ -574,10 +575,6 @@ public:
 
         #ifdef GEODE_IS_WINDOWS
 
-        #endif
-
-        #ifndef QOLMOD_SHOWLAYOUT
-        Client::GetModule("show-layout")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
         #endif
 
         //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
