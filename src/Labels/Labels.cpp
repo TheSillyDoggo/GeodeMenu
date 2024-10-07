@@ -1,4 +1,4 @@
-#ifdef STATUS_TEXTS
+/*#ifdef STATUS_TEXTS
 
 #include "Labels.h"
 #include "../Hacks/Noclip/Noclip.hpp"
@@ -472,4 +472,4 @@ void AttemptBaseGameLayer::resetLevelVariables()
     SafeMode::get()->resetOnNewAttempt();
 }
 
-#endif
+#endif*/

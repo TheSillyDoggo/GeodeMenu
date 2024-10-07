@@ -48,7 +48,8 @@ add_definitions(-DSTATUS_TEXTS)
 add_definitions(-DQOLMOD_EXPORTING)
 
 CPMAddPackage("gh:matcool/gd-imgui-cocos#09a9555")
+CPMAddPackage("gh:EclipseMenu/RIFT#c3f1c29")
 
-target_link_libraries(${PROJECT_NAME} imgui-cocos)
+target_link_libraries(${PROJECT_NAME} imgui-cocos rift)
 
 setup_geode_mod(${PROJECT_NAME})

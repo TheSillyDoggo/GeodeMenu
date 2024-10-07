@@ -16,6 +16,7 @@ class SillyBaseLayer : public geode::Popup<>
         CCPoint size = CCPointZero;
         CCBlurLayer* blur = nullptr;
         std::string _title;
+        CCLabelBMFont* title;
         bool createWithOK;
         bool animate;
         bool noBlur;

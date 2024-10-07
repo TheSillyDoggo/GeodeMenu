@@ -385,73 +385,7 @@ public:
 
     static void SetupStatus()
     {
-        #ifndef STATUS_TEXTS
-        return;
-        #endif
-
-        Window* replay = new Labels();
-
-        replay->modules.push_back(new StatusOpacity());
-        replay->modules.push_back(new StatusScale());
-
-        auto font = new FontModule("labels-font");
-        font->onToggle = [font](bool)
-        {
-            if (auto stn = StatusNode::get())
-            {
-                stn->updateFont();
-                stn->updateVis();
-            }
-        };
-
-        //replay->modules.push_back(new Module("Testmode", "status-testmode", "Show the test mode text if there's a startpos"));
-        replay->modules.push_back(new Module("Labels In Editor", "labels-in-editor", "Shows your labels in the level editor <cr>[EXPERIMENTAL]</c>"));
-        replay->modules.push_back(font);
-
-        replay->modules.push_back(new Module("Cheat Indicator", "cheat-indicator", "Shows if you are cheating"));
-        replay->modules.push_back(new Module("FPS Counter", "status-fps", "Shows your current game fps"));
-        replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your accuracy in noclip (hidden when noclip is disabled)"));
-        replay->modules.push_back(new Module("Noclip Deaths", "status-deaths", "Shows your deaths in noclip (hidden when noclip is disabled)"));
-        replay->modules.push_back(new Module("Attempts", "status-attempt", "Shows Attempt Count"));
-        //replay->modules.push_back(new Module("Clicks", "status-cps", "Shows Attempt Count"));
-        
-        replay->modules.push_back(new Module("Replay Status", "status-replay", "Replay debug info"));
-        //replay->modules.push_back(new Module("Noclip Deaths (not fully accurate)", "status-death", "Shows your death count (hidden when noclip is disabled)"));
-        //replay->modules.push_back(new Module("Noclip Accuracy", "status-accuracy", "Shows your death accuracy (hidden when noclip is disabled)"));
-        //replay->modules.push_back(new Module("Attempts", "status-attempts", "Shows your attempt count"));
-        //replay->modules.push_back(new Module("Clicks", "status-clicks", "Shows your click count"));
-        replay->modules.push_back(new Module("Message", "status-message", "Write a message of your choice to be shown"));
-        replay->modules.push_back(new Module("Session Time", "status-session", "Shows the time you've had the game open for in the format <cg>hh::mm::ss</c>"));
-        replay->modules.push_back(new Module("CPS Counter", "status-cps", "Shows your clicks per second. Tints <cg>Green</c> while you are clicking"));
-        replay->modules.push_back(new Module("Best Run", "best-run", "Shows your best run"));
-        replay->modules.push_back(new Module("Clock", "status-clock", "Shows your current device time"));
-        replay->modules.push_back(new Module("Percentage", "status-percentage", "Copies the text from the percentage label"));
-        //replay->modules.push_back(new StatusMessage());
-
-
-        Client::instance->windows.push_back(replay);
-
-        for (auto mod : replay->modules)
-        {
-            if (mod->id != "labels-in-editor")
-                mod->options.push_back(new DropdownModule({"Top Left", "Top Right", "Bottom Left", "Bottom Right"}, mod->id + "-side", 0));
-        }
-
-        auto messageOption = new InputModule("Message Text: ", "status-message-text", "Default Message");
-        messageOption->allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:\'\",.<>/?|`~ ";
-        messageOption->maxSize = 48; // its just a bit before it overflows on 16:9, perfect
-        Client::GetModule("status-message")->options.push_back(messageOption);
-        Client::GetModule("status-cps")->options.push_back(new Module("Total CPS", "status-cps-total", "Shows the total clicks in the attempt"));
-        Client::GetModule("status-cps")->options.push_back(new Module("Instant Fade Transition", "status-cps-instant-fade", "Makes the green fade transition when clicking instant"));
-
-        Client::GetModule("status-clock")->options.push_back(new Module("24 Hour Time", "status-clock-24h-time", "Uses 24 hour time instead of 12 hour time"));
-
-        Client::GetModule("best-run")->options.push_back(new Module("Always Show From", "best-run-always-show-from", "Always shows the from percent even if it's from 0%"));
-        Client::GetModule("best-run")->options.push_back(new Module("Show Decimal Places", "best-run-decimals", "Shows decimal places in the run", true));
-
-        #ifdef STATUS_TEXTS
-        StatusNode::postSetup(replay);
-        #endif
+        Client::instance->windows.push_back(new Labels());
     }
 
     static void SetupOptions(bool android)

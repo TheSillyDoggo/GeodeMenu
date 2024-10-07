@@ -1,4 +1,4 @@
-#ifdef STATUS_TEXTS
+/*#ifdef STATUS_TEXTS
 
 #pragma once
 
@@ -149,4 +149,4 @@ class StatusNode : public CCNode
         void updateCPS(float dt);
 };
 
-#endif
+#endif*/

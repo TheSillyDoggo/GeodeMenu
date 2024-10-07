@@ -5,20 +5,28 @@
 
 class Labels : public Window
 {
+    private:
+        static inline Labels* instance = nullptr;
     public:
         Labels()
         {
             name = "Labels";
             id = "labels-window";
+
+            instance = this;
         }
 
-        std::vector<CCLabelBMFont*> labels = {};
+        ScrollLayer* scroll = nullptr;
+        CCMenu* menu;
+        std::vector<CCNode*> cells;
+
+        static Labels* get();
 
         void cocosCreate(CCMenu* menu);
 
-        void onHide(CCObject*);
+        void refreshList();
 
-        void onToggleLabel(CCObject* sender);
-
-        void onLabelOptions(CCObject* sender);
+        void onAddItem(CCObject* sender);
+        void onDelete(CCObject* sender);
+        void onSettings(CCObject* sender);
 };
