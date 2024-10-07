@@ -20,4 +20,6 @@ class $modify (LabelsUILayer, UILayer)
 class $modify (LabelBaseGameLayer, GJBaseGameLayer)
 {
     void resetLevelVariables();
+
+    void handleButton(bool down, int button, bool isPlayer1);
 };

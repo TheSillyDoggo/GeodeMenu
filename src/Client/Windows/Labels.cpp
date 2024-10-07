@@ -1,8 +1,16 @@
 #include "Labels.hpp"
 #include "../../Layers/EditLabelPopup.hpp"
+#include "../../Layers/EditSafeZonePopup.hpp"
+
+#define BUTTON_WIDTH 200
 
 #define PRESET_BUTTON(__text, __id) \
-btn = ButtonSprite::create(__text, 120, 0, 1.0f, false, "bigFont.fnt", "GJ_button_05.png"); \
+btn = ButtonSprite::create(__text, BUTTON_WIDTH, 0, 1.0f, false, "bigFont.fnt", "GJ_button_05.png"); \
+btn->setContentWidth(BUTTON_WIDTH); \
+btn->m_label->setPositionX(BUTTON_WIDTH / 2); \
+btn->m_BGSprite->setPositionX(BUTTON_WIDTH / 2); \
+btn->m_BGSprite->setContentWidth(BUTTON_WIDTH); \
+btn->m_label->setScale(0.6f); \
 button = CCMenuItemSpriteExtra::create(btn, this, menu_selector(Labels::onAddItem)); \
 button->setTag(__id); \
 rightMenu->addChild(button)
@@ -42,6 +50,7 @@ void Labels::cocosCreate(CCMenu* menu)
     rightMenu->ignoreAnchorPointForPosition(false);
     rightMenu->setAnchorPoint(ccp(0.5f, 1));
     rightMenu->setContentHeight(1000);
+    rightMenu->setScale(0.9f);
     rightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End));
 
     ButtonSprite* btn;
@@ -61,6 +70,12 @@ void Labels::cocosCreate(CCMenu* menu)
 
     rightMenu->updateLayout();
     back->addChildAtPosition(rightMenu, Anchor::Top, ccp(0, -70));
+
+    auto safeZoneMenu = CCMenu::create();
+
+    safeZoneMenu->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("eventLevelLabel_001.png"), this, menu_selector(Labels::onSetupSafeZone)));
+
+    menu->addChild(safeZoneMenu);
 
     refreshList();
 }
@@ -120,6 +135,11 @@ void Labels::onAddItem(CCObject* sender)
         as<CCScale9Sprite*>(bg)->setColor(rand() % 100 == 69 ? ccc3(200, 0, 255) : ccc3(255, 255, 0));
         as<CCScale9Sprite*>(bg)->runAction(CCTintTo::create(0.35f, 0, 0, 0));
     }
+}
+
+void Labels::onSetupSafeZone(CCObject* sender)
+{
+    EditSafeZonePopup::addToScene();
 }
 
 void Labels::onDelete(CCObject* sender)
@@ -240,6 +260,166 @@ void Labels::refreshList()
 
         scroll->m_contentLayer->addChild(help);
     }
+}
+
+void Labels::save()
+{
+    Mod::get()->setSavedValue<float>("safe-zone.x", safeZone.origin.x);
+    Mod::get()->setSavedValue<float>("safe-zone.y", safeZone.origin.y);
+    Mod::get()->setSavedValue<float>("safe-zone.width", safeZone.size.width);
+    Mod::get()->setSavedValue<float>("safe-zone.height", safeZone.size.height);
+}
+
+void Labels::load()
+{
+    safeZone = CCRectMake(Mod::get()->getSavedValue<float>("safe-zone.x", 3), Mod::get()->getSavedValue<float>("safe-zone.y", 3), Mod::get()->getSavedValue<float>("safe-zone.width", 3), Mod::get()->getSavedValue<float>("safe-zone.height", 3));
+
+    loadFromPrevSave();
+}
+
+void Labels::loadFromPrevSave()
+{
+    auto font = Mod::get()->getSavedValue<std::string>("labels-font_font", "bigFont.fnt");
+    float opacity = numFromString<float>(Mod::get()->getSavedValue<std::string>("status-op_value", "0.9")).unwrapOr(0.9f);
+    float scale = numFromString<float>(Mod::get()->getSavedValue<std::string>("status-sc_value", "1")).unwrapOr(1);
+
+    if (Mod::get()->getSavedValue<bool>("cheat-indicator_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("cheat-indicator-side_index", 0);
+
+        auto mod = new LabelModule(".", "bigFont.fnt");
+        mod->name = "Cheat Indicator";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-fps_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-fps-side_index", 0);
+
+        auto mod = new LabelModule("{precision(fps, 0)} FPS", "bigFont.fnt");
+        mod->name = "FPS Counter";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-attempt_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-attempt-side_index", 0);
+
+        auto mod = new LabelModule("Attempt {attempt}", "bigFont.fnt");
+        mod->name = "Attempt";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-message_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-message-side_index", 0);
+
+        auto mod = new LabelModule(Mod::get()->getSavedValue<std::string>("status-message-text_value", "Default Message"), "bigFont.fnt");
+        mod->name = "Message";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-session_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-session-side_index", 0);
+
+        auto mod = new LabelModule("{leftPad((session_hours < 10 ? \"0\" : \"\") + session_hours + \"\", 2)}:{leftPad((session_minutes < 10 ? \"0\" : \"\") + session_minutes, 2)}:{leftPad((session_seconds < 10 ? \"0\" : \"\") + session_seconds + \"\", 2)}", "bigFont.fnt");
+        mod->name = "Session Time";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-cps_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-cps-side_index", 0);
+
+        auto mod = new LabelModule("{total_cps}", "bigFont.fnt");
+        mod->name = "CPS Counter";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-cps_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-cps-side_index", 0);
+
+        auto mod = new LabelModule("{total_cps}", "bigFont.fnt");
+        mod->name = "CPS Counter";
+
+        if (Mod::get()->getSavedValue<bool>("status-cps-total_enabled", false))
+            mod->format +=" / {total_clicks}";
+
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("best-run_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("best-run-side_index", 0);
+        int precision = Mod::get()->getSavedValue("best-run-decimals_enabled", true) ? 2 : 0;
+
+        auto mod = new LabelModule("Best Run: {isEditor ? \"Editor\" : ((precision(bestRun_from, " + fmt::format("{}", precision)
+        
+        + ") == 0 ? \"\" : (precision(bestRun_from, " + fmt::format("{}", precision) + ") + \"% - \"))) + (precision(bestRun_to, " + fmt::format("{}", precision) + ") + \"%\")}", "bigFont.fnt");
+        mod->name = "Best Run";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    if (Mod::get()->getSavedValue<bool>("status-clock_enabled", false))
+    {
+        auto side = Mod::get()->getSavedValue<int>("status-clock-side_index", 0);
+
+        auto mod = new LabelModule(!Mod::get()->getSavedValue<bool>("status-clock-24h-time_enabled", false) ? 
+        "{leftPad(((clock_hours - (clock_hours < 12 ? 12 : 0)) < 10 ? \"0\" : \"\") + (clock_hours - (clock_hours < 12 ? 12 : 0)) + \"\", 2)}:{leftPad((clock_minutes < 10 ? \"0\" : \"\") + clock_minutes, 2)}:{leftPad((clock_seconds < 10 ? \"0\" : \"\") + clock_seconds + \"\", 2)} {clock_hours < 12 ? \"AM\" : \"PM\"}"
+        :
+        "{leftPad((clock_hours < 10 ? \"0\" : \"\") + clock_hours + \"\", 2)}:{leftPad((clock_minutes < 10 ? \"0\" : \"\") + clock_minutes, 2)}:{leftPad((clock_seconds < 10 ? \"0\" : \"\") + clock_seconds + \"\", 2)}", "bigFont.fnt");
+        mod->name = "Clock";
+        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
+        mod->setFont(font);
+        mod->setScale(scale);
+        mod->setOpacity(opacity);
+
+        modules.push_back(mod);
+    }
+
+    save();
 }
 
 Labels* Labels::get()

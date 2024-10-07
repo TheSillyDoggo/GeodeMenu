@@ -21,6 +21,12 @@ class LabelLayer : public CCLayer
         std::map<LabelAnchor, CCNode*> nodes;
         std::vector<LabelNode*> labels;
         static inline LabelLayer* instance;
+
+        std::vector<float> cps1;
+        std::vector<float> cps2;
+
+        int clicks1;
+        int clicks2;
     
     public:
         UILayer* uiLayer;
@@ -30,8 +36,15 @@ class LabelLayer : public CCLayer
         void incrementAttempts();
         int getAttempts();
 
+        void increateCPS(bool player2);
+        void resetCPS();
+        int getCPS(bool player2);
+        int getTotalCPS();
+
+        int getClicks(bool player2);
+        int getTotalClicks();
+
         float getFPS();
-        int getCPS();
 
         CCNode* createNodeForAnchor(LabelAnchor anchor);
         CCNode* nodeForAnchor(LabelAnchor anchor);

@@ -4,12 +4,11 @@
 
 bool LabelNode::init(LabelModule* mod)
 {
-    if (!CCLabelBMFont::init())
+    if (!CCLabelBMFont::initWithString("", mod->getFont().c_str()))
         return false;
 
     this->mod = mod;
-
-    this->setFntFile(mod->getFont().c_str());
+    mod->labelNode = this;
 
     return true;
 }
@@ -32,7 +31,14 @@ void LabelNode::update(float dt)
     
     script->setVariable("attempt", rift::Value::integer(LabelLayer::get()->getAttempts()));
     script->setVariable("fps", rift::Value::floating(LabelLayer::get()->getFPS()));
-    script->setVariable("cps", rift::Value::integer(LabelLayer::get()->getCPS()));
+
+    script->setVariable("player1_cps", rift::Value::integer(LabelLayer::get()->getCPS(false)));
+    script->setVariable("player2_cps", rift::Value::integer(LabelLayer::get()->getCPS(true)));
+    script->setVariable("total_cps", rift::Value::integer(LabelLayer::get()->getTotalCPS()));
+
+    script->setVariable("player1_clicks", rift::Value::integer(LabelLayer::get()->getClicks(false)));
+    script->setVariable("player2_clicks", rift::Value::integer(LabelLayer::get()->getClicks(true)));
+    script->setVariable("total_clicks", rift::Value::integer(LabelLayer::get()->getTotalClicks()));
 
     std::chrono::milliseconds duration(static_cast<long long>(ColourUtility::totalSessionTime * 1000));
 
@@ -64,10 +70,10 @@ void LabelNode::update(float dt)
 
     auto res2 = script->run();
 
-    this->setString(res2.c_str());
-
-    this->setOpacity(mod->getOpacity() * 255);
+    this->setOpacity(mod->getOpacity() * 255.0f);
     this->setScale(mod->getScale() * 0.5f * (32.5f / this->getContentHeight()));
+
+    this->setString(res2.c_str());
 
     if (getChildrenCount() == 1 && res2 == ".")
     {
@@ -88,4 +94,9 @@ LabelNode* LabelNode::create(LabelModule* mod)
 
     CC_SAFE_DELETE(pRet);
     return nullptr;
+}
+
+LabelNode::~LabelNode()
+{
+    mod->labelNode = nullptr;
 }

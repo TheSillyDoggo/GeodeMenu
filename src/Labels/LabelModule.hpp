@@ -16,7 +16,7 @@ class LabelModule : public Module
     
     public:
         CCPoint offset;
-        CCLabelBMFont* labelNode;
+        CCLabelBMFont* labelNode = nullptr;
         std::string format;
 
         LabelModule(std::string format, std::string font);

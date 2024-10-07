@@ -20,4 +20,14 @@ void LabelBaseGameLayer::resetLevelVariables()
 
     if (LevelEditorLayer::get() ? !LevelEditorLayer::get()->m_editorUI->m_playtestStopBtn->isVisible() : true)
         as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer->incrementAttempts();
+
+    as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer->resetCPS();
+}
+
+void LabelBaseGameLayer::handleButton(bool down, int button, bool isPlayer1)
+{
+    GJBaseGameLayer::handleButton(down, button, isPlayer1);
+
+    if (down && button == 1)
+        as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer->increateCPS(!isPlayer1);
 }

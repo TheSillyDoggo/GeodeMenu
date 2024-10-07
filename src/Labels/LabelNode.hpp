@@ -21,4 +21,6 @@ class LabelNode : public CCLabelBMFont
         std::string getFormatString();
 
         static LabelNode* create(LabelModule* mod);
+
+        ~LabelNode();
 };

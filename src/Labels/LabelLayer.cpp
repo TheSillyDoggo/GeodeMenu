@@ -58,6 +58,15 @@ void LabelLayer::update(float dt)
         _frames = 0;
     }
 
+    for (size_t i = 0; i < cps1.size(); i++)
+        cps1[i] -= dt;
+
+    for (size_t i = 0; i < cps2.size(); i++)
+        cps2[i] -= dt;
+
+    cps1.erase(std::remove_if(cps1.begin(), cps1.end(), [](float i){ return i < 0; }), cps1.end());
+    cps2.erase(std::remove_if(cps2.begin(), cps2.end(), [](float i){ return i < 0; }), cps2.end());   
+
     for (auto label : labels)
     {
         label->update(dt);
@@ -72,6 +81,18 @@ void LabelLayer::update(float dt)
     {
         label->setPosition(label->getPosition() + label->mod->offset);
     }
+
+    nodes.at(LabelAnchor::BottomLeft)->setPosition(Labels::get()->safeZone.origin);
+    nodes.at(LabelAnchor::CenterLeft)->setPositionX(Labels::get()->safeZone.origin.x);
+    nodes.at(LabelAnchor::TopLeft)->setPositionX(Labels::get()->safeZone.origin.x);
+    nodes.at(LabelAnchor::TopLeft)->setPositionY(CCDirector::get()->getWinSize().height - Labels::get()->safeZone.size.height);
+    nodes.at(LabelAnchor::BottomCenter)->setPositionY(Labels::get()->safeZone.origin.y);
+    nodes.at(LabelAnchor::BottomRight)->setPositionY(Labels::get()->safeZone.origin.y);
+    nodes.at(LabelAnchor::BottomRight)->setPositionX(CCDirector::get()->getWinSize().width - Labels::get()->safeZone.size.width);
+    nodes.at(LabelAnchor::CenterRight)->setPositionX(CCDirector::get()->getWinSize().width - Labels::get()->safeZone.size.width);
+    nodes.at(LabelAnchor::TopRight)->setPositionX(CCDirector::get()->getWinSize().width - Labels::get()->safeZone.size.width);
+    nodes.at(LabelAnchor::TopRight)->setPositionY(CCDirector::get()->getWinSize().height - Labels::get()->safeZone.size.height);
+    nodes.at(LabelAnchor::TopCenter)->setPositionY(CCDirector::get()->getWinSize().height - Labels::get()->safeZone.size.height);
 }
 
 void LabelLayer::updateAnchors()
@@ -107,9 +128,49 @@ float LabelLayer::getFPS()
     return fps;
 }
 
-int LabelLayer::getCPS()
+void LabelLayer::resetCPS()
 {
-    return 0;
+    cps1.clear();
+    cps2.clear();
+
+    clicks1 = 0;
+    clicks2 = 0;
+}
+
+void LabelLayer::increateCPS(bool player2)
+{
+    if (player2)
+        cps2.push_back(1);
+    else
+        cps1.push_back(1);
+
+    if (player2)
+        clicks2++;
+    else
+        clicks1++;
+}
+
+int LabelLayer::getCPS(bool player2)
+{
+    return player2 ? cps2.size() : cps1.size();
+}
+
+int LabelLayer::getTotalCPS()
+{
+    return cps1.size() + cps2.size();
+}
+
+int LabelLayer::getClicks(bool player2)
+{
+    if (player2)
+        return clicks2;
+    else
+        return clicks1;
+}
+
+int LabelLayer::getTotalClicks()
+{
+    return clicks1 + clicks2;
 }
 
 CCNode* LabelLayer::nodeForAnchor(LabelAnchor anchor)

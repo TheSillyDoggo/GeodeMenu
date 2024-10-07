@@ -14,11 +14,14 @@ class Labels : public Window
             id = "labels-window";
 
             instance = this;
+
+            load();
         }
 
         ScrollLayer* scroll = nullptr;
         CCMenu* menu;
         std::vector<CCNode*> cells;
+        CCRect safeZone;
 
         static Labels* get();
 
@@ -26,7 +29,12 @@ class Labels : public Window
 
         void refreshList();
 
+        void save();
+        void load();
+        void loadFromPrevSave();
+
         void onAddItem(CCObject* sender);
         void onDelete(CCObject* sender);
         void onSettings(CCObject* sender);
+        void onSetupSafeZone(CCObject* sender);
 };
