@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "../Utils/LaunchArgs.hpp"
 
 Client* Client::get()
 {
@@ -56,6 +57,12 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
 
 bool Client::useImGuiUI()
 {
+    if (LaunchArgs::get()->hasLaunchArg("--qolmod:use-imgui-ui"))
+        return true;
+
+    if (LaunchArgs::get()->hasLaunchArg("--qolmod:no-imgui-ui"))
+        return false;
+
     return Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 

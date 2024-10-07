@@ -126,7 +126,6 @@ public:
         level->modules.push_back(new Module("Auto Clicker", "auto-clicker", "Automatically clicks (and holds for) every X ticks"));
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
 
-        level->modules.push_back(new Module("Percentage Level Font", "percentage-level-font", "Changes the font of the <cc>percentage / time</c> label to be the <cl>level font</c>"));
         level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
 
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
@@ -354,6 +353,8 @@ public:
 
         cosmetic->modules.push_back(new Module("Ball Rotation Bug", "ball-rotation-bug", "EMULATES the old rotation bug when switching gamemodes from the ball"));
         cosmetic->modules.push_back(new Module("No Trail Blending", "no-trail-blending", "Disables blending on the normal player trail"));
+
+        cosmetic->modules.push_back(new Module("Percentage Level Font", "percentage-level-font", "Changes the font of the <cc>percentage / time</c> label to be the <cl>level font</c>"));
 
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));

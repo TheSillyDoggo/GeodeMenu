@@ -46,7 +46,7 @@ void InputModule::makeAndroid(CCNode* menu, CCPoint pos)
     label->setPosition(pos - ccp(10, 0));
     label->limitLabelWidth(70, 0.575f, 0.1f);
 
-    auto input = TextInput::create(100, name.c_str());
+    auto input = TextInput::create(id == "speedhack-top" ? 100 : 160 - label->getScaledContentWidth(), name.c_str());
     input->setMaxCharCount(maxSize);
     input->getInputNode()->setAllowedChars(allowedChars);
     input->setPosition(pos + ccp(70, 0));
@@ -54,6 +54,13 @@ void InputModule::makeAndroid(CCNode* menu, CCPoint pos)
     input->setDelegate(this);
     input->getInputNode()->setID("IGNOREBYPASSES"_spr);
     input->setString(text);
+
+    if (id != "speedhack-top")
+    {
+        input->setAnchorPoint(ccp(1, 0.5f));
+        input->setPosition(pos + ccp(145, 0));
+        input->setScale(0.85f);
+    }
 
     this->inputField = input;
 

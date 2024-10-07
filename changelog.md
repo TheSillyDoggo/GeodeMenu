@@ -1,8 +1,12 @@
 # 1.7.0
 
+- Added imcompatibility with [Text Select](https://github.com/camila314/text-select/) on android
 - Made Icon Effects change colour of objects that use player colour in the level
+- Made Noclip Accuracy not increase once the level ends
 - Frame Stepper no longer saves ticks if you are dead
 - Frame Stepper buttons now repeat presses when being held down
+- Fixed Safe Mode not setting the label to "Safe Mode :3" if the level has coins
+- Added support for the following launch args on Windows: **--qolmod:no-blur**, **--qolmod:no-imgui-ui** and **--qolmod:use-imgui-ui**
 - Rewrote **Show Layout** to be better, allowing it to be ported to Windows and macOS
 - Added **Chest Unlock Bypass**
 

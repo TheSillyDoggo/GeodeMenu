@@ -45,7 +45,15 @@
             "id": "TheSillyDoggo.Cheats",
             "version": "*",
             "importance": "superseded"
-        }
+        },
+		{
+			"id": "camila314.text-select",
+			"version": "<=1.1.1",
+			"importance": "conflicting",
+			"platforms": [
+				"android"
+			]
+		}
     ],
 	"api": {
 		"include": [

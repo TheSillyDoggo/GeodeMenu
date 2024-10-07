@@ -182,15 +182,47 @@ void SafeEndLevelLayer::customSetup()
 
     if (SafeMode::get()->safeEndScreen)
     {
-        if (auto area = getChildOfType<TextArea>(m_mainLayer, -1))
+        bool hasHiddenCoin = false;
+
+        for (auto child : CCArrayExt<CCNode*>(m_mainLayer->getChildren()))
         {
-            area->setString("Safe Mode :3");
-            area->setScale(0.7f);
+            if (auto sprite = typeinfo_cast<CCSprite*>(child))
+            {
+                for (auto f : { "secretCoinUI_001.png", "secretCoinUI2_001.png", "secretCoin_b_01_001.png" })
+                {
+                    if (isSpriteFrameName(sprite, f))
+                    {
+                        hasHiddenCoin = true;
+                        sprite->setVisible(false);
+                    }
+                }
+            }
         }
-        else if (auto lbl = getChildOfType<CCLabelBMFont>(m_mainLayer, -1))
+
+        if (hasHiddenCoin)
         {
-            lbl->setString("Safe Mode :3");
+            auto lbl = CCLabelBMFont::create("Safe Mode :3", "bigFont.fnt");
+            lbl->setID("safe-mode-text"_spr);
             lbl->setScale(0.7f);
+
+            // i dont even know
+            lbl->setPositionY((m_playLayer->m_level->isPlatformer() ? 147 - (32.5 * 0.5) : 95) - 320 / 2 + CCDirector::get()->getWinSize().height / 2);
+            lbl->setPositionX(CCDirector::get()->getWinSize().width / 2);
+
+            m_mainLayer->addChild(lbl);
+        }
+        else
+        {
+            if (auto area = getChildOfType<TextArea>(m_mainLayer, -1))
+            {
+                area->setString("Safe Mode :3");
+                area->setScale(0.7f);
+            }
+            else if (auto lbl = getChildOfType<CCLabelBMFont>(m_mainLayer, -1))
+            {
+                lbl->setString("Safe Mode :3");
+                lbl->setScale(0.7f);
+            }
         }
     }
 }

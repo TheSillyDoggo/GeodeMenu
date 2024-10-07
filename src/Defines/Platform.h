@@ -27,3 +27,7 @@
 #ifndef GEODE_IS_IOS
 #define QOLMOD_KEYBINDS
 #endif
+
+#ifdef GEODE_IS_WINDOWS
+#define QOLMOD_SUPPORTS_LAUNCH_ARGS
+#endif

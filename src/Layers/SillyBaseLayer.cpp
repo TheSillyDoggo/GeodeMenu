@@ -1,4 +1,5 @@
 #include "SillyBaseLayer.h"
+#include "../Utils/LaunchArgs.hpp"
 
 bool SillyBaseLayer::setup()
 {
@@ -6,7 +7,7 @@ bool SillyBaseLayer::setup()
     this->stopAllActions();
     this->setOpacity(0);
 
-    if (!noBlur && Client::GetModuleEnabled("menu-bg-blur"))
+    if (!noBlur && Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
     {
         blur = CCBlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));

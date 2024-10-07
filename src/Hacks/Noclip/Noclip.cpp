@@ -85,6 +85,9 @@ void NoclipBaseGameLayer::updateCamera(float dt)
 {
     GJBaseGameLayer::updateCamera(dt);
 
+    if (!shouldIncreaseTime())
+        return;
+
     if (m_fields->isTickUpdate == true)
     {
         m_fields->isTickUpdate = false;
@@ -104,14 +107,20 @@ void NoclipBaseGameLayer::resetLevelVariables()
     GJBaseGameLayer::resetLevelVariables();
 
     m_fields->timeDead = 0;
+    m_fields->timeInLevel = 0;
 }
 
 float NoclipBaseGameLayer::getNoclipAccuracy()
 {
-    if (m_gameState.m_currentProgress == 0)
+    if (m_fields->timeInLevel == 0)
         return 1;
 
-    return 1 - (m_fields->timeDead / as<float>(m_gameState.m_levelTime));
+    return 1 - (m_fields->timeDead / m_fields->timeInLevel);
+}
+
+bool NoclipBaseGameLayer::shouldIncreaseTime()
+{
+    return !m_levelEndAnimationStarted;
 }
 
 void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
