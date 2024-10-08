@@ -15,9 +15,15 @@ class EditSafeZonePopup : public SillyBaseLayer
         CCNode* bottomRight;
         CCNode* topLeft;
         CCNode* topRight;
+        Slider* topSlider;
+        Slider* bottomSlider;
+        Slider* leftSlider;
+        Slider* rightSlider;
 
         virtual void customSetup();
         virtual void update(float dt);
+
+        void onSliderChanged(CCObject* sender);
 
         static EditSafeZonePopup* create();
         static EditSafeZonePopup* addToScene();

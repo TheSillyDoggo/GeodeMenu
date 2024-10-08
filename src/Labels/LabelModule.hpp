@@ -32,4 +32,7 @@ class LabelModule : public Module
 
         void setSide(LabelAnchor newSide);
         LabelAnchor getSide();
+
+        matjson::Object saveToObject();
+        static LabelModule* createFromObject(matjson::Object obj);
 };

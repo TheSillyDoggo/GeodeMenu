@@ -206,7 +206,7 @@ void EditLabelPopup::customSetup()
     infoMenu = CCMenu::create();
     infoMenu->setPosition(CCPointZero);
 
-    auto formatInfo = InfoAlertButton::create("Rift Format Help", "This is the format help", 0.8f);
+    auto formatInfo = InfoAlertButton::create("Format Label Help", "This is the format help", 0.8f);
     formatInfo->setPosition(size + ccp(-16, -16));
 
     infoMenu->addChild(formatInfo);
@@ -296,6 +296,8 @@ void EditLabelPopup::onClose(CCObject* sender)
             }
         }
     }
+
+    Labels::get()->save();
 
     SillyBaseLayer::onClose(sender);
 }

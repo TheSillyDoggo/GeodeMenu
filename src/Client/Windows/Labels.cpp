@@ -72,9 +72,12 @@ void Labels::cocosCreate(CCMenu* menu)
     back->addChildAtPosition(rightMenu, Anchor::Top, ccp(0, -70));
 
     auto safeZoneMenu = CCMenu::create();
+    safeZoneMenu->setPosition(CCPointZero);
 
-    safeZoneMenu->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("eventLevelLabel_001.png"), this, menu_selector(Labels::onSetupSafeZone)));
+    auto safeBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png"), this, menu_selector(Labels::onSetupSafeZone));
+    safeBtn->setPosition(ccp(0, 0));
 
+    safeZoneMenu->addChild(safeBtn);
     menu->addChild(safeZoneMenu);
 
     refreshList();
@@ -129,6 +132,7 @@ void Labels::onAddItem(CCObject* sender)
 
     modules.push_back(module);
     refreshList();
+    save();
 
     if (auto bg = cells[cells.size() - 1]->getChildByID("background"))
     {
@@ -158,6 +162,7 @@ void Labels::onDelete(CCObject* sender)
                 delete mod;
 
                 refreshList();
+                save();
             }
         }
     );
@@ -268,13 +273,32 @@ void Labels::save()
     Mod::get()->setSavedValue<float>("safe-zone.y", safeZone.origin.y);
     Mod::get()->setSavedValue<float>("safe-zone.width", safeZone.size.width);
     Mod::get()->setSavedValue<float>("safe-zone.height", safeZone.size.height);
+
+    auto arr = matjson::Array{};
+
+    for (auto module : modules)
+    {
+        if (auto lblMod = typeinfo_cast<LabelModule*>(module))
+            arr.push_back(lblMod->saveToObject());
+    }
+
+    Mod::get()->setSavedValue<matjson::Array>("selected-labels", arr);
 }
 
 void Labels::load()
 {
     safeZone = CCRectMake(Mod::get()->getSavedValue<float>("safe-zone.x", 3), Mod::get()->getSavedValue<float>("safe-zone.y", 3), Mod::get()->getSavedValue<float>("safe-zone.width", 3), Mod::get()->getSavedValue<float>("safe-zone.height", 3));
 
-    loadFromPrevSave();
+    if (!Mod::get()->hasSavedValue("selected-labels"))
+        loadFromPrevSave();
+
+    auto arr = Mod::get()->getSavedValue<matjson::Array>("selected-labels");
+
+    for (auto obj : arr)
+    {
+        if (obj.is_object())
+            modules.push_back(LabelModule::createFromObject(obj.as_object()));
+    }
 }
 
 void Labels::loadFromPrevSave()

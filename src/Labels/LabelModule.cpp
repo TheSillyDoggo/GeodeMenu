@@ -59,3 +59,55 @@ LabelAnchor LabelModule::getSide()
 {
     return side;
 }
+
+matjson::Object LabelModule::saveToObject()
+{
+    matjson::Object obj;
+
+    obj["display_name"] = this->name;
+    obj["format"] = this->format;
+    obj["scale"] = this->scale;
+    obj["opacity"] = this->scale;
+    obj["font"] = this->font;
+    obj["side"] = as<int>(this->side);
+    obj["offset.x"] = offset.x;
+    obj["offset.y"] = offset.y;
+
+    return obj;
+}
+
+LabelModule* LabelModule::createFromObject(matjson::Object obj)
+{
+    auto mod = new LabelModule("", "bigFont.fnt");
+
+    if (obj.contains("display_name") && obj["display_name"].is_string())
+        mod->name = obj["display_name"].as_string();
+    else
+        mod->name = "Error Loading Label";
+
+    if (obj.contains("format") && obj["format"].is_string())
+        mod->format = obj["format"].as_string();
+
+    if (obj.contains("scale") && obj["scale"].is_number())
+        mod->scale = obj["scale"].as_double();
+
+    if (obj.contains("opacity") && obj["opacity"].is_number())
+        mod->scale = obj["opacity"].as_double();
+
+    if (obj.contains("opacity") && obj["opacity"].is_number())
+        mod->scale = obj["opacity"].as_double();
+
+    if (obj.contains("font") && obj["font"].is_string())
+        mod->font = obj["font"].as_string();
+
+    if (obj.contains("side") && obj["side"].is_number())
+        mod->side = as<LabelAnchor>(obj["side"].as_int());
+
+    if (obj.contains("offset.x") && obj["offset.x"].is_number())
+        mod->offset.x = obj["offset.x"].as_double();
+
+    if (obj.contains("offset.y") && obj["offset.y"].is_number())
+        mod->offset.y = obj["offset.y"].as_double();
+
+    return mod;
+}
