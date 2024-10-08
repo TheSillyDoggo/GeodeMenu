@@ -75,7 +75,8 @@ void Labels::cocosCreate(CCMenu* menu)
     safeZoneMenu->setPosition(CCPointZero);
 
     auto safeBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png"), this, menu_selector(Labels::onSetupSafeZone));
-    safeBtn->setPosition(ccp(0, 0));
+    safeBtn->setPosition(ccp(240, 15));
+    safeBtn->getNormalImage()->setScale(0.5f);
 
     safeZoneMenu->addChild(safeBtn);
     menu->addChild(safeZoneMenu);
