@@ -6,6 +6,13 @@
 
 using namespace geode::prelude;
 
+struct LabelEvent
+{
+    bool enabled = false;
+    ccColor3B colour = ccc3(0, 255, 0);
+    float time = 0.5f;
+};
+
 class LabelModule : public Module
 {
     private:
@@ -18,6 +25,7 @@ class LabelModule : public Module
         CCPoint offset;
         CCLabelBMFont* labelNode = nullptr;
         std::string format;
+        int presetType = -1;
 
         LabelModule(std::string format, std::string font);
 

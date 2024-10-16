@@ -72,6 +72,7 @@ matjson::Object LabelModule::saveToObject()
     obj["side"] = as<int>(this->side);
     obj["offset.x"] = offset.x;
     obj["offset.y"] = offset.y;
+    obj["preset"] = presetType;
 
     return obj;
 }
@@ -92,10 +93,7 @@ LabelModule* LabelModule::createFromObject(matjson::Object obj)
         mod->scale = obj["scale"].as_double();
 
     if (obj.contains("opacity") && obj["opacity"].is_number())
-        mod->scale = obj["opacity"].as_double();
-
-    if (obj.contains("opacity") && obj["opacity"].is_number())
-        mod->scale = obj["opacity"].as_double();
+        mod->opacity = obj["opacity"].as_double();
 
     if (obj.contains("font") && obj["font"].is_string())
         mod->font = obj["font"].as_string();
@@ -108,6 +106,9 @@ LabelModule* LabelModule::createFromObject(matjson::Object obj)
 
     if (obj.contains("offset.y") && obj["offset.y"].is_number())
         mod->offset.y = obj["offset.y"].as_double();
+
+    if (obj.contains("preset") && obj["preset"].is_number())
+        mod->presetType = obj["preset"].as_int();
 
     return mod;
 }

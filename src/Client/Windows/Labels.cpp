@@ -94,46 +94,55 @@ void Labels::onAddItem(CCObject* sender)
         case 1:
             module = new LabelModule(".", "bigFont.fnt");
             module->name = "Cheat Indicator";
+            module->presetType = sender->getTag();
             break;
 
         case 2:
             module = new LabelModule("{precision(fps, 0)} FPS", "bigFont.fnt");
             module->name = "FPS Counter";
+            module->presetType = sender->getTag();
             break;
 
         case 3:
             module = new LabelModule("{total_cps} CPS", "bigFont.fnt");
             module->name = "CPS Counter";
+            module->presetType = sender->getTag();
             break;
 
         case 4:
             module = new LabelModule("{noclip_accuracy}%", "bigFont.fnt");
             module->name = "Noclip Accuracy";
+            module->presetType = sender->getTag();
             break;
 
         case 5:
             module = new LabelModule("{noclip_deaths} Death{noclip_deaths == 1 ? \"\" : \"s\"}", "bigFont.fnt");
             module->name = "Noclip Deaths";
+            module->presetType = sender->getTag();
             break;
 
         case 6:
             module = new LabelModule("Attempt {attempt}", "bigFont.fnt");
             module->name = "Attempt";
+            module->presetType = sender->getTag();
             break;
 
         case 7:
             module = new LabelModule("{leftPad((session_hours < 10 ? \"0\" : \"\") + session_hours + \"\", 2)}:{leftPad((session_minutes < 10 ? \"0\" : \"\") + session_minutes, 2)}:{leftPad((session_seconds < 10 ? \"0\" : \"\") + session_seconds + \"\", 2)}", "bigFont.fnt");
             module->name = "Session Time";
+            module->presetType = sender->getTag();
             break;
 
         case 8:
             module = new LabelModule("Best Run: {isEditor ? \"Editor\" : ((bestRun_from == 0 ? \"\" : (bestRun_from + \"% - \"))) + (bestRun_to + \"%\")}", "bigFont.fnt");
             module->name = "Best Run";
+            module->presetType = sender->getTag();
             break;
 
         case 9:
             module = new LabelModule("{leftPad((clock_hours < 10 ? \"0\" : \"\") + clock_hours + \"\", 2)}:{leftPad((clock_minutes < 10 ? \"0\" : \"\") + clock_minutes, 2)}:{leftPad((clock_seconds < 10 ? \"0\" : \"\") + clock_seconds + \"\", 2)}", "bigFont.fnt");
             module->name = "Clock";
+            module->presetType = sender->getTag();
             break;
 
         default:
@@ -190,7 +199,7 @@ void Labels::onSettings(CCObject* sender)
 {
     auto mod = as<LabelModule*>(as<CCNode*>(sender)->getUserData());
 
-    EditLabelPopup::addToScene(mod, true);
+    EditLabelPopup::addToScene(mod, mod->presetType == -1);
 }
 
 void Labels::refreshList()

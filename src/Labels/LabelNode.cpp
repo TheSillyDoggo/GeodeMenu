@@ -16,6 +16,24 @@ bool LabelNode::init(LabelModule* mod)
 
 std::string LabelNode::getFormatString()
 {
+    if (mod->presetType == 1)
+        return ".";
+
+    if (mod->presetType == 2)
+        return "{precision(fps, 0)} FPS";
+
+    if (mod->presetType == 3)
+        return "{total_cps} CPS";
+
+    if (mod->presetType == 4)
+        return "{noclip_accuracy}%";
+
+    if (mod->presetType == 5)
+        return "{noclip_deaths} Death{noclip_deaths == 1 ? \"\" : \"s\"}";
+
+    if (mod->presetType == 6)
+        return "Attempt {attempt}";
+
     return mod->format;
 }
 
