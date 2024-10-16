@@ -44,6 +44,7 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
     void updateCamera(float dt);
 
     float getNoclipAccuracy();
+    int getNoclipDeaths();
 
     bool shouldIncreaseTime();
 };

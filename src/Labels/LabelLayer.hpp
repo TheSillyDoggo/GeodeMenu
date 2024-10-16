@@ -51,6 +51,7 @@ class LabelLayer : public CCLayer
 
         virtual void update(float dt);
 
+        void updateLabels();
         void updateAnchors();
 
         ~LabelLayer();

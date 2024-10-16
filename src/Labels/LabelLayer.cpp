@@ -28,17 +28,7 @@ bool LabelLayer::init(UILayer* uiLayer)
     for (auto node : nodes)
         this->addChild(node.second);
 
-    for (auto mod : Labels::get()->modules)
-    {
-        if (auto mod2 = typeinfo_cast<LabelModule*>(mod))
-        {
-            auto node = LabelNode::create(mod2);
-
-            labels.push_back(node);
-        }
-    }
-
-    updateAnchors();
+    updateLabels();
 
     return true;
 }
@@ -95,6 +85,27 @@ void LabelLayer::update(float dt)
     nodes.at(LabelAnchor::TopCenter)->setPositionY(CCDirector::get()->getWinSize().height - Labels::get()->safeZone.size.height);
 }
 
+void LabelLayer::updateLabels()
+{
+    for (auto label : labels)
+        label->removeFromParentAndCleanup(true);
+
+    labels.clear();
+
+    for (auto mod : Labels::get()->modules)
+    {
+        if (auto mod2 = typeinfo_cast<LabelModule*>(mod))
+        {
+            auto node = LabelNode::create(mod2);
+            node->update(-1);
+
+            labels.push_back(node);
+        }
+    }
+
+    updateAnchors();
+}
+
 void LabelLayer::updateAnchors()
 {
     for (auto node : labels)
@@ -111,6 +122,9 @@ void LabelLayer::updateAnchors()
 
         node->release();
     }
+
+    for (auto node : nodes)
+        node.second->updateLayout();
 }
 
 void LabelLayer::incrementAttempts()

@@ -14,6 +14,8 @@ class $modify (LabelsUILayer, UILayer)
         LabelLayer* labelLayer;
     };
 
+    void regenerateLabels();
+
     bool init(GJBaseGameLayer* bgl);
 };
 

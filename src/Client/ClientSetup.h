@@ -127,6 +127,10 @@ public:
         level->modules.push_back(new Module("Stop Triggers on Death", "stop-triggers-on-death", "Stops triggers whenever you die :3"));
 
         level->modules.push_back(new Module("Frame Stepper", "frame-stepper", "Step the game through frames by tapping a button"));
+        level->modules.push_back(new Module("Allow Pause Buffering", "pause-buffering", "Removes the fix for pause buffering (the old sakupen circles thing)"));
+
+        level->modules.push_back(new Module("Force Hide Player", "hide-player", "Forces all players to be invisible"));
+        level->modules.push_back(new Module("Force Show Player", "show-player", "Forces all players to be visible"));
 
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
 
@@ -355,7 +359,9 @@ public:
         cosmetic->modules.push_back(new Module("No Trail Blending", "no-trail-blending", "Disables blending on the normal player trail"));
 
         cosmetic->modules.push_back(new Module("Percentage Level Font", "percentage-level-font", "Changes the font of the <cc>percentage / time</c> label to be the <cl>level font</c>"));
+        cosmetic->modules.push_back(new Module("No Plat Jump Anim", "plat-jump-anim", "Disables the squish animation when jumping in <cc>platformer mode</c>"));
 
+        cosmetic->modules.push_back(new Module("No Lightning", "no-lightning", "Disables the lightning when touching certain portals"));
 
         //cosmetic->modules.push_back(new Module("No Camera Movement", "no-camera", "Disables camera movements that are made with <cl>triggers</c>"));
         //cosmetic->modules.push_back(new Module("No Player Rotation", "no-plr-rot", "Disables Player Rotation :3\nIt looks ugly imo but you do you"));

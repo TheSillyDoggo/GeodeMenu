@@ -34,7 +34,7 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
         PlayLayer::destroyPlayer(p0, p1);
     else
     {
-        SafeMode::get()->setHackedAttempt();
+        SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
 
         if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied)
         {
@@ -118,6 +118,14 @@ float NoclipBaseGameLayer::getNoclipAccuracy()
     return 1 - (m_fields->timeDead / m_fields->timeInLevel);
 }
 
+int NoclipBaseGameLayer::getNoclipDeaths()
+{
+    if (auto pl = typeinfo_cast<PlayLayer*>(this))
+        return as<NoclipPlayLayer*>(pl)->m_fields->d;
+    else
+        return 0;
+}
+
 bool NoclipBaseGameLayer::shouldIncreaseTime()
 {
     return !m_levelEndAnimationStarted;
@@ -141,7 +149,7 @@ void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
             nbgl->m_fields->timeDead += CCDirector::get()->getDeltaTime();
         }
 
-        SafeMode::get()->setHackedAttempt();
+        SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
         return;
     }
 
@@ -160,7 +168,7 @@ void NoclipEditorLayer::postUpdate(float p0)
             nbgl->m_fields->timeDead += CCDirector::get()->getDeltaTime();
         }
 
-        SafeMode::get()->setHackedAttempt();
+        SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
         
         if (m_player1)
             m_player1->m_maybeIsColliding = false;

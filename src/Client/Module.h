@@ -11,6 +11,9 @@ using namespace geode::prelude;
 class ModuleChangeDelegate
 {
     public:
+        // cant
+        UIComponent* _module;
+
         virtual void onModuleChanged(bool enabled)
         {
 

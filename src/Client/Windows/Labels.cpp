@@ -1,6 +1,7 @@
 #include "Labels.hpp"
 #include "../../Layers/EditLabelPopup.hpp"
 #include "../../Layers/EditSafeZonePopup.hpp"
+#include "../../Labels/LabelLayer.hpp"
 
 #define BUTTON_WIDTH 200
 
@@ -105,6 +106,16 @@ void Labels::onAddItem(CCObject* sender)
             module->name = "CPS Counter";
             break;
 
+        case 4:
+            module = new LabelModule("{noclip_accuracy}%", "bigFont.fnt");
+            module->name = "Noclip Accuracy";
+            break;
+
+        case 5:
+            module = new LabelModule("{noclip_deaths} Death{noclip_deaths == 1 ? \"\" : \"s\"}", "bigFont.fnt");
+            module->name = "Noclip Deaths";
+            break;
+
         case 6:
             module = new LabelModule("Attempt {attempt}", "bigFont.fnt");
             module->name = "Attempt";
@@ -140,6 +151,9 @@ void Labels::onAddItem(CCObject* sender)
         as<CCScale9Sprite*>(bg)->setColor(rand() % 100 == 69 ? ccc3(200, 0, 255) : ccc3(255, 255, 0));
         as<CCScale9Sprite*>(bg)->runAction(CCTintTo::create(0.35f, 0, 0, 0));
     }
+
+    if (LabelLayer::get())
+        LabelLayer::get()->updateLabels();
 }
 
 void Labels::onSetupSafeZone(CCObject* sender)
@@ -164,6 +178,9 @@ void Labels::onDelete(CCObject* sender)
 
                 refreshList();
                 save();
+
+                if (LabelLayer::get())
+                    LabelLayer::get()->updateLabels();
             }
         }
     );

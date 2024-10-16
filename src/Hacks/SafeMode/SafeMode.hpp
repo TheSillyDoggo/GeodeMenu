@@ -25,6 +25,8 @@ class SILLY_DLL SafeMode
         bool hackedLevelLoad;
         bool hackedAttempt;
         bool hackedAttemptReal;
+        std::vector<std::string> reasons;
+        std::vector<std::string> loadReasons;
 
         static inline SafeMode* instance = nullptr;
 
@@ -52,8 +54,10 @@ class SILLY_DLL SafeMode
         void resetOnLevelLoad();
         void resetOnNewAttempt();
 
-        void setHackedLoad();
-        void setHackedAttempt();
+        void setHackedLoad(std::string reason);
+        void setHackedAttempt(std::string reason);
+
+        std::vector<std::pair<bool, std::string>> getReasons();
 
         void updateSpeedhackShouldKick();
 

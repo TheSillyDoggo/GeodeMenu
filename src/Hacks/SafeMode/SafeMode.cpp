@@ -14,6 +14,8 @@ void SafeMode::resetOnLevelLoad()
     hackedAttempt = false;
     hackedAttemptReal = false;
 
+    loadReasons.clear();
+
     updateIndicator();
 }
 
@@ -24,6 +26,8 @@ void SafeMode::resetOnNewAttempt()
 
     bool autosafe = Client::GetModuleEnabled("auto-safe-mode");
 
+    reasons.clear();
+
     for (auto hack : hacks)
     {
         if (Client::GetModuleEnabled(hack))
@@ -32,24 +36,30 @@ void SafeMode::resetOnNewAttempt()
                 hackedAttempt = true;
 
             hackedAttemptReal = true;
+
+            reasons.push_back(fmt::format("{} enabled", Client::GetModule(hack)->name));
         }
     }
 
     updateIndicator();
 }
 
-void SafeMode::setHackedLoad()
+void SafeMode::setHackedLoad(std::string reason)
 {
     hackedLevelLoad = true;
+
+    loadReasons.push_back(reason);
 
     updateIndicator();
 }
 
-void SafeMode::setHackedAttempt()
+void SafeMode::setHackedAttempt(std::string reason)
 {
     if (Client::GetModuleEnabled("auto-safe-mode"))
         hackedAttempt = true;
     
+    reasons.push_back(reason);
+
     hackedAttemptReal = true;
     updateIndicator();
 }
@@ -59,6 +69,7 @@ void SafeMode::addDelegateToModules()
     for (auto hack : hacks)
     {
         Client::GetModule(hack)->delegate = new HackModuleDelegate();
+        Client::GetModule(hack)->delegate->_module = Client::GetModule(hack);
     }
 
     SpeedhackEnabled::instance->delegate = new SpeedhackDelegate();
@@ -81,6 +92,19 @@ ccColor3B SafeMode::colourForState()
 bool SafeMode::shouldKickFromLevel()
 {
     return hackedAttempt || hackedLevelLoad || speedhackKick || Client::GetModuleEnabled("safe-mode");
+}
+
+std::vector<std::pair<bool, std::string>> SafeMode::getReasons()
+{
+    std::vector<std::pair<bool, std::string>> v;
+
+    for (auto reason : loadReasons)
+        v.push_back(std::make_pair(true, reason));
+
+    for (auto reason : reasons)
+        v.push_back(std::make_pair(false, reason));
+
+    return v;
 }
 
 void SafeMode::updateIndicator()
@@ -107,7 +131,7 @@ void SafeMode::updateSpeedhackShouldKick()
 
 void HackModuleDelegate::onModuleChanged(bool enabled)
 {
-    SafeMode::get()->setHackedAttempt();
+    SafeMode::get()->setHackedAttempt(fmt::format("{} enabled", as<Module*>(_module)->name));
     SafeMode::get()->updateIndicator();
 }
 
@@ -116,7 +140,7 @@ void SpeedhackDelegate::onModuleChanged(bool enabled)
     SafeMode::get()->updateSpeedhackShouldKick();
 
     if (SafeMode::get()->speedhackKick)
-        SafeMode::get()->setHackedAttempt();
+        SafeMode::get()->setHackedAttempt("Speedhack above 1.0");
     
     SafeMode::get()->updateIndicator();
 }
@@ -132,13 +156,13 @@ bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObje
     SafeMode::get()->resetOnNewAttempt();
 
     if (Client::GetModuleEnabled("force-plat"))
-        SafeMode::get()->setHackedLoad();
+        SafeMode::get()->setHackedLoad("Force Platformer");
 
     if (Client::GetModuleEnabled("show-triggers"))
-        SafeMode::get()->setHackedLoad();
+        SafeMode::get()->setHackedLoad("Show Triggers");
 
     if (Client::GetModuleEnabled("show-layout"))
-        SafeMode::get()->setHackedLoad();
+        SafeMode::get()->setHackedLoad("Show Layout");
 
     return true;
 }
@@ -224,5 +248,22 @@ void SafeEndLevelLayer::customSetup()
                 lbl->setScale(0.7f);
             }
         }
+
+        std::stringstream safeModeStream;
+
+        for (auto reason : SafeMode::get()->getReasons())
+        {
+            safeModeStream << (reason.first ? "<cd>" : "<cs>");
+            safeModeStream << reason.second;
+            safeModeStream << "</c>\n";
+        }
+
+        auto infoMenu = CCMenu::create();
+        infoMenu->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(-181.5f, 126.5f));
+
+        auto infoBtn = InfoAlertButton::create("Safe Mode", safeModeStream.str().c_str(), 0.75f);
+        infoMenu->addChild(infoBtn);
+
+        m_mainLayer->addChild(infoMenu);
     }
 }

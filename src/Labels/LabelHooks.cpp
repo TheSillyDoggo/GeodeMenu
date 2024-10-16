@@ -14,6 +14,16 @@ bool LabelsUILayer::init(GJBaseGameLayer* bgl)
     return true;
 }
 
+void LabelsUILayer::regenerateLabels()
+{
+    if (m_fields->labelLayer)
+        m_fields->labelLayer->removeFromParent();
+
+    m_fields->labelLayer = LabelLayer::create(this);
+
+    this->addChild(m_fields->labelLayer, 69 + 1);
+}
+
 void LabelBaseGameLayer::resetLevelVariables()
 {
     GJBaseGameLayer::resetLevelVariables();

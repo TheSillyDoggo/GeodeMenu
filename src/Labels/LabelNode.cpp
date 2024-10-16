@@ -1,10 +1,11 @@
 #include "LabelNode.hpp"
 #include "LabelLayer.hpp"
+#include "../Hacks/Noclip/Noclip.hpp"
 #include <chrono>
 
 bool LabelNode::init(LabelModule* mod)
 {
-    if (!CCLabelBMFont::initWithString("", mod->getFont().c_str()))
+    if (!CCLabelBMFont::initWithString("l", mod->getFont().c_str()))
         return false;
 
     this->mod = mod;
@@ -20,6 +21,9 @@ std::string LabelNode::getFormatString()
 
 void LabelNode::update(float dt)
 {
+    this->setOpacity(mod->getOpacity() * 255.0f);
+    this->setScale(mod->getScale() * 0.5f * (32.5f / this->getContentHeight()));
+
     auto res = rift::compile(getFormatString());
 
     script = res.unwrapOr(nullptr);
@@ -62,6 +66,9 @@ void LabelNode::update(float dt)
     script->setVariable("isEditor", rift::Value::boolean(LevelEditorLayer::get()));
     script->setVariable("isLevel", rift::Value::boolean(PlayLayer::get()));
 
+    script->setVariable("noclip_deaths", rift::Value::integer(as<NoclipBaseGameLayer*>(GJBaseGameLayer::get())->getNoclipDeaths()));
+    script->setVariable("noclip_accuracy", rift::Value::floating(as<NoclipBaseGameLayer*>(GJBaseGameLayer::get())->getNoclipAccuracy() * 100));
+
     if (PlayLayer::get())
     {
         script->setVariable("bestRun_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestFrom));
@@ -69,9 +76,6 @@ void LabelNode::update(float dt)
     }
 
     auto res2 = script->run();
-
-    this->setOpacity(mod->getOpacity() * 255.0f);
-    this->setScale(mod->getScale() * 0.5f * (32.5f / this->getContentHeight()));
 
     this->setString(res2.c_str());
 
