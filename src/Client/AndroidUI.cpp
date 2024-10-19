@@ -1,6 +1,7 @@
 #include "AndroidUI.h"
 #include "../Utils/CCBlurLayer.hpp"
 #include "../Utils/LaunchArgs.hpp"
+#include <Events.hpp>
 
 bool AndroidUI::setup()
 {
@@ -71,6 +72,8 @@ bool AndroidUI::setup()
     for (size_t i = 0; i < Client::instance->windows.size(); i++)
     {
         auto win = Client::instance->windows[i];
+    //if (Client::GetModuleEnabled("npesta-width"))
+    //{
         auto tabSize = ccp(100, 20);
 
         auto normal = CategoryTabSprite::create(CategoryTabType::Text, win->name);
@@ -140,7 +143,6 @@ bool AndroidUI::setup()
     input->setDelegate(this);
     input->getInputNode()->setID("IGNOREBYPASSES"_spr);
     input->setString("");
-    input->setID("search-input");
     input->getInputNode()->m_cursor->setID("cursor");
     if (auto cursor = input->getInputNode()->m_cursor->getChildren()->objectAtIndex(0))
     {
@@ -189,6 +191,9 @@ bool AndroidUI::setup()
 
     this->addChild(panel);
     this->addChild(backMenu);
+
+    //UIOpenEvent("open-menu"_spr, nullptr).post();
+
     return true;
 }
 

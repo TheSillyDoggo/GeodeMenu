@@ -1,5 +1,6 @@
 #include "Noclip.hpp"
 #include "../SafeMode/SafeMode.hpp"
+#include "../../Labels/LabelLayer.hpp"
 
 bool NoclipPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -35,6 +36,9 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
     else
     {
         SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
+
+        if (LabelLayer::get())
+            LabelLayer::get()->triggerEvent(LabelEventType::PlayerTookDamage);
 
         if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->hasDied)
         {
@@ -148,6 +152,9 @@ void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
             nbgl->m_fields->hasDied = true;
             nbgl->m_fields->timeDead += CCDirector::get()->getDeltaTime();
         }
+
+        if (LabelLayer::get())
+            LabelLayer::get()->triggerEvent(LabelEventType::PlayerTookDamage);
 
         SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
         return;

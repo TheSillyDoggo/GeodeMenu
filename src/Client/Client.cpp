@@ -63,7 +63,7 @@ bool Client::useImGuiUI()
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:no-imgui-ui"))
         return false;
 
-    return Mod::get()->getSavedValue<bool>("use-imgui-ui");
+    return true;// Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 
 void Client::initImGui()
@@ -96,7 +96,7 @@ void Client::drawImGui()
             window->drawImGui();
     }
 
-    ImGui::ShowStyleEditor();
+    // ImGui::ShowStyleEditor();
 
     if (CCKeyboardDispatcher::get()->getShiftKeyPressed() && !windows[0]->getActionByTag(69))
         sortWindows(false);

@@ -40,4 +40,14 @@ void LabelBaseGameLayer::handleButton(bool down, int button, bool isPlayer1)
 
     if (down && button == 1)
         as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer->increateCPS(!isPlayer1);
+
+    if (auto ll = as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer)
+    {
+        ll->triggerEvent(down ? LabelEventType::ClickStarted : LabelEventType::ClickEnded);
+
+        if (isPlayer1)
+            ll->triggerEvent(down ? LabelEventType::P1ClickStarted : LabelEventType::P1ClickEnded);
+        else
+            ll->triggerEvent(down ? LabelEventType::P2ClickStarted : LabelEventType::P2ClickEnded);
+    }
 }

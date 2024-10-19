@@ -1,6 +1,7 @@
 #include "EditLabelPopup.hpp"
 #include "../Client/AndroidUI.h"
 #include "ChooseFontPopup.hpp"
+#include "../UI/LabelEventCell.hpp"
 
 // static ButtonSprite* create(char const* caption, int width, int p2, float scale, bool absolute, char const* font, char const* bg, float height);
 #define ANCHOR_BTN(__anchor, __text) \
@@ -36,7 +37,6 @@ void EditLabelPopup::customSetup()
     page1->setPosition(ccp(0, 0));
     page1->setAnchorPoint(CCPointZero);
     page1->setContentSize(size);
-    pages.push_back(page1);
     page1->setID("General");
 
     auto anchorBG = CCScale9Sprite::create("square02_001.png");
@@ -200,7 +200,6 @@ void EditLabelPopup::customSetup()
     page2->setPosition(ccp(0, 0));
     page2->setAnchorPoint(CCPointZero);
     page2->setContentSize(size);
-    pages.push_back(page2);
     page2->setID("Format");
 
     infoMenu = CCMenu::create();
@@ -222,15 +221,119 @@ void EditLabelPopup::customSetup()
 
     baseLayer->addChildAtPosition(leftBtn, Anchor::Left, ccp(-25, 0));
     baseLayer->addChildAtPosition(rightBtn, Anchor::Right, ccp(25, 0));
-    
-    baseLayer->addChild(page1);
-    baseLayer->addChild(page2);
 
     page2->addChildAtPosition(formatInp, Anchor::Center, ccp(0, 0));
     page2->addChild(infoMenu);
 
+    auto page3 = CCMenu::create();
+    page3->setPosition(ccp(0, 0));
+    page3->setAnchorPoint(CCPointZero);
+    page3->setContentSize(size);
+    page3->setID("Events");
+
+    auto leftBG = CCScale9Sprite::create("square02_small.png");
+    leftBG->setAnchorPoint(ccp(0, 0.5f));
+    leftBG->setOpacity(100);
+    leftBG->setContentSize(ccp((size.x - (7.5f * 3)) * 0.7f, 175));
+
+    auto rightBG = CCScale9Sprite::create("square02_small.png");
+    rightBG->setAnchorPoint(ccp(1, 0.5f));
+    rightBG->setOpacity(100);
+    rightBG->setContentSize(ccp((size.x - (7.5f * 3)) * 0.3f, 175));
+
+    page3->addChildAtPosition(leftBG, Anchor::Left, ccp(7.5f, 8));
+    page3->addChildAtPosition(rightBG, Anchor::Right, ccp(-7.5f, 8));
+
+    std::vector<std::string> strs = { "Add New" };
+    
+    strs.push_back("Player Took Damage");
+    strs.push_back("Click Started");
+    strs.push_back("Click Ended");
+    strs.push_back("P1 Click Started");
+    strs.push_back("P1 Click Ended");
+    strs.push_back("P2 Click Started");
+    strs.push_back("P2 Click Ended");
+
+    dropdown = Dropdown::create(ccp(rightBG->getContentWidth() - 10, 20), strs, menu_selector(EditLabelPopup::onAddEvent));
+    dropdown->faggot = true;
+    dropdown->send = this;
+
+    rightBG->addChildAtPosition(dropdown, Anchor::Top, (-dropdown->getContentSize() * 0.5f) + ccp(0, -dropdown->getContentHeight() * 0.5f - 5));
+
+    scroll = ScrollLayer::create(leftBG->getContentSize());
+    scroll->setPosition(leftBG->getPosition() + leftBG->getContentSize() * ccp(0, -0.5f));
+
+    err = TextArea::create("Nothing here yet <cl>:(</c>", "bigFont.fnt", 1, 6969, ccp(0.5f, 0.5f), 10, false);
+    err->setScale(0.55f);
+    err->setPosition(scroll->getContentSize() / 2);
+    scroll->addChild(err);
+
+    updateList();
+
+    page3->addChild(scroll, 2);
+
+    pages.push_back(page1);
+
+    if (true) // (module->presetType == -1)
+    {
+        pages.push_back(page2);
+        pages.push_back(page3);
+    }
+
+    baseLayer->addChild(page1);
+    baseLayer->addChild(page2);
+    baseLayer->addChild(page3);
+
     updatePage();
     ok->m_pfnSelector = menu_selector(EditLabelPopup::onClose);
+}
+
+void EditLabelPopup::updateList()
+{
+    scroll->m_contentLayer->removeAllChildren();
+
+    float y = 0;
+    int i = 0;
+
+    for (auto event : module->events)
+    {
+        auto cell = LabelEventCell::createWithEvent(&module->events.at(i));
+        cell->setPositionY(y);
+        cell->module = module;
+        cell->layer = this;
+        scroll->m_contentLayer->addChild(cell);
+
+        y += cell->getContentHeight() + 2;
+        i++;
+    }
+
+    scroll->m_contentLayer->setContentHeight(std::max<float>(scroll->getContentHeight(), y - 2));
+
+    for (size_t i = 0; i < scroll->m_contentLayer->getChildrenCount(); i++)
+    {
+        if (auto cell = as<LabelEventCell*>(scroll->m_contentLayer->getChildren()->objectAtIndex(i)))
+        {
+            cell->setPositionY(scroll->m_contentLayer->getContentHeight() - cell->getPositionY());
+        }
+    }
+    
+    scroll->setTouchEnabled(scroll->m_contentLayer->getContentHeight() != scroll->getContentHeight());
+
+    err->setVisible(scroll->m_contentLayer->getChildrenCount() == 0);
+}
+
+void EditLabelPopup::onAddEvent(CCObject* sender)
+{
+    if (dropdown->getSelectedIndex() == 0)
+        return;
+
+    LabelEvent event;
+    event.type = as<LabelEventType>(dropdown->getSelectedIndex() - 1);
+
+    module->events.push_back(event);
+
+    updateList();
+    dropdown->setSelected(0);
 }
 
 void EditLabelPopup::updatePage()
@@ -305,6 +408,8 @@ void EditLabelPopup::onClose(CCObject* sender)
 EditLabelPopup* EditLabelPopup::create(LabelModule* module, bool advanced)
 {
     auto pRet = new EditLabelPopup();
+
+    advanced = true;
 
     pRet->module = module;
     pRet->advanced = advanced;

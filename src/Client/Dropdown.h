@@ -24,6 +24,10 @@ class Dropdown : public CCMenu {
         cocos2d::SEL_MenuHandler event;
 
     public:
+        // idk what to call this so hiii
+        bool faggot = false;
+        CCObject* send;
+
         void onToggleVisible(CCObject*);
 
         void setVis(bool n);

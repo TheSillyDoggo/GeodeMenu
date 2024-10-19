@@ -33,6 +33,8 @@ class LabelLayer : public CCLayer
 
         bool init(UILayer* uiLayer);
 
+        void triggerEvent(LabelEventType type);
+
         void incrementAttempts();
         int getAttempts();
 

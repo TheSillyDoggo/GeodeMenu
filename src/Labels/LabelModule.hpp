@@ -6,13 +6,6 @@
 
 using namespace geode::prelude;
 
-struct LabelEvent
-{
-    bool enabled = false;
-    ccColor3B colour = ccc3(0, 255, 0);
-    float time = 0.5f;
-};
-
 class LabelModule : public Module
 {
     private:
@@ -26,6 +19,7 @@ class LabelModule : public Module
         CCLabelBMFont* labelNode = nullptr;
         std::string format;
         int presetType = -1;
+        std::vector<LabelEvent> events;
 
         LabelModule(std::string format, std::string font);
 
@@ -40,6 +34,8 @@ class LabelModule : public Module
 
         void setSide(LabelAnchor newSide);
         LabelAnchor getSide();
+
+        ccColor3B getColour();
 
         matjson::Object saveToObject();
         static LabelModule* createFromObject(matjson::Object obj);

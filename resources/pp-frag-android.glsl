@@ -14,7 +14,7 @@ out vec4 FragColor;
 
 void main() {
     float scaledRadius = radius * screenSize.y * 0.5;
-    vec2 texOffset = 1.0 / screenSize; // gets size of single texel
+    vec2 texOffset = 1.0 / screenSize;
 
     vec3 result = texture(screen, TexCoords).rgb;
     scaledRadius *= radius * 10.0 / ((radius * 10.0 + 1.0) * (radius * 10.0 + 1.0) - 1.0);

@@ -47,6 +47,11 @@ float LabelModule::getOpacity()
     return opacity;
 }
 
+ccColor3B LabelModule::getColour()
+{
+    return ccWHITE;
+}
+
 void LabelModule::setSide(LabelAnchor newSide)
 {
     this->side = newSide;
@@ -73,6 +78,15 @@ matjson::Object LabelModule::saveToObject()
     obj["offset.x"] = offset.x;
     obj["offset.y"] = offset.y;
     obj["preset"] = presetType;
+
+    matjson::Array eventsArr;
+    
+    for (auto event : events)
+    {
+        eventsArr.push_back(event.save());
+    }
+
+    obj["events"] = eventsArr;
 
     return obj;
 }
@@ -109,6 +123,20 @@ LabelModule* LabelModule::createFromObject(matjson::Object obj)
 
     if (obj.contains("preset") && obj["preset"].is_number())
         mod->presetType = obj["preset"].as_int();
+
+    if (obj.contains("events") && obj["events"].is_array())
+    {
+        for (auto obj : obj["events"].as_array())
+        {
+            if (!obj.is_object())
+                continue;
+
+            LabelEvent event;
+            event.load(obj.as_object());
+
+            mod->events.push_back(event);
+        }
+    }
 
     return mod;
 }

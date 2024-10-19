@@ -85,6 +85,38 @@ void LabelLayer::update(float dt)
     nodes.at(LabelAnchor::TopCenter)->setPositionY(CCDirector::get()->getWinSize().height - Labels::get()->safeZone.size.height);
 }
 
+void LabelLayer::triggerEvent(LabelEventType type)
+{
+    for (auto module : Labels::get()->modules)
+    {
+        if (auto mod = typeinfo_cast<LabelModule*>(module))
+        {
+            for (auto event : mod->events)
+            {
+                if (event.type == type)
+                {
+                    auto array = CCArray::create();
+                    array->retain();
+
+                    if (event.fadeIn != -1)
+                        array->addObject(CCTintTo::create(event.fadeIn, event.colour.r, event.colour.g, event.colour.b));
+
+                    if (event.hold != -1)
+                        array->addObject(CCDelayTime::create(event.hold));
+
+                    if (event.fadeOut != -1)
+                        array->addObject(CCTintTo::create(event.fadeOut, mod->getColour().r, mod->getColour().g, mod->getColour().b));
+
+                    auto seq = CCSequence::create(array);
+                    mod->labelNode->runAction(seq);
+
+                    array->release();
+                }
+            }
+        }
+    }
+}
+
 void LabelLayer::updateLabels()
 {
     for (auto label : labels)

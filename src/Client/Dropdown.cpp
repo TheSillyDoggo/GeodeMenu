@@ -65,7 +65,7 @@ void Dropdown::onPress(CCObject* sender)
     setVis(false);
 
     if (event)
-        (this->*event)(sender);
+        ((faggot ? send : this)->*event)(sender);
 }
 
 void Dropdown::visit()
