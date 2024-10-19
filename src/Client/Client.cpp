@@ -63,7 +63,7 @@ bool Client::useImGuiUI()
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:no-imgui-ui"))
         return false;
 
-    return Mod::get()->getSavedValue<bool>("use-imgui-ui");
+    return true;// Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 
 void Client::initImGui()
@@ -85,11 +85,19 @@ void Client::initImGui()
     setUIScale(mod->getSavedValue<float>("imgui-ui-scale", 1.0f));
 
     sortWindows(true);
-    toggleWindowVisibility(WindowTransitionType::None);
+
+    toggleWindowVisibility(WindowTransitionType::Vertical, true);
 
     blurLayer = CCBlurLayer::create();
+
     blurLayer->onEnter();
     blurLayer->onEnterTransitionDidFinish();
+
+    for (auto window : windows)
+    {
+        window->onEnter();
+        window->onEnterTransitionDidFinish();
+    }
 }
 
 void Client::drawImGui()
@@ -97,7 +105,7 @@ void Client::drawImGui()
     if (Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
         blurLayer->visit();
 
-    ImGui::GetStyle().Alpha = bgOpacity->getDisplayedOpacity() / 255.0f;
+    // ImGui::GetStyle().Alpha = bgOpacity->getDisplayedOpacity() / 255.0f;
 
     hoveredModule = nullptr;
 
@@ -109,13 +117,11 @@ void Client::drawImGui()
 
     // ImGui::ShowStyleEditor();
 
-    if (CCKeyboardDispatcher::get()->getShiftKeyPressed() && !windows[0]->getActionByTag(69))
-        sortWindows(false);
-
     if (hoveredModule && !hoveredModule->description.empty())
     {
         // ImGui::SetNextWindowPos(hoveredModule->lastRenderedPosition);
         ImGui::SetNextWindowPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
+
         ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip);
 
         ImGuiExt::colouredText(hoveredModule->description);
@@ -169,17 +175,21 @@ void Client::sortWindows(bool instant)
             if (window->getActionByTag(69))
                 window->stopActionByTag(69);
             
-            auto action = CCEaseInOut::create(CCMoveTo::create(0.5f, ccp(posOffset.x, posOffset.y)), 2);
+            auto action = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(posOffset.x, posOffset.y)), 2);
             action->setTag(69);
 
             window->runAction(action);
             window->actualWindowPos = posOffset;
         }
     }
+
+    isWindowOpen = true;
 }
 
-void Client::toggleWindowVisibility(WindowTransitionType type)
+void Client::toggleWindowVisibility(WindowTransitionType type, bool instant)
 {
+    ImGui::SetWindowFocus(nullptr);
+
     isWindowOpen = !isWindowOpen;
 
     if (blurLayer)
@@ -193,21 +203,20 @@ void Client::toggleWindowVisibility(WindowTransitionType type)
         switch (type)
         {
             default:
-                bgOpacity->setOpacity(isWindowOpen ? 255 : 0);
                 break;
 
             case WindowTransitionType::Vertical:
-                bgOpacity->setOpacity(255);
-
                 if (window->getActionByTag(69))
                     window->stopActionByTag(69);
 
                 bool up = ((as<int>(window->getPosition().x) - 15) % 235 * 2) == 0 ? true : false;
 
                 if (window->windowPos.x == window->actualWindowPos.x && window->windowPos.y == window->actualWindowPos.y)
+                {
                     window->setPosition(ccp(window->actualWindowPos.x, window->actualWindowPos.y + (!isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (up ? 1 : -1))));
+                }
                 
-                verticalMove = CCEaseInOut::create(CCMoveTo::create(0.5f, ccp(window->actualWindowPos.x, window->actualWindowPos.y + (isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (up ? 1 : -1)))), 2);
+                verticalMove = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(window->actualWindowPos.x, window->actualWindowPos.y + (isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (up ? 1 : -1)))), 2);
                 verticalMove->setTag(69);
 
                 window->runAction(verticalMove);

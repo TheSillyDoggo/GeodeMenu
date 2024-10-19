@@ -40,16 +40,11 @@ public:
 
     Module* hoveredModule;
     Ref<CCBlurLayer> blurLayer;
-    Ref<CCNodeRGBA> bgOpacity;
     bool over = false;
 
     Client()
     {
         mod = Mod::get();
-
-        #ifndef GEODE_IS_MACOS
-        bgOpacity = CCNodeRGBA::create();
-        #endif
     }
 
     static Client* get();
@@ -60,7 +55,7 @@ public:
     void initImGui();
     void drawImGui();
     void sortWindows(bool instant);
-    void toggleWindowVisibility(WindowTransitionType type);
+    void toggleWindowVisibility(WindowTransitionType type, bool instant = false);
 
     void setUIScale(float scale);
 
