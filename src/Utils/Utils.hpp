@@ -62,3 +62,8 @@ float unscaleFloat(float v, float min, float max);
 geode::Patch* createPatchSafe(void *address, const geode::ByteVector &data);
 cocos2d::CCRect getScreenSafeArea();
 cocos2d::CCRect getScreenSafeAreaiOS();
+
+namespace ImGuiExt
+{
+	void colouredText(std::string label);
+};

@@ -1,6 +1,7 @@
 #include "RecordKeyPopup.hpp"
 #include <Geode/ui/GeodeUI.hpp>
 #include "../Utils/CCBlurLayer.hpp"
+#include "../Client/Client.h"
 
 bool RecordKeyPopup::init(SEL_MenuHandler obj)
 {

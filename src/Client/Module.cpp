@@ -19,6 +19,11 @@ void Module::drawImGui()
         onToggleAndroid(nullptr);
     }
 
+    lastRenderedPosition = ImGui::GetItemRectMin();
+
+    if (ImGui::GetMousePos().x >= ImGui::GetItemRectMin().x && ImGui::GetMousePos().y >= ImGui::GetItemRectMin().y && ImGui::GetMousePos().x <= ImGui::GetItemRectMax().x && ImGui::GetMousePos().y <= ImGui::GetItemRectMax().y)
+        Client::get()->hoveredModule = this;
+
     if (f)
         ImGui::PopStyleColor(2);
 }

@@ -4,6 +4,7 @@
 #include <Geode/ui/TextInput.hpp>
 #include "../UI/UIComponent.hpp"
 #include "../Keybinds/KeyStruct.hpp"
+#include <imgui-cocos.hpp>
 
 using namespace geode::prelude;
 
@@ -31,6 +32,8 @@ class Module : public UIComponent
         std::vector<geode::Patch*> patches = {};
     public:
         static inline std::string descMod = "";
+
+        ImVec2 lastRenderedPosition;
 
         std::vector<Module*> options = {};
 

@@ -34,6 +34,8 @@ class Config : public Window
 
         void changeTheme(CCObject* sender);
 
+        virtual void drawImGui();
+
         CCMenuItemToggler* createTabButton(std::string name, int index);
 
         void createBtn(CCNode* menu, int i);

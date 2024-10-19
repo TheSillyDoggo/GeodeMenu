@@ -14,7 +14,7 @@
 #include "../Labels/LabelModule.hpp"
 
 #include "idkwhattocallthis.hpp"
-
+#include "../Utils/CCBlurLayer.hpp"
 #include "Window.h"
 
 enum class WindowTransitionType
@@ -38,6 +38,8 @@ public:
     
     bool isWindowOpen = true;
 
+    Module* hoveredModule;
+    Ref<CCBlurLayer> blurLayer;
     Ref<CCNodeRGBA> bgOpacity;
     bool over = false;
 
@@ -59,6 +61,8 @@ public:
     void drawImGui();
     void sortWindows(bool instant);
     void toggleWindowVisibility(WindowTransitionType type);
+
+    void setUIScale(float scale);
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)

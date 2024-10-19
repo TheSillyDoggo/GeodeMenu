@@ -7,7 +7,6 @@
 #include <Geode/modify/CCLayerColor.hpp>
 #include <Geode/modify/CCNode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include "../Client/Client.h"
 
 using namespace geode::prelude;
 

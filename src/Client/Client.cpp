@@ -63,7 +63,7 @@ bool Client::useImGuiUI()
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:no-imgui-ui"))
         return false;
 
-    return true;// Mod::get()->getSavedValue<bool>("use-imgui-ui");
+    return Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 
 void Client::initImGui()
@@ -82,13 +82,24 @@ void Client::initImGui()
     auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "Poppins-Regular.ttf").string().c_str(), 16.0f);
     io->FontDefault = font;
 
+    setUIScale(mod->getSavedValue<float>("imgui-ui-scale", 1.0f));
+
     sortWindows(true);
     toggleWindowVisibility(WindowTransitionType::None);
+
+    blurLayer = CCBlurLayer::create();
+    blurLayer->onEnter();
+    blurLayer->onEnterTransitionDidFinish();
 }
 
 void Client::drawImGui()
 {
+    if (Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
+        blurLayer->visit();
+
     ImGui::GetStyle().Alpha = bgOpacity->getDisplayedOpacity() / 255.0f;
+
+    hoveredModule = nullptr;
 
     for (auto window : windows)
     {
@@ -100,6 +111,17 @@ void Client::drawImGui()
 
     if (CCKeyboardDispatcher::get()->getShiftKeyPressed() && !windows[0]->getActionByTag(69))
         sortWindows(false);
+
+    if (hoveredModule && !hoveredModule->description.empty())
+    {
+        // ImGui::SetNextWindowPos(hoveredModule->lastRenderedPosition);
+        ImGui::SetNextWindowPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
+        ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip);
+
+        ImGuiExt::colouredText(hoveredModule->description);
+
+        ImGui::End();
+    }
 }
 
 void Client::sortWindows(bool instant)
@@ -160,6 +182,9 @@ void Client::toggleWindowVisibility(WindowTransitionType type)
 {
     isWindowOpen = !isWindowOpen;
 
+    if (blurLayer)
+        blurLayer->runAction(CCFadeTo::create(!isWindowOpen ? 0.15f : 0.5f, isWindowOpen ? 255 : 0));
+
     for (auto window : windows)
     {
         CCAction* fade;
@@ -186,9 +211,28 @@ void Client::toggleWindowVisibility(WindowTransitionType type)
                 verticalMove->setTag(69);
 
                 window->runAction(verticalMove);
-
-                CCScene::get()->addChild(window);
                 break;
         }
     }
+}
+
+void Client::setUIScale(float scale)
+{
+    float oldScale = ImGuiCocos::get().getUIScale();
+
+    scale = clamp<float>(abs(scale), 0.3f, 3);
+
+    mod->setSavedValue<float>("imgui-ui-scale", scale);
+
+    ImGuiCocos::get().setUIScale(scale);
+
+    for (auto window : windows)
+    {
+        window->setPosition(window->getPosition() / (scale / oldScale));
+    }
+
+    Loader::get()->queueInMainThread([this, oldScale, scale]
+    {
+        sortWindows(false);
+    });
 }

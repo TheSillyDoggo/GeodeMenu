@@ -1,6 +1,7 @@
 #include "RecordKeyStruct.hpp"
 #include <Geode/ui/GeodeUI.hpp>
 #include "../Utils/CCBlurLayer.hpp"
+#include "../Client/Client.h"
 
 bool RecordKeyStruct::init(geode::utils::MiniFunction<void(KeyStruct)> obj)
 {
