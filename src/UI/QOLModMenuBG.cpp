@@ -48,7 +48,18 @@ void QOLModMenuBG::updateTheme(int theme)
 {
     this->theme = theme;
 
-    public_cast(colouredBG, _scale9Image)->setTexture(CCSprite::create(fmt::format("GJ_square0{}.png", theme < 0 ? 6 : theme).c_str())->getTexture());
+    auto bgStr = fmt::format("GJ_square0{}.png", theme < 0 ? 6 : theme);
+
+    if (theme == -4)
+        bgStr = "geode.loader/GE_square01.png";
+
+    if (theme == -5)
+        bgStr = "geode.loader/GE_square02.png";
+
+    if (theme == -6)
+        bgStr = "geode.loader/GE_square03.png";
+
+    public_cast(colouredBG, _scale9Image)->setTexture(CCSprite::create(bgStr.c_str())->getTexture());
 
     colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : ccc3(255, 255, 255));
     colouredBG->setOpacity(theme == -2 ? 175 : 255);

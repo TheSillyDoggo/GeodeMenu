@@ -58,7 +58,8 @@ void SafeMode::setHackedAttempt(std::string reason)
     if (Client::GetModuleEnabled("auto-safe-mode"))
         hackedAttempt = true;
     
-    reasons.push_back(reason);
+    if (std::find(reasons.begin(), reasons.end(), reason) == reasons.end())
+        reasons.push_back(reason);
 
     hackedAttemptReal = true;
     updateIndicator();

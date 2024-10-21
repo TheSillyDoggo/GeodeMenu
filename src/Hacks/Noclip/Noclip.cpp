@@ -31,10 +31,26 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
     if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac)
         base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac = p1;
 
+    if (!Client::GetModuleEnabled("noclip-player2") && p0 == m_player2)
+        return PlayLayer::destroyPlayer(p0, p1);
+
+    if (!Client::GetModuleEnabled("noclip-player1") && p0 == m_player1)
+        return PlayLayer::destroyPlayer(p0, p1);
+
     if (!Client::GetModuleEnabled("noclip") || (base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac == p1))
         PlayLayer::destroyPlayer(p0, p1);
     else
     {
+        if (Client::GetModuleEnabled("noclip-min-accuracy-toggle"))
+        {
+            static InputModule* noclipLimit = nullptr;
+            if (!noclipLimit)
+                noclipLimit = as<InputModule*>(Client::GetModule("noclip")->options[5]);
+
+            if (base_cast<NoclipBaseGameLayer*>(this)->getNoclipAccuracy() * 100 < noclipLimit->getFloatValue())
+                return PlayLayer::destroyPlayer(p0, p1);
+        }
+
         SafeMode::get()->setHackedAttempt("Player Died with Noclip Enabled");
 
         if (LabelLayer::get())
@@ -137,6 +153,12 @@ bool NoclipBaseGameLayer::shouldIncreaseTime()
 
 void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
 {
+    if (!Client::GetModuleEnabled("noclip-player2") && p0 == m_player2)
+        return LevelEditorLayer::playerTookDamage(p0);
+
+    if (!Client::GetModuleEnabled("noclip-player1") && p0 == m_player1)
+        return LevelEditorLayer::playerTookDamage(p0);
+
     if (Client::GetModuleEnabled("noclip"))
     {
         auto nbgl = base_cast<NoclipBaseGameLayer*>(this);

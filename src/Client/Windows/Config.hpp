@@ -40,6 +40,7 @@ class Config : public Window
 
         void createBtn(CCNode* menu, int i);
         
+        void onDisableEditor(CCObject* sender);
         void onDisableGP(CCObject* sender);
         void onSliderChanged(CCObject* sender);
         void onLink(CCObject* sender);

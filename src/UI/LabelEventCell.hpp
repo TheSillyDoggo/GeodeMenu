@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-class LabelEventCell : public CCNode
+class LabelEventCell : public CCNode, public ColorPickPopupDelegate
 {
     public:
         LabelEvent* event;
@@ -17,11 +17,19 @@ class LabelEventCell : public CCNode
         TextInput* inputFadeIn;
         TextInput* inputHold;
         TextInput* inputFadeOut;
+        CCScale9Sprite* setColourBG;
 
         bool initWithEvent(LabelEvent* event);
 
+        void updateSliders();
+        void updateInputs();
+
+        void onInf(CCObject* sender);
         void onSliderChanged(CCObject* sender);
         void onDelete(CCObject* sender);
+        void onSetColour(CCObject* sender);
+
+        virtual void updateColor(cocos2d::ccColor4B const& color);
 
         static LabelEventCell* createWithEvent(LabelEvent* event);
 };

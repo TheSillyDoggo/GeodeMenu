@@ -235,8 +235,19 @@ void Config::cocosCreate(CCMenu* menu)
     disableLabel->setScale(0.4f);
     disableLabel->setAnchorPoint(ccp(0, 0));
 
+    auto disableEditor = CCMenuItemToggler::createWithStandardSprites(menu, menu_selector(Config::onDisableEditor), 0.69420f);
+    disableEditor->toggle(Mod::get()->getSavedValue<bool>("disable-editor_enabled", true));
+
+    auto disableEditorLabel = CCLabelBMFont::create("Disable in editor:", "bigFont.fnt");
+    disableEditorLabel->setScale(0.35f);
+    disableEditorLabel->setAnchorPoint(ccp(0, 0));
+
     buttonTab->addChildAtPosition(disableGP, Anchor::BottomRight, ccp(-15, 145));
     buttonTab->addChildAtPosition(disableLabel, Anchor::BottomRight, ccp(-135, 140));
+    buttonTab->addChildAtPosition(disableEditor, Anchor::BottomRight, ccp(-15, 180));
+    buttonTab->addChildAtPosition(disableEditorLabel, Anchor::BottomRight, ccp(-135, 175));
+
+
     buttonTab->addChild(floor);
     buttonTab->addChild(misc);
     buttonTab->addChild(floor2);
@@ -269,13 +280,16 @@ void Config::cocosCreate(CCMenu* menu)
     createBtn(m, 3);
     createBtn(m, 4);
     createBtn(m, 5);
+    createBtn(m, -4);
+    createBtn(m, -5);
+    createBtn(m, -6);
     createBtn(m, -1);
     createBtn(m, -2);
     //createBtn(m, -3);
 
     //m->addChild(CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), menu, menu_selector(Config::onChangeFile)));
 
-    m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10));
+    m->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(10)->setCrossAxisAlignment(AxisAlignment::Start)->setAxisReverse(true)->setCrossAxisReverse(true)->setGrowCrossAxis(true)->setCrossAxisOverflow(true));
     m->updateLayout();
     themeTab->addChild(m);
 
@@ -445,9 +459,25 @@ void Config::changeTheme(CCObject* sender)
 void Config::createBtn(CCNode* menu, int i)
 {
     std::stringstream ss;
-    ss << "GJ_square0";
-    ss << (i < 0 ? 6 : i);
-    ss << ".png";
+
+    if (i == -4)
+    {
+        ss << "geode.loader/GE_square01.png";
+    }
+    else if (i == -5)
+    {
+        ss << "geode.loader/GE_square02.png";
+    }
+    else if (i == -6)
+    {
+        ss << "geode.loader/GE_square03.png";
+    }
+    else
+    {
+        ss << "GJ_square0";
+        ss << (i < 0 ? 6 : i);
+        ss << ".png";
+    }
 
     auto spr = CCScale9Sprite::create(ss.str().c_str());
     spr->setColor({150, 150, 150});
@@ -566,6 +596,11 @@ void Config::onSliderChanged(CCObject* sender)
 void Config::onDisableGP(CCObject* sender)
 {
     Mod::get()->setSavedValue<bool>("disable-gp_enabled", !Mod::get()->getSavedValue<bool>("disable-gp_enabled", true));
+}
+
+void Config::onDisableEditor(CCObject* sender)
+{
+    Mod::get()->setSavedValue<bool>("disable-editor_enabled", !Mod::get()->getSavedValue<bool>("disable-editor_enabled", true));
 }
 
 void Config::onChangeFile(CCObject*)

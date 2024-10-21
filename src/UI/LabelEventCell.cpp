@@ -27,7 +27,7 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     delSpr->setScale(0.7f);
 
     auto del = CCMenuItemSpriteExtra::create(delSpr, this, menu_selector(LabelEventCell::onDelete));
-    del->setPosition(this->getContentSize() * ccp(1, 0.5f) + ccp(-15, 0));
+    del->setPosition(this->getContentSize() * ccp(1, 0.5f) + ccp(-15, -5));
     menu->addChild(del);
 
     auto fadeInLbl = CCLabelBMFont::create("Fade In:", "bigFont.fnt");
@@ -47,9 +47,7 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     sliderHold = Slider::create(this, menu_selector(LabelEventCell::onSliderChanged));
     sliderFadeOut = Slider::create(this, menu_selector(LabelEventCell::onSliderChanged));
 
-    sliderFadeIn->setValue(event->fadeIn / 5);
-    sliderHold->setValue(event->hold / 5);
-    sliderFadeOut->setValue(event->fadeOut / 5);
+    updateSliders();
 
     sliderFadeIn->setAnchorPoint(ccp(0, 0));
     sliderFadeIn->setScale(0.4f);
@@ -73,6 +71,31 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     inputHold = TextInput::create(50, "Time");
     inputFadeOut = TextInput::create(50, "Time");
 
+    inputFadeIn->setCommonFilter(CommonFilter::Float);
+    inputHold->setCommonFilter(CommonFilter::Float);
+    inputFadeOut->setCommonFilter(CommonFilter::Float);
+
+    inputFadeIn->setCallback([this, event](const std::string& str)
+    {
+        event->fadeIn = numFromString<float>(str).unwrapOr(event->fadeIn);
+
+        updateSliders();
+    });
+
+    inputHold->setCallback([this, event](const std::string& str)
+    {
+        event->hold = numFromString<float>(str).unwrapOr(event->hold);
+
+        updateSliders();
+    });
+
+    inputFadeOut->setCallback([this, event](const std::string& str)
+    {
+        event->fadeOut = numFromString<float>(str).unwrapOr(event->fadeOut);
+
+        updateSliders();
+    });
+
     inputFadeIn->setScale(0.4f);
     inputHold->setScale(0.4f);
     inputFadeOut->setScale(0.4f);
@@ -80,6 +103,64 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     inputFadeIn->setString(fmt::format("{:.02f}", event->fadeIn));
     inputHold->setString(fmt::format("{:.02f}", event->hold));
     inputFadeOut->setString(fmt::format("{:.02f}", event->fadeOut));
+
+    auto menuInf = CCMenu::create();
+    menuInf->setContentSize(CCPointZero);
+
+    auto btnSpr = ButtonSprite::create("Inf", "bigFont.fnt", "GJ_button_05.png");
+    btnSpr->setScale(0.25f);
+
+    auto holdInf = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
+    holdInf->setTag(1);
+
+    auto fadeOutInf = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
+    fadeOutInf->setTag(2);
+
+    fadeOutInf->setPositionY(-13);
+
+    menuInf->addChild(holdInf);
+    menuInf->addChild(fadeOutInf);
+
+    std::string typeStr = "";
+
+    if (event->type == LabelEventType::ClickStarted)
+        typeStr = "Click Started";
+
+    if (event->type == LabelEventType::ClickEnded)
+        typeStr = "Click Ended";
+
+    if (event->type == LabelEventType::P1ClickStarted)
+        typeStr = "P1 Click Started";
+
+    if (event->type == LabelEventType::P1ClickEnded)
+        typeStr = "P1 Click Ended";
+
+    if (event->type == LabelEventType::P2ClickStarted)
+        typeStr = "P2 Click Started";
+
+    if (event->type == LabelEventType::P2ClickEnded)
+        typeStr = "P2 Click Ended";
+
+    if (event->type == LabelEventType::PlayerTookDamage)
+        typeStr = "Player Took Damage";
+
+    auto typeLbl = CCLabelBMFont::create(typeStr.c_str(), "bigFont.fnt");
+    typeLbl->limitLabelWidth(88, 0.3f, 0);
+
+    auto setColourMenu = CCMenu::create();
+    setColourMenu->setContentSize(CCPointZero);
+
+    setColourBG = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+    setColourBG->setScale(0.5f);
+    setColourBG->setContentWidth(80);
+    setColourBG->setColor(event->colour);
+
+    auto setColourLbl = CCLabelBMFont::create("Set", "bigFont.fnt");
+    setColourLbl->setScale(0.7f);
+    setColourBG->addChildAtPosition(setColourLbl, Anchor::Center, ccp(-1, 1));
+
+    auto setColourBtn = CCMenuItemSpriteExtra::create(setColourBG, this, menu_selector(LabelEventCell::onSetColour));
+    setColourMenu->addChild(setColourBtn);
 
     this->addChildAtPosition(sliderFadeIn, Anchor::Left, ccp(90, 12));
     this->addChildAtPosition(sliderHold, Anchor::Left, ccp(90, 0));
@@ -93,9 +174,27 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     this->addChildAtPosition(holdLbl, Anchor::Left, ccp(5, 0));
     this->addChildAtPosition(fadeOutLbl, Anchor::Left, ccp(5, -12));
 
+    this->addChildAtPosition(menuInf, Anchor::Left, ccp(157, 0));
+    this->addChildAtPosition(typeLbl, Anchor::TopRight, ccp(-50, -11.5f));
+    this->addChildAtPosition(setColourMenu, Anchor::BottomRight, ccp(-50, 15));
+
     this->addChildAtPosition(bg, Anchor::Center);
     this->addChild(menu);
     return true;
+}
+
+void LabelEventCell::updateSliders()
+{
+    sliderFadeIn->setValue(clamp<float>(event->fadeIn / 5, 0, 1));
+    sliderHold->setValue(clamp<float>(event->hold / 5, 0, 1));
+    sliderFadeOut->setValue(clamp<float>(event->fadeOut / 5, 0, 1));
+}
+
+void LabelEventCell::updateInputs()
+{
+    inputFadeIn->setString(fmt::format("{:.02f}", event->fadeIn));
+    inputHold->setString(fmt::format("{:.02f}", event->hold));
+    inputFadeOut->setString(fmt::format("{:.02f}", event->fadeOut));
 }
 
 void LabelEventCell::onSliderChanged(CCObject* sender)
@@ -104,9 +203,34 @@ void LabelEventCell::onSliderChanged(CCObject* sender)
     event->hold = sliderHold->getThumb()->getValue() * 5;
     event->fadeOut = sliderFadeOut->getThumb()->getValue() * 5;
 
-    inputFadeIn->setString(fmt::format("{:.02f}", event->fadeIn));
-    inputHold->setString(fmt::format("{:.02f}", event->hold));
-    inputFadeOut->setString(fmt::format("{:.02f}", event->fadeOut));
+    updateInputs();
+}
+
+void LabelEventCell::onInf(CCObject* sender)
+{
+    if (sender->getTag() == 0)
+        event->fadeIn = -1;
+    else if (sender->getTag() == 1)
+        event->hold = -1;
+    else
+        event->fadeOut = -1;
+
+    updateSliders();
+    updateInputs();
+}
+
+void LabelEventCell::onSetColour(CCObject* sender)
+{
+    auto popup = ColorPickPopup::create(event->colour);
+    popup->setDelegate(this);
+
+    popup->show();
+}
+
+void LabelEventCell::updateColor(cocos2d::ccColor4B const& color)
+{
+    event->colour = ccc3(color.r, color.g, color.b);
+    setColourBG->setColor(event->colour);
 }
 
 void LabelEventCell::onDelete(CCObject* sender)

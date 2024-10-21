@@ -14,7 +14,6 @@ class AndroidBall : public CCLayer
         static inline bool hasPos = false;
         static inline CCPoint position = ccp(32, CCDirector::get()->getWinSize().height / 2);
         static inline AndroidBall* instance = nullptr;
-        static inline int highest = 0;
 
         bool doingThing = false;
         static inline bool dragging = false;
@@ -45,6 +44,8 @@ class AndroidBall : public CCLayer
         static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);
+
+        bool editorShouldBeVisible();
 
         ~AndroidBall();
 };

@@ -63,7 +63,7 @@ bool Client::useImGuiUI()
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:no-imgui-ui"))
         return false;
 
-    return true;// Mod::get()->getSavedValue<bool>("use-imgui-ui");
+    return Mod::get()->getSavedValue<bool>("use-imgui-ui");
 }
 
 void Client::initImGui()

@@ -14,8 +14,6 @@ bool AndroidBall::init()
     this->setMouseEnabled(false);
     this->setTouchEnabled(false);
 
-    highest++;
-    this->setTag(highest);
     instance = this;
 
     mod = Client::GetModule("hide-btn");
@@ -143,12 +141,34 @@ void AndroidBall::update(float dt)
     UpdateVisible(false);
 }
 
+#define TYPE_CHECK(__type__) \
+if (getChildOfType<__type__>(getParent(), 0)) \
+    return true
+
+bool AndroidBall::editorShouldBeVisible()
+{
+    if (getChildOfType<EditorPauseLayer>(LevelEditorLayer::get(), 0))
+        return true;
+
+    TYPE_CHECK(SetupCameraModePopup);
+    TYPE_CHECK(LevelSettingsLayer);
+    TYPE_CHECK(EditGameObjectPopup);
+    TYPE_CHECK(CustomizeObjectLayer);
+    TYPE_CHECK(SetGroupIDLayer);
+    TYPE_CHECK(SetupTriggerPopup);
+
+    return false;
+}
+
 void AndroidBall::UpdateVisible(bool i)
 {
     bool vis = true;
 
     if (Client::GetModuleEnabled("disable-gp") && this->getParent())
         vis = !(getChildOfType<PlayLayer>(this->getParent(), 0) && !getChildOfType<PauseLayer>(this->getParent(), 0));
+
+    if (Client::GetModuleEnabled("disable-editor") && this->getParent() && getChildOfType<LevelEditorLayer>(this->getParent(), 0))
+        vis = editorShouldBeVisible();
 
     #ifdef GEODE_IS_DESKTOP
     if (vis)

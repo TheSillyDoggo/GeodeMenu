@@ -61,7 +61,7 @@ class $modify (CCKeyboardDispatcher)
                     {
                         ui->onClose(nullptr);
 
-                        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !GameManager::sharedState()->getGameVariable("0024"))
+                        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !PlayLayer::get()->m_levelEndAnimationStarted && !GameManager::sharedState()->getGameVariable("0024"))
                             PlatformToolbox::hideCursor();
                     }
                     else

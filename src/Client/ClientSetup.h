@@ -141,6 +141,11 @@ public:
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
         Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
+        Client::GetModule("noclip")->options.push_back(nullptr);
+        Client::GetModule("noclip")->options.push_back(new Module("Minimum Accuracy", "noclip-min-accuracy-toggle", "Allows you to die if your noclip accuracy drops below this value"));
+        Client::GetModule("noclip")->options.push_back(new InputModule("Min Accuracy:", "noclip-min-accuracy", "95.0"));
+        Client::GetModule("noclip")->options.push_back(new Module("Player 1", "noclip-player1", "Apply noclip to player 1", true));
+        Client::GetModule("noclip")->options.push_back(new Module("Player 2", "noclip-player2", "Apply noclip to player 2", true));
 
 
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));

@@ -287,6 +287,8 @@ void AndroidUI::updateVersionLabel()
         menu->setAnchorPoint(ccp(0.5f, 0));
         menu->setContentSize(ccp(110, 20));
 
+        menu->setVisible(versionParent->isVisible());
+
         auto btn = CCMenuItemSpriteExtra::create(CCNode::create(), this, menu_selector(AndroidUI::onUpdate));
         btn->setContentSize(menu->getContentSize());
         btn->setAnchorPoint(ccp(0, 0));

@@ -125,9 +125,7 @@ void ImGuiExt::colouredText(std::string label)
 			continue;
 		}
 
-		auto cha = fmt::format("{}", ch).c_str();
-
-		ImGui::TextColored(colour.Value, "%s", cha);
+		ImGui::TextColored(colour.Value, "%s", fmt::format("{}", ch).c_str());
 
 		if (!newLine)
 			ImGui::SameLine();

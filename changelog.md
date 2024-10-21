@@ -6,15 +6,18 @@
 - Frame Stepper no longer saves ticks if you are dead
 - Frame Stepper buttons now repeat presses when being held down
 - Fixed Safe Mode not setting the label to "Safe Mode :3" if the level has coins
-- Added support for the following launch args on Windows: **--qolmod:no-blur**, **--qolmod:no-imgui-ui** and **--qolmod:use-imgui-ui**
+- Added New Geode Themes to the menu
+- Added **Hide Button in Editor**
 - Added **Safe Mode Info Button**
 - Added **Pause Buffering**
 - Added **No Platformer Jump Animation**
 - Added **Force Show Player**
 - Added **Force Hide Player**
 - Added **No Lightning**
-- Rewrote **Show Layout** to be better, allowing it to be ported to Windows and macOS
 - Added **Chest Unlock Bypass**
+- Added **Noclip Minimum Accuracy**
+- Added **Noclip Per Player**
+- Rewrote **Show Layout** to be better, allowing it to be ported to Windows and macOS
 
 # 1.6.10
 

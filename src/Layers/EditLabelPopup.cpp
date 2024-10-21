@@ -231,6 +231,14 @@ void EditLabelPopup::customSetup()
     page3->setContentSize(size);
     page3->setID("Events");
 
+    infoMenu = CCMenu::create();
+    infoMenu->setPosition(CCPointZero);
+
+    auto eventsInfo = InfoAlertButton::create("Label Event Help", "im too tired for this", 0.8f);
+    eventsInfo->setPosition(size + ccp(-16, -16));
+
+    infoMenu->addChild(eventsInfo);
+
     auto leftBG = CCScale9Sprite::create("square02_small.png");
     leftBG->setAnchorPoint(ccp(0, 0.5f));
     leftBG->setOpacity(100);
@@ -271,6 +279,7 @@ void EditLabelPopup::customSetup()
     updateList();
 
     page3->addChild(scroll, 2);
+    page3->addChild(infoMenu);
 
     pages.push_back(page1);
 
