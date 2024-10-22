@@ -214,6 +214,7 @@ void EditLabelPopup::customSetup()
 
     auto formatInp = TextInput::create(formatSize.x, "Format");
     formatInp->setString(module->format);
+    formatInp->setCommonFilter(CommonFilter::Any);
     formatInp->setCallback([this](const std::string& str)
     {
         module->format = str;
