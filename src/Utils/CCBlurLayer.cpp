@@ -126,8 +126,6 @@ void CCBlurLayer::draw()
     glBindFramebuffer(0x8D40, ppRt0.fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-
-
     CCLayerColor::draw();
 
     if (getParent())
@@ -149,7 +147,6 @@ void CCBlurLayer::draw()
 
         parent->transform();
         parent->visit();
-
 
         #ifdef GEODE_IS_IOS
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x174250)();

@@ -108,6 +108,8 @@ void LabelLayer::triggerEvent(LabelEventType type)
                         array->addObject(CCTintTo::create(event.fadeOut, mod->getColour().r, mod->getColour().g, mod->getColour().b));
 
                     auto seq = CCSequence::create(array);
+                    seq->setTag(80085);
+
                     mod->labelNode->runAction(seq);
 
                     array->release();

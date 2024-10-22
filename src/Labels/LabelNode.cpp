@@ -97,6 +97,14 @@ void LabelNode::update(float dt)
 
     this->setString(res2.c_str());
 
+    if (numberOfRunningActions() == 0)
+    {
+        if (mod->isCheatIndicator)
+            this->setColor(mod->getColour());
+    }
+
+    this->setVisible(mod->noclipOnly ? Client::GetModuleEnabled("noclip") : true);
+
     if (getChildrenCount() == 1 && res2 == ".")
     {
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setScale(2.25f);

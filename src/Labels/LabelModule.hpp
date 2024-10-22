@@ -19,6 +19,8 @@ class LabelModule : public Module
         CCLabelBMFont* labelNode = nullptr;
         std::string format;
         int presetType = -1;
+        bool isCheatIndicator = false;
+        bool noclipOnly = false;
         std::vector<LabelEvent> events;
 
         LabelModule(std::string format, std::string font);

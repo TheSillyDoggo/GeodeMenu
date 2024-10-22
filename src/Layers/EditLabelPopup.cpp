@@ -159,7 +159,7 @@ void EditLabelPopup::customSetup()
     opacityLine->setScaleX(0.5f);
     generalBG->addChildAtPosition(opacityLine, Anchor::Top, ccp(0, -19 - 47 - 47));
 
-    auto opacityInp = TextInput::create(140, "Scale");
+    auto opacityInp = TextInput::create(140, "Opacity");
     opacityInp->setString(fmt::format("{:.02f}", module->getOpacity()));
     opacityInp->setScale(0.7f);
     opacityInp->setCallback([this, opacityInp](const std::string& str)
@@ -178,6 +178,59 @@ void EditLabelPopup::customSetup()
 
     generalBG->addChildAtPosition(fontMenu, Anchor::Bottom, ccp(0, 15));
 
+    auto colourBG = CCScale9Sprite::create("square02_001.png");
+    colourBG->setOpacity(100);
+    colourBG->setContentSize(ccp(110, 175));
+    page1->addChildAtPosition(colourBG, Anchor::Center, ccp(0, 0));
+
+    auto colourTitle = CCLabelBMFont::create("Colour", "bigFont.fnt");
+    colourTitle->setScale(0.4f);
+    colourBG->addChildAtPosition(colourTitle, Anchor::Top, ccp(0, -9));
+
+    auto colourLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    colourLine->setRotation(90);
+    colourLine->setScaleX(0.5f);
+    colourBG->addChildAtPosition(colourLine, Anchor::Top, ccp(0, -19));
+
+    auto colourToggle = CCMenuItemExt::createTogglerWithStandardSprites(0.6f, [this](CCMenuItemToggler* toggler)
+    {
+        module->isCheatIndicator = !module->isCheatIndicator;
+
+        log::info("toggled");
+    });
+
+    colourToggle->toggle(module->isCheatIndicator);
+
+    auto colourLabel = CCLabelBMFont::create("Cheat Ind", "bigFont.fnt");
+    colourLabel->setAnchorPoint(ccp(0, 0.5f));
+    colourLabel->setPositionX(13);
+    colourLabel->setScale(0.45f);
+
+    auto noclipToggle = CCMenuItemExt::createTogglerWithStandardSprites(0.6f, [this](CCMenuItemToggler* toggler)
+    {
+        module->noclipOnly = !module->noclipOnly;
+
+        log::info("toggled");
+    });
+
+    noclipToggle->toggle(module->noclipOnly);
+    noclipToggle->setPositionY(-30);
+
+    auto noclipLabel = CCLabelBMFont::create("Noclip Only", "bigFont.fnt");
+    noclipLabel->setAnchorPoint(ccp(0, 0.5f));
+    noclipLabel->setPositionX(13);
+    noclipLabel->setScale(0.45f);
+    noclipLabel->setPositionY(-30);
+
+    auto colourToggleMenu = CCMenu::create();
+    colourToggleMenu->setContentSize(CCPointZero);
+    colourToggleMenu->addChild(colourToggle);
+    colourToggleMenu->addChild(colourLabel);
+    colourToggleMenu->addChild(noclipToggle);
+    colourToggleMenu->addChild(noclipLabel);
+
+    colourBG->addChildAtPosition(colourToggleMenu, Anchor::TopLeft, ccp(15, -35));
+
     auto infoMenu = CCMenu::create();
     infoMenu->setPosition(CCPointZero);
 
@@ -190,9 +243,13 @@ void EditLabelPopup::customSetup()
     auto nameInfo = InfoAlertButton::create("Display Name", "A name for your label, only shown in the <cc>ui</c> to differentiate your labels", 0.4f);
     nameInfo->setPosition(ccp(122, 208));
 
+    auto colourInfo = InfoAlertButton::create("Colour Info", "<cc>Cheat Indicator</c> - Makes the label be the colour of the cheat indicator\nsuch as <cr>red</c> for cheating and <cg>green</c> for safe\n\nLabel Events are currently broken with cheat indicator enabled, sorry", 0.4f);
+    colourInfo->setPosition(ccp(216, 208));
+
     infoMenu->addChild(anchorInfo);
     infoMenu->addChild(offsetInfo);
     infoMenu->addChild(nameInfo);
+    infoMenu->addChild(colourInfo);
 
     page1->addChild(infoMenu);
 

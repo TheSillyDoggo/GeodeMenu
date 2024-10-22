@@ -94,6 +94,7 @@ void Labels::onAddItem(CCObject* sender)
         case 1:
             module = new LabelModule(".", "bigFont.fnt");
             module->name = "Cheat Indicator";
+            module->isCheatIndicator = true;
             module->presetType = sender->getTag();
             break;
 
@@ -106,19 +107,25 @@ void Labels::onAddItem(CCObject* sender)
         case 3:
             module = new LabelModule("{total_cps} CPS", "bigFont.fnt");
             module->name = "CPS Counter";
+            module->events.push_back(LabelEvent { .colour = ccc3(0, 255, 0), .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickStarted});
+            module->events.push_back(LabelEvent { .colour = ccWHITE, .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickEnded});
             module->presetType = sender->getTag();
             break;
 
         case 4:
             module = new LabelModule("{noclip_accuracy}%", "bigFont.fnt");
             module->name = "Noclip Accuracy";
+            module->events.push_back(LabelEvent { .colour = ccc3(255, 0, 0), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
             module->presetType = sender->getTag();
+            module->noclipOnly = true;
             break;
 
         case 5:
             module = new LabelModule("{noclip_deaths} Death{noclip_deaths == 1 ? \"\" : \"s\"}", "bigFont.fnt");
             module->name = "Noclip Deaths";
+            module->events.push_back(LabelEvent { .colour = ccc3(255, 0, 0), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
             module->presetType = sender->getTag();
+            module->noclipOnly = true;
             break;
 
         case 6:
@@ -344,6 +351,7 @@ void Labels::loadFromPrevSave()
         mod->setFont(font);
         mod->setScale(scale);
         mod->setOpacity(opacity);
+        mod->isCheatIndicator = true;
 
         modules.push_back(mod);
     }
@@ -396,20 +404,6 @@ void Labels::loadFromPrevSave()
 
         auto mod = new LabelModule("{leftPad((session_hours < 10 ? \"0\" : \"\") + session_hours + \"\", 2)}:{leftPad((session_minutes < 10 ? \"0\" : \"\") + session_minutes, 2)}:{leftPad((session_seconds < 10 ? \"0\" : \"\") + session_seconds + \"\", 2)}", "bigFont.fnt");
         mod->name = "Session Time";
-        mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
-        mod->setFont(font);
-        mod->setScale(scale);
-        mod->setOpacity(opacity);
-
-        modules.push_back(mod);
-    }
-
-    if (Mod::get()->getSavedValue<bool>("status-cps_enabled", false))
-    {
-        auto side = Mod::get()->getSavedValue<int>("status-cps-side_index", 0);
-
-        auto mod = new LabelModule("{total_cps}", "bigFont.fnt");
-        mod->name = "CPS Counter";
         mod->setSide(side == 0 ? LabelAnchor::TopLeft : (side == 1 ? LabelAnchor::TopRight : (side == 2 ? LabelAnchor::BottomLeft : LabelAnchor::BottomRight)));
         mod->setFont(font);
         mod->setScale(scale);

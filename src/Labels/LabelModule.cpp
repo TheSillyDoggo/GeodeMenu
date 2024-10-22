@@ -1,6 +1,7 @@
 #include "LabelModule.hpp"
 #include "Labels.h"
 #include "LabelLayer.hpp"
+#include "../Hacks/SafeMode/SafeMode.hpp"
 
 LabelModule::LabelModule(std::string format, std::string font)
 {
@@ -49,6 +50,9 @@ float LabelModule::getOpacity()
 
 ccColor3B LabelModule::getColour()
 {
+    if (isCheatIndicator)
+        return SafeMode::get()->colourForState();
+
     return ccWHITE;
 }
 
@@ -78,6 +82,8 @@ matjson::Object LabelModule::saveToObject()
     obj["offset.x"] = offset.x;
     obj["offset.y"] = offset.y;
     obj["preset"] = presetType;
+    obj["cheat_indicator"] = isCheatIndicator;
+    obj["noclip_only"] = noclipOnly;
 
     matjson::Array eventsArr;
     
@@ -123,6 +129,12 @@ LabelModule* LabelModule::createFromObject(matjson::Object obj)
 
     if (obj.contains("preset") && obj["preset"].is_number())
         mod->presetType = obj["preset"].as_int();
+
+    if (obj.contains("cheat_indicator") && obj["cheat_indicator"].is_bool())
+        mod->isCheatIndicator = obj["cheat_indicator"].as_bool();
+
+    if (obj.contains("noclip_only") && obj["noclip_only"].is_bool())
+        mod->noclipOnly = obj["noclip_only"].as_bool();
 
     if (obj.contains("events") && obj["events"].is_array())
     {

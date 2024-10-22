@@ -7,6 +7,7 @@
 - Frame Stepper buttons now repeat presses when being held down
 - Fixed Safe Mode not setting the label to "Safe Mode :3" if the level has coins
 - Added New Geode Themes to the menu
+- Fixed crash in editor with betteredit enabled
 - Added **Blur Menu BG** on macOS
 - Added **No Particles** on macOS
 - Added **Transition Customizer** on macOS

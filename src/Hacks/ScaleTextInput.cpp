@@ -76,6 +76,9 @@ class $modify (InputScaleControl, GJScaleControl)
 
     void addControl()
     {
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_scaleLabel->setOpacity(0);
         m_scaleXLabel->setOpacity(0);
         m_scaleYLabel->setOpacity(0);
@@ -142,6 +145,9 @@ class $modify (InputScaleControl, GJScaleControl)
 
     void removeControl()
     {
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_scaleLabel->setOpacity(255);
         m_scaleXLabel->setOpacity(255);
         m_scaleYLabel->setOpacity(255);
@@ -159,6 +165,9 @@ class $modify (InputScaleControl, GJScaleControl)
     {
         GJScaleControl::loadValues(p0, p1, p2);
 
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_fields->scaleXInput->setString(fmt::format("{:.2f}", m_valueX));
         m_fields->scaleYInput->setString(fmt::format("{:.2f}", m_valueY));
         m_fields->scaleXYInput->setString(fmt::format("{:.2f}", m_valueX > m_valueY ? m_valueY : m_valueX));
@@ -167,18 +176,30 @@ class $modify (InputScaleControl, GJScaleControl)
     void updateLabelX(float p0)
     {
         GJScaleControl::updateLabelX(p0);
+
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_fields->scaleXInput->setString(fmt::format("{:.2f}", p0));
     }
 
     void updateLabelY(float p0)
     {
         GJScaleControl::updateLabelY(p0);
+
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_fields->scaleYInput->setString(fmt::format("{:.2f}", p0));
     }
 
     void updateLabelXY(float p0)
     {
         GJScaleControl::updateLabelXY(p0);
+
+        if (Loader::get()->getLoadedMod("hjfod.betteredit"))
+            return;
+
         m_fields->scaleXYInput->setString(fmt::format("{:.2f}", p0));
     }
 
@@ -187,7 +208,7 @@ class $modify (InputScaleControl, GJScaleControl)
         if (!GJScaleControl::init())
             return false;
 
-        if (!getChildByID("hjfod.betteredit/input-x"))
+        if (!Loader::get()->getLoadedMod("hjfod.betteredit"))
             addControl();
 
         return true;
