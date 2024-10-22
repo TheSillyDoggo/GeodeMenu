@@ -139,9 +139,9 @@ void CCBlurLayer::draw()
 
         #ifdef GEODE_IS_IOS
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x17420c)();
-        #elif GEODE_IS_INTEL_MAC
+        #elif defined(GEODE_IS_INTEL_MAC)
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x2025f0)();
-        #elif GEODE_IS_ARM_MAC
+        #elif defined(GEODE_IS_ARM_MAC)
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x1b40d8)();
         #else
         kmGLPushMatrix();
@@ -153,9 +153,9 @@ void CCBlurLayer::draw()
 
         #ifdef GEODE_IS_IOS
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x174250)();
-        #elif GEODE_IS_INTEL_MAC
+        #elif defined(GEODE_IS_INTEL_MAC)
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x202630)();
-        #elif GEODE_IS_ARM_MAC
+        #elif defined(GEODE_IS_ARM_MAC)
         reinterpret_cast<void(__cdecl*)()>(geode::base::get() + 0x1b411c)();
         #else
         kmGLPopMatrix();
