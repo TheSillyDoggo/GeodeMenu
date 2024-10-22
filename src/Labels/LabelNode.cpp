@@ -97,7 +97,7 @@ void LabelNode::update(float dt)
 
     this->setString(res2.c_str());
 
-    if (numberOfRunningActions() == 0)
+    if (!getActionByTag(80085))
     {
         if (mod->isCheatIndicator)
             this->setColor(mod->getColour());
