@@ -71,11 +71,11 @@ CCScene* getSceneForSel(int i, float f, CCScene* s, const ccColor3B& color)
         case 8:
             return CCTransitionFlipY::create(f, s); // m1 0xc256c, imac 0xdb670
         case 9:
-            return CCTransitionZoomFlipAngular::create(f, s); // m1 0xc34c4, imac 0xdc740
+            return CCTransitionZoomFlipAngular::create(f, s); // 
         case 10:
-            return CCTransitionZoomFlipX::create(f, s); // m1 0xc2c60, imac 0xdbe90
+            return CCTransitionZoomFlipX::create(f, s); // 
         case 11:
-            return CCTransitionZoomFlipY::create(f, s); // m1 0xc30d0, imac 0xdc2e0
+            return CCTransitionZoomFlipY::create(f, s); // 
         case 12:
             return CCTransitionJumpZoom::create(f, s); // m1 0xc0424, imac 0xd92a0
         case 13:

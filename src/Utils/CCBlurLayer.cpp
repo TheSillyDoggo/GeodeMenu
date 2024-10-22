@@ -99,8 +99,6 @@ void CCBlurLayer::visit()
 
 void CCBlurLayer::draw()
 {
-    #ifndef GEODE_IS_MACOS
-
     ccBlendFunc(this->getBlendFunc());
     
     if (blurStrength == 0)
@@ -188,8 +186,6 @@ void CCBlurLayer::draw()
 
     if (rtex)
         rtex->end();
-
-    #endif
 }
 
 Result<std::string> Shader::compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath) {
@@ -423,7 +419,7 @@ void cleanupPostProcess() {
     ppShaderRadius = 0;
 }
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
 
 #include <Geode/modify/CCEGLViewProtocol.hpp>
 
