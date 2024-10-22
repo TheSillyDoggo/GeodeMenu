@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_MACOS
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCParticleSystem.hpp>
 #include "../Client/Client.h"
@@ -8,7 +6,7 @@ using namespace geode::prelude;
 
 Module* part = nullptr;
 
-#ifdef GEODE_IS_IOS
+#ifdef __APPLE__
 
 class $modify (CCParticleSystem)
 {
@@ -44,7 +42,5 @@ $execute {
         modu->addHook(hook);
     });
 }
-
-#endif
 
 #endif

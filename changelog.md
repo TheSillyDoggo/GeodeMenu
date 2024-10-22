@@ -7,6 +7,7 @@
 - Frame Stepper buttons now repeat presses when being held down
 - Fixed Safe Mode not setting the label to "Safe Mode :3" if the level has coins
 - Added New Geode Themes to the menu
+- Added **No Particles** on macOS
 - Added **Solid Wave Trail** and **No Wave Trail** on macOS
 - Added **Hide Button in Editor**
 - Added **Safe Mode Info Button**
