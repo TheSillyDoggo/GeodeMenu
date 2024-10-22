@@ -469,7 +469,6 @@ public:
         #ifdef GEODE_IS_MACOS
 
         std::vector<std::string> macInc = {
-            "menu-bg-blur",
             "free-scroll",
         };
 
