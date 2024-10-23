@@ -135,6 +135,16 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
+        #ifdef __APPLE__
+        #include <OpenGL/gl.h>
+
+        GLint                       sync = 0;
+        CGLContextObj               ctx = CGLGetCurrentContext();
+
+        CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
+        #endif
+
+
         if (!v)
         {
             if (Client::get()->useImGuiUI())
