@@ -2,6 +2,7 @@
 #include "../Client/AndroidUI.h"
 #include "ChooseFontPopup.hpp"
 #include "../UI/LabelEventCell.hpp"
+#include "BetterMDPopup.hpp"
 
 // static ButtonSprite* create(char const* caption, int width, int p2, float scale, bool absolute, char const* font, char const* bg, float height);
 #define ANCHOR_BTN(__anchor, __text) \
@@ -265,7 +266,8 @@ void EditLabelPopup::customSetup()
     infoMenu = CCMenu::create();
     infoMenu->setPosition(CCPointZero);
 
-    auto formatInfo = InfoAlertButton::create("Format Label Help", "This is the format help", 0.8f);
+    auto formatInfo = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(EditLabelPopup::onFormatInfo));
+    formatInfo->getNormalImage()->setScale(0.8f);
     formatInfo->setPosition(size + ccp(-16, -16));
 
     infoMenu->addChild(formatInfo);
@@ -390,6 +392,14 @@ void EditLabelPopup::updateList()
     scroll->setTouchEnabled(scroll->m_contentLayer->getContentHeight() != scroll->getContentHeight());
 
     err->setVisible(scroll->m_contentLayer->getChildrenCount() == 0);
+}
+
+void EditLabelPopup::onFormatInfo(CCObject* sender)
+{
+    auto res = utils::file::readString(Mod::get()->getResourcesDir() / "label-help.md");
+    auto text = res.unwrapOr(fmt::format("Error reading file: {}", res.unwrapErr()));
+
+    BetterMDPopup::create(nullptr, "Label Format Help", text, "OK", nullptr, 420, true, 69, 1.0f)->show();
 }
 
 void EditLabelPopup::onAddEvent(CCObject* sender)

@@ -1,3 +1,7 @@
+# 1.7.2
+
+- Fixed memory leak while playing a level
+
 # 1.7.1
 
 - Fixed not being able to type decimals in label inputs

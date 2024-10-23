@@ -16,6 +16,8 @@ bool LabelNode::init(LabelModule* mod)
 
 std::string LabelNode::getFormatString()
 {
+    return mod->format;
+
     if (mod->presetType == 1)
         return ".";
 
@@ -48,8 +50,21 @@ void LabelNode::update(float dt)
     
     if (!script)
     {
+        CC_SAFE_DELETE(script);
+
         return this->setString(fmt::format("Error Compiling Script: {}", res.getMessage()).c_str());
     }
+
+    std::chrono::milliseconds duration(static_cast<long long>(ColourUtility::totalSessionTime * 1000));
+
+    auto hours = std::chrono::duration_cast<std::chrono::hours>(duration);
+    duration -= hours;
+    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
+    duration -= minutes;
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+
+    std::time_t currentTime = std::time(nullptr);
+    std::tm* localTime = std::localtime(&currentTime);
     
     script->setVariable("attempt", rift::Value::integer(LabelLayer::get()->getAttempts()));
     script->setVariable("fps", rift::Value::floating(LabelLayer::get()->getFPS()));
@@ -62,20 +77,9 @@ void LabelNode::update(float dt)
     script->setVariable("player2_clicks", rift::Value::integer(LabelLayer::get()->getClicks(true)));
     script->setVariable("total_clicks", rift::Value::integer(LabelLayer::get()->getTotalClicks()));
 
-    std::chrono::milliseconds duration(static_cast<long long>(ColourUtility::totalSessionTime * 1000));
-
-    auto hours = std::chrono::duration_cast<std::chrono::hours>(duration);
-    duration -= hours;
-    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
-    duration -= minutes;
-    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
-
     script->setVariable("session_seconds", rift::Value::integer(seconds.count()));
     script->setVariable("session_minutes", rift::Value::integer(minutes.count()));
     script->setVariable("session_hours", rift::Value::integer(hours.count()));
-
-    std::time_t currentTime = std::time(nullptr);
-    std::tm* localTime = std::localtime(&currentTime);
 
     script->setVariable("clock_seconds", rift::Value::integer(localTime->tm_sec));
     script->setVariable("clock_minutes", rift::Value::integer(localTime->tm_min));
@@ -110,6 +114,8 @@ void LabelNode::update(float dt)
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setScale(2.25f);
         as<CCNode*>(this->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0.2f, 0.35f));
     }
+
+    CC_SAFE_DELETE(script);
 }
 
 LabelNode* LabelNode::create(LabelModule* mod)
