@@ -61,7 +61,6 @@ public:
         speedhack->modules.push_back(new SpeedhackEnabled());
         speedhack->modules.push_back(new SpeedhackMus());
         speedhack->modules.push_back(new SpeedhackGameplay());
-        speedhack->modules.push_back(new SpeedhackTransFix());
 
         //(reinterpret_cast<SpeedhackTop*>(speedhack->modules.front()))->format = "%x";
 
@@ -486,9 +485,6 @@ public:
         #endif
 
         #ifdef GEODE_IS_IOS
-
-        SpeedhackTransFix::instance->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
-        SpeedhackTransFix::instance->enabled = false;
 
         Client::GetModule("custom-trans")->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
 

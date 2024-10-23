@@ -324,7 +324,7 @@ void Labels::load()
     safeZone = CCRectMake(Mod::get()->getSavedValue<float>("safe-zone.x", 3), Mod::get()->getSavedValue<float>("safe-zone.y", 3), Mod::get()->getSavedValue<float>("safe-zone.width", 3), Mod::get()->getSavedValue<float>("safe-zone.height", 3));
 
     if (!Mod::get()->hasSavedValue("selected-labels"))
-        loadFromPrevSave();
+        return loadFromPrevSave();
 
     auto arr = Mod::get()->getSavedValue<matjson::Array>("selected-labels");
 

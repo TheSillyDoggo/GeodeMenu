@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCScheduler.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include "Speedhack.hpp"
 
 using namespace geode::prelude;
@@ -29,14 +30,18 @@ float speedhackLogic(float dt)
 
             float v = SpeedhackTop::instance->getFloatValue();
 
-            if (SpeedhackGameplay::instance->enabled)
-                if (!(PlayLayer::get() || GameManager::sharedState()->getEditorLayer())) { v = 1.0f; }
-
             #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, SpeedhackMus::instance->enabled ? v : 1);
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
             #else
-            masterGroup->setPitch(SpeedhackMus::instance->enabled ? v : 1);
+            masterGroup->setPitch((SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
             #endif
+
+            if (SpeedhackGameplay::instance->enabled)
+            {
+                ColourUtility::update(dt);
+                return dt;
+            }
+
             ColourUtility::update(dt * v);
 
             #ifdef GEODE_IS_WINDOWS
@@ -113,3 +118,14 @@ $execute {
 }
 
 #endif
+
+class $modify (GJBaseGameLayer)
+{
+    virtual void update(float dt)
+    {
+        if (SpeedhackEnabled::instance->enabled && SpeedhackGameplay::instance->enabled)
+            dt *= SpeedhackTop::instance->getFloatValue();
+
+        GJBaseGameLayer::update(dt);
+    }
+};

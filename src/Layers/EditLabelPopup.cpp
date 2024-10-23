@@ -122,6 +122,7 @@ void EditLabelPopup::customSetup()
     generalBG->addChildAtPosition(nameLine, Anchor::Top, ccp(0, -19));
 
     auto nameInp = TextInput::create(140, "Display Name");
+    nameInp->setCommonFilter(CommonFilter::Any);
     nameInp->setString(module->name);
     nameInp->setScale(0.7f);
     nameInp->setCallback([this, nameInp](const std::string& str)
@@ -141,6 +142,7 @@ void EditLabelPopup::customSetup()
     generalBG->addChildAtPosition(scaleLine, Anchor::Top, ccp(0, -19 - 47));
 
     auto scaleInp = TextInput::create(140, "Scale");
+    scaleInp->setCommonFilter(CommonFilter::Float);
     scaleInp->setString(fmt::format("{:.02f}", module->getScale()));
     scaleInp->setScale(0.7f);
     scaleInp->setCallback([this, scaleInp](const std::string& str)
@@ -160,6 +162,7 @@ void EditLabelPopup::customSetup()
     generalBG->addChildAtPosition(opacityLine, Anchor::Top, ccp(0, -19 - 47 - 47));
 
     auto opacityInp = TextInput::create(140, "Opacity");
+    opacityInp->setCommonFilter(CommonFilter::Float);
     opacityInp->setString(fmt::format("{:.02f}", module->getOpacity()));
     opacityInp->setScale(0.7f);
     opacityInp->setCallback([this, opacityInp](const std::string& str)
@@ -243,7 +246,7 @@ void EditLabelPopup::customSetup()
     auto nameInfo = InfoAlertButton::create("Display Name", "A name for your label, only shown in the <cc>ui</c> to differentiate your labels", 0.4f);
     nameInfo->setPosition(ccp(122, 208));
 
-    auto colourInfo = InfoAlertButton::create("Colour Info", "<cc>Cheat Indicator</c> - Makes the label be the colour of the cheat indicator\nsuch as <cr>red</c> for cheating and <cg>green</c> for safe\n\nLabel Events are currently broken with cheat indicator enabled, sorry", 0.4f);
+    auto colourInfo = InfoAlertButton::create("Colour Info", "<cc>Cheat Indicator</c> - Makes the label be the colour of the cheat indicator\nsuch as <cr>red</c> for cheating and <cg>green</c> for safe\n\nLabel Events are currently broken with cheat indicator enabled, sorry\n<cc>Noclip Only</c> - Only shows the label if the noclip mod is enabled", 0.4f);
     colourInfo->setPosition(ccp(216, 208));
 
     infoMenu->addChild(anchorInfo);

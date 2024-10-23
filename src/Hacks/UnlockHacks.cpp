@@ -18,10 +18,10 @@ class $modify (GameStatsManager)
             }
         }
         
-        if (id == 16 && Client::GetModuleEnabled("music-bypass"))
+        if (id == 16 && Client::GetModuleEnabled("music-bypass") && type == UnlockType::GJItem)
             return true;
         
-        if (id == 17 && Client::GetModuleEnabled("practice-bypass"))
+        if (id == 17 && Client::GetModuleEnabled("practice-bypass") && type == UnlockType::GJItem)
             return true;
         
         return GameStatsManager::isItemUnlocked(type, id);

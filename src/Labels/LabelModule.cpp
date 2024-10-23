@@ -41,6 +41,11 @@ float LabelModule::getScale()
 void LabelModule::setOpacity(float newOpacity)
 {
     this->opacity = newOpacity;
+
+    if (labelNode)
+    {
+        labelNode->setOpacity(opacity * 255.0f);
+    }
 }
 
 float LabelModule::getOpacity()
@@ -76,7 +81,7 @@ matjson::Object LabelModule::saveToObject()
     obj["display_name"] = this->name;
     obj["format"] = this->format;
     obj["scale"] = this->scale;
-    obj["opacity"] = this->scale;
+    obj["opacity"] = this->opacity;
     obj["font"] = this->font;
     obj["side"] = as<int>(this->side);
     obj["offset.x"] = offset.x;

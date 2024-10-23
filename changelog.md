@@ -1,3 +1,14 @@
+# 1.7.1
+
+- Fixed not being able to type decimals in label inputs
+- Fixed opacity being saved as the scale
+- Fixed crash when searching in the mod menu
+- Fixed Duplicate Labels when loading v1.7.0 for the first time
+- Fixed icons with the id 16 and 17 being unlocked with practice unlocker hack enabled
+- Fixed Startpos Switcher starting at 0 (isn't fixed on macOS because of crashes)
+- Removed Speedhack Transition Fix because it was very buggy
+- Made Speedhack Gameplay actually be gameplay only
+
 # 1.7.0
 
 - Added incompatibility with [Text Select](https://github.com/camila314/text-select/) on android

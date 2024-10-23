@@ -56,24 +56,6 @@ class SpeedhackGameplay : public Module
         }
 };
 
-class SpeedhackTransFix : public Module
-{
-    public:
-        static inline SpeedhackTransFix* instance = nullptr;
-
-        SpeedhackTransFix()
-        {
-            id = "trans-fix";
-            name = "Transition Fix";
-            description = "Scene Transitions run at normal speed instead of your speedhack value";
-            enabled = true;
-
-            instance = this;
-
-            this->load();
-        }
-};
-
 class StatusOpacity : public InputModule
 {
     public:

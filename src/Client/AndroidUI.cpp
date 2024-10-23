@@ -364,18 +364,24 @@ void AndroidUI::textChanged(CCTextInputNode* p0)
 {
     for (size_t i = 0; i < pages.size(); i++)
     {
-        pages[i]->setVisible(p0->getString().empty() ? (i == selectedTab) : false);
+        pages[i]->setVisible(inputField->getString().empty() ? (i == selectedTab) : false);
     }
 
-    searchResultsPanel->setVisible(!p0->getString().empty());
+    searchResultsPanel->setVisible(!inputField->getString().empty());
 
     std::vector<Module*> modules = {};
 
     for (auto window : Client::instance->windows)
     {
+        if (typeinfo_cast<Labels*>(window))
+            continue;
+
         for (auto module : window->modules)
         {
-            if (string::toLower(module->name).find(string::toLower(std::string(p0->getString()))) != std::string::npos)
+            if (!module)
+                continue;
+
+            if (string::toLower(module->name).find(string::toLower(std::string(inputField->getString()))) != std::string::npos)
             {
                 if (!(module->id.starts_with("anim-speed")))
                     modules.push_back(module);
@@ -383,7 +389,10 @@ void AndroidUI::textChanged(CCTextInputNode* p0)
 
             for (auto option : module->options)
             {
-                if (string::toLower(option->name).find(string::toLower(std::string(p0->getString()))) != std::string::npos)
+                if (!option)
+                    continue;
+
+                if (string::toLower(option->name).find(string::toLower(std::string(inputField->getString()))) != std::string::npos)
                 {
                     if (!(option->id.starts_with("anim-speed")))
                         modules.push_back(option);

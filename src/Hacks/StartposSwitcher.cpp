@@ -72,6 +72,11 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (obj->m_objectID == 31)
         {
             m_fields->objs.push_back(as<StartPosObject*>(obj));
+
+            #ifndef GEODE_IS_MACOS
+            if (as<StartPosObject*>(obj)->m_startSettings && !as<StartPosObject*>(obj)->m_startSettings->m_disableStartPos)
+                m_fields->selectedIndex++;
+            #endif
         }
 
         PlayLayer::addObject(obj);
