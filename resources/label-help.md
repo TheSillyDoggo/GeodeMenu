@@ -19,7 +19,24 @@ These are all the variables provided by QOLMod and what they do:
 **noclip_deaths** | How many times you've died in noclip
 **noclip_accuracy** | How much time you've spent dead with noclip on
 
+**normal_best** | Your best percentage in normal mode
+**practice_best** | Your best percentage in practice mode
+
+**level_name** | The name of the level
+**level_creator** | The name of the creator of the level
+**level_likes** | The amount of likes for the level
+**level_downloads** | The amount of downloads for the level
+**level_description** | The description of the level
+**level_upload** | The time the level was uploaded
+**level_update** | The time the level was last updated
+**level_id** | The id of the level
+**level_verified** | If the level is verified
+**level_object_count** | The amount of objects in the level, does not show values above 65535 because of a bug
+**level_version** | The version of the level
+**level_game_version** | The version of the game the level was created in
+
 ## Level Only (Shows as **null** in editor)
 
 **bestRun_from** | The percentage that your best run was from
 **bestRun_to**   | The percentage that your best run was to
+**percentage** | Current percentage in the level

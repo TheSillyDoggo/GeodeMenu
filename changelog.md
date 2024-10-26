@@ -1,3 +1,8 @@
+# 1.7.3
+
+- Added new variables to labels
+- Wrote docs for labels that can be viewed with the (i) button the format page
+
 # 1.7.2
 
 - Fixed memory leak while playing a level
