@@ -221,6 +221,16 @@ int LabelLayer::getTotalClicks()
     return clicks1 + clicks2;
 }
 
+void LabelLayer::setLastPercentage(float v)
+{
+    lastPercentage = v;
+}
+
+float LabelLayer::getLastPercentage()
+{
+    return lastPercentage;
+}
+
 CCNode* LabelLayer::nodeForAnchor(LabelAnchor anchor)
 {
     return nodes.at(anchor);

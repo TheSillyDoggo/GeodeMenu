@@ -1,5 +1,10 @@
 # Variables
 Variables are special values that you can put in the format of your label.
+
+Variables can be used by typing {}, and putting the variable name inbetween the two {}.
+like this: "im playing {level_name} by {level_creator}!!!"
+which would show as: "im playing Bloodbath by Riot!!!"
+
 These are all the variables provided by QOLMod and what they do:
 
 **isLevel** | If you are in the level (not the editor)
@@ -40,3 +45,4 @@ These are all the variables provided by QOLMod and what they do:
 **bestRun_from** | The percentage that your best run was from
 **bestRun_to**   | The percentage that your best run was to
 **percentage** | Current percentage in the level
+**last_percentage** | The last percentage you died at

@@ -27,6 +27,7 @@ class LabelLayer : public CCLayer
 
         int clicks1;
         int clicks2;
+        float lastPercentage;
     
     public:
         UILayer* uiLayer;
@@ -34,6 +35,9 @@ class LabelLayer : public CCLayer
         bool init(UILayer* uiLayer);
 
         void triggerEvent(LabelEventType type);
+
+        void setLastPercentage(float v);
+        float getLastPercentage();
 
         void incrementAttempts();
         int getAttempts();

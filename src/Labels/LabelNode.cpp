@@ -118,6 +118,7 @@ void LabelNode::update(float dt)
         script->setVariable("bestRun_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestFrom));
         script->setVariable("bestRun_to", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestTo));
         script->setVariable("percentage", rift::Value::floating(PlayLayer::get()->getCurrentPercent()));
+        script->setVariable("last_percentage", rift::Value::floating(LabelLayer::get()->getLastPercentage()));
     }
 
     auto res2 = script->run();
