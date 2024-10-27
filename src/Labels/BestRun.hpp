@@ -21,6 +21,7 @@ class $modify (BestPlayLayer, PlayLayer)
 	};
 
 	void resetLevel();
+    virtual void destroyPlayer(PlayerObject* p0, GameObject* p1);
 
     std::string getRoundedString(float f);
     std::string getRunString();

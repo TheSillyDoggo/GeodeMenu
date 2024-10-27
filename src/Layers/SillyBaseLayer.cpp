@@ -1,5 +1,6 @@
 #include "SillyBaseLayer.h"
 #include "../Utils/LaunchArgs.hpp"
+#include "../Utils/UnspeedhackedAction.hpp"
 
 bool SillyBaseLayer::setup()
 {
@@ -10,7 +11,7 @@ bool SillyBaseLayer::setup()
     if (!noBlur && Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
     {
         blur = CCBlurLayer::create();
-        blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
+        blur->runAction(UnspeedhackedAction::create(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2)));
         this->addChild(blur);
     }
 
@@ -43,7 +44,7 @@ bool SillyBaseLayer::setup()
     if (animate)
     {
         l->setScale(0);
-        l->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));
+        l->runAction(UnspeedhackedAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)));
     }
 
     this->addChild(l);

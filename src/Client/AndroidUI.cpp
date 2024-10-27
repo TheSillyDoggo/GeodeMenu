@@ -1,6 +1,7 @@
 #include "AndroidUI.h"
 #include "../Utils/CCBlurLayer.hpp"
 #include "../Utils/LaunchArgs.hpp"
+#include "../Utils/UnspeedhackedAction.hpp"
 #include <Events.hpp>
 
 bool AndroidUI::setup()
@@ -35,7 +36,7 @@ bool AndroidUI::setup()
     #ifdef GEODE_IS_APPLE
     backSpr->runAction(CCFadeIn::create(0.5f));
     #else
-    backSpr->runAction(CCSpeed::create(CCFadeIn::create(0.5f), 1.0f / SpeedhackTop::getAdjustedValue()));
+    backSpr->runAction(UnspeedhackedAction::create(CCFadeIn::create(0.5f)));
     #endif
 
     auto backBtn = CCMenuItemSpriteExtra::create(backSpr, this, menu_selector(AndroidUI::onClose));
@@ -485,18 +486,10 @@ CCAction* AndroidUI::getEnterAction(CCNode* panel)
     {
         panel->setScale(0);
 
-        #ifdef GEODE_IS_APPLE
-        return CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f);
-        #else
-        return CCSpeed::create((CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)), 1.0f / v);
-        #endif
+        return UnspeedhackedAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));
     }
 
-    #ifdef GEODE_IS_APPLE
-    return CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.3f);
-    #else
-    return CCSpeed::create((CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2))), 1.0f / v);
-    #endif
+    return UnspeedhackedAction::create(CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.3f));
 }
 
 void AndroidUI::onPressTab(CCObject* sender)

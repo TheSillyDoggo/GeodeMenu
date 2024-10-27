@@ -8,6 +8,9 @@ class $modify (CCMotionStreak)
 {
     virtual void update(float delta)
     {
+        if (getUserObject("ignore-longer-trail"_spr))
+            delta *= 3;
+
         CCMotionStreak::update(delta / 3);
     }
 

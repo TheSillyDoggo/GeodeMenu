@@ -1,3 +1,8 @@
+# 1.7.4
+
+- Fixed UI Button being really hard to hit when speedhack is really high
+- Improved Show Touches to show the touch trail and not disappear early
+
 # 1.7.3
 
 - Added new variables to labels

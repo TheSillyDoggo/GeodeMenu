@@ -24,7 +24,7 @@ class $modify(LevelInfoLayer)
 
             if (auto unlocked = typeinfo_cast<CCMenuItemSpriteExtra*>(getChildBySpriteFrameName(menu, "GJ_duplicateBtn_001.png")))
             {
-                // do nothing cuz the buttons already there
+                unlocked->setVisible(true);
             }
             else
             {

@@ -2,7 +2,7 @@
 
 Module* _accurateMod;
 
-void BestPlayLayer::resetLevel()
+/*void BestPlayLayer::resetLevel()
 {
     if (m_fields->ignoreBest || (m_startPosObject && getCurrentPercent() == 0))
         return PlayLayer::resetLevel();
@@ -20,6 +20,28 @@ void BestPlayLayer::resetLevel()
 
     PlayLayer::resetLevel();
     m_fields->fromPercent = getCurrentPercent();
+}*/
+
+void BestPlayLayer::resetLevel()
+{
+    PlayLayer::resetLevel();
+
+    m_fields->fromPercent = getCurrentPercent();
+}
+
+void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
+{
+    if (p1 == m_unk3688)
+        return PlayLayer::destroyPlayer(p0, p1);
+
+    if (m_fields->fromPercent > m_fields->toPercent)
+        m_fields->fromPercent = 0;
+
+    m_fields->toPercent = getCurrentPercent();
+
+    PlayLayer::destroyPlayer(p0, p1);
+
+    //m_fields->fromPercent = getCurrentPercent();
 }
 
 std::string BestPlayLayer::getRoundedString(float f)

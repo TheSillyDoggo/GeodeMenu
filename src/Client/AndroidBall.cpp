@@ -1,4 +1,5 @@
 #include "AndroidBall.h"
+#include "../Utils/UnspeedhackedAction.hpp"
 
 AndroidBall* AndroidBall::get()
 {
@@ -70,7 +71,7 @@ bool AndroidBall::_ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event
 
     if (point.containsPoint(btn->convertToNodeSpace(touch->getLocation())))
     {
-        auto scale = CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2);
+        auto scale = UnspeedhackedAction::create(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
         scale->setTag(69);
 
         btn->runAction(scale);
@@ -92,7 +93,7 @@ bool AndroidBall::_ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event
         if (!dragging)
             onOpenMenu();
 
-        auto scale = CCEaseBackOut::create(CCScaleTo::create(0.35f, 1));
+        auto scale = UnspeedhackedAction::create(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
         scale->setTag(69);
 
         btn->runAction(scale);
@@ -234,10 +235,10 @@ void AndroidBall::UpdateVisible(bool i)
         }
         else
         {
-            auto action = CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2);
+            auto action = UnspeedhackedAction::create(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
             action->setTag(69);
 
-            auto action2 = CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2);
+            auto action2 = UnspeedhackedAction::create(CCEaseInOut::create(CCFadeTo::create(0.35f * (mod2->enabled ? 0 : 1), op), 2));
             action2->setTag(69);
 
             btn->runAction(action);
