@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "../Utils/LaunchArgs.hpp"
 
+
 Client* Client::get()
 {
     return instance;
@@ -79,10 +80,9 @@ void Client::initImGui()
     style->Colors[ImGuiCol_TitleBg] = ImVec4(20.0f / 255, 20.0f / 255, 20.0f / 255, 1);
     style->ScrollbarSize = 8;
 
-    auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "Poppins-Regular.ttf").string().c_str(), 16.0f);
-    io->FontDefault = font;
-
     setUIScale(mod->getSavedValue<float>("imgui-ui-scale", 1.0f));
+
+    loadImGuiTheme("catppuccin-frappe.ini");
 
     sortWindows(true);
 
@@ -120,9 +120,10 @@ void Client::drawImGui()
     if (hoveredModule && !hoveredModule->description.empty())
     {
         // ImGui::SetNextWindowPos(hoveredModule->lastRenderedPosition);
+
         ImGui::SetNextWindowPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
 
-        ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip);
+        ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip | ImGuiWindowFlags_NoBackground);
 
         ImGuiExt::colouredText(hoveredModule->description);
 
@@ -235,6 +236,15 @@ void Client::setUIScale(float scale)
 
     ImGuiCocos::get().setUIScale(scale);
 
+    if (!font)
+    {
+        font = ImGui::GetIO().Fonts->AddFontFromFileTTF((Mod::get()->getResourcesDir() / "Poppins-Regular.ttf").string().c_str(), 16.0f * scale);
+        ImGui::GetIO().FontDefault = font;
+    }
+
+    font->FontSize = 16 * scale;
+    font->Scale = 1.0f / scale;
+
     for (auto window : windows)
     {
         window->setPosition(window->getPosition() / (scale / oldScale));
@@ -244,4 +254,150 @@ void Client::setUIScale(float scale)
     {
         sortWindows(false);
     });
+}
+
+#define THEME_COLOUR(__name__) \
+style->Colors[ImGuiCol_##__name__] = ccc4ToVec(getThemeColour(#__name__, vecToCCC4(style->Colors[ImGuiCol_##__name__])))
+
+ccColor4B Client::getThemeColour(std::string key, ccColor4B def)
+{
+    if (!ini->hasKey(fmt::format("Colors::{}", key)))
+        return def;
+    
+    auto res = cc4bFromHexString(ini->getKeyValue(fmt::format("Colors::{}", key), ""), false, false);
+
+    if (res.has_value())
+        return res.unwrapOr(def);
+
+    if (res.has_error())
+        log::error("Failed to get colour {}, {}", key, res.error());
+
+    return def;
+}
+
+void Client::loadImGuiTheme(std::string theme)
+{
+    if (ini)
+    {
+        CC_SAFE_DELETE(ini);
+        ini = nullptr;
+    }
+
+    ini = SimpleINI::createWithFile((Mod::get()->getResourcesDir() / theme).string());
+
+    auto style = &ImGui::GetStyle();
+
+    THEME_COLOUR(Text);
+    THEME_COLOUR(TextDisabled);
+    THEME_COLOUR(WindowBg);
+    THEME_COLOUR(ChildBg);
+    THEME_COLOUR(PopupBg);
+    THEME_COLOUR(Border);
+    THEME_COLOUR(BorderShadow);
+    THEME_COLOUR(FrameBg);
+    THEME_COLOUR(FrameBgHovered);
+    THEME_COLOUR(FrameBgActive);
+    THEME_COLOUR(TitleBg);
+    THEME_COLOUR(TitleBgActive);
+    THEME_COLOUR(TitleBgCollapsed);
+    THEME_COLOUR(MenuBarBg);
+    THEME_COLOUR(ScrollbarBg);
+    THEME_COLOUR(ScrollbarGrab);
+    THEME_COLOUR(ScrollbarGrabHovered);
+    THEME_COLOUR(ScrollbarGrabActive);
+    THEME_COLOUR(CheckMark);
+    THEME_COLOUR(SliderGrab);
+    THEME_COLOUR(SliderGrabActive);
+    THEME_COLOUR(Button);
+    THEME_COLOUR(ButtonHovered);
+    THEME_COLOUR(ButtonActive);
+    THEME_COLOUR(Header);
+    THEME_COLOUR(HeaderHovered);
+    THEME_COLOUR(HeaderActive);
+    THEME_COLOUR(Separator);
+    THEME_COLOUR(SeparatorHovered);
+    THEME_COLOUR(SeparatorActive);
+    THEME_COLOUR(ResizeGrip);
+    THEME_COLOUR(ResizeGripHovered);
+    THEME_COLOUR(ResizeGripActive);
+    THEME_COLOUR(Tab);
+    THEME_COLOUR(TabHovered);
+    THEME_COLOUR(TabActive);
+    THEME_COLOUR(TabUnfocused);
+    THEME_COLOUR(TabUnfocusedActive);
+    THEME_COLOUR(PlotLines);
+    THEME_COLOUR(PlotLinesHovered);
+    THEME_COLOUR(PlotHistogram);
+    THEME_COLOUR(PlotHistogramHovered);
+    THEME_COLOUR(TableHeaderBg);
+    THEME_COLOUR(TableBorderStrong);
+    THEME_COLOUR(TableBorderLight);
+    THEME_COLOUR(TableRowBg);
+    THEME_COLOUR(TableRowBgAlt);
+    THEME_COLOUR(TextSelectedBg);
+    THEME_COLOUR(DragDropTarget);
+    THEME_COLOUR(NavHighlight);
+    THEME_COLOUR(NavWindowingHighlight);
+    THEME_COLOUR(NavWindowingDimBg);
+    THEME_COLOUR(ModalWindowDimBg);
+
+/*
+enum ImGuiCol_
+{
+Text,
+TextDisabled,
+WindowBg,              // Background of normal windows
+ChildBg,               // Background of child windows
+PopupBg,               // Background of popups, menus, tooltips windows
+Border,
+BorderShadow,
+FrameBg,               // Background of checkbox, radio button, plot, slider, text input
+FrameBgHovered,
+FrameBgActive,
+TitleBg,
+TitleBgActive,
+TitleBgCollapsed,
+MenuBarBg,
+ScrollbarBg,
+ScrollbarGrab,
+ScrollbarGrabHovered,
+ScrollbarGrabActive,
+CheckMark,
+SliderGrab,
+SliderGrabActive,
+Button,
+ButtonHovered,
+ButtonActive,
+Header,                // Header* colors are used for CollapsingHeader, TreeNode, Selectable, MenuItem
+HeaderHovered,
+HeaderActive,
+Separator,
+SeparatorHovered,
+SeparatorActive,
+ResizeGrip,            // Resize grip in lower-right and lower-left corners of windows.
+ResizeGripHovered,
+ResizeGripActive,
+Tab,                   // TabItem in a TabBar
+TabHovered,
+TabActive,
+TabUnfocused,
+TabUnfocusedActive,
+PlotLines,
+PlotLinesHovered,
+PlotHistogram,
+PlotHistogramHovered,
+TableHeaderBg,         // Table header background
+TableBorderStrong,     // Table outer and header borders (prefer using Alpha=1.0 here)
+TableBorderLight,      // Table inner borders (prefer using Alpha=1.0 here)
+TableRowBg,            // Table row background (even rows)
+TableRowBgAlt,         // Table row background (odd rows)
+TextSelectedBg,
+DragDropTarget,        // Rectangle highlighting a drop target
+NavHighlight,          // Gamepad/keyboard: current highlighted item
+NavWindowingHighlight, // Highlight window when using CTRL+TAB
+NavWindowingDimBg,     // Darken/colorize entire screen behind the CTRL+TAB window list, when active
+ModalWindowDimBg,      // Darken/colorize entire screen behind a modal window, when one is active
+ImGuiCol_COUNT
+};
+*/
 }

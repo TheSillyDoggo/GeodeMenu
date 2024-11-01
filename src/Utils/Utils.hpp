@@ -63,6 +63,11 @@ geode::Patch* createPatchSafe(void *address, const geode::ByteVector &data);
 cocos2d::CCRect getScreenSafeArea();
 cocos2d::CCRect getScreenSafeAreaiOS();
 
+#include <imgui-cocos.hpp>
+
+ImVec4 ccc4ToVec(cocos2d::ccColor4B col);
+cocos2d::ccColor4B vecToCCC4(ImVec4 vec);
+
 namespace ImGuiExt
 {
 	void colouredText(std::string label);

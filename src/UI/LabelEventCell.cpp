@@ -153,7 +153,7 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     setColourBG = CCScale9Sprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     setColourBG->setScale(0.5f);
     setColourBG->setContentWidth(80);
-    setColourBG->setColor(event->colour);
+    setColourBG->setColor(ccc3(event->colour.r, event->colour.g, event->colour.b));
 
     auto setColourLbl = CCLabelBMFont::create("Set", "bigFont.fnt");
     setColourLbl->setScale(0.7f);
@@ -229,8 +229,8 @@ void LabelEventCell::onSetColour(CCObject* sender)
 
 void LabelEventCell::updateColor(cocos2d::ccColor4B const& color)
 {
-    event->colour = ccc3(color.r, color.g, color.b);
-    setColourBG->setColor(event->colour);
+    event->colour = ccc4(color.r, color.g, color.b, color.a);
+    setColourBG->setColor(ccc3(event->colour.r, event->colour.g, event->colour.b));
 }
 
 void LabelEventCell::onDelete(CCObject* sender)

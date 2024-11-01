@@ -1,8 +1,6 @@
 #include "LabelLayer.hpp"
 #include "../Client/Windows/Labels.hpp"
 
-UILayer* uiLayer;
-
 #define ANCHOR_CREATE(__anchor) nodes.emplace(LabelAnchor::__anchor, createNodeForAnchor(LabelAnchor::__anchor))
 
 bool LabelLayer::init(UILayer* uiLayer)
@@ -109,6 +107,25 @@ void LabelLayer::triggerEvent(LabelEventType type)
 
                     auto seq = CCSequence::create(array);
                     seq->setTag(80085);
+
+                    mod->labelNode->runAction(seq);
+
+                    array->release();
+
+                    array = CCArray::create();
+                    array->retain();
+
+                    if (event.fadeIn != -1)
+                        array->addObject(CCFadeTo::create(event.fadeIn, event.colour.a));
+
+                    if (event.hold != -1)
+                        array->addObject(CCDelayTime::create(event.hold));
+
+                    if (event.fadeOut != -1)
+                        array->addObject(CCFadeTo::create(event.fadeOut, mod->getOpacity() * 255));
+
+                    seq = CCSequence::create(array);
+                    seq->setTag(800851);
 
                     mod->labelNode->runAction(seq);
 

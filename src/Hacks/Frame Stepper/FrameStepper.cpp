@@ -67,7 +67,7 @@ void SteppedBaseGameLayer::stepFrame()
 {
     m_fields->steppingUpdate = true;
 
-    GJBaseGameLayer::update(1.0f / 240.0f);
+    GJBaseGameLayer::update(1.0f / (Client::GetModuleEnabled("tps-bypass") ? as<InputModule*>(Client::GetModule("tps-bypass")->options[0])->getFloatValue() : 240.0f));
 
     m_fields->steppingUpdate = false;
 }

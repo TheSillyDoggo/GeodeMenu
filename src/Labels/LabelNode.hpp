@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "BestRun.hpp"
+#include "RunInfo.hpp"
 #include "../Client/Client.h"
 #include <rift.hpp>
 #include "LabelModule.hpp"

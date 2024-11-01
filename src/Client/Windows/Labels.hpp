@@ -37,4 +37,6 @@ class Labels : public Window
         void onDelete(CCObject* sender);
         void onSettings(CCObject* sender);
         void onSetupSafeZone(CCObject* sender);
+        void onMoveLabelUp(CCObject* sender);
+        void onMoveLabelDown(CCObject* sender);
 };

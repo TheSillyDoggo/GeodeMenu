@@ -23,7 +23,8 @@
 			"resources/*.glsl",
 			"resources/*.hlsl",
 			"resources/*.wav",
-			"resources/*.md"
+			"resources/*.md",
+			"resources/*.ini"
         ],
 		"sprites": [
 			"resources/sprites/*.png"

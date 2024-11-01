@@ -16,6 +16,7 @@
 #include "idkwhattocallthis.hpp"
 #include "../Utils/CCBlurLayer.hpp"
 #include "Window.h"
+#include "../Utils/SimpleINI.hpp"
 
 enum class WindowTransitionType
 {
@@ -39,8 +40,10 @@ public:
     bool isWindowOpen = true;
 
     Module* hoveredModule;
+    ImFont* font = nullptr;
     Ref<CCBlurLayer> blurLayer;
     bool over = false;
+    SimpleINI* ini = nullptr;
 
     Client()
     {
@@ -56,6 +59,10 @@ public:
     void drawImGui();
     void sortWindows(bool instant);
     void toggleWindowVisibility(WindowTransitionType type, bool instant = false);
+
+    void loadImGuiTheme(std::string theme);
+
+    ccColor4B getThemeColour(std::string key, ccColor4B def);
 
     void setUIScale(float scale);
 

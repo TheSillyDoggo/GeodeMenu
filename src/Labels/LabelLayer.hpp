@@ -31,6 +31,7 @@ class LabelLayer : public CCLayer
     
     public:
         UILayer* uiLayer;
+        std::string neofetchOutput;
 
         bool init(UILayer* uiLayer);
 

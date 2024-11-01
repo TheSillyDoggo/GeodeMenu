@@ -667,10 +667,17 @@ void Config::drawImGui()
     if (ImGui::InputFloat("UI Scale", &v, 0.1f, 0.2f))
         Client::get()->setUIScale(v);
 
+    if (ImGui::Button("Sort Windows"))
+        Client::get()->sortWindows(false);
+
+    if (ImGui::Button("Reload Theme"))
+        Client::get()->loadImGuiTheme("catppuccin-frappe.ini");
+
     for (auto module : modules)
     {
         ImGui::PushItemWidth(215);
-        module->drawImGui();
+        if (module)
+            module->drawImGui();
     }
 
     closedTimer += (ImGui::GetIO().DeltaTime * (ImGui::IsWindowCollapsed() ? -1.0f : 1.0f)) / 0.5f;

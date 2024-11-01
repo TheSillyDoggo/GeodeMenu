@@ -131,6 +131,9 @@ public:
         level->modules.push_back(new Module("Force Hide Player", "hide-player", "Forces all players to be invisible"));
         level->modules.push_back(new Module("Force Show Player", "show-player", "Forces all players to be visible"));
 
+        level->modules.push_back(new Module("Hitbox Multiplier", "hitbox-multiplier", "Change the size of hotboxes"));
+        level->modules.push_back(new Module("Freeze Attempts", "freeze-attempts", "Freezes your attempt count stat and on level"));
+
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
 
 
@@ -184,6 +187,17 @@ public:
         Client::GetModule("auto-clicker")->options.push_back(new Module("Player 2", "auto-clicker-player2", "Should it click for player 2", true));
         as<InputModule*>(Client::GetModule("auto-clicker")->options[0])->allowedChars = "0123456789";
         as<InputModule*>(Client::GetModule("auto-clicker")->options[1])->allowedChars = "0123456789";
+
+        if (auto hitboxMult = Client::GetModule("hitbox-multiplier"))
+        {
+            hitboxMult->options.push_back(new InputModule("Player", "hitbox-multiplier-player", "1.0"));
+            hitboxMult->options.push_back(nullptr);
+
+            hitboxMult->options.push_back(new InputModule("Solid", "hitbox-multiplier-solid", "0.5"));
+            hitboxMult->options.push_back(nullptr);
+
+            hitboxMult->options.push_back(new InputModule("Hazard", "hitbox-multiplier-hazard", "0.5"));
+        }
     }
 
     static void SetupBypass()
@@ -292,7 +306,7 @@ public:
         creator->modules.push_back(new Module("Toolbox Button Bypass", "toolbox-buttons", "Unlimited <cc>Rows</c> and <cc>Columns</c> in your <cl>Object Toolbox</c>"));
 
         creator->modules.push_back(new Module("Scale Input", "scale-input-control", "Adds an input field to the object scale control", true));
-
+        creator->modules.push_back(new Module("Reset Percentage On Save", "reset-percentage-on-save", "Resets <cc>percentage</c> on <cl>local levels</c> whenever you save in the editor"));
 
         Client::instance->windows.push_back(creator);
     }

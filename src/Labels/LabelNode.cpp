@@ -41,7 +41,12 @@ std::string LabelNode::getFormatString()
 
 void LabelNode::update(float dt)
 {
-    this->setOpacity(mod->getOpacity() * 255.0f);
+    if (!getActionByTag(800851))
+        this->setOpacity(mod->getOpacity() * 255.0f);
+
+    this->setString("L");
+    float fontHeight = getContentHeight();
+    
     this->setScale(mod->getScale() * 0.5f * (32.5f / this->getContentHeight()));
 
     auto res = rift::compile(getFormatString());
@@ -68,6 +73,8 @@ void LabelNode::update(float dt)
 
     std::time_t currentTime = std::time(nullptr);
     std::tm* localTime = std::localtime(&currentTime);
+
+    script->setVariable("neofetch", rift::Value::string(LabelLayer::get()->neofetchOutput));
     
     script->setVariable("attempt", rift::Value::integer(LabelLayer::get()->getAttempts()));
     script->setVariable("fps", rift::Value::floating(LabelLayer::get()->getFPS()));
@@ -119,6 +126,7 @@ void LabelNode::update(float dt)
         script->setVariable("bestRun_to", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestTo));
         script->setVariable("percentage", rift::Value::floating(PlayLayer::get()->getCurrentPercent()));
         script->setVariable("last_percentage", rift::Value::floating(LabelLayer::get()->getLastPercentage()));
+        script->setVariable("run_from", rift::Value::floating(as<RunPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
     }
 
     auto res2 = script->run();
@@ -130,6 +138,8 @@ void LabelNode::update(float dt)
         if (mod->isCheatIndicator)
             this->setColor(mod->getColour());
     }
+
+    this->setScale(mod->getScale() * 0.5f * (32.5f / fontHeight));
 
     this->setVisible(mod->noclipOnly ? Client::GetModuleEnabled("noclip") : true);
 

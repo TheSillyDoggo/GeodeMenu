@@ -1,6 +1,7 @@
 #include "Utils.hpp"
 #include <Geode/Geode.hpp>
 #include <imgui-cocos.hpp>
+#include "../Client/Client.h"
 
 using namespace geode::prelude;
 
@@ -44,6 +45,16 @@ cocos2d::CCRect getScreenSafeArea()
 	return insets;
 }
 
+ImVec4 ccc4ToVec(ccColor4B col)
+{
+    return ImVec4(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, col.a / 255.0f);
+}
+
+ccColor4B vecToCCC4(ImVec4 vec)
+{
+    return ccc4(vec.x * 255.0f, vec.y * 255.0f, vec.z * 255.0f, vec.w * 255.0f);
+}
+
 void ImGuiExt::colouredText(std::string label)
 {
 	bool isCol = false;
@@ -66,43 +77,43 @@ void ImGuiExt::colouredText(std::string label)
 			if (c == 1 && !v)
 			{
 				if (ch == 'a')
-					colour = ImColor(150, 50, 255, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_a", ccc4(150, 50, 255, 255)));
 
 				if (ch == 'b')
-					colour = ImColor(74, 82, 225, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_b", ccc4(74, 82, 225, 255)));
 
 				if (ch == 'c')
-					colour = ImColor(255, 255, 150, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_c", ccc4(255, 255, 150, 255)));
 
 				if (ch == 'd')
-					colour = ImColor(255, 150, 255, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_d", ccc4(255, 150, 255, 255)));
 
 				if (ch == 'f')
-					colour = ImColor(150, 255, 255, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_f", ccc4(150, 255, 255, 255)));
 
 				if (ch == 'g')
-					colour = ImColor(64, 227, 72, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_g", ccc4(64, 227, 72, 255)));
 
 				if (ch == 'j')
-					colour = ImColor(50, 200, 255, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_j", ccc4(50, 200, 255, 255)));
 
 				if (ch == 'l')
-					colour = ImColor(96, 171, 239, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_l", ccc4(96, 171, 239, 255)));
 
 				if (ch == 'o')
-					colour = ImColor(255, 165, 75, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_o", ccc4(255, 165, 75, 255)));
 
 				if (ch == 'p')
-					colour = ImColor(255, 0, 255, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_p", ccc4(255, 0, 255, 255)));
 
 				if (ch == 'r')
-					colour = ImColor(255, 90, 90, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_r", ccc4(255, 90, 90, 255)));
 
 				if (ch == 's')
-					colour = ImColor(255, 220, 65, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_s", ccc4(255, 220, 65, 255)));
 
 				if (ch == 'y')
-					colour = ImColor(255, 255, 0, 255);
+					colour = ccc4ToVec(Client::get()->getThemeColour("Desc_y", ccc4(255, 255, 0, 255)));
 			}
 
 			if (c == 2)

@@ -2,6 +2,13 @@
 
 - Fixed UI Button being really hard to hit when speedhack is really high
 - Improved Show Touches to show the touch trail and not disappear early
+- Fixed Frame Stepper not stepping correctly with tps bypass enabled
+- Added arrows to reorder labels
+- Added opacity slider to label events
+- Added run info to labels
+- Added **Editor Reset Percentage on Save**
+- Added **Hitbox Multiplier**
+- Added **Freeze Attempts**
 
 # 1.7.3
 

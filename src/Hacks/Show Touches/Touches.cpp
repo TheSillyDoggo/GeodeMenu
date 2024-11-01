@@ -34,13 +34,3 @@ class $modify (CCTouchDispatcher)
 
     QOLMOD_MOD_HOOK("show-touches", "cocos2d::CCTouchDispatcher::touches")
 };
-
-class $modify (CCMotionStreak)
-{
-    static CCMotionStreak* create(float fade, float minSeg, float stroke, ccColor3B const& color, char const* path)
-    {
-        log::info("fade: {}, minSeg: {}, stroke: {}", fade, minSeg, stroke);
-
-        return CCMotionStreak::create(fade, minSeg, stroke, color, path);
-    }
-};

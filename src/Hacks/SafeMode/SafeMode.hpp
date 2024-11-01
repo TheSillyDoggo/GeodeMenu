@@ -47,6 +47,7 @@ class SILLY_DLL SafeMode
             "auto-coins",
             "auto-clicker",
             "frame-stepper",
+            "hitbox-multiplier",
         };
 
         static SafeMode* get();

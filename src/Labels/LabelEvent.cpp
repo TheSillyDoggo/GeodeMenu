@@ -9,6 +9,7 @@ matjson::Object LabelEvent::save()
     obj["colour.r"] = colour.r;
     obj["colour.g"] = colour.g;
     obj["colour.b"] = colour.b;
+    obj["colour.a"] = colour.a;
     obj["fadeIn"] = fadeIn;
     obj["hold"] = hold;
     obj["fadeOut"] = fadeOut;
@@ -32,6 +33,9 @@ void LabelEvent::load(matjson::Object obj)
 
     if (obj.contains("colour.b") && obj["colour.b"].is_number())
         colour.b = obj["colour.b"].as_int();
+
+    if (obj.contains("colour.a") && obj["colour.a"].is_number())
+        colour.a = obj["colour.a"].as_int();
 
     if (obj.contains("fadeIn") && obj["fadeIn"].is_number())
         fadeIn = obj["fadeIn"].as_double();

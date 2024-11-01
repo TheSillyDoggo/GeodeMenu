@@ -53,3 +53,4 @@ These are all the variables provided by QOLMod and what they do:
 **bestRun_to**   | The percentage that your best run was to
 **percentage** | Current percentage in the level
 **last_percentage** | The last percentage you died at
+**run_from** | Where your run started from

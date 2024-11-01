@@ -107,15 +107,15 @@ void Labels::onAddItem(CCObject* sender)
         case 3:
             module = new LabelModule("{total_cps} CPS", "bigFont.fnt");
             module->name = "CPS Counter";
-            module->events.push_back(LabelEvent { .colour = ccc3(0, 255, 0), .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickStarted});
-            module->events.push_back(LabelEvent { .colour = ccWHITE, .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickEnded});
+            module->events.push_back(LabelEvent { .colour = ccc4(0, 255, 0, 255), .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickStarted});
+            module->events.push_back(LabelEvent { .colour = ccc4(255, 255, 255, 255), .fadeIn = 0, .hold = 0, .fadeOut = -1, .type = LabelEventType::ClickEnded});
             module->presetType = sender->getTag();
             break;
 
         case 4:
             module = new LabelModule("{noclip_accuracy}%", "bigFont.fnt");
             module->name = "Noclip Accuracy";
-            module->events.push_back(LabelEvent { .colour = ccc3(255, 0, 0), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
+            module->events.push_back(LabelEvent { .colour = ccc4(255, 0, 0, 255), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
             module->presetType = sender->getTag();
             module->noclipOnly = true;
             break;
@@ -123,7 +123,7 @@ void Labels::onAddItem(CCObject* sender)
         case 5:
             module = new LabelModule("{noclip_deaths} Death{noclip_deaths == 1 ? \"\" : \"s\"}", "bigFont.fnt");
             module->name = "Noclip Deaths";
-            module->events.push_back(LabelEvent { .colour = ccc3(255, 0, 0), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
+            module->events.push_back(LabelEvent { .colour = ccc4(255, 0, 0, 255), .fadeIn = 0, .hold = 0, .fadeOut = 0.5f, .type = LabelEventType::PlayerTookDamage});
             module->presetType = sender->getTag();
             module->noclipOnly = true;
             break;
@@ -209,6 +209,31 @@ void Labels::onSettings(CCObject* sender)
     EditLabelPopup::addToScene(mod, mod->presetType == -1);
 }
 
+void Labels::onMoveLabelUp(CCObject* sender)
+{
+    if (sender->getTag() > 0)
+        std::swap(modules[sender->getTag()], modules[sender->getTag() - 1]);
+
+    refreshList();
+    save();
+
+    if (LabelLayer::get())
+        LabelLayer::get()->updateLabels();
+}
+
+void Labels::onMoveLabelDown(CCObject* sender)
+{
+    // cuz someones gonna fuck around in devtools and crash the game
+    if (sender->getTag() < modules.size())
+        std::swap(modules[sender->getTag()], modules[sender->getTag() + 1]);
+
+    refreshList();
+    save();
+
+    if (LabelLayer::get())
+        LabelLayer::get()->updateLabels();
+}
+
 void Labels::refreshList()
 {
     if (scroll)
@@ -222,6 +247,7 @@ void Labels::refreshList()
 
     float height = 23;
     float y = 0;
+    int i = 0;
 
     for (auto module : modules)
     {
@@ -248,7 +274,7 @@ void Labels::refreshList()
             auto name = CCLabelBMFont::create(module->name.c_str(), "bigFont.fnt");
             name->setAnchorPoint(ccp(0, 0.5f));
             name->setPosition(ccp(10, cell->getContentHeight() / 2));
-            name->limitLabelWidth(cell->getContentWidth() - 70, 0.4f, 0);
+            name->limitLabelWidth(120, 0.4f, 0);
 
             auto m = CCMenu::create();
             m->setPosition(ccp(0, 0));
@@ -269,8 +295,59 @@ void Labels::refreshList()
             deleteBtn->setPositionY(cell->getContentHeight() / 2);
             deleteBtn->setUserData(module);
 
+            bool single = i == 0 || i == modules.size() - 1;
+
+            auto arrowBack = CCScale9Sprite::create("square02_small.png");
+            arrowBack->setOpacity(100);
+            arrowBack->setContentSize(ccp(single ? 18 : 36, 18) * 3);
+            arrowBack->setScale(1.0f / 3.0f);
+            arrowBack->setPositionX(cell->getContentWidth() - (195 - (single ? (18 / 2) / arrowBack->getScale() : 0)) * arrowBack->getScale());
+            arrowBack->setPositionY(cell->getContentHeight() / 2);
+
+            auto upSpr = CCSprite::createWithSpriteFrameName("edit_upBtn_001.png");
+            upSpr->setScale(0.65f);
+
+            auto moveUp = CCMenuItemSpriteExtra::create(upSpr, this, menu_selector(Labels::onMoveLabelUp));
+            moveUp->setPositionY(cell->getContentHeight() / 2);
+            moveUp->setTag(i);
+
+            auto downSpr = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
+            downSpr->setScale(0.65f);
+
+            auto moveDown = CCMenuItemSpriteExtra::create(downSpr, this, menu_selector(Labels::onMoveLabelDown));
+            moveDown->setPositionY(cell->getContentHeight() / 2);
+            moveDown->setTag(i);
+
+            if (modules.size() == 1)
+            {
+                arrowBack->setVisible(false);
+                moveUp->setVisible(false);
+                moveDown->setVisible(false);
+            }
+
+            if (i == 0)
+            {
+                moveUp->setVisible(false);
+                moveDown->setPosition(arrowBack->getPosition());
+            }
+            else if (i == modules.size() - 1)
+            {
+                moveDown->setVisible(false);
+                moveUp->setPosition(arrowBack->getPosition());
+            }
+            else
+            {
+                #define GAP_ARROWS_BOTH 8
+
+                moveUp->setPosition(arrowBack->getPosition() + ccp(GAP_ARROWS_BOTH, 0));
+                moveDown->setPosition(arrowBack->getPosition() + ccp(-GAP_ARROWS_BOTH, 0));
+            }
+
             m->addChild(options);
             m->addChild(deleteBtn);
+            m->addChild(arrowBack);
+            m->addChild(moveUp);
+            m->addChild(moveDown);
 
             cell->addChild(bg);
             cell->addChild(name);
@@ -279,6 +356,8 @@ void Labels::refreshList()
             scroll->m_contentLayer->addChild(cell);
 
             cells.push_back(cell);
+
+            i++;
         }
     }
 
