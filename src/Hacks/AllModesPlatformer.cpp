@@ -18,7 +18,7 @@ class $modify (GJBaseGameLayer)
 
         if (p0 && p1)
         {
-            for (size_t i = 0; i < p1->size(); i++)
+            for (size_t i = 0; i < p2; i++)
             {
                 if (auto obj = p1->at(i))
                 {
