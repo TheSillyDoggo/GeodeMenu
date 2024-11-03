@@ -88,7 +88,7 @@ void Client::initImGui()
 
     toggleWindowVisibility(WindowTransitionType::Vertical, true);
 
-    blurLayer = CCBlurLayer::create();
+    blurLayer = BlurLayer::create();
 
     blurLayer->onEnter();
     blurLayer->onEnterTransitionDidFinish();

@@ -1,6 +1,6 @@
 #include "RecordKeyPopup.hpp"
 #include <Geode/ui/GeodeUI.hpp>
-#include "../Utils/CCBlurLayer.hpp"
+#include "../UI/BlurLayer.hpp"
 #include "../Client/Client.h"
 
 bool RecordKeyPopup::init(SEL_MenuHandler obj)
@@ -15,7 +15,7 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
 
     if (Client::GetModuleEnabled("menu-bg-blur"))
     {
-        auto blur = CCBlurLayer::create();
+        auto blur = BlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
         this->addChild(blur);
     }

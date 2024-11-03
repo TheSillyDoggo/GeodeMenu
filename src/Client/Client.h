@@ -14,7 +14,7 @@
 #include "../Labels/LabelModule.hpp"
 
 #include "idkwhattocallthis.hpp"
-#include "../Utils/CCBlurLayer.hpp"
+#include "../UI/BlurLayer.hpp"
 #include "Window.h"
 #include "../Utils/SimpleINI.hpp"
 
@@ -41,7 +41,7 @@ public:
 
     Module* hoveredModule;
     ImFont* font = nullptr;
-    Ref<CCBlurLayer> blurLayer;
+    Ref<BlurLayer> blurLayer;
     bool over = false;
     SimpleINI* ini = nullptr;
 

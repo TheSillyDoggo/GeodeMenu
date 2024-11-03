@@ -61,6 +61,11 @@ class $modify (cocos2d::CCTransitionFade)
     {
         float mod = 1;
 
+        if (Client::GetModuleEnabled("custom-trans"))
+        {
+            duration = Mod::get()->getSavedValue<float>("transition-time", 0.5f);
+        }
+
         if (Client::GetModuleEnabled("no-trans"))
         {
             mod = 0;

@@ -90,10 +90,10 @@ public:
         level->modules.push_back(new Module("Show Hitboxes On Death", "show-hitboxes-on-death", "Shows object hitboxes on death"));
 
         level->modules.push_back(new Module("Force Platformer", "force-plat", "Force Platformer mode on all levels.\nReopen level to apply."));
-        level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
+        level->modules.push_back(new Module("Coin Finder", "coin-tracers", "Draws a line to secret / user coins in the level"));
 
         level->modules.push_back(new Module("No Mirror Portal", "no-reverse", "Disables mirror portals, only bad players use this"));
-        level->modules.push_back(new Module("Coin Finder", "coin-tracers", "Draws a line to secret / user coins in the level"));
+        level->modules.push_back(new Module("Instant Mirror Portal", "instant-reverse", "Makes the mirror portal transition instant"));        
 
         level->modules.push_back(new Module("Accurate Percentage", "accurate-percentage", "Allows you to have any amount of decimal places in your percentage text"));
         level->modules.push_back(new Module("Classic Percentage", "classic-percentage", "Percentage is calculated like in 2.1, The percentage for new best is still calculated like 2.2"));
@@ -133,6 +133,11 @@ public:
 
         level->modules.push_back(new Module("Hitbox Multiplier", "hitbox-multiplier", "Change the size of hotboxes"));
         level->modules.push_back(new Module("Freeze Attempts", "freeze-attempts", "Freezes your attempt count stat and on level"));
+
+        level->modules.push_back(new Module("No Static Camera", "no-static", "Disables static camera"));
+        level->modules.push_back(new Module("Legacy Upside Down Physics", "legacy-upside-down", "Forces the level to have the upside down <cl>gravity bug</c> from before <cc>2.2</c>"));
+
+        level->modules.push_back(new Module("Icon Kit in Pause", "pause-icon-kit", "Adds a button to open the icon kit in the pause menu", true));
 
         //level->modules.push_back(new Module("Gamemode Switcher", "gamemode-switcher", "Adds a button to the bottom of the pause menu to change your gamemode"));
 
@@ -268,6 +273,7 @@ public:
         Client::GetModule("tps-bypass")->options.push_back(tps);
 
         Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
+        Client::GetModule("custom-trans")->optionSizeForce = ccp(350, 180);
         //Client::GetModule("custom-trans")->options.push_back(nullptr);
         //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
         //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));

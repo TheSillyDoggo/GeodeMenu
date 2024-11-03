@@ -48,6 +48,7 @@ class SILLY_DLL SafeMode
             "auto-clicker",
             "frame-stepper",
             "hitbox-multiplier",
+            "legacy-upside-down",
         };
 
         static SafeMode* get();

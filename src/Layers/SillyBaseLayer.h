@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/TextAlertPopup.hpp>
 #include "../Client/Client.h"
-#include "../Utils/CCBlurLayer.hpp"
+#include "../UI/BlurLayer.hpp"
 #include "../UI/QOLModMenuBG.hpp"
 
 using namespace geode::prelude;
@@ -14,7 +14,7 @@ class SillyBaseLayer : public geode::Popup<>
         CCMenu* baseLayer = nullptr;
         CCMenuItemSpriteExtra* ok = nullptr;
         CCPoint size = CCPointZero;
-        CCBlurLayer* blur = nullptr;
+        BlurLayer* blur = nullptr;
         std::string _title;
         CCLabelBMFont* title;
         bool createWithOK;

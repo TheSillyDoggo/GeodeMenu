@@ -6,9 +6,14 @@
 - Added arrows to reorder labels
 - Added opacity slider to label events
 - Added run info to labels
+- Optimised blur shader
 - Added **Editor Reset Percentage on Save**
 - Added **Hitbox Multiplier**
 - Added **Freeze Attempts**
+- Added **Custom Transition Time**
+- Added **Instant Mirror Portal**
+- Added **Legacy Upside Down Physics**
+- Added **Icon Kit in Pause Menu**
 
 # 1.7.3
 

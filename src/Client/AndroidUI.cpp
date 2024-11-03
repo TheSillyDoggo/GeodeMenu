@@ -1,5 +1,5 @@
 #include "AndroidUI.h"
-#include "../Utils/CCBlurLayer.hpp"
+#include "../UI/BlurLayer.hpp"
 #include "../Utils/LaunchArgs.hpp"
 #include "../Utils/UnspeedhackedAction.hpp"
 #include <Events.hpp>
@@ -18,7 +18,7 @@ bool AndroidUI::setup()
 
     if (Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
     {
-        auto blur = CCBlurLayer::create();
+        auto blur = BlurLayer::create();
         blur->setID("blur-layer");
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));
         this->addChild(blur);
