@@ -9,7 +9,7 @@ class $modify (GameStatsManager)
 {
     void incrementStat(char const* p0, int p1)
     {
-        if (p0 == "2")
+        if (strcmp(p0, "2") == 0)
             return;
 
         GameStatsManager::incrementStat(p0, p1);
