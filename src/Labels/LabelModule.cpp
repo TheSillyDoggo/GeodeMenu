@@ -89,6 +89,7 @@ matjson::Object LabelModule::saveToObject()
     obj["preset"] = presetType;
     obj["cheat_indicator"] = isCheatIndicator;
     obj["noclip_only"] = noclipOnly;
+    obj["visible"] = visible;
 
     matjson::Array eventsArr;
     
@@ -140,6 +141,9 @@ LabelModule* LabelModule::createFromObject(matjson::Object obj)
 
     if (obj.contains("noclip_only") && obj["noclip_only"].is_bool())
         mod->noclipOnly = obj["noclip_only"].as_bool();
+
+    if (obj.contains("visible") && obj["visible"].is_bool())
+        mod->visible = obj["visible"].as_bool();
 
     if (obj.contains("events") && obj["events"].is_array())
     {

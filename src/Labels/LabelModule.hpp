@@ -22,6 +22,7 @@ class LabelModule : public Module
         bool isCheatIndicator = false;
         bool noclipOnly = false;
         std::vector<LabelEvent> events;
+        bool visible = true;
 
         LabelModule(std::string format, std::string font);
 

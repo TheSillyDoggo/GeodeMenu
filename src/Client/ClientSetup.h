@@ -265,6 +265,9 @@ public:
         bypass->modules.push_back(new Module("Basement Key Bypass", "basement-key-bypass", "Allows you to unlock the keys in the monsters basement"));
 
         bypass->modules.push_back(new Module("Treasure Room Chest Bypass", "chest-unlock-bypass", "Allows you to open any chest in the <cc>treasure room</c>"));
+        bypass->modules.push_back(new Module("Unlock All Gauntlets", "unlock-gauntlets", "Allows you to open any level in the gauntlet"));
+
+        bypass->modules.push_back(new Module("December Menu Snow", "december-snow", "Shows snow on the main menu during <cc>december</c>.", true));
         
         Client::instance->windows.push_back(bypass);
 
@@ -550,6 +553,9 @@ public:
         #ifndef QOLMOD_ALL_MODES_PLATFORMER
         Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>.");
         #endif
+
+        if (!Loader::get()->getInstalledMod("geode.node-ids") || !Loader::get()->getInstalledMod("geode.node-ids")->isEnabled())
+            Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be installed!");
     }
 
 #pragma endregion

@@ -1,33 +1,18 @@
 #include <Geode/Geode.hpp>
-#include <Geode/modify/GameStatsManager.hpp>
-#include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/EditorPauseLayer.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
 
-class $modify (GameStatsManager)
+class $modify (EditorPauseLayer)
 {
-    void incrementStat(char const* p0, int p1)
+    void saveLevel()
     {
-        if (p0 == "2")
-            return;
+        if (LevelEditorLayer::get()->m_level->m_levelType == GJLevelType::Editor)
+            LevelEditorLayer::get()->m_level->m_normalPercent = 0;
 
-        GameStatsManager::incrementStat(p0, p1);
+        EditorPauseLayer::saveLevel();
     }
 
-    QOLMOD_MOD_ALL_HOOKS("freeze-attempts")
-};
-
-class $modify (PlayLayer)
-{
-    void resetLevel()
-    {
-        auto atts = m_level->m_attempts;
-
-        PlayLayer::resetLevel();
-
-        m_level->m_attempts = atts;
-    }
-
-    QOLMOD_MOD_ALL_HOOKS("freeze-attempts")
+    QOLMOD_MOD_ALL_HOOKS("reset-percentage-on-save")
 };

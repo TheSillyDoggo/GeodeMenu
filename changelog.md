@@ -4,9 +4,11 @@
 - Improved Show Touches to show the touch trail and not disappear early
 - Fixed Frame Stepper not stepping correctly with tps bypass enabled
 - Added arrows to reorder labels
+- Added toggles to hide labels
 - Added opacity slider to label events
 - Added run info to labels
-- Optimised blur shader
+- Fixed Unlock Buttons ungreyscaling some wrong buttons
+- Optimised blur background
 - Added **Editor Reset Percentage on Save**
 - Added **Hitbox Multiplier**
 - Added **Freeze Attempts**
@@ -14,6 +16,7 @@
 - Added **Instant Mirror Portal**
 - Added **Legacy Upside Down Physics**
 - Added **Icon Kit in Pause Menu**
+- Added **Unlock Gauntlets**
 
 # 1.7.3
 

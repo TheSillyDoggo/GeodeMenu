@@ -1,7 +1,9 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCSpriteGrayscale.hpp>
-#include <Geode/modify/CCSpriteWithHue.hpp>
+#include <Geode/modify/CreatorLayer.hpp>
 #include "../Client/Client.h"
+
+bool __creatorlayer__init__ = false;
 
 class $modify(CCSpriteGrayscale)
 {
@@ -9,7 +11,7 @@ class $modify(CCSpriteGrayscale)
     {
         auto res = CCSpriteGrayscale::createWithSpriteFrameName(spr);
 
-        if (spr == "GJ_rewardBtn_001.png")
+        if (!__creatorlayer__init__)
             return res;
 
         auto spr2 = CCSprite::createWithSpriteFrameName(spr.c_str());
@@ -44,5 +46,19 @@ class $modify(CCSpriteGrayscale)
                 }
             }
         });
+    }
+};
+
+class $modify (CreatorLayer)
+{
+    virtual bool init()
+    {
+        __creatorlayer__init__ = true;
+
+        auto ret = CreatorLayer::init();
+
+        __creatorlayer__init__ = false;
+
+        return ret;
     }
 };

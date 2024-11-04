@@ -37,7 +37,8 @@ void Speedhack::sliderChanged(CCObject* sender) {
     SpeedhackTop::instance->onChange();
 }
 
-void Speedhack::onPreset(CCObject* sender) {
+void Speedhack::onPreset(CCObject* sender)
+{
     float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).value();
 
     SpeedhackTop::instance->text = as<CCNode*>(sender)->getID();
@@ -49,7 +50,8 @@ void Speedhack::onPreset(CCObject* sender) {
     SpeedhackTop::instance->onChange();
 }
 
-void Speedhack::cocosCreate(CCMenu* menu) {
+void Speedhack::cocosCreate(CCMenu* menu)
+{
     float v = 1.0f;
 
     auto x = numFromString<float>(SpeedhackTop::instance->text);
@@ -101,8 +103,8 @@ void Speedhack::cocosCreate(CCMenu* menu) {
     presetMenu->setScale(0.41f);
     presetMenu->setAnchorPoint(ccp(0.5f, 0.5f));
     presetMenu->setPosition(menu->getContentWidth() / 2, 13);
-    presetMenu->setContentWidth(6969);
-    presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(false));
+    presetMenu->setContentWidth(800);
+    presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(true));
 
     for (auto preset : presets)
     {
@@ -111,21 +113,25 @@ void Speedhack::cocosCreate(CCMenu* menu) {
         act->setID(numToString(preset, 2));
 
         presetMenu->addChild(act);
-    }           
+    }
+
+    auto btn = ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png");
+    auto act = CCMenuItemSpriteExtra::create(btn, menu, menu_selector(Speedhack::onPreset));
+    act->setID("+");
+
+    // presetMenu->addChild(act);
 
     presetMenu->updateLayout();
     menu->addChild(presetMenu);
 }
 
-void Speedhack::textChanged(CCTextInputNode* p0) {
+void Speedhack::textChanged(CCTextInputNode* p0)
+{
     SpeedhackTop::instance->text = p0->getString();
 
     float v = 1.0f;
 
-    if (SpeedhackTop::instance->text.size() != 0 && !SpeedhackTop::instance->text.ends_with("."))
-    {
-        v = std::stof(SpeedhackTop::instance->text);
-    }
+    v = numFromString<float>(p0->getString()).unwrapOr(v);
 
     if (v < 0.01f)
         v = 0.01f;

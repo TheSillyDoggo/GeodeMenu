@@ -141,7 +141,7 @@ void LabelNode::update(float dt)
 
     this->setScale(mod->getScale() * 0.5f * (32.5f / fontHeight));
 
-    this->setVisible(mod->noclipOnly ? Client::GetModuleEnabled("noclip") : true);
+    this->setVisible(mod->noclipOnly ? Client::GetModuleEnabled("noclip") && mod->visible : mod->visible);
 
     if (getChildrenCount() == 1 && res2 == ".")
     {

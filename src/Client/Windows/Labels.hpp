@@ -39,4 +39,5 @@ class Labels : public Window
         void onSetupSafeZone(CCObject* sender);
         void onMoveLabelUp(CCObject* sender);
         void onMoveLabelDown(CCObject* sender);
+        void onToggleVisible(CCObject* sender);
 };

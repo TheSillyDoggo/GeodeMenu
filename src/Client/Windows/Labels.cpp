@@ -234,6 +234,17 @@ void Labels::onMoveLabelDown(CCObject* sender)
         LabelLayer::get()->updateLabels();
 }
 
+void Labels::onToggleVisible(CCObject* sender)
+{
+    auto mod = as<LabelModule*>(as<CCNode*>(sender)->getUserData());
+
+    mod->visible = !mod->visible;
+    save();
+
+    if (LabelLayer::get())
+        LabelLayer::get()->updateLabels();
+}
+
 void Labels::refreshList()
 {
     if (scroll)
@@ -274,7 +285,7 @@ void Labels::refreshList()
             auto name = CCLabelBMFont::create(module->name.c_str(), "bigFont.fnt");
             name->setAnchorPoint(ccp(0, 0.5f));
             name->setPosition(ccp(10, cell->getContentHeight() / 2));
-            name->limitLabelWidth(120, 0.4f, 0);
+            name->limitLabelWidth(95, 0.4f, 0);
 
             auto m = CCMenu::create();
             m->setPosition(ccp(0, 0));
@@ -343,11 +354,24 @@ void Labels::refreshList()
                 moveDown->setPosition(arrowBack->getPosition() + ccp(-GAP_ARROWS_BOTH, 0));
             }
 
+            auto toggleBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(Labels::onToggleVisible), 0.45f);
+            toggleBtn->setUserData(module);
+            toggleBtn->toggle(lbl->visible);
+            toggleBtn->setPosition(arrowBack->getPosition() + ccp(-arrowBack->getScaledContentWidth() / 2, 0) + ccp(-12, 0));
+
+            auto toggleBG = CCScale9Sprite::create("square02_small.png");
+            toggleBG->setOpacity(100);
+            toggleBG->setContentSize(ccp(18, 18) * 3);
+            toggleBG->setScale(1.0f / 3.0f);
+            toggleBG->setPosition(toggleBtn->getPosition());
+
             m->addChild(options);
             m->addChild(deleteBtn);
             m->addChild(arrowBack);
             m->addChild(moveUp);
             m->addChild(moveDown);
+            m->addChild(toggleBG);
+            m->addChild(toggleBtn);
 
             cell->addChild(bg);
             cell->addChild(name);
