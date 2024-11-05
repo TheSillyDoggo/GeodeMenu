@@ -554,6 +554,8 @@ public:
         Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>.");
         #endif
 
+        Client::GetModule("menu-bg-blur")->setIncompatible("Blur BG is temporarily disabled because i broke it :(.");
+
         if (!Loader::get()->getInstalledMod("geode.node-ids") || !Loader::get()->getInstalledMod("geode.node-ids")->isEnabled())
             Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be installed!");
     }

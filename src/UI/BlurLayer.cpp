@@ -6,6 +6,8 @@ bool BlurLayer::init()
     if (!CCLayerColor::init())
         return false;
 
+    return true;
+
     rtex = CCRenderTexture::create(569, 320);
     node = CCNode::create();
     this->addChild(node);
@@ -92,11 +94,15 @@ bool BlurLayer::init()
 
 BlurLayer::~BlurLayer()
 {
+    return;
+
     std::erase(instances, this);
 }
 
 void BlurLayer::visit()
 {
+    return;
+
     CCLayerColor::visit();
 }
 
@@ -105,6 +111,8 @@ BlurLayer* __blurlayer__being__drawn__ = nullptr;
 
 void BlurLayer::draw()
 {
+    return;
+
     if (this != instances[instances.size() - 1])
         return;
 

@@ -8,7 +8,7 @@
 - Added opacity slider to label events
 - Added run info to labels
 - Fixed Unlock Buttons ungreyscaling some wrong buttons
-- Optimised blur background
+- Temporarily disabled blur bg because i broke it :broken_heart:
 - Added **Editor Reset Percentage on Save**
 - Added **Hitbox Multiplier**
 - Added **Freeze Attempts**
