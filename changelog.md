@@ -17,6 +17,7 @@
 - Added **Legacy Upside Down Physics**
 - Added **Icon Kit in Pause Menu**
 - Added **Unlock Gauntlets**
+- Added **End Screen Cheat Indicator**
 
 # 1.7.3
 

@@ -268,7 +268,7 @@ public:
         bypass->modules.push_back(new Module("Unlock All Gauntlets", "unlock-gauntlets", "Allows you to open any level in the gauntlet"));
 
         bypass->modules.push_back(new Module("December Menu Snow", "december-snow", "Shows snow on the main menu during <cc>december</c>.", true));
-        
+        bypass->modules.push_back(new Module("End Screen Cheat Indicator", "end-screen-cheat-indicator", "Shows the cheat indicator on the <cc>end screen</c>.", true));
         Client::instance->windows.push_back(bypass);
 
         auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
