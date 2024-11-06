@@ -12,15 +12,15 @@ class ConfirmFLAlertLayer : public FLAlertLayer
             if (!FLAlertLayer::init(delegate, title, desc, btn1, btn2, width, scroll, height, textScale))
                 return false;
 
-            auto l = getChildOfType<CCLayer>(this, 0);
-            auto menu = getChildOfType<CCMenu>(l, 0);
-            auto bg = getChildOfType<CCScale9Sprite>(l, 0);
+            auto l = this->getChildByType<CCLayer>(0);
+            auto menu = l->getChildByType<CCMenu>(0);
+            auto bg = l->getChildByType<CCScale9Sprite>(0);
 
             float inc = 20;
 
             bg->setContentHeight(bg->getContentHeight() + inc);
-            getChildOfType<CCLabelBMFont>(l, 0)->setPositionY(getChildOfType<CCLabelBMFont>(l, 0)->getPositionY() + inc / 2);
-            getChildOfType<TextArea>(l, 0)->setPositionY(getChildOfType<TextArea>(l, 0)->getPositionY() + inc / 2);
+            l->getChildByType<CCLabelBMFont>(0)->setPositionY(l->getChildByType<CCLabelBMFont>(0)->getPositionY() + inc / 2);
+            l->getChildByType<TextArea>(0)->setPositionY(l->getChildByType<TextArea>(0)->getPositionY() + inc / 2);
             menu->setPositionY(menu->getPositionY() - inc / 2);
 
             auto label = CCLabelBMFont::create(confLabel, "chatFont.fnt");

@@ -22,7 +22,7 @@ void Level::onFix(CCObject*)
 }
 
 void Level::onUnc(CCObject* sender) {
-    if (!(PlayLayer::get() || getChildOfType<LevelInfoLayer>(CCScene::get(), 0)))
+    if (!(PlayLayer::get() || CCScene::get()->getChildByType<LevelInfoLayer>(0)))
         return FLAlertLayer::create("Uncomplete Level", "You must be in a level or on a level page to uncomplete a level", "OK")->show();
     
     auto protocol = new Uncomplete();

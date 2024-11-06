@@ -83,7 +83,7 @@ class $modify (MenuLayer)
         FMODAudioEngine::sharedEngine()->enableMetering();
 
         auto mp = MenuPulse::create();
-        mp->node = getChildOfType<CCSprite>(this, 0);
+        mp->node = this->getChildByType<CCSprite>(0);
 
         this->addChild(mp);
 

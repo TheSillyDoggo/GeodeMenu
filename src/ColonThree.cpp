@@ -48,7 +48,7 @@ class $modify (SecretLayer2)
     {
         bool inp = false;
 
-        if (auto input = getChildOfType<CCTextInputNode>(this, 0))
+        if (auto input = this->getChildByType<CCTextInputNode>(0))
         {
             if (input->getString() != ":3")
                 return SecretLayer2::onSubmit(sender);

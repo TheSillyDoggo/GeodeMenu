@@ -52,20 +52,20 @@ bool LabelEventCell::initWithEvent(LabelEvent* event)
     sliderFadeIn->setAnchorPoint(ccp(0, 0));
     sliderFadeIn->setScale(0.4f);
     sliderFadeIn->setScaleX(0.3f);
-    getChildOfType<CCSprite>(sliderFadeIn->getThumb(), 0)->setScaleX(0.4f / 0.3f);
-    getChildOfType<CCSprite>(sliderFadeIn->getThumb(), 1)->setScaleX(0.4f / 0.3f);
+    sliderFadeIn->getThumb()->getChildByType<CCSprite>(0)->setScaleX(0.4f / 0.3f);
+    sliderFadeIn->getThumb()->getChildByType<CCSprite>(1)->setScaleX(0.4f / 0.3f);
 
     sliderHold->setAnchorPoint(ccp(0, 0));
     sliderHold->setScale(0.4f);
     sliderHold->setScaleX(0.3f);
-    getChildOfType<CCSprite>(sliderHold->getThumb(), 0)->setScaleX(0.4f / 0.3f);
-    getChildOfType<CCSprite>(sliderHold->getThumb(), 1)->setScaleX(0.4f / 0.3f);
+    sliderHold->getThumb()->getChildByType<CCSprite>(0)->setScaleX(0.4f / 0.3f);
+    sliderHold->getThumb()->getChildByType<CCSprite>(1)->setScaleX(0.4f / 0.3f);
 
     sliderFadeOut->setAnchorPoint(ccp(0, 0));
     sliderFadeOut->setScale(0.4f);
     sliderFadeOut->setScaleX(0.3f);
-    getChildOfType<CCSprite>(sliderFadeOut->getThumb(), 0)->setScaleX(0.4f / 0.3f);
-    getChildOfType<CCSprite>(sliderFadeOut->getThumb(), 1)->setScaleX(0.4f / 0.3f);
+    sliderFadeOut->getThumb()->getChildByType<CCSprite>(0)->setScaleX(0.4f / 0.3f);
+    sliderFadeOut->getThumb()->getChildByType<CCSprite>(1)->setScaleX(0.4f / 0.3f);
 
     inputFadeIn = TextInput::create(50, "Time");
     inputHold = TextInput::create(50, "Time");

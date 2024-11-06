@@ -29,7 +29,7 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
 
     if (!icon.empty())
     {
-        if (sprite = CCSprite::createWithSpriteFrameName(icon.c_str()))
+        if (sprite = CCSprite::createWithSpriteFrameName(icon.c_str()); sprite)
         {
             sprite->setZOrder(4);
             this->addChildAtPosition(sprite, Anchor::Center);
@@ -83,49 +83,3 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     if (sprite && std::string(label->getString()).empty())
         as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(CCPointZero);
 }
-
-/*
-auto win = Client::instance->windows[i];
-
-auto selectedBtn = CCScale9Sprite::create("square02b_small.png");
-selectedBtn->setContentSize(ccp(100, 20) / 0.5f);
-selectedBtn->setColor(ccc3(0, 0, 0));
-selectedBtn->setScale(0.5f);
-selectedBtn->setOpacity(100);
-selectedBtn->setID("selected");
-
-auto selectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-selectedLbl->setPosition(selectedBtn->getContentSize() / 2);
-selectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
-selectedLbl->setColor(selectedTab == i ? ccc3(255, 255, 255) : ccc3(150, 150, 150));
-selectedLbl->setOpacity(selectedTab == i ? 255 : 150);
-selectedLbl->setID("name");
-
-if (true) // maybe make a way to turn this off oneday?
-{
-    auto outline = CCScale9Sprite::create("GJ_square07.png");
-    outline->setContentSize(selectedBtn->getContentSize());
-    outline->setPosition(outline->getContentSize() / 2);
-    outline->setVisible(selectedTab == i);
-    outline->setID("outline");
-
-    selectedBtn->addChild(outline);
-    outlines.push_back(outline);
-}
-
-auto unselectedBtn = CCScale9Sprite::create("square02b_small.png");
-unselectedBtn->setContentSize(ccp(100, 20) / 0.5f);
-unselectedBtn->setColor(ccc3(0, 0, 0));
-unselectedBtn->setScale(0.5f);
-unselectedBtn->setOpacity(100);
-unselectedBtn->setID("unselected");
-
-auto unselectedLbl = CCLabelBMFont::create(win->name.c_str(), "bigFont.fnt");
-unselectedLbl->setPosition(unselectedBtn->getContentSize() / 2);
-unselectedLbl->limitLabelWidth(100 / 0.5f, 0.75f, 0.1f);
-unselectedLbl->setColor({200, 200, 200});
-unselectedLbl->setID("name");
-
-selectedBtn->addChild(selectedLbl);
-unselectedBtn->addChild(unselectedLbl);
-*/

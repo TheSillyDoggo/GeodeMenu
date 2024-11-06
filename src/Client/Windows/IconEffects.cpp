@@ -193,7 +193,7 @@ class $modify (GJBaseGameLayer)
 
     static void onModify(auto& self) {
         EffectUI::_hook = self.getHook("GJBaseGameLayer::update").unwrap();
-        self.setHookPriority("GJBaseGameLayer::update", 69420);
+        (void)self.setHookPriority("GJBaseGameLayer::update", 69420);
     }
 };
 
@@ -204,7 +204,7 @@ class $modify (MenuLayer)
         if (EffectUI::getIncompatibleModLoaded())
         {
             EffectUI::_hook->setAutoEnable(false);
-            EffectUI::_hook->disable();
+            (void)EffectUI::_hook->disable();
 
             log::error("Incompatible mod loaded, disabling icon effects");
         }

@@ -49,10 +49,10 @@ class $modify (AppDelegate)
         {
             if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)); l->getChildrenCount() > 0)
             {
-                if (getChildOfType<LevelEditorLayer>(scene, 0))
+                if (scene->getChildByType<LevelEditorLayer>(0))
                     return;
 
-                if (getChildOfType<LoadingLayer>(scene, 0))
+                if (scene->getChildByType<LoadingLayer>(0))
                     return;
 
                 l->sortAllChildren();
@@ -83,10 +83,10 @@ $execute
                 {
                     if (auto l = as<CCLayer*>(scene->getChildren()->objectAtIndex(0)); l->getChildrenCount() > 0)
                     {
-                        if (getChildOfType<LevelEditorLayer>(scene, 0))
+                        if (scene->getChildByType<LevelEditorLayer>(0))
                             return;
 
-                        if (getChildOfType<LoadingLayer>(scene, 0))
+                        if (scene->getChildByType<LoadingLayer>(0))
                             return;
 
                         l->sortAllChildren();

@@ -70,7 +70,7 @@ void updateTPSPatches(bool tpsEnabled)
         for (auto catgirl : patches)
         {
             if (catgirl)
-                Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
+                (void)Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
         }
 
         patches.clear();
@@ -88,7 +88,7 @@ void updateTPSPatches(bool tpsEnabled)
     if (tpsEnabled)
     {
         #ifdef GEODE_IS_WINDOWS
-        auto array = geode::toByteArray<float>(1.0f / tps);
+        auto array = geode::toBytes<float>(1.0f / tps);
 
         //DWORD old_prot;
         //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), PAGE_EXECUTE_READWRITE, &old_prot);

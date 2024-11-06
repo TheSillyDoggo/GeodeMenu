@@ -9,7 +9,7 @@ using namespace geode::prelude;
 class $modify (PlayerObject)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("PlayerObject::playDeathEffect", -6969);
+        (void)self.setHookPriority("PlayerObject::playDeathEffect", -6969);
     }
 
     void playDeathEffect()

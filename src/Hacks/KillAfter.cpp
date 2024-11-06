@@ -30,7 +30,7 @@ class $modify (PlayLayer)
             if (m_player1->m_isPlatformer)
             {
                 if (!m_fields->time)
-                    m_fields->time = getChildOfType<CCLabelBMFont>(this, 1);
+                    m_fields->time = this->getChildByType<CCLabelBMFont>(1);
 
                 auto x = utils::numFromString<float>(m_fields->time->getString());
 

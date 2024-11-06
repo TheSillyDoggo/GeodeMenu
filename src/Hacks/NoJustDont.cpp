@@ -35,7 +35,7 @@ class $modify (EndLevelLayer)
         Loader::get()->queueInMainThread([this] {
             m_mainLayer->sortAllChildren();
 
-            auto spr = getChildOfType<CCSprite>(m_mainLayer, -1);
+            auto spr = m_mainLayer->getChildByType<CCSprite>(-1);
 
             if (spr)
                 spr->setFlipX(false);

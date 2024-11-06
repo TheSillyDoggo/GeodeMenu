@@ -138,6 +138,6 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
         dot->setColor(getColour());
         menu->addChild(dot);
 
-        getChildOfType<CCLayer>(this, 0)->addChild(menu);
+        getChildByType<CCLayer>(this, 0)->addChild(menu);
     }
 };*/

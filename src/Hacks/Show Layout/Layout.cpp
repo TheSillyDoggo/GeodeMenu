@@ -174,9 +174,9 @@ bool LayoutPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
     for (auto hook : showLayoutHooks)
     {
         if (Client::GetModuleEnabled("show-layout"))
-            hook->enable();
+            (void)hook->enable();
         else
-            hook->disable();
+            (void)hook->disable();
     }
 
     m_fields->node = NonRemovableNode::create();

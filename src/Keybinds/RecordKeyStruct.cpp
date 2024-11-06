@@ -55,9 +55,9 @@ bool RecordKeyStruct::init(geode::utils::MiniFunction<void(KeyStruct)> obj)
     cmd = CCLabelBMFont::create("Command", "bigFont.fnt");
     cmd->setScale(0.5f);
 
-    if (auto popup = getChildOfType<CCLayer>(CCScene::get(), 0))
+    if (auto popup = CCScene::get()->getChildByType<CCLayer>(0))
     {
-        if (auto input = getChildOfType<CCTextInputNode>(popup, 0))
+        if (auto input = popup->getChildByType<CCTextInputNode>(0))
             input->onClickTrackNode(false);
     }
 

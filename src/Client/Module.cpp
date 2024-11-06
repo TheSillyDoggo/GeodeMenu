@@ -185,7 +185,7 @@ void Module::addHook(Hook* hook)
         hook->setAutoEnable(false);
 
         if (!enabled)
-            hook->disable();
+            (void)hook->disable();
     }
 }
 
@@ -197,7 +197,7 @@ void Module::addPatch(Patch* patch)
         patch->setAutoEnable(false);
 
         if (!enabled)
-            patch->disable();
+            (void)patch->disable();
     }
 }
 

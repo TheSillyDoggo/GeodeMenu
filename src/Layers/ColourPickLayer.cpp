@@ -23,7 +23,7 @@ void IconOptionsLayer::onClose(CCObject* sender)
 
 void IconOptionsLayer::updateColor(cocos2d::ccColor4B const& color)
 {
-    if (auto popup = getChildOfType<ColorPickPopup>(CCScene::get(), 0))
+    if (auto popup = getChildByType<ColorPickPopup>(CCScene::get(), 0))
     {
         auto col = ccc3(color.r, color.g, color.b);
 

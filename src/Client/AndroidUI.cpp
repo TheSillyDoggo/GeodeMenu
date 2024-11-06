@@ -304,7 +304,7 @@ void AndroidUI::updateVersionLabel()
 
 void AndroidUI::onUpdate(CCObject*)
 {
-    openInfoPopup(Mod::get()->getID());
+    (void)openInfoPopup(Mod::get()->getID());
 }
 
 CCMenu* AndroidUI::getSearchPanel()
@@ -450,7 +450,7 @@ void AndroidUI::goToPage(int p, bool transition)
 
 void AndroidUI::onClose(CCObject* sender)
 {
-    if (auto pause = getChildOfType<PauseLayer>(CCScene::get(), 0))
+    if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0))
     {
         handleTouchPriority(pause);
     }
@@ -538,7 +538,7 @@ AndroidUI* AndroidUI::create()
 
 AndroidUI* AndroidUI::addToScene()
 {
-    if (auto existing = getChildOfType<AndroidUI>(CCScene::get(), 0))
+    if (auto existing = CCScene::get()->getChildByType<AndroidUI>(0))
         return existing;
 
     auto pRet = AndroidUI::create();

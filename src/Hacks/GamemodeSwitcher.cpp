@@ -54,7 +54,7 @@ $execute
 {
     Loader::get()->queueInMainThread([] {
         Client::GetModule("gamemode-switcher")->onToggle = [](bool enabled){
-            if (auto p = as<SwitchPauseLayer*>(getChildOfType<PauseLayer>(CCScene::get(), 0)))
+            if (auto p = as<SwitchPauseLayer*>(getChildByType<PauseLayer>(CCScene::get(), 0)))
             {
                 if (enabled)
                     p->addNode();

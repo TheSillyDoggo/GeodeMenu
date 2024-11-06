@@ -8,7 +8,7 @@ using namespace geode::prelude;
 class $modify (SecretLayer2)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("SecretLayer2::onDoor", 99999999);
+        (void)self.setHookPriority("SecretLayer2::onDoor", 99999999);
         auto hook = self.getHook("SecretLayer2::onDoor");
         Loader::get()->queueInMainThread([hook]{
             Client::GetModule("basement-bypass")->addHookRaw(hook);

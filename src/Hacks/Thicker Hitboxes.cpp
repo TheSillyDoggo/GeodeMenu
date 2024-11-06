@@ -149,7 +149,7 @@ bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccCol
 }
 
 $execute {
-    Mod::get()->hook(
+    (void)Mod::get()->hook(
         reinterpret_cast<void*>(
             geode::addresser::getNonVirtual(&CCDrawNode::drawPolygon)
         ),

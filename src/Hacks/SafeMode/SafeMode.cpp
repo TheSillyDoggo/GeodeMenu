@@ -238,12 +238,12 @@ void SafeEndLevelLayer::customSetup()
         }
         else
         {
-            if (auto area = getChildOfType<TextArea>(m_mainLayer, -1))
+            if (auto area = m_mainLayer->getChildByType<TextArea>(-1))
             {
                 area->setString("Safe Mode :3");
                 area->setScale(0.7f);
             }
-            else if (auto lbl = getChildOfType<CCLabelBMFont>(m_mainLayer, -1))
+            else if (auto lbl = m_mainLayer->getChildByType<CCLabelBMFont>(-1))
             {
                 lbl->setString("Safe Mode :3");
                 lbl->setScale(0.7f);

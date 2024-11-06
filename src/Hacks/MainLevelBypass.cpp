@@ -31,8 +31,8 @@ class $modify (LevelAreaInnerLayer)
         if (!Client::GetModuleEnabled("tower-level-bypass"))
             return true;
 
-        auto x = getChildOfType<CCNode>(this, 1);
-        auto menu = getChildOfType<CCMenu>(x, 0);
+        auto x = this->getChildByType<CCNode>(1);
+        auto menu = x->getChildByType<CCMenu>(0);
 
         if (menu)
         {

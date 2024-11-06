@@ -143,12 +143,12 @@ void AndroidBall::update(float dt)
 }
 
 #define TYPE_CHECK(__type__) \
-if (getChildOfType<__type__>(getParent(), 0)) \
+if (getParent()->getChildByType<__type__>(0)) \
     return true
 
 bool AndroidBall::editorShouldBeVisible()
 {
-    if (getChildOfType<EditorPauseLayer>(LevelEditorLayer::get(), 0))
+    if (LevelEditorLayer::get()->getChildByType<EditorPauseLayer>(0))
         return true;
 
     TYPE_CHECK(SetupCameraModePopup);
@@ -166,9 +166,9 @@ void AndroidBall::UpdateVisible(bool i)
     bool vis = true;
 
     if (Client::GetModuleEnabled("disable-gp") && this->getParent())
-        vis = !(getChildOfType<PlayLayer>(this->getParent(), 0) && !getChildOfType<PauseLayer>(this->getParent(), 0));
+        vis = !(this->getParent()->getChildByType<PlayLayer>(0) && !this->getParent()->getChildByType<PauseLayer>(0));
 
-    if (Client::GetModuleEnabled("disable-editor") && this->getParent() && getChildOfType<LevelEditorLayer>(this->getParent(), 0))
+    if (Client::GetModuleEnabled("disable-editor") && this->getParent() && this->getParent()->getChildByType<LevelEditorLayer>(0))
         vis = editorShouldBeVisible();
 
     #ifdef GEODE_IS_DESKTOP
@@ -205,7 +205,7 @@ void AndroidBall::UpdateVisible(bool i)
 
     if (PlayLayer::get())
     {
-        if (getChildOfType<PauseLayer>(CCScene::get(), 0))
+        if (CCScene::get()->getChildByType<PauseLayer>(0))
         {
             op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
         }
@@ -216,7 +216,7 @@ void AndroidBall::UpdateVisible(bool i)
     }
     else if (GameManager::sharedState()->m_levelEditorLayer)
     {
-        if (getChildOfType<EditorPauseLayer>(CCScene::get(), 0))
+        if (CCScene::get()->getChildByType<EditorPauseLayer>(0))
         {
             op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
         }
@@ -327,15 +327,15 @@ class $modify (AppDelegate)
         if (!newScene)
             return;
 
-        if (getChildOfType<LoadingLayer>(newScene, 0))
+        if (newScene->getChildByType<LoadingLayer>(0))
             return; // fixes texture ldr
 
-        if (auto ball = getChildOfType<AndroidBall>(newScene, 0))
+        if (auto ball = newScene->getChildByType<AndroidBall>(0))
             ball->removeFromParent();
 
         newScene->addChild(AndroidBall::create());
 
-        if (auto shop = getChildOfType<GJShopLayer>(newScene, 0))
+        if (auto shop = newScene->getChildByType<GJShopLayer>(0))
         {
             cocos::handleTouchPriority(shop);
         }

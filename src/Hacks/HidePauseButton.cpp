@@ -11,7 +11,7 @@ class $modify (UILayer)
         if (!UILayer::init(p0))
             return false;
 
-        if (auto menu = getChildOfType<CCMenu>(this, 0); auto btn = getChildOfType<CCMenuItemSpriteExtra>(menu, 0))
+        if (auto menu = this->getChildByType<CCMenu>(0); auto btn = menu->getChildByType<CCMenuItemSpriteExtra>(0))
         {
             btn->getNormalImage()->setVisible(false);
         }

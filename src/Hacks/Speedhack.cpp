@@ -9,7 +9,7 @@ FMOD::ChannelGroup* masterGroup;
 
 float speedhackLogic(float dt)
 {
-    if (CCScene::get() && getChildOfType<LoadingLayer>(CCScene::get(), 0))
+    if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return dt;
 
     #ifndef GEODE_IS_IOS
@@ -83,7 +83,7 @@ void myUpdate(CCScheduler* ins, float dt)
 }
 
 $execute {
-    Mod::get()->hook(
+    (void)Mod::get()->hook(
         reinterpret_cast<void*>(
             geode::addresser::getVirtual(&CCScheduler::update)
         ),
@@ -109,7 +109,7 @@ FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name,
 }
 
 $execute {
-    Mod::get()->hook(
+    (void)Mod::get()->hook(
         reinterpret_cast<void*>(geode::base::get() + 0x4d4f1c), // address
         &FMOD_System_createChannelGroup, // detour
         "FMOD::System::createChannelGroup", // display name, shows up on the console

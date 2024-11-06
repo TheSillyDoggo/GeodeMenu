@@ -4,7 +4,7 @@ using namespace geode::prelude;
 
 void Speedhack::clear(CCObject* sender) {
     SpeedhackTop::instance->text = "";
-    auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent(), 0);
+    auto inp = static_cast<CCNode*>(sender)->getParent()->getChildByType<TextInput>(0);
     inp->setString("");
     slider->setValue(unscaleValue(1));
 }
@@ -29,7 +29,7 @@ void Speedhack::sliderChanged(CCObject* sender) {
     std::stringstream ss;
     ss << round(scaleValue(v) * 100.0) / 100.0;
 
-    auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent()->getParent()->getParent(), 0);
+    auto inp = static_cast<CCNode*>(sender)->getParent()->getParent()->getParent()->getChildByType<TextInput>(0);
     inp->setString(ss.str().c_str());
     SpeedhackTop::instance->text = ss.str();
 
@@ -42,7 +42,7 @@ void Speedhack::onPreset(CCObject* sender)
     float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).value();
 
     SpeedhackTop::instance->text = as<CCNode*>(sender)->getID();
-    auto inp = getChildOfType<TextInput>(static_cast<CCNode*>(sender)->getParent()->getParent(), 0);
+    auto inp = static_cast<CCNode*>(sender)->getParent()->getParent()->getChildByType<TextInput>(0);
     inp->setString(as<CCNode*>(sender)->getID());
     slider->setValue(unscaleValue(value));
     

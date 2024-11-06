@@ -7,7 +7,7 @@ using namespace geode::prelude;
 class $modify (GameStatsManager)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("GameStatsManager::isItemUnlocked", 99999999);
+        (void)self.setHookPriority("GameStatsManager::isItemUnlocked", 99999999);
         auto hook = self.getHook("GameStatsManager::isItemUnlocked");
         Loader::get()->queueInMainThread([hook]{
             Client::GetModule("basement-key-bypass")->addHookRaw(hook);

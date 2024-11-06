@@ -26,7 +26,7 @@ class $modify (PlayLayer)
 
         if (!m_fields->title)
         {
-            m_fields->title = getChildOfType<CCLabelBMFont>(this, 0);
+            m_fields->title = this->getChildByType<CCLabelBMFont>(0);
 
             if (!(std::string(m_fields->title->getString())).ends_with("%"))
                 m_fields->title = nullptr;

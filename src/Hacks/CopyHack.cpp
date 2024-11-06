@@ -73,13 +73,13 @@ class $modify (ShowPasswordLayer, NumberInputLayer)
         if (!Client::GetModuleEnabled("show-password"))
             return true;
 
-        if (auto l = getChildOfType<LevelInfoLayer>(CCScene::get(), 0))
+        if (auto l = CCScene::get()->getChildByType<LevelInfoLayer>(0))
         {
             auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(ShowPasswordLayer::onShowPassword));
             btn->setTag(l->m_level->m_password.value());
             btn->setPosition(ccp(119, 117));
 
-            getChildOfType<CCMenu>(m_mainLayer, 0)->addChild(btn);
+            m_mainLayer->getChildByType<CCMenu>(0)->addChild(btn);
         }
 
         return true;

@@ -20,7 +20,7 @@ class $modify (GJBaseGameLayer)
     static void onModify(auto& self)
     {
         auto hook = self.getHook("GJBaseGameLayer::update");
-        self.setHookPriority("GJBaseGameLayer::update", 9999999999);
+        (void)self.setHookPriority("GJBaseGameLayer::update", 99999999);
 
         Loader::get()->queueInMainThread([hook]
         {

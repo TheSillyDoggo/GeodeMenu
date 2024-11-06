@@ -54,7 +54,7 @@ class $modify (QOLModTouchDispatcher, CCTouchDispatcher)
 {
     static void onModify(auto& self)
     {
-        self.setHookPriority("cocos2d::CCTouchDispatcher::touches", -99999999);
+        (void)self.setHookPriority("cocos2d::CCTouchDispatcher::touches", -99999999);
     }
 
     void touches(CCSet* touches, CCEvent* event, unsigned int type);

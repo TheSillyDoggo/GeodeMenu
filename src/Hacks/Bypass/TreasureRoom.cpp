@@ -7,7 +7,7 @@ using namespace geode::prelude;
 class $modify (CreatorLayer)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("CreatorLayer::onTreasureRoom", 99999999);
+        (void)self.setHookPriority("CreatorLayer::onTreasureRoom", 99999999);
         auto hook = self.getHook("CreatorLayer::onTreasureRoom");
         Loader::get()->queueInMainThread([hook]{
             Client::GetModule("treasure-room-bypass")->addHookRaw(hook);

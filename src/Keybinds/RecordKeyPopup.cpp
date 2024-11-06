@@ -39,9 +39,9 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
     text2->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(0, -10));
     this->addChild(text2);
 
-    if (auto popup = getChildOfType<CCLayer>(CCScene::get(), 0))
+    if (auto popup = CCScene::get()->getChildByType<CCLayer>(0))
     {
-        if (auto input = getChildOfType<CCTextInputNode>(popup, 0))
+        if (auto input = popup->getChildByType<CCTextInputNode>(0))
             input->onClickTrackNode(false);
     }
 

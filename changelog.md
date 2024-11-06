@@ -1,3 +1,7 @@
+# 1.7.5
+
+- Fixed best run not working
+
 # 1.7.4
 
 - Fixed UI Button being really hard to hit when speedhack is really high

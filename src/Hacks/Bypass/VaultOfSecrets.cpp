@@ -7,7 +7,7 @@ using namespace geode::prelude;
 class $modify (CreatorLayer)
 {
     static void onModify(auto& self) {
-        self.setHookPriority("CreatorLayer::onSecretVault", 99999999);
+        (void)self.setHookPriority("CreatorLayer::onSecretVault", 99999999);
         auto hook = self.getHook("CreatorLayer::onSecretVault");
         Loader::get()->queueInMainThread([hook]{
             Client::GetModule("vault-of-secrets-bypass")->addHookRaw(hook);

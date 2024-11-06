@@ -32,7 +32,7 @@ class $modify (CCKeyboardDispatcher)
         if (!CCScene::get())
             return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, idk);
 
-        if (!getChildOfType<LoadingLayer>(CCScene::get(), 0) && !getChildOfType<RecordKeyPopup>(CCScene::get(), 0))
+        if (!CCScene::get()->getChildByType<LoadingLayer>(0) && !CCScene::get()->getChildByType<RecordKeyPopup>(0))
         {
             bool v = false;
 
@@ -57,7 +57,7 @@ class $modify (CCKeyboardDispatcher)
                 {
                     PlatformToolbox::showCursor();
 
-                    if (auto ui = getChildOfType<AndroidUI>(CCScene::get(), 0))
+                    if (auto ui = CCScene::get()->getChildByType<AndroidUI>(0))
                     {
                         ui->onClose(nullptr);
 
@@ -71,7 +71,7 @@ class $modify (CCKeyboardDispatcher)
                 }
             }
 
-            if (!getChildOfType<AndroidUI>(CCScene::get(), 0))
+            if (!CCScene::get()->getChildByType<AndroidUI>(0))
             {
                 if (Client::get()->handleKeybinds(key, down, idk))
                     return false;

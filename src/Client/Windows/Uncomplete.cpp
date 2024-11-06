@@ -12,8 +12,8 @@ void Uncomplete::FLAlert_Clicked(FLAlertLayer* p0, bool p1) {
         if (PlayLayer::get())
             level = PlayLayer::get()->m_level;
 
-        if (getChildOfType<LevelInfoLayer>(CCScene::get(), 0))
-            level = getChildOfType<LevelInfoLayer>(CCScene::get(), 0)->m_level;
+        if (CCScene::get()->getChildByType<LevelInfoLayer>(0))
+            level = CCScene::get()->getChildByType<LevelInfoLayer>(0)->m_level;
 
         if (!level)
             return;

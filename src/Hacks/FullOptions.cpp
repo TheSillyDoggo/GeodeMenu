@@ -17,7 +17,7 @@ class $modify (OptionsLayerExt, OptionsLayer)
     {
         ignore = true;
 
-        if (auto pause = getChildOfType<PauseLayer>(CCScene::get(), 0))
+        if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0))
         {
             pause->onSettings(sender);
         }
@@ -35,7 +35,7 @@ class $modify (OptionsLayerExt, OptionsLayer)
         auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
         btn->setID("normal-settings-btn"_spr);
 
-        if (auto m = getChildOfType<CCMenu>(m_mainLayer, -2))
+        if (auto m = m_mainLayer->getChildByType<CCMenu>(-2))
         {
             btn->setPosition(ccp(18, -50));
 
