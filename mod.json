@@ -2,9 +2,9 @@
 	"geode": "3.9.0",
 	"version": "v1.7.5",
 	"gd": {
-		"win": "2.206",
+		"win": "2.207",
 		"android": "2.206",
-		"mac": "2.206",
+		"mac": "2.207",
 		"ios": "2.206"
 	},
 	"early-load": true,
