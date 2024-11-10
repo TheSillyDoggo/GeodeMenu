@@ -26,7 +26,7 @@ class $modify (GJBaseGameLayer)
                 seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            *(int*)((char*)geode::base::get() + 0x687dd0) = seed;
+            *(int*)((char*)geode::base::get() + 0x6a4e20) = seed;
             #else
             GameToolbox::fast_srand(seed);
             #endif
@@ -53,7 +53,7 @@ class $modify (PlayLayer)
                 seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            *(int*)((char*)geode::base::get() + 0x687dd0) = seed;
+            *(int*)((char*)geode::base::get() + 0x6a4e20) = seed;
             #else
             GameToolbox::fast_srand(seed);
             #endif

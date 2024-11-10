@@ -12,7 +12,7 @@ using namespace geode::prelude;
 class ChooseFontPopup : public SillyBaseLayer
 {
     public:
-        MiniFunction<void(std::string)> callback; // callback is run whenever the value is changed by the user
+        std::function<void(std::string)> callback; // callback is run whenever the value is changed by the user
         int selectedIndex = 0;
         std::vector<CCMenuItemToggler*> toggles;
 
@@ -23,6 +23,6 @@ class ChooseFontPopup : public SillyBaseLayer
 
         virtual void customSetup();
 
-        static ChooseFontPopup* create(MiniFunction<void(std::string)> callback);
-        static ChooseFontPopup* addToScene(MiniFunction<void(std::string)> callback);
+        static ChooseFontPopup* create(std::function<void(std::string)> callback);
+        static ChooseFontPopup* addToScene(std::function<void(std::string)> callback);
 };

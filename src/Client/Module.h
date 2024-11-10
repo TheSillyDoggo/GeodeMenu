@@ -56,7 +56,7 @@ class Module : public UIComponent
 
         bool mouseHeldDown = false;
 
-        geode::utils::MiniFunction<void(bool)> onToggle;
+        std::function<void(bool)> onToggle;
         ModuleChangeDelegate* delegate = nullptr;
 
         CCSize optionSizeForce = CCSizeZero;

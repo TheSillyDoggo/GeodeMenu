@@ -92,7 +92,7 @@ void updateTPSPatches(bool tpsEnabled)
 
         //DWORD old_prot;
         //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), PAGE_EXECUTE_READWRITE, &old_prot);
-        patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array));
+        patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x606f98), array));
         //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), old_prot, &old_prot);
         #endif
 

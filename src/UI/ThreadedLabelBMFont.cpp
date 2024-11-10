@@ -1,6 +1,6 @@
 #include "ThreadedLabelBMFont.hpp"
 
-bool ThreadedLabelBMFont::init(std::string text, std::string font, MiniFunction<void(ThreadedLabelBMFont*)> callback)
+bool ThreadedLabelBMFont::init(std::string text, std::string font, std::function<void(ThreadedLabelBMFont*)> callback)
 {
     if (!CCNode::init())
         return false;
@@ -89,7 +89,7 @@ std::string ThreadedLabelBMFont::getFont()
     return font;
 }
 
-ThreadedLabelBMFont* ThreadedLabelBMFont::create(std::string text, std::string font, MiniFunction<void(ThreadedLabelBMFont*)> callback)
+ThreadedLabelBMFont* ThreadedLabelBMFont::create(std::string text, std::string font, std::function<void(ThreadedLabelBMFont*)> callback)
 {
     auto pRet = new ThreadedLabelBMFont();
 

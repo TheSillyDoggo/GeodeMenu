@@ -3,7 +3,7 @@
 #include "../UI/BlurLayer.hpp"
 #include "../Client/Client.h"
 
-bool RecordKeyStruct::init(geode::utils::MiniFunction<void(KeyStruct)> obj)
+bool RecordKeyStruct::init(std::function<void(KeyStruct)> obj)
 {
     if (!CCLayerColor::init())
         return false;
@@ -129,7 +129,7 @@ void RecordKeyStruct::update(float dt)
     cmd->setColor(CCKeyboardDispatcher::get()->getCommandKeyPressed() ? ccc3(255, 255, 255) : ccc3(150, 150, 150));
 }
 
-RecordKeyStruct* RecordKeyStruct::create(geode::utils::MiniFunction<void(KeyStruct)> obj)
+RecordKeyStruct* RecordKeyStruct::create(std::function<void(KeyStruct)> obj)
 {
     auto pRet = new RecordKeyStruct();
 

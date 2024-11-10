@@ -173,6 +173,7 @@ class $modify (InputScaleControl, GJScaleControl)
         m_fields->scaleXYInput->setString(fmt::format("{:.2f}", m_valueX > m_valueY ? m_valueY : m_valueX));
     }
 
+    /*
     void updateLabelX(float p0)
     {
         GJScaleControl::updateLabelX(p0);
@@ -192,7 +193,7 @@ class $modify (InputScaleControl, GJScaleControl)
 
         m_fields->scaleYInput->setString(fmt::format("{:.2f}", p0));
     }
-
+    
     void updateLabelXY(float p0)
     {
         GJScaleControl::updateLabelXY(p0);
@@ -202,6 +203,7 @@ class $modify (InputScaleControl, GJScaleControl)
 
         m_fields->scaleXYInput->setString(fmt::format("{:.2f}", p0));
     }
+    */
 
     virtual bool init()
     {

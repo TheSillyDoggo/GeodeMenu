@@ -120,7 +120,7 @@ void ChooseFontPopup::onSelect(CCObject* sender)
         callback(as<CCNode*>(sender)->getID());
 }
 
-ChooseFontPopup* ChooseFontPopup::create(geode::utils::MiniFunction<void(std::string)> callback)
+ChooseFontPopup* ChooseFontPopup::create(std::function<void(std::string)> callback)
 {
     auto pRet = new ChooseFontPopup();
 
@@ -136,7 +136,7 @@ ChooseFontPopup* ChooseFontPopup::create(geode::utils::MiniFunction<void(std::st
     return nullptr;
 }
 
-ChooseFontPopup* ChooseFontPopup::addToScene(geode::utils::MiniFunction<void(std::string)> callback)
+ChooseFontPopup* ChooseFontPopup::addToScene(std::function<void(std::string)> callback)
 {
     auto pRet = ChooseFontPopup::create(callback);
 

@@ -2,6 +2,8 @@
 
 void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
 {
+    return;
+
     auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
@@ -161,6 +163,6 @@ SetValueModule::SetValueModule(std::string name, std::string id)
     this->id = id;
 }
 
-void SetValueModule::save() {}
+void SetValueModule::save() { }
 
 void SetValueModule::load() { }

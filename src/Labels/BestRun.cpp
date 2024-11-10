@@ -31,7 +31,7 @@ void BestPlayLayer::resetLevel()
 
 void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
 {
-    if (p1 == m_unk3688)
+    if (p1 == m_anticheatSpike)
         return PlayLayer::destroyPlayer(p0, p1);
 
     m_fields->toPercent = getCurrentPercent();

@@ -12,8 +12,8 @@ $execute
     std::vector<geode::Patch*> patches = {};
 
     #ifdef GEODE_IS_WINDOWS
-    patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ed33c), { 0xFF, 0xFF, 0xFF, 0xFF }));
-    patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x5ed340), { 0xFF, 0xFF, 0xFF, 0xFF }));
+    patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x607c30), { 0xFF, 0xFF, 0xFF, 0xFF }));
+    patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x607c34), { 0xFF, 0xFF, 0xFF, 0xFF }));
     #endif
 
     #ifdef GEODE_IS_ANDROID32

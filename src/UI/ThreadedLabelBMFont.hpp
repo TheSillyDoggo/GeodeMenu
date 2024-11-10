@@ -10,7 +10,7 @@ class ThreadedLabelBMFont : public CCNode
         CCLabelBMFont* label;
         std::string text;
         std::string font;
-        MiniFunction<void(ThreadedLabelBMFont*)> callback;
+        std::function<void(ThreadedLabelBMFont*)> callback;
 
         static inline std::vector<ThreadedLabelBMFont*> labels = {};
 
@@ -21,8 +21,8 @@ class ThreadedLabelBMFont : public CCNode
         CCLabelBMFont* getLabel();
         std::string getFont();
 
-        bool init(std::string text, std::string font, MiniFunction<void(ThreadedLabelBMFont*)> callback);
+        bool init(std::string text, std::string font, std::function<void(ThreadedLabelBMFont*)> callback);
 
         // Callback is always run on main thread
-        static ThreadedLabelBMFont* create(std::string text, std::string font, MiniFunction<void(ThreadedLabelBMFont*)> callback = nullptr);
+        static ThreadedLabelBMFont* create(std::string text, std::string font, std::function<void(ThreadedLabelBMFont*)> callback = nullptr);
 };

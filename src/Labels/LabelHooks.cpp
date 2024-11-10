@@ -54,7 +54,7 @@ void LabelBaseGameLayer::handleButton(bool down, int button, bool isPlayer1)
 
 void LabelPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
 {
-    if (p1 != m_unk3688)
+    if (p1 != m_anticheatSpike)
         as<LabelsUILayer*>(m_uiLayer)->m_fields->labelLayer->setLastPercentage(getCurrentPercent());
 
     PlayLayer::destroyPlayer(p0, p1);

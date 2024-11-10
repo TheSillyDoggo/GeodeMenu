@@ -224,6 +224,11 @@ void SafeEndLevelLayer::customSetup()
             }
         }
 
+        for (auto coin : CCArrayExt<CCNode*>(m_coinsToAnimate))
+        {
+            coin->setVisible(false);
+        }
+
         if (hasHiddenCoin)
         {
             auto lbl = CCLabelBMFont::create("Safe Mode :3", "bigFont.fnt");
