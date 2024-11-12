@@ -128,7 +128,7 @@ void SteppedUILayer::onTogglePaused(CCObject*)
         fields->paused = !fields->paused;
 
         if (fields->paused)
-            FMODAudioEngine::get()->pauseAllMusic();
+            FMODAudioEngine::get()->pauseAllMusic(true);
         else
             FMODAudioEngine::get()->resumeAllMusic();
     }

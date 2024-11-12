@@ -168,8 +168,7 @@ bool AndroidUI::setup()
     versionInfo->setScale(0.55f);
     versionInfo->setOpacity(125);
 
-    checkingSprite = LoadingCircleSprite::create();
-    checkingSprite->runAction(CCRepeatForever::create(CCRotateBy::create(1, 360)));
+    checkingSprite = LoadingCircleSprite::create(1);
     checkingSprite->setScale(versionInfo->getScaledContentHeight() / checkingSprite->getContentHeight());
 
     versionParent->addChild(versionInfo);

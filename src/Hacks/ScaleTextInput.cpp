@@ -27,7 +27,7 @@ class $modify (InputScaleControl, GJScaleControl)
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
 
             m_sliderXY->setValue(clamp<float>(wrappedValue, 0, 1));
-            this->sliderChanged(m_sliderXY->m_touchLogic);
+            //this->sliderChanged(m_sliderXY->m_touchLogic);
 
             if (EditorUI::get())
             {
@@ -46,7 +46,7 @@ class $modify (InputScaleControl, GJScaleControl)
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
 
             m_sliderX->setValue(clamp<float>(wrappedValue, 0, 1));
-            this->sliderChanged(m_sliderX->m_touchLogic);
+            //this->sliderChanged(m_sliderX->m_touchLogic);
 
             if (EditorUI::get())
             {
@@ -65,7 +65,7 @@ class $modify (InputScaleControl, GJScaleControl)
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
 
             m_sliderY->setValue(clamp<float>(wrappedValue, 0, 1));
-            this->sliderChanged(m_sliderY->m_touchLogic);
+            //this->sliderChanged(m_sliderY->m_touchLogic);
 
             if (EditorUI::get())
             {

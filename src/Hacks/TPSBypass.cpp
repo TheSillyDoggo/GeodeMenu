@@ -1,6 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
+#include "../Utils/OffsetManager.hpp"
 
 using namespace geode::prelude;
 
@@ -87,34 +88,16 @@ void updateTPSPatches(bool tpsEnabled)
 
     if (tpsEnabled)
     {
-        #ifdef GEODE_IS_WINDOWS
-        auto array = geode::toBytes<float>(1.0f / tps);
+        if (auto offset = OffsetManager::get()->offsetForType(PatchType::PhysicsBypass); offset != 0x80085)
+        {
+            #ifdef GEODE_IS_WINDOWS
+            auto array = geode::toBytes<float>(1.0f / tps);
+            #else
+            auto array = geode::toBytes<double>(1.0f / tps);
+            #endif
 
-        //DWORD old_prot;
-        //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), PAGE_EXECUTE_READWRITE, &old_prot);
-        patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + 0x606f98), array));
-        //VirtualProtect(reinterpret_cast<void*>(geode::base::get() + 0x5ec6d0), array.size(), old_prot, &old_prot);
-        #endif
-
-        #ifdef GEODE_IS_ANDROID32
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x46ce38 - 0x10000)), getBytes<double>(1.0f / tps)).unwrap());
-        #endif
-
-        #ifdef GEODE_IS_ANDROID64
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + (0x9384b8 - 0x100000)), getBytes<double>(1.0f / tps)).unwrap());
-        #endif
-
-        #ifdef GEODE_IS_INTEL_MAC
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x823b00), getBytes<double>(1.0f / tps)).unwrap());
-        #endif
-
-        #ifdef GEODE_IS_ARM_MAC
-        
-        #endif
-        
-        #ifdef GEODE_IS_IOS
-        patches.push_back(Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x642b60), getBytes<double>(1.0f / tps)).unwrap());
-        #endif
+            patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + offset), array));
+        }
     }
 }
 

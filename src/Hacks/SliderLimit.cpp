@@ -43,7 +43,7 @@ class $modify (GJScaleControl)
             float value = scaleFloat(m_sliderXY->getThumb()->getValue(), m_lowerBound, m_upperBound);
 
             updateLabelXY(value);
-            this->sliderChanged(m_sliderXY->getThumb());
+            // this->sliderChanged(m_sliderXY->getThumb());
 
             if (EditorUI::get())
             {

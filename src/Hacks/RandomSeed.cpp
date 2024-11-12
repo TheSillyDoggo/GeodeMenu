@@ -2,6 +2,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include "../Client/Client.h"
+#include "../Utils/OffsetManager.hpp"
 
 using namespace geode::prelude;
 
@@ -26,7 +27,7 @@ class $modify (GJBaseGameLayer)
                 seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            *(int*)((char*)geode::base::get() + 0x6a4e20) = seed;
+            *(int*)((char*)geode::base::get() + OffsetManager::get()->offsetForRandomSeed()) = seed;
             #else
             GameToolbox::fast_srand(seed);
             #endif
@@ -53,7 +54,7 @@ class $modify (PlayLayer)
                 seed = x.value();
 
             #ifdef GEODE_IS_WINDOWS
-            *(int*)((char*)geode::base::get() + 0x6a4e20) = seed;
+            *(int*)((char*)geode::base::get() + OffsetManager::get()->offsetForRandomSeed()) = seed;
             #else
             GameToolbox::fast_srand(seed);
             #endif

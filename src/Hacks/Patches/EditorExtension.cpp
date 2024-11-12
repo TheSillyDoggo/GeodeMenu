@@ -9,6 +9,10 @@ $execute
     // first address is found in CCPoint * EditorUI::getLimitedPosition(EditorUI *this,CCPoi nt *__return,CCPoint param_3)
     // second address is found in void EditorUI::constrainGameLayerPosition(EditorUI *this,fl oat param_2,float param_3)
 
+    // todo: port to 2.207
+
+    static_assert(false, "this fucking sucks btw");
+
     std::vector<geode::Patch*> patches = {};
 
     #ifdef GEODE_IS_WINDOWS

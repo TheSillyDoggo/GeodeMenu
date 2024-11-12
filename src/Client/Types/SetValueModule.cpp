@@ -59,7 +59,7 @@ void SetValueModule::makeAndroid(CCNode* menu, CCPoint pos)
 
 void SetValueModule::onSet(CCObject* sender)
 {
-    auto mod = as<SetValueModule*>(as<CCNode*>(sender)->getUserData());
+    /*auto mod = as<SetValueModule*>(as<CCNode*>(sender)->getUserData());
 
     if (LevelEditorLayer::get() && LevelEditorLayer::get()->m_editorUI && (LevelEditorLayer::get()->m_editorUI->m_selectedObject || LevelEditorLayer::get()->m_editorUI->m_selectedObjects->count() > 0))
     {
@@ -145,7 +145,7 @@ void SetValueModule::onSet(CCObject* sender)
                 }
             }
         }
-    }
+    }*/
 }
 
 void SetValueModule::onScaleToggle(CCObject* sender)
