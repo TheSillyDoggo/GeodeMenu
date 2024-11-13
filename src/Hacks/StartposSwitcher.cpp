@@ -202,6 +202,4 @@ $execute
     Loader::get()->queueInMainThread([] {
         Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
     });
-
-    log::info("asfwer");
 }

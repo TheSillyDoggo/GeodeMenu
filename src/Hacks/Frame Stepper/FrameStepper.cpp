@@ -128,7 +128,17 @@ void SteppedUILayer::onTogglePaused(CCObject*)
         fields->paused = !fields->paused;
 
         if (fields->paused)
+        {
+            #ifdef GEODE_IS_WINDOWS
+            for (auto& [id, channel] : FMODAudioEngine::get()->m_musicChannels) {
+                auto ch = FMODAudioEngine::get()->channelForChannelID(channel.m_channelID);
+                if (ch)
+                    ch->setPaused(true);
+            }
+            #else
             FMODAudioEngine::get()->pauseAllMusic(true);
+            #endif
+        }
         else
             FMODAudioEngine::get()->resumeAllMusic();
     }

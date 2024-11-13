@@ -61,39 +61,40 @@ float speedhackLogic(float dt)
     return dt;
 }
 
-#if (defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
-
 class $modify (CCScheduler)
 {
     virtual void update(float dt)
     {
-        dt = speedhackLogic(dt);
+        if (!masterGroup)
+            FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
+
+        if (!masterGroup || (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0)))
+            return CCScheduler::update(dt);
+
+        ColourUtility::update(dt);
+
+        if (SpeedhackEnabled::instance->enabled)
+        {
+            if (!SpeedhackGameplay::instance->enabled)
+            {
+                dt *= SpeedhackTop::instance->getFloatValue();
+            }
+
+            masterGroup->setPitch((SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? SpeedhackTop::instance->getFloatValue() : 1);
+        }
+        else
+        {
+            masterGroup->setPitch(1);
+        }
 
         CCScheduler::update(dt);
+
+        #ifdef GEODE_IS_WINDOWS
+        CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * SpeedhackTop::instance->getFloatValue());
+        CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * SpeedhackTop::instance->getFloatValue());
+        #endif
     }
 };
-
-#else
-
-void myUpdate(CCScheduler* ins, float dt)
-{
-    dt = speedhackLogic(dt);
-    
-    ins->update(dt);
-}
-
-$execute {
-    (void)Mod::get()->hook(
-        reinterpret_cast<void*>(
-            geode::addresser::getVirtual(&CCScheduler::update)
-        ),
-        &myUpdate,
-        "cocos2d::CCScheduler::update",
-        tulip::hook::TulipConvention::Thiscall
-    );
-}
-
-#endif
 
 #ifdef GEODE_IS_IOS
 

@@ -109,6 +109,4 @@ $execute
             }
         };
     });
-
-    log::info("afrewqfdsaerasd");
 }

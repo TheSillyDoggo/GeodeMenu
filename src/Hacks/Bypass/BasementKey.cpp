@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-class $modify (GameStatsManager)
+/*class $modify (GameStatsManager)
 {
     static void onModify(auto& self) {
         (void)self.setHookPriority("GameStatsManager::isItemUnlocked", 99999999);
@@ -24,4 +24,4 @@ class $modify (GameStatsManager)
 
         return GameStatsManager::isItemUnlocked(p0, p1);
     }
-};
+};*/

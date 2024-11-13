@@ -157,8 +157,6 @@ $execute {
         "cocos2d::CCDrawNode::drawPolygon",
         tulip::hook::TulipConvention::Thiscall
     );
-
-    log::info("penis");
 }
 
 #endif
