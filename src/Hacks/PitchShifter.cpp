@@ -55,6 +55,4 @@ $execute
             updatePitch();
         });
     });
-
-    log::info("g");
 }

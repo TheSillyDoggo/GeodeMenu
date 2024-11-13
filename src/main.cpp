@@ -129,8 +129,6 @@ $execute
     Client::instance = client;
 
     ClientUtils::Setup(android);
-
-    log::info("a");
 }
 
 bool v = false;

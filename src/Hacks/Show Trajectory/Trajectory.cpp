@@ -484,6 +484,4 @@ $execute
             }
         };
     });
-
-    log::info("gsa");
 }

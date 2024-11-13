@@ -26,6 +26,4 @@ $execute
             Client::GetModule("editor-extension")->addPatch(patch);
         }
     });
-
-    log::info("gassg");
 };

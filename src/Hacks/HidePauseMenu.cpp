@@ -27,6 +27,4 @@ $execute
             }
         };
     });
-
-    log::info("d");
 }

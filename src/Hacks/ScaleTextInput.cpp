@@ -238,6 +238,4 @@ $execute
             }
         };
     });
-
-    log::info("asf");
 }
