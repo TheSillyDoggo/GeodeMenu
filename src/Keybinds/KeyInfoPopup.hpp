@@ -1,3 +1,5 @@
+#ifdef QOLMOD_CUSTOM_KEYS_SETTING
+
 #pragma once
 
 #include "../Layers/SillyBaseLayer.h"
@@ -16,3 +18,5 @@ class KeyInfoPopup : public SillyBaseLayer
 
         virtual void customSetup();
 };
+
+#endif

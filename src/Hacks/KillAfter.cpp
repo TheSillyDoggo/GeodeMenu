@@ -34,7 +34,7 @@ class $modify (PlayLayer)
 
                 auto x = utils::numFromString<float>(m_fields->time->getString());
 
-                if (x.isOk() && x.value() > v)
+                if (x.isOk() && x.unwrapOr(0.0f) > v)
                 {
                     this->PlayLayer::destroyPlayer(m_player1, nullptr);
                 }

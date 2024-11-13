@@ -1,3 +1,5 @@
+#ifdef QOLMOD_CUSTOM_KEYS_SETTING
+
 #pragma once
 #include <Geode/Geode.hpp>
 #include <Geode/loader/SettingNode.hpp>
@@ -119,3 +121,5 @@ class SetBindNode : public SettingNode
             return nullptr;
         }
 };
+
+#endif

@@ -230,4 +230,6 @@ $execute
             }
         };
     });
+
+    log::info("fsadfasdsrasdf");
 }

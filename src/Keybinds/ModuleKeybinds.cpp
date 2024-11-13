@@ -1,13 +1,5 @@
 #include "ModuleKeybinds.hpp"
 
-bool KeybindsMenuLayer::init()
-{
-    if (QOLModKeybinds::isKeybindsLoaded() && !QOLModKeybinds::hasSetupKeybinds)
-        QOLModKeybinds::setupKeybinds();
-
-    return MenuLayer::init();
-}
-
 bool QOLModKeybinds::isKeybindsLoaded()
 {
     return Loader::get()->getLoadedMod("geode.custom-keybinds");

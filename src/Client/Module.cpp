@@ -171,7 +171,7 @@ void Module::setIncompatible(std::string str)
 
 void Module::addHookRaw(Result<Hook*> hook)
 {
-    if (!hook.isOk() || !hook.has_value())
+    if (!hook.isOk() || !hook.isOk())
         return log::error("Error adding hook: {}", hook.err());
 
     addHook(hook.unwrapOr(nullptr));
@@ -208,7 +208,7 @@ void Module::disableHooks()
         if (hook)
         {
             auto v = hook->disable();
-            if (v.has_error())
+            if (v.isErr())
             {
                 log::error("Error Disabling hook: {}, {}", hook->getDisplayName(), v.err());
             }
@@ -223,7 +223,7 @@ void Module::enableHooks()
         if (hook)
         {
             auto v = hook->enable();
-            if (v.has_error())
+            if (v.isErr())
             {
                 log::error("Error Enabling hook: {}, {}", hook->getDisplayName(), v.err());
             }
@@ -238,7 +238,7 @@ void Module::disablePatches()
         if (patch)
         {
             auto v = patch->disable();
-            if (v.has_error())
+            if (v.isErr())
             {
                 log::error("Error Disabling patch: {}, {}", patch->getAddress(), v.err());
             }
@@ -253,7 +253,7 @@ void Module::enablePatches()
         if (patch)
         {
             auto v = patch->enable();
-            if (v.has_error())
+            if (v.isErr())
             {
                 log::error("Error Enabling patch: {}, {}", patch->getAddress(), v.err());
             }

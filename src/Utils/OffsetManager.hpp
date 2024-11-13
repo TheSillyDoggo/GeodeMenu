@@ -7,6 +7,8 @@ using namespace geode::prelude;
 enum class PatchType
 {
     PhysicsBypass,
+    EditorExtension1,
+    EditorExtension2,
 };
 
 class OffsetManager

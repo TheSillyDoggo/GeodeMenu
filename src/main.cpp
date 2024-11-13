@@ -1,6 +1,7 @@
 #include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include "Client/AndroidUI.h"
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/modify/CCDictionary.hpp>
 #include "Client/AndroidBall.h"
 #include "Layers/SillyBaseLayer.h"
 
@@ -38,8 +39,12 @@ class $modify (CCKeyboardDispatcher)
 
             std::vector<int> btns = { enumKeyCodes::KEY_Tab, enumKeyCodes::KEY_Insert };
 
+            #ifdef QOLMOD_CUSTOM_KEYS_SETTING
+
             if (SetBindValue::instance)
                 btns = SetBindValue::instance->buttons;
+
+            #endif
 
             for (auto btn : btns)
             {
@@ -110,8 +115,8 @@ void migrateData()
 
     auto res = Mod::get()->loadData();
 
-    if (res.has_error())
-        log::error("Error loading: {}", res.error());
+    if (res.isErr())
+        log::error("Error loading: {}", res.err());
 
     Mod::get()->setSavedValue<bool>("migrated", true);
 }
@@ -124,6 +129,8 @@ $execute
     Client::instance = client;
 
     ClientUtils::Setup(android);
+
+    log::info("a");
 }
 
 bool v = false;

@@ -1,3 +1,5 @@
+#ifdef QOLMOD_CUSTOM_KEYS_SETTING
+
 #include "KeyInfoPopup.hpp"
 
 KeyInfoPopup* KeyInfoPopup::createWithKeyAndBind(int key, SetBindNode* node)
@@ -73,3 +75,5 @@ void KeyInfoPopup::onRemove(CCObject* sender)
         }
     );
 }
+
+#endif

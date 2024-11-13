@@ -247,7 +247,7 @@ void AndroidUI::updateVersionLabel()
         {
             if (auto value = event->getValue())
             {
-                if (value->has_value())
+                if (value->isOk())
                 {
                     updateRequired = value->unwrap().has_value();
                 }

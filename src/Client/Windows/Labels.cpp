@@ -411,15 +411,16 @@ void Labels::save()
     Mod::get()->setSavedValue<float>("safe-zone.width", safeZone.size.width);
     Mod::get()->setSavedValue<float>("safe-zone.height", safeZone.size.height);
 
-    auto arr = matjson::Array{};
+    auto arr = matjson::Value{};
+    arr.array();
 
     for (auto module : modules)
     {
         if (auto lblMod = typeinfo_cast<LabelModule*>(module))
-            arr.push_back(lblMod->saveToObject());
+            arr.asArray().unwrap().push_back(lblMod->saveToObject());
     }
 
-    Mod::get()->setSavedValue<matjson::Array>("selected-labels", arr);
+    Mod::get()->setSavedValue<matjson::Value>("selected-labels", arr);
 }
 
 void Labels::load()
@@ -429,12 +430,15 @@ void Labels::load()
     if (!Mod::get()->hasSavedValue("selected-labels"))
         return loadFromPrevSave();
 
-    auto arr = Mod::get()->getSavedValue<matjson::Array>("selected-labels");
+    auto arr = Mod::get()->getSavedValue<matjson::Value>("selected-labels");
 
-    for (auto obj : arr)
+    if (!arr.isArray())
+        return;
+
+    for (auto obj : arr.asArray().unwrap())
     {
-        if (obj.is_object())
-            modules.push_back(LabelModule::createFromObject(obj.as_object()));
+        if (obj.isObject())
+            modules.push_back(LabelModule::createFromObject(obj));
     }
 }
 

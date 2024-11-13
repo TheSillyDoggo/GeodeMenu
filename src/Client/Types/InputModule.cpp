@@ -115,10 +115,10 @@ void InputModule::updateValue()
 
     floatValue = x.unwrapOr(1);
 
-    x = numFromString<int>(text);
+    auto x2 = numFromString<int>(text);
 
     if (x.isOk())
-        intValue = x.value();
+        intValue = x2.unwrapOr(0);
 
     if (floatValue < 0.01f)
         floatValue = 0.01f;

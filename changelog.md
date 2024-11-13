@@ -1,7 +1,8 @@
-# 1.7.5
+# 1.7.5-beta.1
 
 - Fixed best run not working
-- Ported to **2.2074**
+- Custom open menu keybinds are not supported in this version
+- **Added support for 2.2074**
 
 # 1.7.4
 

@@ -74,9 +74,9 @@ LabelAnchor LabelModule::getSide()
     return side;
 }
 
-matjson::Object LabelModule::saveToObject()
+matjson::Value LabelModule::saveToObject()
 {
-    matjson::Object obj;
+    matjson::Value obj;
 
     obj["display_name"] = this->name;
     obj["format"] = this->format;
@@ -91,11 +91,11 @@ matjson::Object LabelModule::saveToObject()
     obj["noclip_only"] = noclipOnly;
     obj["visible"] = visible;
 
-    matjson::Array eventsArr;
+    matjson::Value eventsArr = obj.array();
     
     for (auto event : events)
     {
-        eventsArr.push_back(event.save());
+        eventsArr.asArray().unwrap().push_back(event.save());
     }
 
     obj["events"] = eventsArr;
@@ -103,57 +103,54 @@ matjson::Object LabelModule::saveToObject()
     return obj;
 }
 
-LabelModule* LabelModule::createFromObject(matjson::Object obj)
+LabelModule* LabelModule::createFromObject(matjson::Value obj)
 {
     auto mod = new LabelModule("", "bigFont.fnt");
 
-    if (obj.contains("display_name") && obj["display_name"].is_string())
-        mod->name = obj["display_name"].as_string();
+    if (obj.contains("display_name") && obj["display_name"].isString())
+        mod->name = obj["display_name"].asString().unwrap();
     else
         mod->name = "Error Loading Label";
 
-    if (obj.contains("format") && obj["format"].is_string())
-        mod->format = obj["format"].as_string();
+    if (obj.contains("format") && obj["format"].isString())
+        mod->format = obj["format"].asString().unwrap();
 
-    if (obj.contains("scale") && obj["scale"].is_number())
-        mod->scale = obj["scale"].as_double();
+    if (obj.contains("scale") && obj["scale"].isNumber())
+        mod->scale = obj["scale"].asDouble().unwrap();
 
-    if (obj.contains("opacity") && obj["opacity"].is_number())
-        mod->opacity = obj["opacity"].as_double();
+    if (obj.contains("opacity") && obj["opacity"].isNumber())
+        mod->opacity = obj["opacity"].asDouble().unwrap();
 
-    if (obj.contains("font") && obj["font"].is_string())
-        mod->font = obj["font"].as_string();
+    if (obj.contains("font") && obj["font"].isString())
+        mod->font = obj["font"].asString().unwrap();
 
-    if (obj.contains("side") && obj["side"].is_number())
-        mod->side = as<LabelAnchor>(obj["side"].as_int());
+    if (obj.contains("side") && obj["side"].isNumber())
+        mod->side = as<LabelAnchor>(obj["side"].asInt().unwrap());
 
-    if (obj.contains("offset.x") && obj["offset.x"].is_number())
-        mod->offset.x = obj["offset.x"].as_double();
+    if (obj.contains("offset.x") && obj["offset.x"].isNumber())
+        mod->offset.x = obj["offset.x"].asDouble().unwrap();
 
-    if (obj.contains("offset.y") && obj["offset.y"].is_number())
-        mod->offset.y = obj["offset.y"].as_double();
+    if (obj.contains("offset.y") && obj["offset.y"].isNumber())
+        mod->offset.y = obj["offset.y"].asDouble().unwrap();
 
-    if (obj.contains("preset") && obj["preset"].is_number())
-        mod->presetType = obj["preset"].as_int();
+    if (obj.contains("preset") && obj["preset"].isNumber())
+        mod->presetType = obj["preset"].asInt().unwrap();
 
-    if (obj.contains("cheat_indicator") && obj["cheat_indicator"].is_bool())
-        mod->isCheatIndicator = obj["cheat_indicator"].as_bool();
+    if (obj.contains("cheat_indicator") && obj["cheat_indicator"].isBool())
+        mod->isCheatIndicator = obj["cheat_indicator"].asBool().unwrap();
 
-    if (obj.contains("noclip_only") && obj["noclip_only"].is_bool())
-        mod->noclipOnly = obj["noclip_only"].as_bool();
+    if (obj.contains("noclip_only") && obj["noclip_only"].isBool())
+        mod->noclipOnly = obj["noclip_only"].asBool().unwrap();
 
-    if (obj.contains("visible") && obj["visible"].is_bool())
-        mod->visible = obj["visible"].as_bool();
+    if (obj.contains("visible") && obj["visible"].isBool())
+        mod->visible = obj["visible"].asBool().unwrap();
 
-    if (obj.contains("events") && obj["events"].is_array())
+    if (obj.contains("events") && obj["events"].isArray())
     {
-        for (auto obj : obj["events"].as_array())
+        for (auto obj : obj["events"].asArray().unwrap())
         {
-            if (!obj.is_object())
-                continue;
-
             LabelEvent event;
-            event.load(obj.as_object());
+            event.load(obj);
 
             mod->events.push_back(event);
         }

@@ -216,4 +216,6 @@ class $modify (MenuLayer)
 $execute
 {
     EffectUI::updateValues();
+
+    log::info("b");
 };

@@ -1,3 +1,5 @@
+#ifdef QOLMOD_CUSTOM_KEYS_SETTING
+
 #include "SetBindSetting.hpp"
 #include "KeyInfoPopup.hpp"
 #include "RecordKeyPopup.hpp"
@@ -133,3 +135,5 @@ $execute
         std::make_unique<SetBindValue>("set-bind", Mod::get()->getID())
     );
 }
+
+#endif

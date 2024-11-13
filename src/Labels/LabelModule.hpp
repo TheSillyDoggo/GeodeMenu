@@ -40,6 +40,6 @@ class LabelModule : public Module
 
         ccColor3B getColour();
 
-        matjson::Object saveToObject();
-        static LabelModule* createFromObject(matjson::Object obj);
+        matjson::Value saveToObject();
+        static LabelModule* createFromObject(matjson::Value obj);
 };

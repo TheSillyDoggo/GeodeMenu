@@ -39,7 +39,7 @@ void Speedhack::sliderChanged(CCObject* sender) {
 
 void Speedhack::onPreset(CCObject* sender)
 {
-    float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).value();
+    float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).unwrap();
 
     SpeedhackTop::instance->text = as<CCNode*>(sender)->getID();
     auto inp = static_cast<CCNode*>(sender)->getParent()->getParent()->getChildByType<TextInput>(0);
@@ -58,7 +58,7 @@ void Speedhack::cocosCreate(CCMenu* menu)
 
     if (x.isOk())
     {
-        v = x.value();
+        v = x.unwrap();
     }
 
     if (v < 0.01f)

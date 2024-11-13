@@ -21,7 +21,7 @@ class $modify (InputScaleControl, GJScaleControl)
     {
         auto v = numFromString<float>(str);
 
-        if (v.has_value())
+        if (v.isOk())
         {
             auto value = v.unwrapOr(1);
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
@@ -40,7 +40,7 @@ class $modify (InputScaleControl, GJScaleControl)
     {
         auto v = numFromString<float>(str);
 
-        if (v.has_value())
+        if (v.isOk())
         {
             auto value = v.unwrapOr(1);
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
@@ -59,7 +59,7 @@ class $modify (InputScaleControl, GJScaleControl)
     {
         auto v = numFromString<float>(str);
 
-        if (v.has_value())
+        if (v.isOk())
         {
             auto value = v.unwrapOr(1);
             auto wrappedValue = unscaleFloat(value, m_lowerBound, m_upperBound);
@@ -238,4 +238,6 @@ $execute
             }
         };
     });
+
+    log::info("asf");
 }

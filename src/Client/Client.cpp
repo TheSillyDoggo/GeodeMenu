@@ -266,11 +266,11 @@ ccColor4B Client::getThemeColour(std::string key, ccColor4B def)
     
     auto res = cc4bFromHexString(ini->getKeyValue(fmt::format("Colors::{}", key), ""), false, false);
 
-    if (res.has_value())
+    if (res.isOk())
         return res.unwrapOr(def);
 
-    if (res.has_error())
-        log::error("Failed to get colour {}, {}", key, res.error());
+    if (res.isErr())
+        log::error("Failed to get colour {}, {}", key, res.err());
 
     return def;
 }

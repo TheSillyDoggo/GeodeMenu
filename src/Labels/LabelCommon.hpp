@@ -37,6 +37,6 @@ struct LabelEvent
 
     friend bool operator==(const LabelEvent& a, const LabelEvent& b);
 
-    matjson::Object save();
-    void load(matjson::Object obj);
+    matjson::Value save();
+    void load(matjson::Value obj);
 };

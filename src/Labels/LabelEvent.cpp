@@ -1,8 +1,8 @@
 #include "LabelCommon.hpp"
 
-matjson::Object LabelEvent::save()
+matjson::Value LabelEvent::save()
 {
-    matjson::Object obj;
+    matjson::Value obj;
 
     obj["type"] = geode::cast::as<int>(type);
     obj["enabled"] = enabled;
@@ -17,34 +17,34 @@ matjson::Object LabelEvent::save()
     return obj;
 }
 
-void LabelEvent::load(matjson::Object obj)
+void LabelEvent::load(matjson::Value obj)
 {
-    if (obj.contains("type") && obj["type"].is_number())
-        type = geode::cast::as<LabelEventType>(obj["type"].as_int());
+    if (obj.contains("type") && obj["type"].isNumber())
+        type = geode::cast::as<LabelEventType>(obj["type"].asInt().unwrap());
 
-    if (obj.contains("enabled") && obj["enabled"].is_bool())
-        enabled = obj["enabled"].as_bool();
+    if (obj.contains("enabled") && obj["enabled"].isBool())
+        enabled = obj["enabled"].asBool().unwrap();
 
-    if (obj.contains("colour.r") && obj["colour.r"].is_number())
-        colour.r = obj["colour.r"].as_int();
+    if (obj.contains("colour.r") && obj["colour.r"].isNumber())
+        colour.r = obj["colour.r"].asInt().unwrap();
 
-    if (obj.contains("colour.g") && obj["colour.g"].is_number())
-        colour.g = obj["colour.g"].as_int();
+    if (obj.contains("colour.g") && obj["colour.g"].isNumber())
+        colour.g = obj["colour.g"].asInt().unwrap();
 
-    if (obj.contains("colour.b") && obj["colour.b"].is_number())
-        colour.b = obj["colour.b"].as_int();
+    if (obj.contains("colour.b") && obj["colour.b"].isNumber())
+        colour.b = obj["colour.b"].asInt().unwrap();
 
-    if (obj.contains("colour.a") && obj["colour.a"].is_number())
-        colour.a = obj["colour.a"].as_int();
+    if (obj.contains("colour.a") && obj["colour.a"].isNumber())
+        colour.a = obj["colour.a"].asInt().unwrap();
 
-    if (obj.contains("fadeIn") && obj["fadeIn"].is_number())
-        fadeIn = obj["fadeIn"].as_double();
+    if (obj.contains("fadeIn") && obj["fadeIn"].isNumber())
+        fadeIn = obj["fadeIn"].asDouble().unwrap();
 
-    if (obj.contains("hold") && obj["hold"].is_number())
-        hold = obj["hold"].as_double();
+    if (obj.contains("hold") && obj["hold"].isNumber())
+        hold = obj["hold"].asDouble().unwrap();
 
-    if (obj.contains("fadeOut") && obj["fadeOut"].is_number())
-        fadeOut = obj["fadeOut"].as_double();
+    if (obj.contains("fadeOut") && obj["fadeOut"].isNumber())
+        fadeOut = obj["fadeOut"].asDouble().unwrap();
 }
 
 bool operator==(const LabelEvent& a, const LabelEvent& b) = default;

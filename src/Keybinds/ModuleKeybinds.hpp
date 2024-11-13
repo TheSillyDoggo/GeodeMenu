@@ -3,11 +3,6 @@
 
 using namespace geode::prelude;
 
-class $modify (KeybindsMenuLayer, MenuLayer)
-{
-    bool init();
-};
-
 namespace QOLModKeybinds
 {
     bool hasSetupKeybinds;

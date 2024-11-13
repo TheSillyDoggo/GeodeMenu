@@ -70,4 +70,6 @@ $execute
         player1 = as<InputModule*>(clicker->options[2]);
         player2 = as<InputModule*>(clicker->options[3]);
     });
+
+    log::info("c");
 }
