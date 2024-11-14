@@ -451,7 +451,11 @@ void AndroidUI::goToPage(int p, bool transition)
 
 void AndroidUI::onClose(CCObject* sender)
 {
-    this->removeFromParent();
+    log::info("CLOSEDS ETHLOSDFS");
+
+    FLAlertLayer::create("ADSSYFHSDFDS", "ADASD", "OK")->show();
+
+    // this->removeFromParent();
 }
 
 CCAction* AndroidUI::getEnterAction(CCNode* panel)

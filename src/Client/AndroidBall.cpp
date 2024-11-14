@@ -249,7 +249,8 @@ void AndroidBall::UpdateVisible(bool i)
 
 AndroidBall::~AndroidBall()
 {
-    instance = nullptr;
+    if (instance == this)
+        instance = nullptr;
 }
 
 float AndroidBall::clampf(float v, float min, float max)
@@ -331,38 +332,42 @@ class $modify (AppDelegate)
             return; // fixes texture ldr
 
         if (auto ball = newScene->getChildByType<AndroidBall>(0))
-            ball->removeFromParent();
-
-        newScene->addChild(AndroidBall::create());
-
-        if (auto shop = newScene->getChildByType<GJShopLayer>(0))
         {
-            cocos::handleTouchPriority(shop);
+            AndroidBall::instance = ball;
+
+            return;
         }
+
+        auto ball = AndroidBall::create();
+
+        newScene->addChild(ball);
     }
 };
 
 void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
 {
-    bool thIgn;
+    bool sendToGame = true;
 
     if (AndroidUI::instance)
         return CCTouchDispatcher::touches(touches, event, type);
 
-    if (AndroidBall::get())
+    if (touches)
     {
-        auto t = as<CCTouch*>(touches->anyObject());
+        if (auto ball = AndroidBall::get())
+        {
+            auto t = as<CCTouch*>(touches->anyObject());
 
-        if (type == ccTouchType::CCTOUCHBEGAN)
-            thIgn = AndroidBall::get()->_ccTouchBegan(t, event);
+            if (type == ccTouchType::CCTOUCHBEGAN)
+                sendToGame = !ball->_ccTouchBegan(t, event);
 
-        if (type == ccTouchType::CCTOUCHMOVED)
-            thIgn = AndroidBall::get()->_ccTouchMoved(t, event);
+            if (type == ccTouchType::CCTOUCHMOVED)
+                sendToGame = !ball->_ccTouchMoved(t, event);
 
-        if (type == ccTouchType::CCTOUCHENDED)
-            thIgn = AndroidBall::get()->_ccTouchEnded(t, event);
+            if (type == ccTouchType::CCTOUCHENDED)
+                sendToGame = !ball->_ccTouchEnded(t, event);
+        }
     }
 
-    if (!thIgn)
+    if (sendToGame)
         CCTouchDispatcher::touches(touches, event, type);
 }
