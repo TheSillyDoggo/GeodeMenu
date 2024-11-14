@@ -293,8 +293,8 @@ public:
         creator->id = "creator-window";
         //creator->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 0, 50);
 
-        creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
-        creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
+        // creator->modules.push_back(new SetValueModule("Set Scale:", "set-scale"));
+        // creator->modules.push_back(new SetValueModule("Set Rotation:", "set-rot"));
 
         creator->modules.push_back(new Module("Copy Hack", "copy-hack", "Allows you to copy any level from the servers\nCode by <co>Firee</c>"));
         creator->modules.push_back(new Module("Show Level Password", "show-password", "Adds a button to the password input popup that shows the level password", true));

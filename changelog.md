@@ -1,6 +1,7 @@
 # 1.7.5-beta.2
 
 - Fixed crash closing the mod menu
+- Removed editor set scale and rotation
 
 # 1.7.5-beta.1
 
