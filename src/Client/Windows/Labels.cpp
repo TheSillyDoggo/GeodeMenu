@@ -306,7 +306,7 @@ void Labels::refreshList()
             deleteBtn->setPositionY(cell->getContentHeight() / 2);
             deleteBtn->setUserData(module);
 
-            bool single = i == 0 || i == modules.size() - 1;
+            bool single = false;// i == 0 || i == modules.size() - 1;
 
             auto arrowBack = CCScale9Sprite::create("square02_small.png");
             arrowBack->setOpacity(100);
@@ -338,26 +338,24 @@ void Labels::refreshList()
 
             if (i == 0)
             {
-                moveUp->setVisible(false);
-                moveDown->setPosition(arrowBack->getPosition());
+                moveUp->setEnabled(false);
+                as<CCSprite*>(moveUp->getNormalImage())->setOpacity(150);
             }
             else if (i == modules.size() - 1)
             {
-                moveDown->setVisible(false);
-                moveUp->setPosition(arrowBack->getPosition());
+                moveDown->setEnabled(false);
+                as<CCSprite*>(moveDown->getNormalImage())->setOpacity(150);
             }
-            else
-            {
-                #define GAP_ARROWS_BOTH 8
 
-                moveUp->setPosition(arrowBack->getPosition() + ccp(GAP_ARROWS_BOTH, 0));
-                moveDown->setPosition(arrowBack->getPosition() + ccp(-GAP_ARROWS_BOTH, 0));
-            }
+            #define GAP_ARROWS_BOTH 8
+
+            moveUp->setPosition(arrowBack->getPosition() + ccp(GAP_ARROWS_BOTH, 0));
+            moveDown->setPosition(arrowBack->getPosition() + ccp(-GAP_ARROWS_BOTH, 0));
 
             auto toggleBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(Labels::onToggleVisible), 0.45f);
             toggleBtn->setUserData(module);
             toggleBtn->toggle(lbl->visible);
-            toggleBtn->setPosition(arrowBack->getPosition() + ccp(-arrowBack->getScaledContentWidth() / 2, 0) + ccp(-12, 0));
+            toggleBtn->setPosition(arrowBack->getPosition() + ccp(-arrowBack->getScaledContentWidth() / 2, 0) + ccp(-12, 0) + ccp(modules.size() == 1 ? 41 : 0, 0));
 
             auto toggleBG = CCScale9Sprite::create("square02_small.png");
             toggleBG->setOpacity(100);
@@ -411,13 +409,12 @@ void Labels::save()
     Mod::get()->setSavedValue<float>("safe-zone.width", safeZone.size.width);
     Mod::get()->setSavedValue<float>("safe-zone.height", safeZone.size.height);
 
-    auto arr = matjson::Value{};
-    arr.array();
+    std::vector<matjson::Value> arr;
 
     for (auto module : modules)
     {
         if (auto lblMod = typeinfo_cast<LabelModule*>(module))
-            arr.asArray().unwrap().push_back(lblMod->saveToObject());
+            arr.push_back(lblMod->saveToObject());
     }
 
     Mod::get()->setSavedValue<matjson::Value>("selected-labels", arr);

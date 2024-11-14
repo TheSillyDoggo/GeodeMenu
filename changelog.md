@@ -1,6 +1,9 @@
 # 1.7.5-beta.2
 
 - Fixed crash closing the mod menu
+- Fixed crash when adding labels
+- Fixed label toggle box appearing in the wrong position when theres only 1 label
+- Minor label UI changes
 - Removed editor set scale and rotation
 
 # 1.7.5-beta.1
