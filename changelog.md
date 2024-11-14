@@ -1,3 +1,7 @@
+# 1.7.5-beta.2
+
+- Fixed crash closing the mod menu
+
 # 1.7.5-beta.1
 
 - Fixed best run not working

@@ -177,8 +177,8 @@ bool AndroidUI::setup()
     panel->addChild(versionParent);
 
     goToPage(selectedTab);
-    updateVersionLabel();
     updateSearchBox();
+    updateVersionLabel();
 
     //if (Client::GetModuleEnabled("npesta-width"))
     //{
@@ -253,11 +253,13 @@ void AndroidUI::updateVersionLabel()
                 }
 
                 hasCheckedForUpdates = true;
+                updateSearchBox();
                 updateVersionLabel();
             }
             else if (event->isCancelled())
             {
                 hasCheckedForUpdates = false;
+                updateSearchBox();
                 updateVersionLabel();
             }
         });
@@ -449,17 +451,6 @@ void AndroidUI::goToPage(int p, bool transition)
 
 void AndroidUI::onClose(CCObject* sender)
 {
-    if (auto pause = CCScene::get()->getChildByType<PauseLayer>(0))
-    {
-        handleTouchPriority(pause);
-    }
-
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
-    CCTouchDispatcher::get()->removeDelegate(this);
-
-    if (CCTouchDispatcher::get()->m_pTargetedHandlers->containsObject(this))
-        CCTouchDispatcher::get()->m_pTargetedHandlers->removeObject(this, false);
-
     this->removeFromParent();
 }
 
@@ -514,6 +505,7 @@ void AndroidUI::onPressTab(CCObject* sender)
 void AndroidUI::updateTabs()
 {
     int i = 0;
+
     for (auto sprite : sprites)
     {
         sprite->updateSelection(i == selectedTab ? CategorySelectionType::Selected : CategorySelectionType::Deselected);
@@ -526,7 +518,8 @@ AndroidUI* AndroidUI::create()
 {
     auto pRet = new AndroidUI();
 
-    if (pRet->initAnchored(240.f, 160.f)) {
+    if (pRet->initAnchored(240.f, 160.f))
+    {
         pRet->autorelease();
         return pRet;
     }
