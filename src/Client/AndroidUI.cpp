@@ -352,11 +352,6 @@ CCMenu* AndroidUI::getSearchPanel()
     return menu;
 }
 
-void AndroidUI::keyBackClicked()
-{
-    onClose(nullptr);
-}
-
 void AndroidUI::update(float dt)
 {
     searchLabel->limitLabelWidth(90, 0.6f, 0.1f);
@@ -447,16 +442,6 @@ void AndroidUI::goToPage(int p, bool transition)
         }
         
     }
-}
-
-void AndroidUI::onClose(CCObject* sender)
-{
-    log::info("CLOSEDS ETHLOSDFS");
-
-    FLAlertLayer::create("ADSSYFHSDFDS", "ADASD", "OK")->show();
-
-    instance = nullptr;
-    this->removeFromParent();
 }
 
 CCAction* AndroidUI::getEnterAction(CCNode* panel)

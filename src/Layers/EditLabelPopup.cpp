@@ -397,7 +397,7 @@ void EditLabelPopup::updateList()
 void EditLabelPopup::onFormatInfo(CCObject* sender)
 {
     auto res = utils::file::readString(Mod::get()->getResourcesDir() / "label-help.md");
-    auto text = res.unwrapOr(fmt::format("Error reading file: {}", res.unwrapErr()));
+    auto text = res.unwrapOr(fmt::format("Error reading file: {}", res.err()));
 
     BetterMDPopup::create(nullptr, "Label Format Help", text, "OK", nullptr, 420, true, 69, 1.0f)->show();
 }

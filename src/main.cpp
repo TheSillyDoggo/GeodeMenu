@@ -64,7 +64,8 @@ class $modify (CCKeyboardDispatcher)
 
                     if (auto ui = CCScene::get()->getChildByType<AndroidUI>(0))
                     {
-                        ui->onClose(nullptr);
+                        // ui->onClose(nullptr);
+                        ui->keyBackClicked();
 
                         if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !PlayLayer::get()->m_levelEndAnimationStarted && !GameManager::sharedState()->getGameVariable("0024"))
                             PlatformToolbox::hideCursor();

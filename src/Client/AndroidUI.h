@@ -34,14 +34,13 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
 
         QOLModMenuBG* bg;
 
-        static inline AndroidUI* instance;
+        static inline AndroidUI* instance = nullptr;
 
         static inline int lastTab = 0;
         static inline int selectedTab = 0;
 
         void goToPage(int p, bool transition = false);
         
-        void onClose(CCObject* sender);
         void onKeybinds(CCObject*);
         void onPressTab(CCObject* sender);
         void onUpdate(CCObject*);
@@ -53,7 +52,6 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
         virtual bool setup();
         virtual void textChanged(CCTextInputNode* p0);
         virtual void update(float dt);
-        virtual void keyBackClicked();
         virtual void keyDown(cocos2d::enumKeyCodes key);
 
         CCAction* getEnterAction(CCNode* panel);
