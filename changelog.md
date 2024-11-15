@@ -2,6 +2,7 @@
 
 - Fixed not being able to input decimal places in the transition speed customizer UI
 - Fixed crash when pressing the info button on the label format page
+- Added support for Geode 4.0.0-beta.1
 - **Added support for Intel macOS**
 
 # 1.7.5-beta.2

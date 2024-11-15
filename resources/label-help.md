@@ -1,7 +1,7 @@
 # Variables
 
 Variables are special values that you can put in the format of your label.
-<br/><br/>
+
 Variables can be used by typing {}, and putting the variable name inbetween the two {}.
 like this: "im playing {level_name} by {level_creator}!!!"
 which would show as: "im playing Bloodbath by Riot!!!"
