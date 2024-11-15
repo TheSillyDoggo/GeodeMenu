@@ -455,7 +455,8 @@ void AndroidUI::onClose(CCObject* sender)
 
     FLAlertLayer::create("ADSSYFHSDFDS", "ADASD", "OK")->show();
 
-    // this->removeFromParent();
+    instance = nullptr;
+    this->removeFromParent();
 }
 
 CCAction* AndroidUI::getEnterAction(CCNode* panel)

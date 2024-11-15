@@ -21,6 +21,7 @@ void TransCustomizerModule::makeAndroid(CCNode* menu, CCPoint pos)
 
     auto input = TextInput::create(90, "Time");
     input->setString(fmt::format("{:.02}", Mod::get()->getSavedValue<float>("transition-time", 0.5f)));
+    input->setCommonFilter(CommonFilter::Float);
 
     input->setCallback([this](std::string const& str)
     {

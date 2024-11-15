@@ -1,3 +1,7 @@
+# 1.7.5-beta.3
+
+- Fixed not being able to input decimal places in the transition speed customizer UI
+
 # 1.7.5-beta.2
 
 - Fixed crash closing the mod menu
