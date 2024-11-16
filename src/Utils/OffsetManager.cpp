@@ -23,7 +23,6 @@ unsigned int OffsetManager::offsetForType(PatchType type)
             GEODE_ANDROID32(return 0x4740f0 - 0x10000);
             GEODE_ANDROID64(return 0x9473c0 - 0x100000);
             GEODE_INTEL_MAC(return 0x7ff4d8);
-            GEODE_ARM_MAC(return );
             GEODE_IOS(return );
 
             #elif GEODE_COMP_GD_VERSION == 22073
