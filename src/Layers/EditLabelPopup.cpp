@@ -463,7 +463,7 @@ void EditLabelPopup::onPage(CCObject* sender)
 
 void EditLabelPopup::onClose(CCObject* sender)
 {
-    if (AndroidUI::instance)
+    if (AndroidUI::get())
     {
         Labels::get()->refreshList();
 

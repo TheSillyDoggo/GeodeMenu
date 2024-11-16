@@ -34,8 +34,6 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
 
         QOLModMenuBG* bg;
 
-        static inline AndroidUI* instance = nullptr;
-
         static inline int lastTab = 0;
         static inline int selectedTab = 0;
 
@@ -59,6 +57,5 @@ class AndroidUI : public geode::Popup<>, TextInputDelegate
 
         static AndroidUI* addToScene();
         static AndroidUI* create();
-
-        ~AndroidUI();
+        static AndroidUI* get();
 };

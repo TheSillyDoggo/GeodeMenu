@@ -348,7 +348,7 @@ void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int
 {
     bool sendToGame = true;
 
-    if (AndroidUI::instance)
+    if (AndroidUI::get())
         return CCTouchDispatcher::touches(touches, event, type);
 
     if (touches)

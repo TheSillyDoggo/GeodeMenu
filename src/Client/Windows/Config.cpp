@@ -452,8 +452,8 @@ void Config::changeTheme(CCObject* sender)
         btnsS[i]->setEnabled(i != v - 1);
     }
 
-    if (AndroidUI::instance)
-        AndroidUI::instance->bg->updateTheme(Mod::get()->getSavedValue<int>("theme"));
+    if (AndroidUI::get())
+        AndroidUI::get()->bg->updateTheme(Mod::get()->getSavedValue<int>("theme"));
 }
 
 void Config::createBtn(CCNode* menu, int i)

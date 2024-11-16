@@ -4,9 +4,11 @@
 #include "../Utils/UnspeedhackedAction.hpp"
 #include <Events.hpp>
 
+AndroidUI* __androidui__instance__ = nullptr;
+
 bool AndroidUI::setup()
 {
-    instance = this;
+    __androidui__instance__ = this;
     m_mainLayer->setVisible(false);
 
     this->setTouchEnabled(false);
@@ -195,6 +197,21 @@ bool AndroidUI::setup()
     //UIOpenEvent("open-menu"_spr, nullptr).post();
 
     return true;
+}
+
+AndroidUI* AndroidUI::get()
+{
+    if (auto ui = CCScene::get()->getChildByType<AndroidUI>(0))
+        return ui;
+
+    if (__androidui__instance__)
+    {
+        __androidui__instance__->removeFromParent();
+        
+        __androidui__instance__ = nullptr;
+    }
+
+    return nullptr;
 }
 
 void AndroidUI::updateVersionLabel()
@@ -532,11 +549,6 @@ AndroidUI* AndroidUI::addToScene()
 void AndroidUI::onKeybinds(CCObject*)
 {
     ManageKeybindsLayer::addToScene();
-}
-
-AndroidUI::~AndroidUI()
-{
-    instance = nullptr;
 }
 
 void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
