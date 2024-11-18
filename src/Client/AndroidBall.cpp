@@ -292,6 +292,7 @@ void AndroidBall::setColonThreeEnabled()
 #endif
 }
 
+/*
 class $modify (CCScene)
 {
     int getHighestChildZ()
@@ -343,7 +344,7 @@ class $modify (AppDelegate)
         newScene->addChild(ball);
     }
 };
-
+*/
 /*void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
 {
     bool sendToGame = true;
