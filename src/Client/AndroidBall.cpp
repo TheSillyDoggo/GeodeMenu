@@ -344,7 +344,7 @@ class $modify (AppDelegate)
     }
 };
 
-void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
+/*void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int type)
 {
     bool sendToGame = true;
 
@@ -370,4 +370,4 @@ void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int
 
     if (sendToGame)
         CCTouchDispatcher::touches(touches, event, type);
-}
+}*/

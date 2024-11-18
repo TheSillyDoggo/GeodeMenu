@@ -50,7 +50,7 @@ class AndroidBall : public CCLayer
         ~AndroidBall();
 };
 
-class $modify (QOLModTouchDispatcher, CCTouchDispatcher)
+/*class $modify (QOLModTouchDispatcher, CCTouchDispatcher)
 {
     static void onModify(auto& self)
     {
@@ -58,4 +58,4 @@ class $modify (QOLModTouchDispatcher, CCTouchDispatcher)
     }
 
     void touches(CCSet* touches, CCEvent* event, unsigned int type);
-};
+};*/

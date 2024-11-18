@@ -201,6 +201,9 @@ bool AndroidUI::setup()
 
 AndroidUI* AndroidUI::get()
 {
+    if (!CCScene::get())
+        return nullptr;
+
     if (auto ui = CCScene::get()->getChildByType<AndroidUI>(0))
         return ui;
 

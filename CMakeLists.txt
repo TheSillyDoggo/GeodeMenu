@@ -19,12 +19,6 @@ file(GLOB SOURCES
 	src/*/*/*.cpp
 )
 
-file(GLOB OBJC_SOURCES
-    src/*.mm
-    src/*/*.mm
-    src/*/*/*.mm
-)
-
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 # Windows specific settings
