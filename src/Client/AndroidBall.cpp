@@ -3,6 +3,7 @@
 
 AndroidBall* AndroidBall::get()
 {
+    return nullptr;
     return instance;
 }
 
