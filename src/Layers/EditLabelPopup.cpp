@@ -429,7 +429,7 @@ void EditLabelPopup::updatePage()
 
 void EditLabelPopup::onFont(CCObject* sender)
 {
-    // #ifdef GEODE_IS_ANDROID
+    #ifdef GEODE_IS_ANDROID
     static bool hasShown = false;
 
     if (!hasShown)
@@ -440,6 +440,8 @@ void EditLabelPopup::onFont(CCObject* sender)
 
         return;
     }
+
+    #endif
 
     ChooseFontPopup::addToScene([this](std::string font)
     {
