@@ -1,3 +1,5 @@
+#ifndef GEODE_IS_ANDROID
+
 #include "LabelHooks.hpp"
 
 bool LabelsUILayer::init(GJBaseGameLayer* bgl)
@@ -59,3 +61,5 @@ void LabelPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
 
     PlayLayer::destroyPlayer(p0, p1);
 }
+
+#endif
