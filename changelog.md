@@ -1,6 +1,6 @@
 # 1.7.5-beta.4
 
-
+- Fixed crash when closing the mod popup
 
 # 1.7.5-beta.3
 

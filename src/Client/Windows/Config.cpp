@@ -215,7 +215,8 @@ void Config::cocosCreate(CCMenu* menu)
     btnMenu->setScale(AndroidBall::clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
     btnMenu->setContentSize(ccp(0, 0));
 
-    btnL = CCPastelLabelBMFont::create(">_", "bigFont.fnt");
+    //btnL = CCPastelLabelBMFont::create(">_", "bigFont.fnt");
+    btnL = CCLabelBMFont::create(">_", "bigFont.fnt");
     btnL->setAnchorPoint(ccp(0.5f, 0.35f));
 
     btn = CircleButtonSprite::create(btnL, CircleBaseColor::Gray);
