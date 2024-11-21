@@ -418,6 +418,8 @@ void Labels::save()
     }
 
     Mod::get()->setSavedValue<matjson::Value>("selected-labels", arr);
+
+    (void) Mod::get()->saveData();
 }
 
 void Labels::load()
