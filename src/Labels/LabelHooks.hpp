@@ -1,5 +1,3 @@
-#ifndef GEODE_IS_ANDROID
-
 #pragma once
 
 #include <Geode/Geode.hpp>
@@ -33,5 +31,3 @@ class $modify (LabelPlayLayer, PlayLayer)
 {
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1);
 };
-
-#endif

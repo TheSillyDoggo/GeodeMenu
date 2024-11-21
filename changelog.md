@@ -1,3 +1,8 @@
+# 1.7.5-beta.6
+
+- **Added Labels back on Android**
+-- (i broke it in the last update)
+
 # 1.7.5-beta.5
 
 - **Added Labels back on Android**
