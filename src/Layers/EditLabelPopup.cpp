@@ -429,20 +429,6 @@ void EditLabelPopup::updatePage()
 
 void EditLabelPopup::onFont(CCObject* sender)
 {
-    #ifdef GEODE_IS_ANDROID
-    static bool hasShown = false;
-
-    if (!hasShown)
-    {
-        hasShown = true;
-
-        FLAlertLayer::create("Crash Warning", "Due to a bug in the <ca>geode</c> loader, opening this popup will <cc>likely</c> <cr>crash</c>.\nTo open this popup, press the button again.\n<cc>Do not report if this crashes!</c>\n<cl>(I know it does)</c>", "OK")->show();
-
-        return;
-    }
-
-    #endif
-
     ChooseFontPopup::addToScene([this](std::string font)
     {
         log::info("selected font: {}", font);

@@ -1,3 +1,7 @@
+# 1.7.5-beta.5
+
+- **Added Labels back on Android**
+
 # 1.7.5-beta.4
 
 - Fixed crash when closing the mod popup
