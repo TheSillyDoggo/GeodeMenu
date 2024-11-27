@@ -59,6 +59,6 @@ $execute
 
         delete ev->window;
 
-        return ListenerResult::Propagate;
+        return ListenerResult::Stop;
     });
 };
