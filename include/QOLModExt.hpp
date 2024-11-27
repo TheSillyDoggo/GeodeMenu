@@ -20,6 +20,19 @@ namespace QOLModExt
             }
     };
 
+    class ToggleModuleEvent : public Event
+    {
+        public:
+            std::string id;
+            bool enabled;
+
+            ToggleModuleEvent(std::string id, bool enabled)
+            {
+                this->id = id;
+                this->enabled = enabled;
+            }
+    };
+
     /// @brief Creates a window and returns it
     /// @param id An id for the window, this is not shown to the user and is currently not used internally. This may change, please do not change the ID
     /// @return WindowExt*
@@ -37,11 +50,17 @@ namespace QOLModExt
         return mod;
     }
 
-    /// @brief Adds a window and its modules to the UI. All modules and windows will be **deleted** after.
+    /// @brief Adds a window and its modules to the UI.
     /// @param window 
     inline void pushWindow(WindowExt* window)
     {
         auto e = PushWindowEvent(window);
+        e.post();
+    }
+
+    inline void setModuleEnabled(std::string moduleID, bool enabled)
+    {
+        auto e = ToggleModuleEvent(moduleID, enabled);
         e.post();
     }
 };
