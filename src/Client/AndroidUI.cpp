@@ -2,7 +2,6 @@
 #include "../UI/BlurLayer.hpp"
 #include "../Utils/LaunchArgs.hpp"
 #include "../Utils/UnspeedhackedAction.hpp"
-#include <Events.hpp>
 
 AndroidUI* __androidui__instance__ = nullptr;
 
@@ -63,20 +62,35 @@ bool AndroidUI::setup()
     windows->setID("windows-panel");
 
     auto windowsMenu = CCMenu::create();
-    windowsMenu->setContentSize(ccp(windows->getContentSize().width, windows->getContentSize().height - 10));
-    windowsMenu->setAnchorPoint(ccp(0, 0));
-    windowsMenu->setPosition(ccp(5, 5));
+    windowsMenu->setContentSize(ccp(windows->getContentSize().width, (20 + 3.5f) * Client::get()->windows.size()));
+    windowsMenu->setAnchorPoint(ccp(0, 1));
+    windowsMenu->setPositionX(5 * 2);
     windowsMenu->ignoreAnchorPointForPosition(false);
     windowsMenu->setID("windows-menu");
 
     windowsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
-    windows->addChild(windowsMenu);
 
-    for (size_t i = 0; i < Client::instance->windows.size(); i++)
+    std::sort(Client::instance->windows.begin(), Client::instance->windows.end(), [](Window* a, Window* b)
     {
-        auto win = Client::instance->windows[i];
-    //if (Client::GetModuleEnabled("npesta-width"))
-    //{
+        return a->priority < b->priority;
+    });
+
+    // 🥶
+    auto windowScroll = ScrollLayer::create(ccp(windows->getContentSize().width + 5 * 2, windows->getContentSize().height - 35 - 5));
+    windowScroll->setTouchEnabled(Client::get()->windows.size() > 9);
+    windowScroll->setMouseEnabled(Client::get()->windows.size() > 9);
+    windowScroll->setPosition(ccp(-5, windows->getContentHeight() - 5 - windowScroll->getContentHeight()));
+    windowScroll->m_contentLayer->setContentHeight(windowsMenu->getContentHeight());
+    windowsMenu->setPositionY(windowScroll->m_contentLayer->getContentHeight());
+    windowScroll->moveToTop();
+    windowScroll->m_contentLayer->addChild(windowsMenu);
+    windows->addChild(windowScroll);
+    windowsMenu->setAnchorPoint(CCPointZero);
+    windowsMenu->setPositionY(0);
+
+    int i = 0;
+    for (auto win : Client::get()->windows)
+    {
         auto tabSize = ccp(100, 20);
 
         auto normal = CategoryTabSprite::create(CategoryTabType::Text, win->name);
@@ -101,6 +115,8 @@ bool AndroidUI::setup()
         windowsMenu->addChild(button);
 
         buttons.push_back(button);
+
+        i++;
     }
 
     updateTabs();
@@ -207,12 +223,12 @@ AndroidUI* AndroidUI::get()
     if (auto ui = CCScene::get()->getChildByType<AndroidUI>(0))
         return ui;
 
-    if (__androidui__instance__)
+    /*if (__androidui__instance__)
     {
         __androidui__instance__->removeFromParent();
         
         __androidui__instance__ = nullptr;
-    }
+    }*/
 
     return nullptr;
 }

@@ -12,6 +12,7 @@ class $modify (EndLevelLayer)
         EndLevelLayer::customSetup();
 
         auto ind = CCSprite::createWithSpriteFrameName("uiDot_001.png");
+        ind->setID("cheat-indicator"_spr);
         ind->setColor(SafeMode::get()->colourForState());
         ind->setOpacity(150);
         ind->setScale(1.5f);

@@ -9,6 +9,7 @@ bool LabelsUILayer::init(GJBaseGameLayer* bgl)
         return true;
 
     m_fields->labelLayer = LabelLayer::create(this);
+    m_fields->labelLayer->setID("labels-layer"_spr);
 
     this->addChild(m_fields->labelLayer, 69 + 1);
     return true;

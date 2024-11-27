@@ -355,16 +355,17 @@ void QOLModTouchDispatcher::touches(CCSet* touches, CCEvent* event, unsigned int
     {
         if (auto ball = AndroidBall::get())
         {
-            auto t = as<CCTouch*>(touches->anyObject());
+            if (auto t = as<CCTouch*>(touches->anyObject()))
+            {
+                if (type == ccTouchType::CCTOUCHBEGAN)
+                    sendToGame = !ball->_ccTouchBegan(t, event);
 
-            if (type == ccTouchType::CCTOUCHBEGAN)
-                sendToGame = !ball->_ccTouchBegan(t, event);
+                if (type == ccTouchType::CCTOUCHMOVED)
+                    sendToGame = !ball->_ccTouchMoved(t, event);
 
-            if (type == ccTouchType::CCTOUCHMOVED)
-                sendToGame = !ball->_ccTouchMoved(t, event);
-
-            if (type == ccTouchType::CCTOUCHENDED)
-                sendToGame = !ball->_ccTouchEnded(t, event);
+                if (type == ccTouchType::CCTOUCHENDED)
+                    sendToGame = !ball->_ccTouchEnded(t, event);
+            }
         }
     }
 

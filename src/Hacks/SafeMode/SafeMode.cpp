@@ -266,8 +266,10 @@ void SafeEndLevelLayer::customSetup()
 
         auto infoMenu = CCMenu::create();
         infoMenu->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(-181.5f, 126.5f));
+        infoMenu->setID("info-menu"_spr);
 
         auto infoBtn = InfoAlertButton::create("Safe Mode", safeModeStream.str().c_str(), 0.75f);
+        infoBtn->setID("info-button"_spr);
         infoMenu->addChild(infoBtn);
 
         m_mainLayer->addChild(infoMenu);

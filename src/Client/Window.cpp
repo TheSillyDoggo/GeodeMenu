@@ -1,6 +1,15 @@
 #include "Client.h"
 #include "Types/SetValueModule.hpp"
 
+Window::Window()
+{
+    static int i = 0;
+
+    priority = i * 100;
+
+    i++;
+}
+
 void Window::drawImGui()
 {
     ImGui::SetNextWindowPos(ImVec2(getPosition().x, getPosition().y));
@@ -153,6 +162,9 @@ void Window::cocosCreate(CCMenu* menu)
 
     scroll->m_contentLayer->setContentHeight(height);
     scroll->moveToTop();
+
+    if (createPostHook)
+        createPostHook(btnMenu, scroll);
 }
 
 #ifndef GEODE_IS_IOS
@@ -162,7 +174,9 @@ bool WindowMouseDispatcher::dispatchScrollMSG(float y, float x)
     for (auto window : Client::instance->windows)
     {
         if (window->scroll && nodeIsVisible(window->scroll))
+        {
             window->scroll->scrollLayer(y);
+        }
     }
 
     return CCMouseDispatcher::dispatchScrollMSG(y, x);

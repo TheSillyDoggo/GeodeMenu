@@ -1,3 +1,7 @@
+# 1.7.5
+
+- Added API for mod developers to add tabs to the QOLMod UI
+
 # 1.7.5-beta.6
 
 - **Added Labels back on Android**

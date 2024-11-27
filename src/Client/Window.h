@@ -24,6 +24,13 @@ class Window : public UIComponent
         ImVec2 actualWindowPos;
         ImVec2 dragOffset;
 
+        int priority = 0;
+        int visualPriority = 0;
+
+        std::function<void(CCMenu*, ScrollLayer*)> createPostHook;
+
+        Window();
+
         float quadraticEaseInOut(float t);
 
         ImVec2 getDesiredWindowSize();
