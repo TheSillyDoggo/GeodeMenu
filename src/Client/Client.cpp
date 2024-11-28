@@ -58,6 +58,8 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
 
 bool Client::useImGuiUI()
 {
+    return true;
+
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:use-imgui-ui"))
         return true;
 
@@ -82,7 +84,8 @@ void Client::initImGui()
 
     setUIScale(mod->getSavedValue<float>("imgui-ui-scale", 1.0f));
 
-    loadImGuiTheme("catppuccin-frappe.ini");
+    // loadImGuiTheme("catppuccin-frappe.ini");
+    loadImGuiTheme("midgahack.ini");
 
     sortWindows(true);
 
@@ -115,7 +118,7 @@ void Client::drawImGui()
             window->drawImGui();
     }
 
-    // ImGui::ShowStyleEditor();
+    ImGui::ShowStyleEditor();
 
     if (hoveredModule && !hoveredModule->description.empty())
     {
@@ -133,6 +136,63 @@ void Client::drawImGui()
 
 void Client::sortWindows(bool instant)
 {
+    float x = 15;
+    std::map<float, float> yMap;
+    bool stacking = false;
+
+    std::sort(Client::instance->windows.begin(), Client::instance->windows.end(), [](Window* a, Window* b)
+    {
+        return a->priority < b->priority;
+    });
+
+    for (auto window : windows)
+    {
+        if (!yMap.contains(x))
+            yMap[x] = 15;
+        
+        if (x + window->getDesiredWindowSize().x > ImGui::GetIO().DisplaySize.x)
+        {
+            x = 15;
+            stacking = true;
+        }
+
+        ImVec2 wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + 15]);
+
+        for (size_t i = 0; i < 8; i++)
+        {
+            if (wndPos.y + window->getDesiredWindowSize().y > ImGui::GetIO().DisplaySize.y)
+            {
+                x += window->getDesiredWindowSize().x + 15;
+
+                wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + 15]);
+            }
+        }
+        
+        x += window->getDesiredWindowSize().x + 15;
+        yMap[x] += window->getDesiredWindowSize().y + 15;
+
+        wndPos.y += 15;
+
+        if (instant)
+        {
+            window->setPosition(ccp(wndPos.x, wndPos.y));
+            window->actualWindowPos = wndPos;
+        }
+        else
+        {
+            if (window->getActionByTag(69))
+                window->stopActionByTag(69);
+            
+            auto action = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(wndPos.x, wndPos.y)), 2);
+            action->setTag(69);
+
+            window->runAction(action);
+            window->actualWindowPos = wndPos;
+        }
+    }
+
+    return;
+
     ImVec2 configSize;
 
     for (auto window : windows)
@@ -252,7 +312,10 @@ void Client::setUIScale(float scale)
 
     Loader::get()->queueInMainThread([this, oldScale, scale]
     {
-        sortWindows(false);
+        Loader::get()->queueInMainThread([this, oldScale, scale]
+        {
+            sortWindows(false);
+        });
     });
 }
 

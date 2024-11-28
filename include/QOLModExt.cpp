@@ -72,3 +72,38 @@ $execute
         return ListenerResult::Stop;
     });
 };
+
+// idk bro i feel like dying im very tired i dont know what most of this does
+// i should sleep
+/*
+$on_mod(Loaded)
+{
+    int i = 0;
+    for (Mod* mod : Loader::get()->getAllMods())
+    {
+        if (mod->shouldLoad() && mod->getMetadata().getSettings().size() != 0)
+        {
+            auto wnd = QOLModExt::createWindow(mod->getID());
+            wnd->setName(mod->getName());
+            wnd->setPriority(10000 * (i + 1));
+
+            for (auto setting : mod->getMetadata().getSettings())
+            {
+                if (setting.second["type"] == "bool")
+                {
+                    std::string id = fmt::format("{}/{}", mod->getID(), setting.first);
+
+                    auto mod = QOLModExt::createModule(id);
+                    mod->setName(setting.second["name"].asString().unwrapOr("NULL"));
+
+                    wnd->addModule(mod);
+                }
+            }
+            
+            QOLModExt::pushWindow(wnd);
+
+            i++;
+        }
+    }
+};
+*/

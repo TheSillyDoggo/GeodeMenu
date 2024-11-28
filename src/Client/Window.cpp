@@ -41,7 +41,11 @@ void Window::drawImGui()
 
 ImVec2 Window::getDesiredWindowSize()
 {
-    return ImVec2(215, 25 * ((std::min<int>(modules.size(), 40) * closedTimer) + 1));
+    auto vec = ImVec2(215, 25 * ((std::min<int>(modules.size(), 40) * closedTimer) + 1));
+
+    vec.y = clamp<float>(vec.y, 0, ImGui::GetIO().DisplaySize.y - (15 + 15));
+
+    return vec;
 }
 
 const CCPoint& Window::getPosition()
