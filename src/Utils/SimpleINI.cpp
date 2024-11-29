@@ -69,6 +69,14 @@ bool SimpleINI::init(std::string data)
     return true;
 }
 
+void SimpleINI::addVariable(std::string varName, std::string varVal)
+{
+    for (auto hKey : headerKeys)
+    {
+        headerKeys.at(hKey.first) = utils::string::replace(hKey.second, fmt::format("${}", varName), varVal);
+    }
+}
+
 bool SimpleINI::hasKey(std::string key)
 {
     return headerKeys.contains(key);

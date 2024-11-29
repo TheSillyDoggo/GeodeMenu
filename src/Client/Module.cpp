@@ -2,19 +2,21 @@
 
 #include "../Layers/ModuleOptionsLayer.h"
 #include "Dropdown.h"
+#include "Client.h"
 
 void Module::drawImGui()
 {
     bool f = false;
     if (!enabled)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(40 / 255.0f, 40 / 255.0f, 40 / 255.0f, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(50 / 255.0f, 50 / 255.0f, 50 / 255.0f, 1));
+        ImGui::PushStyleColor(ImGuiCol_Button, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabled", ccc4(40, 40, 40, 255))));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabledHovered", ccc4(50, 50, 50, 255))));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabledActive", ccc4(50, 50, 50, 255))));
 
         f = true;
     }
 
-    if (ImGui::Button(this->name.c_str(), ImVec2(215, 25)))
+    if (ImGui::Button(this->name.c_str(), Client::get()->widgetSize))
     {
         onToggleAndroid(nullptr);
     }
@@ -25,7 +27,7 @@ void Module::drawImGui()
         Client::get()->hoveredModule = this;
 
     if (f)
-        ImGui::PopStyleColor(2);
+        ImGui::PopStyleColor(3);
 }
 
 void Module::onOptionsAndroid(CCObject* sender)

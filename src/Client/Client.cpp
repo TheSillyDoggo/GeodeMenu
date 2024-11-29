@@ -1,6 +1,6 @@
 #include "Client.h"
 #include "../Utils/LaunchArgs.hpp"
-
+#include <Geode/modify/CCEGLView.hpp>
 
 Client* Client::get()
 {
@@ -76,7 +76,7 @@ void Client::initImGui()
 
     io->ConfigWindowsMoveFromTitleBarOnly = true;
 
-    style->FramePadding = ImVec2(3, 6);
+    style->FramePadding = ImVec2(3, 4);
     style->ItemSpacing = ImVec2(0, 0);
     style->WindowPadding = ImVec2(0, 0);
     style->Colors[ImGuiCol_TitleBg] = ImVec4(20.0f / 255, 20.0f / 255, 20.0f / 255, 1);
@@ -122,21 +122,25 @@ void Client::drawImGui()
 
     if (hoveredModule && !hoveredModule->description.empty())
     {
-        // ImGui::SetNextWindowPos(hoveredModule->lastRenderedPosition);
+        // // ImGui::SetNextWindowPos(hoveredModule->lastRenderedPosition);
 
-        ImGui::SetNextWindowPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
+        // ImGui::SetNextWindowPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
 
-        ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip | ImGuiWindowFlags_NoBackground);
+        // ImGui::Begin("Description Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_Tooltip | ImGuiWindowFlags_NoBackground);
+
+        // ImGui::SetCursorPos(ImVec2(ImGui::GetMousePos().x + 12.5f, ImGui::GetMousePos().y));
 
         ImGuiExt::colouredText(hoveredModule->description);
 
-        ImGui::End();
+        // ImGui::End();
     }
 }
 
 void Client::sortWindows(bool instant)
 {
-    float x = 15;
+    float offset = ini->getKeyValueFloat("Offsets::WindowDistance", "15");
+
+    float x = offset;
     std::map<float, float> yMap;
     bool stacking = false;
 
@@ -148,30 +152,30 @@ void Client::sortWindows(bool instant)
     for (auto window : windows)
     {
         if (!yMap.contains(x))
-            yMap[x] = 15;
+            yMap[x] = offset;
         
         if (x + window->getDesiredWindowSize().x > ImGui::GetIO().DisplaySize.x)
         {
-            x = 15;
+            x = offset;
             stacking = true;
         }
 
-        ImVec2 wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + 15]);
+        ImVec2 wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + offset]);
 
         for (size_t i = 0; i < 8; i++)
         {
             if (wndPos.y + window->getDesiredWindowSize().y > ImGui::GetIO().DisplaySize.y)
             {
-                x += window->getDesiredWindowSize().x + 15;
+                x += window->getDesiredWindowSize().x + offset;
 
-                wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + 15]);
+                wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + offset]);
             }
         }
         
-        x += window->getDesiredWindowSize().x + 15;
-        yMap[x] += window->getDesiredWindowSize().y + 15;
+        x += window->getDesiredWindowSize().x + offset;
+        yMap[x] += window->getDesiredWindowSize().y + offset;
 
-        wndPos.y += 15;
+        wndPos.y += offset;
 
         if (instant)
         {
@@ -256,6 +260,16 @@ void Client::toggleWindowVisibility(WindowTransitionType type, bool instant)
     if (blurLayer)
         blurLayer->runAction(CCFadeTo::create(!isWindowOpen ? 0.15f : 0.5f, isWindowOpen ? 255 : 0));
 
+    std::vector<Window*> windows = this->windows;
+
+    std::sort(windows.begin(), windows.end(), [](Window* a, Window* b)
+    {
+        return a->getPosition().x < b->getPosition().x;
+    });
+
+    bool verticalUp;
+    float lastX = 0;
+
     for (auto window : windows)
     {
         CCAction* fade;
@@ -270,17 +284,19 @@ void Client::toggleWindowVisibility(WindowTransitionType type, bool instant)
                 if (window->getActionByTag(69))
                     window->stopActionByTag(69);
 
-                bool up = ((as<int>(window->getPosition().x) - 15) % 235 * 2) == 0 ? true : false;
+                bool verticalUp = window->getPosition().y > ImGui::GetIO().DisplaySize.y / 2;
 
                 if (window->windowPos.x == window->actualWindowPos.x && window->windowPos.y == window->actualWindowPos.y)
                 {
-                    window->setPosition(ccp(window->actualWindowPos.x, window->actualWindowPos.y + (!isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (up ? 1 : -1))));
+                    window->setPosition(ccp(window->actualWindowPos.x, window->actualWindowPos.y + (!isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (verticalUp ? 1 : -1))));
                 }
                 
-                verticalMove = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(window->actualWindowPos.x, window->actualWindowPos.y + (isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (up ? 1 : -1)))), 2);
+                verticalMove = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(window->actualWindowPos.x, window->actualWindowPos.y + (isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (verticalUp ? 1 : -1)))), 2);
                 verticalMove->setTag(69);
 
                 window->runAction(verticalMove);
+
+                lastX = window->getPosition().x;
                 break;
         }
     }
@@ -347,6 +363,10 @@ void Client::loadImGuiTheme(std::string theme)
     }
 
     ini = SimpleINI::createWithFile((Mod::get()->getResourcesDir() / theme).string());
+
+    ini->addVariable("accent_colour", fmt::format("#{}", cc4bToHexString(ccc4(207, 67, 115, 255))));
+
+    widgetSize = ImVec2(ini->getKeyValueFloat("WidgetSize::Width", "215"), ini->getKeyValueFloat("WidgetSize::Height", "25"));
 
     auto style = &ImGui::GetStyle();
 

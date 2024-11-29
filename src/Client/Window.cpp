@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "Types/SetValueModule.hpp"
+#include <imgui_internal.h>
 
 Window::Window()
 {
@@ -16,6 +17,7 @@ void Window::drawImGui()
     ImGui::SetNextWindowSize(getDesiredWindowSize());
 
     ImGui::Begin(this->name.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::GetCurrentWindow()->TitleBarHeight = Client::get()->widgetSize.y;
 
     if (ImGui::IsWindowHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
     {
@@ -30,7 +32,7 @@ void Window::drawImGui()
 
     for (auto module : modules)
     {
-        ImGui::PushItemWidth(215);
+        ImGui::PushItemWidth(Client::get()->widgetSize.x);
         module->drawImGui();
     }
 
@@ -41,10 +43,9 @@ void Window::drawImGui()
 
 ImVec2 Window::getDesiredWindowSize()
 {
-    auto vec = ImVec2(215, 25 * ((std::min<int>(modules.size(), 40) * closedTimer) + 1));
+    auto vec = ImVec2(Client::get()->widgetSize.x, Client::get()->widgetSize.y * ((std::min<int>(modules.size(), 69) * closedTimer) + 1));
 
     vec.y = clamp<float>(vec.y, 0, ImGui::GetIO().DisplaySize.y - (15 + 15));
-
     return vec;
 }
 

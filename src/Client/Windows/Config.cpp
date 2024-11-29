@@ -672,7 +672,7 @@ void Config::drawImGui()
         Client::get()->sortWindows(false);
 
     if (ImGui::Button("Reload Theme"))
-        Client::get()->loadImGuiTheme("catppuccin-frappe.ini");
+        Client::get()->loadImGuiTheme("midgahack.ini");
 
     for (auto module : modules)
     {

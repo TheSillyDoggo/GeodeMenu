@@ -16,6 +16,8 @@ class SimpleINI
 
         bool init(std::string data);
 
+        void addVariable(std::string varName, std::string varVal);
+
         bool hasKey(std::string key);
         std::string getKeyValue(std::string key, std::string def);
         float getKeyValueFloat(std::string key, std::string def);

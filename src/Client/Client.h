@@ -44,6 +44,7 @@ public:
     Ref<BlurLayer> blurLayer;
     bool over = false;
     SimpleINI* ini = nullptr;
+    ImVec2 widgetSize = ImVec2(215, 25);
 
     Client()
     {
