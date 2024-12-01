@@ -6,17 +6,24 @@
 
 void Module::drawImGui()
 {
-    bool f = false;
-    if (!enabled)
+    float sbarWidth = ImGui::GetScrollMaxY() > 0.0f ? ImGui::GetStyle().ScrollbarSize : 0;
+
+    if (enabled)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button, ccc4ToVec(Client::get()->getThemeColour("ModuleEnabled", ccc4(40, 40, 40, 255))));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ccc4ToVec(Client::get()->getThemeColour("ModuleEnabledHovered", ccc4(50, 50, 50, 255))));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ccc4ToVec(Client::get()->getThemeColour("ModuleEnabledActive", ccc4(50, 50, 50, 255))));
+        ImGui::PushStyleColor(ImGuiCol_Text, ccc4ToVec(Client::get()->getThemeColour("ModuleEnabledText", Client::get()->accentColour)));
+    }
+    else
     {
         ImGui::PushStyleColor(ImGuiCol_Button, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabled", ccc4(40, 40, 40, 255))));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabledHovered", ccc4(50, 50, 50, 255))));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabledActive", ccc4(50, 50, 50, 255))));
-
-        f = true;
+        ImGui::PushStyleColor(ImGuiCol_Text, ccc4ToVec(Client::get()->getThemeColour("ModuleDisabledText", ccc4(255, 255, 255, 255))));
     }
 
-    if (ImGui::Button(this->name.c_str(), ImVec2(Client::get()->widgetSize.x + (options.size() > 0 ? -Client::get()->widgetSize.y : 0), Client::get()->widgetSize.y)))
+    if (ImGui::Button(this->name.c_str(), ImVec2(Client::get()->widgetSize.x + (options.size() > 0 ? -Client::get()->widgetSize.y - sbarWidth : 0), Client::get()->widgetSize.y)))
     {
         onToggleAndroid(nullptr);
     }
@@ -47,7 +54,7 @@ void Module::drawImGui()
     {
         float offset = Client::get()->ini->getKeyValueFloat("Offsets::ModuleBarOffset", "3");
         auto optionBtn = enabled ? Client::get()->accentColour : Client::get()->getThemeColour("ModuleBarDeselected", ccc4(70, 70, 70, 255));
-        ImVec2 topRightPos = ImVec2(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x + Client::get()->widgetSize.x - offset, ImGui::GetWindowPos().y + ImGui::GetCursorPos().y - Client::get()->widgetSize.y + offset);
+        ImVec2 topRightPos = ImVec2(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x + Client::get()->widgetSize.x - offset - sbarWidth, ImGui::GetWindowPos().y + ImGui::GetCursorPos().y - Client::get()->widgetSize.y + offset);
 
         ImGui::GetWindowDrawList()->AddRectFilled(topRightPos, ImVec2(topRightPos.x - Client::get()->ini->getKeyValueFloat("ModuleBarSize::Width", "3"), topRightPos.y + Client::get()->ini->getKeyValueFloat("ModuleBarSize::Height", "18")), ImColor(ccc4ToVec(optionBtn)));
     }
@@ -57,8 +64,7 @@ void Module::drawImGui()
     if (ImGui::GetMousePos().x >= ImGui::GetItemRectMin().x && ImGui::GetMousePos().y >= ImGui::GetItemRectMin().y && ImGui::GetMousePos().x <= ImGui::GetItemRectMax().x && ImGui::GetMousePos().y <= ImGui::GetItemRectMax().y)
         Client::get()->hoveredModule = this;
 
-    if (f)
-        ImGui::PopStyleColor(3);
+    ImGui::PopStyleColor(4);
 }
 
 void Module::onOptionsAndroid(CCObject* sender)
