@@ -16,9 +16,40 @@ void Module::drawImGui()
         f = true;
     }
 
-    if (ImGui::Button(this->name.c_str(), Client::get()->widgetSize))
+    if (ImGui::Button(this->name.c_str(), ImVec2(Client::get()->widgetSize.x + (options.size() > 0 ? -Client::get()->widgetSize.y : 0), Client::get()->widgetSize.y)))
     {
         onToggleAndroid(nullptr);
+    }
+
+    if (options.size() > 0)
+    {
+        ImGui::SameLine();
+
+        ImGui::PushID(fmt::format("{}/options-btn", id).c_str());
+
+        float offset = Client::get()->ini->getKeyValueFloat("Offsets::ModuleSettingOffset", "6");
+        auto optionBtn = Client::get()->optionsModule == this ? Client::get()->accentColour : Client::get()->getThemeColour("ModuleOptionsDeselected", ccc4(70, 70, 70, 255));
+        ImVec2 bottomLeftPos = ImVec2(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x + offset, ImGui::GetWindowPos().y + ImGui::GetCursorPos().y + offset);
+
+        if (ImGui::Button("", ImVec2(Client::get()->widgetSize.y, Client::get()->widgetSize.y)))
+        {
+            if (Client::get()->optionsModule == this)
+                Client::get()->optionsModule = nullptr;
+            else
+                Client::get()->optionsModule = this;
+        }
+
+        ImGui::PopID();
+
+        ImGui::GetWindowDrawList()->AddTriangleFilled(ImVec2(bottomLeftPos.x, bottomLeftPos.y + Client::get()->widgetSize.y - offset * 2), ImVec2(bottomLeftPos.x + Client::get()->widgetSize.y - offset * 2, bottomLeftPos.y), ImVec2(bottomLeftPos.x + Client::get()->widgetSize.y - offset * 2, bottomLeftPos.y + Client::get()->widgetSize.y - offset * 2), ImColor(ccc4ToVec(optionBtn)));
+    }
+    else
+    {
+        float offset = Client::get()->ini->getKeyValueFloat("Offsets::ModuleBarOffset", "3");
+        auto optionBtn = enabled ? Client::get()->accentColour : Client::get()->getThemeColour("ModuleBarDeselected", ccc4(70, 70, 70, 255));
+        ImVec2 topRightPos = ImVec2(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x + Client::get()->widgetSize.x - offset, ImGui::GetWindowPos().y + ImGui::GetCursorPos().y - Client::get()->widgetSize.y + offset);
+
+        ImGui::GetWindowDrawList()->AddRectFilled(topRightPos, ImVec2(topRightPos.x - Client::get()->ini->getKeyValueFloat("ModuleBarSize::Width", "3"), topRightPos.y + Client::get()->ini->getKeyValueFloat("ModuleBarSize::Height", "18")), ImColor(ccc4ToVec(optionBtn)));
     }
 
     lastRenderedPosition = ImGui::GetItemRectMin();

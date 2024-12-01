@@ -76,13 +76,15 @@ void Client::initImGui()
 
     io->ConfigWindowsMoveFromTitleBarOnly = true;
 
-    style->FramePadding = ImVec2(3, 4);
+    style->FramePadding = ImVec2(4, 4);
     style->ItemSpacing = ImVec2(0, 0);
     style->WindowPadding = ImVec2(0, 0);
     style->Colors[ImGuiCol_TitleBg] = ImVec4(20.0f / 255, 20.0f / 255, 20.0f / 255, 1);
     style->ScrollbarSize = 8;
 
     setUIScale(mod->getSavedValue<float>("imgui-ui-scale", 1.0f));
+
+    accentColour = ccc4(238, 119, 98, 255);
 
     // loadImGuiTheme("catppuccin-frappe.ini");
     loadImGuiTheme("midgahack.ini");
@@ -101,6 +103,11 @@ void Client::initImGui()
         window->onEnter();
         window->onEnterTransitionDidFinish();
     }
+
+    Loader::get()->queueInMainThread([this]
+    {
+        toggleWindowVisibility(WindowTransitionType::Vertical, true);
+    });
 }
 
 void Client::drawImGui()
@@ -116,6 +123,22 @@ void Client::drawImGui()
     {
         if (window->isVisible())
             window->drawImGui();
+    }
+
+    if (optionsModule)
+    {
+        ImGui::SetNextWindowPos(ImVec2(optionsModule->lastRenderedPosition.x + widgetSize.y, optionsModule->lastRenderedPosition.y));
+        ImGui::SetNextWindowSize(ImVec2(widgetSize.x, widgetSize.y * optionsModule->options.size()));
+
+        ImGui::Begin("Module Options", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+
+        for (auto module : optionsModule->options)
+        {
+            ImGui::PushItemWidth(widgetSize.x);
+            module->drawImGui();
+        }
+
+        ImGui::End();
     }
 
     ImGui::ShowStyleEditor();
@@ -192,59 +215,6 @@ void Client::sortWindows(bool instant)
 
             window->runAction(action);
             window->actualWindowPos = wndPos;
-        }
-    }
-
-    return;
-
-    ImVec2 configSize;
-
-    for (auto window : windows)
-    {
-        ImVec2 posOffset = ImVec2(15, 15);
-
-        if (window->id == "cosmetic-window")
-            posOffset.x = (225 + 15) * 1;
-
-        if (window->id == "universal-window")
-            posOffset.x = (225 + 15) * 2;
-
-        if (window->id == "creator-window")
-        {
-            posOffset.x = (225 + 15) * 3;
-            configSize = window->getDesiredWindowSize();
-        }
-
-        if (window->id == "speedhack-window")
-        {
-            posOffset.x = (225 + 15) * 3;
-            posOffset.y = 15 * 2 + configSize.y;
-        }
-
-        if (window->id == "labels-window")
-            posOffset.x = (225 + 15) * 4;
-
-        if (window->id == "icon-effects")
-            posOffset.x = (225 + 15) * 5;
-
-        if (window->id == "config-window")
-            posOffset.x = (225 + 15) * 6;
-
-        if (instant)
-        {
-            window->setPosition(ccp(posOffset.x, posOffset.y));
-            window->actualWindowPos = posOffset;
-        }
-        else
-        {
-            if (window->getActionByTag(69))
-                window->stopActionByTag(69);
-            
-            auto action = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(posOffset.x, posOffset.y)), 2);
-            action->setTag(69);
-
-            window->runAction(action);
-            window->actualWindowPos = posOffset;
         }
     }
 
@@ -364,7 +334,7 @@ void Client::loadImGuiTheme(std::string theme)
 
     ini = SimpleINI::createWithFile((Mod::get()->getResourcesDir() / theme).string());
 
-    ini->addVariable("accent_colour", fmt::format("#{}", cc4bToHexString(ccc4(207, 67, 115, 255))));
+    ini->addVariable("accent_colour", fmt::format("#{}", cc4bToHexString(accentColour)));
 
     widgetSize = ImVec2(ini->getKeyValueFloat("WidgetSize::Width", "215"), ini->getKeyValueFloat("WidgetSize::Height", "25"));
 

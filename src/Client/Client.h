@@ -38,8 +38,10 @@ public:
     float delta = 0;
     
     bool isWindowOpen = true;
+    ccColor4B accentColour = ccc4(207, 67, 115, 255);
 
-    Module* hoveredModule;
+    Module* hoveredModule = nullptr;
+    Module* optionsModule = nullptr;
     ImFont* font = nullptr;
     Ref<BlurLayer> blurLayer;
     bool over = false;

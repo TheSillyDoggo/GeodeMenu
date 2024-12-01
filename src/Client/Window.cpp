@@ -1,6 +1,5 @@
 #include "Client.h"
 #include "Types/SetValueModule.hpp"
-#include <imgui_internal.h>
 
 Window::Window()
 {
@@ -17,7 +16,6 @@ void Window::drawImGui()
     ImGui::SetNextWindowSize(getDesiredWindowSize());
 
     ImGui::Begin(this->name.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-    ImGui::GetCurrentWindow()->TitleBarHeight = Client::get()->widgetSize.y;
 
     if (ImGui::IsWindowHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
     {
