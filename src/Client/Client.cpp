@@ -58,8 +58,6 @@ bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
 
 bool Client::useImGuiUI()
 {
-    return true;
-
     if (LaunchArgs::get()->hasLaunchArg("--qolmod:use-imgui-ui"))
         return true;
 

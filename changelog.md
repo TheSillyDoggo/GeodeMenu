@@ -1,5 +1,8 @@
 # 1.7.5
 
+- Fixed December Menu Snow not working
+- Fixed Unlock Gauntlets not working in some cases
+- Fixed rare crash on completing levels
 - Added API for mod developers to add tabs to the QOLMod UI
 
 # 1.7.5-beta.6

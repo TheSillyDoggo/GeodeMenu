@@ -556,8 +556,15 @@ public:
 
         Client::GetModule("menu-bg-blur")->setIncompatible("Blur BG is temporarily disabled because i broke it :(.");
 
-        if (!Loader::get()->getInstalledMod("geode.node-ids") || !Loader::get()->getInstalledMod("geode.node-ids")->isEnabled())
+        if (auto nodeIDs = Loader::get()->getInstalledMod("geode.node-ids"))
+        {
+            if (!nodeIDs->isOrWillBeEnabled())
+                Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be enabled!");
+        }
+        else
+        {
             Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be installed!");
+        }
     }
 
 #pragma endregion

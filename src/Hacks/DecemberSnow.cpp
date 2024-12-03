@@ -14,7 +14,7 @@ class $modify (MenuLayer)
         std::time_t currentTime = std::time(nullptr);
         std::tm* localTime = std::localtime(&currentTime);
 
-        if (localTime->tm_mon == 12)
+        if (localTime->tm_mon + 1 == 12)
         {
             auto snow = CCParticleSnow::create();
             snow->setID("snow"_spr);
