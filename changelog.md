@@ -1,5 +1,6 @@
 # 1.7.6
 
+- Fixed level creator appearing as blank in labels for official levels
 - Fixed lag (thanks @prevter)
 - Added **Label Import / Export to file buttons**
 

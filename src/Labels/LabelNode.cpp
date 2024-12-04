@@ -104,7 +104,7 @@ void LabelNode::update(float dt)
     if (auto lvl = GJBaseGameLayer::get()->m_level)
     {
         script->setVariable("level_name", rift::Value::string(lvl->m_levelName));
-        script->setVariable("level_creator", rift::Value::string(lvl->m_creatorName));
+        script->setVariable("level_creator", rift::Value::string(lvl->m_creatorName.empty() ? "RobTop" : lvl->m_creatorName));
         script->setVariable("level_description", rift::Value::string(lvl->getUnpackedLevelDescription()));
         script->setVariable("level_upload", rift::Value::string(lvl->m_uploadDate));
         script->setVariable("level_update", rift::Value::string(lvl->m_updateDate));
