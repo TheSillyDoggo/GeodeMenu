@@ -40,4 +40,7 @@ class Labels : public Window
         void onMoveLabelUp(CCObject* sender);
         void onMoveLabelDown(CCObject* sender);
         void onToggleVisible(CCObject* sender);
+        void onImportFromFile(CCObject* sender);
+
+        void importFromFile(std::filesystem::path path);
 };

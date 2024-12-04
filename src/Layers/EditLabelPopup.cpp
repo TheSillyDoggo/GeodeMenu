@@ -233,6 +233,12 @@ void EditLabelPopup::customSetup()
     colourToggleMenu->addChild(noclipToggle);
     colourToggleMenu->addChild(noclipLabel);
 
+    // ButtonSprite * create(const char *caption, int width, bool absolute, const char *font, const char *texture, float height, float scale)
+    auto exportBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Export To File", 100, false, "bigFont.fnt", "GJ_button_05.png", 30, 1.0f), this, menu_selector(EditLabelPopup::onExportToFile));
+    exportBtn->setPosition(ccp((colourBG->getContentWidth() - 15 * 2) / 2, -120));
+    exportBtn->getNormalImage()->setScale(0.85f);
+    colourToggleMenu->addChild(exportBtn);
+
     colourBG->addChildAtPosition(colourToggleMenu, Anchor::TopLeft, ccp(15, -35));
 
     auto infoMenu = CCMenu::create();
@@ -459,6 +465,11 @@ void EditLabelPopup::onPage(CCObject* sender)
         currentPage = 0;
 
     updatePage();
+}
+
+void EditLabelPopup::onExportToFile(CCObject* sender)
+{
+    module->exportToFile();
 }
 
 void EditLabelPopup::onClose(CCObject* sender)

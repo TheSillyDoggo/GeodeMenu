@@ -2,6 +2,8 @@
 #include "../../Layers/EditLabelPopup.hpp"
 #include "../../Layers/EditSafeZonePopup.hpp"
 #include "../../Labels/LabelLayer.hpp"
+#include "../AndroidUI.h"
+#include "../../DragDrop.hpp"
 
 #define BUTTON_WIDTH 200
 
@@ -78,6 +80,12 @@ void Labels::cocosCreate(CCMenu* menu)
     auto safeBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png"), this, menu_selector(Labels::onSetupSafeZone));
     safeBtn->setPosition(ccp(240, 15));
     safeBtn->getNormalImage()->setScale(0.5f);
+
+    // ButtonSprite * create(const char *caption, int width, bool absolute, const char *font, const char *texture, float height, float scale)
+    auto importBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Import From File", 100, false, "bigFont.fnt", "GJ_button_05.png", 30, 1.0f), this, menu_selector(Labels::onImportFromFile));
+    importBtn->setPosition(safeBtn->getPosition() + ccp(55, 0));
+    importBtn->getNormalImage()->setScale(0.7f);
+    safeZoneMenu->addChild(importBtn);
 
     safeZoneMenu->addChild(safeBtn);
     menu->addChild(safeZoneMenu);
@@ -576,4 +584,63 @@ void Labels::loadFromPrevSave()
 Labels* Labels::get()
 {
     return instance;
+}
+
+void Labels::onImportFromFile(CCObject* sender)
+{
+    file::FilePickOptions options;
+
+    file::FilePickOptions::Filter filter;
+    filter.description = "QOLMod Label";
+    filter.files = { "*.qollbl" };
+
+    options.filters.push_back(filter);
+
+    file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
+    {
+        if (path->isOk())
+        {
+            auto paths = path->unwrap();
+
+            for (auto path : paths)
+            {
+                importFromFile(path);
+            }
+        }
+    });
+}
+
+void Labels::importFromFile(std::filesystem::path path)
+{
+    auto res = file::readJson(path);
+
+    if (res.isOk())
+    {
+        auto mod = LabelModule::createFromObject(res.unwrap());
+        mod->name = fmt::format("{} ({})", mod->name, path.filename().string());
+
+        modules.push_back(mod);
+
+        save();
+        
+        if (AndroidUI::get())
+            refreshList();
+
+        FLAlertLayer::create("Success!", "<cg>Successfully</c> imported <cc>label</c>!", "Yay!")->show();
+    }
+    else
+    {
+        FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> to import <cc>label</c>.\n<cl>{}</c>", res.unwrapErr()), "OK")->show();
+    }
+}
+
+$on_mod(Loaded)
+{
+    DragDrop::get()->addListener("import-labels"_spr, [](std::vector<std::string> paths)
+    {
+        for (auto path : paths)
+        {
+            Labels::get()->importFromFile(path);
+        }
+    });
 }

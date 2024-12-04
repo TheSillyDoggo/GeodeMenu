@@ -158,3 +158,36 @@ LabelModule* LabelModule::createFromObject(matjson::Value obj)
 
     return mod;
 }
+
+void LabelModule::exportToFile()
+{
+    auto object = saveToObject();
+
+    auto dump = object.dump();
+
+    file::FilePickOptions options;
+
+    file::FilePickOptions::Filter filter;
+    filter.description = "QOLMod Label";
+    filter.files = { "*.qollbl" };
+
+    options.filters.push_back(filter);
+
+    file::pick(file::PickMode::SaveFile, options).listen([this, dump](Result<std::filesystem::path>* path)
+    {
+        if (path->isOk())
+        {
+            auto filePath = path->unwrapOr(Mod::get()->getConfigDir());
+
+            if (!filePath.has_extension())
+                filePath += ".qollbl";
+            
+            auto res = file::writeString(filePath, dump);
+
+            if (res.isOk())
+                FLAlertLayer::create("Success!", "<cg>Success</c> exporting <cc>file</c>!", "OK")->show();
+            else
+                FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> exporting <cc>file</c>!\n<cr>{}</c>", res.unwrapErr()), "OK")->show();
+        }
+    });
+}

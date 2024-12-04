@@ -30,6 +30,7 @@ class EditLabelPopup : public SillyBaseLayer
         void onClose(CCObject* sender);
         void onAddEvent(CCObject* sender);
         void onFormatInfo(CCObject* sender);
+        void onExportToFile(CCObject* sender);
 
         void updateList();
 

@@ -1,3 +1,8 @@
+# 1.7.6
+
+- Fixed lag (thanks @prevter)
+- Added **Label Import / Export to file buttons**
+
 # 1.7.5
 
 - Fixed December Menu Snow not working

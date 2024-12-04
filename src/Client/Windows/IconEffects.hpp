@@ -20,6 +20,9 @@ class EffectUI : public CCNode
         static inline int trail = 0;
         static inline int waveTrail = 0;
 
+        static inline std::array<float, 5> speeds = {1, 1, 1, 1, 1};
+        static inline bool sameDual = false;
+
         static inline Hook* _hook = nullptr;
 
         static bool getIncompatibleModLoaded();
@@ -44,30 +47,34 @@ class EffectUI : public CCNode
 
         void update(float delta)
         {
+            auto color1 = getColourForSelected(0);
+            auto color2 = getColourForSelected(1);
+            auto glow = getColourForSelected(2);
+
             for (size_t i = 0; i < players.size(); i++)
             {
-                players[i]->setColor(getColourForSelected(0));
-                players[i]->setSecondColor(getColourForSelected(1));
+                players[i]->setColor(color1);
+                players[i]->setSecondColor(color2);
 
-                players[i]->enableCustomGlowColor(getColourForSelected(2));
+                players[i]->enableCustomGlowColor(glow);
                 players[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
                 players[i]->updateColors();
             }
 
             for (size_t i = 0; i < players2.size(); i++)
             {
-                if (Mod::get()->getSavedValue<bool>("same-dual"))
+                if (sameDual)
                 {
-                    players2[i]->setColor(getColourForSelected(0));
-                    players2[i]->setSecondColor(getColourForSelected(1));
+                    players2[i]->setColor(color1);
+                    players2[i]->setSecondColor(color2);
                 }
                 else
                 {
-                    players2[i]->setColor(getColourForSelected(1));
-                    players2[i]->setSecondColor(getColourForSelected(0));
+                    players2[i]->setColor(color2);
+                    players2[i]->setSecondColor(color1);
                 }
 
-                players2[i]->enableCustomGlowColor(getColourForSelected(2));
+                players2[i]->enableCustomGlowColor(glow);
                 players2[i]->m_hasGlowOutline = GameManager::get()->m_playerGlow;
                 players2[i]->updateColors();
             }
@@ -90,16 +97,11 @@ class EffectUI : public CCNode
 
             for (size_t i = 0; i < fades.size(); i++)
             {
-                std::stringstream fadeIn;
-                fadeIn << "fadeColour1";
-                fadeIn << i;
+                auto fadeIn = fmt::format("fadeColour1{}", i);
+                auto fadeOut = fmt::format("fadeColour2{}", i);
 
-                std::stringstream fadeOut;
-                fadeOut << "fadeColour2";
-                fadeOut << i;
-
-                ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
-                ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
+                ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn, {0, 0, 0});
+                ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut, {255, 255, 255});
 
                 float v = ColourUtility::va;
                 v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", i), 1);
@@ -163,7 +165,9 @@ class IconEffects : public Window
 
         void changeDual(CCObject*)
         {
-            Mod::get()->setSavedValue<bool>("same-dual", !Mod::get()->getSavedValue<bool>("same-dual"));
+            bool sameDual = !Mod::get()->getSavedValue<bool>("same-dual");
+            Mod::get()->setSavedValue<bool>("same-dual", sameDual);
+            EffectUI::sameDual = sameDual;
         }
 
         void updateSelections()

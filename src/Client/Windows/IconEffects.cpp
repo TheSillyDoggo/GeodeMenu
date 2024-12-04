@@ -6,7 +6,7 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
     int sel = 0;
     float v = ColourUtility::va;
 
-    v *= Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", mode), 1);
+    v *= speeds[mode];
 
     switch (mode)
     {
@@ -30,30 +30,23 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
             break;
     }
 
-    if (mode == 0)
+    auto gameManager = GameManager::get();
+
+    if (sel == 0)
     {
-        if (sel == 0)
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value());
-    }
-    else if (mode == 1)
-    {
-        if (sel == 0)
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value());
-    }
-    else if (mode == 2)
-    {
-        if (sel == 0)
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value());
-    }
-    else if (mode == 3)
-    {
-        if (sel == 0)
-            return GameManager::get()->colorForIdx(Mod::get()->getSavedValue<bool>("same-dual") ? GameManager::get()->m_playerColor2.value() : (player2 ? GameManager::get()->m_playerColor.value() : GameManager::get()->m_playerColor2.value()));
-    }
-    else
-    {
-        if (sel == 0)
-            return GameManager::get()->colorForIdx(Mod::get()->getSavedValue<bool>("same-dual") ? GameManager::get()->m_playerColor.value() : (player2 ? GameManager::get()->m_playerColor2.value() : GameManager::get()->m_playerColor.value()));
+        switch (mode)
+        {
+            case 0:
+                return gameManager->colorForIdx(gameManager->m_playerColor.value());
+            case 1:
+                return gameManager->colorForIdx(gameManager->m_playerColor2.value());
+            case 2:
+                return gameManager->colorForIdx(gameManager->m_playerGlowColor.value());
+            case 3:
+                return gameManager->colorForIdx(sameDual ? gameManager->m_playerColor2.value() : (player2 ? gameManager->m_playerColor.value() : gameManager->m_playerColor2.value()));
+            default:
+                return gameManager->colorForIdx(sameDual ? gameManager->m_playerColor.value() : (player2 ? gameManager->m_playerColor2.value() : gameManager->m_playerColor.value()));
+        }
     }
 
     if (sel == 1)
@@ -64,16 +57,11 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
 
     if (sel == 3)
     {
-        std::stringstream fadeIn;
-        fadeIn << "fadeColour1";
-        fadeIn << mode;
+        auto fadeIn = fmt::format("fadeColour1{}", mode);
+        auto fadeOut = fmt::format("fadeColour2{}", mode);
 
-        std::stringstream fadeOut;
-        fadeOut << "fadeColour2";
-        fadeOut << mode;
-
-        ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn.str(), {0, 0, 0});
-        ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut.str(), {255, 255, 255});
+        ccColor3B in = Mod::get()->getSavedValue<ccColor3B>(fadeIn, {0, 0, 0});
+        ccColor3B out = Mod::get()->getSavedValue<ccColor3B>(fadeOut, {255, 255, 255});
 
         return ColourUtility::lerpColour(in, out, (sinf(v * 3) + 1) / 2);
         //fade
@@ -87,7 +75,7 @@ ccColor3B EffectUI::getColourForSelected(int mode, bool player2) // bri`ish
     return {0, 0, 0};
 }
 
-std::vector<std::string> mods = 
+constexpr std::array mods =
 {
     "rooot.custom-gamemode-colors",
     "gdemerald.custom_icon_colors",
@@ -139,16 +127,27 @@ void EffectUI::updateValues()
     glow = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 2), 0);
     trail = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 3), 0);
     waveTrail = Mod::get()->getSavedValue<int>(fmt::format("selColour{}", 4), 0);
+
+    sameDual = Mod::get()->getSavedValue<bool>("same-dual");
+
+    // cache values for performance
+    for (int i = 0; i < 5; i++)
+    {
+        speeds[i] = Mod::get()->getSavedValue<float>(fmt::format("icon-effect-speed_{}", i), 1);
+    }
 }
 
 class $modify (GJBaseGameLayer)
 {
     virtual void update(float p0)
     {
+        auto plr1 = EffectUI::getColourForSelected(0);
+        auto plr2 = EffectUI::getColourForSelected(1);
+
         if (m_player1)
         {
-            m_player1->setColor(EffectUI::getColourForSelected(0));
-            m_player1->setSecondColor(EffectUI::getColourForSelected(1));
+            m_player1->setColor(plr1);
+            m_player1->setSecondColor(plr2);
             m_player1->m_glowColor = EffectUI::getColourForSelected(2);
             m_player1->updateGlowColor();
             m_player1->m_regularTrail->setColor(EffectUI::getColourForSelected(3));
@@ -157,7 +156,7 @@ class $modify (GJBaseGameLayer)
 
         if (m_player2)
         {
-            if (!Mod::get()->getSavedValue<bool>("same-dual"))
+            if (!EffectUI::sameDual)
             {
                 m_player2->setColor(EffectUI::getColourForSelected(1, true));
                 m_player2->setSecondColor(EffectUI::getColourForSelected(0, true));
@@ -175,9 +174,6 @@ class $modify (GJBaseGameLayer)
             m_player2->m_regularTrail->setColor(EffectUI::getColourForSelected(3, true));
             m_player2->m_waveTrail->setColor(EffectUI::getColourForSelected(4, true));
         }
-
-        auto plr1 = EffectUI::getColourForSelected(0, false);
-        auto plr2 = EffectUI::getColourForSelected(1, false);
 
         if (m_effectManager)
         {
@@ -216,6 +212,4 @@ class $modify (MenuLayer)
 $execute
 {
     EffectUI::updateValues();
-
-    log::info("b");
 };

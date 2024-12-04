@@ -42,4 +42,6 @@ class LabelModule : public Module
 
         matjson::Value saveToObject();
         static LabelModule* createFromObject(matjson::Value obj);
+
+        void exportToFile();
 };

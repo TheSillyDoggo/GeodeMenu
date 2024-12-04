@@ -1,5 +1,7 @@
 #include "IconOptionsLayer.h"
 
+#include "../Client/Windows/IconEffects.hpp"
+
 void IconOptionsLayer::customSetup()
 {
     startFade = Mod::get()->getSavedValue<ccColor3B>(fmt::format("fadeColour1{}", icon), {0, 0, 0});
@@ -67,7 +69,10 @@ void IconOptionsLayer::onClose(CCObject* sender)
 {
     Mod::get()->setSavedValue<ccColor3B>(fmt::format("fadeColour1{}", icon), startFade);
     Mod::get()->setSavedValue<ccColor3B>(fmt::format("fadeColour2{}", icon), endFade);
-    Mod::get()->setSavedValue<float>(fmt::format("icon-effect-speed_{}", icon), numFromString<float>(input->getString()).unwrapOr(1.0f));
+
+    auto value = numFromString<float>(input->getString()).unwrapOr(1.0f);
+    Mod::get()->setSavedValue<float>(fmt::format("icon-effect-speed_{}", icon), value);
+    EffectUI::speeds[icon] = value;
 
     SillyBaseLayer::onClose(sender);
 }
