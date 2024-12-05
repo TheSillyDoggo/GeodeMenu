@@ -5,64 +5,52 @@
 
 using namespace geode::prelude;
 
-#ifdef QOLMOD_TPS_BYPASS_HOOK
+#ifndef QOLMOD_TPS_BYPASS_HOOK
 
-#else
+std::vector<Patch*> patches;
 
-std::vector<Patch*> patches = {};
+void updateTPSPatches(bool tpsEnabled) {
+    
+    for (auto* patch : patches) {
+        if (patch) Mod::get()->disownPatch(patch);
+    }
+    patches.clear();
 
-void updateTPSPatches(bool tpsEnabled)
-{    
-    if (patches.size() > 0)
-    {
-        for (auto catgirl : patches)
-        {
-            if (catgirl)
-                (void)Mod::get()->disownPatch(catgirl); // goodbye cutie you will be very missed :3c
+    if (!tpsEnabled) return;
+
+    constexpr float defaultTPS = 240.0f;
+    float tps = defaultTPS;
+
+    if (auto input = dynamic_cast<InputModule*>(Client::GetModule("tps-bypass")->options[0])) {
+        if (auto parsedTPS = numFromString<float>(input->text); parsedTPS.isOk()) {
+            tps = parsedTPS.unwrapOr(defaultTPS);
         }
-
-        patches.clear();
     }
 
-    float tps = 240;
+    if (auto offset = OffsetManager::get()->offsetForType(PatchType::PhysicsBypass); offset != 0x80085) {
+        #ifdef GEODE_IS_WINDOWS
+        auto array = geode::toBytes<float>(1.0f / tps);
+        #else
+        auto array = geode::toBytes<double>(1.0f / tps);
+        #endif
 
-    auto x = numFromString<float>(as<InputModule*>(Client::GetModule("tps-bypass")->options[0])->text);
-
-    if (x.isOk())
-    {
-        tps = x.unwrapOr(240);
-    }
-
-    if (tpsEnabled)
-    {
-        if (auto offset = OffsetManager::get()->offsetForType(PatchType::PhysicsBypass); offset != 0x80085)
-        {
-            #ifdef GEODE_IS_WINDOWS
-            auto array = geode::toBytes<float>(1.0f / tps);
-            #else
-            auto array = geode::toBytes<double>(1.0f / tps);
-            #endif
-
-            patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + offset), array));
-        }
+        patches.push_back(createPatchSafe(reinterpret_cast<void*>(geode::base::get() + offset), array));
     }
 }
 
-class TPSChangedDelegate : public ModuleChangeDelegate
-{
-    virtual void onModuleChanged(bool enabled)
-    {
+class TPSChangedDelegate : public ModuleChangeDelegate {
+    void onModuleChanged(bool enabled) override {
         updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
     }
 };
 
-$execute
-{
+$execute {
     Loader::get()->queueInMainThread([] {
-        auto del = new TPSChangedDelegate();
+        auto* delegate = new TPSChangedDelegate();
+        auto* tpsModule = Client::GetModule("tps-bypass");
 
-        Client::GetModule("tps-bypass")->delegate = del;
-        Client::GetModule("tps-bypass")->options[0]->delegate = del;
+        tpsModule->delegate = delegate;
+        tpsModule->options[0]->delegate = delegate;
 
         updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
     });
