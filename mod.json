@@ -24,7 +24,8 @@
 			"resources/*.hlsl",
 			"resources/*.wav",
 			"resources/*.md",
-			"resources/*.ini"
+			"resources/*.ini",
+			"resources/langs/*.json"
         ],
 		"sprites": [
 			"resources/sprites/*.png"

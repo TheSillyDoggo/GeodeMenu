@@ -3,6 +3,7 @@
 #include "../Layers/ModuleOptionsLayer.h"
 #include "Dropdown.h"
 #include "Client.h"
+#include "../UI/TransLabelBMFont.hpp"
 
 void Module::drawImGui()
 {
@@ -158,7 +159,7 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
     btn->toggle(enabled);
     btn->setPosition(pos);
 
-    auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    auto label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos + ccp(15, 0));
