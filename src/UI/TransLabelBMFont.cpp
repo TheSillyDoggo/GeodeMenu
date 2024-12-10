@@ -9,9 +9,6 @@ bool TransLabelBMFont::init(std::string text, std::string font)
 
     text = TranslationManager::get()->getTranslatedString(text);
 
-    if (text == "Noclip")
-        text = "ノークリップ";
-
     this->text = text;
     this->font = text;
 

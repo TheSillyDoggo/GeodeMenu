@@ -12,6 +12,7 @@ class TranslationManager
     public:
         static TranslationManager* get();
 
+        void unloadTranslation();
         void loadTranslationFromJson(matjson::Value object);
         std::string getTranslatedString(std::string engText);
 };

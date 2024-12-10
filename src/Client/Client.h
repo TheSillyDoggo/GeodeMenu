@@ -48,10 +48,7 @@ public:
     SimpleINI* ini = nullptr;
     ImVec2 widgetSize = ImVec2(215, 25);
 
-    Client()
-    {
-        mod = Mod::get();
-    }
+    Client();
 
     static Client* get();
 
@@ -68,6 +65,8 @@ public:
     ccColor4B getThemeColour(std::string key, ccColor4B def);
 
     void setUIScale(float scale);
+
+    void setLanguage(std::string langFile);
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
     static bool GetModuleEnabled(std::string id)

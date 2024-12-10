@@ -1,10 +1,18 @@
 #include "Client.h"
 #include "../Utils/LaunchArgs.hpp"
+#include "../Utils/TranslationManager.hpp"
 #include <Geode/modify/CCEGLView.hpp>
 
 Client* Client::get()
 {
     return instance;
+}
+
+Client::Client()
+{
+    mod = Mod::get();
+
+    setLanguage(Mod::get()->getSavedValue<std::string>("loaded-translation", "none"));
 }
 
 bool Client::handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey)
@@ -155,6 +163,22 @@ void Client::drawImGui()
 
         // ImGui::End();
     }
+}
+
+void Client::setLanguage(std::string langFile)
+{
+    auto path = Mod::get()->getResourcesDir() / langFile;
+
+    if (std::filesystem::exists(path))
+    {
+        TranslationManager::get()->loadTranslationFromJson(file::readJson(path).unwrapOr("{ }"));
+    }
+    else
+    {
+        TranslationManager::get()->unloadTranslation();
+    }
+
+    Mod::get()->setSavedValue<std::string>("loaded-translation", langFile);
 }
 
 void Client::sortWindows(bool instant)

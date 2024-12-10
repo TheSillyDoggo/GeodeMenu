@@ -12,5 +12,8 @@
             "glow-col": 12,
             "death-effect-id": 3
         }
-    ] 
+    ],
+    "strings": {
+        "Noclip": "ノークリップ"
+    }
 }

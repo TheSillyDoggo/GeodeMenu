@@ -4,6 +4,7 @@
 
 using namespace geode::prelude;
 
+// they call this my gender
 class TransLabelBMFont : public CCNode
 {
     private:

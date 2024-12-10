@@ -10,11 +10,21 @@ TranslationManager* TranslationManager::get()
     return instance;
 }
 
-void TranslationManager::loadTranslationFromJson(matjson::Value object)
+void TranslationManager::unloadTranslation()
 {
     translatedTexts = {};
+}
 
-    for (auto value : object)
+void TranslationManager::loadTranslationFromJson(matjson::Value object)
+{
+    unloadTranslation();
+
+    if (!object.contains("strings"))
+        return;
+
+    auto strings = object["strings"];
+
+    for (auto value : strings)
     {
         if (value.isString() && value.getKey().has_value())
         {

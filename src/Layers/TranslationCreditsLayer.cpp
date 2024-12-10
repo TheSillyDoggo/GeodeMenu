@@ -17,18 +17,15 @@ void TranslationCreditsLayer::customSetup()
 
     langNode->setLayout(AxisLayout::create()->setGap(20));
 
-    auto stencil = CCScale9Sprite::create("GJ_square01.png");
-    stencil->setContentSize(size + ccp(0, -30));
-    stencil->setAnchorPoint(ccp(0.5f, 0));
-
-    auto stencilTop = CCLayerColor::create(ccc4(255, 255, 255, 255), size.x, 30);
-    stencilTop->setAnchorPoint(ccp(0.5f, 1));
-    stencilTop->ignoreAnchorPointForPosition(false);
-    stencil->addChildAtPosition(stencilTop, Anchor::Top);
+    auto stencil = CCScale9Sprite::create("banner-mask.png"_spr);
+    stencil->setContentSize(size + ccp(0, -32));
+    stencil->setAnchorPoint(ccp(0.5f, 1));
+    stencil->setScaleY(-1);
 
     auto clip = CCClippingNode::create(stencil);
     clip->setAlphaThreshold(0.03f);
     clip->setAnchorPoint(ccp(0.5f, 0));
+    clip->setZOrder(3);
 
     auto clipOutline = CCScale9Sprite::create("GJ_square07.png");
     clipOutline->setContentSize(size);
@@ -48,8 +45,13 @@ void TranslationCreditsLayer::customSetup()
     clip->addChild(background, -2);
     clip->addChild(ground, -1);
 
-    baseLayer->addChildAtPosition(langNode, Anchor::Top, ccp(0, -16));
+    baseLayer->addChildAtPosition(langNode, Anchor::Top, ccp(0, -18));
     baseLayer->addChildAtPosition(clip, Anchor::Bottom);
+
+    auto clipLine = CCLayerColor::create(ccc4(255, 255, 255, 255), size.x, 30);
+    clipLine->setAnchorPoint(ccp(0.5f, 1));
+    clipLine->ignoreAnchorPointForPosition(false);
+    baseLayer->addChildAtPosition(clipLine, Anchor::Bottom, ccp(0, stencil->getContentHeight() + 1.5f));
 
     auto gameNode = CCMenu::create();
     gameNode->ignoreAnchorPointForPosition(false);
@@ -61,6 +63,7 @@ void TranslationCreditsLayer::customSetup()
     creditsMenu->setContentWidth(320);
     creditsMenu->setAnchorPoint(ccp(0.5f, 1));
     creditsMenu->setLayout(AxisLayout::create()->setGrowCrossAxis(true)->setCrossAxisAlignment(AxisAlignment::Start));
+    creditsMenu->setZOrder(6);
 
     for (auto contributor : language["contributors"].asArray().unwrap())
     {
@@ -106,7 +109,7 @@ void TranslationCreditsLayer::customSetup()
     creditsMenu->updateLayout();
 
     clip->addChild(gameNode);
-    baseLayer->addChildAtPosition(creditsMenu, Anchor::Top, ccp(0, -42.5f));
+    baseLayer->addChildAtPosition(creditsMenu, Anchor::Top, ccp(0, -45));
 
     ok->setZOrder(420);
 }
