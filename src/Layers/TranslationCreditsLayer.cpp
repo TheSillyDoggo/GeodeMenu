@@ -98,6 +98,7 @@ void TranslationCreditsLayer::customSetup()
 
             auto lbl = CCLabelBMFont::create(contributor["username"].asString().unwrapOr("Error").c_str(), "goldFont.fnt");
             lbl->limitLabelWidth(130, 1, 0);
+            lbl->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
             float s = lbl->getScale();
             
             auto btn = CCMenuItemSpriteExtra::create(lbl, this, menu_selector(TranslationCreditsLayer::onPlayerProfile));
@@ -173,11 +174,11 @@ void TranslationCreditsLayer::onKill(CCObject* sender)
 
     as<CCMenuItemSpriteExtra*>(sender)->addChild(death);
 
-    background->runAction(CCSequence::create(CCTintTo::create(0.05f, 200, 0, 0), CCTintTo::create(0.5f, 40, 125, 255), nullptr));
+    background->runAction(CCSequence::create(CCTintTo::create(0.05f, 200, 0, 0), CCTintTo::create(0.5f, background->getColor().r, background->getColor().g, background->getColor().b), nullptr));
 
     for (auto grn : CCArrayExt<CCSprite*>(ground->getChildByType<CCSpriteBatchNode>(0)->getChildByType<CCSprite>(0)->getChildren()))
     {
-        grn->runAction(CCSequence::create(CCTintTo::create(0.05f, 160, 0, 0), CCTintTo::create(0.5f, 0, 102, 255), nullptr));
+        grn->runAction(CCSequence::create(CCTintTo::create(0.05f, 160, 0, 0), CCTintTo::create(0.5f, grn->getColor().r, grn->getColor().g, grn->getColor().b), nullptr));
     }
 }
 

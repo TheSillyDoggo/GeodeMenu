@@ -1,5 +1,6 @@
 #include "LanguageSelectNode.hpp"
 #include "../Utils/UnspeedhackedAction.hpp"
+#include "../Utils/TranslationManager.hpp"
 
 bool LanguageSelectNode::init()
 {
@@ -32,7 +33,12 @@ bool LanguageSelectNode::init()
 
     node->setTouchPriority(-999999);
 
-    goToPage(0);
+    if (!TranslationManager::get()->isLanguageLoaded())
+        goToPage(0);
+    else
+    {
+
+    }
 
     this->addChild(colBG);
     this->addChildAtPosition(node, Anchor::Center);
@@ -68,11 +74,21 @@ void LanguageSelectNode::goToPage(int page)
     layer->ok->setTarget(this, menu_selector(LanguageSelectNode::onSubmit));
 
     node->addChild(layer, 420);
+
+    auto c = ColourUtility::getChromaColour(0.5f * changedBy);
+
+    layer->background->setColor(c);
+
+    for (auto child : CCArrayExt<CCSprite*>(layer->ground->getChildByType<CCSpriteBatchNode>(0)->getChildByType<CCSprite>(0)->getChildren()))
+    {
+        child->setColor(ccc3(c.r * 0.6f, c.g * 0.6f, c.b * 0.6f));
+    }
 }
 
 void LanguageSelectNode::onLeft(CCObject* sender)
 {
     page--;
+    changedBy--;
 
     if (page < 0)
         page = Client::get()->getLanguages().size();
@@ -83,6 +99,7 @@ void LanguageSelectNode::onLeft(CCObject* sender)
 void LanguageSelectNode::onRight(CCObject* sender)
 {
     page++;
+    changedBy++;
 
     if (page > Client::get()->getLanguages().size())
         page = 0;

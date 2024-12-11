@@ -11,6 +11,7 @@ class LanguageSelectNode : public CCLayer
         CCMenu* node;
         TranslationCreditsLayer* layer;
         int page = 0;
+        int changedBy = 0;
 
         bool init();
 
