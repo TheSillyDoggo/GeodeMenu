@@ -20,6 +20,10 @@ class TransLabelBMFont : public CCNode
         void limitLabelWidth(float width, float defaultScale, float minScale);
 
         void setOpacity(int opacity);
+        void setColor(ccColor3B colour);
+
+        std::string getString();
+
         void updateTTFVisible();
 
         static TransLabelBMFont* create(std::string text, std::string font);

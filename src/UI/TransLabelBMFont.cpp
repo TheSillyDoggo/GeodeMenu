@@ -15,6 +15,8 @@ bool TransLabelBMFont::init(std::string text, std::string font)
     label = CCLabelBMFont::create(text.c_str(), font.c_str());
     ttf = CCLabelTTF::create("", "Arial.ttf", 27.5f);
 
+    this->setAnchorPoint(ccp(0.5f, 0.5f));
+
     label->setAnchorPoint(ccp(0, 0));
     ttf->setAnchorPoint(ccp(0, 0));
 
@@ -57,6 +59,17 @@ void TransLabelBMFont::setOpacity(int opacity)
 {
     label->setOpacity(opacity);
     ttf->setOpacity(opacity);
+}
+
+void TransLabelBMFont::setColor(ccColor3B colour)
+{
+    label->setColor(colour);
+    ttf->setColor(colour);
+}
+
+std::string TransLabelBMFont::getString()
+{
+    return text;
 }
 
 TransLabelBMFont* TransLabelBMFont::create(std::string text, std::string font)

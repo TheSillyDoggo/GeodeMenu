@@ -43,8 +43,11 @@ bool SillyBaseLayer::setup()
 
     if (animate)
     {
+        auto action = UnspeedhackedAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));
+        action->setTag(69);
+
         l->setScale(0);
-        l->runAction(UnspeedhackedAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)));
+        l->runAction(action);
     }
 
     this->addChild(l);

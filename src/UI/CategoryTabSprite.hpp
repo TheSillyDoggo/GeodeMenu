@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "TransLabelBMFont.hpp"
 
 using namespace geode::prelude;
 
@@ -22,7 +23,7 @@ class CategoryTabSprite : public CCNode
     public:
         CCScale9Sprite* outline;
         CCScale9Sprite* background;
-        CCLabelBMFont* label;
+        TransLabelBMFont* label;
         CCSprite* sprite;
 
         static CategoryTabSprite* create(CategoryTabType type, std::string name = "", std::string icon = "");

@@ -13,6 +13,8 @@ TranslationManager* TranslationManager::get()
 void TranslationManager::unloadTranslation()
 {
     translatedTexts = {};
+    currentLanguage = "";
+    languageLoaded = false;
 }
 
 void TranslationManager::loadTranslationFromJson(matjson::Value object)
@@ -31,6 +33,19 @@ void TranslationManager::loadTranslationFromJson(matjson::Value object)
             translatedTexts.emplace(value.getKey().value(), value.asString().unwrapOr("Unknown unwrap error :c"));
         }
     }
+
+    languageLoaded = true;
+    currentLanguage = object["display_name_english"].asString().unwrapOr("ERROR");
+}
+
+std::string TranslationManager::getLoadedLanguage()
+{
+    return currentLanguage;
+}
+
+bool TranslationManager::isLanguageLoaded()
+{
+    return languageLoaded;
 }
 
 std::string TranslationManager::getTranslatedString(std::string engText)

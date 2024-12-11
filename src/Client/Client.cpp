@@ -2,6 +2,7 @@
 #include "../Utils/LaunchArgs.hpp"
 #include "../Utils/TranslationManager.hpp"
 #include <Geode/modify/CCEGLView.hpp>
+#include <regex>
 
 Client* Client::get()
 {
@@ -179,6 +180,23 @@ void Client::setLanguage(std::string langFile)
     }
 
     Mod::get()->setSavedValue<std::string>("loaded-translation", langFile);
+}
+
+std::vector<std::filesystem::path> Client::getLanguages()
+{
+    std::vector<std::filesystem::path> files;
+
+    for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
+    {
+        auto p = file.path().filename();
+
+        if (p.has_extension() && p.extension().string() == ".json")
+        {
+            files.push_back(file);
+        }
+    }
+
+    return files;
 }
 
 void Client::sortWindows(bool instant)

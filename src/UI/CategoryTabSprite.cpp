@@ -36,7 +36,7 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
         }
     }
 
-    label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
 
     this->addChildAtPosition(background, Anchor::Center);
     this->addChildAtPosition(outline, Anchor::Center);

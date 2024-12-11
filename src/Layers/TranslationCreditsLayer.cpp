@@ -1,6 +1,7 @@
 #include "TranslationCreditsLayer.hpp"
 #include <Geode/modify/MenuLayer.hpp>
 #include "../UI/PlayerDeathAnimation.hpp"
+#include "../Utils/TranslationManager.hpp"
 
 void TranslationCreditsLayer::customSetup()
 {
@@ -65,45 +66,48 @@ void TranslationCreditsLayer::customSetup()
     creditsMenu->setLayout(AxisLayout::create()->setGrowCrossAxis(true)->setCrossAxisAlignment(AxisAlignment::Start));
     creditsMenu->setZOrder(6);
 
-    for (auto contributor : language["contributors"].asArray().unwrap())
+    if (path != "none")
     {
-        auto plr = PlayerObject::create(contributor["icon-id"].asUInt().unwrapOr(1), 2, nullptr, this, false);
-
-        plr->setColor(GameManager::get()->colorForIdx(contributor["primary-col"].asInt().unwrapOr(0)));
-        plr->setSecondColor(GameManager::get()->colorForIdx(contributor["secondary-col"].asInt().unwrapOr(0)));
-
-        if (contributor["glow-enabled"].asBool().unwrapOr(false))
+        for (auto contributor : language["contributors"].asArray().unwrap())
         {
-            plr->enableCustomGlowColor(GameManager::get()->colorForIdx(contributor["glow-col"].asInt().unwrapOr(0)));
-            plr->updateGlowColor();
+            auto plr = PlayerObject::create(contributor["icon-id"].asUInt().unwrapOr(1), 2, nullptr, this, false);
+
+            plr->setColor(GameManager::get()->colorForIdx(contributor["primary-col"].asInt().unwrapOr(0)));
+            plr->setSecondColor(GameManager::get()->colorForIdx(contributor["secondary-col"].asInt().unwrapOr(0)));
+
+            if (contributor["glow-enabled"].asBool().unwrapOr(false))
+            {
+                plr->enableCustomGlowColor(GameManager::get()->colorForIdx(contributor["glow-col"].asInt().unwrapOr(0)));
+                plr->updateGlowColor();
+            }
+
+            plr->togglePlatformerMode(true);
+            plr->m_regularTrail->setVisible(false);
+
+            auto plrBtn = CCMenuItemSpriteExtra::create(plr, this, menu_selector(TranslationCreditsLayer::onKill));
+            plrBtn->setContentSize(ccp(30, 30));
+            plr->setPosition(plrBtn->getContentSize() / 2);
+
+            plrBtn->setPosition(ccp((as<float>(rand()) / as<float>(RAND_MAX) * 2 - 1) * 120, 190));
+            plrBtn->runAction(CCEaseBounceOut::create(CCMoveTo::create(1, ccp(plrBtn->getPositionX(), 0))));
+            plrBtn->setTag(contributor["death-effect-id"].asUInt().unwrapOr(1));
+
+            plrBtn->m_scaleMultiplier = 0.8f;
+
+            gameNode->addChild(plrBtn);
+
+            auto lbl = CCLabelBMFont::create(contributor["username"].asString().unwrapOr("Error").c_str(), "goldFont.fnt");
+            lbl->limitLabelWidth(130, 1, 0);
+            float s = lbl->getScale();
+            
+            auto btn = CCMenuItemSpriteExtra::create(lbl, this, menu_selector(TranslationCreditsLayer::onPlayerProfile));
+            btn->setTag(contributor["account-id"].asUInt().unwrapOr(0));
+
+            lbl->setScale(0);
+            lbl->runAction(CCEaseElasticOut::create(CCScaleTo::create(1.25f, s)));
+
+            creditsMenu->addChild(btn);
         }
-
-        plr->togglePlatformerMode(true);
-        plr->m_regularTrail->setVisible(false);
-
-        auto plrBtn = CCMenuItemSpriteExtra::create(plr, this, menu_selector(TranslationCreditsLayer::onKill));
-        plrBtn->setContentSize(ccp(30, 30));
-        plr->setPosition(plrBtn->getContentSize() / 2);
-
-        plrBtn->setPosition(ccp((as<float>(rand()) / as<float>(RAND_MAX) * 2 - 1) * 120, 190));
-        plrBtn->runAction(CCEaseBounceOut::create(CCMoveTo::create(1, ccp(plrBtn->getPositionX(), 0))));
-        plrBtn->setTag(contributor["death-effect-id"].asUInt().unwrapOr(1));
-
-        plrBtn->m_scaleMultiplier = 0.8f;
-
-        gameNode->addChild(plrBtn);
-
-        auto lbl = CCLabelBMFont::create(contributor["username"].asString().unwrapOr("Error").c_str(), "goldFont.fnt");
-        lbl->limitLabelWidth(130, 1, 0);
-        float s = lbl->getScale();
-        
-        auto btn = CCMenuItemSpriteExtra::create(lbl, this, menu_selector(TranslationCreditsLayer::onPlayerProfile));
-        btn->setTag(contributor["account-id"].asUInt().unwrapOr(0));
-
-        lbl->setScale(0);
-        lbl->runAction(CCEaseElasticOut::create(CCScaleTo::create(1.25f, s)));
-
-        creditsMenu->addChild(btn);
     }
 
     creditsMenu->updateLayout();
@@ -111,7 +115,45 @@ void TranslationCreditsLayer::customSetup()
     clip->addChild(gameNode);
     baseLayer->addChildAtPosition(creditsMenu, Anchor::Top, ccp(0, -45));
 
+    bool used = TranslationManager::get()->getLoadedLanguage() == language["display_name_english"];
+
+    if (path == "none")
+        used = !TranslationManager::get()->isLanguageLoaded();
+
+    sprUse = ButtonSprite::create(used ? "Used" : "Use", "goldFont.fnt", used ? "GJ_button_05.png" : "GJ_button_01.png");
+    btnUse = CCMenuItemSpriteExtra::create(sprUse, this, menu_selector(TranslationCreditsLayer::onUse));
+    btnUse->setEnabled(!used);
+
+    ok->setPositionX(ok->getPositionX() - btnUse->getScaledContentWidth() / 2);
+    btnUse->setPosition(ccp(ok->getPositionX() + btnUse->getScaledContentWidth(), ok->getPositionY()));
+
     ok->setZOrder(420);
+    baseLayer->addChild(btnUse, 69);
+}
+
+void TranslationCreditsLayer::onUse(CCObject* sender)
+{
+    if (path == "none")
+        Client::get()->setLanguage("none");
+    else
+        Client::get()->setLanguage(path.filename().string());
+
+    ok->setPositionX(ok->getPositionX() + btnUse->getScaledContentWidth() / 2);
+    btnUse->removeFromParent();
+
+    bool used = TranslationManager::get()->getLoadedLanguage() == language["display_name_english"];
+
+    if (path == "none")
+        used = !TranslationManager::get()->isLanguageLoaded();
+
+    sprUse = ButtonSprite::create(used ? "Used" : "Use", "goldFont.fnt", used ? "GJ_button_05.png" : "GJ_button_01.png");
+    btnUse = CCMenuItemSpriteExtra::create(sprUse, this, menu_selector(TranslationCreditsLayer::onUse));
+    btnUse->setEnabled(!used);
+
+    ok->setPositionX(ok->getPositionX() - btnUse->getScaledContentWidth() / 2);
+    btnUse->setPosition(ccp(ok->getPositionX() + btnUse->getScaledContentWidth(), ok->getPositionY()));
+
+    baseLayer->addChild(btnUse, 69);
 }
 
 void TranslationCreditsLayer::onPlayerProfile(CCObject* sender)
@@ -139,11 +181,12 @@ void TranslationCreditsLayer::onKill(CCObject* sender)
     }
 }
 
-TranslationCreditsLayer* TranslationCreditsLayer::create(matjson::Value language)
+TranslationCreditsLayer* TranslationCreditsLayer::create(matjson::Value language, std::filesystem::path path)
 {
     auto pRet = new TranslationCreditsLayer();
 
     pRet->language = language;
+    pRet->path = path;
 
     if (pRet && pRet->initWithSizeAndName(ccp(330, 280), ""))
     {
@@ -155,20 +198,91 @@ TranslationCreditsLayer* TranslationCreditsLayer::create(matjson::Value language
     return nullptr;
 }
 
-TranslationCreditsLayer* TranslationCreditsLayer::addToScene(matjson::Value language)
+TranslationCreditsLayer* TranslationCreditsLayer::addToScene(matjson::Value language, std::filesystem::path path)
 {
-    auto pRet = TranslationCreditsLayer::create(language);
+    auto pRet = TranslationCreditsLayer::create(language, path);
 
     CCScene::get()->addChild(pRet, 99999);
 
     return pRet;
 }
 
+#include "LanguageSelectNode.hpp"
+
 class $modify (MeowMenuLayer, MenuLayer)
 {
     void onMeow(CCObject*)
     {
-        TranslationCreditsLayer::addToScene(file::readJson(Mod::get()->getResourcesDir() / "ja-JP.json").unwrap());
+        TranslationCreditsLayer::addToScene(file::readJson(Mod::get()->getResourcesDir() / "de-DE.json").unwrap(), Mod::get()->getResourcesDir() / "de-DE.json");
+    }
+
+    void onNyaa(CCObject*)
+    {
+        TranslationCreditsLayer::addToScene(matjson::parse("{ \"display_name_english\": \"Default\", \"display_name_native\": \"English\", \"contributors\": [] }").unwrapOr("{}"), "none");
+    }
+
+    void onCatgirl(CCObject*)
+    {
+        log::info("1: {}, 2: {}", TranslationManager::get()->isLanguageLoaded(), TranslationManager::get()->getLoadedLanguage());
+    }
+
+    void onFemboy(CCObject*)
+    {
+        LanguageSelectNode::addToScene();
+    }
+
+    void onMrrow(CCObject*)
+    {
+        matjson::Value obj;
+
+        obj["display_name_english"] = "TODO";
+        obj["display_name_native"] = "TODO";
+        obj["contributors"] = obj.array();
+        
+        matjson::Value strings;
+
+        for (auto window : Client::get()->windows)
+        {
+            strings[window->name] = "";
+        }
+
+        for (auto window : Client::get()->windows)
+        {
+            for (auto mod : window->modules)
+            {
+                strings[mod->name] = "";
+
+                for (auto option : mod->options)
+                {
+                    if (!option)
+                        continue;
+
+                    strings[option->name] = "";
+                }
+            }
+        }
+
+        /*
+        for (auto window : Client::get()->windows)
+        {
+            for (auto mod : window->modules)
+            {
+                strings[mod->description] = "";
+
+                for (auto option : mod->options)
+                {
+                    if (!option)
+                        continue;
+
+                    strings[option->description] = "";
+                }
+            }
+        }
+        */
+
+        obj["strings"] = strings;
+
+        log::info("a:\n{}", obj.dump());
     }
 
     bool init()
@@ -181,7 +295,25 @@ class $modify (MeowMenuLayer, MenuLayer)
         btn->setPosition(ccp(100, 100));
         menu->addChild(btn);
 
+        auto btn2 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), this, menu_selector(MeowMenuLayer::onMrrow));
+        btn2->setPosition(ccp(50, -50));
+        menu->addChild(btn2);
+
+        auto btn3 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_editHSVBtn2_001.png"), this, menu_selector(MeowMenuLayer::onNyaa));
+        btn3->setPosition(ccp(100, 50));
+        menu->addChild(btn3);
+
+        auto btn4 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_like2Btn_001.png"), this, menu_selector(MeowMenuLayer::onCatgirl));
+        btn4->setPosition(ccp(100, 0));
+        menu->addChild(btn4);
+
+        auto btn5 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("label_of_001.png"), this, menu_selector(MeowMenuLayer::onFemboy));
+        btn5->setPosition(ccp(150, -50));
+        menu->addChild(btn5);
+
         this->addChild(menu, 6935434);
+
+        Client::get()->getLanguages();
 
         return true;
     }
