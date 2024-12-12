@@ -331,7 +331,7 @@ public:
         cosmetic->modules.push_back(new Module("No Transition", "no-trans", "Disables the fade scene transitions"));
         cosmetic->modules.push_back(new Module("No Camera Shake", "no-shake", "Disables camera shake globally"));
 
-        cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables shaders, <cl>maybe read</c> the name"));
+        cosmetic->modules.push_back(new Module("No Shaders", "no-shaders", "Disables the shaders of a level"));
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
 
         cosmetic->modules.push_back(new Module("No Wave Trail", "no-wave", "Disables the wave trail"));
