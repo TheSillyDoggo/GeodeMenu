@@ -4,6 +4,7 @@
 #include "Dropdown.h"
 #include "Client.h"
 #include "../UI/TransLabelBMFont.hpp"
+#include "../UI/TransAlertLayer.hpp"
 
 void Module::drawImGui()
 {
@@ -85,7 +86,7 @@ void Module::onInfoAndroid(CCObject* sender)
     if (!dat)
         return;
 
-    auto al = FLAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
+    auto al = TransAlertLayer::create(dat->name.c_str(), dat->description.c_str(), "OK");
     al->show();
 }
 

@@ -36,13 +36,28 @@ bool LanguageSelectNode::init()
     if (!TranslationManager::get()->isLanguageLoaded())
         goToPage(0);
     else
-    {
-
-    }
+        goToPage(Mod::get()->getSavedValue<std::string>("loaded-translation", "none"));
 
     this->addChild(colBG);
     this->addChildAtPosition(node, Anchor::Center);
     return true;
+}
+
+void LanguageSelectNode::goToPage(std::string fileName)
+{
+    auto langs = Client::get()->getLanguages();
+
+    int i = 1;
+
+    for (auto lang : langs)
+    {
+        if (lang.filename() == fileName)
+            return goToPage(i);
+
+        i++;
+    }
+
+    goToPage(0);
 }
 
 void LanguageSelectNode::goToPage(int page)

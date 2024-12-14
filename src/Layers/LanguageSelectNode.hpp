@@ -16,6 +16,7 @@ class LanguageSelectNode : public CCLayer
         bool init();
 
         void goToPage(int page);
+        void goToPage(std::string fileName);
 
         virtual void keyBackClicked();
         void onSubmit(CCObject* sender);

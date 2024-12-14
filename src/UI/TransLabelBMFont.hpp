@@ -22,6 +22,7 @@ class TransLabelBMFont : public CCNode
         void setOpacity(int opacity);
         void setColor(ccColor3B colour);
 
+        void setString(const char* str);
         std::string getString();
 
         void updateTTFVisible();

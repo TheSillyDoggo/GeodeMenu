@@ -1,3 +1,7 @@
+# 1.7.7
+
+- Added **Localization / Translations**!!!
+
 # 1.7.6
 
 - Fixed level creator appearing as blank in labels for official levels

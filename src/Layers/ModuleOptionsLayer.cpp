@@ -1,4 +1,5 @@
 #include "ModuleOptionsLayer.h"
+#include "../UI/TransAlertLayer.hpp"
 
 ModuleOptionsLayer* ModuleOptionsLayer::create(Module* module)
 {
@@ -49,6 +50,6 @@ void ModuleOptionsLayer::customSetup()
 
 void ModuleOptionsLayer::onInfoButton(CCObject*)
 {
-    auto al = FLAlertLayer::create(mod->name.c_str(), mod->description.c_str(), "OK");
+    auto al = TransAlertLayer::create(mod->name.c_str(), mod->description.c_str(), "OK");
     al->show();
 }

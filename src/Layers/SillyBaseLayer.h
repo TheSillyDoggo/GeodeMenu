@@ -5,6 +5,7 @@
 #include "../Client/Client.h"
 #include "../UI/BlurLayer.hpp"
 #include "../UI/QOLModMenuBG.hpp"
+#include "../UI/TransLabelBMFont.hpp"
 
 using namespace geode::prelude;
 
@@ -16,7 +17,7 @@ class SillyBaseLayer : public geode::Popup<>
         CCPoint size = CCPointZero;
         BlurLayer* blur = nullptr;
         std::string _title;
-        CCLabelBMFont* title;
+        TransLabelBMFont* title;
         bool createWithOK;
         bool animate;
         bool noBlur;

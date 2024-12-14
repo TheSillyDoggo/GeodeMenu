@@ -1,8 +1,9 @@
 #include "ColourPickModule.hpp"
+#include "../../UI/TransLabelBMFont.hpp"
 
 void ColourModule::makeAndroid(CCNode* menu, CCPoint pos)
 {
-    auto label = CCLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    auto label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos + ccp(-15, 0));
