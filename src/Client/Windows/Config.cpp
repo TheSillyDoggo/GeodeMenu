@@ -1,5 +1,6 @@
 #include "Config.hpp"
 #include "../AndroidBall.h"
+#include "../../Layers/LanguageSelectNode.hpp"
 
 #define FADE_ICON(iconID, primary, secondary, glow, deathEffect) \
 plr = SimplePlayer::create(iconID); \
@@ -101,6 +102,25 @@ void Config::cocosCreate(CCMenu* menu)
     kbs->setPosition(kbs->getContentSize() / 2);
     kbs->setAnchorPoint(CCPointZero);
     kbs2->setPosition(kbs2->getContentSize() / 2);
+
+    auto lang = CategoryTabSprite::create(CategoryTabType::Text, "Set Language", "geode.loader/globe.png");
+    lang->updateSelection(CategorySelectionType::Deselected);
+    lang->setContentSize(animDropdown->getContentSize());
+    lang->setContentWidth(150);
+
+    auto lang2 = CategoryTabSprite::create(CategoryTabType::Text, "Set Language", "geode.loader/globe.png");
+    lang2->updateSelection(CategorySelectionType::Hovered);
+    lang2->setContentSize(animDropdown->getContentSize());
+    lang2->setContentWidth(150);
+
+    auto btnlang = CCMenuItemSpriteExtra::create(lang, menu, menu_selector(Config::onChangeLanguage));
+    btnlang->m_animationEnabled = false;
+    btnlang->setSelectedImage(lang2);
+    menuTab->addChildAtPosition(btnlang, Anchor::BottomLeft, p + ccp(65, -30 - 30));
+
+    lang->setPosition(lang->getContentSize() / 2);
+    lang->setAnchorPoint(CCPointZero);
+    lang2->setPosition(lang2->getContentSize() / 2);
     
     auto buttonTab = CCMenu::create();
     buttonTab->setContentWidth(menu->getContentWidth());
@@ -633,6 +653,11 @@ void Config::onChangeFile(CCObject*)
 void Config::onManageKeybinds(CCObject*)
 {
     ManageKeybindsLayer::addToScene();
+}
+
+void Config::onChangeLanguage(CCObject*)
+{
+    LanguageSelectNode::addToScene();
 }
 
 void Config::drawImGui()

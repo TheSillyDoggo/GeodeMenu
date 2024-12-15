@@ -3,6 +3,12 @@
 #include "../UI/PlayerDeathAnimation.hpp"
 #include "../Utils/TranslationManager.hpp"
 
+// Particle Strings
+
+#define PARTICLE_HIT_BIG "30a-1a1a0a-1a90a0a46a76a11a0a0a-483a45a0a0a0a1a1a0a0a1a0a1a0a1a0a1a0a0a1a0a0a1a0a1a0a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a2a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0"
+#define PARTICLE_HIT_MEDIUM "30a-1a1a0a30a90a0a5a0a11a0a0a-208a289a0a0a0a1a1a0a0a1a0a1a0a1a0a1a0a0a1a0a0a1a0a1a0a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a2a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0"
+#define PARTICLE_HIT_SMALL "30a-1a1a0a30a90a70a58a0a11a0a0a-208a0a0a0a0a1a1a0a0a1a0a1a0a1a0a1a0a0a1a0a0a1a0a1a0a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a2a1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0"
+
 void TranslationCreditsLayer::customSetup()
 {
     auto langNode = CCNode::create();
@@ -44,7 +50,7 @@ void TranslationCreditsLayer::customSetup()
     background->setScale(0.85f);
 
     clip->addChild(background, -2);
-    clip->addChild(ground, -1);
+    clip->addChild(ground, 1);
 
     baseLayer->addChildAtPosition(langNode, Anchor::Top, ccp(0, -18));
     baseLayer->addChildAtPosition(clip, Anchor::Bottom);
@@ -63,10 +69,10 @@ void TranslationCreditsLayer::customSetup()
     creditsMenu->ignoreAnchorPointForPosition(false);
     creditsMenu->setContentWidth(320);
     creditsMenu->setAnchorPoint(ccp(0.5f, 1));
-    creditsMenu->setLayout(AxisLayout::create()->setGrowCrossAxis(true)->setCrossAxisAlignment(AxisAlignment::Start));
+    creditsMenu->setLayout(AxisLayout::create()->setGrowCrossAxis(true)->setCrossAxisAlignment(AxisAlignment::Start)->setGap(15));
     creditsMenu->setZOrder(6);
 
-    if (path != "none")
+    if (path != "none" && language.contains("contributors"))
     {
         for (auto contributor : language["contributors"].asArray().unwrap())
         {
@@ -83,6 +89,10 @@ void TranslationCreditsLayer::customSetup()
 
             plr->togglePlatformerMode(true);
             plr->m_regularTrail->setVisible(false);
+
+            plr->runAction(CCSequence::create(CCDelayTime::create(0.37f), CCCallFunc::create(plr, callfunc_selector(TranslationCreditsLayer::spawnBigParticle)), nullptr));
+            plr->runAction(CCSequence::create(CCDelayTime::create(0.73f), CCCallFunc::create(plr, callfunc_selector(TranslationCreditsLayer::spawnMediumParticle)), nullptr));
+            plr->runAction(CCSequence::create(CCDelayTime::create(0.92f), CCCallFunc::create(plr, callfunc_selector(TranslationCreditsLayer::spawnSmallParticle)), nullptr));
 
             auto plrBtn = CCMenuItemSpriteExtra::create(plr, this, menu_selector(TranslationCreditsLayer::onKill));
             plrBtn->setContentSize(ccp(30, 30));
@@ -115,6 +125,50 @@ void TranslationCreditsLayer::customSetup()
 
     clip->addChild(gameNode);
     baseLayer->addChildAtPosition(creditsMenu, Anchor::Top, ccp(0, -45));
+
+    if (path == "none")
+    {
+        auto thanks = CCLabelBMFont::create("Nobody to thank here.\nExcept you <3\nThanks for using QOLMod!", "bigFont.fnt");
+        thanks->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+
+        auto sprs = CCArrayExt<CCSprite*>(thanks->getChildren());
+
+        sprs[28]->setColor(ccc3(255, 90, 90));
+        sprs[29]->setColor(ccc3(255, 90, 90));
+        sprs[30]->setColor(ccc3(255, 90, 90));
+        sprs[31]->setColor(ccc3(255, 90, 90));
+        sprs[32]->setColor(ccc3(255, 90, 90));
+        sprs[33]->setColor(ccc3(255, 90, 90));
+
+        sprs[51]->setColor(ccc3(255, 165, 75));
+        sprs[52]->setColor(ccc3(255, 165, 75));
+        sprs[53]->setColor(ccc3(255, 165, 75));
+        sprs[54]->setColor(ccc3(255, 165, 75));
+        sprs[55]->setColor(ccc3(255, 165, 75));
+        sprs[56]->setColor(ccc3(255, 165, 75));
+
+        auto menu = CCMenu::create();
+        menu->setPosition(ccp(0, 150));
+        menu->ignoreAnchorPointForPosition(false);
+        menu->setScale(0.6f);
+        menu->setContentSize(thanks->getContentSize());
+
+        for (auto letter : CCArrayExt<CCSprite*>(thanks->getChildren()))
+        {
+            auto spr = CCSprite::createWithTexture(letter->getTexture());
+            spr->setTextureRect(letter->getTextureRect());
+            spr->setColor(letter->getColor());
+
+            auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TranslationCreditsLayer::onKill));
+            btn->setTag(1);
+            btn->m_scaleMultiplier = 0.8f;
+            btn->setPosition(letter->getPosition());
+
+            menu->addChild(btn);
+        }
+
+        clip->addChild(menu);
+    }
 
     bool used = TranslationManager::get()->getLoadedLanguage() == language["display_name_english"];
 
@@ -180,6 +234,59 @@ void TranslationCreditsLayer::onKill(CCObject* sender)
     {
         grn->runAction(CCSequence::create(CCTintTo::create(0.05f, 160, 0, 0), CCTintTo::create(0.5f, grn->getColor().r, grn->getColor().g, grn->getColor().b), nullptr));
     }
+
+    if (sender->getTag() == 1)
+    {
+        killCount++;
+
+        if (killCount == 50)
+        {
+            #ifndef GEODE_IS_MACOS
+
+            AchievementNotifier::sharedState()->notifyAchievement("Waste of time", "Why would you waste your time doing that?", "diffIcon_04_btn_001.png", true);
+
+            #endif
+        }
+    }
+}
+
+void TranslationCreditsLayer::spawnBigParticle()
+{
+    auto plr = reinterpret_cast<PlayerObject*>(this);
+
+    auto part = GameToolbox::particleFromString(PARTICLE_HIT_BIG, nullptr, false);
+    part->setDuration(1);
+    part->setAutoRemoveOnFinish(true);
+    part->setEmissionRate(-1);
+    part->setPosition(plr->getParent()->getPosition() + ccp(0, -15));
+
+    plr->getParent()->getParent()->addChild(part, 7);
+}
+
+void TranslationCreditsLayer::spawnMediumParticle()
+{
+    auto plr = reinterpret_cast<PlayerObject*>(this);
+
+    auto part = GameToolbox::particleFromString(PARTICLE_HIT_MEDIUM, nullptr, false);
+    part->setDuration(1);
+    part->setAutoRemoveOnFinish(true);
+    part->setEmissionRate(-1);
+    part->setPosition(plr->getParent()->getPosition() + ccp(0, -15));
+
+    plr->getParent()->getParent()->addChild(part, 6);
+}
+
+void TranslationCreditsLayer::spawnSmallParticle()
+{
+    auto plr = reinterpret_cast<PlayerObject*>(this);
+
+    auto part = GameToolbox::particleFromString(PARTICLE_HIT_SMALL, nullptr, false);
+    part->setDuration(1);
+    part->setAutoRemoveOnFinish(true);
+    part->setEmissionRate(-1);
+    part->setPosition(plr->getParent()->getPosition() + ccp(0, -15));
+
+    plr->getParent()->getParent()->addChild(part, 5);
 }
 
 TranslationCreditsLayer* TranslationCreditsLayer::create(matjson::Value language, std::filesystem::path path)
@@ -207,115 +314,3 @@ TranslationCreditsLayer* TranslationCreditsLayer::addToScene(matjson::Value lang
 
     return pRet;
 }
-
-#include "LanguageSelectNode.hpp"
-
-class $modify (MeowMenuLayer, MenuLayer)
-{
-    void onMeow(CCObject*)
-    {
-        TranslationCreditsLayer::addToScene(file::readJson(Mod::get()->getResourcesDir() / "de-DE.json").unwrap(), Mod::get()->getResourcesDir() / "de-DE.json");
-    }
-
-    void onNyaa(CCObject*)
-    {
-        TranslationCreditsLayer::addToScene(matjson::parse("{ \"display_name_english\": \"Default\", \"display_name_native\": \"English\", \"contributors\": [] }").unwrapOr("{}"), "none");
-    }
-
-    void onCatgirl(CCObject*)
-    {
-        log::info("1: {}, 2: {}", TranslationManager::get()->isLanguageLoaded(), TranslationManager::get()->getLoadedLanguage());
-    }
-
-    void onFemboy(CCObject*)
-    {
-        LanguageSelectNode::addToScene();
-    }
-
-    void onMrrow(CCObject*)
-    {
-        matjson::Value obj;
-
-        obj["display_name_english"] = "TODO";
-        obj["display_name_native"] = "TODO";
-        obj["contributors"] = obj.array();
-        
-        matjson::Value strings;
-
-        for (auto window : Client::get()->windows)
-        {
-            strings[window->name] = "";
-        }
-
-        for (auto window : Client::get()->windows)
-        {
-            for (auto mod : window->modules)
-            {
-                strings[mod->name] = "";
-
-                for (auto option : mod->options)
-                {
-                    if (!option)
-                        continue;
-
-                    strings[option->name] = "";
-                }
-            }
-        }
-
-        /*
-        for (auto window : Client::get()->windows)
-        {
-            for (auto mod : window->modules)
-            {
-                strings[mod->description] = "";
-
-                for (auto option : mod->options)
-                {
-                    if (!option)
-                        continue;
-
-                    strings[option->description] = "";
-                }
-            }
-        }
-        */
-
-        obj["strings"] = strings;
-
-        log::info("a:\n{}", obj.dump());
-    }
-
-    bool init()
-    {
-        MenuLayer::init();
-
-        auto menu = CCMenu::create();
-
-        auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_rewardBtn_001.png"), this, menu_selector(MeowMenuLayer::onMeow));
-        btn->setPosition(ccp(100, 100));
-        menu->addChild(btn);
-
-        auto btn2 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_epicCoin3_001.png"), this, menu_selector(MeowMenuLayer::onMrrow));
-        btn2->setPosition(ccp(50, -50));
-        menu->addChild(btn2);
-
-        auto btn3 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_editHSVBtn2_001.png"), this, menu_selector(MeowMenuLayer::onNyaa));
-        btn3->setPosition(ccp(100, 50));
-        menu->addChild(btn3);
-
-        auto btn4 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_like2Btn_001.png"), this, menu_selector(MeowMenuLayer::onCatgirl));
-        btn4->setPosition(ccp(100, 0));
-        menu->addChild(btn4);
-
-        auto btn5 = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("label_of_001.png"), this, menu_selector(MeowMenuLayer::onFemboy));
-        btn5->setPosition(ccp(150, -50));
-        menu->addChild(btn5);
-
-        this->addChild(menu, 6935434);
-
-        Client::get()->getLanguages();
-
-        return true;
-    }
-};

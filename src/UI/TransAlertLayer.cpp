@@ -40,11 +40,13 @@ bool TransAlertLayer::init(char const* title, const gd::string& desc, char const
         node->setAnchorPoint(ccp(0.5f, 0.5f));
         node->setContentWidth(260);
 
-        for (auto word : utils::string::split(desc2, " "))
+        for (auto lb : CCArrayExt<CCLabelBMFont*>(m_mainLayer->getChildByType<TextArea>(0)->getChildByType<MultilineBitmapFont>(0)->getChildren()))
         {
-            auto lbl = TransLabelBMFont::create(fmt::format("{} ", word), "chatFont.fnt");
+            auto lbl = TransLabelBMFont::create(fmt::format("{} ", lb->getString()), "chatFont.fnt");
+            lbl->setColor(lb->getColor());
 
             node->addChild(lbl);
+            log::info("str: {}", lb->getString());
         }
 
         node->setLayout(AxisLayout::create()->setAutoScale(false)->setGrowCrossAxis(true)->setGap(0));

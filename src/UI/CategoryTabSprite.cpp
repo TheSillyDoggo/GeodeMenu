@@ -1,5 +1,7 @@
 #include "CategoryTabSprite.hpp"
 
+#define SPRITE_INSET 5
+
 CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon)
 {
     auto pRet = new CategoryTabSprite();
@@ -31,8 +33,8 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
     {
         if (sprite = CCSprite::createWithSpriteFrameName(icon.c_str()); sprite)
         {
-            sprite->setZOrder(4);
-            this->addChildAtPosition(sprite, Anchor::Center);
+            sprite->setAnchorPoint(ccp(0, 0.5f));
+            this->addChild(sprite, 4);
         }
     }
 
@@ -53,16 +55,34 @@ void CategoryTabSprite::updateSelection(CategorySelectionType type)
         case Deselected:
             label->setColor(ccc3(150, 150, 150));
             label->setOpacity(150);
+
+            if (sprite)
+            {
+                sprite->setColor(ccc3(150, 150, 150));
+                sprite->setOpacity(150);
+            }
             break;
 
         case Hovered:
             label->setColor(ccc3(200, 200, 200));
             label->setOpacity(255);
+
+            if (sprite)
+            {
+                sprite->setColor(ccc3(200, 200, 200));
+                sprite->setOpacity(255);
+            }
             break;
 
         case Selected:
             label->setColor(ccc3(255, 255, 255));
             label->setOpacity(255);
+
+            if (sprite)
+            {
+                sprite->setColor(ccc3(255, 255, 255));
+                sprite->setOpacity(255);
+            }
             break;
     };
 }
@@ -78,7 +98,10 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     background->setContentSize(contentSize * 2);
 
     if (sprite)
-        as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(ccp(-label->getContentWidth() / 2 - sprite->getScaledContentWidth(), 0));
+    {
+        sprite->setPositionX(-getContentWidth() / 2 + SPRITE_INSET);
+        sprite->setScale((getContentHeight() - (SPRITE_INSET * 2)) / sprite->getContentHeight());
+    }
 
     if (sprite && std::string(label->getString()).empty())
         as<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(CCPointZero);

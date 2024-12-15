@@ -75,7 +75,10 @@ void LanguageSelectNode::goToPage(int page)
     if (page == 0)
         layer = TranslationCreditsLayer::create(matjson::parse("{ \"display_name_english\": \"Default\", \"display_name_native\": \"English\", \"contributors\": [] }").unwrapOr("{}"), "none");
     else
-        layer = TranslationCreditsLayer::create(file::readJson(langs[page - 1]).unwrap(), langs[page - 1]);
+    {
+        log::info("loading lang: {}", langs[page - 1].filename());
+        layer = TranslationCreditsLayer::create(file::readJson(langs[page - 1]).unwrapOr("{}"), langs[page - 1]);
+    }
 
     layer->setPosition(CCDirector::get()->getWinSize() * -0.5f);
     layer->stopAllActions();
@@ -90,7 +93,7 @@ void LanguageSelectNode::goToPage(int page)
 
     node->addChild(layer, 420);
 
-    auto c = ColourUtility::getChromaColour(0.5f * changedBy);
+    auto c = ColourUtility::getChromaColour(abs(0.5f * changedBy));
 
     layer->background->setColor(c);
 

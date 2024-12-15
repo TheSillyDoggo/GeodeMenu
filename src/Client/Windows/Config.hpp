@@ -48,6 +48,7 @@ class Config : public Window
         void onChangeFile(CCObject*);
         void onChangeTab(CCObject*);
         void onManageKeybinds(CCObject*);
+        void onChangeLanguage(CCObject*);
         void onRoxi(CCObject* sender);
 
         void cocosCreate(CCMenu* menu);
