@@ -28,6 +28,7 @@ class Labels : public Window
         void cocosCreate(CCMenu* menu);
 
         void refreshList();
+        void dirtyRefreshList(bool smooth);
 
         void save();
         void load();

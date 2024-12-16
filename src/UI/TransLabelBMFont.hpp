@@ -14,6 +14,8 @@ class TransLabelBMFont : public CCNode
         std::string text;
         std::string font;
     
+        CCLabelTTF* createTTF(std::string font, float fontSize);
+
     public:
         bool init(std::string text, std::string font);
 

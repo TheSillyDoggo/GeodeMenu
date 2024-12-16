@@ -4,6 +4,7 @@
 #include "../../Labels/LabelLayer.hpp"
 #include "../AndroidUI.h"
 #include "../../DragDrop.hpp"
+#include "../../UI/GrabNodeLayer.hpp"
 
 #define BUTTON_WIDTH 200
 
@@ -277,6 +278,7 @@ void Labels::refreshList()
             cell->setContentHeight(height);
             cell->setContentWidth(scroll->getContentWidth());
             cell->setUserData(module);
+            cell->setAnchorPoint(ccp(0.5f, 0.5f));
             y += height + 4;
 
             auto bg = CCScale9Sprite::create("square02b_001.png");
@@ -318,47 +320,62 @@ void Labels::refreshList()
 
             auto arrowBack = CCScale9Sprite::create("square02_small.png");
             arrowBack->setOpacity(100);
-            arrowBack->setContentSize(ccp(single ? 18 : 36, 18) * 3);
+            arrowBack->setContentSize(ccp(18, 18) * 3);
             arrowBack->setScale(1.0f / 3.0f);
-            arrowBack->setPositionX(cell->getContentWidth() - (195 - (single ? (18 / 2) / arrowBack->getScale() : 0)) * arrowBack->getScale());
+            arrowBack->setPositionX(cell->getContentWidth() - (195 - ((18 / 2) / arrowBack->getScale())) * arrowBack->getScale());
             arrowBack->setPositionY(cell->getContentHeight() / 2);
 
-            auto upSpr = CCSprite::createWithSpriteFrameName("edit_upBtn_001.png");
-            upSpr->setScale(0.65f);
-
-            auto moveUp = CCMenuItemSpriteExtra::create(upSpr, this, menu_selector(Labels::onMoveLabelUp));
-            moveUp->setPositionY(cell->getContentHeight() / 2);
-            moveUp->setTag(i);
-
-            auto downSpr = CCSprite::createWithSpriteFrameName("edit_downBtn_001.png");
-            downSpr->setScale(0.65f);
-
-            auto moveDown = CCMenuItemSpriteExtra::create(downSpr, this, menu_selector(Labels::onMoveLabelDown));
-            moveDown->setPositionY(cell->getContentHeight() / 2);
-            moveDown->setTag(i);
-
-            if (modules.size() == 1)
+            auto grab = GrabNodeLayer::create();
+            grab->setNodeToGrab(cell);
+            grab->setLockedAxis(LockedAxis::Vertical);
+            grab->setOnStartDrag([cell, bg]
             {
-                arrowBack->setVisible(false);
-                moveUp->setVisible(false);
-                moveDown->setVisible(false);
-            }
+                cell->runAction(CCEaseInOut::create(CCScaleTo::create(0.2f, 0.95f), 2));
 
-            if (i == 0)
+                bg->runAction(CCTintTo::create(0.35f, 145, 0, 255));
+
+                cell->setZOrder(42069);
+            });
+            grab->setOnEndDrag([cell, this, i, bg]
             {
-                moveUp->setEnabled(false);
-                as<CCSprite*>(moveUp->getNormalImage())->setOpacity(150);
-            }
-            else if (i == modules.size() - 1)
-            {
-                moveDown->setEnabled(false);
-                as<CCSprite*>(moveDown->getNormalImage())->setOpacity(150);
-            }
+                cell->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1.0f)));
 
-            #define GAP_ARROWS_BOTH 8
+                bg->runAction(CCTintTo::create(0.35f, 0, 0, 0));
 
-            moveUp->setPosition(arrowBack->getPosition() + ccp(GAP_ARROWS_BOTH, 0));
-            moveDown->setPosition(arrowBack->getPosition() + ccp(-GAP_ARROWS_BOTH, 0));
+                std::sort(cells.begin(), cells.end(), [](CCNode* a, CCNode* b)
+                {
+                    return a->getPositionY() > b->getPositionY();
+                });
+
+                int index = 0;
+
+                for (size_t i = 0; i < cells.size(); i++)
+                {
+                    if (cells[i] == cell)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                log::info("index: {}", index);
+
+                std::swap(modules[i], modules[index]);
+                
+                save();
+
+                if (LabelLayer::get())
+                    LabelLayer::get()->updateLabels();
+
+                dirtyRefreshList(true);
+            });
+
+            grab->setContentSize(ccp(cell->getContentHeight() - 2, cell->getContentHeight() - 2));
+            grab->setPosition(arrowBack->getPosition());
+
+            auto grabSpr = CCSprite::create("draggable.png"_spr);
+            grabSpr->setPosition(grab->getPosition());
+            grabSpr->setScale(0.6f);
 
             auto toggleBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(Labels::onToggleVisible), 0.45f);
             toggleBtn->setUserData(module);
@@ -374,8 +391,8 @@ void Labels::refreshList()
             m->addChild(options);
             m->addChild(deleteBtn);
             m->addChild(arrowBack);
-            m->addChild(moveUp);
-            m->addChild(moveDown);
+            m->addChild(grab);
+            m->addChild(grabSpr);
             m->addChild(toggleBG);
             m->addChild(toggleBtn);
 
@@ -397,6 +414,7 @@ void Labels::refreshList()
     for (auto cell : cells)
     {
         cell->setPositionY(scroll->m_contentLayer->getContentHeight() - cell->getPositionY() - 4 - cell->getContentHeight());
+        cell->setPosition(cell->getPosition() + cell->getContentSize() / 2);
     }
 
     if (cells.size() == 0)
@@ -407,6 +425,22 @@ void Labels::refreshList()
         help->setScale(0.45f);
 
         scroll->m_contentLayer->addChild(help);
+    }
+}
+
+void Labels::dirtyRefreshList(bool smooth)
+{
+    for (size_t i = 0; i < modules.size(); i++)
+    {
+        // im going to kill myself very soon
+        auto pos = ccp(cells[i]->getContentWidth() / 2, (scroll->m_contentLayer->getContentHeight() - ((23 + 4) * i) - cells[i]->getContentHeight() / 2) - 4);
+
+        if (smooth)
+            cells[i]->runAction(CCEaseInOut::create(CCMoveTo::create(0.35f, pos), 2));
+        else
+            cells[i]->setPosition(pos);
+
+        cells[i]->setZOrder(i);
     }
 }
 
