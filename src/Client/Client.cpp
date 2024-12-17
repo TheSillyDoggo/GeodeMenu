@@ -186,9 +186,13 @@ std::vector<std::filesystem::path> Client::getLanguages()
 {
     std::vector<std::filesystem::path> files;
 
+    log::info("asdf: {}", Mod::get()->getResourcesDir());
+
     for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
     {
         auto p = file.path().filename();
+
+        log::info("file: {}", file.path());
 
         if (p.has_extension() && p.extension().string() == ".json")
         {
