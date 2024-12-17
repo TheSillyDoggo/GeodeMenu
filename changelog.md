@@ -1,6 +1,8 @@
 # 1.7.7
 
-- Added **Localization / Translations**!!!
+- Imrpoved label reordering
+- Added **Gold Chest Bypass** to Chest Unlock Bypass
+- Added **Localization / Translations**!!
 -- The language can be changed in the **Config** tab of the mod menu
 
 # 1.7.6

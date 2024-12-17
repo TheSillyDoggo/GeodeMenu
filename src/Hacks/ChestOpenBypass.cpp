@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/SecretRewardsLayer.hpp>
+#include <Geode/modify/GameStatsManager.hpp>
 #include "../Client/Client.h"
 
 using namespace geode::prelude;
@@ -15,8 +16,22 @@ class $modify (SecretRewardsLayer)
 
         GameStatsManager::sharedState()->setStat("21", keys);
 
-        m_keysLabel->setString(fmt::format("{}", keys).c_str());
+        if (m_keysLabel)
+            m_keysLabel->setString(fmt::format("{}", keys).c_str());
     }
 
-    QOLMOD_MOD_HOOK("chest-unlock-bypass", "SecretRewardsLayer::onSelectItem")
+    void onGoldChest(cocos2d::CCObject* sender)
+    {
+        auto keys = GameStatsManager::sharedState()->getStat("43");
+        GameStatsManager::sharedState()->setStat("43", 9999);
+
+        SecretRewardsLayer::onGoldChest(sender);
+
+        GameStatsManager::sharedState()->setStat("21", keys);
+
+        if (m_goldKeysLabel)
+            m_goldKeysLabel->setString(fmt::format("{}", keys).c_str());
+    }
+
+    QOLMOD_MOD_ALL_HOOKS("chest-unlock-bypass")
 };
