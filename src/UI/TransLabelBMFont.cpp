@@ -113,7 +113,7 @@ void TransLabelBMFont::updateTTFVisible()
         if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
         {
             useTtf = true;
-            log::debug("Tripped at: {}, in string: {}", letter, text);
+            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, label->getConfiguration()->getCharacterSet()->size(), as<int>(letter));
             break;
         }
     }

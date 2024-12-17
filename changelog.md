@@ -1,6 +1,7 @@
 # 1.7.7
 
-- Imrpoved label reordering
+- Improved label reordering
+- Fixed Crash using Chest Unlock Bypass
 - Added **Gold Chest Bypass** to Chest Unlock Bypass
 - Added **Localization / Translations**!!
 -- The language can be changed in the **Config** tab of the mod menu
