@@ -110,10 +110,10 @@ void TransLabelBMFont::updateTTFVisible()
 
     for (auto letter : this->text)
     {
-        if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
+        if (!reinterpret_cast<gd::set<unsigned int>*>(label->getConfiguration()->getCharacterSet())->contains(as<int>(letter)))
         {
             useTtf = true;
-            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, label->getConfiguration()->getCharacterSet()->size(), as<int>(letter));
+            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, reinterpret_cast<gd::set<unsigned int>*>(label->getConfiguration()->getCharacterSet())->size(), as<int>(letter));
             break;
         }
     }
