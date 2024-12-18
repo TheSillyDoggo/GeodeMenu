@@ -75,6 +75,9 @@ bool TransLabelBMFont::init(std::string text, std::string font)
     if (!CCNode::init())
         return false;
 
+    instances.push_back(this);
+
+    this->originalText = text;
     text = TranslationManager::get()->getTranslatedString(text);
 
     this->text = text;
@@ -102,6 +105,11 @@ bool TransLabelBMFont::init(std::string text, std::string font)
 void TransLabelBMFont::limitLabelWidth(float width, float defaultScale, float minScale)
 {
     this->setScale(clamp<float>(width / getContentWidth(), minScale, defaultScale));
+
+    isLimited = true;
+    limitWidth = width;
+    limitDefaultScale = defaultScale;
+    limitMinScale = minScale;
 }
 
 void TransLabelBMFont::updateTTFVisible()
@@ -110,10 +118,10 @@ void TransLabelBMFont::updateTTFVisible()
 
     for (auto letter : this->text)
     {
-        if (!reinterpret_cast<gd::set<unsigned int>*>(label->getConfiguration()->getCharacterSet())->contains(as<int>(letter)))
+        if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
         {
             useTtf = true;
-            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, reinterpret_cast<gd::set<unsigned int>*>(label->getConfiguration()->getCharacterSet())->size(), as<int>(letter));
+            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, label->getConfiguration()->getCharacterSet()->size(), as<int>(letter));
             break;
         }
     }
@@ -149,8 +157,31 @@ std::string TransLabelBMFont::getString()
 void TransLabelBMFont::setString(const char* str)
 {
     this->text = str;
+    this->originalText = str;
+
+    text = TranslationManager::get()->getTranslatedString(text);
 
     updateTTFVisible();
+}
+
+TransLabelBMFont::~TransLabelBMFont()
+{
+    instances.erase(std::find(instances.begin(), instances.end(), this));
+}
+
+void TransLabelBMFont::updateAllLabels()
+{
+    for (auto label : instances)
+    {
+        label->text = TranslationManager::get()->getTranslatedString(label->originalText);
+
+        label->updateTTFVisible();
+
+        if (label->isLimited)
+        {
+            label->limitLabelWidth(label->limitWidth, label->limitDefaultScale, label->limitMinScale);
+        }
+    }
 }
 
 TransLabelBMFont* TransLabelBMFont::create(std::string text, std::string font)

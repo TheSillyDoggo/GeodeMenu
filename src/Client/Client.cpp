@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "../Utils/LaunchArgs.hpp"
 #include "../Utils/TranslationManager.hpp"
+#include "../UI/TransLabelBMFont.hpp"
 #include <Geode/modify/CCEGLView.hpp>
 #include <regex>
 
@@ -178,6 +179,8 @@ void Client::setLanguage(std::string langFile)
     {
         TranslationManager::get()->unloadTranslation();
     }
+
+    TransLabelBMFont::updateAllLabels();
 
     Mod::get()->setSavedValue<std::string>("loaded-translation", langFile);
 }
