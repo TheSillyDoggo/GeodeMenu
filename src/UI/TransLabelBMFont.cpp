@@ -164,6 +164,11 @@ void TransLabelBMFont::setString(const char* str)
     updateTTFVisible();
 }
 
+void TransLabelBMFont::setOnLabelUpdated(std::function<void()> callback)
+{
+    this->onLabelUpdated = callback;
+}
+
 TransLabelBMFont::~TransLabelBMFont()
 {
     instances.erase(std::find(instances.begin(), instances.end(), this));
@@ -181,6 +186,9 @@ void TransLabelBMFont::updateAllLabels()
         {
             label->limitLabelWidth(label->limitWidth, label->limitDefaultScale, label->limitMinScale);
         }
+
+        if (label->onLabelUpdated)
+            label->onLabelUpdated();
     }
 }
 

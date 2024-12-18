@@ -39,6 +39,10 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
     }
 
     label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    label->setOnLabelUpdated([this]
+    {
+        this->setContentSize(this->getContentSize());
+    });
 
     this->addChildAtPosition(background, Anchor::Center);
     this->addChildAtPosition(outline, Anchor::Center);
@@ -91,9 +95,7 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
 {
     CCNode::setContentSize(contentSize);
 
-    label->limitLabelWidth(this->getContentWidth() / 0.5f, 0.75f, 0.1f);
-    // there is a better way to do this, but i have to release this update before midclipse gets android support so that can be later
-    label->isLimited = false;
+    label->limitLabelWidth((this->getContentWidth() - 7.5f) / 0.5f, 0.75f, 0.1f);
     label->setScale(label->getScale() / 2);
 
     outline->setContentSize(contentSize * 2);

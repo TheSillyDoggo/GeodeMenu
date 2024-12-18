@@ -31,7 +31,7 @@ bool LanguageSelectNode::init()
     rightBtn->setZOrder(420);
     node->addChildAtPosition(rightBtn, Anchor::BottomLeft, ccp(190, 0));
 
-    node->setTouchPriority(-999999);
+    node->setTouchPriority(-507);
 
     if (!TranslationManager::get()->isLanguageLoaded())
         goToPage(0);

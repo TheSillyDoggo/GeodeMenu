@@ -169,6 +169,13 @@ void TranslationCreditsLayer::customSetup()
 
         clip->addChild(menu);
     }
+    else
+    {
+        auto btn = CCMenuItemSpriteExtra::create(CCSprite::create("heart.png"_spr), this, menu_selector(TranslationCreditsLayer::onMessage));
+        btn->setPosition(ccp(142, 144));
+
+        gameNode->addChild(btn);
+    }
 
     bool used = TranslationManager::get()->getLoadedLanguage() == language["display_name_english"];
 
@@ -209,6 +216,11 @@ void TranslationCreditsLayer::onUse(CCObject* sender)
     btnUse->setPosition(ccp(ok->getPositionX() + btnUse->getScaledContentWidth(), ok->getPositionY()));
 
     baseLayer->addChild(btnUse, 69);
+}
+
+void TranslationCreditsLayer::onMessage(CCObject* sender)
+{
+    FLAlertLayer::create("Contributions", "These are all the <cl>amazing</c> people who have <cc>contributed</c> to <co>qolmod</c> by translatingthe mod to this <cp>language</c>.\nThank you <cr><3</c>", "OK")->show();
 }
 
 void TranslationCreditsLayer::onPlayerProfile(CCObject* sender)

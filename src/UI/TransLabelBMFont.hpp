@@ -15,16 +15,17 @@ class TransLabelBMFont : public CCNode
         std::string originalText;
         std::string font;
 
-    public:
+        std::function<void()> onLabelUpdated;
+
         bool isLimited = false;
-    private:
         float limitWidth = 0.0f;
         float limitDefaultScale = 0.0f;
         float limitMinScale = 0.0f;
-    
-        CCLabelTTF* createTTF(std::string font, float fontSize);
 
         static inline std::vector<TransLabelBMFont*> instances = {};
+    
+        CCLabelTTF* createTTF(std::string font, float fontSize);
+        void updateTTFVisible();
 
     public:
         bool init(std::string text, std::string font);
@@ -38,9 +39,8 @@ class TransLabelBMFont : public CCNode
         void setString(const char* str);
         std::string getString();
 
-        void updateTTFVisible();
+        void setOnLabelUpdated(std::function<void()> callback);
 
         static void updateAllLabels();
-
         static TransLabelBMFont* create(std::string text, std::string font);
 };

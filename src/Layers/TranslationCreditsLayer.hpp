@@ -24,6 +24,7 @@ class TranslationCreditsLayer : public SillyBaseLayer
         void onPlayerProfile(CCObject* sender);
         void onKill(CCObject* sender);
         void onUse(CCObject* sender);
+        void onMessage(CCObject* sender);
 
         void spawnBigParticle();
         void spawnMediumParticle();
