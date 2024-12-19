@@ -11,6 +11,7 @@ class TransLabelBMFont : public CCNode
         CCLabelBMFont* label;
         CCLabelTTF* ttf;
         bool useTtf = false;
+        bool forceTtf = false;
         std::string text;
         std::string originalText;
         std::string font;
@@ -38,6 +39,9 @@ class TransLabelBMFont : public CCNode
 
         void setString(const char* str);
         std::string getString();
+
+        void setForceTTF(bool force);
+        bool getForceTTF();
 
         void setOnLabelUpdated(std::function<void()> callback);
 

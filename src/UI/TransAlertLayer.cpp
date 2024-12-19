@@ -6,15 +6,15 @@ bool TransAlertLayer::init(char const* title, const gd::string& desc, char const
 {
     std::string desc2 = TranslationManager::get()->getTranslatedString(desc);
 
-    if (!FLAlertLayer::init(nullptr, title, desc2, btn, nullptr, 300.0f, false, 320, 1.0f))
-        return false;
-
-    auto label = CCLabelBMFont::create("", "bigFont.fnt");
+    auto label = CCLabelBMFont::create("l", "chatFont.fnt");
 
     bool useTtf = false;
 
     for (auto letter : desc2)
     {
+        if (letter == '\n')
+            continue;
+
         if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
         {
             useTtf = true;
@@ -22,37 +22,87 @@ bool TransAlertLayer::init(char const* title, const gd::string& desc, char const
         }
     }
 
+    if (useTtf)
+    {
+        desc2 = utils::string::replace(desc2, "</c>", "");
+        desc2 = utils::string::replace(desc2, "<cr>", "");
+        desc2 = utils::string::replace(desc2, "<cg>", "");
+        desc2 = utils::string::replace(desc2, "<cl>", "");
+        desc2 = utils::string::replace(desc2, "<cp>", "");
+        desc2 = utils::string::replace(desc2, "<co>", "");
+        desc2 = utils::string::replace(desc2, "<cy>", "");
+        desc2 = utils::string::replace(desc2, "<cj>", "");
+        desc2 = utils::string::replace(desc2, "<cf>", "");
+        desc2 = utils::string::replace(desc2, "<cd>", "");
+        desc2 = utils::string::replace(desc2, "<cs>", "");
+        desc2 = utils::string::replace(desc2, "<ca>", "");
+        desc2 = utils::string::replace(desc2, "<cc>", "");
+        desc2 = utils::string::replace(desc2, "<cb>", "");
+
+        auto node = CCNode::create();
+        node->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(0, 5));
+        node->setAnchorPoint(ccp(0.5f, 0.5f));
+        node->setContentWidth(260);
+
+        for (auto line : utils::string::split(desc2, "\n"))
+        {
+            auto node2 = CCNode::create();
+            node2->setPosition(CCDirector::get()->getWinSize() / 2);
+            node2->setAnchorPoint(ccp(0.5f, 0.5f));
+            node2->setContentWidth(260);
+
+            for (auto word : utils::string::split(line, " "))
+            {
+                auto lbl = TransLabelBMFont::create(word, "chatFont.fnt");
+                lbl->setForceTTF(true);
+
+                node2->addChild(lbl);
+            }
+
+            node->addChild(node2);
+            node2->setLayout(AxisLayout::create()->setAutoScale(false)->setGrowCrossAxis(true)->setGap(6));
+        }
+
+        node->setLayout(AxisLayout::create()->setAutoScale(false)->setGrowCrossAxis(true)->setGap(6));
+
+        std::string ss;
+
+        for (auto child : CCArrayExt<CCNode*>(node->getChildren()))
+        {
+            float lastY = -42069;
+
+            for (auto child2 : CCArrayExt<CCNode*>(child->getChildren()))
+            {
+                if (child2->getPositionY() != lastY)
+                {
+                    lastY = child2->getPositionY();
+                    ss += "\n";
+                }
+            }
+
+            ss += "\n";
+        }
+
+        ss = ss.substr(0, ss.size() - 1);
+
+        FLAlertLayer::init(nullptr, title, ss, btn, nullptr, 300.0f, false, 320, 1.0f);
+        m_mainLayer->getChildByType<TextArea>(0)->setVisible(false);
+
+        m_mainLayer->addChild(node, 69);
+    }
+    else
+    {
+        FLAlertLayer::init(nullptr, title, desc2, btn, nullptr, 300.0f, false, 320, 1.0f);
+    }
+
     auto titleL = TransLabelBMFont::create(std::string(title), "goldFont.fnt");
     titleL->setAnchorPoint(ccp(0.5f, 1));
     titleL->setPosition(m_mainLayer->getChildByType<CCLabelBMFont>(0)->getPosition());
-    titleL->setScale(m_mainLayer->getChildByType<CCLabelBMFont>(0)->getScale());
+    titleL->limitLabelWidth(260, m_mainLayer->getChildByType<CCLabelBMFont>(0)->getScale(), 0);;
 
     m_mainLayer->getChildByType<CCLabelBMFont>(0)->setVisible(false);
 
     m_mainLayer->addChild(titleL, 420);
-
-    if (useTtf)
-    {
-        m_mainLayer->getChildByType<TextArea>(0)->setVisible(false);
-
-        auto node = CCNode::create();
-        node->setPosition(CCDirector::get()->getWinSize() / 2);
-        node->setAnchorPoint(ccp(0.5f, 0.5f));
-        node->setContentWidth(260);
-
-        for (auto lb : CCArrayExt<CCLabelBMFont*>(m_mainLayer->getChildByType<TextArea>(0)->getChildByType<MultilineBitmapFont>(0)->getChildren()))
-        {
-            auto lbl = TransLabelBMFont::create(fmt::format("{} ", lb->getString()), "chatFont.fnt");
-            lbl->setColor(lb->getColor());
-
-            node->addChild(lbl);
-            log::info("str: {}", lb->getString());
-        }
-
-        node->setLayout(AxisLayout::create()->setAutoScale(false)->setGrowCrossAxis(true)->setGap(0));
-
-        m_mainLayer->addChild(node, 69);
-    }
 
     return true;
 }

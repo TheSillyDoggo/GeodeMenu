@@ -116,13 +116,19 @@ void TransLabelBMFont::updateTTFVisible()
 {
     useTtf = false;
 
-    for (auto letter : this->text)
+    if (forceTtf)
     {
-        if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
+        useTtf = true;
+    }
+    else
+    {
+        for (auto letter : this->text)
         {
-            useTtf = true;
-            log::debug("Tripped at: {}, in string: {}, cset: {}, letter: {}", letter, text, label->getConfiguration()->getCharacterSet()->size(), as<int>(letter));
-            break;
+            if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
+            {
+                useTtf = true;
+                break;
+            }
         }
     }
 
@@ -162,6 +168,18 @@ void TransLabelBMFont::setString(const char* str)
     text = TranslationManager::get()->getTranslatedString(text);
 
     updateTTFVisible();
+}
+
+void TransLabelBMFont::setForceTTF(bool force)
+{
+    forceTtf = force;
+
+    updateTTFVisible();
+}
+
+bool TransLabelBMFont::getForceTTF()
+{
+    return forceTtf;
 }
 
 void TransLabelBMFont::setOnLabelUpdated(std::function<void()> callback)
