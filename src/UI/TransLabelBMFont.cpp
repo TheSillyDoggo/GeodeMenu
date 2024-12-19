@@ -123,7 +123,7 @@ void TransLabelBMFont::updateTTFVisible()
     }
     else
     {
-        useTtf = !std::regex_match(text, std::regex("^[a-zA-Z0-9\\s]*$"));
+        useTtf = !std::regex_match(text, std::regex("^[a-zA-Z0-9\\s\\W]*$"));
     }
 
     label->setString(text.c_str());
