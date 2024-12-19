@@ -1,6 +1,7 @@
 #include "TransLabelBMFont.hpp"
 #include "../Utils/Utils.hpp"
 #include "../Utils/TranslationManager.hpp"
+#include <regex>
 
 /*
 
@@ -122,14 +123,7 @@ void TransLabelBMFont::updateTTFVisible()
     }
     else
     {
-        for (auto letter : this->text)
-        {
-            if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
-            {
-                useTtf = true;
-                break;
-            }
-        }
+        useTtf = !std::regex_match(text, std::regex("^[a-zA-Z0-9\\s]*$"));
     }
 
     label->setString(text.c_str());

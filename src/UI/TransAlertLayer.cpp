@@ -1,6 +1,7 @@
 #include "TransAlertLayer.hpp"
 #include "TransLabelBMFont.hpp"
 #include "../Utils/TranslationManager.hpp"
+#include <regex>
 
 bool TransAlertLayer::init(char const* title, const gd::string& desc, char const* btn)
 {
@@ -10,17 +11,7 @@ bool TransAlertLayer::init(char const* title, const gd::string& desc, char const
 
     bool useTtf = false;
 
-    for (auto letter : desc2)
-    {
-        if (letter == '\n')
-            continue;
-
-        if (!label->getConfiguration()->getCharacterSet()->contains(as<int>(letter)))
-        {
-            useTtf = true;
-            break;
-        }
-    }
+    useTtf = !std::regex_match(desc2, std::regex("^[a-zA-Z0-9\\s]*$"));
 
     if (useTtf)
     {
