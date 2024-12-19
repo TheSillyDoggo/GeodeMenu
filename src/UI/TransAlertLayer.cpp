@@ -11,7 +11,7 @@ bool TransAlertLayer::init(char const* title, const gd::string& desc, char const
 
     bool useTtf = false;
 
-    useTtf = !std::regex_match(desc2, std::regex("^[a-zA-Z0-9\\s\\W]*$"));
+    useTtf = !std::regex_match(desc2, std::regex("^[a-zA-Z0-9\\s%:-]*$"));
 
     if (useTtf)
     {
