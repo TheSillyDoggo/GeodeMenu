@@ -292,10 +292,30 @@ void Labels::refreshList()
             bg->setContentSize(bg->getContentSize() * 2.5f);
             bg->setPositionX(4);
 
-            auto name = CCLabelBMFont::create(module->name.c_str(), "bigFont.fnt");
-            name->setAnchorPoint(ccp(0, 0.5f));
-            name->setPosition(ccp(10, cell->getContentHeight() / 2));
-            name->limitLabelWidth(95, 0.4f, 0);
+            auto nameBack = CCScale9Sprite::create("square02_small.png");
+            nameBack->setOpacity(100);
+            nameBack->setContentSize(ccp(120, 18) * 3);
+            nameBack->setAnchorPoint(ccp(0, 0.5f));
+            nameBack->setScale(1.0f / 3.0f);
+            nameBack->setPositionX(6.5f);
+            nameBack->setPositionY(cell->getContentHeight() / 2);
+
+            auto nameInp = TextInput::create(160, "Display Name", "bigFont.fnt");
+            nameInp->setAnchorPoint(ccp(0, 0.5f));
+            nameInp->setPosition(ccp(10, cell->getContentHeight() / 2));
+            nameInp->setScale(0.7f);
+
+            nameInp->getBGSprite()->setVisible(false);
+            nameInp->getInputNode()->m_placeholderLabel->setAnchorPoint(ccp(0, 0.5f));
+            nameInp->getInputNode()->m_placeholderLabel->setPositionX(-nameInp->getContentWidth() / 2);
+
+            nameInp->setString(lbl->name);
+            nameInp->setCallback([this, lbl](const std::string& str)
+            {
+                lbl->name = str;
+
+                save();
+            });
 
             auto m = CCMenu::create();
             m->setPosition(ccp(0, 0));
@@ -397,7 +417,8 @@ void Labels::refreshList()
             m->addChild(toggleBtn);
 
             cell->addChild(bg);
-            cell->addChild(name);
+            cell->addChild(nameBack);
+            cell->addChild(nameInp);
             cell->addChild(m);
 
             scroll->m_contentLayer->addChild(cell);

@@ -4,6 +4,8 @@
 
 using namespace geode::prelude;
 
+#define ENGLISH_REGEX "^[a-zA-Z0-9\\s%:-]*$"
+
 // they call this my gender
 class TransLabelBMFont : public CCNode
 {
@@ -28,9 +30,10 @@ class TransLabelBMFont : public CCNode
         CCLabelTTF* createTTF(std::string font, float fontSize);
         void updateTTFVisible();
 
+        ~TransLabelBMFont();
+
     public:
         bool init(std::string text, std::string font);
-        ~TransLabelBMFont();
 
         void limitLabelWidth(float width, float defaultScale, float minScale);
 
