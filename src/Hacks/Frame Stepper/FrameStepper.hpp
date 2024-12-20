@@ -51,9 +51,13 @@ class $modify (SteppedUILayer, UILayer)
     void updateUI();
 };
 
+#ifndef GEODE_IS_IOS
+
 class $modify (SteppedKeyboardDispatcher, CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat);
 
     QOLMOD_MOD_ALL_HOOKS("frame-stepper")
 };
+
+#endif

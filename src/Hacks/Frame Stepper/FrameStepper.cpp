@@ -187,6 +187,8 @@ void SteppedUILayer::updateUI()
     m_fields->menu->setScale(scale);
 }
 
+#ifndef GEODE_IS_IOS
+
 bool SteppedKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat)
 {
     CCKeyboardDispatcher::dispatchKeyboardMSG(key, isKeyDown, isKeyRepeat);
@@ -217,6 +219,8 @@ bool SteppedKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool isKey
 
     return true;
 }
+
+#endif
 
 class FrameStepperUIDelegate : public ModuleChangeDelegate
 {
