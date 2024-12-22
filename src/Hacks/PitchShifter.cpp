@@ -21,7 +21,7 @@ void updatePitch()
 
 #ifdef GEODE_IS_IOS
     reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, FMOD_DSP_TYPE, FMOD::DSP**)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__System__createDSPByType))(FMODAudioEngine::sharedEngine()->m_system, FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP); //createDSPByType
-    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, int, FMOD::DSP*)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD::ChannelControl::addDSP))(masterGroup, 0, pitchDSP); //addDSP
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, int, FMOD::DSP*)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__addDSP))(masterGroup, 0, pitchDSP); //addDSP
 #else
     FMODAudioEngine::sharedEngine()->m_system->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &pitchDSP);
     masterGroup->addDSP(0, pitchDSP);
