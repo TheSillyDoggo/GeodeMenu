@@ -11,6 +11,16 @@ enum class PatchType
     EditorExtension2,
 };
 
+enum class FunctionType
+{
+    FMOD__ChannelControl__removeDSP,
+    FMOD__System__createDSPByType,
+    FMOD__ChannelControl__addDSP,
+    FMOD__DSP__setParameterFloat,
+    FMOD__ChannelControl__setPitch,
+    FMOD__System__createChannelGroup,
+};
+
 class OffsetManager
 {
     public:
@@ -18,4 +28,5 @@ class OffsetManager
 
         unsigned int offsetForType(PatchType type);
         unsigned int offsetForRandomSeed();
+        unsigned int offsetForFunction(FunctionType type);
 };

@@ -31,7 +31,7 @@ float speedhackLogic(float dt)
             float v = SpeedhackTop::instance->getFloatValue();
 
             #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
             #else
             masterGroup->setPitch((SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
             #endif
@@ -53,7 +53,7 @@ float speedhackLogic(float dt)
     }
 
     #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + 0x50c47c)(masterGroup, 1);
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, 1);
     #else
     masterGroup->setPitch(1);
     #endif
@@ -80,11 +80,21 @@ class $modify (CCScheduler)
                 dt *= SpeedhackTop::instance->getFloatValue();
             }
 
-            masterGroup->setPitch((SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? SpeedhackTop::instance->getFloatValue() : 1);
+            float spee = (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? SpeedhackTop::instance->getFloatValue() : 1;
+
+            #ifdef GEODE_IS_IOS
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, spee);
+            #else
+            masterGroup->setPitch(spee);
+            #endif
         }
         else
         {
+            #ifdef GEODE_IS_IOS
+            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, 1);
+            #else
             masterGroup->setPitch(1);
+            #endif
         }
 
         CCScheduler::update(dt);
@@ -111,7 +121,7 @@ FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name,
 
 $execute {
     (void)Mod::get()->hook(
-        reinterpret_cast<void*>(geode::base::get() + 0x4d4f1c), // address
+        reinterpret_cast<void*>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__System__createChannelGroup)), // address
         &FMOD_System_createChannelGroup, // detour
         "FMOD::System::createChannelGroup", // display name, shows up on the console
         tulip::hook::TulipConvention::Cdecl // calling convention

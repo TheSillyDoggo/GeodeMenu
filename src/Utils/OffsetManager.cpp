@@ -130,3 +130,113 @@ unsigned int OffsetManager::offsetForRandomSeed()
     return 0x687dd0;
     #endif
 }
+
+unsigned int OffsetManager::offsetForFunction(FunctionType type)
+{
+    switch (type)
+    {
+        case FunctionType::FMOD__System__createChannelGroup:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x4c3cc0);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x4d4f1c);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+
+        case FunctionType::FMOD__System__createDSPByType:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x4c3b98);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x4d4df4);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+
+        case FunctionType::FMOD__ChannelControl__addDSP:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x4fd0bc);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x50e318);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+
+        case FunctionType::FMOD__DSP__setParameterFloat:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x47dde0);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x48f03c);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+
+        case FunctionType::FMOD__ChannelControl__removeDSP:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x4fd1ec);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x50e448);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+
+        case FunctionType::FMOD__ChannelControl__setPitch:
+            #if GEODE_COMP_GD_VERSION == 22074
+
+            GEODE_IOS(return 0x4fb220);
+
+            #elif GEODE_COMP_GD_VERSION == 22060
+
+            GEODE_IOS(return 0x50c47c);
+
+            #else
+
+            static_assert(false, "Function Offset not updated for this game version");
+
+            #endif
+            
+            break;
+    }
+
+    return 0x80085;
+}

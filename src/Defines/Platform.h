@@ -32,4 +32,6 @@
 #define QOLMOD_SUPPORTS_LAUNCH_ARGS
 #endif
 
+#ifndef GEODE_IS_IOS
 #define QOLMOD_TRANSITION_CUSTOMIZER
+#endif
