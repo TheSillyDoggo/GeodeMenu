@@ -7,6 +7,26 @@ bool __creatorlayer__init__ = false;
 
 class $modify(CCSpriteGrayscale)
 {
+    #ifdef GEODE_IS_IOS
+
+    static CCSpriteGrayscale* createWithSpriteFrame(CCSpriteFrame* frame)
+    {
+        auto res = CCSpriteGrayscale::createWithSpriteFrame(frame);
+
+        if (!__creatorlayer__init__)
+            return res;
+
+        auto spr2 = CCSprite::createWithSpriteFrameName(spr.c_str());
+        spr2->setPosition(res->getContentSize() / 2);
+
+        res->addChild(spr2);
+        res->setOpacity(0);
+        
+        return res;
+    }
+
+    #else
+
     static CCSpriteGrayscale* createWithSpriteFrameName(gd::string const& spr)
     {
         auto res = CCSpriteGrayscale::createWithSpriteFrameName(spr);
@@ -22,6 +42,8 @@ class $modify(CCSpriteGrayscale)
         
         return res;
     }
+
+    #endif
 
     static void onModify(auto& self) {
         std::vector<geode::Hook*> hooks;
