@@ -437,3 +437,32 @@ void Client::loadImGuiTheme(std::string theme)
     THEME_COLOUR(NavWindowingDimBg);
     THEME_COLOUR(ModalWindowDimBg);
 }
+
+bool Client::GetModuleEnabled(std::string id)
+{
+    if (!mod)
+        mod = Mod::get();
+
+    return mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
+}
+
+Module* Client::GetModule(std::string id)
+{
+    if (!instance)
+        return nullptr;
+
+    for (size_t w = 0; w < instance->windows.size(); w++)
+    {
+        for (size_t m = 0; m < instance->windows[w]->modules.size(); m++)
+        {
+            if (!instance->windows[w]->modules[m]->id.compare(id))
+            {
+                return instance->windows[w]->modules[m];
+            }
+        }
+    }
+
+    //geode::prelude::log::info("missing module :( {}", id);
+
+    return nullptr;
+}
