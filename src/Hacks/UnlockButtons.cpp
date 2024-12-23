@@ -16,7 +16,7 @@ class $modify(CCSpriteGrayscale)
         if (!__creatorlayer__init__)
             return res;
 
-        auto spr2 = CCSprite::createWithSpriteFrameName(spr.c_str());
+        auto spr2 = CCSprite::createWithSpriteFrame(frame);
         spr2->setPosition(res->getContentSize() / 2);
 
         res->addChild(spr2);
