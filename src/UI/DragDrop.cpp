@@ -1,4 +1,4 @@
-#include "../DragDrop.hpp"
+#include "DragDrop.hpp"
 
 #ifdef GEODE_IS_WINDOWS
 
