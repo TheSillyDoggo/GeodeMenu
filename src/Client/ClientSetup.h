@@ -147,7 +147,7 @@ public:
 
         Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
         Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
-        Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
+        Client::GetModule("noclip")->options.push_back(new ColorModule("Tint Color:", "noclip-tint-Color", ccc3(255, 0, 0)));
         Client::GetModule("noclip")->options.push_back(nullptr);
         Client::GetModule("noclip")->options.push_back(new Module("Minimum Accuracy", "noclip-min-accuracy-toggle", "Allows you to die if your noclip accuracy drops below this value"));
         Client::GetModule("noclip")->options.push_back(new InputModule("Min Accuracy:", "noclip-min-accuracy", "95.0"));
@@ -158,11 +158,11 @@ public:
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
         Client::GetModule("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
 
-        Client::GetModule("coin-tracers")->options.push_back(new ColourModule("Line Colour:", "coin-tracers-colour", ccc3(255, 0, 0)));
+        Client::GetModule("coin-tracers")->options.push_back(new ColorModule("Line Color:", "coin-tracers-Color", ccc3(255, 0, 0)));
 
         Client::GetModule("show-layout")->options.push_back(new Module("Keep Camera Triggers", "layout-retain-camera", "Keeps the 2.2 camera triggers in the level", true));
-        Client::GetModule("show-layout")->options.push_back(new ColourModule("BG Colour:", "show-layout-bg", ccc3(40, 125, 255)));
-        Client::GetModule("show-layout")->options.push_back(new ColourModule("Ground Colour:", "show-layout-g", ccc3(0, 102, 255)));
+        Client::GetModule("show-layout")->options.push_back(new ColorModule("BG Color:", "show-layout-bg", ccc3(40, 125, 255)));
+        Client::GetModule("show-layout")->options.push_back(new ColorModule("Ground Color:", "show-layout-g", ccc3(0, 102, 255)));
 
 
         auto decimals = new InputModule("Decimal Places:", "accurate-percentage-places", "2");
@@ -279,7 +279,7 @@ public:
         Client::GetModule("custom-trans")->optionSizeForce = ccp(350, 180);
         //Client::GetModule("custom-trans")->options.push_back(nullptr);
         //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
-        //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
+        //Client::GetModule("custom-trans")->options.push_back(new ColorModule("Fade Color:", "transition-fade-Color", ccc3(0, 0, 0)));
 
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;
@@ -335,10 +335,10 @@ public:
         cosmetic->modules.push_back(new Module("No Death Effect", "no-death", "Disables the death effect on the player"));
 
         cosmetic->modules.push_back(new Module("No Wave Trail", "no-wave", "Disables the wave trail"));
-        cosmetic->modules.push_back(new Module("Solid Wave Trail", "solid-wave", "Makes the wave trail a solid colour"));
+        cosmetic->modules.push_back(new Module("Solid Wave Trail", "solid-wave", "Makes the wave trail a solid Color"));
 
-        cosmetic->modules.push_back(new Module("Transparent BG", "trans-bg", "Disables the colouring on the gradient backgrounds"));
-        cosmetic->modules.push_back(new Module("Transparent Lists", "trans-lists", "Disables the colouring on all cells"));
+        cosmetic->modules.push_back(new Module("Transparent BG", "trans-bg", "Disables the Coloring on the gradient backgrounds"));
+        cosmetic->modules.push_back(new Module("Transparent Lists", "trans-lists", "Disables the Coloring on all cells"));
 
         cosmetic->modules.push_back(new Module("Force Trail On", "trail-on", "Forces the trail on"));
         cosmetic->modules.push_back(new Module("Force Trail Off", "trail-off", "Forces the trail off"));
@@ -467,7 +467,7 @@ public:
         theming->id = "themes-window";
         //theming->windowPos = ccp(50 + (50 + (Client::instance->tileSize.x)) * 5, 50);
 
-        theming->modules.push_back(new ColourModule("Accent", "accent-colour", ccc3(10, 0, 0)));
+        theming->modules.push_back(new ColorModule("Accent", "accent-Color", ccc3(10, 0, 0)));
 
         Client::instance->windows.push_back(theming);
     }
