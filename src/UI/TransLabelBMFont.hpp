@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-#define ENGLISH_REGEX "^[a-zA-Z0-9\\s%\"!:-]*$"
+#define ENGLISH_REGEX "^[a-zA-Z0-9\\s%\"!: -]*$"
 
 // they call this my gender
 class TransLabelBMFont : public CCNode

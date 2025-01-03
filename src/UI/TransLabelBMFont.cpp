@@ -78,11 +78,7 @@ bool TransLabelBMFont::init(std::string text, std::string font)
 
     instances.push_back(this);
 
-    this->originalText = text;
-    text = TranslationManager::get()->getTranslatedString(text);
-
-    this->text = text;
-    this->font = text;
+    this->font = font;
 
     label = CCLabelBMFont::create(text.c_str(), font.c_str());
 
@@ -95,10 +91,10 @@ bool TransLabelBMFont::init(std::string text, std::string font)
     label->setAnchorPoint(ccp(0, 0));
     ttf->setAnchorPoint(ccp(0, 0));
 
-    updateTTFVisible();
-
     this->addChild(label);
     this->addChild(ttf);
+
+    setString(text.c_str());
 
     return true;
 }
@@ -160,6 +156,15 @@ void TransLabelBMFont::setString(const char* str)
     this->originalText = str;
 
     text = TranslationManager::get()->getTranslatedString(text);
+
+    if (TranslationManager::get()->isRightToLeft())
+    {
+        // log::warn("RTL!");
+
+
+    }
+
+    text = applyRTLFix(text);
 
     updateTTFVisible();
 }

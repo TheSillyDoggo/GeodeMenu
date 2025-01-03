@@ -68,6 +68,9 @@ cocos2d::CCRect getScreenSafeAreaiOS();
 ImVec4 ccc4ToVec(cocos2d::ccColor4B col);
 cocos2d::ccColor4B vecToCCC4(ImVec4 vec);
 
+std::string applyRTL(const std::string& str);
+std::string applyRTLFix(const std::string& str);
+
 namespace ImGuiExt
 {
 	void colouredText(std::string label);

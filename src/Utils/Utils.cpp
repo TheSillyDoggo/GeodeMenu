@@ -45,6 +45,26 @@ cocos2d::CCRect getScreenSafeArea()
 	return insets;
 }
 
+std::string applyRTL(const std::string& str)
+{
+	return str;
+}
+
+std::string applyRTLFix(const std::string& str)
+{
+	std::stringstream ss;
+
+	auto arr = utils::string::split(str);
+	std::reverse(arr.begin(), arr.end());
+
+	for (auto ch : arr)
+	{
+		ss << ch;
+	}
+
+	return ss.str();
+}
+
 ImVec4 ccc4ToVec(ccColor4B col)
 {
     return ImVec4(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, col.a / 255.0f);
