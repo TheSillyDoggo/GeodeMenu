@@ -4,23 +4,17 @@
 
 using namespace geode::prelude;
 
-class $modify (PlayLayer)
-{
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
-    {
+class $modify(PlayLayer) {
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
         if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        m_player1->togglePlatformerMode(true);
-
-        if (m_player2)
-            m_player2->togglePlatformerMode(true);
+        // Toggle platformer mode for all relevant players and layers
+        if (m_player1) m_player1->togglePlatformerMode(true);
+        if (m_player2) m_player2->togglePlatformerMode(true);
 
         #ifdef GEODE_IS_MOBILE
-
-        if (m_uiLayer)
-            m_uiLayer->togglePlatformerMode(true);
-
+        if (m_uiLayer) m_uiLayer->togglePlatformerMode(true);
         #endif
 
         return true;
