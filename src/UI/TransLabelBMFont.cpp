@@ -164,7 +164,7 @@ void TransLabelBMFont::setString(const char* str)
 
     }
 
-    text = applyRTLFix(text);
+    // text = applyRTLFix(text);
 
     updateTTFVisible();
 }

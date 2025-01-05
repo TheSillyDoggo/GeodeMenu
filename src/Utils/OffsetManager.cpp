@@ -55,7 +55,7 @@ unsigned int OffsetManager::offsetForType(PatchType type)
             GEODE_ANDROID32(return 0x382bd8 - 0x10000);
             GEODE_ANDROID64(return 0x7773c4 - 0x100000);
             GEODE_INTEL_MAC(return 0x7fe110);
-            GEODE_IOS(return );
+            GEODE_IOS(return 0x80085);
     
             #elif GEODE_COMP_GD_VERSION == 22073
 
@@ -86,7 +86,7 @@ unsigned int OffsetManager::offsetForType(PatchType type)
             GEODE_ANDROID32(return 0x382f7c - 0x10000);
             GEODE_ANDROID64(return 0x77790c - 0x100000);
             GEODE_INTEL_MAC(return 0x7fdf34);
-            GEODE_IOS(return );
+            GEODE_IOS(return 0x80085);
 
             #elif GEODE_COMP_GD_VERSION == 22073
 
