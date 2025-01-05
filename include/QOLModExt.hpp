@@ -33,6 +33,17 @@ namespace QOLModExt
             }
     };
 
+    class CommentEmojisOverrideLabelCreatePrivateEventPleaseDoNotUseOrIWillTouchYou : public Event
+    {
+        public:
+            std::function<CCLabelBMFont*()> function;
+
+            CommentEmojisOverrideLabelCreatePrivateEventPleaseDoNotUseOrIWillTouchYou(std::function<CCLabelBMFont*()> function)
+            {
+                this->function = function;
+            }
+    };
+
     /// @brief Creates a window and returns it
     /// @param id An id for the window, this is not shown to the user and is currently not used internally. This may change, please do not change the ID
     /// @return WindowExt*

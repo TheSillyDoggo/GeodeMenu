@@ -22,6 +22,7 @@ class Labels : public Window
         CCMenu* menu;
         std::vector<CCNode*> cells;
         CCRect safeZone;
+        std::function<CCLabelBMFont*()> createFuncCommentEmojis = nullptr;
 
         static Labels* get();
 

@@ -9,10 +9,11 @@
 
 using namespace geode::prelude;
 
-class LabelNode : public CCLabelBMFont
+class LabelNode : public CCNode
 {
     public:
         LabelModule* mod;
+        CCLabelBMFont* label;
         rift::Script* script;
 
         bool init(LabelModule* mod);

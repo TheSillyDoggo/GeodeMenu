@@ -1,5 +1,6 @@
 #include "QOLModExt.hpp"
 #include "../src/Client/Client.h"
+#include "../src/Client/Windows/Labels.hpp"
 
 using namespace QOLModExt;
 
@@ -68,6 +69,13 @@ $execute
 
         if (mod->enabled != ev->enabled)
             mod->onToggleAndroid(nullptr);
+
+        return ListenerResult::Stop;
+    });
+
+    new EventListener<EventFilter<CommentEmojisOverrideLabelCreatePrivateEventPleaseDoNotUseOrIWillTouchYou>>(+[](CommentEmojisOverrideLabelCreatePrivateEventPleaseDoNotUseOrIWillTouchYou* ev)
+    {
+        Labels::get()->createFuncCommentEmojis = ev->function;
 
         return ListenerResult::Stop;
     });

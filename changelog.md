@@ -1,3 +1,8 @@
+# 1.7.8
+
+- Added Comment Emojis Integration to Labels
+- Added New **Path** related functions to Label formatting
+
 # 1.7.7
 
 - Improved label reordering
