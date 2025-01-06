@@ -175,6 +175,10 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
 {
     auto fields = m_fields.self();
 
+    fields->trajectoryPlayer->m_scaleX = player->m_scaleX;
+    fields->trajectoryPlayer->m_scaleY = player->m_scaleY;
+    fields->trajectoryPlayer->m_vehicleSize = player->m_vehicleSize;
+
     fields->point = player->getPosition();
     fields->trajectoryPlayer->setPosition(player->getPosition());
 
@@ -183,10 +187,10 @@ void TrajectoryBGL::resetSimulation(PlayerObject* player)
     fields->trajectoryPlayer->m_collisionLogLeft->removeAllObjects();
     fields->trajectoryPlayer->m_collisionLogRight->removeAllObjects();
 
-    fields->trajectoryPlayer->m_lastCollisionBottom = 0;
-    fields->trajectoryPlayer->m_lastCollisionTop = 0;
-    fields->trajectoryPlayer->m_lastCollisionLeft = 0;
-    fields->trajectoryPlayer->m_lastCollisionRight = 0;
+    fields->trajectoryPlayer->m_lastCollisionBottom = -1;
+    fields->trajectoryPlayer->m_lastCollisionTop = -1;
+    fields->trajectoryPlayer->m_lastCollisionLeft = -1;
+    fields->trajectoryPlayer->m_lastCollisionRight = -1;
 
     RM(m_wasTeleported)
     RM(m_fixGravityBug)

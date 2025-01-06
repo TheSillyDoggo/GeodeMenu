@@ -5,6 +5,7 @@
 - Removed Uncomplete Level cuz it was broken. Will come back in future
 - Added New **Path** related functions to Label formatting
 - Added Customizable Speedhack Presets
+- Added **Comment Emojis Integration to Labels**
 - Updated Translations
 -- Fixed Korean Translations (thanks @nyaongi)
 -- Added Arabic Translations (thanks @adamorocco)
@@ -12,7 +13,6 @@
 -- Fixed translations not being used in some places
 -- Fixed some UI elements being misplaced after changing language
 -- Fixed some text's incorrectly being in the fallback font
-- Added **Comment Emojis Integration to Labels**
 
 # 1.7.7
 
