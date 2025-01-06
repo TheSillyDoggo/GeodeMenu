@@ -29,7 +29,7 @@ bool SillyBaseLayer::setup()
 
     l->addChildAtPosition(bg, Anchor::Center);
 
-    title = TransLabelBMFont::create(_title.c_str(), "bigFont.fnt");
+    title = TransLabelBMFont::create(_title, "bigFont.fnt");
     title->setPosition(l->getContentSize() / 2 + ccp(0, (l->getContentSize().height / 2) - 15));
     title->setScale(0.6f);
     l->addChild(title);

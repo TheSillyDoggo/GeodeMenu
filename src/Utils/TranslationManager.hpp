@@ -19,6 +19,7 @@ class TranslationManager
         void unloadTranslation();
         void loadTranslationFromJson(matjson::Value object);
         std::string getTranslatedString(std::string engText);
+        bool hasTranslationForString(std::string engText);
 
         bool isRightToLeft();
         bool isRightToLeftFix();

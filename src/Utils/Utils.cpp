@@ -50,19 +50,70 @@ std::string applyRTL(const std::string& str)
 	return str;
 }
 
+// BEGIN chatgpt :c
+
+std::vector<uint32_t> decodeUTF8(const std::string& input) {
+    std::vector<uint32_t> codepoints;
+    size_t i = 0;
+    while (i < input.size()) {
+        uint32_t cp = 0;
+        unsigned char ch = input[i];
+        if (ch < 0x80) {
+            cp = ch;
+            i++;
+        } else if ((ch >> 5) == 0x6) { // 2-byte character
+            cp = ((ch & 0x1F) << 6) | (input[i + 1] & 0x3F);
+            i += 2;
+        } else if ((ch >> 4) == 0xE) { // 3-byte character
+            cp = ((ch & 0xF) << 12) | ((input[i + 1] & 0x3F) << 6) | (input[i + 2] & 0x3F);
+            i += 3;
+        } else if ((ch >> 3) == 0x1E) { // 4-byte character
+            cp = ((ch & 0x7) << 18) | ((input[i + 1] & 0x3F) << 12) |
+                 ((input[i + 2] & 0x3F) << 6) | (input[i + 3] & 0x3F);
+            i += 4;
+        }
+        codepoints.push_back(cp);
+    }
+    return codepoints;
+}
+
+// Helper: Encode a vector of code points back into UTF-8
+std::string encodeUTF8(const std::vector<uint32_t>& codepoints) {
+    std::string output;
+    for (uint32_t cp : codepoints) {
+        if (cp < 0x80) {
+            output += static_cast<char>(cp);
+        } else if (cp < 0x800) {
+            output += static_cast<char>(0xC0 | (cp >> 6));
+            output += static_cast<char>(0x80 | (cp & 0x3F));
+        } else if (cp < 0x10000) {
+            output += static_cast<char>(0xE0 | (cp >> 12));
+            output += static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+            output += static_cast<char>(0x80 | (cp & 0x3F));
+        } else {
+            output += static_cast<char>(0xF0 | (cp >> 18));
+            output += static_cast<char>(0x80 | ((cp >> 12) & 0x3F));
+            output += static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+            output += static_cast<char>(0x80 | (cp & 0x3F));
+        }
+    }
+    return output;
+}
+
+// Function to reverse a UTF-8 string
+std::string reverseUTF8(const std::string& input) {
+    std::vector<uint32_t> codepoints = decodeUTF8(input);
+    std::reverse(codepoints.begin(), codepoints.end());
+    return encodeUTF8(codepoints);
+}
+
+// END chatgpt
+
 std::string applyRTLFix(const std::string& str)
 {
-	std::stringstream ss;
+	std::string ss = reverseUTF8(str);
 
-	auto arr = utils::string::split(str);
-	std::reverse(arr.begin(), arr.end());
-
-	for (auto ch : arr)
-	{
-		ss << ch;
-	}
-
-	return ss.str();
+	return ss;
 }
 
 ImVec4 ccc4ToVec(ccColor4B col)

@@ -6,6 +6,8 @@ using namespace geode::prelude;
 void Universal::cocosCreate(CCMenu* menu) {
     Window::cocosCreate(menu);
 
+    return;
+
     auto pos = ccp(menu->getContentSize().width, 0) + ccp(-58, 22);
 
     CCMenuItemSpriteExtra* btn = nullptr;

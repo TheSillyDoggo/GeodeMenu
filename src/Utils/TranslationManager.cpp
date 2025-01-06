@@ -70,3 +70,8 @@ std::string TranslationManager::getTranslatedString(std::string engText)
 
     return engText;
 }
+
+bool TranslationManager::hasTranslationForString(std::string engText)
+{
+    return translatedTexts.contains(engText);
+}

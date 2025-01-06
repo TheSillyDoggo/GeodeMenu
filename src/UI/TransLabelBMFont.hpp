@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-#define ENGLISH_REGEX "^[a-zA-Z0-9\\s%\"!: -]*$"
+#define ENGLISH_REGEX "^[a-zA-Z0-9\\s%\"!:,./#\\-<>'()]*$"
 
 // they call this my gender
 class TransLabelBMFont : public CCNode
@@ -40,7 +40,7 @@ class TransLabelBMFont : public CCNode
         void setOpacity(int opacity);
         void setColor(ccColor3B colour);
 
-        void setString(const char* str);
+        void setString(std::string str);
         std::string getString();
 
         void setForceTTF(bool force);

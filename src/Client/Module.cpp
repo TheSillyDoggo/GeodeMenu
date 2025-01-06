@@ -160,7 +160,7 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
     btn->toggle(enabled);
     btn->setPosition(pos);
 
-    auto label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    auto label = TransLabelBMFont::create(name, "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos + ccp(15, 0));
@@ -177,6 +177,11 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
         info->setUserData(this);
 
         menu->addChild(info);
+
+        label->setOnLabelUpdated([=]
+        {
+            info->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-5, 5));
+        });
     }
 
     if (options.size() != 0 && !isInComp)
@@ -186,6 +191,11 @@ void Module::makeAndroid(CCNode* menu, CCPoint pos)
         options->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-2, 0));
 
         menu->addChild(options);
+
+        label->setOnLabelUpdated([=]
+        {
+            options->setPosition(pos + ccp(label->getScaledContentSize().width + 30, 0) + ccp(-2, 0));
+        });
     }
 
     if (isInComp)

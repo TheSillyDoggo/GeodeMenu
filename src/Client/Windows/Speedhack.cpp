@@ -2,36 +2,38 @@
 
 using namespace geode::prelude;
 
-void Speedhack::clear(CCObject* sender) {
+void Speedhack::onClear(CCObject* sender)
+{
     SpeedhackTop::instance->text = "";
-    auto inp = static_cast<CCNode*>(sender)->getParent()->getChildByType<TextInput>(0);
-    inp->setString("");
+
+    input->setString("");
     slider->setValue(unscaleValue(1));
 }
 
-float Speedhack::scaleValue(float originalValue) {
+float Speedhack::scaleValue(float originalValue)
+{
     float minValue = 0.1;
     float maxValue = 3.0;
     float scaledValue = (maxValue - minValue) * originalValue + minValue;
     return scaledValue;
 }
 
-float Speedhack::unscaleValue(float scaledValue) {
+float Speedhack::unscaleValue(float scaledValue)
+{
     float minValue = 0.1;
     float maxValue = 3.0;
     float originalValue = (scaledValue - minValue) / (maxValue - minValue);
     return originalValue;
 }
 
-void Speedhack::sliderChanged(CCObject* sender) {
+void Speedhack::sliderChanged(CCObject* sender)
+{
     float v = ((slider->getThumb()->getPositionX() + 100) / 200.0f);
 
-    std::stringstream ss;
-    ss << round(scaleValue(v) * 100.0) / 100.0;
+    auto str = utils::numToString<float>(scaleValue(v), 2);
 
-    auto inp = static_cast<CCNode*>(sender)->getParent()->getParent()->getParent()->getChildByType<TextInput>(0);
-    inp->setString(ss.str().c_str());
-    SpeedhackTop::instance->text = ss.str();
+    input->setString(str);
+    SpeedhackTop::instance->text = str;
 
     SpeedhackTop::instance->save();
     SpeedhackTop::instance->onChange();
@@ -41,9 +43,20 @@ void Speedhack::onPreset(CCObject* sender)
 {
     float value = numFromString<float>(as<CCNode*>(sender)->getID(), 2).unwrap();
 
+    if (isDeleting)
+    {
+        presets.erase(std::find(presets.begin(), presets.end(), value));
+
+        updatePresets();
+        updatePresetsSprites(6);
+
+        Mod::get()->setSavedValue<std::vector<float>>("speedhack-presets", presets);
+
+        return;
+    }
+
     SpeedhackTop::instance->text = as<CCNode*>(sender)->getID();
-    auto inp = static_cast<CCNode*>(sender)->getParent()->getParent()->getChildByType<TextInput>(0);
-    inp->setString(as<CCNode*>(sender)->getID());
+    input->setString(as<CCNode*>(sender)->getID());
     slider->setValue(unscaleValue(value));
     
     SpeedhackTop::instance->save();
@@ -52,6 +65,9 @@ void Speedhack::onPreset(CCObject* sender)
 
 void Speedhack::cocosCreate(CCMenu* menu)
 {
+    isDeleting = false;
+    presets = Mod::get()->getSavedValue<std::vector<float>>("speedhack-presets", { 0.1f, 0.25f, 0.3f, 0.50f, 0.75f, 1, 1.50f, 2 });
+
     float v = 1.0f;
 
     auto x = numFromString<float>(SpeedhackTop::instance->text);
@@ -76,7 +92,7 @@ void Speedhack::cocosCreate(CCMenu* menu)
     back->setOpacity(100);
     menu->addChild(back);
 
-    slider = Slider::create(menu, menu_selector(Speedhack::sliderChanged));
+    slider = Slider::create(this, menu_selector(Speedhack::sliderChanged));
     slider->setPosition(ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 80));
     slider->setScale(0.875f);
     slider->setContentSize(ccp(0, 0));
@@ -86,43 +102,104 @@ void Speedhack::cocosCreate(CCMenu* menu)
 
     modules[0]->makeAndroid(menu, ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 50) - ccp(180 / 2, 0) + ccp(10, 0));
 
+    input = menu->getChildByType<TextInput>(0);
+
     for (size_t i = 1; i < modules.size(); i++)
     {
         modules[i]->makeAndroid(menu, (ccp(menu->getContentSize().width / 2, menu->getContentSize().height - 110 - (30 * i)) - ccp(180 / 2, 0) + ccp(20, 0)) + ccp(0, 27.5f));
     }
 
-    //static_cast<geode::InputNode*>(menu->getChildByID("speedhack-top"))->getInput()->setDelegate(this);
-
-    auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), menu, menu_selector(Speedhack::clear));
+    auto trash = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png"), this, menu_selector(Speedhack::onClear));
     trash->m_baseScale = 0.725f;
     trash->setScale(0.725f);
     trash->setPosition(ccp((menu->getContentSize().width / 2) + (180 / 2) + 20, menu->getContentSize().height - 50));
     menu->addChild(trash);
 
-    auto presetMenu = CCMenu::create();
+    presetMenu = CCMenu::create();
     presetMenu->setScale(0.41f);
-    presetMenu->setAnchorPoint(ccp(0.5f, 0.5f));
-    presetMenu->setPosition(menu->getContentWidth() / 2, 13);
-    presetMenu->setContentWidth(800);
+    presetMenu->setAnchorPoint(ccp(0, 0.5f));
+    presetMenu->setPosition(5, 13);
+    presetMenu->setContentWidth(700);
     presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(true));
+
+    updatePresets();
+
+    auto configMenu = CCMenu::create();
+    configMenu->setPosition(menu->getContentWidth(), 13);
+    configMenu->setScale(0.41f);
+    configMenu->setContentSize(CCPointZero);
+
+    auto sprP = ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png");
+    auto btnP = CCMenuItemSpriteExtra::create(sprP, this, menu_selector(Speedhack::onNewPreset));
+    btnP->setPositionX(-30);
+
+    sprD = ButtonSprite::create("X", "bigFont.fnt", "GJ_button_06.png");
+    auto btnD = CCMenuItemSpriteExtra::create(sprD, this, menu_selector(Speedhack::onDeletePreset));
+    btnD->setPositionX(-80);
+
+    configMenu->addChild(btnP);
+    configMenu->addChild(btnD);
+
+    menu->addChild(presetMenu);
+    menu->addChild(configMenu);
+}
+
+void Speedhack::updatePresets()
+{
+    std::sort(presets.begin(), presets.end(), [](float a, float b)
+    {
+        return a < b;
+    });
+
+    presetMenu->removeAllChildren();
+    presetBtns.clear();
 
     for (auto preset : presets)
     {
-        auto btn = ButtonSprite::create(utils::numToString(preset, 2).c_str(), "bigFont.fnt", "GJ_button_05.png");
-        auto act = CCMenuItemSpriteExtra::create(btn, menu, menu_selector(Speedhack::onPreset));
-        act->setID(numToString(preset, 2));
+        auto spr = ButtonSprite::create(utils::numToString(preset, 2).c_str(), "bigFont.fnt", "GJ_button_05.png");
+        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(Speedhack::onPreset));
+        btn->setID(numToString(preset, 2));
 
-        presetMenu->addChild(act);
+        presetMenu->addChild(btn);
+        presetBtns.push_back(btn);
     }
 
-    auto btn = ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png");
-    auto act = CCMenuItemSpriteExtra::create(btn, menu, menu_selector(Speedhack::onPreset));
-    act->setID("+");
-
-    // presetMenu->addChild(act);
-
     presetMenu->updateLayout();
-    menu->addChild(presetMenu);
+}
+
+void Speedhack::updatePresetsSprites(int spr)
+{
+    for (auto btn : presetBtns)
+    {
+        as<ButtonSprite*>(btn->getNormalImage())->updateBGImage(fmt::format("GJ_button_0{}.png", spr).c_str());
+    }
+}
+
+void Speedhack::onNewPreset(CCObject* sender)
+{
+    float v = numFromString<float>(input->getString()).unwrapOr(1.0f);
+
+    if (std::find(presets.begin(), presets.end(), v) != presets.end())
+    {
+        FLAlertLayer::create("Error", fmt::format("There is already a preset with the value <cc>{:.2f}</c>.", v), "OK")->show();
+
+        return;
+    }
+
+    presets.push_back(v);
+
+    updatePresets();
+    updatePresetsSprites(isDeleting ? 6 : 5);
+
+    Mod::get()->setSavedValue<std::vector<float>>("speedhack-presets", presets);
+}
+
+void Speedhack::onDeletePreset(CCObject* sender)
+{
+    isDeleting = !isDeleting;
+    updatePresetsSprites(isDeleting ? 6 : 5);
+    sprD->updateBGImage(isDeleting ? "geode.loader/GE_button_03.png" : "GJ_button_06.png");
+    sprD->m_label->setString(isDeleting ? "-" : "X");
 }
 
 void Speedhack::textChanged(CCTextInputNode* p0)

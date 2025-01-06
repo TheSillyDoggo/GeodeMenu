@@ -150,21 +150,20 @@ std::string TransLabelBMFont::getString()
     return text;
 }
 
-void TransLabelBMFont::setString(const char* str)
+
+void TransLabelBMFont::setString(std::string str)
 {
     this->text = str;
     this->originalText = str;
 
-    text = TranslationManager::get()->getTranslatedString(text);
+    auto trans = TranslationManager::get()->getTranslatedString(str);
 
-    if (TranslationManager::get()->isRightToLeft())
+    if (TranslationManager::get()->isRightToLeft() && TranslationManager::get()->hasTranslationForString(str))
     {
-        // log::warn("RTL!");
-
-
+        trans = applyRTLFix(trans);
     }
 
-    // text = applyRTLFix(text);
+    text = trans;
 
     updateTTFVisible();
 }
@@ -195,9 +194,7 @@ void TransLabelBMFont::updateAllLabels()
 {
     for (auto label : instances)
     {
-        label->text = TranslationManager::get()->getTranslatedString(label->originalText);
-
-        label->updateTTFVisible();
+        label->setString(label->originalText.c_str());
 
         if (label->isLimited)
         {
