@@ -9,8 +9,8 @@ using namespace geode::prelude;
 
 class $modify (BestPlayLayer, PlayLayer)
 {
-	struct Fields {
-		float fromPercent;
+    struct Fields {
+        float fromPercent;
         float toPercent;
 
         float bestFrom;
@@ -18,11 +18,13 @@ class $modify (BestPlayLayer, PlayLayer)
         float bestLength;
 
         bool ignoreBest;
-	};
+    };
 
-	void resetLevel();
+    void resetLevel();
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1);
+    void levelComplete();
 
+    void updateBestRun();
     std::string getRoundedString(float f);
     std::string getRunString();
 };

@@ -29,11 +29,8 @@ void BestPlayLayer::resetLevel()
     m_fields->fromPercent = getCurrentPercent();
 }
 
-void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
+void BestPlayLayer::updateBestRun()
 {
-    if (p1 == m_anticheatSpike)
-        return PlayLayer::destroyPlayer(p0, p1);
-
     m_fields->toPercent = getCurrentPercent();
 
     auto length = m_fields->toPercent - m_fields->fromPercent;
@@ -44,8 +41,21 @@ void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
         m_fields->bestFrom = m_fields->fromPercent;
         m_fields->bestTo = m_fields->toPercent;
     }
+}
+
+void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
+{
+    if (p1 != m_anticheatSpike)
+        updateBestRun();
 
     PlayLayer::destroyPlayer(p0, p1);
+}
+
+void BestPlayLayer::levelComplete()
+{
+    updateBestRun();
+
+    PlayLayer::levelComplete();
 }
 
 std::string BestPlayLayer::getRoundedString(float f)
