@@ -111,25 +111,15 @@ class Module : public UIComponent
                 delegate->onModuleChanged(this->enabled);
         }
 
-        virtual void save()
-        {
-            geode::prelude::Mod::get()->setSavedValue<bool>(id + "_enabled", enabled);
-            keybind.saveToModule(id);
-        }
-
-        virtual void load()
-        {
-            keybind = KeyStruct::loadFromModule(id);
-            enabled = geode::prelude::Mod::get()->getSavedValue<bool>(id + "_enabled", def);
-            save();
-        }
+        virtual void save();
+        virtual void load();
 
         void onInfoAndroid(CCObject* sender);
         void onOptionsAndroid(CCObject* sender);
         void onToggleAndroid(CCObject* sender);
 
         void setIncompatible(std::string str);
-        
+
         virtual void makeAndroid(CCNode* menu, CCPoint pos);
 };
 

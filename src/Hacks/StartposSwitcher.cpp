@@ -123,7 +123,7 @@ class $modify (StartposPlayLayer, PlayLayer)
 
         m_fields->position = ccp(Mod::get()->getSavedValue<float>("startpos-position.x", CCDirector::get()->getWinSize().width / 2), Mod::get()->getSavedValue<float>("startpos-position.y", 25));
         m_fields->scale = Mod::get()->getSavedValue<float>("startpos-scale", 1);
-        m_fields->opacity = Mod::get()->getSavedValue<float>("startpos-opacity", 75.0f / 255.0f);
+        m_fields->opacity = Mod::get()->getSavedValue<float>("startpos-opacity", 1);
 
         m_fields->label->setString(fmt::format("{}/{}", m_fields->selectedIndex + 1, m_fields->objs.size()).c_str());
         m_fields->label->limitLabelWidth(100, 0.65f, 0);
@@ -131,7 +131,7 @@ class $modify (StartposPlayLayer, PlayLayer)
         auto action = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
         auto action2 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
         auto action3 = CCSequence::create(CCFadeTo::create(0.1f, 225), CCFadeTo::create(0.6f, 225), CCFadeTo::create(0.3f, 255 * m_fields->opacity), nullptr);
-        
+
         m_fields->label->runAction(action);
         m_fields->left->runAction(action2);
         m_fields->right->runAction(action3);
@@ -141,12 +141,10 @@ class $modify (StartposPlayLayer, PlayLayer)
     {
         PlayLayer::postUpdate(dt);
 
-        m_fields->position = ccp(Mod::get()->getSavedValue<float>("startpos-position.x", CCDirector::get()->getWinSize().width / 2), Mod::get()->getSavedValue<float>("startpos-position.y", 25));
-        m_fields->scale = Mod::get()->getSavedValue<float>("startpos-scale", 1);
-        m_fields->opacity = Mod::get()->getSavedValue<float>("startpos-opacity", 1);
+        auto fields = m_fields.self();
 
-        m_fields->menu->setPosition(m_fields->position);
-        m_fields->menu->setScale(m_fields->scale);
+        fields->menu->setPosition(m_fields->position);
+        fields->menu->setScale(m_fields->scale);
     }
 };
 

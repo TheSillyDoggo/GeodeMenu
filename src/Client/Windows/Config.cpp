@@ -121,7 +121,7 @@ void Config::cocosCreate(CCMenu* menu)
     lang->setPosition(lang->getContentSize() / 2);
     lang->setAnchorPoint(CCPointZero);
     lang2->setPosition(lang2->getContentSize() / 2);
-    
+
     auto buttonTab = CCMenu::create();
     buttonTab->setContentWidth(menu->getContentWidth());
     buttonTab->setContentHeight(menu->getContentHeight() - 32);
@@ -340,7 +340,7 @@ void Config::cocosCreate(CCMenu* menu)
     FADE_ICON(41, 11, 70, -1, 1);   // justin
     // FADE_ICON(77, 1, 5, -1, 8);     // baby (ninxout)
     FADE_ICON(335, 98, 41, 15, 19);  // alphalaneous
-    
+
     aboutTab->addChild(iconsMenu);
 
     auto discord = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png"), menu, menu_selector(Config::onLink)); // https://discord.gg/DfQSTEnQKK
@@ -419,7 +419,7 @@ void Config::onChangeTab(CCObject* sender)
         if (sprJoin)
             sprJoin->setVisible(false);
     }
-    
+
     CCArrayExt<CCMenuItemToggler*> tabs = as<CCNode*>(sender)->getParent()->getChildren();
 
     for (auto tab : tabs)
@@ -534,7 +534,7 @@ void Config::createBtn(CCNode* menu, int i)
         spr->addChild(gr);
         sprSel->addChild(gr);
     }
-    
+
     if (i == -2)
     {
         auto gr = CCLabelBMFont::create("Darken", "bigFont.fnt");
@@ -601,13 +601,18 @@ void Config::onSliderChanged(CCObject* sender)
 
     Mod::get()->setSavedValue<int>("editor-opacity", (int)(ved));
 
-    Mod::get()->setSavedValue<float>("button-scale", scale->getThumb()->getValue());
+    float scaleVal = scale->getThumb()->getValue();
+    Mod::get()->setSavedValue<float>("button-scale", scaleVal);
 
-    btnMenu->setScale(AndroidBall::clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
+    if (auto ab = AndroidBall::get()) {
+        ab->updateButtonScale(scaleVal);
+    }
+
+    btnMenu->setScale(AndroidBall::clampf(scaleVal, 0.2f, 1));
 
     btn->stopAllActions();
     btnL->stopAllActions();
-    
+
     btn->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
     btnL->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
 
@@ -672,14 +677,14 @@ void Config::drawImGui()
         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
             dragOffset = windowPos;
-        }        
+        }
 
         setPosition(ccp(dragOffset.x + ImGui::GetMouseDragDelta().x, dragOffset.y + ImGui::GetMouseDragDelta().y));
         actualWindowPos = ImVec2(dragOffset.x + ImGui::GetMouseDragDelta().x, dragOffset.y + ImGui::GetMouseDragDelta().y);
     }
 
     float v = ImGuiCocos::get().getUIScale();
-    
+
     if (ImGui::InputFloat("UI Scale", &v, 0.1f, 0.2f))
         Client::get()->setUIScale(v);
 

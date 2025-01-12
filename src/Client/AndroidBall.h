@@ -44,6 +44,7 @@ class AndroidBall : public CCLayer
         static float clampf(float v, float min, float max);
 
         void UpdateVisible(bool i);
+        void updateButtonScale(float scale);
 
         bool editorShouldBeVisible();
 
