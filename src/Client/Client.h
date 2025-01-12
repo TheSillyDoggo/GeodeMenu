@@ -31,12 +31,13 @@ class Client
 public:
     static inline Client* instance = nullptr;
     static inline Mod* mod = nullptr;
+    static inline std::unordered_map<size_t, bool> enabledModuleCache;
 
     std::vector<Window*> windows;
     static inline CCPoint tileSize = CCPoint(42, 9);
     float animStatus = 0;
     float delta = 0;
-    
+
     bool isWindowOpen = true;
     ccColor4B accentColour = ccc4(207, 67, 115, 255);
 
@@ -53,7 +54,7 @@ public:
     static Client* get();
 
     bool handleKeybinds(enumKeyCodes key, bool isDown, bool isRepeatedKey);
-    
+
     bool useImGuiUI();
     void initImGui();
     void drawImGui();
@@ -70,7 +71,8 @@ public:
     std::vector<std::filesystem::path> getLanguages();
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
-    static bool GetModuleEnabled(std::string id);
+    static bool GetModuleEnabled(std::string_view id);
+    static void SetModuleEnabled(std::string_view id, bool enabled);
 
     static Module* GetModule(std::string id);
 };

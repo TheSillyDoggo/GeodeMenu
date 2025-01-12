@@ -219,7 +219,7 @@ void Client::sortWindows(bool instant)
     {
         if (!yMap.contains(x))
             yMap[x] = offset;
-        
+
         if (x + window->getDesiredWindowSize().x > ImGui::GetIO().DisplaySize.x)
         {
             x = offset;
@@ -237,7 +237,7 @@ void Client::sortWindows(bool instant)
                 wndPos = ImVec2(x, yMap[x + window->getDesiredWindowSize().x + offset]);
             }
         }
-        
+
         x += window->getDesiredWindowSize().x + offset;
         yMap[x] += window->getDesiredWindowSize().y + offset;
 
@@ -252,7 +252,7 @@ void Client::sortWindows(bool instant)
         {
             if (window->getActionByTag(69))
                 window->stopActionByTag(69);
-            
+
             auto action = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(wndPos.x, wndPos.y)), 2);
             action->setTag(69);
 
@@ -303,7 +303,7 @@ void Client::toggleWindowVisibility(WindowTransitionType type, bool instant)
                 {
                     window->setPosition(ccp(window->actualWindowPos.x, window->actualWindowPos.y + (!isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (verticalUp ? 1 : -1))));
                 }
-                
+
                 verticalMove = CCEaseInOut::create(CCMoveTo::create(instant ? 0 : 0.5f, ccp(window->actualWindowPos.x, window->actualWindowPos.y + (isWindowOpen ? 0 : (ImGui::GetIO().DisplaySize.y + window->getDesiredWindowSize().y) * (verticalUp ? 1 : -1)))), 2);
                 verticalMove->setTag(69);
 
@@ -355,7 +355,7 @@ ccColor4B Client::getThemeColour(std::string key, ccColor4B def)
 {
     if (!ini->hasKey(fmt::format("Colors::{}", key)))
         return def;
-    
+
     auto res = cc4bFromHexString(ini->getKeyValue(fmt::format("Colors::{}", key), ""), false, false);
 
     if (res.isOk())
@@ -438,12 +438,23 @@ void Client::loadImGuiTheme(std::string theme)
     THEME_COLOUR(ModalWindowDimBg);
 }
 
-bool Client::GetModuleEnabled(std::string id)
+bool Client::GetModuleEnabled(std::string_view id)
 {
     if (!mod)
         mod = Mod::get();
 
-    return mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
+    auto hash = std::hash<std::string_view>{}(id);
+    if (enabledModuleCache.contains(hash)) {
+        return enabledModuleCache[hash];
+    }
+
+    bool enabled = mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
+    SetModuleEnabled(id, enabled);
+    return enabled;
+}
+
+void Client::SetModuleEnabled(std::string_view id, bool enabled) {
+    enabledModuleCache[std::hash<std::string_view>{}(id)] = enabled;
 }
 
 Module* Client::GetModule(std::string id)

@@ -33,7 +33,7 @@ bool AndroidBall::init()
     btn = CCSprite::create("qolmodButtonBG.png"_spr);
     btn->addChildAtPosition(btnOverlay, Anchor::Center);
     menu->addChild(btn);
-    
+
     this->addChild(menu);
     this->setZOrder(69420 - 1);
     this->scheduleUpdate();
@@ -178,14 +178,16 @@ void AndroidBall::UpdateVisible(bool i)
 
     this->setVisible(vis);
 
-    menu->setScale(clampf(Mod::get()->getSavedValue<float>("button-scale", 1), 0.2f, 1));
+    ColourUtility::pastel++;
+    instance = this;
+
+    if (!vis) {
+        return;
+    }
 
     menu->setPosition(position);
 
-    ColourUtility::pastel++;
-
     btnOverlay->setColor(ColourUtility::getPastelColour());
-    instance = this;
 
     if (btn->getActionByTag(69))
         return;
@@ -203,9 +205,10 @@ void AndroidBall::UpdateVisible(bool i)
 
     int op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
 
-    if (PlayLayer::get())
+    if (auto pl = PlayLayer::get())
     {
-        if (CCScene::get()->getChildByType<PauseLayer>(0))
+        // if (CCScene::get()->getChildByType<PauseLayer>(0))
+        if (pl->m_isPaused)
         {
             op = Mod::get()->getSavedValue<int>("normal-opacity", 255);
         }
@@ -247,6 +250,10 @@ void AndroidBall::UpdateVisible(bool i)
     }
 }
 
+void AndroidBall::updateButtonScale(float scale) {
+    menu->setScale(clampf(scale, 0.2f, 1));
+}
+
 AndroidBall::~AndroidBall()
 {
     if (instance == this)
@@ -275,11 +282,11 @@ void AndroidBall::setColonThreeEnabled()
 
     auto spr = CCSprite::create(isColonThreeEnabled() ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr)->getTexture();
     btnOverlay->setTexture(spr);
-    
+
 #ifndef GEODE_IS_IOS
     auto over = CCClippingNode::create(btn);
     over->setAlphaThreshold(0.9f);
-    
+
     auto inner = CCLayerColor::create(ccc4(255, 255, 255, 255));
     inner->setAnchorPoint(ccp(0.5f, 0.5f));
     inner->setContentSize(ccp(100, 100));

@@ -317,3 +317,15 @@ CCSize Module::sizeForOptionsPage()
     // idk man
     return optionSizeForce == CCSizeZero ? CCSizeMake(350, std::ceil((std::max<int  >(options.size(), 3) - 1) / 2) * 35 + 110) : optionSizeForce;
 }
+
+void Module::save() {
+    Mod::get()->setSavedValue<bool>(id + "_enabled", enabled);
+    keybind.saveToModule(id);
+    Client::SetModuleEnabled(id, enabled);
+}
+
+void Module::load() {
+    keybind = KeyStruct::loadFromModule(id);
+    enabled = Mod::get()->getSavedValue<bool>(id + "_enabled", def);
+    save();
+}
