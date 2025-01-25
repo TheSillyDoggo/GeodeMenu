@@ -1,3 +1,9 @@
+# 1.7.9
+
+- Removed Comment Emojis integration to fix lag
+- Improved Performance
+- Added **Noclip SFX on Death**
+
 # 1.7.8
 
 - Fixed Speedhack being extremely laggy

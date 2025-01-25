@@ -9,10 +9,8 @@ class KeyInfoPopup : public SillyBaseLayer
 {
     public:
         int key;
-        SetBindValue* value;
-        SetBindNode* node;
 
-        static KeyInfoPopup* createWithKeyAndBind(int key, SetBindNode* node);
+        static KeyInfoPopup* createWithKeyAndBind(int key);
 
         void onRemove(CCObject* sender);
 

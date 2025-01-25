@@ -9,12 +9,15 @@ bool LabelNode::init(LabelModule* mod)
     if (!CCNode::init())
         return false;
 
+    #ifdef COMMENT_EMOJIS_INTEGRATION_ENABLED
+
     if (Labels::get()->createFuncCommentEmojis)
     {
         label = Labels::get()->createFuncCommentEmojis();
         label->setFntFile(mod->getFont().c_str());
     }
     else
+        #endif
         label = CCLabelBMFont::create("l", mod->getFont().c_str());
 
     label->setAnchorPoint(ccp(0, 0));

@@ -36,17 +36,27 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
         bool hasDied = false;
 
         bool isTickUpdate = false;
+
+        bool canP1SFXPlay = true;
+        bool canP2SFXPlay = true;
     };
-
-    void resetLevelVariables();
-
-    void checkRepellPlayer();
-    void updateCamera(float dt);
 
     float getNoclipAccuracy();
     int getNoclipDeaths();
 
     bool shouldIncreaseTime();
+
+    void playSFX(bool player1);
+
+    void resetP1SFX(float);
+    void resetP2SFX(float);
+
+    // Hooks
+
+    void resetLevelVariables();
+
+    void checkRepellPlayer();
+    void updateCamera(float dt);
 };
 
 class $modify (NoclipEditorLayer, LevelEditorLayer)

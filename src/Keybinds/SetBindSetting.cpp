@@ -4,6 +4,15 @@
 #include "KeyInfoPopup.hpp"
 #include "RecordKeyPopup.hpp"
 
+bool ButtonSettingNode::init(std::shared_ptr<DummySetting>& setting, float width)
+{
+    if (!SettingValueNodeV3::init(setting, width))
+        return false;
+
+    return true;
+}
+
+/*
 bool SetBindNode::init(SetBindValue* value, float width)
 {
     if (!SettingNode::init(value))
@@ -128,12 +137,16 @@ SettingNode* SetBindValue::createNode(float width)
     return SetBindNode::create(this, width);
 }
 
+*/
+
+SettingNode* DummySetting::createNode(float width)
+{
+	return ButtonSettingNode::create(std::static_pointer_cast<DummySetting>(shared_from_this()), width);
+}
+
 $execute
 {
-    Mod::get()->registerCustomSetting(
-        "set-bind",
-        std::make_unique<SetBindValue>("set-bind", Mod::get()->getID())
-    );
+	(void) Mod::get()->registerCustomSettingType("set-bind", &DummySetting::parse);
 }
 
 #endif
