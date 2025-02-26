@@ -41,7 +41,7 @@ void InputModule::drawImGui()
 
 void InputModule::makeAndroid(CCNode* menu, CCPoint pos)
 {
-    auto label = TransLabelBMFont::create(name.c_str(), "bigFont.fnt");
+    auto label = TransLabelBMFont::create(name, "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->setScale(0.575f);
     label->setPosition(pos - ccp(10, 0));

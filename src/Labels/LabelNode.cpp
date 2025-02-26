@@ -1,15 +1,32 @@
 #include "LabelNode.hpp"
 #include "LabelLayer.hpp"
 #include "../Hacks/Noclip/Noclip.hpp"
+#include "../Client/Windows/Labels.hpp"
 #include <chrono>
 
 bool LabelNode::init(LabelModule* mod)
 {
-    if (!CCLabelBMFont::initWithString("l", mod->getFont().c_str()))
+    if (!CCNode::init())
         return false;
 
+    #ifdef COMMENT_EMOJIS_INTEGRATION_ENABLED
+
+    if (Labels::get()->createFuncCommentEmojis)
+    {
+        label = Labels::get()->createFuncCommentEmojis();
+        label->setFntFile(mod->getFont().c_str());
+    }
+    else
+        #endif
+        label = CCLabelBMFont::create("l", mod->getFont().c_str());
+
+    label->setAnchorPoint(ccp(0, 0));
+    this->setContentSize(label->getContentSize());
+
     this->mod = mod;
-    mod->labelNode = this;
+    mod->labelNode = this->label;
+
+    this->addChild(label);
 
     return true;
 }
@@ -42,12 +59,12 @@ std::string LabelNode::getFormatString()
 void LabelNode::update(float dt)
 {
     if (!getActionByTag(800851))
-        this->setOpacity(mod->getOpacity() * 255.0f);
+        label->setOpacity(mod->getOpacity() * 255.0f);
 
-    this->setString("L");
-    float fontHeight = getContentHeight();
+    label->setString("L");
+    float fontHeight = label->getContentHeight();
     
-    this->setScale(mod->getScale() * 0.5f * (32.5f / this->getContentHeight()));
+    this->setScale(mod->getScale() * 0.5f * (32.5f / label->getContentHeight()));
 
     auto res = rift::compile(getFormatString());
 
@@ -57,7 +74,7 @@ void LabelNode::update(float dt)
     {
         CC_SAFE_DELETE(script);
 
-        return this->setString(fmt::format("Error Compiling Script: {}", res.getMessage()).c_str());
+        return label->setString(fmt::format("Error Compiling Script: {}", res.getMessage()).c_str());
     }
 
     if (!GJBaseGameLayer::get())
@@ -131,22 +148,25 @@ void LabelNode::update(float dt)
 
     auto res2 = script->run();
 
-    this->setString(res2.c_str());
+    if (res2 != std::string(label->getString()))
+        label->setString(res2.c_str());
+
+    this->setContentSize(label->getContentSize());
 
     if (!getActionByTag(80085))
     {
         if (mod->isCheatIndicator)
-            this->setColor(mod->getColour());
+            label->setColor(mod->getColour());
     }
 
     this->setScale(mod->getScale() * 0.5f * (32.5f / fontHeight));
 
     this->setVisible(mod->noclipOnly ? Client::GetModuleEnabled("noclip") && mod->visible : mod->visible);
 
-    if (getChildrenCount() == 1 && res2 == ".")
+    if (label->getChildrenCount() == 1 && res2 == ".")
     {
-        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setScale(2.25f);
-        as<CCNode*>(this->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0.2f, 0.35f));
+        as<CCNode*>(label->getChildren()->objectAtIndex(0))->setScale(2.25f);
+        as<CCNode*>(label->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(0.2f, 0.35f));
     }
 
     CC_SAFE_DELETE(script);

@@ -153,6 +153,8 @@ public:
         Client::GetModule("noclip")->options.push_back(new InputModule("Min Accuracy:", "noclip-min-accuracy", "95.0"));
         Client::GetModule("noclip")->options.push_back(new Module("Player 1", "noclip-player1", "Apply noclip to player 1", true));
         Client::GetModule("noclip")->options.push_back(new Module("Player 2", "noclip-player2", "Apply noclip to player 2", true));
+        Client::GetModule("noclip")->options.push_back(new SFXModule("Player 1 SFX:", "noclip-player1-sfx"));
+        Client::GetModule("noclip")->options.push_back(new SFXModule("Player 2 SFX:", "noclip-player2-sfx"));
 
 
         Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));

@@ -1,3 +1,25 @@
+# 1.7.9
+
+- Removed Comment Emojis integration to fix lag
+- Improved Performance
+- Added **Noclip SFX on Death**
+
+# 1.7.8
+
+- Fixed Speedhack being extremely laggy
+- Fixed Timewarp Trigger / Speedhack breaking CPS + FPS Labels
+- Removed Uncomplete Level cuz it was broken. Will come back in future
+- Added New **Path** related functions to Label formatting
+- Added Customizable Speedhack Presets
+- Added **Comment Emojis Integration to Labels**
+- Updated Translations
+-- Fixed Korean Translations (thanks @nyaongi)
+-- Added Arabic Translations (thanks @adamorocco)
+-- Added Right-To-Left language support
+-- Fixed translations not being used in some places
+-- Fixed some UI elements being misplaced after changing language
+-- Fixed some text's incorrectly being in the fallback font
+
 # 1.7.7
 
 - Improved label reordering

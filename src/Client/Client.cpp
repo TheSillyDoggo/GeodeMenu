@@ -440,10 +440,9 @@ void Client::loadImGuiTheme(std::string theme)
 
 bool Client::GetModuleEnabled(std::string id)
 {
-    if (!mod)
-        mod = Mod::get();
+    auto mod = GetModule(id);
 
-    return mod->getSavedValue<bool>(fmt::format("{}_enabled", id));
+    return mod ? mod->enabled : false;
 }
 
 Module* Client::GetModule(std::string id)
@@ -451,18 +450,27 @@ Module* Client::GetModule(std::string id)
     if (!instance)
         return nullptr;
 
-    for (size_t w = 0; w < instance->windows.size(); w++)
+    for (auto wnd : instance->windows)
     {
-        for (size_t m = 0; m < instance->windows[w]->modules.size(); m++)
+        for (auto mod : wnd->modules)
         {
-            if (!instance->windows[w]->modules[m]->id.compare(id))
+            if (!mod->id.compare(id))
             {
-                return instance->windows[w]->modules[m];
+                return mod;
+            }
+
+            for (auto option : mod->options)
+            {
+                if (option)
+                {
+                    if (!option->id.compare(id))
+                    {
+                        return option;
+                    }
+                }
             }
         }
     }
-
-    //geode::prelude::log::info("missing module :( {}", id);
 
     return nullptr;
 }

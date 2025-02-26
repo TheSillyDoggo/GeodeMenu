@@ -1,5 +1,6 @@
 #include "LabelLayer.hpp"
 #include "../Client/Windows/Labels.hpp"
+#include "../Utils/CCDirectorExt.hpp"
 
 #define ANCHOR_CREATE(__anchor) nodes.emplace(LabelAnchor::__anchor, createNodeForAnchor(LabelAnchor::__anchor))
 
@@ -33,8 +34,10 @@ bool LabelLayer::init(UILayer* uiLayer)
 
 void LabelLayer::update(float dt)
 {
-    _timeLeft -= dt / CCScheduler::get()->getTimeScale();
-    _accum += 1 / (dt / CCScheduler::get()->getTimeScale());
+    dt = as<CCDirectorExt*>(CCDirector::get())->getUnmodifiedDelta();
+
+    _timeLeft -= dt;
+    _accum += 1 / dt;
     _frames++;
 
     if (_timeLeft <= 0)

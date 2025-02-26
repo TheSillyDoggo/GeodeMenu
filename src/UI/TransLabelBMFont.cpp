@@ -78,11 +78,7 @@ bool TransLabelBMFont::init(std::string text, std::string font)
 
     instances.push_back(this);
 
-    this->originalText = text;
-    text = TranslationManager::get()->getTranslatedString(text);
-
-    this->text = text;
-    this->font = text;
+    this->font = font;
 
     label = CCLabelBMFont::create(text.c_str(), font.c_str());
 
@@ -95,10 +91,10 @@ bool TransLabelBMFont::init(std::string text, std::string font)
     label->setAnchorPoint(ccp(0, 0));
     ttf->setAnchorPoint(ccp(0, 0));
 
-    updateTTFVisible();
-
     this->addChild(label);
     this->addChild(ttf);
+
+    setString(text.c_str());
 
     return true;
 }
@@ -154,12 +150,20 @@ std::string TransLabelBMFont::getString()
     return text;
 }
 
-void TransLabelBMFont::setString(const char* str)
+
+void TransLabelBMFont::setString(std::string str)
 {
     this->text = str;
     this->originalText = str;
 
-    text = TranslationManager::get()->getTranslatedString(text);
+    auto trans = TranslationManager::get()->getTranslatedString(str);
+
+    if (TranslationManager::get()->isRightToLeft() && TranslationManager::get()->hasTranslationForString(str))
+    {
+        trans = applyRTLFix(trans);
+    }
+
+    text = trans;
 
     updateTTFVisible();
 }
@@ -190,9 +194,7 @@ void TransLabelBMFont::updateAllLabels()
 {
     for (auto label : instances)
     {
-        label->text = TranslationManager::get()->getTranslatedString(label->originalText);
-
-        label->updateTTFVisible();
+        label->setString(label->originalText.c_str());
 
         if (label->isLimited)
         {

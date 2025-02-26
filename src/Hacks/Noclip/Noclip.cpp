@@ -81,6 +81,12 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
 
             m_fields->tint->setColor(as<ColourModule*>(Client::GetModule("noclip")->options[2])->colour);
         }
+
+        if (p0 == m_player1)
+            base_cast<NoclipBaseGameLayer*>(this)->playSFX(true);
+
+        if (p0 == m_player2)
+            base_cast<NoclipBaseGameLayer*>(this)->playSFX(false);
     }
 }
 
@@ -207,4 +213,49 @@ void NoclipEditorLayer::postUpdate(float p0)
     }
 
     LevelEditorLayer::postUpdate(p0);
+}
+
+void NoclipBaseGameLayer::playSFX(bool player1)
+{
+    static SFXModule* p1sfx = nullptr;
+    static SFXModule* p2sfx = nullptr;
+
+    if (!p1sfx)
+    {
+        p1sfx = as<SFXModule*>(Client::GetModule("noclip-player1-sfx"));
+        p2sfx = as<SFXModule*>(Client::GetModule("noclip-player2-sfx"));
+    }
+
+    if (player1)
+    {
+        if (m_fields->canP1SFXPlay)
+        {
+            m_fields->canP1SFXPlay = false;
+
+            p1sfx->playRandomSFX();
+
+            this->scheduleOnce(schedule_selector(NoclipBaseGameLayer::resetP1SFX), 0.3f);
+        }
+    }
+    else
+    {
+        if (m_fields->canP2SFXPlay)
+        {
+            m_fields->canP2SFXPlay = false;
+
+            p2sfx->playRandomSFX();
+
+            this->scheduleOnce(schedule_selector(NoclipBaseGameLayer::resetP2SFX), 0.3f);
+        }
+    }
+}
+
+void NoclipBaseGameLayer::resetP1SFX(float)
+{
+    m_fields->canP1SFXPlay = true;
+}
+
+void NoclipBaseGameLayer::resetP2SFX(float)
+{
+    m_fields->canP2SFXPlay = true;
 }

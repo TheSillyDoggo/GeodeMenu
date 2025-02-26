@@ -2,13 +2,46 @@
 
 #pragma once
 #include <Geode/Geode.hpp>
-#include <Geode/loader/SettingNode.hpp>
 #include "../Utils/Utils.hpp"
 
 using namespace geode::prelude;
 
-class SetBindValue;
+// Have to make a SettingValue even if it holds no value
+class DummySetting : public SettingBaseValue<int>
+{
+    public:
+        static Result<std::shared_ptr<SettingV3>> parse(std::string const&, std::string const&, matjson::Value const&)
+        {
+            return Ok(std::make_shared<DummySetting>());
+        };
 
+        SettingNode* createNode(float width) override;
+};
+
+class ButtonSettingNode : public SettingValueNode<DummySetting>
+{
+    protected:
+        bool init(std::shared_ptr<DummySetting>& setting, float width);
+        
+    public:
+        void updateState(CCNode* invoker) override
+        {
+            SettingValueNodeV3::updateState(invoker);
+        }
+
+        static ButtonSettingNode* create(std::shared_ptr<DummySetting> value, float width)
+        {
+            auto ret = new ButtonSettingNode();
+            if (ret && ret->init(value, width)) {
+                ret->autorelease();
+                return ret;
+            }
+            CC_SAFE_DELETE(ret);
+            return nullptr;
+        }
+};
+
+/*
 class SetBindValue : public SettingValue
 {
     public:
@@ -121,5 +154,6 @@ class SetBindNode : public SettingNode
             return nullptr;
         }
 };
+*/
 
 #endif

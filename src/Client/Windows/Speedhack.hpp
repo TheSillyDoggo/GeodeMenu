@@ -3,27 +3,36 @@
 #include "../Window.h"
 #include "../idkwhattocallthis.hpp"
 
-class Speedhack : public Window {
-public:
-    Speedhack() {
-        name = "Speedhack";
-        id = "speedhack-window";
-    }
+class Speedhack : public Window
+{
+    public:
+        Speedhack()
+        {
+            name = "Speedhack";
+            id = "speedhack-window";
+        }
 
-    static inline Slider* slider = nullptr;
-    std::vector<float> presets = { 0.1f, 0.25f, 0.3f, 0.50f, 0.75f, 1, 1.50f, 2 };
+        Slider* slider = nullptr;
+        TextInput* input;
+        CCMenu* presetMenu;
+        std::vector<CCMenuItemSpriteExtra*> presetBtns;
+        std::vector<float> presets = { 0.1f, 0.25f, 0.3f, 0.50f, 0.75f, 1, 1.50f, 2 };
+        bool isDeleting = false;
+        ButtonSprite* sprD = nullptr;
 
-    void clear(CCObject* sender);
+        float scaleValue(float originalValue);
+        float unscaleValue(float scaledValue);
 
-    float scaleValue(float originalValue);
+        void sliderChanged(CCObject* sender);
+        void onClear(CCObject* sender);
+        void onPreset(CCObject* sender);
+        void onNewPreset(CCObject* sender);
+        void onDeletePreset(CCObject* sender);
 
-    float unscaleValue(float scaledValue);
+        void cocosCreate(CCMenu* menu);
 
-    void sliderChanged(CCObject* sender);
+        void updatePresets();
+        void updatePresetsSprites(int spr);
 
-    void onPreset(CCObject* sender);
-
-    void cocosCreate(CCMenu* menu);
-
-    virtual void textChanged(CCTextInputNode* p0);
+        virtual void textChanged(CCTextInputNode* p0);
 };

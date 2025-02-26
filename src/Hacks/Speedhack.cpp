@@ -44,9 +44,29 @@ float speedhackLogic(float dt)
 
             ColourUtility::update(dt * v);
 
+            // okay, time to explain myself.
+            // CBF (cheat between frames) has a setting called Physics Bypass. This breaks the speedhack in qolmod.
+            // because of this i have to do this :c
             #ifdef GEODE_IS_WINDOWS
-            CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * v);
-            CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * v);
+            static bool cbfChecked = false;
+            static bool cbfEnabled = false;
+            static Mod* cbf = nullptr;
+
+            if (!cbfChecked)
+            {
+                cbf = Loader::get()->getInstalledMod("syzzi.click_between_frames");
+
+                if (cbf)
+                    cbfEnabled = cbf->shouldLoad() || cbf->isEnabled();
+
+                cbfChecked = true;
+            }
+
+            if (cbfEnabled && cbf->getSettingValue<bool>("actual-delta"))
+            {
+                CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * v);
+                CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * v);
+            }
             #endif
             return dt * v;
         }
@@ -61,50 +81,39 @@ float speedhackLogic(float dt)
     return dt;
 }
 
+#if (defined(GEODE_IS_IOS) || defined(GEODE_IS_MACOS))
+
 class $modify (CCScheduler)
 {
     virtual void update(float dt)
     {
-        if (!masterGroup)
-            FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
-
-        if (!masterGroup || (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0)))
-            return CCScheduler::update(dt);
-
-        ColourUtility::update(dt);
-
-        if (SpeedhackEnabled::instance->enabled)
-        {
-            if (!SpeedhackGameplay::instance->enabled)
-            {
-                dt *= SpeedhackTop::instance->getFloatValue();
-            }
-
-            float spee = (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? SpeedhackTop::instance->getFloatValue() : 1;
-
-            #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, spee);
-            #else
-            masterGroup->setPitch(spee);
-            #endif
-        }
-        else
-        {
-            #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, 1);
-            #else
-            masterGroup->setPitch(1);
-            #endif
-        }
+        dt = speedhackLogic(dt);
 
         CCScheduler::update(dt);
-
-        #ifdef GEODE_IS_WINDOWS
-        CCDirector::get()->setActualDeltaTime(CCDirector::get()->getActualDeltaTime() * SpeedhackTop::instance->getFloatValue());
-        CCDirector::get()->setDeltaTime(CCDirector::get()->getDeltaTime() * SpeedhackTop::instance->getFloatValue());
-        #endif
     }
 };
+
+#else
+
+void myUpdate(CCScheduler* ins, float dt)
+{
+    dt = speedhackLogic(dt);
+    
+    ins->update(dt);
+}
+
+$execute {
+    (void)Mod::get()->hook(
+        reinterpret_cast<void*>(
+            geode::addresser::getVirtual(&CCScheduler::update)
+        ),
+        &myUpdate,
+        "cocos2d::CCScheduler::update",
+        tulip::hook::TulipConvention::Thiscall
+    );
+}
+
+#endif
 
 #ifdef GEODE_IS_IOS
 

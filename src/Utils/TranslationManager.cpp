@@ -15,6 +15,8 @@ void TranslationManager::unloadTranslation()
     translatedTexts = {};
     currentLanguage = "";
     languageLoaded = false;
+    rightToLeft = false;
+    rightToLeftFix = false;
 }
 
 void TranslationManager::loadTranslationFromJson(matjson::Value object)
@@ -36,11 +38,24 @@ void TranslationManager::loadTranslationFromJson(matjson::Value object)
 
     languageLoaded = true;
     currentLanguage = object["display_name_english"].asString().unwrapOr("ERROR");
+
+    rightToLeft = object["right-to-left"].asBool().unwrapOr(false);
+    rightToLeftFix = object["right-to-left-fix"].asBool().unwrapOr(false);
 }
 
 std::string TranslationManager::getLoadedLanguage()
 {
     return currentLanguage;
+}
+
+bool TranslationManager::isRightToLeft()
+{
+    return this->rightToLeft;
+}
+
+bool TranslationManager::isRightToLeftFix()
+{
+    return this->rightToLeftFix;
 }
 
 bool TranslationManager::isLanguageLoaded()
@@ -54,4 +69,9 @@ std::string TranslationManager::getTranslatedString(std::string engText)
         return translatedTexts[engText];
 
     return engText;
+}
+
+bool TranslationManager::hasTranslationForString(std::string engText)
+{
+    return translatedTexts.contains(engText);
 }
