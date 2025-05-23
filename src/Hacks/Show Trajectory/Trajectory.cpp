@@ -104,6 +104,8 @@ void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObjec
 {
     if (p0 == m_fields->trajectoryPlayer)
     {
+        #ifndef GEODE_IS_ANDROID
+        
         gd::vector<GameObject*> p1old = *p1;
 
         auto new_end = std::remove_if(p1->begin(), p1->end(), [](GameObject* obj)
@@ -134,6 +136,12 @@ void TrajectoryBGL::collisionCheckObjects(PlayerObject* p0, gd::vector<GameObjec
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 
         *p1 = p1old;
+
+        #else
+
+        GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
+
+        #endif
         return;
     }
 
