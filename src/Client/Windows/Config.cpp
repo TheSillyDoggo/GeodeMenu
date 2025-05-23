@@ -333,12 +333,9 @@ void Config::cocosCreate(CCMenu* menu)
 
     FADE_ICON(296, 2, 12, 12, 14);   // roxi
     FADE_ICON(373, 35, 43, 35, 1);  // jaid
-    FADE_ICON(70, 41, 12, 12, 1);   // gaypeling
     FADE_ICON(459, 98, 83, 12, 20);  // catgirlsarehot (anh)
     FADE_ICON(478, 37, 21, 105, 11); // i dont remember
     FADE_ICON(104, 21, 3, 3, 11);    // ery
-    FADE_ICON(41, 11, 70, -1, 1);   // justin
-    // FADE_ICON(77, 1, 5, -1, 8);     // baby (ninxout)
     FADE_ICON(335, 98, 41, 15, 19);  // alphalaneous
     
     aboutTab->addChild(iconsMenu);
