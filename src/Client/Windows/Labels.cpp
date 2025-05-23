@@ -306,8 +306,8 @@ void Labels::refreshList()
             nameInp->setScale(0.7f);
 
             nameInp->getBGSprite()->setVisible(false);
-            nameInp->getInputNode()->m_placeholderLabel->setAnchorPoint(ccp(0, 0.5f));
-            nameInp->getInputNode()->m_placeholderLabel->setPositionX(-nameInp->getContentWidth() / 2);
+            // nameInp->getInputNode()->m_placeholderLabel->setAnchorPoint(ccp(0, 0.5f));
+            // nameInp->getInputNode()->m_placeholderLabel->setPositionX(-nameInp->getContentWidth() / 2);
 
             nameInp->setString(lbl->name);
             nameInp->setCallback([this, lbl](const std::string& str)

@@ -167,7 +167,9 @@ bool AndroidUI::setup()
     {
         as<CCNode*>(cursor)->setID("cursor-char");
     }
-    searchLabel = input->getInputNode()->m_placeholderLabel;
+
+    // not a member anymore ?
+    // searchLabel = input->getInputNode()->m_placeholderLabel;
 
     panel->addChild(input);
     this->inputField = input;
@@ -390,7 +392,11 @@ CCMenu* AndroidUI::getSearchPanel()
 
 void AndroidUI::update(float dt)
 {
-    searchLabel->limitLabelWidth(90, 0.6f, 0.1f);
+    // at this point its just making shit up
+    // cuz
+    // WHAT THE FUCK IS FAILED TO READ FROM MEMORY AT ZERO X FUCKING ZERO
+
+    // searchLabel->limitLabelWidth(90, 0.6f, 0.1f);
 }
 
 void AndroidUI::textChanged(CCTextInputNode* p0)
@@ -484,7 +490,7 @@ CCAction* AndroidUI::getEnterAction(CCNode* panel)
 {
     float v = SpeedhackTop::getAdjustedValue();
 
-    int e = Mod::get()->getSavedValue<int>("anim-mode", 2);
+    int e = Mod::get()->getSavedValue<int>("anim-mode", 5);
 
     panel->setPosition(CCDirector::get()->getWinSize() / 2);
 

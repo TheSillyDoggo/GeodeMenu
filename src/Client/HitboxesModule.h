@@ -13,6 +13,11 @@ class Hitboxes : public Module
             name = "Show Hitboxes";
             description = "Shows object hitboxes";
 
+            // i think this fixes the hitboxes not turning off bug
+            // maybe cuz its not defined
+            // keep this here idiot !!!
+            enabled = false;
+
             options.push_back(new ColourModule("Solid's Colour:", "colour-solid", ccc3(0, 0, 255)));
             options.push_back(new ColourModule("Hazards's Colour:", "colour-hazard", ccc3(255, 0, 0)));
             options.push_back(new ColourModule("Passable Colour:", "colour-passable", ccc3(0, 255, 255)));

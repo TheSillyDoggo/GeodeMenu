@@ -66,7 +66,7 @@ void Config::cocosCreate(CCMenu* menu)
     animTitle->setScale(0.55f);
     menuTab->addChildAtPosition(animTitle, Anchor::TopLeft, ccp(5, -4));
 
-    animDropdown = Dropdown::create({130, 25}, {"None", "From Top", "From Bottom", "From Left", "From Right", "Scale"}, menu_selector(Config::onDropdownChanged), Mod::get()->getSavedValue<int>("anim-mode", 2));
+    animDropdown = Dropdown::create({130, 25}, {"None", "From Top", "From Bottom", "From Left", "From Right", "Scale"}, menu_selector(Config::onDropdownChanged), Mod::get()->getSavedValue<int>("anim-mode", 5));
     animDropdown->setZOrder(42069);
     menuTab->addChildAtPosition(animDropdown, Anchor::TopLeft, ccp(5 + animTitle->getScaledContentSize().width + 2, -2 - 25));
 

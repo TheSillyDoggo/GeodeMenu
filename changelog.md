@@ -2,6 +2,10 @@
 
 - Removed Comment Emojis integration to fix lag
 - Improved Performance
+- Fixed Toggling Show Hitboxes not working sometimes
+- Updated outdated strings
+- Changed default open animation to scale cuz it looks nicer
+- Removed not very nice message from github readme
 - Added **Noclip SFX on Death**
 
 # 1.7.8

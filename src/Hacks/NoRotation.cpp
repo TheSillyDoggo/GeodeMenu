@@ -1,4 +1,4 @@
-#ifndef GEODE_IS_ANDROID32
+#ifdef NO_ROTATION_BUILD
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCNode.hpp>

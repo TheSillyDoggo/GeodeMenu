@@ -520,19 +520,23 @@ public:
         #endif
 
         #ifndef QOLMOD_AUTOSONG
-        Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_NOJUSTDONT
-        Client::GetModule("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        Client::GetModule("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_VERIFYHACK
-        Client::GetModule("verify-hack")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        Client::GetModule("verify-hack")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_PULSINGMENU
-        Client::GetModule("menu-pulse")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        Client::GetModule("menu-pulse")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        #endif
+
+        #ifndef NO_ROTATION_BUILD
+        Client::GetModule("no-rot")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifdef GEODE_IS_WINDOWS
@@ -553,7 +557,7 @@ public:
         #endif
 
         #ifndef QOLMOD_ALL_MODES_PLATFORMER
-        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>.");
+        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>.");
         #endif
 
         Client::GetModule("menu-bg-blur")->setIncompatible("Blur BG is temporarily disabled because i broke it :(.");
