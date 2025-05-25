@@ -165,10 +165,10 @@ void AndroidBall::UpdateVisible(bool i)
 {
     bool vis = true;
 
-    if (Module::get("disable-gp")->enabled && this->getParent())
+    if (Mod::get()->getSavedValue<bool>("disable-gp_enabled") && this->getParent())
         vis = !(this->getParent()->getChildByType<PlayLayer>(0) && !this->getParent()->getChildByType<PauseLayer>(0));
 
-    if (Module::get("disable-editor")->enabled && this->getParent() && this->getParent()->getChildByType<LevelEditorLayer>(0))
+    if (Mod::get()->getSavedValue<bool>("disable-editor_enabled") && this->getParent() && this->getParent()->getChildByType<LevelEditorLayer>(0))
         vis = editorShouldBeVisible();
 
     #ifdef GEODE_IS_DESKTOP
