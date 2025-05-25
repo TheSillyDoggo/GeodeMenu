@@ -10,10 +10,10 @@ class $modify (PlayerObject)
     {
         if (PlayLayer::get())
         {
-            if (Client::GetModuleEnabled("ghost-on"))
+            if (Module::get("ghost-on")->enabled)
                 p0 = GhostType::Enabled;
 
-            if (Client::GetModuleEnabled("ghost-off"))
+            if (Module::get("ghost-off")->enabled)
                 p0 = GhostType::Disabled;
         }
 

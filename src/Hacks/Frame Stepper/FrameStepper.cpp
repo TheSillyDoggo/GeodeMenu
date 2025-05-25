@@ -67,7 +67,7 @@ void SteppedBaseGameLayer::stepFrame()
 {
     m_fields->steppingUpdate = true;
 
-    GJBaseGameLayer::update(1.0f / (Client::GetModuleEnabled("tps-bypass") ? as<InputModule*>(Client::GetModule("tps-bypass")->options[0])->getFloatValue() : 240.0f));
+    GJBaseGameLayer::update(1.0f / (Module::get("tps-bypass")->enabled ? as<InputModule*>(Module::get("tps-bypass")->options[0])->getFloatValue() : 240.0f));
 
     m_fields->steppingUpdate = false;
 }
@@ -178,7 +178,7 @@ void SteppedUILayer::updateUI()
 
     as<CCSprite*>(m_fields->pause->getNormalImage())->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(as<SteppedBaseGameLayer*>(m_gameLayer)->m_fields->paused ? "GJ_playEditorBtn_001.png" : "GJ_pauseEditorBtn_001.png"));
 
-    m_fields->menu->setVisible(Client::GetModuleEnabled("frame-stepper"));
+    m_fields->menu->setVisible(Module::get("frame-stepper")->enabled);
 
     auto position = ccp(Mod::get()->getSavedValue<float>("frame-stepper-position.x", 135 / 2 + 25), Mod::get()->getSavedValue<float>("frame-stepper-position.y", 40 / 2 + 25));
     auto scale = Mod::get()->getSavedValue<float>("frame-stepper-scale", 1);
@@ -234,8 +234,8 @@ $execute
 {
     Loader::get()->queueInMainThread([]
     {
-        Client::GetModule("frame-stepper")->delegate = new FrameStepperUIDelegate();
-        Client::GetModule("frame-stepper")->onToggle = [](bool enabled)
+        Module::get("frame-stepper")->delegate = new FrameStepperUIDelegate();
+        Module::get("frame-stepper")->onToggle = [](bool enabled)
         {
             if (GJBaseGameLayer::get())
             {

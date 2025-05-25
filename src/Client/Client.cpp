@@ -120,7 +120,7 @@ void Client::initImGui()
 
 void Client::drawImGui()
 {
-    if (Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
+    if (Module::get("menu-bg-blur")->enabled && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
         blurLayer->visit();
 
     // ImGui::GetStyle().Alpha = bgOpacity->getDisplayedOpacity() / 255.0f;
@@ -436,41 +436,4 @@ void Client::loadImGuiTheme(std::string theme)
     THEME_COLOUR(NavWindowingHighlight);
     THEME_COLOUR(NavWindowingDimBg);
     THEME_COLOUR(ModalWindowDimBg);
-}
-
-bool Client::GetModuleEnabled(std::string id)
-{
-    auto mod = GetModule(id);
-
-    return mod ? mod->enabled : false;
-}
-
-Module* Client::GetModule(std::string id)
-{
-    if (!instance)
-        return nullptr;
-
-    for (auto wnd : instance->windows)
-    {
-        for (auto mod : wnd->modules)
-        {
-            if (!mod->id.compare(id))
-            {
-                return mod;
-            }
-
-            for (auto option : mod->options)
-            {
-                if (option)
-                {
-                    if (!option->id.compare(id))
-                    {
-                        return option;
-                    }
-                }
-            }
-        }
-    }
-
-    return nullptr;
 }

@@ -12,7 +12,7 @@ bool CountdownLayer::init()
     if (!CCLayer::init())
         return false;
 
-    auto down = as<InputModule*>(Client::GetModule("pause-countdown")->options[0])->getIntValue();
+    auto down = as<InputModule*>(Module::get("pause-countdown")->options[0])->getIntValue();
 
     countdownInstance = this;
     count = std::clamp<int>(down, 1, down);

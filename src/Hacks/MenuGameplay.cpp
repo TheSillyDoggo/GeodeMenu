@@ -30,7 +30,7 @@ class MenuGameDelegate : public CCLayer
         {
             if (auto mgl = getGameLayer())
             {    
-                if (Client::GetModuleEnabled("main-menu-gameplay") && (pTouch ? mgl->ccTouchBegan(pTouch, pEvent) : true))
+                if (Module::get("main-menu-gameplay")->enabled && (pTouch ? mgl->ccTouchBegan(pTouch, pEvent) : true))
                 {
                     if (mgl->m_playerObject && !mgl->m_playerObject->m_isSpider)
                         mgl->m_playerObject->pushButton(PlayerButton::Jump);
@@ -44,7 +44,7 @@ class MenuGameDelegate : public CCLayer
 
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
         {
-            if (Client::GetModuleEnabled("main-menu-gameplay"))
+            if (Module::get("main-menu-gameplay")->enabled)
             {
                 if (auto mgl = getGameLayer())
                 {
@@ -76,7 +76,7 @@ class $modify (MenuGameLayer)
 {   
     void tryJump(float p0)
     {
-        if (!Client::GetModuleEnabled("main-menu-gameplay"))
+        if (!Module::get("main-menu-gameplay")->enabled)
             MenuGameLayer::tryJump(p0);
     }
 
@@ -118,7 +118,7 @@ class $modify (CCKeyboardDispatcher)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("main-menu-gameplay");
+            auto modu = Module::get("main-menu-gameplay");
             modu->addHookRaw(hook);
         });
     }

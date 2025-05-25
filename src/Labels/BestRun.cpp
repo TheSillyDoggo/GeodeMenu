@@ -53,9 +53,9 @@ std::string BestPlayLayer::getRoundedString(float f)
     int places = 0;
 
     if (!_accurateMod)
-        _accurateMod = Client::GetModule("accurate-percentage");
+        _accurateMod = Module::get("accurate-percentage");
 
-    if (Client::GetModuleEnabled("best-run-decimals") && _accurateMod)
+    if (Module::get("best-run-decimals")->enabled && _accurateMod)
     {
         places = as<InputModule*>(_accurateMod->options[0])->getIntValue();
 
@@ -76,7 +76,7 @@ std::string BestPlayLayer::getRunString()
     if (fields->bestLength == 0)
         return "Best Run: None";
 
-    if (!Client::GetModuleEnabled("best-run-always-show-from") && (as<int>(fields->fromPercent) == 0))
+    if (!Module::get("best-run-always-show-from")->enabled && (as<int>(fields->fromPercent) == 0))
         return fmt::format("Best Run: {}%", getRoundedString(fields->bestTo));
 
     return fmt::format("Best Run: {} - {}%", getRoundedString(fields->bestFrom), getRoundedString(fields->bestTo));

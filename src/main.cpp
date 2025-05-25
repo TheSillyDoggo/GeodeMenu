@@ -152,7 +152,7 @@ class $modify (MenuLayer)
                 });
             }
 
-            if (Client::GetModuleEnabled("save-pos"))
+            if (Module::get("save-pos")->enabled)
             {
                 AndroidBall::position = ccp(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));
 

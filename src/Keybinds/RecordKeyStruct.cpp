@@ -14,7 +14,7 @@ bool RecordKeyStruct::init(std::function<void(KeyStruct)> obj)
     this->scheduleUpdate();
     this->callback = obj;
 
-    if (Client::GetModuleEnabled("menu-bg-blur"))
+    if (Module::get("menu-bg-blur")->enabled)
     {
         auto blur = BlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));

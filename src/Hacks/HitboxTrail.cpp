@@ -25,7 +25,7 @@ class $modify (GJBaseGameLayerExt, GJBaseGameLayer)
         lastPos = CCPointZero;
         lastPos2 = CCPointZero;
 
-        hitboxTrail = Client::GetModule("show-hitboxes")->options[6];
+        hitboxTrail = Module::get("show-hitboxes")->options[6];
         hitboxTrail->onToggle = [](bool enabled){
             points.clear();
             sizes.clear();

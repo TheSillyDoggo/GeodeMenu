@@ -15,10 +15,10 @@ class $modify (CCDrawNode)
         if (typeinfo_cast<HardStreak*>(this))
         {
             if (!noWave)
-                noWave = Client::GetModule("no-wave");
+                noWave = Module::get("no-wave");
 
             if (!solidWave)
-                solidWave = Client::GetModule("solid-wave");
+                solidWave = Module::get("solid-wave");
 
             if (noWave->enabled)
                 return true;

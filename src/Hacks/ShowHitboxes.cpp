@@ -26,10 +26,10 @@ class $modify (PlayLayer)
         bool shouldVis = GameManager::sharedState()->getGameVariable("0166") && m_isPracticeMode;
 
         if (!m_fields->mod)
-            m_fields->mod = Client::GetModule("show-hitboxes");
+            m_fields->mod = Module::get("show-hitboxes");
 
         if (!m_fields->mod2)
-            m_fields->mod2 = Client::GetModule("show-hitboxes-on-death");
+            m_fields->mod2 = Module::get("show-hitboxes-on-death");
 
         if (m_fields->mod->enabled)
             shouldVis = true;

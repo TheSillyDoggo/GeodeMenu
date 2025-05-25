@@ -30,6 +30,8 @@ class Module : public UIComponent
     protected:
         std::vector<geode::Hook*> hooks = {};
         std::vector<geode::Patch*> patches = {};
+
+        static inline std::map<std::string, Module*> modules = {};
     public:
         static inline std::string descMod = "";
 
@@ -76,7 +78,7 @@ class Module : public UIComponent
 
         Module()
         {
-
+            // dont add to cache
         }
 
         Module(std::string n, std::string i)
@@ -86,6 +88,8 @@ class Module : public UIComponent
             enabled = false;
 
             this->load();
+
+            addToCache();
         }
 
         Module(std::string n, std::string i, std::string d, bool _def = false, std::string a = "", bool as = false)
@@ -99,7 +103,12 @@ class Module : public UIComponent
             alert = a;
 
             this->load();
+
+            addToCache();
         }
+
+        static Module* get(std::string id);
+        void addToCache();
 
 
         // options

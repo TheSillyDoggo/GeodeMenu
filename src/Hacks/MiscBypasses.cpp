@@ -63,7 +63,7 @@ void updateZoom()
 
     for (auto patch : zoompatches)
     {
-        if (Client::GetModuleEnabled("zoom-limit"))
+        if (Module::get("zoom-limit")->enabled)
             patch->enable();
         else
             patch->disable();
@@ -85,7 +85,7 @@ $execute
 {
     Loader::get()->queueInMainThread([] {
         auto del = new MiscChangedDelegate();
-        auto misc = Client::GetModule("misc-bypass");
+        auto misc = Module::get("misc-bypass");
 
         misc->delegate = del;
         misc->options[0]->delegate = del;

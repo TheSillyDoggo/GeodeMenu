@@ -22,7 +22,7 @@ class $modify(ShareLevelLayer)
     void onShare(cocos2d::CCObject* sender)
     {
         #ifdef QOLMOD_GOODVERIFYHACK
-        if (Client::GetModuleEnabled("verify-hack"))
+        if (Module::get("verify-hack")->enabled)
         {
             auto pop = UploadPopup::create(m_fields->m_level);
             CCScene::get()->addChild(pop, CCScene::get()->getHighestChildZ() + 1);
@@ -39,7 +39,7 @@ class $modify(ShareLevelLayer)
 		auto p1 = level->m_isVerifiedRaw;
 		auto p2 = level->m_isVerified.value();
 
-        if (Client::GetModuleEnabled("verify-hack"))
+        if (Module::get("verify-hack")->enabled)
         {
 		    level->m_isVerifiedRaw = true;
 		    level->m_isVerified = true;

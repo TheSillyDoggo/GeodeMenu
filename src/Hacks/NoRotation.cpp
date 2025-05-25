@@ -14,7 +14,7 @@ class $modify (PlayerObject)
     void setRotation(float r)
     {
         if (!rot)
-            rot = Client::GetModule("no-rot");
+            rot = Module::get("no-rot");
 
         if (rot->enabled)
             PlayerObject::setRotation(0);
@@ -30,7 +30,7 @@ class $modify (CCNode)
 {
     void setRotation(float r)
     {
-        if (Client::GetModuleEnabled("no-rot"))
+        if (Module::get("no-rot")->enabled)
             CCNode::setRotation(0);
         else
             CCNode::setRotation(r);

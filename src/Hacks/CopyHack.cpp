@@ -70,7 +70,7 @@ class $modify (ShowPasswordLayer, NumberInputLayer)
         if (!NumberInputLayer::init())
             return false;
 
-        if (!Client::GetModuleEnabled("show-password"))
+        if (!Module::get("show-password")->enabled)
             return true;
 
         if (auto l = CCScene::get()->getChildByType<LevelInfoLayer>(0))

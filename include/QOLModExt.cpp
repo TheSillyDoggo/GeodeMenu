@@ -65,7 +65,7 @@ $execute
 
     new EventListener<EventFilter<ToggleModuleEvent>>(+[](ToggleModuleEvent* ev)
     {
-        auto mod = Client::GetModule(ev->id);
+        auto mod = Module::get(ev->id);
 
         if (mod->enabled != ev->enabled)
             mod->onToggleAndroid(nullptr);

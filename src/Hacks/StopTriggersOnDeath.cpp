@@ -24,7 +24,7 @@ class $modify (GJBaseGameLayer)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("stop-triggers-on-death");
+            auto modu = Module::get("stop-triggers-on-death");
             modu->addHookRaw(hook);
         });
     }

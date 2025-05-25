@@ -1,4 +1,4 @@
-# 1.7.9(1)
+# 1.7.9(2)
 
 - Removed Comment Emojis integration to fix lag
 - Improved Performance

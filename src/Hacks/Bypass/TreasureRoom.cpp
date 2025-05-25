@@ -10,7 +10,7 @@ class $modify (CreatorLayer)
         (void)self.setHookPriority("CreatorLayer::onTreasureRoom", 99999999);
         auto hook = self.getHook("CreatorLayer::onTreasureRoom");
         Loader::get()->queueInMainThread([hook]{
-            Client::GetModule("treasure-room-bypass")->addHookRaw(hook);
+            Module::get("treasure-room-bypass")->addHookRaw(hook);
         });
     }
 

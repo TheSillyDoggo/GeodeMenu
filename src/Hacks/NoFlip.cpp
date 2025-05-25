@@ -9,10 +9,10 @@ class $modify (GJBaseGameLayer)
 {
     void toggleFlipped(bool p0, bool p1)
     {
-        if (Client::GetModuleEnabled("instant-reverse"))
+        if (Module::get("instant-reverse")->enabled)
             p1 = true;
 
-        if (!Client::GetModuleEnabled("no-reverse"))
+        if (!Module::get("no-reverse")->enabled)
             GJBaseGameLayer::toggleFlipped(p0, p1);
     }
 };

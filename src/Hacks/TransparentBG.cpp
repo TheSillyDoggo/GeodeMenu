@@ -42,7 +42,7 @@ class $modify (AppDelegate)
         AppDelegate::willSwitchToScene(scene);
         #endif
 
-        if (!Client::GetModuleEnabled("trans-bg"))
+        if (!Module::get("trans-bg")->enabled)
             return;
 
         if (scene->getChildrenCount() > 0)
@@ -76,7 +76,7 @@ class $modify (AppDelegate)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("trans-bg")->onToggle = [](bool enabled){
+        Module::get("trans-bg")->onToggle = [](bool enabled){
             if (auto scene = CCScene::get())
             {
                 if (scene->getChildrenCount() > 0)

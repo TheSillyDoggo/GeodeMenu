@@ -488,7 +488,7 @@ void TrajectoryBGL::simulateTrajectory(bool press, PlayerObject* player)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("show-trajectory")->onToggle = [](bool enabled){
+        Module::get("show-trajectory")->onToggle = [](bool enabled){
             if (auto bgl = as<TrajectoryBGL*>(GJBaseGameLayer::get()))
             {
                 if (!enabled)

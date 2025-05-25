@@ -21,7 +21,7 @@ class $modify (CCNode)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("no-blink");
+            auto modu = Module::get("no-blink");
             modu->addHookRaw(hook);
         });
     }

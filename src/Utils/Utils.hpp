@@ -19,7 +19,7 @@
 static void onModify(auto& self) { \
     auto hook = self.getHook(_hookname); \
     Loader::get()->queueInMainThread([hook] { \
-        auto modu = Client::GetModule(_modid); \
+        auto modu = Module::get(_modid); \
         modu->addHookRaw(hook); \
     }); \
 }
@@ -35,7 +35,7 @@ static void onModify(auto& self) { \
 	} \
 	Loader::get()->queueInMainThread([hooks] \
 	{ \
-		auto modu = Client::GetModule(_modid); \
+		auto modu = Module::get(_modid); \
 		for (auto hook : hooks) \
 		{ \
 			if (hook) \

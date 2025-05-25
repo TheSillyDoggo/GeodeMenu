@@ -17,7 +17,7 @@ bool AndroidUI::setup()
     this->setID("QOLModUI");
     this->runAction(CCFadeTo::create(0.5f, 100));
 
-    if (Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
+    if (Module::get("menu-bg-blur")->enabled && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
     {
         auto blur = BlurLayer::create();
         blur->setID("blur-layer");
@@ -200,7 +200,7 @@ bool AndroidUI::setup()
     updateSearchBox();
     updateVersionLabel();
 
-    //if (Client::GetModuleEnabled("npesta-width"))
+    //if (Module::get("npesta-width")->enabled)
     //{
     //    panel->setPositionX(panel->getPositionX() + 5);
     //    panel->setContentSize(panel->getContentSize() + ccp(10, 0));
@@ -613,7 +613,7 @@ void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
 
 void AndroidUI::updateSearchBox()
 {
-    auto en = Client::GetModuleEnabled("ui-search-box");
+    auto en = Module::get("ui-search-box")->enabled;
 
     versionInfo->setVisible(!en);
     inputField->setVisible(en);

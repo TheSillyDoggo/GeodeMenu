@@ -97,7 +97,7 @@ void StatusNode::updateVis()
 
 void StatusNode::updateFont()
 {
-    std::string font = as<FontModule*>(Client::GetModule("labels-font"))->getSelectedFont();
+    std::string font = as<FontModule*>(Module::get("labels-font"))->getSelectedFont();
 
     for (auto lbl : sLabels)
     {
@@ -222,43 +222,43 @@ void StatusNode::postSetup(Window* wnd)
 void StatusNode::update(float dt)
 {
     if (!cheat)
-        cheat = Client::GetModule("cheat-indicator");
+        cheat = Module::get("cheat-indicator");
     
     if (!fps)
-        fps = Client::GetModule("status-fps");
+        fps = Module::get("status-fps");
 
     if (!accuracy)
-        accuracy = Client::GetModule("status-accuracy");
+        accuracy = Module::get("status-accuracy");
 
     if (!deaths)
-        deaths = Client::GetModule("status-deaths");
+        deaths = Module::get("status-deaths");
 
     if (!noclip)
-        noclip = Client::GetModule("noclip");
+        noclip = Module::get("noclip");
 
     if (!replay)
-        replay = Client::GetModule("status-replay");
+        replay = Module::get("status-replay");
 
     if (!attempt)
-        attempt = Client::GetModule("status-attempt");
+        attempt = Module::get("status-attempt");
 
     if (!message)
-        message = Client::GetModule("status-message");
+        message = Module::get("status-message");
 
     if (!session)
-        session = Client::GetModule("status-session");
+        session = Module::get("status-session");
 
     if (!cpsM)
-        cpsM = Client::GetModule("status-cps");
+        cpsM = Module::get("status-cps");
 
     if (!bestRun)
-        bestRun = Client::GetModule("best-run");
+        bestRun = Module::get("best-run");
 
     if (!clock)
-        clock = Client::GetModule("status-clock");
+        clock = Module::get("status-clock");
 
     if (!percentage)
-        percentage = Client::GetModule("status-percentage");
+        percentage = Module::get("status-percentage");
         
     if (!attPL)
         attPL = static_cast<AttemptBaseGameLayer*>(GJBaseGameLayer::get());
@@ -400,7 +400,7 @@ class $modify (PlayerObject)
             {
                 stn->sLabels[8]->stopAllActions();
 
-                if (Client::GetModuleEnabled("status-cps-instant-fade"))
+                if (Module::get("status-cps-instant-fade")->enabled)
                     stn->sLabels[8]->setColor(ccc3(255, 255, 255));
                 else
                     stn->sLabels[8]->runAction(CCTintTo::create(1, 255, 255, 255));
@@ -437,7 +437,7 @@ class $modify (LevelEditorLayer)
         if (!LevelEditorLayer::init(p0, p1))
             return false;
 
-        if (!Client::GetModuleEnabled("labels-in-editor"))
+        if (!Module::get("labels-in-editor")->enabled)
             return true;
 
         if (getChildByID("status-node"_spr))

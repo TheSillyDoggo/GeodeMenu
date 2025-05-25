@@ -10,7 +10,7 @@ using namespace geode::prelude;
         (void)self.setHookPriority("GameStatsManager::isItemUnlocked", 99999999);
         auto hook = self.getHook("GameStatsManager::isItemUnlocked");
         Loader::get()->queueInMainThread([hook]{
-            Client::GetModule("basement-key-bypass")->addHookRaw(hook);
+            Module::get("basement-key-bypass")->addHookRaw(hook);
         });
     }
 

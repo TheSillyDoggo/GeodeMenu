@@ -26,7 +26,7 @@ void updateTPSPatches(bool tpsEnabled)
 
     float tps = 240;
 
-    auto x = numFromString<float>(as<InputModule*>(Client::GetModule("tps-bypass")->options[0])->text);
+    auto x = numFromString<float>(as<InputModule*>(Module::get("tps-bypass")->options[0])->text);
 
     if (x.isOk())
     {
@@ -52,7 +52,7 @@ class TPSChangedDelegate : public ModuleChangeDelegate
 {
     virtual void onModuleChanged(bool enabled)
     {
-        updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
+        updateTPSPatches(Module::get("tps-bypass")->enabled);
     }
 };
 
@@ -61,10 +61,10 @@ $execute
     Loader::get()->queueInMainThread([] {
         auto del = new TPSChangedDelegate();
 
-        Client::GetModule("tps-bypass")->delegate = del;
-        Client::GetModule("tps-bypass")->options[0]->delegate = del;
+        Module::get("tps-bypass")->delegate = del;
+        Module::get("tps-bypass")->options[0]->delegate = del;
 
-        updateTPSPatches(Client::GetModuleEnabled("tps-bypass"));
+        updateTPSPatches(Module::get("tps-bypass")->enabled);
     });
 }
 

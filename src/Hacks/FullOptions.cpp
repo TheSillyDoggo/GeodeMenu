@@ -48,7 +48,7 @@ class $modify (PauseLayer)
 {
     void onSettings(cocos2d::CCObject* sender)
     {
-        if (Client::GetModuleEnabled("full-options") && !ignore)
+        if (Module::get("full-options")->enabled && !ignore)
         {
             #ifdef GEODE_IS_WINDOWS
             auto event = menu_selector(MenuLayer::onOptions);

@@ -71,7 +71,7 @@ public:
     std::vector<std::filesystem::path> getLanguages();
 
     //[[deprecated("GetModuleEnabled has been deprecated due to lag, please rember to cache the module :3")]]
-    static bool GetModuleEnabled(std::string id);
+    // static bool GetModuleEnabled(std::string id);
 
-    static Module* GetModule(std::string id);
+    // static Module* GetModule(std::string id);
 };

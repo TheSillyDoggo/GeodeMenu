@@ -111,7 +111,7 @@ class $modify (StartposPlayLayer, PlayLayer)
 
         m_uiLayer->addChild(m_fields->menu);
 
-        m_fields->menu->setVisible(Client::GetModuleEnabled("startpos-switcher") ? !m_fields->objs.empty() : false);
+        m_fields->menu->setVisible(Module::get("startpos-switcher")->enabled ? !m_fields->objs.empty() : false);
 
         updateUI();
     }
@@ -157,7 +157,7 @@ class $modify (UILayer)
     {
         UILayer::keyDown(key);
 
-        if (Client::GetModuleEnabled("startpos-switcher"))
+        if (Module::get("startpos-switcher")->enabled)
         {
             if (auto pl = PlayLayer::get())
             {
@@ -172,7 +172,7 @@ class $modify (UILayer)
     #else
     void handleKeypress(cocos2d::enumKeyCodes key, bool down)
     {
-        if (down && Client::GetModuleEnabled("startpos-switcher"))
+        if (down && Module::get("startpos-switcher")->enabled)
         {
             if (auto pl = PlayLayer::get())
             {
@@ -200,6 +200,6 @@ class StartposUIDelegate : public ModuleChangeDelegate
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("startpos-switcher")->delegate = new StartposUIDelegate();
+        Module::get("startpos-switcher")->delegate = new StartposUIDelegate();
     });
 }

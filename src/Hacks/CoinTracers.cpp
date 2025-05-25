@@ -22,7 +22,7 @@ class $modify (PlayLayer)
         if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        coinTracers = Client::GetModule("coin-tracers");
+        coinTracers = Module::get("coin-tracers");
         coinColour = as<ColourModule*>(coinTracers->options[0]);
 
         auto dn = CCDrawNode::create();

@@ -19,7 +19,7 @@ class $modify (PauseLayer)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("hide-pause-menu")->onToggle = [](bool enabled)
+        Module::get("hide-pause-menu")->onToggle = [](bool enabled)
         {
             if (auto p = CCScene::get()->getChildByType<PauseLayer>(0))
             {

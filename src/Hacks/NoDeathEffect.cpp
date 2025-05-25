@@ -16,7 +16,7 @@ class $modify (PlayerObject)
     {
         m_isDead = true;
         
-        if (!Client::GetModuleEnabled("no-death"))
+        if (!Module::get("no-death")->enabled)
             PlayerObject::playDeathEffect();
     }
 };
@@ -30,13 +30,13 @@ class $modify (PlayLayer)
         if (!p0)
             return;
 
-        if (Client::GetModuleEnabled("instant-restart") || Client::GetModuleEnabled("custom-respawn-time"))
+        if (Module::get("instant-restart")->enabled || Module::get("custom-respawn-time")->enabled)
         {
             if (auto action = getActionByTag(0x10))
             {
                 this->stopActionByTag(0x10);
 
-                if (Client::GetModuleEnabled("instant-restart"))
+                if (Module::get("instant-restart")->enabled)
                 {
                     this->resetLevel();
                     p0->setVisible(true);
@@ -44,7 +44,7 @@ class $modify (PlayLayer)
                 }
                 else
                 {
-                    auto act = CCSequence::create(CCDelayTime::create(as<InputModule*>(Client::GetModule("custom-respawn-time")->options[0])->getFloatValue()), CCCallFunc::create(this, callfunc_selector(PlayLayer::delayedResetLevel)), nullptr);
+                    auto act = CCSequence::create(CCDelayTime::create(as<InputModule*>(Module::get("custom-respawn-time")->options[0])->getFloatValue()), CCCallFunc::create(this, callfunc_selector(PlayLayer::delayedResetLevel)), nullptr);
                     act->setTag(0x10);
 
                     this->runAction(act);

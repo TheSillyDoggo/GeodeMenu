@@ -133,10 +133,10 @@ void Config::cocosCreate(CCMenu* menu)
     float posY = 0;
     posY += 17;
 
-    Client::GetModule("save-pos")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+    Module::get("save-pos")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
     posY += 30;
 
-    Client::GetModule("allow-dragging")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+    Module::get("allow-dragging")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
     posY += 10;
 
     auto lSc = CCLabelBMFont::create("Scale:", "bigFont.fnt");
@@ -164,7 +164,7 @@ void Config::cocosCreate(CCMenu* menu)
 
     posY += 25;
 
-    Client::GetModule("instant-fade")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
+    Module::get("instant-fade")->makeAndroid(buttonTab, ccp(17, posY) - buttonTab->getContentSize());
 
     posY += 13;
 
@@ -605,8 +605,8 @@ void Config::onSliderChanged(CCObject* sender)
     btn->stopAllActions();
     btnL->stopAllActions();
     
-    btn->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
-    btnL->runAction(CCFadeTo::create(Client::GetModuleEnabled("instant-fade") ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
+    btn->runAction(CCFadeTo::create(Module::get("instant-fade")->enabled ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
+    btnL->runAction(CCFadeTo::create(Module::get("instant-fade")->enabled ? 0 : 0.35f, Mod::get()->getSavedValue<int>("normal-opacity", 255)));
 
     //"instant-fade"
 }

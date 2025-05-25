@@ -58,7 +58,7 @@ class $modify(CCSpriteGrayscale)
 
         Loader::get()->queueInMainThread([hooks] 
         {
-            auto modu = Client::GetModule("unlock-buttons");
+            auto modu = Module::get("unlock-buttons");
 
             for (auto hook : hooks)
             {

@@ -36,16 +36,16 @@ class $modify (PlayLayer)
             return;
 
         if (!accurateMod)
-            accurateMod = Client::GetModule("accurate-percentage");
+            accurateMod = Module::get("accurate-percentage");
 
         if (!inaccurateMod)
-            inaccurateMod = Client::GetModule("classic-percentage");
+            inaccurateMod = Module::get("classic-percentage");
 
         if (!accurateModPlaces)
             accurateModPlaces = as<InputModule*>(accurateMod->options[0]);
 
         if (!bestMod)
-            bestMod = Client::GetModule("best-in-percentage");
+            bestMod = Module::get("best-in-percentage");
 
         if (accurateMod->enabled || inaccurateMod->enabled || bestMod->enabled)
         {

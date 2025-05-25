@@ -38,7 +38,7 @@ $execute {
 
     Loader::get()->queueInMainThread([hook]
     {
-        auto modu = Client::GetModule("no-particles");
+        auto modu = Module::get("no-particles");
         modu->addHook(hook);
     });
 }

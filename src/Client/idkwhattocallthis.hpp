@@ -18,6 +18,8 @@ class SpeedhackEnabled : public Module
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -36,6 +38,8 @@ class SpeedhackMus : public Module
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -53,6 +57,8 @@ class SpeedhackGameplay : public Module
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -72,6 +78,8 @@ class StatusOpacity : public InputModule
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -91,6 +99,8 @@ class StatusScale : public InputModule
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -110,6 +120,8 @@ class StatusMessage : public InputModule
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -127,6 +139,8 @@ class AltModuleLocation : public Module
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -144,6 +158,8 @@ class CompactMode : public Module
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 };
 
@@ -162,6 +178,8 @@ class SpeedhackTop : public InputModule
             instance = this;
 
             this->load();
+
+            addToCache();
         }
 
         static float getAdjustedValue()

@@ -61,17 +61,17 @@ class $modify (cocos2d::CCTransitionFade)
     {
         float mod = 1;
 
-        if (Client::GetModuleEnabled("custom-trans"))
+        if (Module::get("custom-trans")->enabled)
         {
             duration = Mod::get()->getSavedValue<float>("transition-time", 0.5f);
         }
 
-        if (Client::GetModuleEnabled("no-trans"))
+        if (Module::get("no-trans")->enabled)
         {
             mod = 0;
         }
 
-        return as<CCTransitionFade*>(getSceneForSel(Client::GetModuleEnabled("custom-trans") ? Mod::get()->getSavedValue<int>("transition", 0) : 0, duration * mod, scene, ccc3(0, 0, 0)));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
+        return as<CCTransitionFade*>(getSceneForSel(Module::get("custom-trans")->enabled ? Mod::get()->getSavedValue<int>("transition", 0) : 0, duration * mod, scene, ccc3(0, 0, 0)));// /*base_cast<CCTransitionFade*>(CCTransitionFlipY::create(duration * mod, scene));  */CCTransitionFade::create(duration * mod, scene);
     }
 };
 
@@ -81,7 +81,7 @@ class $modify (cocos2d::CCTransitionFade)
 {
     static CCTransitionFade* create(float duration,CCScene* scene)
     {
-        return CCTransitionFade::create(Client::GetModuleEnabled("no-trans") ? 0 : duration, scene);
+        return CCTransitionFade::create(Module::get("no-trans")->enabled ? 0 : duration, scene);
     }
 };
 

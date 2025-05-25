@@ -11,7 +11,7 @@ class $modify (SecretLayer2)
         (void)self.setHookPriority("SecretLayer2::onDoor", 99999999);
         auto hook = self.getHook("SecretLayer2::onDoor");
         Loader::get()->queueInMainThread([hook]{
-            Client::GetModule("basement-bypass")->addHookRaw(hook);
+            Module::get("basement-bypass")->addHookRaw(hook);
         });
     }
 

@@ -18,7 +18,7 @@ class $modify (PlayLayer)
 
         if (!killAt)
         {
-            killAt = Client::GetModule("kill-after");
+            killAt = Module::get("kill-after");
             pc = as<InputModule*>(killAt->options[0]);
             tm = as<InputModule*>(killAt->options[1]);
         }
@@ -54,7 +54,7 @@ class $modify (PlayLayer)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("kill-after");
+            auto modu = Module::get("kill-after");
             modu->addHookRaw(hook);
         });
     }

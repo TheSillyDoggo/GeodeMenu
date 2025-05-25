@@ -23,7 +23,7 @@ $execute
     Loader::get()->queueInMainThread([patches]{
         for (auto patch : patches)
         {
-            Client::GetModule("editor-extension")->addPatch(patch);
+            Module::get("editor-extension")->addPatch(patch);
         }
     });
 };

@@ -12,7 +12,7 @@ class $modify (LevelPage)
     {
         auto v = m_level->m_requiredCoins;
 
-        if (Client::GetModuleEnabled("main-level-bypass"))
+        if (Module::get("main-level-bypass")->enabled)
             m_level->m_requiredCoins = 0;
 
         LevelPage::onPlay(sender);
@@ -28,7 +28,7 @@ class $modify (LevelAreaInnerLayer)
         if (!LevelAreaInnerLayer::init(p0))
             return false;
 
-        if (!Client::GetModuleEnabled("tower-level-bypass"))
+        if (!Module::get("tower-level-bypass")->enabled)
             return true;
 
         auto x = this->getChildByType<CCNode>(1);

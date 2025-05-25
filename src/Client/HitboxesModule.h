@@ -33,5 +33,7 @@ class Hitboxes : public Module
 
 
             this->load();
+
+            addToCache();
         }
 };

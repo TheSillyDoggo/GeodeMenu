@@ -7,8 +7,8 @@ bool NoclipPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
     if (!PlayLayer::init(level, useReplay, dontCreateObjects))
         return false;
 
-    m_fields->tintOnDeath = Client::GetModule("noclip")->options[0];
-    m_fields->tintOpacity = as<SliderModule*>(Client::GetModule("noclip")->options[1]);
+    m_fields->tintOnDeath = Module::get("noclip")->options[0];
+    m_fields->tintOpacity = as<SliderModule*>(Module::get("noclip")->options[1]);
 
     m_fields->tint = CCLayerColor::create(ccc4(255, 0, 0, 0));
     m_fields->tint->setID("noclip-tint-popup"_spr);
@@ -31,21 +31,21 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
     if (!base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac)
         base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac = p1;
 
-    if (!Client::GetModuleEnabled("noclip-player2") && p0 == m_player2)
+    if (!Module::get("noclip-player2")->enabled && p0 == m_player2)
         return PlayLayer::destroyPlayer(p0, p1);
 
-    if (!Client::GetModuleEnabled("noclip-player1") && p0 == m_player1)
+    if (!Module::get("noclip-player1")->enabled && p0 == m_player1)
         return PlayLayer::destroyPlayer(p0, p1);
 
-    if (!Client::GetModuleEnabled("noclip") || (base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac == p1))
+    if (!Module::get("noclip")->enabled || (base_cast<NoclipBaseGameLayer*>(this)->m_fields->ac == p1))
         PlayLayer::destroyPlayer(p0, p1);
     else
     {
-        if (Client::GetModuleEnabled("noclip-min-accuracy-toggle"))
+        if (Module::get("noclip-min-accuracy-toggle")->enabled)
         {
             static InputModule* noclipLimit = nullptr;
             if (!noclipLimit)
-                noclipLimit = as<InputModule*>(Client::GetModule("noclip")->options[5]);
+                noclipLimit = as<InputModule*>(Module::get("noclip")->options[5]);
 
             if (base_cast<NoclipBaseGameLayer*>(this)->getNoclipAccuracy() * 100 < noclipLimit->getFloatValue())
                 return PlayLayer::destroyPlayer(p0, p1);
@@ -79,7 +79,7 @@ void NoclipPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
             m_fields->tint->setOpacity(m_fields->tintOpacity->value * 255);
             m_fields->tint->runAction(CCFadeTo::create(0.35f, 0));
 
-            m_fields->tint->setColor(as<ColourModule*>(Client::GetModule("noclip")->options[2])->colour);
+            m_fields->tint->setColor(as<ColourModule*>(Module::get("noclip")->options[2])->colour);
         }
 
         if (p0 == m_player1)
@@ -159,13 +159,13 @@ bool NoclipBaseGameLayer::shouldIncreaseTime()
 
 void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
 {
-    if (!Client::GetModuleEnabled("noclip-player2") && p0 == m_player2)
+    if (!Module::get("noclip-player2")->enabled && p0 == m_player2)
         return LevelEditorLayer::playerTookDamage(p0);
 
-    if (!Client::GetModuleEnabled("noclip-player1") && p0 == m_player1)
+    if (!Module::get("noclip-player1")->enabled && p0 == m_player1)
         return LevelEditorLayer::playerTookDamage(p0);
 
-    if (Client::GetModuleEnabled("noclip"))
+    if (Module::get("noclip")->enabled)
     {
         auto nbgl = base_cast<NoclipBaseGameLayer*>(this);
 
@@ -193,7 +193,7 @@ void NoclipEditorLayer::playerTookDamage(PlayerObject* p0)
 
 void NoclipEditorLayer::postUpdate(float p0)
 {
-    if (Client::GetModuleEnabled("noclip"))
+    if (Module::get("noclip")->enabled)
     {
         auto nbgl = base_cast<NoclipBaseGameLayer*>(this);
 
@@ -222,8 +222,8 @@ void NoclipBaseGameLayer::playSFX(bool player1)
 
     if (!p1sfx)
     {
-        p1sfx = as<SFXModule*>(Client::GetModule("noclip-player1-sfx"));
-        p2sfx = as<SFXModule*>(Client::GetModule("noclip-player2-sfx"));
+        p1sfx = as<SFXModule*>(Module::get("noclip-player1-sfx"));
+        p2sfx = as<SFXModule*>(Module::get("noclip-player2-sfx"));
     }
 
     if (player1)

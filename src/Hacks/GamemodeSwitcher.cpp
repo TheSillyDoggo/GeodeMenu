@@ -53,7 +53,7 @@ class $modify (SwitchPauseLayer, PauseLayer)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("gamemode-switcher")->onToggle = [](bool enabled){
+        Module::get("gamemode-switcher")->onToggle = [](bool enabled){
             if (auto p = as<SwitchPauseLayer*>(getChildByType<PauseLayer>(CCScene::get(), 0)))
             {
                 if (enabled)

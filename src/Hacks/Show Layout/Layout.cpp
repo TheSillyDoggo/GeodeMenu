@@ -133,7 +133,7 @@ void LayoutPlayLayer::addObject(GameObject* object)
     if (std::find(objectIDS.begin(), objectIDS.end(), object->m_objectID) != objectIDS.end())
         dontAdd = true;
 
-    if (!Client::GetModuleEnabled("layout-retain-camera"))
+    if (!Module::get("layout-retain-camera")->enabled)
     {
         if (std::find(cameraObjectIDS.begin(), cameraObjectIDS.end(), object->m_objectID) != cameraObjectIDS.end())
             dontAdd = true;
@@ -173,7 +173,7 @@ bool LayoutPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
 {
     for (auto hook : showLayoutHooks)
     {
-        if (Client::GetModuleEnabled("show-layout"))
+        if (Module::get("show-layout")->enabled)
             (void)hook->enable();
         else
             (void)hook->disable();
@@ -184,7 +184,7 @@ bool LayoutPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateOb
     if (!PlayLayer::init(level, useReplay, dontCreateObjects))
         return false;
 
-    if (Client::GetModuleEnabled("show-layout"))
+    if (Module::get("show-layout")->enabled)
     {
         if (m_groundLayer)
             m_groundLayer->setPositionY(91);
@@ -217,10 +217,10 @@ void LayoutBaseGameLayer::updateColor(cocos2d::ccColor3B& color, float fadeTime,
     static ColourModule* g = nullptr;
 
     if (!bg)
-        bg = as<ColourModule*>(Client::GetModule("show-layout")->options[1]);
+        bg = as<ColourModule*>(Module::get("show-layout")->options[1]);
 
     if (!g)
-        g = as<ColourModule*>(Client::GetModule("show-layout")->options[2]);
+        g = as<ColourModule*>(Module::get("show-layout")->options[2]);
 
     if (colorID == 1000)
         color = bg->colour;

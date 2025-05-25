@@ -20,7 +20,7 @@ class $modify (GameObject)
     {
         if (!hitPlayer)
         {
-            if (auto hitboxMult = Client::GetModule("hitbox-multiplier"))
+            if (auto hitboxMult = Module::get("hitbox-multiplier"))
             {
                 hitPlayer = as<InputModule*>(hitboxMult->options[0]);
                 hitSolid = as<InputModule*>(hitboxMult->options[2]);

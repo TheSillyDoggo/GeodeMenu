@@ -10,7 +10,7 @@ class $modify (PauseLayer)
     {
         auto a = PlayLayer::get()->m_level->m_levelType;
 
-        if (Client::GetModuleEnabled("level-edit"))
+        if (Module::get("level-edit")->enabled)
             PlayLayer::get()->m_level->m_levelType = GJLevelType::Editor;
 
         PauseLayer::customSetup();
@@ -22,7 +22,7 @@ class $modify (PauseLayer)
     {
         auto a = PlayLayer::get()->m_level->m_levelType;
 
-        if (Client::GetModuleEnabled("level-edit"))
+        if (Module::get("level-edit")->enabled)
             PlayLayer::get()->m_level->m_levelType = GJLevelType::Editor;
 
         PauseLayer::onEdit(sender);

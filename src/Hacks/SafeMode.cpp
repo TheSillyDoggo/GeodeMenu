@@ -64,7 +64,7 @@ class $modify (PlayLayerExt, PlayLayer)
 
         PlayLayer::resetLevel();
 
-        hasHackedAttempt = Client::GetModuleEnabled("safe-mode");
+        hasHackedAttempt = Module::get("safe-mode")->enabled;
         updateSafemode();
     }
 };
@@ -88,8 +88,8 @@ class $modify(EndLevelLayerExt, EndLevelLayer)
 
         for (auto mod : hacks)
         {
-            if (Client::GetModule(mod)->enabled)
-                hs.push_back(Client::GetModule(mod)->name);
+            if (Module::get(mod)->enabled)
+                hs.push_back(Module::get(mod)->name);
         }
 
         if (hs.size() != 0)

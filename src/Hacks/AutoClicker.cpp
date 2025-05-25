@@ -64,7 +64,7 @@ class $modify (AutoBaseGameLayer, GJBaseGameLayer)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        auto clicker = Client::GetModule("auto-clicker");
+        auto clicker = Module::get("auto-clicker");
         delay = as<InputModule*>(clicker->options[0]);
         holdFor = as<InputModule*>(clicker->options[1]);
         player1 = as<InputModule*>(clicker->options[2]);

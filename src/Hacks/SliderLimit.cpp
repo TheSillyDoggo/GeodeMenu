@@ -23,7 +23,7 @@ class $modify (SliderTouchLogic)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("slider-limit");
+            auto modu = Module::get("slider-limit");
             modu->addHookRaw(hook);
         });
     }

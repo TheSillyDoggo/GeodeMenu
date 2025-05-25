@@ -222,7 +222,7 @@ class $modify (InputScaleControl, GJScaleControl)
 $execute
 {
     Loader::get()->queueInMainThread([] {
-        Client::GetModule("scale-input-control")->onToggle = [](bool enabled){
+        Module::get("scale-input-control")->onToggle = [](bool enabled){
             if (auto editor = LevelEditorLayer::get())
             {
                 if (auto ui = editor->m_editorUI)

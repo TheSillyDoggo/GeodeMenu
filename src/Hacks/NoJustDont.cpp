@@ -13,7 +13,7 @@ class $modify (PlayLayer)
     {
         PlayLayer::createObjectsFromSetupFinished();
 
-        if (!Client::GetModuleEnabled("just-dont"))
+        if (!Module::get("just-dont")->enabled)
             return;
 
         Loader::get()->queueInMainThread([this] {
@@ -29,7 +29,7 @@ class $modify (EndLevelLayer)
     {
         EndLevelLayer::customSetup();
 
-        if (!Client::GetModuleEnabled("just-dont"))
+        if (!Module::get("just-dont")->enabled)
             return;
 
         Loader::get()->queueInMainThread([this] {

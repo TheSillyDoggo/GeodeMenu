@@ -15,7 +15,7 @@ class $modify (GJBaseGameLayer)
         GJBaseGameLayer::resetLevelVariables();
         
         if(!randMod)
-            randMod = Client::GetModule("rand-seed");
+            randMod = Module::get("rand-seed");
 
         if (randMod->enabled)
         {
@@ -42,7 +42,7 @@ class $modify (PlayLayer)
         PlayLayer::resetLevel();
 
         if(!randMod)
-            randMod = Client::GetModule("rand-seed");
+            randMod = Module::get("rand-seed");
 
         if (randMod->enabled)
         {

@@ -43,7 +43,7 @@ class MenuPulse : public CCNode
             if (!CCNode::init())
                 return false;
 
-            mod = Client::GetModule("menu-pulse");
+            mod = Module::get("menu-pulse");
 
             engine = FMODAudioEngine::sharedEngine();
 

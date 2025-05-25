@@ -13,7 +13,7 @@ bool RecordKeyPopup::init(SEL_MenuHandler obj)
     this->setKeypadEnabled(true);
     this->handler = obj;
 
-    if (Client::GetModuleEnabled("menu-bg-blur"))
+    if (Module::get("menu-bg-blur")->enabled)
     {
         auto blur = BlurLayer::create();
         blur->runAction(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2));

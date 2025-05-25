@@ -9,7 +9,7 @@ class $modify (SongSelectNode)
 {
     void audioNext(cocos2d::CCObject* p0)
     {
-        if (Client::GetModuleEnabled("default-song-bypass"))
+        if (Module::get("default-song-bypass")->enabled)
         {
             m_selectedSongID++;
             getLevelSettings()->m_level->m_audioTrack = m_selectedSongID;
@@ -22,7 +22,7 @@ class $modify (SongSelectNode)
 
     void audioPrevious(cocos2d::CCObject* p0)
     {
-        if (Client::GetModuleEnabled("default-song-bypass"))
+        if (Module::get("default-song-bypass")->enabled)
         {
             m_selectedSongID--;
             getLevelSettings()->m_level->m_audioTrack = m_selectedSongID;

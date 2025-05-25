@@ -8,7 +8,7 @@ class $modify (PauseLayer)
     {
         PauseLayer::customSetup();
 
-        if (!Client::GetModuleEnabled("pause-quests"))
+        if (!Module::get("pause-quests")->enabled)
             return;
 
         auto menu = CCMenu::create();

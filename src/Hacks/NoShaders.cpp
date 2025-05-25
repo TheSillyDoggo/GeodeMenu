@@ -19,7 +19,7 @@ class $modify (ShaderLayer)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("no-shaders");
+            auto modu = Module::get("no-shaders");
             modu->addHookRaw(hook);
         });
     }

@@ -23,31 +23,31 @@ class $modify (CCDrawNode)
     bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
     {
         if (!thicker)
-            thicker = Client::GetModule("show-hitboxes")->options[7];
+            thicker = Module::get("show-hitboxes")->options[7];
 
         if (!fill)
-            fill = Client::GetModule("show-hitboxes")->options[8];
+            fill = Module::get("show-hitboxes")->options[8];
 
         if (!fillOpacity)
-            fillOpacity = as<SliderModule*>(Client::GetModule("show-hitboxes")->options[9]);
+            fillOpacity = as<SliderModule*>(Module::get("show-hitboxes")->options[9]);
 
         if (!solid)
-            solid = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[0]);
+            solid = as<ColourModule*>(Module::get("show-hitboxes")->options[0]);
 
         if (!hazard)
-            hazard = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[1]);
+            hazard = as<ColourModule*>(Module::get("show-hitboxes")->options[1]);
 
         if (!passable)
-            passable = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[2]);
+            passable = as<ColourModule*>(Module::get("show-hitboxes")->options[2]);
 
         if (!interact)
-            interact = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[3]);
+            interact = as<ColourModule*>(Module::get("show-hitboxes")->options[3]);
 
         if (!player)
-            player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
+            player = as<ColourModule*>(Module::get("show-hitboxes")->options[4]);
 
         if (!playerRot)
-            playerRot = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[5]);
+            playerRot = as<ColourModule*>(Module::get("show-hitboxes")->options[5]);
 
         if (this->getTag() == -9999)
         {
@@ -89,31 +89,31 @@ class $modify (CCDrawNode)
 
 bool myDrawPoly(CCDrawNode* ins, CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, ccColor4F &borderColor) {
     if (!thicker)
-        thicker = Client::GetModule("show-hitboxes")->options[7];
+        thicker = Module::get("show-hitboxes")->options[7];
 
     if (!fill)
-        fill = Client::GetModule("show-hitboxes")->options[8];
+        fill = Module::get("show-hitboxes")->options[8];
 
     if (!fillOpacity)
-        fillOpacity = as<SliderModule*>(Client::GetModule("show-hitboxes")->options[9]);
+        fillOpacity = as<SliderModule*>(Module::get("show-hitboxes")->options[9]);
 
     if (!solid)
-        solid = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[0]);
+        solid = as<ColourModule*>(Module::get("show-hitboxes")->options[0]);
 
     if (!hazard)
-        hazard = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[1]);
+        hazard = as<ColourModule*>(Module::get("show-hitboxes")->options[1]);
 
     if (!passable)
-        passable = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[2]);
+        passable = as<ColourModule*>(Module::get("show-hitboxes")->options[2]);
 
     if (!interact)
-        interact = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[3]);
+        interact = as<ColourModule*>(Module::get("show-hitboxes")->options[3]);
 
     if (!player)
-        player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
+        player = as<ColourModule*>(Module::get("show-hitboxes")->options[4]);
 
     if (!playerRot)
-        playerRot = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[5]);
+        playerRot = as<ColourModule*>(Module::get("show-hitboxes")->options[5]);
 
     if (ins->getTag() == -9999)
     {
@@ -199,7 +199,7 @@ class $modify (GJBaseGameLayer)
             return;
 
         //if (!player)
-            //player = as<ColourModule*>(Client::GetModule("show-hitboxes")->options[4]);
+            //player = as<ColourModule*>(Module::get("show-hitboxes")->options[4]);
 
         drawForPlayer(m_player1);
 

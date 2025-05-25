@@ -11,10 +11,10 @@ class $modify (CCMotionStreak)
 {
     virtual void update(float delta)
     {
-        if (Client::GetModuleEnabled("trail-on"))
+        if (Module::get("trail-on")->enabled)
             m_bStroke = true;
 
-        if (Client::GetModuleEnabled("trail-off"))
+        if (Module::get("trail-off")->enabled)
             m_bStroke = false;
 
         CCMotionStreak::update(delta);

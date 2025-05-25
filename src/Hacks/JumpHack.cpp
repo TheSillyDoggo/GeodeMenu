@@ -11,7 +11,7 @@ class $modify (GJBaseGameLayer)
     virtual void update(float dt)
     {
         if (!jumpHack)
-            jumpHack = Client::GetModule("jump-hack");
+            jumpHack = Module::get("jump-hack");
 
         if (jumpHack->enabled)
             m_player1->m_isOnGround = true;
@@ -27,7 +27,7 @@ class $modify (GJBaseGameLayer)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("jump-hack");
+            auto modu = Module::get("jump-hack");
             modu->addHookRaw(hook);
         });
     }

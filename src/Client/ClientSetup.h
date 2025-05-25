@@ -145,57 +145,57 @@ public:
         Client::instance->windows.push_back(level);
 
 
-        Client::GetModule("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
-        Client::GetModule("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
-        Client::GetModule("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
-        Client::GetModule("noclip")->options.push_back(nullptr);
-        Client::GetModule("noclip")->options.push_back(new Module("Minimum Accuracy", "noclip-min-accuracy-toggle", "Allows you to die if your noclip accuracy drops below this value"));
-        Client::GetModule("noclip")->options.push_back(new InputModule("Min Accuracy:", "noclip-min-accuracy", "95.0"));
-        Client::GetModule("noclip")->options.push_back(new Module("Player 1", "noclip-player1", "Apply noclip to player 1", true));
-        Client::GetModule("noclip")->options.push_back(new Module("Player 2", "noclip-player2", "Apply noclip to player 2", true));
-        Client::GetModule("noclip")->options.push_back(new SFXModule("Player 1 SFX:", "noclip-player1-sfx"));
-        Client::GetModule("noclip")->options.push_back(new SFXModule("Player 2 SFX:", "noclip-player2-sfx"));
+        Module::get("noclip")->options.push_back(new Module("Tint on death", "noclip-death-tint", "Tints the screen red when you die in noclip"));
+        Module::get("noclip")->options.push_back(new SliderModule("Tint Opacity:", "tint-opacity", 0.25f));
+        Module::get("noclip")->options.push_back(new ColourModule("Tint Colour:", "noclip-tint-colour", ccc3(255, 0, 0)));
+        Module::get("noclip")->options.push_back(nullptr);
+        Module::get("noclip")->options.push_back(new Module("Minimum Accuracy", "noclip-min-accuracy-toggle", "Allows you to die if your noclip accuracy drops below this value"));
+        Module::get("noclip")->options.push_back(new InputModule("Min Accuracy:", "noclip-min-accuracy", "95.0"));
+        Module::get("noclip")->options.push_back(new Module("Player 1", "noclip-player1", "Apply noclip to player 1", true));
+        Module::get("noclip")->options.push_back(new Module("Player 2", "noclip-player2", "Apply noclip to player 2", true));
+        Module::get("noclip")->options.push_back(new SFXModule("Player 1 SFX:", "noclip-player1-sfx"));
+        Module::get("noclip")->options.push_back(new SFXModule("Player 2 SFX:", "noclip-player2-sfx"));
 
 
-        Client::GetModule("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
-        Client::GetModule("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
+        Module::get("kill-after")->options.push_back(new InputModule("Percent:", "death-percent", "100"));
+        Module::get("kill-after")->options.push_back(new InputModule("Time:", "death-time", "6.9"));
 
-        Client::GetModule("coin-tracers")->options.push_back(new ColourModule("Line Colour:", "coin-tracers-colour", ccc3(255, 0, 0)));
+        Module::get("coin-tracers")->options.push_back(new ColourModule("Line Colour:", "coin-tracers-colour", ccc3(255, 0, 0)));
 
-        Client::GetModule("show-layout")->options.push_back(new Module("Keep Camera Triggers", "layout-retain-camera", "Keeps the 2.2 camera triggers in the level", true));
-        Client::GetModule("show-layout")->options.push_back(new ColourModule("BG Colour:", "show-layout-bg", ccc3(40, 125, 255)));
-        Client::GetModule("show-layout")->options.push_back(new ColourModule("Ground Colour:", "show-layout-g", ccc3(0, 102, 255)));
+        Module::get("show-layout")->options.push_back(new Module("Keep Camera Triggers", "layout-retain-camera", "Keeps the 2.2 camera triggers in the level", true));
+        Module::get("show-layout")->options.push_back(new ColourModule("BG Colour:", "show-layout-bg", ccc3(40, 125, 255)));
+        Module::get("show-layout")->options.push_back(new ColourModule("Ground Colour:", "show-layout-g", ccc3(0, 102, 255)));
 
 
         auto decimals = new InputModule("Decimal Places:", "accurate-percentage-places", "2");
         decimals->allowedChars = "1234567890";
-        Client::GetModule("accurate-percentage")->options.push_back(decimals);
+        Module::get("accurate-percentage")->options.push_back(decimals);
 
         auto seed = new InputModule("Seed:", "rand-seed-seed", "69420");
         seed->allowedChars = "1234567890";
         seed->maxSize = 16;
-        Client::GetModule("rand-seed")->options.push_back(seed);
+        Module::get("rand-seed")->options.push_back(seed);
 
         auto cdownT = new InputModule("Time:", "countdown-time", "3");
         cdownT->allowedChars = "1234567890";
         cdownT->maxSize = 4;
-        Client::GetModule("pause-countdown")->options.push_back(cdownT);
+        Module::get("pause-countdown")->options.push_back(cdownT);
 
-        Client::GetModule("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
-        Client::GetModule("frame-stepper")->options.push_back(new Module("unused", "unused-module", "this is here because i need a module for the popup"));
-        //Client::GetModule("smart-startpos")->options.push_back(new SmartStartposUIModule());
-        //Client::GetModule("smart-startpos")->optionSizeForce = Client::GetModule("smart-startpos")->options[0]->sizeForOptionsPage();
+        Module::get("startpos-switcher")->options.push_back(new SliderModule("Opacity:", "startpos-opacity", 50.0f / 255.0f));
+        Module::get("frame-stepper")->options.push_back(new Module("unused", "unused-module", "this is here because i need a module for the popup"));
+        //Module::get("smart-startpos")->options.push_back(new SmartStartposUIModule());
+        //Module::get("smart-startpos")->optionSizeForce = Module::get("smart-startpos")->options[0]->sizeForOptionsPage();
 
-        Client::GetModule("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
+        Module::get("custom-respawn-time")->options.push_back(new InputModule("Delay:", "respawn-time-delay", "4.2069"));
 
-        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Interval", "auto-clicker-delay", "6"));
-        Client::GetModule("auto-clicker")->options.push_back(new InputModule("Hold For", "auto-clicker-hold-for", "3"));
-        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 1", "auto-clicker-player1", "Should it click for player 1", true));
-        Client::GetModule("auto-clicker")->options.push_back(new Module("Player 2", "auto-clicker-player2", "Should it click for player 2", true));
-        as<InputModule*>(Client::GetModule("auto-clicker")->options[0])->allowedChars = "0123456789";
-        as<InputModule*>(Client::GetModule("auto-clicker")->options[1])->allowedChars = "0123456789";
+        Module::get("auto-clicker")->options.push_back(new InputModule("Interval", "auto-clicker-delay", "6"));
+        Module::get("auto-clicker")->options.push_back(new InputModule("Hold For", "auto-clicker-hold-for", "3"));
+        Module::get("auto-clicker")->options.push_back(new Module("Player 1", "auto-clicker-player1", "Should it click for player 1", true));
+        Module::get("auto-clicker")->options.push_back(new Module("Player 2", "auto-clicker-player2", "Should it click for player 2", true));
+        as<InputModule*>(Module::get("auto-clicker")->options[0])->allowedChars = "0123456789";
+        as<InputModule*>(Module::get("auto-clicker")->options[1])->allowedChars = "0123456789";
 
-        if (auto hitboxMult = Client::GetModule("hitbox-multiplier"))
+        if (auto hitboxMult = Module::get("hitbox-multiplier"))
         {
             hitboxMult->options.push_back(new InputModule("Player", "hitbox-multiplier-player", "1.0"));
             hitboxMult->options.push_back(nullptr);
@@ -275,17 +275,17 @@ public:
 
         auto tps = new InputModule("Ticks:", "tps-bypass-value", "240");
         tps->maxSize = 11;
-        Client::GetModule("tps-bypass")->options.push_back(tps);
+        Module::get("tps-bypass")->options.push_back(tps);
 
-        Client::GetModule("custom-trans")->options.push_back(new TransCustomizerModule());
-        Client::GetModule("custom-trans")->optionSizeForce = ccp(350, 180);
-        //Client::GetModule("custom-trans")->options.push_back(nullptr);
-        //Client::GetModule("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
-        //Client::GetModule("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
+        Module::get("custom-trans")->options.push_back(new TransCustomizerModule());
+        Module::get("custom-trans")->optionSizeForce = ccp(350, 180);
+        //Module::get("custom-trans")->options.push_back(nullptr);
+        //Module::get("custom-trans")->options.push_back(new InputModule("Time Mod (*)", "transition-time-modifier", "1.0"));
+        //Module::get("custom-trans")->options.push_back(new ColourModule("Fade Colour:", "transition-fade-colour", ccc3(0, 0, 0)));
 
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;
-        Client::GetModule("pitch-shifter")->options.push_back(pitch);
+        Module::get("pitch-shifter")->options.push_back(pitch);
     }
 
     static void SetupCreator()
@@ -398,7 +398,7 @@ public:
         Client::instance->windows.push_back(cosmetic);
 
 
-        Client::GetModule("no-wave-pulse")->options.push_back(new SliderModule("Pulse Size:", "wave-pulse-size", 0.5f));
+        Module::get("no-wave-pulse")->options.push_back(new SliderModule("Pulse Size:", "wave-pulse-size", 0.5f));
     }
 
     static void SetupIconEffects()
@@ -498,7 +498,7 @@ public:
 
         for (auto hack : macInc)
         {
-            auto mod = Client::GetModule(hack);
+            auto mod = Module::get(hack);
 
             if (mod)
             {
@@ -511,65 +511,65 @@ public:
 
         #ifdef GEODE_IS_IOS
 
-        Client::GetModule("custom-trans")->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
+        Module::get("custom-trans")->setIncompatible("This mod does not <cg>yet</c> support <cl>iOS</c>");
 
         #endif
 
         #ifndef GEODE_IS_WINDOWS
-        //Client::GetModule("custom-obj-limit")->setIncompatible("This mod only supports <cl>Windows</c> <cg>currently</c>");
+        //Module::get("custom-obj-limit")->setIncompatible("This mod only supports <cl>Windows</c> <cg>currently</c>");
         #endif
 
         #ifndef QOLMOD_AUTOSONG
-        Client::GetModule("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        Module::get("auto-song")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_NOJUSTDONT
-        Client::GetModule("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        Module::get("just-dont")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_VERIFYHACK
-        Client::GetModule("verify-hack")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        Module::get("verify-hack")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef QOLMOD_PULSINGMENU
-        Client::GetModule("menu-pulse")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        Module::get("menu-pulse")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifndef NO_ROTATION_BUILD
-        Client::GetModule("no-rot")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
+        Module::get("no-rot")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>");
         #endif
 
         #ifdef GEODE_IS_WINDOWS
 
         #endif
 
-        //Client::GetModule("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
-        //Client::GetModule("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Module::get("rand-seed")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
+        //Module::get("show-trajectory")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.206</c>");
 
         #ifdef GEODE_IS_ARM_MAC
-        Client::GetModule("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
-        Client::GetModule("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
-        Client::GetModule("editor-extension")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        Module::get("tps-bypass")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        Module::get("editor-wave-trail")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
+        Module::get("editor-extension")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>ARM Mac</c>");
         #endif
 
         #ifdef GEODE_IS_MACOS
-        Client::GetModule("smart-startpos")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>MacOS</c>");
+        Module::get("smart-startpos")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>MacOS</c>");
         #endif
 
         #ifndef QOLMOD_ALL_MODES_PLATFORMER
-        Client::GetModule("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>.");
+        Module::get("all-plat")->setIncompatible("This mod has <cr>not yet</c> been ported to <cl>2.2074</c>.");
         #endif
 
-        Client::GetModule("menu-bg-blur")->setIncompatible("Blur BG is temporarily disabled because i broke it :(.");
+        Module::get("menu-bg-blur")->setIncompatible("Blur BG is temporarily disabled because i broke it :(.");
 
         if (auto nodeIDs = Loader::get()->getInstalledMod("geode.node-ids"))
         {
             if (!nodeIDs->isOrWillBeEnabled())
-                Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be enabled!");
+                Module::get("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be enabled!");
         }
         else
         {
-            Client::GetModule("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be installed!");
+            Module::get("unlock-gauntlets")->setIncompatible("This mod requires the <cc>Node IDs</c> mod to be installed!");
         }
     }
 

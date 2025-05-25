@@ -8,7 +8,7 @@ class $modify (PlayerObject)
 {
     void fadeOutStreak2(float p0)
     {
-        if (!Client::GetModuleEnabled("no-wave-reset"))
+        if (!Module::get("no-wave-reset")->enabled)
             PlayerObject::fadeOutStreak2(p0);
     }
 };

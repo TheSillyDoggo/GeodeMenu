@@ -9,7 +9,7 @@ class $modify (GameStatsManager)
 {
     bool isItemUnlocked(UnlockType type, int id)
     {
-        if (Client::GetModuleEnabled("icon-bypass"))
+        if (Module::get("icon-bypass")->enabled)
         {
             if (type == UnlockType::GJItem)
             {
@@ -18,10 +18,10 @@ class $modify (GameStatsManager)
             }
         }
         
-        if (id == 16 && Client::GetModuleEnabled("music-bypass") && type == UnlockType::GJItem)
+        if (id == 16 && Module::get("music-bypass")->enabled && type == UnlockType::GJItem)
             return true;
         
-        if (id == 17 && Client::GetModuleEnabled("practice-bypass") && type == UnlockType::GJItem)
+        if (id == 17 && Module::get("practice-bypass")->enabled && type == UnlockType::GJItem)
             return true;
         
         return GameStatsManager::isItemUnlocked(type, id);
@@ -32,7 +32,7 @@ class $modify (GameManager)
 {
     bool isIconUnlocked(int id, IconType type)
     {
-        if (Client::GetModuleEnabled("icon-bypass"))
+        if (Module::get("icon-bypass")->enabled)
             return true;
 
         return GameManager::isIconUnlocked(id, type);
@@ -40,7 +40,7 @@ class $modify (GameManager)
 
     bool isColorUnlocked(int id, UnlockType type)
     {
-        if (Client::GetModuleEnabled("icon-bypass"))
+        if (Module::get("icon-bypass")->enabled)
             return true;
 
         return GameManager::isColorUnlocked(id, type);

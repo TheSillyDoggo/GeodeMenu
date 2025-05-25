@@ -8,7 +8,7 @@ class $modify (GameObject)
 {
     virtual cocos2d::CCRect const& getObjectRect()
     {
-        if (Client::GetModuleEnabled("no-hitboxes"))
+        if (Module::get("no-hitboxes")->enabled)
             this->m_isNoTouch = true;            
 
         return GameObject::getObjectRect();

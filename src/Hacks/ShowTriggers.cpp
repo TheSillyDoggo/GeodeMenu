@@ -23,7 +23,7 @@ class $modify (PlayLayer)
             this->m_objectLayer->addChild(m_fields->customNode);
         }
 
-        if (Client::GetModuleEnabled("show-triggers"))
+        if (Module::get("show-triggers")->enabled)
         {
             if (p0->m_objectType == GameObjectType::Modifier || p0->m_objectType == GameObjectType::Special)
             {
@@ -54,7 +54,7 @@ class $modify (CCNode)
 
         Loader::get()->queueInMainThread([hooks] 
         {
-            auto modu = Client::GetModule("show-triggers");
+            auto modu = Module::get("show-triggers");
 
             for (auto hook : hooks)
             {

@@ -21,7 +21,7 @@ class $modify (PlayLayer)
         
         Loader::get()->queueInMainThread([hooks]
         {
-            auto modu = Client::GetModule("no-checkpoint-limit");
+            auto modu = Module::get("no-checkpoint-limit");
             for (auto hook : hooks)
             {
                 if (hook)

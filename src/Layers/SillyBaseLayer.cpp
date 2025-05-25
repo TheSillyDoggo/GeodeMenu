@@ -8,7 +8,7 @@ bool SillyBaseLayer::setup()
     this->stopAllActions();
     this->setOpacity(0);
 
-    if (!noBlur && Client::GetModuleEnabled("menu-bg-blur") && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
+    if (!noBlur && Module::get("menu-bg-blur")->enabled && !LaunchArgs::get()->hasLaunchArg("--qolmod:no-blur"))
     {
         blur = BlurLayer::create();
         blur->runAction(UnspeedhackedAction::create(CCEaseIn::create(CCFadeTo::create(0.5f, 255), 2)));

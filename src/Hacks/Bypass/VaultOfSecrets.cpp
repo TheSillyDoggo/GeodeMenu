@@ -10,7 +10,7 @@ class $modify (CreatorLayer)
         (void)self.setHookPriority("CreatorLayer::onSecretVault", 99999999);
         auto hook = self.getHook("CreatorLayer::onSecretVault");
         Loader::get()->queueInMainThread([hook]{
-            Client::GetModule("vault-of-secrets-bypass")->addHookRaw(hook);
+            Module::get("vault-of-secrets-bypass")->addHookRaw(hook);
         });
     }
 

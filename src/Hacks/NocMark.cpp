@@ -8,7 +8,7 @@ class $modify(EditLevelLayer) {
 
     void onShare(CCObject* sender) {
 
-        if (Client::GetModuleEnabled("noc-hack"))
+        if (Module::get("noc-hack")->enabled)
         {
             this->m_level->m_originalLevel = 0;
         }

@@ -10,7 +10,7 @@ class $modify (SecretLayer2)
         (void)self.setHookPriority("SecretLayer2::onSecretLevel", 99999999);
         auto hook = self.getHook("SecretLayer2::onSecretLevel");
         Loader::get()->queueInMainThread([hook]{
-            Client::GetModule("the-challenge-bypass")->addHookRaw(hook);
+            Module::get("the-challenge-bypass")->addHookRaw(hook);
         });
     }
 

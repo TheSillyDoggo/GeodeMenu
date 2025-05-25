@@ -13,7 +13,7 @@ class $modify (CCCircleWave)
     virtual void draw()
     {
         if (!orbPulse)
-            orbPulse = Client::GetModule("no-circles");
+            orbPulse = Module::get("no-circles");
 
         if (!PlayLayer::get() || !orbPulse->enabled) // if it isn't enabled or it isn't the level
             CCCircleWave::draw();
@@ -54,7 +54,7 @@ class $modify (PlayLayer)
 
         Loader::get()->queueInMainThread([hook]
         {
-            auto modu = Client::GetModule("no-orb-pulse");
+            auto modu = Module::get("no-orb-pulse");
             modu->addHookRaw(hook);
         });
     }

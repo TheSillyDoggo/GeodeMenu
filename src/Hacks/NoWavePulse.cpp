@@ -14,7 +14,7 @@ class $modify (HardStreak)
     {
         if (!noWaveMod)
         {
-            noWaveMod = Client::GetModule("no-wave-pulse");
+            noWaveMod = Module::get("no-wave-pulse");
             noWaveEffect = as<SliderModule*>(noWaveMod->options[0]);
         }
 

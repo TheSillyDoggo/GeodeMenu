@@ -13,7 +13,7 @@ class $modify (PauseLayer)
 
     void onNormalMode(cocos2d::CCObject* sender)
     {
-        if (m_fields->v || !Client::GetModuleEnabled("conf-prac"))
+        if (m_fields->v || !Module::get("conf-prac")->enabled)
         {
             PauseLayer::onNormalMode(sender);
 
@@ -39,7 +39,7 @@ class $modify (PauseLayer)
 
     void onPracticeMode(cocos2d::CCObject* sender)
     {
-        if (m_fields->v || !Client::GetModuleEnabled("conf-prac"))
+        if (m_fields->v || !Module::get("conf-prac")->enabled)
         {
             PauseLayer::onPracticeMode(sender);
 
@@ -65,7 +65,7 @@ class $modify (PauseLayer)
 
     void onRestart(cocos2d::CCObject* sender)
     {
-        if (m_fields->a || !Client::GetModuleEnabled("conf-res"))
+        if (m_fields->a || !Module::get("conf-res")->enabled)
         {
             PauseLayer::onRestart(sender);
 
@@ -90,7 +90,7 @@ class $modify (PauseLayer)
 
     void onRestartFull(cocos2d::CCObject* sender)
     {
-        if (m_fields->a || !Client::GetModuleEnabled("conf-res"))
+        if (m_fields->a || !Module::get("conf-res")->enabled)
         {
             PauseLayer::onRestartFull(sender);
 

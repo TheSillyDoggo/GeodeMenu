@@ -16,7 +16,7 @@ void updatePitch()
         masterGroup->removeDSP(pitchDSP);
 #endif
 
-    if (!Client::GetModuleEnabled("pitch-shifter"))
+    if (!Module::get("pitch-shifter")->enabled)
         return;
 
 #ifdef GEODE_IS_IOS
@@ -28,9 +28,9 @@ void updatePitch()
 #endif
 
 #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::DSP*, int, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__DSP__setParameterFloat))(pitchDSP, FMOD_DSP_PITCHSHIFT_PITCH, Client::GetModuleEnabled("pitch-shifter") ? pitchAmount->getFloatValue() : 1); //setParameterFloat
+    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::DSP*, int, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__DSP__setParameterFloat))(pitchDSP, FMOD_DSP_PITCHSHIFT_PITCH, Module::get("pitch-shifter")->enabled ? pitchAmount->getFloatValue() : 1); //setParameterFloat
 #else
-    pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_PITCH, Client::GetModuleEnabled("pitch-shifter") ? pitchAmount->getFloatValue() : 1);
+    pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_PITCH, Module::get("pitch-shifter")->enabled ? pitchAmount->getFloatValue() : 1);
 #endif
 }
 
@@ -47,9 +47,9 @@ $execute
     Loader::get()->queueInMainThread([] {
         auto del = new PitchChangedDelegate();
 
-        Client::GetModule("pitch-shifter")->delegate = del;
-        Client::GetModule("pitch-shifter")->options[0]->delegate = del;
-        pitchAmount = as<InputModule*>(Client::GetModule("pitch-shifter")->options[0]);
+        Module::get("pitch-shifter")->delegate = del;
+        Module::get("pitch-shifter")->options[0]->delegate = del;
+        pitchAmount = as<InputModule*>(Module::get("pitch-shifter")->options[0]);
 
         Loader::get()->queueInMainThread([] {
             updatePitch();

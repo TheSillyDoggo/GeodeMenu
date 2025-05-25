@@ -17,9 +17,9 @@ bool AndroidBall::init()
 
     instance = this;
 
-    mod = Client::GetModule("hide-btn");
-    mod2 = Client::GetModule("instant-fade");
-    canDrag = Client::GetModule("allow-dragging");
+    mod = Module::get("hide-btn");
+    mod2 = Module::get("instant-fade");
+    canDrag = Module::get("allow-dragging");
 
     menu = CCMenu::create();
     menu->setPosition(position);
@@ -100,7 +100,7 @@ bool AndroidBall::_ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event
 
         doingThing = false;
 
-        if (Client::GetModuleEnabled("save-pos"))
+        if (Module::get("save-pos")->enabled)
         {
             Mod::get()->setSavedValue("posX", position.x);
             Mod::get()->setSavedValue("posY", position.y);
@@ -165,10 +165,10 @@ void AndroidBall::UpdateVisible(bool i)
 {
     bool vis = true;
 
-    if (Client::GetModuleEnabled("disable-gp") && this->getParent())
+    if (Module::get("disable-gp")->enabled && this->getParent())
         vis = !(this->getParent()->getChildByType<PlayLayer>(0) && !this->getParent()->getChildByType<PauseLayer>(0));
 
-    if (Client::GetModuleEnabled("disable-editor") && this->getParent() && this->getParent()->getChildByType<LevelEditorLayer>(0))
+    if (Module::get("disable-editor")->enabled && this->getParent() && this->getParent()->getChildByType<LevelEditorLayer>(0))
         vis = editorShouldBeVisible();
 
     #ifdef GEODE_IS_DESKTOP
