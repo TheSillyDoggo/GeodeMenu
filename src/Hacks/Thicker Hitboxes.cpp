@@ -203,7 +203,7 @@ class $modify (GJBaseGameLayer)
 
         drawForPlayer(m_player1);
 
-        if (m_player2)
+        if (m_player2 && m_player2->isRunning())
             drawForPlayer(m_player2);
     }
 };

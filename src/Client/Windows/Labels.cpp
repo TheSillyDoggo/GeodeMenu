@@ -83,9 +83,13 @@ void Labels::cocosCreate(CCMenu* menu)
     safeBtn->getNormalImage()->setScale(0.5f);
 
     // ButtonSprite * create(const char *caption, int width, bool absolute, const char *font, const char *texture, float height, float scale)
-    auto importBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Import From File", 100, false, "bigFont.fnt", "GJ_button_05.png", 30, 1.0f), this, menu_selector(Labels::onImportFromFile));
+
+    auto importSpr = ButtonSprite::create("Import From File", 100, false, "bigFont.fnt", "GJ_button_05.png", 30, 1.0f);
+    importSpr->setScale(0.7f);
+
+    auto importBtn = CCMenuItemSpriteExtra::create(importSpr, this, menu_selector(Labels::onImportFromFile));
     importBtn->setPosition(safeBtn->getPosition() + ccp(55, 0));
-    importBtn->getNormalImage()->setScale(0.7f);
+    //importBtn->getNormalImage()->setScale(0.7f);
     safeZoneMenu->addChild(importBtn);
 
     safeZoneMenu->addChild(safeBtn);

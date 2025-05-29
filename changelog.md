@@ -1,4 +1,4 @@
-# 1.7.9(4)
+# 1.7.9(5)
 
 - Removed Comment Emojis integration to fix lag
 - Improved Performance
@@ -7,6 +7,8 @@
 - Changed default open animation to scale cuz it looks nicer
 - Removed not very nice message from github readme
 - Fixed crash opening language select caused by other developer update
+- Made Safe Zone config button easier to click
+- Fixed Show Hitboxes showing player 2 hitbox when it isn't meant to :P
 - Added **Noclip SFX on Death**
 
 # 1.7.8
