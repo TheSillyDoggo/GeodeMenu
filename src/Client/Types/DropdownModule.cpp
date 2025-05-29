@@ -28,6 +28,8 @@ DropdownModule::DropdownModule(std::vector<std::string> stuff, std::string id, i
     this->content = stuff;
 
     this->load();
+
+    addToCache();
 }
 
 void DropdownModule::save()

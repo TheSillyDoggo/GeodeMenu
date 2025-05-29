@@ -9,6 +9,8 @@ SFXModule::SFXModule(std::string name, std::string id)
     this->id = id;
     
     load();
+
+    addToCache();
 }
 
 void SFXModule::save()

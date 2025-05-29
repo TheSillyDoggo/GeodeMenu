@@ -43,6 +43,8 @@ ColourModule::ColourModule(std::string name, std::string id, ccColor3B def)
     this->def = def;
 
     this->load();
+
+    addToCache();
 }
 
 void ColourModule::save()

@@ -89,6 +89,8 @@ InputModule::InputModule(std::string name, std::string id, std::string def)
     this->text = def;
 
     this->load();
+
+    addToCache();
 }
 
 void InputModule::save()

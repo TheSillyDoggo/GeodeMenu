@@ -7,6 +7,8 @@ FontModule::FontModule(std::string id)
     font = "bigFont.fnt";
 
     load();
+
+    addToCache();
 }
 
 void FontModule::save()

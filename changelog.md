@@ -1,4 +1,4 @@
-# 1.7.9(3)
+# 1.7.9(4)
 
 - Removed Comment Emojis integration to fix lag
 - Improved Performance
@@ -6,6 +6,7 @@
 - Updated outdated strings
 - Changed default open animation to scale cuz it looks nicer
 - Removed not very nice message from github readme
+- Fixed crash opening language select caused by other developer update
 - Added **Noclip SFX on Death**
 
 # 1.7.8

@@ -54,7 +54,7 @@ void TransCustomizerModule::onRight(CCObject*)
 
 TransCustomizerModule::TransCustomizerModule()
 {
-
+    addToCache();
 }
 
 void TransCustomizerModule::save() { }

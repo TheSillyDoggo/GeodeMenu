@@ -2,7 +2,7 @@
 
 SmartStartposUIModule::SmartStartposUIModule()
 {
-
+    addToCache();
 }
 
 void SmartStartposUIModule::makeAndroid(CCNode* menuu, CCPoint pos)

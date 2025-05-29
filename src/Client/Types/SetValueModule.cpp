@@ -161,6 +161,8 @@ SetValueModule::SetValueModule(std::string name, std::string id)
 {
     this->name = name;
     this->id = id;
+
+    addToCache();
 }
 
 void SetValueModule::save() { }

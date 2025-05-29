@@ -41,6 +41,8 @@ SliderModule::SliderModule(std::string name, std::string id, float def)
     value = def;
 
     this->load();
+
+    addToCache();
 }
 
 void SliderModule::save()
