@@ -1,4 +1,4 @@
-# 1.7.9(5)
+# 1.7.9(6)
 
 - Removed Comment Emojis integration to fix lag
 - Improved Performance
@@ -9,6 +9,7 @@
 - Fixed crash opening language select caused by other developer update
 - Made Safe Zone config button easier to click
 - Fixed Show Hitboxes showing player 2 hitbox when it isn't meant to :P
+- Added Reset Audio Sliders button to fix audio sliders going off screen (Thanks @anhnguyenlost13)
 - Added **Noclip SFX on Death**
 
 # 1.7.8
