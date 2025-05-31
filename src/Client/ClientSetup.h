@@ -16,6 +16,7 @@
 #include "../Hacks/SafeMode/SafeMode.hpp"
 
 #include "idkwhattocallthis.hpp"
+#include "Types/ResetAudioModule.hpp"
 
 class ClientUtils
 {
@@ -286,6 +287,8 @@ public:
         auto pitch = new InputModule("Pitch:", "pitch-shifter-value", "1.0");
         pitch->maxSize = 6;
         Module::get("pitch-shifter")->options.push_back(pitch);
+
+	    Module::get("slider-limit")->options.push_back(new ResetAudioModule());
     }
 
     static void SetupCreator()
