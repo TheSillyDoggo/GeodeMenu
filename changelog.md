@@ -1,3 +1,7 @@
+# 1.7.9(8)
+
+- Fixed Crash
+
 # 1.7.9(7)
 
 - Fixed Safe Mode always being active
