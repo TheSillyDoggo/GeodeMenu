@@ -1,8 +1,6 @@
 #pragma once
 
-#ifdef QOLMOD_IMGUI
 #include <imgui-cocos.hpp>
-#endif
 
 #include "../Defines/Platform.h"
 

@@ -42,14 +42,10 @@ include_directories(include)
 
 add_definitions(-DSTATUS_TEXTS)
 add_definitions(-DQOLMOD_EXPORTING)
-add_definitions(-DQOLMOD_IMGUI)
 # add_definitions(-DQOLMOD_CUSTOM_KEYS_SETTING)
 # add_definitions(-DCOMMENT_EMOJIS_INTEGRATION_ENABLED)
 
-if (DEFINED QOLMOD_IMGUI)
-    CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#826aef6") # should be geode
-endif()
-
+CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#826aef6") # should be geode
 CPMAddPackage("gh:EclipseMenu/RIFT#main")
 
 target_link_libraries(${PROJECT_NAME} imgui-cocos rift)
