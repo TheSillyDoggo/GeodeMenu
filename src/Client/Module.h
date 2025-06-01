@@ -4,7 +4,9 @@
 #include <Geode/ui/TextInput.hpp>
 #include "../UI/UIComponent.hpp"
 #include "../Keybinds/KeyStruct.hpp"
+#ifdef QOLMOD_IMGUI
 #include <imgui-cocos.hpp>
+#endif
 
 using namespace geode::prelude;
 

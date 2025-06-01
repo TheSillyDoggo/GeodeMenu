@@ -63,7 +63,9 @@ geode::Patch* createPatchSafe(void *address, const geode::ByteVector &data);
 cocos2d::CCRect getScreenSafeArea();
 cocos2d::CCRect getScreenSafeAreaiOS();
 
+#ifdef QOLMOD_IMGUI
 #include <imgui-cocos.hpp>
+#endif
 
 ImVec4 ccc4ToVec(cocos2d::ccColor4B col);
 cocos2d::ccColor4B vecToCCC4(ImVec4 vec);

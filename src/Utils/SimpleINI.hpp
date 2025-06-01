@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#ifdef QOLMOD_IMGUI
 #include <imgui-cocos.hpp>
+#endif
 
 using namespace geode::prelude;
 
