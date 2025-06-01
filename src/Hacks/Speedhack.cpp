@@ -12,6 +12,9 @@ float speedhackLogic(float dt)
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return dt;
 
+    if (!FMODAudioEngine::sharedEngine()->m_system)
+        return dt;
+
     if (!masterGroup)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
 
@@ -100,30 +103,6 @@ $execute {
         &myUpdate,
         "cocos2d::CCScheduler::update",
         tulip::hook::TulipConvention::Thiscall
-    );
-}
-
-#endif
-
-#ifdef GEODE_IS_IOS
-
-FMOD_RESULT FMOD_System_createChannelGroup(FMOD::System* self, const char *name, FMOD::ChannelGroup **channelgroup) {
-    auto res = reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::System*, const char*, FMOD::ChannelGroup**)>(geode::base::get() + 0x4d4f1c)(self, name, channelgroup);
-
-    if (!masterGroup)
-        masterGroup = *channelgroup;
-
-    log::info("WE HAVE A MASTER GROUP LETS FUCKING GO!!!!");
-
-    return res;
-}
-
-$execute {
-    (void)Mod::get()->hook(
-        reinterpret_cast<void*>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__System__createChannelGroup)), // address
-        &FMOD_System_createChannelGroup, // detour
-        "FMOD::System::createChannelGroup", // display name, shows up on the console
-        tulip::hook::TulipConvention::Cdecl // calling convention
     );
 }
 
