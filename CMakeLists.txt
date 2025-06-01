@@ -47,7 +47,7 @@ add_definitions(-DQOLMOD_IMGUI)
 # add_definitions(-DCOMMENT_EMOJIS_INTEGRATION_ENABLED)
 
 if (DEFINED QOLMOD_IMGUI)
-    CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#e3b5016") # should be geode
+    CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#826aef6") # should be geode
 endif()
 
 CPMAddPackage("gh:EclipseMenu/RIFT#main")
