@@ -107,7 +107,7 @@ class Module : public UIComponent
             addToCache();
         }
 
-        static Module* get(std::string id);
+        static Module* get(const std::string& id);
         void addToCache();
 
 

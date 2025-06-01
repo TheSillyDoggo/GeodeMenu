@@ -21,8 +21,8 @@ void SafeMode::resetOnLevelLoad()
 
 void SafeMode::resetOnNewAttempt()
 {
-    hackedAttempt = Module::get("auto-safe-mode")->enabled;
-    hackedAttemptReal = Module::get("auto-safe-mode")->enabled;
+    hackedAttempt = Module::get("safe-mode")->enabled;
+    hackedAttemptReal = Module::get("safe-mode")->enabled;
 
     bool autosafe = Module::get("auto-safe-mode")->enabled;
 

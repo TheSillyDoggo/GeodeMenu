@@ -318,7 +318,7 @@ CCSize Module::sizeForOptionsPage()
     return optionSizeForce == CCSizeZero ? CCSizeMake(350, std::ceil((std::max<int  >(options.size(), 3) - 1) / 2) * 35 + 110) : optionSizeForce;
 }
 
-Module* Module::get(std::string id)
+Module* Module::get(const std::string& id)
 {
     if (modules.contains(id))
         return modules[id];

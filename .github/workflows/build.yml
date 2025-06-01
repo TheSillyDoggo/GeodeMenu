@@ -22,7 +22,9 @@ jobs:
           target: Android64
         - name: macOS
           os: macos-latest
-        
+        - name: iOS
+          os: macos-latest
+          target: iOS        
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -36,7 +38,7 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
-          # bindings: 'TheSillyDoggo/bindings'
+          bindings: 'TheSillyDoggo/bindings'
           build-config: 'RelWithDebInfo'
           export-pdb: true
           combine: true
