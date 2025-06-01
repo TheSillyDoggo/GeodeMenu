@@ -1,3 +1,7 @@
+# 1.8.0
+
+- Added **iOS Support**
+
 # 1.7.9(8)
 
 - Fixed Crash

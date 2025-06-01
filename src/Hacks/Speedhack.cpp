@@ -12,10 +12,8 @@ float speedhackLogic(float dt)
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return dt;
 
-    #ifndef GEODE_IS_IOS
     if (!masterGroup)
         FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&masterGroup);
-    #endif
 
     if (!masterGroup)
         return dt;
@@ -30,11 +28,7 @@ float speedhackLogic(float dt)
 
             float v = SpeedhackTop::instance->getFloatValue();
 
-            #ifdef GEODE_IS_IOS
-            reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, (SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
-            #else
             masterGroup->setPitch((SpeedhackGameplay::instance->enabled ? GJBaseGameLayer::get() && SpeedhackMus::instance->enabled : SpeedhackMus::instance->enabled) ? v : 1);
-            #endif
 
             if (SpeedhackGameplay::instance->enabled)
             {
@@ -72,11 +66,7 @@ float speedhackLogic(float dt)
         }
     }
 
-    #ifdef GEODE_IS_IOS
-    reinterpret_cast<FMOD_RESULT(__cdecl*)(FMOD::ChannelControl*, float)>(geode::base::get() + OffsetManager::get()->offsetForFunction(FunctionType::FMOD__ChannelControl__setPitch))(masterGroup, 1);
-    #else
     masterGroup->setPitch(1);
-    #endif
     ColourUtility::update(dt);
     return dt;
 }
