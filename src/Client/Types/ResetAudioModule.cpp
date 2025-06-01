@@ -35,7 +35,7 @@ void ResetAudioModule::makeAndroid(CCNode* menu, CCPoint pos)
 	spr->addChild(label);
 
 	// the anchors drive me crazy
-	const auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(ResetAudioModule::onResetAudio));
+	auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(ResetAudioModule::onResetAudio));
 	btn->setPosition({ menu->getContentWidth()/2, menu->getContentHeight()/2 });
 
 	auto info = InfoAlertButton::create("Reset Audio Sliders", "Resets the audio sliders to 100% incase it went off screen and you can't get it back.", 0.6f);
@@ -50,23 +50,27 @@ void ResetAudioModule::onResetAudio(CCObject* sender)
 	FMODAudioEngine::sharedEngine()->setBackgroundMusicVolume(1.0f);
 	FMODAudioEngine::sharedEngine()->setEffectsVolume(1.0f);
 
-	if (auto menu = CCScene::get()->getChildByType<MenuLayer>(0))
+	// OptionsLayer is added to the scene, not a child of MenuLayer
+	if (auto optionsLayer = CCScene::get()->getChildByType<OptionsLayer>(0))
 	{
-		if (auto options = menu->getChildByType<OptionsLayer>(0))
+		if (auto mainLayer = optionsLayer->getChildByType<CCLayer>(0))
 		{
-			if (auto layer = options->getChildByType<CCLayer>(0))
-			{
-				if (auto slider = layer->getChildByType<Slider>(0))
-				{
+			for (int i = 0; i <= 1; i++) {
+				if (auto slider = mainLayer->getChildByType<Slider>(i)) {
 					slider->setValue(1);
 					slider->updateBar();
 				}
+			}
+		}
+	}
 
-				if (auto slider = layer->getChildByType<Slider>(-1))
-				{
-					slider->setValue(1);
-					slider->updateBar();
-				}
+	// PauseLayer as well
+	if (auto pauseLayer = CCScene::get()->getChildByType<PauseLayer>(0))
+	{
+		for (int i = 0; i <= 1; i++) {
+			if (auto slider = pauseLayer->getChildByType<Slider>(i)) {
+				slider->setValue(1);
+				slider->updateBar();
 			}
 		}
 	}
