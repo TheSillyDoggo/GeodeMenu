@@ -1,3 +1,7 @@
+# 1.7.9(7)
+
+- Fixed Safe Mode always being active
+
 # 1.7.9(6)
 
 - Removed Comment Emojis integration to fix lag
