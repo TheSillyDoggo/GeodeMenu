@@ -1,6 +1,7 @@
 # 1.8.0
 
 - Added **iOS Support**
+- Fixed Show Hitboxes always being on
 
 # 1.7.9(8)
 

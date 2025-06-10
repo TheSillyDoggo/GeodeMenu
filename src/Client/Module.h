@@ -39,21 +39,21 @@ class Module : public UIComponent
 
         std::vector<Module*> options = {};
 
-        std::string name;
-        std::string id;
-        std::string description;
-        std::string alert;
-        std::string inCompAlert;
-        bool enabled;
-        bool useAlert;
-        bool onceAlert;
-        bool isInComp;
+        std::string name = "";
+        std::string id = "";
+        std::string description = "";
+        std::string alert = "";
+        std::string inCompAlert = "";
+        bool enabled = false;
+        bool useAlert = false;
+        bool onceAlert = false;
+        bool isInComp = false;
 
-        KeyStruct keybind;
+        KeyStruct keybind = {};
 
-        bool vAlert;
+        bool vAlert = false;
 
-        bool def;
+        bool def = false;
         float value = 1.0f;
 
         bool mouseHeldDown = false;
