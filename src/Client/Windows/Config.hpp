@@ -17,7 +17,7 @@ class Config : public Window
         static inline std::vector<CCNode*> tabs = {};
         static inline int selectedTab = 1;
 
-        static inline Ref<CCSprite> sprJoin = nullptr;
+        static inline CCSprite* sprJoin = nullptr;
         CCMenu* menu = nullptr;
 
         static inline std::vector<CCScale9Sprite*> btns = {};
