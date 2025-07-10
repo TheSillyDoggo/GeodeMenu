@@ -1,17 +1,53 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "HookMacro.hpp"
+
+#define SUBMIT_HACK(func) \
+$execute \
+{ \
+    func::get(); \
+}
+
+#define MODULE_GETTER(func) \
+static func* get() \
+{ \
+    static func* instance = nullptr; \
+    if (!instance) \
+    { \
+        instance = new func(); \
+        Module::moduleMap.emplace(instance->id, instance); \
+    } \
+    return instance; \
+}
+
+#define MODULE_SETUP(func) \
+MODULE_GETTER(func) \
+func()
 
 class Module
 {
-    private:
+    protected:
+        static inline std::unordered_map<std::string, Module*> moduleMap = {};
+
         std::string name = "";
         std::string id = "";
+
+        void setName(std::string str);
+        void setID(std::string str);
+
+    private:
 
         bool userEnabled = false;
         bool forceDisabled = false;
 
+        std::vector<geode::Hook*> hooks = {};
+
+        void updateHooks();
+
     public:
+        static Module* getByID(std::string id);
+
         void setUserEnabled(bool enabled);
         bool getUserEnabled();
 
@@ -19,4 +55,6 @@ class Module
         bool getForceDisabled();
 
         bool getRealEnabled();
+
+        void addHook(geode::Hook* hook);
 };

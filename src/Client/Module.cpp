@@ -1,8 +1,12 @@
 #include "Module.hpp"
 
+using namespace geode::prelude;
+
 void Module::setUserEnabled(bool enabled)
 {
     this->userEnabled = enabled;
+
+    updateHooks();
 }
 
 bool Module::getUserEnabled()
@@ -13,6 +17,8 @@ bool Module::getUserEnabled()
 void Module::setForceDisabled(bool forced)
 {
     forceDisabled = forced;
+
+    updateHooks();
 }
 
 bool Module::getForceDisabled()
@@ -26,4 +32,47 @@ bool Module::getRealEnabled()
         return false;
 
     return userEnabled;
+}
+
+void Module::setName(std::string str)
+{
+    this->name = str;
+}
+
+void Module::setID(std::string str)
+{
+    this->id = str;
+}
+
+void Module::addHook(geode::Hook* hook)
+{
+    hook->setAutoEnable(false);
+    (void)hook->disable();
+
+    if (getRealEnabled())
+        (void)hook->enable();
+
+    hooks.push_back(hook);
+}
+
+void Module::updateHooks()
+{
+    bool enabled = getRealEnabled();
+
+    for (auto hook : hooks)
+    {
+        (void)hook->disable();
+
+        if (enabled)
+            (void)hook->enable();
+    }
+}
+
+Module* Module::getByID(std::string id)
+{
+    if (moduleMap.contains(id))
+        return moduleMap[id];
+
+    // will probably crash but i dont fucking care anymore
+    return nullptr;
 }
