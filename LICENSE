@@ -1,6 +1,1 @@
-ask me to use code (my discord is @thesillydoggo).
-
-if (response.allowedToUseCode())
-    use(theCode);
-else
-    dont(use(theCode));
+Dont use my code unless I let you

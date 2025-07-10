@@ -1,3 +1,7 @@
+# 2.0.0
+
+- Rewrite entire mod
+
 # 1.8.0
 
 - Added **iOS Support**

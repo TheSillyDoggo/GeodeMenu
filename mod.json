@@ -1,6 +1,6 @@
 {
 	"geode": "4.4.0",
-	"version": "v1.8.02",
+	"version": "v2.0.0",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -32,9 +32,7 @@
 		]
     },
 	"settings": {
-		"set-bind": { 
-			"type": "custom"
-		}
+		
 	},
 	"tags": [
 		"cheat",

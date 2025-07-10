@@ -5,8 +5,7 @@ if ("${GEODE_TARGET_PLATFORM}" STREQUAL "iOS" OR IOS)
     set(CMAKE_OSX_ARCHITECTURES "arm64")
     add_definitions(-DGLES_SILENCE_DEPRECATION)
 else()
-	set(CMAKE_OSX_ARCHITECTURES "x86_64")
-    #set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 endif()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -40,14 +39,10 @@ endif()
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 include_directories(include)
 
-add_definitions(-DSTATUS_TEXTS)
-add_definitions(-DQOLMOD_EXPORTING)
-# add_definitions(-DQOLMOD_CUSTOM_KEYS_SETTING)
-# add_definitions(-DCOMMENT_EMOJIS_INTEGRATION_ENABLED)
+# CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
+# todo: make my own
+# CPMAddPackage("gh:EclipseMenu/RIFT#main")
 
-CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
-CPMAddPackage("gh:EclipseMenu/RIFT#main")
-
-target_link_libraries(${PROJECT_NAME} imgui-cocos rift)
+# target_link_libraries(${PROJECT_NAME} imgui-cocos rift)
 
 setup_geode_mod(${PROJECT_NAME})
