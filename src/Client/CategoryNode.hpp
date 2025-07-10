@@ -2,13 +2,15 @@
 
 #include <Geode/Geode.hpp>
 #include "Module.hpp"
+#include "ModuleNode.hpp"
 
 using namespace geode::prelude;
 
-class CategoryNode : public CCNode
+class CategoryNode : public CCMenu
 {
     protected:
-        std::vector<Module*> modules = {};
+        std::map<Module*, ModuleNode*> modules = {};
+        ScrollLayer* scroll = nullptr;
     
     public:
         static CategoryNode* create();

@@ -35,6 +35,11 @@ void AndroidUI::populateModules()
 
             menu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
+
+        categories[module.second->getCategory()]->addModule(module.second);
+        categories[module.second->getCategory()]->addModule(module.second);
+        categories[module.second->getCategory()]->addModule(module.second);
+        categories[module.second->getCategory()]->addModule(module.second);
     }
 
     m_mainLayer->addChild(menu);

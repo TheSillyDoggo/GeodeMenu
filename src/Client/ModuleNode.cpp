@@ -16,7 +16,15 @@ ModuleNode* ModuleNode::create(Module* module)
 
 void ModuleNode::setup()
 {
+    auto btn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(ModuleNode::onToggle), 0.75f);
+    btn->toggle(module->getUserEnabled());
 
+    this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
+}
+
+void ModuleNode::onToggle(CCObject* sender)
+{
+    module->setUserEnabled(!module->getUserEnabled());
 }
 
 bool ModuleNode::init(Module* module)
@@ -26,6 +34,7 @@ bool ModuleNode::init(Module* module)
 
     this->setAnchorPoint(ccp(0.5f, 0.5f));
     this->ignoreAnchorPointForPosition(false);
+    this->setContentSize(ccp(150, 28));
 
     this->module = module;
     setup();

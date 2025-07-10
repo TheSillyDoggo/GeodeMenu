@@ -15,5 +15,7 @@ class ModuleNode : public CCNode
 
         virtual void setup();
 
+        void onToggle(CCObject* sender);
+
         bool init(Module* module);
 };
