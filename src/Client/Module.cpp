@@ -1,4 +1,5 @@
 #include "Module.hpp"
+#include "ModuleNode.hpp"
 
 using namespace geode::prelude;
 
@@ -44,6 +45,11 @@ void Module::setID(std::string str)
     this->id = str;
 }
 
+void Module::setCategory(std::string str)
+{
+    this->category = str;
+}
+
 void Module::addHook(geode::Hook* hook)
 {
     hook->setAutoEnable(false);
@@ -66,6 +72,16 @@ void Module::updateHooks()
         if (enabled)
             (void)hook->enable();
     }
+}
+
+ModuleNode* Module::getNode()
+{
+    return ModuleNode::create(this);
+}
+
+std::string Module::getCategory()
+{
+    return category;
 }
 
 Module* Module::getByID(std::string id)

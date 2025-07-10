@@ -10,6 +10,7 @@ class Noclip : public Module
         {
             setName("Noclip");
             setID("noclip");
+            setCategory("Level");
         }
 };
 

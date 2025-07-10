@@ -25,16 +25,22 @@ static func* get() \
 MODULE_GETTER(func) \
 func()
 
+class ModuleNode;
+
 class Module
 {
     protected:
+        friend class AndroidUI;
+
         static inline std::unordered_map<std::string, Module*> moduleMap = {};
 
         std::string name = "";
         std::string id = "";
+        std::string category = "";
 
         void setName(std::string str);
         void setID(std::string str);
+        void setCategory(std::string str);
 
     private:
 
@@ -57,4 +63,8 @@ class Module
         bool getRealEnabled();
 
         void addHook(geode::Hook* hook);
+
+        std::string getCategory();
+
+        virtual ModuleNode* getNode();
 };
