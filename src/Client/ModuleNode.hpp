@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-class ModuleNode : public CCNode
+class ModuleNode : public CCMenu
 {
     protected:
         Module* module = nullptr;

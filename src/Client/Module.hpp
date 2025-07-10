@@ -37,10 +37,12 @@ class Module
         std::string name = "";
         std::string id = "";
         std::string category = "";
+        std::string description = "";
 
         void setName(std::string str);
         void setID(std::string str);
         void setCategory(std::string str);
+        void setDescription(std::string str);
 
     private:
 
@@ -64,6 +66,8 @@ class Module
 
         void addHook(geode::Hook* hook);
 
+        std::string getName();
+        std::string getID();
         std::string getCategory();
 
         virtual ModuleNode* getNode();

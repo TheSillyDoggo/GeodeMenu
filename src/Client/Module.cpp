@@ -79,6 +79,16 @@ ModuleNode* Module::getNode()
     return ModuleNode::create(this);
 }
 
+std::string Module::getName()
+{
+    return name;
+}
+
+std::string Module::getID()
+{
+    return id;
+}
+
 std::string Module::getCategory()
 {
     return category;

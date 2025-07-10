@@ -11,6 +11,7 @@ class CategoryNode : public CCMenu
     protected:
         std::map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
+        CCMenu* contentMenu = nullptr;
     
     public:
         static CategoryNode* create();

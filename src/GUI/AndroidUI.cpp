@@ -1,7 +1,4 @@
 #include "AndroidUI.hpp"
-#include "../Client/Module.hpp"
-#include "../Client/ModuleNode.hpp"
-#include "../Client/CategoryNode.hpp"
 
 bool AndroidUI::setup()
 {
@@ -14,6 +11,7 @@ bool AndroidUI::setup()
     m_buttonMenu->setVisible(false);
 
     populateModules();
+    populateTabs();
 
     m_mainLayer->addChild(bg, -1);
     return true;
@@ -22,9 +20,7 @@ bool AndroidUI::setup()
 void AndroidUI::populateModules()
 {
     auto menu = CCNode::create();
-    menu->setContentSize(ccp(420, 280));
-
-    std::unordered_map<std::string, CategoryNode*> categories = {};
+    menu->setContentSize(ccp(475, 280));
 
     for (auto module : Module::moduleMap)
     {
@@ -37,19 +33,86 @@ void AndroidUI::populateModules()
         }
 
         categories[module.second->getCategory()]->addModule(module.second);
-        categories[module.second->getCategory()]->addModule(module.second);
-        categories[module.second->getCategory()]->addModule(module.second);
-        categories[module.second->getCategory()]->addModule(module.second);
     }
 
     m_mainLayer->addChild(menu);
+}
+
+void AndroidUI::populateTabs()
+{
+    auto bg = CCScale9Sprite::create("square02b_small.png");
+    bg->setContentSize(ccp(110, m_size.height - 10 * 2) / 0.5f);
+    bg->setAnchorPoint(ccp(0, 0.5f));
+    bg->setScale(0.5f);
+    bg->setColor(ccColor3B(0, 0, 0));
+    bg->setOpacity(100);
+
+    auto tabsMenu = CCMenu::create();
+    tabsMenu->setContentSize((bg->getContentSize() / 2) + ccp(0, -10));
+    tabsMenu->setAnchorPoint(ccp(0, 0.5f));
+    tabsMenu->ignoreAnchorPointForPosition(false);
+    tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
+    
+    m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
+    m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 5, 0));
+
+    for (auto category : categories)
+    {
+        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category.first);
+        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category.first);
+        sprHeld->updateSelection(CategorySelectionType::Hovered);
+
+        sprNormal->setContentSize(ccp(100, 20));
+        sprHeld->setContentSize(ccp(100, 20));
+
+        auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
+        btn->setID(category.first);
+        btn->setSelectedImage(sprHeld);
+        btn->m_scaleMultiplier = 1;
+
+        sprNormal->setAnchorPoint(ccp(0, 0));
+        sprHeld->setPosition(btn->getContentSize() / 2);
+
+        tabsMenu->addChild(btn);
+
+        categoryBtns[category.first] = btn;
+        categorySprs[category.first] = sprNormal;
+    }
+
+    tabsMenu->updateLayout();
+    updateTabs();
+}
+
+void AndroidUI::updateTabs()
+{
+    for (auto btn : categoryBtns)
+    {
+        btn.second->setEnabled(selectedCategory != btn.first);
+    }
+    
+    for (auto spr : categorySprs)
+    {
+        spr.second->updateSelection(selectedCategory != spr.first ? CategorySelectionType::Deselected : CategorySelectionType::Selected);
+    }
+
+    for (auto category : categories)
+    {
+        category.second->setVisible(category.first == selectedCategory);
+    }
+}
+
+void AndroidUI::onSelectTab(CCObject* sender)
+{
+    selectedCategory = as<CCNode*>(sender)->getID();
+
+    updateTabs();
 }
 
 AndroidUI* AndroidUI::create()
 {
     auto pRet = new AndroidUI();
 
-    if (pRet && pRet->initAnchored(420.f, 280.f))
+    if (pRet && pRet->initAnchored(475.f, 280.f))
     {
         PlatformToolbox::showCursor();
         instance = pRet;
@@ -87,11 +150,4 @@ void AndroidUI::close()
         PlatformToolbox::hideCursor();
 
     this->onClose(nullptr);
-}
-
-void AndroidUI::test(CCObject* sender)
-{
-    auto mod = Module::getByID("noclip");
-
-    mod->setUserEnabled(!mod->getUserEnabled());
 }
