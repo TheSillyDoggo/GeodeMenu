@@ -23,7 +23,7 @@ bool BackgroundSprite::init()
     gradientOutline = CCScale9Sprite::create("GJ_square07.png");
     gradientDarken = CCScale9Sprite::create("GJ_square01.png");
 
-    gradientDarken->setColor(ccColor3B(0, 0, 0));
+    gradientDarken->setColor(ccc3(0, 0, 0));
     gradientDarken->setOpacity(30);
     gradientDarken->setScale(0.5f);
 

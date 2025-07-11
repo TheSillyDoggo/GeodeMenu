@@ -51,7 +51,8 @@ class Module
 
         std::vector<geode::Hook*> hooks = {};
 
-        void updateHooks();
+        void disableHooks();
+        void enableHooks();
 
     public:
         static Module* getByID(std::string id);
@@ -69,6 +70,7 @@ class Module
         std::string getName();
         std::string getID();
         std::string getCategory();
+        std::string getDescription();
 
         virtual ModuleNode* getNode();
 };

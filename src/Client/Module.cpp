@@ -7,7 +7,17 @@ void Module::setUserEnabled(bool enabled)
 {
     this->userEnabled = enabled;
 
-    updateHooks();
+    if (forceDisabled)
+    {
+        disableHooks();
+    }
+    else
+    {
+        if (userEnabled)
+            enableHooks();
+        else
+            disableHooks();
+    }
 }
 
 bool Module::getUserEnabled()
@@ -19,7 +29,17 @@ void Module::setForceDisabled(bool forced)
 {
     forceDisabled = forced;
 
-    updateHooks();
+    if (forceDisabled)
+    {
+        disableHooks();
+    }
+    else
+    {
+        if (userEnabled)
+            enableHooks();
+        else
+            disableHooks();
+    }
 }
 
 bool Module::getForceDisabled()
@@ -52,25 +72,37 @@ void Module::setCategory(std::string str)
 
 void Module::addHook(geode::Hook* hook)
 {
-    hook->setAutoEnable(false);
-    (void)hook->disable();
-
-    if (getRealEnabled())
-        (void)hook->enable();
-
     hooks.push_back(hook);
+
+    hook->setAutoEnable(false);
+
+    //hook->enable();
+
+    //if (getRealEnabled())
+        //(void)hook->enable();
 }
 
-void Module::updateHooks()
+void Module::enableHooks()
 {
+    log::error("enable");
+
+    bool enabled = getRealEnabled();
+
+    for (auto hook : hooks)
+    {
+        (void)hook->enable();
+    }
+}
+
+void Module::disableHooks()
+{
+    log::error("disable");
+
     bool enabled = getRealEnabled();
 
     for (auto hook : hooks)
     {
         (void)hook->disable();
-
-        if (enabled)
-            (void)hook->enable();
     }
 }
 
@@ -92,6 +124,16 @@ std::string Module::getID()
 std::string Module::getCategory()
 {
     return category;
+}
+
+std::string Module::getDescription()
+{
+    return description;
+}
+
+void Module::setDescription(std::string str)
+{
+    this->description = str;
 }
 
 Module* Module::getByID(std::string id)

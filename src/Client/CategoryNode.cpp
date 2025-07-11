@@ -59,7 +59,7 @@ bool CategoryNode::init()
     auto bg = CCScale9Sprite::create("square02b_small.png");
     bg->setContentSize(this->getContentSize() / 0.5f);
     bg->setScale(0.5f);
-    bg->setColor(ccColor3B(0, 0, 0));
+    bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
 
     scroll = geode::ScrollLayer::create(this->getContentSize());

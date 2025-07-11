@@ -11,6 +11,7 @@ class NoTransition : public Module
             setName("No Transition");
             setID("no-trans");
             setCategory("Cosmetic");
+            setDescription("Disables the fade transition between scenes");
         }
 };
 

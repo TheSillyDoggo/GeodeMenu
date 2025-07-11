@@ -20,10 +20,8 @@ class $modify (PlayLayer)
 {
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
-        log::error("ASUIETTSDGTYUFSDRFFCTVYHSE RFEUIYR ET GRFYUISDGR*FYSEUIHFGSDUIYHFGHSDHIK");
-
-        //if (p1 == m_anticheatSpike)
-            //PlayLayer::destroyPlayer(p0, p1);
+        if (p1 == m_anticheatSpike)
+            PlayLayer::destroyPlayer(p0, p1);
     }
 
     MODULE_ALL_HOOKS(Noclip);

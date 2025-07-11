@@ -44,7 +44,7 @@ void AndroidUI::populateTabs()
     bg->setContentSize(ccp(110, m_size.height - 10 * 2) / 0.5f);
     bg->setAnchorPoint(ccp(0, 0.5f));
     bg->setScale(0.5f);
-    bg->setColor(ccColor3B(0, 0, 0));
+    bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
 
     auto tabsMenu = CCMenu::create();
