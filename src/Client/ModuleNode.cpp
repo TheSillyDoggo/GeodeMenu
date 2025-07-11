@@ -16,14 +16,22 @@ ModuleNode* ModuleNode::create(Module* module)
 
 void ModuleNode::setup()
 {
-    auto hasDesc = module->getDescription().size() > 0;
+    bool hasDesc = module->getDescription().size() > 0;
+    bool isDisabled = module->isDisabled();
 
-    auto btn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(ModuleNode::onToggle), 0.75f);
+    auto btn = CCMenuItemToggler::createWithStandardSprites(this, isDisabled ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle), 0.75f);
     btn->toggle(module->getUserEnabled());
 
     auto label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(110 - (hasDesc ? 0 : 0), 0.575f, 0.1f);
+
+    if (isDisabled)
+    {
+        label->setOpacity(150);
+        btn->m_onButton->setOpacity(150);
+        btn->m_offButton->setOpacity(150);
+    }
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));
@@ -44,6 +52,20 @@ void ModuleNode::setup()
 void ModuleNode::onToggle(CCObject* sender)
 {
     module->setUserEnabled(!module->getUserEnabled());
+}
+
+void ModuleNode::onToggleError(CCObject* sender)
+{
+    auto toggler = as<CCMenuItemToggler*>(sender);
+    toggler->toggle(!toggler->isToggled());
+
+    toggler->m_onButton->setScale(1);
+    toggler->m_offButton->setScale(1);
+
+    toggler->m_onButton->stopAllActions();
+    toggler->m_offButton->stopAllActions();
+
+    FLAlertLayer::create("Help", "Disabled module help text", "OK")->show();
 }
 
 void ModuleNode::onInfo(CCObject* sender)

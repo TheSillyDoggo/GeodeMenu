@@ -37,7 +37,7 @@ void BallGameManager::reloadAllStep5()
 
 void BallTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
 {
-    if (pTouches && AndroidBall::get()->shouldFunction())
+    if (pTouches && AndroidBall::get()->shouldFunction() && !AndroidUI::get())
     {
         if (auto t = as<CCTouch*>(pTouches->anyObject()))
         {

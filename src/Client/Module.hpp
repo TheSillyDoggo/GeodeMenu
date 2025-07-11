@@ -40,12 +40,14 @@ class Module
         std::string category = "";
         std::string description = "";
         bool defaultEnabled = false;
+        bool disabled = false;
 
         void setName(std::string str);
         void setID(std::string str);
         void setCategory(std::string str);
         void setDescription(std::string str);
         void setDefaultEnabled(bool def);
+        void setDisabled(bool value);
 
         void save();
         void load();
@@ -77,6 +79,7 @@ class Module
         std::string getID();
         std::string getCategory();
         std::string getDescription();
+        bool isDisabled();
 
         virtual ModuleNode* getNode();
 };

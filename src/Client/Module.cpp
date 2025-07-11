@@ -147,6 +147,16 @@ void Module::setDefaultEnabled(bool def)
     this->defaultEnabled = def;
 }
 
+void Module::setDisabled(bool value)
+{
+    this->disabled = value;
+}
+
+bool Module::isDisabled()
+{
+    return disabled;
+}
+
 Module* Module::getByID(std::string id)
 {
     log::info("todo: implement");

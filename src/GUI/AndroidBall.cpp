@@ -52,7 +52,7 @@ void AndroidBall::reloadTextures()
 
 bool AndroidBall::shouldFunction()
 {
-    if (!HideButton::get()->getUserEnabled())
+    if (HideButton::get()->getUserEnabled())
         return false;
 
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
@@ -130,6 +130,8 @@ bool AndroidBall::ccTouchEnded(CCTouch* touch)
     }
 
     this->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
+    Mod::get()->setSavedValue("posX", getPositionX());
+    Mod::get()->setSavedValue("posY", getPositionY());
 
     isDragging = false;
     isMoving = false;

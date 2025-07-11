@@ -57,17 +57,17 @@ void AndroidUI::populateTabs()
     m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
     m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 5, 0));
 
-    for (auto category : categories)
+    for (auto category : categoryOrders)
     {
-        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category.first);
-        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category.first);
+        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category);
+        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category);
         sprHeld->updateSelection(CategorySelectionType::Hovered);
 
         sprNormal->setContentSize(ccp(100, 20));
         sprHeld->setContentSize(ccp(100, 20));
 
         auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
-        btn->setID(category.first);
+        btn->setID(category);
         btn->setSelectedImage(sprHeld);
         btn->m_scaleMultiplier = 1;
 
@@ -76,8 +76,8 @@ void AndroidUI::populateTabs()
 
         tabsMenu->addChild(btn);
 
-        categoryBtns[category.first] = btn;
-        categorySprs[category.first] = sprNormal;
+        categoryBtns[category] = btn;
+        categorySprs[category] = sprNormal;
     }
 
     tabsMenu->updateLayout();

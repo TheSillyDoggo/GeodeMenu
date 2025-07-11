@@ -11,7 +11,7 @@ class AllowDragging : public Module
         {
             setName("Allow Dragging");
             setID("allow-dragging");
-            setCategory("Universal");
+            setCategory("Button");
             setDescription("Allow dragging help");
             setDefaultEnabled(true);
         }

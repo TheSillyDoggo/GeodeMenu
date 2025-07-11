@@ -16,6 +16,7 @@ class ModuleNode : public CCMenu
         virtual void setup();
 
         void onToggle(CCObject* sender);
+        void onToggleError(CCObject* sender);
         void onInfo(CCObject* sender);
 
         bool init(Module* module);

@@ -11,11 +11,12 @@ class HideButton : public Module
         {
             setName("Hide Button");
             setID("hide-btn");
-            setCategory("Universal");
+            setCategory("Button");
             setDescription("Hide button help");
 
-            #ifdef GEODE_IS_DESKTOP
+            #ifdef GEODE_IS_MOBILE
             setDefaultEnabled(true);
+            setDisabled(true);
             #endif
         }
 };

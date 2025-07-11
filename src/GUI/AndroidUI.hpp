@@ -18,7 +18,15 @@ class AndroidUI : public geode::Popup<>
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
-        std::string selectedCategory = "Level";
+        // static to keep between reopens
+        static inline std::string selectedCategory = "Level";
+
+        std::vector<std::string> categoryOrders =
+        {
+            "Level",
+            "Cosmetic",
+            "Button",
+        };
 
         ~AndroidUI();
 
