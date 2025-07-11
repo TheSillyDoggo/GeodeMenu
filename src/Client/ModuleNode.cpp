@@ -23,7 +23,7 @@ void ModuleNode::setup()
 
     auto label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(120 - (hasDesc ? 0 : 0), 0.525f, 0.1f);
+    label->limitLabelWidth(110 - (hasDesc ? 0 : 0), 0.575f, 0.1f);
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));

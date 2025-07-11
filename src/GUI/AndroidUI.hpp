@@ -35,4 +35,5 @@ class AndroidUI : public geode::Popup<>
 
         void close();
         virtual bool setup();
+        virtual void visit();
 };

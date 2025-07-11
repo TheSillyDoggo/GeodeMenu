@@ -32,7 +32,7 @@ void CategoryNode::addModule(Module* module)
     {
         auto n = node.second;
 
-        float x = (n->getTag() % 2 == 0) ? 85 : 252;
+        float x = (n->getTag() % 2 == 0) ? 85 : 260;
         float y = floor(n->getTag() / 2);
 
         n->setPosition(ccp(x, height2 - (y * 28)));

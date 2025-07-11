@@ -1,4 +1,5 @@
 #include "AndroidUI.hpp"
+#include "AndroidBall.hpp"
 
 bool AndroidUI::setup()
 {
@@ -150,4 +151,11 @@ void AndroidUI::close()
         PlatformToolbox::hideCursor();
 
     this->onClose(nullptr);
+}
+
+void AndroidUI::visit()
+{
+    AndroidBall::get()->visit();
+
+    geode::Popup<>::visit();
 }
