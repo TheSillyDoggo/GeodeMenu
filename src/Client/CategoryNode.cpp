@@ -17,34 +17,28 @@ CategoryNode* CategoryNode::create()
 void CategoryNode::addModule(Module* module)
 {
     auto node = module->getNode();
+    node->setTag(modules.size());
 
     modules.emplace(module, node);
 
-    contentMenu->addChild(node);
+    scroll->m_contentLayer->addChild(node);
 
-    float height = (std::floor((modules.size() / 2.0f) + 1)) * 28.0f;
-    float height2 = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
+    float height = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
+    float height2 = height - (28 / 2) - 3;
 
-    scroll->m_contentLayer->setContentHeight(height2);
-    contentMenu->setContentHeight(height2 + 6);
-    contentMenu->setPositionY(scroll->getContentHeight() - height);
-
-    int x = 0;
-    int y = 0;
+    scroll->m_contentLayer->setContentHeight(height);
 
     for (auto node : modules)
     {
-        node.second->setPosition(ccp(x == 0 ? 85 : 255, -(28 * y) + 28 / 2) + ccp(0, -3));
+        auto n = node.second;
 
-        x++;
-        if (x == 2)
-        {
-            x = 0;
-            y++;
-        }
+        float x = (n->getTag() % 2 == 0) ? 85 : 252;
+        float y = floor(n->getTag() / 2);
+
+        n->setPosition(ccp(x, height2 - (y * 28)));
     }
 
-    // x: 85, 255
+    scroll->setTouchEnabled(height != scroll->getContentHeight());
 }
 
 bool CategoryNode::init()
@@ -66,13 +60,6 @@ bool CategoryNode::init()
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     
-    contentMenu = CCMenu::create();
-    contentMenu->ignoreAnchorPointForPosition(false);
-    contentMenu->setContentSize(getContentSize());
-    contentMenu->setPosition(ccp(0, 0));
-    contentMenu->setAnchorPoint(ccp(0, 0));
-    scroll->m_contentLayer->addChild(contentMenu);
-
     this->addChildAtPosition(bg, Anchor::Center);
     this->addChild(scroll);
     return true;

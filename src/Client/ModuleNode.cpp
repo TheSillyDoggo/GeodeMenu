@@ -16,20 +16,59 @@ ModuleNode* ModuleNode::create(Module* module)
 
 void ModuleNode::setup()
 {
+    auto hasDesc = module->getDescription().size() > 0;
+
     auto btn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(ModuleNode::onToggle), 0.75f);
     btn->toggle(module->getUserEnabled());
 
     auto label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(110, 0.575f, 0.1f);
+    label->limitLabelWidth(120 - (hasDesc ? 0 : 0), 0.525f, 0.1f);
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));
+
+    if (hasDesc)
+    {
+        auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+        infoSpr->setScale(0.55f + 0.35f);
+
+        auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
+
+        infoSpr->setScale(infoSpr->getScale() - 0.35f);
+
+        this->addChildAtPosition(infoBtn, Anchor::Left, ccp(30 + label->getScaledContentWidth() + 9, 5));
+    }
 }
 
 void ModuleNode::onToggle(CCObject* sender)
 {
     module->setUserEnabled(!module->getUserEnabled());
+}
+
+void ModuleNode::onInfo(CCObject* sender)
+{
+    auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    alert->show();
+
+    // :3
+    if (module->getID() == "no-trans")
+    {
+        if (auto textArea = alert->m_mainLayer->getChildByType<TextArea>(0))
+        {
+            auto clip = CCClippingNode::create(textArea);
+            clip->setAlphaThreshold(0.03f);
+
+            auto trans = CCScale9Sprite::create("geode.loader/GE_button_04.png");
+            trans->_scale9Image->setBlendFunc({GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA});
+            trans->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(25.5f, 15));
+            trans->setContentWidth(66);
+            trans->setScaleY(0.375f);
+            clip->addChild(trans);
+
+            alert->m_mainLayer->addChild(clip, 80085);
+        }
+    }
 }
 
 bool ModuleNode::init(Module* module)

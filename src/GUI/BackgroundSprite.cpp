@@ -54,7 +54,7 @@ void BackgroundSprite::updateTheme(int theme)
     if (theme == -6)
         bgStr = "geode.loader/GE_square03.png";
 
-    public_cast(colouredBG, _scale9Image)->setTexture(CCSprite::create(bgStr.c_str())->getTexture());
+    colouredBG->_scale9Image->setTexture(CCSprite::create(bgStr.c_str())->getTexture());
 
     colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : ccc3(255, 255, 255));
     colouredBG->setOpacity(theme == -2 ? 175 : 255);
