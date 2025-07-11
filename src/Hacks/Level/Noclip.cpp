@@ -1,4 +1,4 @@
-#include "../Client/Module.hpp"
+#include "../../Client/Module.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 
 using namespace geode::prelude;
@@ -21,8 +21,9 @@ class $modify (PlayLayer)
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
         if (p1 == m_anticheatSpike)
+            return PlayLayer::destroyPlayer(p0, p1);
+
+        if (!Noclip::get()->getRealEnabled())
             PlayLayer::destroyPlayer(p0, p1);
     }
-
-    MODULE_ALL_HOOKS(Noclip);
 };

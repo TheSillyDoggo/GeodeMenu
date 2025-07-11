@@ -16,6 +16,7 @@ static func* get() \
     if (!instance) \
     { \
         instance = new func(); \
+        instance->load(); \
         Module::moduleMap.emplace(instance->id, instance); \
     } \
     return instance; \
@@ -38,14 +39,18 @@ class Module
         std::string id = "";
         std::string category = "";
         std::string description = "";
+        bool defaultEnabled = false;
 
         void setName(std::string str);
         void setID(std::string str);
         void setCategory(std::string str);
         void setDescription(std::string str);
+        void setDefaultEnabled(bool def);
+
+        void save();
+        void load();
 
     private:
-
         bool userEnabled = false;
         bool forceDisabled = false;
 

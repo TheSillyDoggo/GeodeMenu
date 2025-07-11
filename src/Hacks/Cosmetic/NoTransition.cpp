@@ -21,10 +21,6 @@ class $modify (CCTransitionFade)
 {
     virtual bool initWithDuration(float t, CCScene*scene ,const ccColor3B& color)
     {
-        t = 0;
-
-        return CCTransitionFade::initWithDuration(t, scene, color);
+        return CCTransitionFade::initWithDuration(NoTransition::get()->getRealEnabled() ? 0 : t, scene, color);
     }
-
-    MODULE_ALL_HOOKS(NoTransition);
 };
