@@ -17,7 +17,7 @@ static func* get() \
     { \
         instance = new func(); \
         instance->load(); \
-        Module::moduleMap.emplace(instance->id, instance); \
+        Module::moduleMap.push_back(instance); \
     } \
     return instance; \
 }
@@ -33,7 +33,7 @@ class Module
     protected:
         friend class AndroidUI;
 
-        static inline std::unordered_map<std::string, Module*> moduleMap = {};
+        static inline std::vector<Module*> moduleMap = {};
 
         std::string name = "";
         std::string id = "";
@@ -61,6 +61,7 @@ class Module
 
     public:
         static Module* getByID(std::string id);
+        static void sortAlphabetically();
 
         void setUserEnabled(bool enabled);
         bool getUserEnabled();

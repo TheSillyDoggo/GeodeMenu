@@ -149,9 +149,11 @@ void Module::setDefaultEnabled(bool def)
 
 Module* Module::getByID(std::string id)
 {
-    if (moduleMap.contains(id))
-        return moduleMap[id];
+    log::info("todo: implement");
+    return nullptr;
+    //if (moduleMap.contains(id))
+        //return moduleMap[id];
 
     // will probably crash but i dont fucking care anymore
-    return nullptr;
+    //return nullptr;
 }

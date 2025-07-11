@@ -24,15 +24,15 @@ void AndroidUI::populateModules()
 
     for (auto module : Module::moduleMap)
     {
-        if (!categories.contains(module.second->getCategory()))
+        if (!categories.contains(module->getCategory()))
         {
             auto cat = CategoryNode::create();
-            categories.emplace(module.second->getCategory(), cat);
+            categories.emplace(module->getCategory(), cat);
 
             menu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
-        categories[module.second->getCategory()]->addModule(module.second);
+        categories[module->getCategory()]->addModule(module);
     }
 
     m_mainLayer->addChild(menu);
