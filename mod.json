@@ -28,7 +28,8 @@
 			"resources/translations/langs/*.json"
         ],
 		"sprites": [
-			"resources/sprites/*.png"
+			"resources/sprites/*.png",
+			"resources/sprites/categories/*.png"
 		]
     },
 	"settings": {

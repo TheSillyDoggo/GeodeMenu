@@ -171,6 +171,26 @@ bool Module::isFavourited()
     return favourited;
 }
 
+void Module::setSafeModeTrigger(SafeModeTrigger trigger)
+{
+    this->trigger = trigger;
+}
+
+SafeModeTrigger Module::getSafeModeTrigger()
+{
+    return this->trigger;
+}
+
+void Module::setSafeModeCustom(std::function<bool()> func)
+{
+    this->safeModeCustomTrigger = func;
+}
+
+std::function<bool()> Module::getSafeModeCustom()
+{
+    return safeModeCustomTrigger;
+}
+
 Module* Module::getByID(std::string id)
 {
     log::info("todo: implement");

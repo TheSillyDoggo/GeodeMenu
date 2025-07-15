@@ -20,23 +20,24 @@ bool AndroidUI::setup()
 
 void AndroidUI::populateModules()
 {
-    auto menu = CCNode::create();
-    menu->setContentSize(ccp(475, 280));
+    categoryMenu = CCNode::create();
+    categoryMenu->setContentSize(ccp(475, 280));
 
     for (auto module : Module::moduleMap)
     {
         if (!categories.contains(module->getCategory()))
         {
-            auto cat = CategoryNode::create();
+            auto cat = CategoryNode::getNode(module->getCategory());
+            cat->setID(module->getCategory());
             categories.emplace(module->getCategory(), cat);
 
-            menu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
+            categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
         categories[module->getCategory()]->addModule(module);
     }
 
-    m_mainLayer->addChild(menu);
+    m_mainLayer->addChild(categoryMenu);
 }
 
 void AndroidUI::populateTabs()
@@ -64,6 +65,16 @@ void AndroidUI::populateTabs()
             tabsMenu->addChild(geode::SpacerNode::create());
 
             continue;
+        }
+
+        if (!categories.contains(category))
+        {
+            // meowwww
+            auto cat = CategoryNode::getNode(category);
+            cat->setID(category);
+
+            categories.emplace(category, cat);
+            categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
         auto spr = fmt::format("{}{}.png", ""_spr, utils::string::toLower(category));

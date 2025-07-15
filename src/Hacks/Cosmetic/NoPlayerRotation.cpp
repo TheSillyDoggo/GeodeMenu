@@ -1,5 +1,5 @@
 #include "../../Client/Module.hpp"
-#include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/GJBaseGameLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -17,13 +17,19 @@ class NoPlayerRotation : public Module
 
 SUBMIT_HACK(NoPlayerRotation);
 
-class $modify (PlayerObject)
+class $modify (GJBaseGameLayer)
 {
     virtual void update(float dt)
     {
-        PlayerObject::update(dt);
+        GJBaseGameLayer::update(dt);
 
         if (NoPlayerRotation::get()->getRealEnabled())
-            setRotation(0);
+        {
+            if (m_player1)
+                m_player1->setRotation(0);
+
+            if (m_player2)
+                m_player2->setRotation(0);
+        }
     }
 };

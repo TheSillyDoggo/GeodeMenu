@@ -28,6 +28,14 @@ func()
 
 class ModuleNode;
 
+enum class SafeModeTrigger
+{
+    None,
+    Attempt,
+    LevelLoad,
+    Custom,
+};
+
 class Module
 {
     protected:
@@ -42,6 +50,8 @@ class Module
         bool defaultEnabled = false;
         bool disabled = false;
         bool favourited = false;
+        SafeModeTrigger trigger = SafeModeTrigger::None;
+        std::function<bool()> safeModeCustomTrigger = nullptr;
 
         void setName(std::string str);
         void setID(std::string str);
@@ -49,6 +59,8 @@ class Module
         void setDescription(std::string str);
         void setDefaultEnabled(bool def);
         void setDisabled(bool value);
+        void setSafeModeTrigger(SafeModeTrigger trigger);
+        void setSafeModeCustom(std::function<bool()> func);
 
         void save();
         void load();
@@ -84,6 +96,8 @@ class Module
         std::string getID();
         std::string getCategory();
         std::string getDescription();
+        SafeModeTrigger getSafeModeTrigger();
+        std::function<bool()> getSafeModeCustom();
         bool isDisabled();
 
         virtual ModuleNode* getNode();

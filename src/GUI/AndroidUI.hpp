@@ -15,6 +15,7 @@ class AndroidUI : public geode::Popup<>
         static inline AndroidUI* instance = nullptr;
 
         BackgroundSprite* bg = nullptr;
+        CCNode* categoryMenu;
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};

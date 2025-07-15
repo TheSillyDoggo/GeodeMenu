@@ -12,7 +12,7 @@ class ShowHitboxes : public Module
             setName("Show Hitboxes");
             setID("show-hitboxes");
             setCategory("Level");
-            setDescription("");
+            setDescription("a");
         }
 };
 
@@ -24,7 +24,7 @@ class ShowHitboxesOnDeath : public Module
             setName("Show Hitboxes On Death");
             setID("show-hitboxes-on-death");
             setCategory("Level");
-            setDescription("");
+            setDescription("a");
         }
 };
 

@@ -8,16 +8,29 @@ using namespace geode::prelude;
 
 class CategoryNode : public CCMenu
 {
+    friend class AndroidUI;
+
     protected:
+        static inline std::map<std::string, std::function<CategoryNode*()>> advCategories = {};
         std::map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
         Scrollbar* scrollbar = nullptr;
     
     public:
         static CategoryNode* create();
+        static void addAdvanced(std::string name, std::function<CategoryNode*()> func);
+        static CategoryNode* getNode(std::string category);
 
         void addModule(Module* module);
         bool shouldScrollbarShow();
 
         bool init();
 };
+
+#define SUBMIT_CATEGORY(name, func) \
+$execute \
+{ \
+    CategoryNode::addAdvanced(name, []{ \
+        return func::create(); \
+    }); \
+}

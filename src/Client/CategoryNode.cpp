@@ -15,6 +15,19 @@ CategoryNode* CategoryNode::create()
     return nullptr;
 }
 
+void CategoryNode::addAdvanced(std::string name, std::function<CategoryNode*()> func)
+{
+    advCategories.emplace(name, func);
+}
+
+CategoryNode* CategoryNode::getNode(std::string category)
+{
+    if (advCategories.contains(category))
+        return advCategories[category]();
+
+    return create();
+}
+
 void CategoryNode::addModule(Module* module)
 {
     bool showScrollbar = shouldScrollbarShow();
@@ -29,7 +42,7 @@ void CategoryNode::addModule(Module* module)
     float height = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;
 
-    scroll->m_contentLayer->setContentHeight(height);
+    scroll->m_contentLayer->setContentHeight(height + 6);
 
     for (auto node : modules)
     {
@@ -38,9 +51,10 @@ void CategoryNode::addModule(Module* module)
         float x = (n->getTag() % 2 == 0) ? 85 : (showScrollbar ? 255 : 260);
         float y = floor(n->getTag() / 2);
 
-        n->setPosition(ccp(x, height2 - (y * 28)));
+        n->setPosition(ccp(x, height2 - (y * 28) + 6));
     }
 
+    scroll->moveToTop();
     scroll->setTouchEnabled(height != scroll->getContentHeight());
     scrollbar->setVisible(showScrollbar);
 }
@@ -70,7 +84,10 @@ bool CategoryNode::init()
     scroll->m_peekLimitBottom = 15;
 
     scrollbar = Scrollbar::create(scroll);
+    // updates size
+    scrollbar->visit();
     public_cast(scrollbar, m_track)->setScale(0.5f);
+    scrollbar->setVisible(shouldScrollbarShow());
     
     this->addChildAtPosition(bg, Anchor::Center);
     this->addChild(scroll);
