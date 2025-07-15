@@ -25,7 +25,11 @@ class AndroidUI : public geode::Popup<>
         {
             "Level",
             "Cosmetic",
+            "Speedhack",
             "Button",
+            "spacer",
+            "Keybinds",
+            "Favourites",
         };
 
         ~AndroidUI();

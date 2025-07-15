@@ -15,12 +15,12 @@ class NoTransition : public Module
         }
 };
 
-SUBMIT_HACK(NoTransition);
+// SUBMIT_HACK(NoTransition);
 
-class $modify (CCTransitionFade)
+/*class $modify (CCTransitionFade)
 {
     virtual bool initWithDuration(float t, CCScene*scene ,const ccColor3B& color)
     {
         return CCTransitionFade::initWithDuration(NoTransition::get()->getRealEnabled() ? 0 : t, scene, color);
     }
-};
+};*/

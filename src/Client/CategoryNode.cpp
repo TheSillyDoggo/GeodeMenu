@@ -1,4 +1,5 @@
 #include "CategoryNode.hpp"
+#include "../Utils/Casts.hpp"
 
 CategoryNode* CategoryNode::create()
 {
@@ -16,6 +17,8 @@ CategoryNode* CategoryNode::create()
 
 void CategoryNode::addModule(Module* module)
 {
+    bool showScrollbar = shouldScrollbarShow();
+
     auto node = module->getNode();
     node->setTag(modules.size());
 
@@ -32,13 +35,19 @@ void CategoryNode::addModule(Module* module)
     {
         auto n = node.second;
 
-        float x = (n->getTag() % 2 == 0) ? 85 : 260;
+        float x = (n->getTag() % 2 == 0) ? 85 : (showScrollbar ? 255 : 260);
         float y = floor(n->getTag() / 2);
 
         n->setPosition(ccp(x, height2 - (y * 28)));
     }
 
     scroll->setTouchEnabled(height != scroll->getContentHeight());
+    scrollbar->setVisible(showScrollbar);
+}
+
+bool CategoryNode::shouldScrollbarShow()
+{
+    return false;
 }
 
 bool CategoryNode::init()
@@ -59,8 +68,12 @@ bool CategoryNode::init()
     scroll = geode::ScrollLayer::create(this->getContentSize());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
+
+    scrollbar = Scrollbar::create(scroll);
+    public_cast(scrollbar, m_track)->setScale(0.5f);
     
     this->addChildAtPosition(bg, Anchor::Center);
     this->addChild(scroll);
+    this->addChildAtPosition(scrollbar, Anchor::Right, ccp(-4, 0));
     return true;
 }

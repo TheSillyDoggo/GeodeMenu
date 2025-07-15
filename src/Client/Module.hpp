@@ -41,6 +41,7 @@ class Module
         std::string description = "";
         bool defaultEnabled = false;
         bool disabled = false;
+        bool favourited = false;
 
         void setName(std::string str);
         void setID(std::string str);
@@ -63,10 +64,14 @@ class Module
 
     public:
         static Module* getByID(std::string id);
+        static std::vector<Module*> getAllFavourited();
         static void sortAlphabetically();
 
         void setUserEnabled(bool enabled);
         bool getUserEnabled();
+
+        void setFavourited(bool favourited);
+        bool isFavourited();
 
         void setForceDisabled(bool forced);
         bool getForceDisabled();

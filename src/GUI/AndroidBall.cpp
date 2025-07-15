@@ -6,7 +6,7 @@
 
 AndroidBall* AndroidBall::get()
 {
-    static AndroidBall* instance = nullptr;
+    static Ref<AndroidBall> instance = nullptr;
 
     if (!instance)
         instance = create();
@@ -24,6 +24,7 @@ bool AndroidBall::init()
 
     setColonThreeSecret(Mod::get()->getSavedValue<bool>("colon-three-secwet-uwu-:3", false));
 
+    this->retain();
     this->onEnter();
     this->scheduleUpdate();
     this->addChild(background);
@@ -32,9 +33,12 @@ bool AndroidBall::init()
 }
 
 void AndroidBall::setColonThreeSecret(bool enabled)
-{
-    overlay->setTexture(CCSprite::create(enabled ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr)->getTexture());
-    colonThreeEnabled = enabled;
+{ 
+    if (auto spr = CCSprite::create(enabled ? "qolmodButtonOverlaycolonthree.png"_spr : "qolmodButtonOverlay.png"_spr))
+    {
+        overlay->setTexture(spr->getTexture());
+        colonThreeEnabled = enabled;
+    }
 }
 
 bool AndroidBall::getColonThreeSecret()
@@ -52,8 +56,12 @@ void AndroidBall::reloadTextures()
 
 bool AndroidBall::shouldFunction()
 {
+    #ifdef GEODE_IS_DESKTOP
+
     if (HideButton::get()->getUserEnabled())
         return false;
+    
+    #endif
 
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;

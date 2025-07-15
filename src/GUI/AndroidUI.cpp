@@ -59,8 +59,17 @@ void AndroidUI::populateTabs()
 
     for (auto category : categoryOrders)
     {
-        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category);
-        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category);
+        if (category == "spacer")
+        {
+            tabsMenu->addChild(geode::SpacerNode::create());
+
+            continue;
+        }
+
+        auto spr = fmt::format("{}{}.png", ""_spr, utils::string::toLower(category));
+
+        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category, spr);
+        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category, spr);
         sprHeld->updateSelection(CategorySelectionType::Hovered);
 
         sprNormal->setContentSize(ccp(100, 20));

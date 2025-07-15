@@ -104,12 +104,14 @@ void Module::disableHooks()
 
 void Module::save()
 {
-    Mod::get()->setSavedValue<bool>(getID() + "_enabled", getUserEnabled());
+    Mod::get()->setSavedValue<bool>(fmt::format("{}_enabled", getID()), getUserEnabled());
 }
 
 void Module::load()
 {
-    setUserEnabled(Mod::get()->getSavedValue<bool>(getID() + "_enabled", defaultEnabled));
+    setUserEnabled(Mod::get()->getSavedValue<bool>(fmt::format("{}_enabled", getID()), defaultEnabled));
+    // nothing should be favourited by default
+    setFavourited(Mod::get()->getSavedValue<bool>(fmt::format("{}_favourited", getID()), false));
 }
 
 ModuleNode* Module::getNode()
@@ -157,6 +159,18 @@ bool Module::isDisabled()
     return disabled;
 }
 
+void Module::setFavourited(bool favourited)
+{
+    this->favourited = favourited;
+
+    Mod::get()->setSavedValue<bool>(fmt::format("{}_favourited", getID()), favourited);
+}
+
+bool Module::isFavourited()
+{
+    return favourited;
+}
+
 Module* Module::getByID(std::string id)
 {
     log::info("todo: implement");
@@ -166,4 +180,17 @@ Module* Module::getByID(std::string id)
 
     // will probably crash but i dont fucking care anymore
     //return nullptr;
+}
+
+std::vector<Module*> Module::getAllFavourited()
+{
+    std::vector<Module*> favourites = {};
+
+    for (auto mod : moduleMap)
+    {
+        if (mod->isFavourited())
+            favourites.push_back(mod);
+    }
+
+    return favourites;
 }

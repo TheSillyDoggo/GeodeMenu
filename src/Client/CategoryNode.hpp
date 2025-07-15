@@ -11,11 +11,13 @@ class CategoryNode : public CCMenu
     protected:
         std::map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
+        Scrollbar* scrollbar = nullptr;
     
     public:
         static CategoryNode* create();
 
         void addModule(Module* module);
+        bool shouldScrollbarShow();
 
         bool init();
 };

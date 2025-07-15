@@ -1,6 +1,6 @@
 #include "CategoryTabSprite.hpp"
 
-#define SPRITE_INSET 5
+#define SPRITE_INSET 3.5f
 
 CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon)
 {
@@ -31,7 +31,7 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
 
     if (!icon.empty())
     {
-        if (sprite = CCSprite::createWithSpriteFrameName(icon.c_str()); sprite)
+        if (sprite = CCSprite::create(icon.c_str()); sprite)
         {
             sprite->setAnchorPoint(ccp(0, 0.5f));
             this->addChild(sprite, 4);
@@ -42,7 +42,7 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
 
     this->addChildAtPosition(background, Anchor::Center);
     this->addChildAtPosition(outline, Anchor::Center);
-    this->addChildAtPosition(label, Anchor::Center);
+    this->addChild(label);
     return true;
 }
 
@@ -101,6 +101,8 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     {
         sprite->setPositionX(-getContentWidth() / 2 + SPRITE_INSET);
         sprite->setScale((getContentHeight() - (SPRITE_INSET * 2)) / sprite->getContentHeight());
+        label->setAnchorPoint(ccp(0, 0.5f));
+        label->setPosition(ccp(-getContentWidth() / 2, 0) + ccp(SPRITE_INSET * 2 + sprite->getScaledContentWidth(), 0));
     }
 
     if (sprite && std::string(label->getString()).empty())
