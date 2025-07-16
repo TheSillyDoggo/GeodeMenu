@@ -6,11 +6,18 @@ class FavouritesNode : public CategoryNode
 {
     protected:
         CCLabelBMFont* text = nullptr;
+        CCSprite* star = nullptr;
+        CCSprite* info = nullptr;
+        static inline FavouritesNode* instance = nullptr;
+
+        ~FavouritesNode();
 
     public:
         CREATE_FUNC(FavouritesNode)
+        static FavouritesNode* get();
 
-        void addModule(Module* module);
+        void refresh();
+        virtual void updateUI();
         bool init();
 };
 

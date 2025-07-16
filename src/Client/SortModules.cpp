@@ -3,7 +3,7 @@
 
 using namespace geode::prelude;
 
-$execute
+$on_mod(Loaded)
 {
     Loader::get()->queueInMainThread([]
     {
@@ -15,6 +15,9 @@ void Module::sortAlphabetically()
 {
     std::sort(Module::moduleMap.begin(), Module::moduleMap.end(), [](Module* a, Module* b)
     {
-        return a->getName() < b->getName();
+        auto aN = utils::string::toLower(a->getName());
+        auto bN = utils::string::toLower(b->getName());
+
+        return aN < bN;
     });
 }

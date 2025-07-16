@@ -22,6 +22,7 @@ void AndroidUI::populateModules()
 {
     categoryMenu = CCNode::create();
     categoryMenu->setContentSize(ccp(475, 280));
+    categoryMenu->setID("category-menu");
 
     for (auto module : Module::moduleMap)
     {

@@ -25,11 +25,12 @@ class AndroidUI : public geode::Popup<>
         std::vector<std::string> categoryOrders =
         {
             "Level",
+            "Universal",
+            "Creator",
             "Cosmetic",
             "Speedhack",
-            "Button",
             "spacer",
-            "Keybinds",
+            "Config",
             "Favourites",
         };
 

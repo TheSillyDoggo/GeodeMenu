@@ -30,14 +30,31 @@ CategoryNode* CategoryNode::getNode(std::string category)
 
 void CategoryNode::addModule(Module* module)
 {
-    bool showScrollbar = shouldScrollbarShow();
-
     auto node = module->getNode();
     node->setTag(modules.size());
 
     modules.emplace(module, node);
 
     scroll->m_contentLayer->addChild(node);
+
+    updateUI();
+}
+
+void CategoryNode::removeModule(Module* module)
+{
+    if (!modules.contains(module))
+        return;
+
+    auto node = modules[module];
+    node->removeFromParent();
+    modules.erase(module);
+
+    updateUI();
+}
+
+void CategoryNode::updateUI()
+{
+    bool showScrollbar = shouldScrollbarShow();
 
     float height = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;

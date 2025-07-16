@@ -19,8 +19,8 @@ SUBMIT_HACK(NoTransition);
 
 class $modify (CCTransitionFade)
 {
-    static CCTransitionFade* create(float duration,CCScene* scene, const ccColor3B& color)
+    static CCTransitionFade* create(float duration, CCScene* scene)
     {
-        return CCTransitionFade::create(NoTransition::get()->getRealEnabled() ? 0 : duration, scene, color);
+        return CCTransitionFade::create(NoTransition::get()->getRealEnabled() ? 0 : duration, scene);
     }
 };

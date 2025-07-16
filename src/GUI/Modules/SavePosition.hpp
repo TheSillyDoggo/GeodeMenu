@@ -11,7 +11,7 @@ class SavePosition : public Module
         {
             setName("Save Position");
             setID("save-pos");
-            setCategory("Button");
+            setCategory("Config");
             setDescription("Save position help");
             setDefaultEnabled(true);
         }

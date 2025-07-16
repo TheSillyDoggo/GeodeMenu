@@ -11,7 +11,7 @@ class HideButton : public Module
         {
             setName("Hide Button");
             setID("hide-btn");
-            setCategory("Button");
+            setCategory("Config");
             setDescription("Hide button help");
 
             #ifdef GEODE_IS_MOBILE

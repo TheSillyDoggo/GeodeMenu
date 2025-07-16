@@ -25,8 +25,10 @@ class $modify (PlayLayer)
 
         if (BestInPercentage::get()->getRealEnabled())
         {
-            if (m_percentageLabel)
+            if (m_percentageLabel && !m_level->isPlatformer())
+            {
                 m_percentageLabel->setString(fmt::format("{} / {}%", m_percentageLabel->getString(), m_isPracticeMode ? m_level->m_practicePercent : m_level->m_normalPercent.value()).c_str());
+            }
         }
     }
 };
