@@ -3,6 +3,7 @@
 #include "Modules/SavePosition.hpp"
 #include "Modules/HideButton.hpp"
 #include "Modules/AllowDragging.hpp"
+#include "../Utils/ColourUtils.hpp"
 
 AndroidBall* AndroidBall::get()
 {
@@ -76,6 +77,8 @@ void AndroidBall::update(float dt)
 
     this->setPositionX(std::min<float>(std::max<float>(0, getPositionX()), CCDirector::get()->getWinSize().width));
     this->setPositionY(std::min<float>(std::max<float>(0, getPositionY()), CCDirector::get()->getWinSize().height));
+
+    overlay->setColor(ColourUtils::get()->getPastel(-1));
 }
 
 void AndroidBall::visit()
