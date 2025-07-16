@@ -116,6 +116,16 @@ void ModuleNode::onInfo(CCObject* sender)
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleNode::onInfoToggleFavourite));
     btn->toggle(module->isFavourited());
 
+    btn->setContentSize(btn->getContentSize() * 3);
+
+    btn->m_offButton->setContentSize(btn->getContentSize());
+    btn->m_offButton->setPosition(btn->getContentSize() / 2);
+    btn->m_offButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
+    
+    btn->m_onButton->setContentSize(btn->getContentSize());
+    btn->m_onButton->setPosition(btn->getContentSize() / 2);
+    btn->m_onButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
+
     btn->m_offButton->setColor(ccc3(150, 150, 150));
     btn->m_offButton->setOpacity(150);
 
