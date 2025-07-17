@@ -12,6 +12,7 @@ class NoMirrorPortal : public Module
             setID("no-reverse");
             setCategory("Level");
             setDescription("Best in percentage help :c");
+            setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
 

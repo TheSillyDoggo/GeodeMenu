@@ -77,6 +77,7 @@ class Module
     public:
         static Module* getByID(std::string id);
         static std::vector<Module*> getAllFavourited();
+        static std::vector<Module*>& getAll();
         static void sortAlphabetically();
 
         void setUserEnabled(bool enabled);
@@ -101,4 +102,5 @@ class Module
         bool isDisabled();
 
         virtual ModuleNode* getNode();
+        virtual void onToggle();
 };

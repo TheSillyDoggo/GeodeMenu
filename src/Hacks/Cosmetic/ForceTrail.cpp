@@ -37,11 +37,7 @@ class $modify (PlayerObject)
         PlayerObject::update(delta);
 
         // 怖い
-
         if (m_regularTrail)
             m_regularTrail->m_bStroke = ForceTrailOn::get()->getRealEnabled() ? true : (ForceTrailOff::get()->getRealEnabled() ? false : m_regularTrail->m_bStroke);
-
-        if (m_shipStreak)
-            m_shipStreak->m_bStroke = ForceTrailOn::get()->getRealEnabled() ? true : (ForceTrailOff::get()->getRealEnabled() ? false : m_shipStreak->m_bStroke);
     }
 };

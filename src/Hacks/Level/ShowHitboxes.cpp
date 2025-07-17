@@ -13,6 +13,7 @@ class ShowHitboxes : public Module
             setID("show-hitboxes");
             setCategory("Level");
             setDescription("a");
+            setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
 

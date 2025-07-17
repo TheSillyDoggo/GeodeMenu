@@ -12,6 +12,7 @@ class Noclip : public Module
             setID("noclip");
             setCategory("Level");
             setDescription("a");
+            setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
 

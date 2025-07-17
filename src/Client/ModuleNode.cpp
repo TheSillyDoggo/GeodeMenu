@@ -72,6 +72,8 @@ void ModuleNode::onToggle(CCObject* sender)
 {
     module->setUserEnabled(!module->getUserEnabled());
     updateAllNodes(this);
+
+    module->onToggle();
 }
 
 void ModuleNode::onToggleError(CCObject* sender)
@@ -149,6 +151,11 @@ void ModuleNode::onInfo(CCObject* sender)
 
             alert->m_mainLayer->addChild(clip, 80085);
         }
+    }
+
+    if (auto label = alert->m_mainLayer->getChildByType<CCLabelBMFont>(0))
+    {
+        label->limitLabelWidth(270, 0.9f, 0);
     }
 }
 

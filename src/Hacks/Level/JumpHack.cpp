@@ -12,6 +12,7 @@ class JumpHack : public Module
             setID("jump-hack");
             setCategory("Level");
             setDescription("a");
+            setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
 

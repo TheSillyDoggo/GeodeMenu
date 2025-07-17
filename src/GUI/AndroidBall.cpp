@@ -67,6 +67,9 @@ bool AndroidBall::shouldFunction()
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
 
+    if (PlayLayer::get() && (!PlayLayer::get()->m_levelEndAnimationStarted && !PlayLayer::get()->m_isPaused))
+        return false;
+
     return true;
 }
 

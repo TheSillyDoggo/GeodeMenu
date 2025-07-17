@@ -191,6 +191,11 @@ std::function<bool()> Module::getSafeModeCustom()
     return safeModeCustomTrigger;
 }
 
+void Module::onToggle()
+{
+
+}
+
 Module* Module::getByID(std::string id)
 {
     log::info("todo: implement");
@@ -213,4 +218,9 @@ std::vector<Module*> Module::getAllFavourited()
     }
 
     return favourites;
+}
+
+std::vector<Module*>& Module::getAll()
+{
+    return moduleMap;
 }
