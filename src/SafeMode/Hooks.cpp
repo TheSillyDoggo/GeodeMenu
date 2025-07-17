@@ -34,7 +34,7 @@ void SafePlayLayer::showNewBest(bool newReward, int orbs, int diamonds, bool dem
     if (SafeMode::get()->shouldDisableLevelProgress())
         return;
 
-    SafePlayLayer::showNewBest(newReward, orbs, diamonds, demonKey, noRetry, noTitle);
+    PlayLayer::showNewBest(newReward, orbs, diamonds, demonKey, noRetry, noTitle);
 }
 
 void SafeGJGameLevel::savePercentage(int p0, bool p1, int p2, int p3, bool p4)
