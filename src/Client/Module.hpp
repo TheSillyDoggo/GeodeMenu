@@ -4,7 +4,7 @@
 #include "HookMacro.hpp"
 
 #define SUBMIT_HACK(func) \
-$execute \
+$on_mod(Loaded) \
 { \
     func::get(); \
 }
