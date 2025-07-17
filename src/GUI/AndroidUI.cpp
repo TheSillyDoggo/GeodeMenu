@@ -11,10 +11,17 @@ bool AndroidUI::setup()
     m_bgSprite->setVisible(false);
     m_buttonMenu->setVisible(false);
 
+    auto backMenu = CCMenu::create();
+    backMenu->setPosition(ccp(24, CCDirector::get()->getWinSize().height - 23));
+    
+    auto backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
+    backMenu->addChild(backBtn);
+
     populateModules();
     populateTabs();
 
     m_mainLayer->addChild(bg, -1);
+    this->addChild(backMenu, 69);
     return true;
 }
 

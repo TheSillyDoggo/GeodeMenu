@@ -11,3 +11,6 @@ class SpeedhackNode : public CategoryNode
 };
 
 SUBMIT_CATEGORY("Speedhack", SpeedhackNode)
+// temp
+SUBMIT_CATEGORY("Labels", SpeedhackNode)
+SUBMIT_CATEGORY("Creator", SpeedhackNode)
