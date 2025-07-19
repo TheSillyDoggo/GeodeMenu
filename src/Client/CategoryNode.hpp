@@ -23,6 +23,8 @@ class CategoryNode : public CCMenu
 
         void addModule(Module* module);
         void removeModule(Module* module);
+        void removeAll();
+        
         virtual void updateUI();
         bool shouldScrollbarShow();
 

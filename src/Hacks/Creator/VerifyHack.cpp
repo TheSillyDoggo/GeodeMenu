@@ -12,7 +12,7 @@ class VerifyHack : public Module
             setName("Verify Hack");
             setID("verify-hack");
             setCategory("Creator");
-            setDescription("a");
+            setDescription("Allows you upload levels without verifying them");
         }
 };
 

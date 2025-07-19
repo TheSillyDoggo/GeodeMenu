@@ -52,6 +52,17 @@ void CategoryNode::removeModule(Module* module)
     updateUI();
 }
 
+void CategoryNode::removeAll()
+{
+    for (auto node : modules)
+    {
+        node.second->removeFromParent();
+    }
+
+    modules.clear();
+    updateUI();
+}
+
 void CategoryNode::updateUI()
 {
     bool showScrollbar = shouldScrollbarShow();
