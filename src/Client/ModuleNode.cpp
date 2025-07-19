@@ -100,7 +100,11 @@ void ModuleNode::onToggleFavourite(CCObject* sender)
 
 void ModuleNode::onInfoToggleFavourite(CCObject* sender)
 {
-    module->setFavourited(!module->isFavourited());
+    // 'this' is the alert in the context of this function
+
+    auto mod = as<Module*>(this->getUserData());
+
+    mod->setFavourited(!mod->isFavourited());
 
     FavouritesNode::get()->refresh();
 }
@@ -108,6 +112,7 @@ void ModuleNode::onInfoToggleFavourite(CCObject* sender)
 void ModuleNode::onInfo(CCObject* sender)
 {
     auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    alert->setUserData(module);
     alert->show();
 
     auto menu = CCMenu::create();
@@ -115,7 +120,7 @@ void ModuleNode::onInfo(CCObject* sender)
     menu->setPosition(CCDirector::get()->getWinSize() / 2 - (alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentSize() / 2) + ccp(25, 25));
     menu->setTouchPriority(-42069);
 
-    auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleNode::onInfoToggleFavourite));
+    auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(ModuleNode::onInfoToggleFavourite));
     btn->toggle(module->isFavourited());
 
     btn->setContentSize(btn->getContentSize() * 3);

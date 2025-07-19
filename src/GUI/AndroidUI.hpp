@@ -30,8 +30,9 @@ class AndroidUI : public geode::Popup<>
             "Cosmetic",
             "Speedhack",
             "Labels",
-            "spacer",
             "Config",
+            "spacer",
+            "Search",
             "Favourites",
         };
 
