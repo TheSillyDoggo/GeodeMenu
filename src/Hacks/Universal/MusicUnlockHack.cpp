@@ -11,7 +11,7 @@ class MusicUnlockHack : public Module
             setName("Music Customiser Bypass");
             setID("music-bypass");
             setCategory("Universal");
-            setDescription("This is the help text >w<");
+            setDescription("Unlocks the menu and practice music buttons");
         }
 };
 

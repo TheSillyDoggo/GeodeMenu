@@ -12,7 +12,7 @@ class LongerTrail : public Module
             setName("Longer Trail");
             setID("longer-trail");
             setCategory("Cosmetic");
-            setDescription("Longer trail help");
+            setDescription("Lengthens your player's trail length by a factor of 3x");
         }
 };
 

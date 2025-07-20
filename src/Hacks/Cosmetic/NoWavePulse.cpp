@@ -11,7 +11,7 @@ class NoWavePulse : public Module
             setName("No Wave Pulse");
             setID("no-wave-pulse");
             setCategory("Cosmetic");
-            setDescription("No Wave Pulse help");
+            setDescription("Stops the wave from pulsing to the music");
         }
 };
 

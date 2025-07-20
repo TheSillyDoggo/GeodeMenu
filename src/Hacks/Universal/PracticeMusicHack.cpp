@@ -11,7 +11,7 @@ class PracticeMusicHack : public Module
             setName("Practice Music Hack");
             setID("practice-bypass");
             setCategory("Universal");
-            setDescription("This is the help text >w<");
+            setDescription("Unlocks the Practice Music Sync button in the pause menu options");
         }
 };
 

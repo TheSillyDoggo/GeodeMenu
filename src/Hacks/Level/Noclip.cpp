@@ -11,7 +11,7 @@ class Noclip : public Module
             setName("Noclip");
             setID("noclip");
             setCategory("Level");
-            setDescription("a");
+            setDescription("Prevents the player from dying");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };

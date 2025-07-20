@@ -11,7 +11,7 @@ class NoPlayerRotation : public Module
             setName("No Rotation");
             setID("no-rot");
             setCategory("Cosmetic");
-            setDescription("Disables playwr rotation");
+            setDescription("Disables rotation on players");
         }
 };
 

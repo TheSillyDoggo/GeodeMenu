@@ -11,7 +11,7 @@ class JumpHack : public Module
             setName("Jump Hack");
             setID("jump-hack");
             setCategory("Level");
-            setDescription("a");
+            setDescription("Allows you to jump infinitely");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };

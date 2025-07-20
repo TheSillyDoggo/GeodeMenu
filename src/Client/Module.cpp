@@ -1,11 +1,14 @@
 #include "Module.hpp"
 #include "ModuleNode.hpp"
+#include "../SafeMode/SafeMode.hpp"
 
 using namespace geode::prelude;
 
 void Module::setUserEnabled(bool enabled)
 {
     this->userEnabled = enabled;
+
+    SafeMode::get()->onModuleToggled(this);
 
     if (forceDisabled)
     {

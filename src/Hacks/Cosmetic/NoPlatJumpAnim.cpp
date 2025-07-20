@@ -11,7 +11,7 @@ class NoPlatJumpAnim : public Module
             setName("No Plat Jump Anim");
             setID("plat-jump-anim");
             setCategory("Cosmetic");
-            setDescription("No particle help");
+            setDescription("Disables the squish animation when jumping in <cc>platformer mode</c>");
         }
 };
 

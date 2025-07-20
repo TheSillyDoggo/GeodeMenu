@@ -21,7 +21,8 @@ bool AndroidUI::setup()
     populateTabs();
 
     m_mainLayer->addChild(bg, -1);
-    this->addChild(backMenu, 69);
+    m_mainLayer->setZOrder(80085);
+    this->addChild(backMenu);
     return true;
 }
 

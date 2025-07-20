@@ -11,7 +11,7 @@ class NoDashFire : public Module
             setName("No Dash Fire");
             setID("no-dash-fire");
             setCategory("Cosmetic");
-            setDescription("No dash fire");
+            setDescription("Hides the fire behind your icon when using a dash orb");
         }
 };
 

@@ -14,7 +14,7 @@ class IconKitInPause : public Module
             setName("Icon Kit in Pause");
             setID("pause-icon-kit");
             setCategory("Level");
-            setDescription("asdf");
+            setDescription("Adds a button to open the icon kit in the pause menu");
             setDefaultEnabled(true);
         }
 };

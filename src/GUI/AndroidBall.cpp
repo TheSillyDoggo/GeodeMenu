@@ -119,7 +119,7 @@ bool AndroidBall::ccTouchMoved(CCTouch* touch)
         float dis = 7.5f;
         #endif
 
-        if (!isMoving && touch->getLocation().getDistance(touch->getStartLocation()) > dis)
+        if (!isMoving && touch->getLocation().getDistance(touch->getStartLocation()) > dis && AllowDragging::get()->getRealEnabled())
         {
             isMoving = true;
             moveOffset = touch->getLocation() - getPosition();

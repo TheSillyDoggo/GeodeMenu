@@ -12,7 +12,7 @@ class SavePosition : public Module
             setName("Save Position");
             setID("save-pos");
             setCategory("Config");
-            setDescription("Save position help");
+            setDescription("Saves the position of the button between game launches");
             setDefaultEnabled(true);
         }
 };

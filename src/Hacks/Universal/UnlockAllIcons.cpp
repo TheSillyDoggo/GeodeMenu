@@ -12,7 +12,7 @@ class UnlockAllIcons : public Module
             setName("Unlock All Icons");
             setID("icon-bypass");
             setCategory("Universal");
-            setDescription("This is the help text >w<");
+            setDescription("Unlocks all the icons");
         }
 };
 

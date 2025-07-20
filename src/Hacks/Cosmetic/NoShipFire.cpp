@@ -11,7 +11,7 @@ class NoShipFire : public Module
             setName("No Ship Fire");
             setID("no-ship-fire");
             setCategory("Cosmetic");
-            setDescription("Disables shaders");
+            setDescription("Hides the fire behind the ship while it's flying");
         }
 };
 

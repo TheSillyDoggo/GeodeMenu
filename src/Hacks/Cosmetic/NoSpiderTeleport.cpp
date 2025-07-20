@@ -11,7 +11,7 @@ class NoSpiderDash : public Module
             setName("No Spider Dash Effect");
             setID("no-spider-dash");
             setCategory("Cosmetic");
-            setDescription("No respawn blnik");
+            setDescription("Hides the spider dash effect when you teleport");
         }
 };
 

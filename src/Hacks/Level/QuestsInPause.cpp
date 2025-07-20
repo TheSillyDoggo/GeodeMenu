@@ -11,7 +11,7 @@ class QuestsInPause : public Module
             setName("Quests In Pause");
             setID("pause-quests");
             setCategory("Level");
-            setDescription("Help message");
+            setDescription("Adds a button to open the quests menu in the pause menu");
             setDefaultEnabled(true);
         }
 };

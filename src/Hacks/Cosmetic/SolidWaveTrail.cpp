@@ -11,7 +11,7 @@ class SolidWaveTrail : public Module
             setName("Solid Wave Trail");
             setID("solid-wave");
             setCategory("Cosmetic");
-            setDescription("Disables the wave trail");
+            setDescription("Makes the wave trail a solid colour");
         }
 };
 

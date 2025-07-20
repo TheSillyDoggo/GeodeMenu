@@ -1,6 +1,7 @@
 #include "SafeMode.hpp"
 #include "Modules/AutoSafeMode.hpp"
 #include "Modules/SafeMode.hpp"
+#include "../Hacks/Speedhack/Speedhack.hpp"
 
 SafeMode* SafeMode::get()
 {
@@ -48,16 +49,35 @@ void SafeMode::onLevelNewAttempt()
             }
         }
     }
+
+    onSpeedhackChanged();
+}
+
+void SafeMode::onModuleToggled(Module* mod)
+{
+    if (mod->getSafeModeTrigger() == SafeModeTrigger::Attempt)
+    {
+        isAttemptCheated = true;
+        addMessage(mod->getSafeModeTrigger(), fmt::format("<cc>{}</c> enabled for <co>this attempt</c>", mod->getName()));
+    }
+}
+
+void SafeMode::onSpeedhackChanged()
+{
+    if (Speedhack::get()->getRealValue() != 1.0f)
+    {
+        isAttemptCheated = true;
+        addMessage(SafeModeTrigger::Attempt, "<cc>Speedhack</c> enabled for <co>this attempt</c>");
+    }
 }
 
 void SafeMode::addMessage(SafeModeTrigger level, std::string message)
 {
-    log::debug("Cheated: {}, {}", (level == SafeModeTrigger::Attempt ? "Attempt" : "LevelLoad"), message);
-
     switch (level)
     {
         case SafeModeTrigger::Attempt:
-            attemptReasons.push_back(message);
+            if (std::find(attemptReasons.begin(), attemptReasons.end(), message) == attemptReasons.end())
+                attemptReasons.push_back(message);
             break;
 
         case SafeModeTrigger::LevelLoad:

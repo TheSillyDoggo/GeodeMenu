@@ -11,7 +11,7 @@ class HidePauseMenu : public Module
             setName("Hide Pause Menu");
             setID("hide-pause-menu");
             setCategory("Universal");
-            setDescription("This is the help text >w<");
+            setDescription("Hides the pause menu :3");
         }
 
         void onToggle()

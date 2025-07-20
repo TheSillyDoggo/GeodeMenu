@@ -12,7 +12,7 @@ class AllowDragging : public Module
             setName("Allow Dragging");
             setID("allow-dragging");
             setCategory("Config");
-            setDescription("Allow dragging help");
+            setDescription("Allows the button to be dragged");
             setDefaultEnabled(true);
         }
 };

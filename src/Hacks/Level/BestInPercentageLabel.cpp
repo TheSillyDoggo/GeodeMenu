@@ -11,7 +11,7 @@ class BestInPercentage : public Module
             setName("Best In Percentage");
             setID("best-in-percentage");
             setCategory("Level");
-            setDescription("Best in percentage help :c");
+            setDescription("Shows the best percentage in the progress bar");
         }
 };
 

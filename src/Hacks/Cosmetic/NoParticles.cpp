@@ -11,7 +11,7 @@ class NoParticles : public Module
             setName("No Particles");
             setID("no-particles");
             setCategory("Cosmetic");
-            setDescription("No particle help");
+            setDescription("Disables particles");
         }
 };
 

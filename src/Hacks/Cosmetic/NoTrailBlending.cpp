@@ -11,7 +11,7 @@ class NoTrailBlending : public Module
             setName("No Trail Blending");
             setID("no-trail-blending");
             setCategory("Cosmetic");
-            setDescription("No particle help");
+            setDescription("Disables blending on the normal player trail");
         }
 };
 

@@ -11,7 +11,7 @@ class NoMirrorPortal : public Module
             setName("No Mirror Portal");
             setID("no-reverse");
             setCategory("Level");
-            setDescription("Best in percentage help :c");
+            setDescription("Disables mirror portals");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };

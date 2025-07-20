@@ -11,7 +11,7 @@ class NoRespawnBlink : public Module
             setName("No Respawn Blink");
             setID("no-blink");
             setCategory("Cosmetic");
-            setDescription("No respawn blnik");
+            setDescription("Disables the blinking when the player respawns");
         }
 };
 

@@ -12,7 +12,7 @@ class ShowHitboxes : public Module
             setName("Show Hitboxes");
             setID("show-hitboxes");
             setCategory("Level");
-            setDescription("a");
+            setDescription("Shows object hitboxes");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
@@ -25,7 +25,7 @@ class ShowHitboxesOnDeath : public Module
             setName("Show Hitboxes On Death");
             setID("show-hitboxes-on-death");
             setCategory("Level");
-            setDescription("a");
+            setDescription("Shows object hitboxes on death");
         }
 };
 

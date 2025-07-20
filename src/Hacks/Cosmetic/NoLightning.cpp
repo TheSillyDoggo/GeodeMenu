@@ -11,7 +11,7 @@ class NoLightning : public Module
             setName("No Lightning");
             setID("no-lightning");
             setCategory("Cosmetic");
-            setDescription("No respawn blnik");
+            setDescription("Disables the lightning when touching certain portals");
         }
 };
 

@@ -11,7 +11,7 @@ class NoDeathEffect : public Module
             setName("No Death Effect");
             setID("no-death");
             setCategory("Cosmetic");
-            setDescription("Disables the death effect");
+            setDescription("Disables the death effect on the player");
         }
 };
 

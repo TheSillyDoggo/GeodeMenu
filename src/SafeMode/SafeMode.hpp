@@ -19,6 +19,9 @@ class SafeMode
         void onLevelLoad();
         void onLevelNewAttempt();
 
+        void onModuleToggled(Module* mod);
+        void onSpeedhackChanged();
+
         ccColor3B getIndicatorColour();
 
         bool shouldDisableLevelProgress();

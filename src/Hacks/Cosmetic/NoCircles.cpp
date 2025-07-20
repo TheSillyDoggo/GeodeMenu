@@ -11,7 +11,7 @@ class NoCircles : public Module
             setName("No Circles");
             setID("no-circles");
             setCategory("Cosmetic");
-            setDescription("No circles");
+            setDescription("Disables circle effects such as the one when you touch an orb");
         }
 };
 

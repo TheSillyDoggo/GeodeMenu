@@ -11,7 +11,7 @@ class HidePauseButton : public Module
             setName("Hide Pause Button");
             setID("hide-pause-button");
             setCategory("Universal");
-            setDescription("This is the help text >w<");
+            setDescription("Hides the pause button in game, requires reopening level to apply");
         }
 };
 
