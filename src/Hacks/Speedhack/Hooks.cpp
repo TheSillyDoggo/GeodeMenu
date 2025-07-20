@@ -27,8 +27,8 @@ void SpeedhackScheduler::update(float dt)
     {
         auto director = CCDirector::get();
 
-        director->setActualDeltaTime(director->getActualDeltaTime() * value);
-        director->setDeltaTime(director->getDeltaTime() * value);
+        director->m_fActualDeltaTime *= value;
+        director->m_fDeltaTime *= value;
     }
 
     CCScheduler::update(dt * value);
