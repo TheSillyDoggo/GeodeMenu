@@ -25,7 +25,7 @@ bool SpeedhackNode::init()
     slider->setPosition(input->getPosition() + ccp(-38, -35));
     slider->setScale(0.9f);
     slider->setAnchorPoint(ccp(0, 0));
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getRealValue(), 0.1f, 3.0f), 0, 1));
+    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
 
     enabledBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SpeedhackNode::onToggleEnabled), 0.75f);
     enabledBtn->toggle(Speedhack::get()->getEnabled());
@@ -98,12 +98,12 @@ void SpeedhackNode::onSliderMoved(CCObject* sender)
 void SpeedhackNode::onTrash(CCObject* sender)
 {
     Speedhack::get()->setText("");
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getRealValue(), 0.1f, 3.0f), 0, 1));
+    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
     input->setString("");
 }
 
 void SpeedhackNode::textChanged(CCTextInputNode* node)
 {
     Speedhack::get()->setText(input->getString());
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getRealValue(), 0.1f, 3.0f), 0, 1));
+    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
 }

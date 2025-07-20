@@ -30,4 +30,5 @@ class Speedhack
 
         bool gameplayOnlyCheck();
         float getRealValue();
+        float getValue();
 };

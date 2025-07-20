@@ -15,7 +15,8 @@ bool SearchNode::init()
 
     textInput->setContentHeight(height);
     textInput->getBGSprite()->setPositionY(height / 2);
-    textInput->getBGSprite()->setContentHeight(height * 2);
+    textInput->getBGSprite()->setContentSize(textInput->getContentSize() * 4);
+    textInput->getBGSprite()->setScale(1.0f / 4.0f);
     textInput->getInputNode()->setPositionY(height / 2);
     textInput->getInputNode()->setContentHeight(height);
 

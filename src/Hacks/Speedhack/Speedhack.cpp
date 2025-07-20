@@ -100,6 +100,11 @@ bool Speedhack::gameplayOnlyCheck()
     return true;
 }
 
+float Speedhack::getValue()
+{
+    return std::min<float>(std::max<float>(value, 0.001f), 999999);
+}
+
 FMOD::ChannelGroup* Speedhack::getMasterChannel()
 {
     static FMOD::ChannelGroup* group = nullptr;
