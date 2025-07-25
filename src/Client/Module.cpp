@@ -199,6 +199,30 @@ void Module::onToggle()
 
 }
 
+void Module::addOption(Module* option)
+{
+    if (std::find(options.begin(), options.end(), option) != options.end())
+        return;
+
+    options.push_back(option);
+    option->setParent(this);
+}
+
+std::vector<Module*> Module::getOptions()
+{
+    return options;
+}
+
+void Module::setParent(Module* parent)
+{
+    this->parent = parent;
+}
+
+Module* Module::getParent()
+{
+    return parent;
+}
+
 Module* Module::getByID(std::string id)
 {
     log::info("todo: implement");

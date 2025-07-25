@@ -15,6 +15,7 @@ class CategoryNode : public CCMenu
         std::unordered_map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
         Scrollbar* scrollbar = nullptr;
+        CCScale9Sprite* bg = nullptr;
     
     public:
         static CategoryNode* create();
@@ -27,6 +28,8 @@ class CategoryNode : public CCMenu
         
         virtual void updateUI();
         bool shouldScrollbarShow();
+
+        virtual void setContentSize(const CCSize& contentSize);
 
         bool init();
 };

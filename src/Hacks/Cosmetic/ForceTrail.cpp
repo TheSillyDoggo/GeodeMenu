@@ -27,8 +27,20 @@ class ForceTrailOff : public Module
         }
 };
 
+class TrailOffWaveOnly : public Module
+{
+    public:
+        MODULE_SETUP(TrailOffWaveOnly)
+        {
+            setName("Wave Only");
+            setID("trail-off/wave-only");
+            setDescription("Force the trail off only when in the wave gamemode");
+        }
+};
+
 SUBMIT_HACK(ForceTrailOn);
 SUBMIT_HACK(ForceTrailOff);
+SUBMIT_OPTION(ForceTrailOff, TrailOffWaveOnly);
 
 class $modify (PlayerObject)
 {
@@ -36,8 +48,26 @@ class $modify (PlayerObject)
     {
         PlayerObject::update(delta);
 
-        // 怖い
         if (m_regularTrail)
-            m_regularTrail->m_bStroke = ForceTrailOn::get()->getRealEnabled() ? true : (ForceTrailOff::get()->getRealEnabled() ? false : m_regularTrail->m_bStroke);
+        {
+            bool en = m_regularTrail->m_bStroke;
+
+            if (ForceTrailOn::get()->getRealEnabled())
+                en = true;
+
+            if (ForceTrailOff::get()->getRealEnabled())
+            {
+                if (TrailOffWaveOnly::get()->getRealEnabled())
+                {
+                    en = m_isDart ? false : en;
+                }
+                else
+                {
+                    en = false;
+                }
+            }
+
+            m_regularTrail->m_bStroke = en;
+        }
     }
 };

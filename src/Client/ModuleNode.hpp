@@ -26,6 +26,7 @@ class ModuleNode : public CCMenu
         void onInfo(CCObject* sender);
         void onToggleFavourite(CCObject* sender);
         void onInfoToggleFavourite(CCObject* sender);
+        void onOptions(CCObject* sender);
 
         void updateNode();
         bool init(Module* module);

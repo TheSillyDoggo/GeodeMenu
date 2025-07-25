@@ -34,6 +34,9 @@ void AndroidUI::populateModules()
 
     for (auto module : Module::moduleMap)
     {
+        if (module->getParent())
+            continue;
+
         if (!categories.contains(module->getCategory()))
         {
             auto cat = CategoryNode::getNode(module->getCategory());

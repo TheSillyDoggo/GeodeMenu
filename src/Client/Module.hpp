@@ -9,6 +9,12 @@ $on_mod(Loaded) \
     func::get(); \
 }
 
+#define SUBMIT_OPTION(func, option) \
+$on_mod(Loaded) \
+{ \
+    func::get()->addOption(option::get()); \
+}
+
 #define MODULE_GETTER(func) \
 static func* get() \
 { \
@@ -52,6 +58,8 @@ class Module
         bool favourited = false;
         SafeModeTrigger trigger = SafeModeTrigger::None;
         std::function<bool()> safeModeCustomTrigger = nullptr;
+        Module* parent = nullptr;
+        std::vector<Module*> options = {};
 
         void setName(std::string str);
         void setID(std::string str);
@@ -61,6 +69,7 @@ class Module
         void setDisabled(bool value);
         void setSafeModeTrigger(SafeModeTrigger trigger);
         void setSafeModeCustom(std::function<bool()> func);
+        void setParent(Module* parent);
 
         void save();
         void load();
@@ -93,6 +102,10 @@ class Module
 
         void addHook(geode::Hook* hook);
 
+        void addOption(Module* option);
+        std::vector<Module*> getOptions();
+
+        Module* getParent();
         std::string getName();
         std::string getID();
         std::string getCategory();

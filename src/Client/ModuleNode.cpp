@@ -1,5 +1,6 @@
 #include "ModuleNode.hpp"
 #include "../GUI/Categories/FavouritesNode.hpp"
+#include "../GUI/OptionsUI.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -18,6 +19,7 @@ ModuleNode* ModuleNode::create(Module* module)
 void ModuleNode::setup()
 {
     bool hasDesc = module->getDescription().size() > 0;
+    bool hasOptions = module->getOptions().size() > 0;
     bool isDisabled = module->isDisabled();
 
     btn = CCMenuItemToggler::createWithStandardSprites(this, isDisabled ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle), 0.75f);
@@ -25,7 +27,7 @@ void ModuleNode::setup()
 
     auto label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(110 - (hasDesc ? 0 : 0), 0.575f, 0.1f);
+    label->limitLabelWidth(110 - (hasOptions ? 3 : 0), 0.575f, 0.1f);
 
     favBtn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleNode::onToggleFavourite));
     favBtn->setScale(0.65f);
@@ -46,7 +48,7 @@ void ModuleNode::setup()
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));
     this->addChildAtPosition(favBtn, Anchor::Left, ccp(30 + label->getScaledContentWidth() + 9, -8));
 
-    if (hasDesc)
+    if (hasDesc && !hasOptions)
     {
         auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
         infoSpr->setScale(0.55f + 0.35f);
@@ -56,6 +58,14 @@ void ModuleNode::setup()
         infoSpr->setScale(infoSpr->getScale() - 0.35f);
 
         this->addChildAtPosition(infoBtn, Anchor::Left, ccp(30 + label->getScaledContentWidth() + 9, 5));
+    }
+
+    if (hasOptions)
+    {
+        auto optionsSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
+        auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
+
+        this->addChildAtPosition(optionsBtn, Anchor::Right, ccp(-16, 0));
     }
 }
 
@@ -106,7 +116,13 @@ void ModuleNode::onInfoToggleFavourite(CCObject* sender)
 
     mod->setFavourited(!mod->isFavourited());
 
-    FavouritesNode::get()->refresh();
+    if (FavouritesNode::get())
+        FavouritesNode::get()->refresh();
+}
+
+void ModuleNode::onOptions(CCObject* sender)
+{
+    OptionsUI::create(module)->show();
 }
 
 void ModuleNode::onInfo(CCObject* sender)
@@ -139,25 +155,7 @@ void ModuleNode::onInfo(CCObject* sender)
     menu->addChild(btn);
     alert->m_mainLayer->addChild(menu, 8008569);
 
-    // :3
-    if (module->getID() == "no-trans")
-    {
-        if (auto textArea = alert->m_mainLayer->getChildByType<TextArea>(0))
-        {
-            auto clip = CCClippingNode::create(textArea);
-            clip->setAlphaThreshold(0.03f);
-
-            auto trans = CCScale9Sprite::create("geode.loader/GE_button_04.png");
-            trans->_scale9Image->setBlendFunc({GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA});
-            trans->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(25.5f, 15));
-            trans->setContentWidth(66);
-            trans->setScaleY(0.375f);
-            clip->addChild(trans);
-
-            alert->m_mainLayer->addChild(clip, 80085);
-        }
-    }
-
+    // title
     if (auto label = alert->m_mainLayer->getChildByType<CCLabelBMFont>(0))
     {
         label->limitLabelWidth(270, 0.9f, 0);

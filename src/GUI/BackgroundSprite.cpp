@@ -30,7 +30,7 @@ bool BackgroundSprite::init()
     clipping->addChild(gradientBG);
     clipping->addChild(gradientDarken);
 
-    updateTheme(Mod::get()->getSavedValue<int>("theme", -5));
+    updateTheme(Mod::get()->getSavedValue<int>("theme", -6));
 
     this->addChildAtPosition(colouredBG, Anchor::Center);
     this->addChildAtPosition(clipping, Anchor::Center);

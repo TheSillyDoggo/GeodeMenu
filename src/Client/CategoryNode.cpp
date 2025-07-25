@@ -36,7 +36,6 @@ void CategoryNode::addModule(Module* module)
     modules.emplace(module, node);
 
     scroll->m_contentLayer->addChild(node);
-
     updateUI();
 }
 
@@ -65,12 +64,12 @@ void CategoryNode::removeAll()
 
 void CategoryNode::updateUI()
 {
-    bool showScrollbar = shouldScrollbarShow();
-
     float height = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;
 
     scroll->m_contentLayer->setContentHeight(height + 6);
+
+    bool showScrollbar = height != scroll->getContentHeight();
 
     for (auto node : modules)
     {
@@ -84,12 +83,14 @@ void CategoryNode::updateUI()
 
     scroll->moveToTop();
     scroll->setTouchEnabled(height != scroll->getContentHeight());
-    scrollbar->setVisible(showScrollbar);
+    scrollbar->setTouchEnabled(shouldScrollbarShow());
+    scrollbar->setVisible(shouldScrollbarShow());
 }
 
 bool CategoryNode::shouldScrollbarShow()
 {
     return false;
+    //return scroll->isTouchEnabled();
 }
 
 bool CategoryNode::init()
@@ -101,7 +102,7 @@ bool CategoryNode::init()
     this->setContentSize(ccp(340, 280 - 10 * 2));
     this->ignoreAnchorPointForPosition(false);
 
-    auto bg = CCScale9Sprite::create("square02b_small.png");
+    bg = CCScale9Sprite::create("square02b_small.png");
     bg->setContentSize(this->getContentSize() / 0.5f);
     bg->setScale(0.5f);
     bg->setColor(ccc3(0, 0, 0));
@@ -121,4 +122,18 @@ bool CategoryNode::init()
     this->addChild(scroll);
     this->addChildAtPosition(scrollbar, Anchor::Right, ccp(-4, 0));
     return true;
+}
+
+void CategoryNode::setContentSize(const CCSize& contentSize)
+{
+    CCMenu::setContentSize(contentSize);
+
+    if (bg)
+        bg->setContentSize(contentSize / 0.5f);
+
+    if (scroll)
+    {
+        scroll->setContentSize(contentSize);
+        updateUI();
+    }
 }
