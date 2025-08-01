@@ -18,4 +18,6 @@ class $modify (SafePlayLayer, PlayLayer)
 class $modify (SafeGJGameLevel, GJGameLevel)
 {
     void savePercentage(int p0, bool p1, int p2, int p3, bool p4);
+
+    static void onModify(auto& self);
 };

@@ -49,7 +49,7 @@ bool OptionsUI::setup()
     favBtn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(OptionsUI::onToggleFavourite));
     favBtn->toggle(module->isFavourited());
 
-    favBtn->setContentSize(btn->getContentSize() * 3);
+    favBtn->setContentSize(btn->getContentSize() * 1.3f);
 
     favBtn->m_offButton->setContentSize(favBtn->getContentSize());
     favBtn->m_offButton->setPosition(favBtn->getContentSize() / 2);

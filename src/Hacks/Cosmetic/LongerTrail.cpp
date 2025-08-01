@@ -16,7 +16,20 @@ class LongerTrail : public Module
         }
 };
 
+class LongerTrailPlayerOnly : public Module
+{
+    public:
+        MODULE_SETUP(LongerTrailPlayerOnly)
+        {
+            setName("Player Only");
+            setID("longer-trail/player-only");
+            setDescription("Only makes player trails longer, ignoring all other trail effects ingame");
+            setDefaultEnabled(true);
+        }
+};
+
 SUBMIT_HACK(LongerTrail);
+SUBMIT_OPTION(LongerTrail, LongerTrailPlayerOnly);
 
 class $modify (CCLongerStreak, CCMotionStreak)
 {
@@ -27,7 +40,7 @@ class $modify (CCLongerStreak, CCMotionStreak)
 
     virtual void update(float delta)
     {
-        if (LongerTrail::get()->getRealEnabled() && m_fields->shouldStreakBeLonger)
+        if (LongerTrail::get()->getRealEnabled() && (LongerTrailPlayerOnly::get()->getRealEnabled() ? m_fields->shouldStreakBeLonger : true))
             delta /= 3;
 
         CCMotionStreak::update(delta);

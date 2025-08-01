@@ -105,8 +105,19 @@ void Module::disableHooks()
     }
 }
 
+bool Module::shouldSave()
+{
+    if (getID() == "test")
+        return false;
+
+    return true;
+}
+
 void Module::save()
 {
+    if (!shouldSave())
+        return;
+
     Mod::get()->setSavedValue<bool>(fmt::format("{}_enabled", getID()), getUserEnabled());
 }
 

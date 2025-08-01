@@ -37,6 +37,11 @@ void SafePlayLayer::showNewBest(bool newReward, int orbs, int diamonds, bool dem
     PlayLayer::showNewBest(newReward, orbs, diamonds, demonKey, noRetry, noTitle);
 }
 
+void SafeGJGameLevel::onModify(auto& self)
+{
+    (void)self.setHookPriorityPost("GJGameLevel::savePercentage", Priority::First);
+}
+
 void SafeGJGameLevel::savePercentage(int p0, bool p1, int p2, int p3, bool p4)
 {
     if (SafeMode::get()->shouldDisableLevelProgress())

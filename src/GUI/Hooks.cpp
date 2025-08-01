@@ -7,10 +7,12 @@ bool GUIKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, boo
     if (!CCScene::get())
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat);
 
-    if (down && key == enumKeyCodes::KEY_Tab)
+    if (down && key == enumKeyCodes::KEY_Tab && !repeat)
     {
         if (AndroidUI::get())
-            AndroidUI::get()->close();
+        {
+            return CCKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, down, repeat);
+        }            
         else
             AndroidUI::addToScene();
 

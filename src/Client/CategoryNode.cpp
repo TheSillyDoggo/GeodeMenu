@@ -64,7 +64,7 @@ void CategoryNode::removeAll()
 
 void CategoryNode::updateUI()
 {
-    float height = std::max<float>((std::floor((modules.size() / 2.0f) + 1)) * 28.0f, scroll->getContentHeight());
+    float height = std::max<float>((std::floor((modules.size() / 2.0f) + (((modules.size() / 2) == (int)(modules.size() / 2)) ? 0 : 1))) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;
 
     scroll->m_contentLayer->setContentHeight(height + 6);

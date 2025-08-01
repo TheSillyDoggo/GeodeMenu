@@ -71,6 +71,8 @@ class Module
         void setSafeModeCustom(std::function<bool()> func);
         void setParent(Module* parent);
 
+        bool shouldSave();
+
         void save();
         void load();
 

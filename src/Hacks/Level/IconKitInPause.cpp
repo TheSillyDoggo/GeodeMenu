@@ -3,6 +3,7 @@
 #include <Geode/modify/CCLayer.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/modify/CharacterColorPage.hpp>
+#include "../../GUI/BoundingBoxClipNode.hpp"
 
 using namespace geode::prelude;
 
@@ -31,7 +32,7 @@ class $modify (PauseLayer)
 
         if (IconKitInPause::get()->getRealEnabled())
         {
-            auto clip = CCNode::create();// BoundingBoxClipNode::create();
+            auto clip = BoundingBoxClipNode::create();
             clip->setPosition(CCDirector::get()->getWinSize() + ccp(-10, -10));
             clip->setAnchorPoint(ccp(1, 1));
             clip->setContentSize(ccp(120, 120));
@@ -117,6 +118,30 @@ class $modify (GJGarageLayer)
 
             if (m_selectedIconType == IconType::Jetpack)
                 plr->updatePlayerJetpackFrame(id);
+
+            // TODO: FIX WITH SEPERATE DUAL ICONS
+
+            if (plr->m_isShip)
+            {
+                if (plr->m_isPlatformer)
+                    plr->updatePlayerJetpackFrame(GameManager::get()->getPlayerJetpack());
+                else
+                    plr->updatePlayerShipFrame(GameManager::get()->getPlayerShip());
+            }
+            else if (plr->m_isBall)
+                plr->updatePlayerRollFrame(GameManager::get()->getPlayerBall());
+            else if (plr->m_isBird)
+                plr->updatePlayerBirdFrame(GameManager::get()->getPlayerBird());
+            else if (plr->m_isDart)
+                plr->updatePlayerDartFrame(GameManager::get()->getPlayerDart());
+            else if (plr->m_isRobot)
+                plr->updatePlayerRobotFrame(GameManager::get()->getPlayerDart());
+            else if (plr->m_isSpider)
+                plr->updatePlayerSpiderFrame(GameManager::get()->getPlayerSpider());
+            else if (plr->m_isSwing)
+                plr->updatePlayerSwingFrame(GameManager::get()->getPlayerSwing());
+            else
+                plr->updatePlayerFrame(GameManager::get()->getPlayerFrame());
         }
     }
 };
