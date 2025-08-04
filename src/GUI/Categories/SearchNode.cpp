@@ -6,13 +6,14 @@ bool SearchNode::init()
     if (!CategoryNode::init())
         return false;
 
-    textInput = TextInput::create(getContentWidth() - 5 * 2, "Search a mod...");
-    textInput->setAnchorPoint(ccp(0.5f, 1));
-    textInput->setDelegate(this);
-    textInput->setCommonFilter(CommonFilter::Any);
-    // dear geode team.. why isnt height easily changable
     float height = 25;
 
+    textInput = TextInput::create((getContentWidth() - 5 * 2) - height - 5, "Search a mod...");
+    textInput->setAnchorPoint(ccp(0, 1));
+    textInput->setDelegate(this);
+    textInput->setCommonFilter(CommonFilter::Any);
+
+    // dear geode team.. why isnt height easily changable
     textInput->setContentHeight(height);
     textInput->getBGSprite()->setPositionY(height / 2);
     textInput->getBGSprite()->setContentSize(textInput->getContentSize() * 4);
@@ -23,6 +24,13 @@ bool SearchNode::init()
     errorMenu = CCMenu::create();
     errorMenu->ignoreAnchorPointForPosition(false);
     errorMenu->setContentSize(ccp(100, 65));
+
+    auto filterMenu = CCMenu::create();
+    auto filterSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
+    filterSpr->setScale(1.15f);
+    auto filterBtn = CCMenuItemSpriteExtra::create(filterSpr, this, menu_selector(SearchNode::onFilter));
+
+    filterMenu->addChild(filterBtn);
 
     error = CCLabelBMFont::create("No results found", "bigFont.fnt");
     error->setScale(0.5f);
@@ -63,14 +71,20 @@ bool SearchNode::init()
 
     scroll->setContentHeight(scroll->getContentHeight() - 30);
 
-    this->addChildAtPosition(textInput, Anchor::Top, ccp(0, -5));
+    this->addChildAtPosition(textInput, Anchor::TopLeft, ccp(5, -5));
     this->addChildAtPosition(errorMenu, Anchor::Center, ccp(0, -30 / 2));
+    this->addChildAtPosition(filterMenu, Anchor::TopRight, ccp(-5, -5) - ccp(height, height) / 2);
     return true;
 }
 
 void SearchNode::onJoinDiscord(CCObject* sender)
 {
     utils::web::openLinkInBrowser("https://discord.gg/3Ua5GZq8Hs");
+}
+
+void SearchNode::onFilter(CCObject* sender)
+{
+    // TODO: IMPLEMENT FILTERS
 }
 
 void SearchNode::textChanged(CCTextInputNode* input)
@@ -88,6 +102,9 @@ void SearchNode::textChanged(CCTextInputNode* input)
         auto name = utils::string::replace(utils::string::toLower(module->getName()), " ", "");
         auto id = utils::string::replace(utils::string::toLower(module->getID()), " ", "");
         auto desc = utils::string::replace(utils::string::toLower(module->getDescription()), " ", "");
+
+        if (!showOptions && module->getParent())
+            continue;
 
         if (name.find(str) != std::string::npos)
         {

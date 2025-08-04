@@ -8,12 +8,15 @@ class SearchNode : public CategoryNode, public TextInputDelegate
         TextInput* textInput = nullptr;
         CCMenu* errorMenu = nullptr;
         CCLabelBMFont* error = nullptr;
+        bool showOptions = false;
     
     public:
         CREATE_FUNC(SearchNode)
 
         virtual void textChanged(CCTextInputNode* input);
+
         void onJoinDiscord(CCObject* sender);
+        void onFilter(CCObject* sender);
 
         bool init();
 };
