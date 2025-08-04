@@ -13,7 +13,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES
-    include/*.cpp
+    include/src/*.cpp
     src/*.cpp
 	src/*/*.cpp
 	src/*/*/*.cpp

@@ -13,8 +13,8 @@ class InputModule : public Module
         int charLimit = 0;
         float textFloat = 1.0f;
 
-        void save();
-        void load();
+        virtual void save();
+        virtual void load();
 
         void setDefaultString(std::string str);
         void setPlaceholderString(std::string str);

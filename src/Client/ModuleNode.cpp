@@ -97,7 +97,7 @@ void ModuleNode::onToggleError(CCObject* sender)
     toggler->m_onButton->stopAllActions();
     toggler->m_offButton->stopAllActions();
 
-    FLAlertLayer::create("Help", "Disabled module help text", "OK")->show();
+    FLAlertLayer::create(module->getName().c_str(), module->getDisabledMessage(), "OK")->show();
 }
 
 void ModuleNode::onToggleFavourite(CCObject* sender)

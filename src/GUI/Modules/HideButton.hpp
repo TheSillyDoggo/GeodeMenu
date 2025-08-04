@@ -17,6 +17,7 @@ class HideButton : public Module
             #ifdef GEODE_IS_MOBILE
             setDefaultEnabled(true);
             setDisabled(true);
+            setDisabledMessage("You can't hide the button on mobile, silly :P");
             #endif
         }
 };

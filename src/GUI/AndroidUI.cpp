@@ -1,5 +1,8 @@
 #include "AndroidUI.hpp"
 #include "AndroidBall.hpp"
+#include "../Client/ExtensionManager.hpp"
+#include "Modules/FavouritesTab.hpp"
+#include "Modules/SearchBox.hpp"
 
 bool AndroidUI::setup()
 {
@@ -61,11 +64,12 @@ void AndroidUI::populateTabs()
     bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
 
-    auto tabsMenu = CCMenu::create();
+    tabsMenu = CCMenu::create();
     tabsMenu->setContentSize((bg->getContentSize() / 2) + ccp(0, -10));
     tabsMenu->setAnchorPoint(ccp(0, 0.5f));
     tabsMenu->ignoreAnchorPointForPosition(false);
     tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
+    tabsMenu->getLayout()->ignoreInvisibleChildren(true);
     
     m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
     m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 5, 0));
@@ -74,6 +78,11 @@ void AndroidUI::populateTabs()
     {
         if (category == "spacer")
         {
+            for (auto category : ExtensionManager::get()->getCategories())
+            {
+                addTab(category.name, fmt::format("{}/{}", category.modID, category.name), category.sprite);
+            }
+
             tabsMenu->addChild(geode::SpacerNode::create());
 
             continue;
@@ -89,31 +98,34 @@ void AndroidUI::populateTabs()
             categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
-        auto spr = fmt::format("{}{}.png", ""_spr, utils::string::toLower(category));
-
-        auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, category, spr);
-        auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, category, spr);
-        sprHeld->updateSelection(CategorySelectionType::Hovered);
-
-        sprNormal->setContentSize(ccp(100, 20));
-        sprHeld->setContentSize(ccp(100, 20));
-
-        auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
-        btn->setID(category);
-        btn->setSelectedImage(sprHeld);
-        btn->m_scaleMultiplier = 1;
-
-        sprNormal->setAnchorPoint(ccp(0, 0));
-        sprHeld->setPosition(btn->getContentSize() / 2);
-
-        tabsMenu->addChild(btn);
-
-        categoryBtns[category] = btn;
-        categorySprs[category] = sprNormal;
+        addTab(category, category, fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)));
     }
 
     tabsMenu->updateLayout();
     updateTabs();
+}
+
+void AndroidUI::addTab(std::string name, std::string id, std::string sprite)
+{
+    auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
+    auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
+    sprHeld->updateSelection(CategorySelectionType::Hovered);
+
+    sprNormal->setContentSize(ccp(100, 20));
+    sprHeld->setContentSize(ccp(100, 20));
+
+    auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
+    btn->setID(id);
+    btn->setSelectedImage(sprHeld);
+    btn->m_scaleMultiplier = 1;
+
+    sprNormal->setAnchorPoint(ccp(0, 0));
+    sprHeld->setPosition(btn->getContentSize() / 2);
+
+    tabsMenu->addChild(btn);
+
+    categoryBtns[id] = btn;
+    categorySprs[id] = sprNormal;
 }
 
 void AndroidUI::updateTabs()
@@ -132,6 +144,10 @@ void AndroidUI::updateTabs()
     {
         category.second->setVisible(category.first == selectedCategory);
     }
+
+    categoryBtns["Search"]->setVisible(SearchBox::get()->getRealEnabled());
+    categoryBtns["Favourites"]->setVisible(FavouritesTab::get()->getRealEnabled());
+    tabsMenu->updateLayout();
 }
 
 void AndroidUI::onSelectTab(CCObject* sender)

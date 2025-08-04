@@ -75,6 +75,16 @@ void Module::setCategory(std::string str)
     this->category = str;
 }
 
+void Module::setDisabledMessage(std::string str)
+{
+    this->disabledMessage = str;
+}
+
+std::string Module::getDisabledMessage()
+{
+    return disabledMessage;
+}
+
 // TODO: Fix hooks
 
 void Module::addHook(geode::Hook* hook)
@@ -108,6 +118,9 @@ void Module::disableHooks()
 bool Module::shouldSave()
 {
     if (getID() == "test")
+        return false;
+
+    if (getID().empty())
         return false;
 
     return true;

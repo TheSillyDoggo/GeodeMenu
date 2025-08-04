@@ -16,6 +16,7 @@ class AndroidUI : public geode::Popup<>
 
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
+        CCMenu* tabsMenu;
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
@@ -48,6 +49,8 @@ class AndroidUI : public geode::Popup<>
         void populateModules();
         void populateTabs();
         void updateTabs();
+
+        void addTab(std::string name, std::string id, std::string sprite);
 
         void close();
         virtual bool setup();

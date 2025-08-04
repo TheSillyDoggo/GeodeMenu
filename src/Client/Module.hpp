@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "HookMacro.hpp"
+#include "../Utils/DLL.hpp"
 
 #define SUBMIT_HACK(func) \
 $on_mod(Loaded) \
@@ -60,21 +61,23 @@ class Module
         std::function<bool()> safeModeCustomTrigger = nullptr;
         Module* parent = nullptr;
         std::vector<Module*> options = {};
+        std::string disabledMessage = "";
 
-        void setName(std::string str);
-        void setID(std::string str);
-        void setCategory(std::string str);
-        void setDescription(std::string str);
-        void setDefaultEnabled(bool def);
-        void setDisabled(bool value);
-        void setSafeModeTrigger(SafeModeTrigger trigger);
-        void setSafeModeCustom(std::function<bool()> func);
-        void setParent(Module* parent);
+        void DLL setName(std::string str);
+        void DLL setID(std::string str);
+        void DLL setCategory(std::string str);
+        void DLL setDescription(std::string str);
+        void DLL setDefaultEnabled(bool def);
+        void DLL setDisabled(bool value);
+        void DLL setSafeModeTrigger(SafeModeTrigger trigger);
+        void DLL setSafeModeCustom(std::function<bool()> func);
+        void DLL setParent(Module* parent);
+        void DLL setDisabledMessage(std::string str);
 
         bool shouldSave();
 
-        void save();
-        void load();
+        virtual void save();
+        virtual void load();
 
     private:
         bool userEnabled = false;
@@ -91,8 +94,8 @@ class Module
         static std::vector<Module*>& getAll();
         static void sortAlphabetically();
 
-        void setUserEnabled(bool enabled);
-        bool getUserEnabled();
+        virtual void setUserEnabled(bool enabled);
+        virtual bool getUserEnabled();
 
         void setFavourited(bool favourited);
         bool isFavourited();
@@ -112,10 +115,11 @@ class Module
         std::string getID();
         std::string getCategory();
         std::string getDescription();
+        std::string getDisabledMessage();
         SafeModeTrigger getSafeModeTrigger();
         std::function<bool()> getSafeModeCustom();
         bool isDisabled();
 
         virtual ModuleNode* getNode();
-        virtual void onToggle();
+        virtual void DLL onToggle();
 };
