@@ -13,6 +13,7 @@ class InstantComplete : public Module
             setCategory("Level");
             setDescription("Instantly Completes a level.");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
+            setPriority(2);
         }
 };
 

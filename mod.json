@@ -20,11 +20,11 @@
         "files": [
             "resources/fonts/*.ttf",
 			"resources/*.png",
-			"resources/*.glsl",
-			"resources/*.hlsl",
 			"resources/*.wav",
 			"resources/*.md",
 			"resources/*.ini",
+			"resources/shaders/*.fsh",
+			"resources/shaders/*.vsh",
 			"resources/translations/langs/*.json"
         ],
 		"sprites": [
@@ -47,19 +47,6 @@
             "id": "TheSillyDoggo.Cheats",
             "version": "*",
             "importance": "superseded"
-        },
-		{
-			"id": "camila314.text-select",
-			"version": "<=1.1.1",
-			"importance": "conflicting",
-			"platforms": [
-				"android"
-			]
-		}
-    ],
-	"api": {
-		"include": [
-			"src/Hacks/SafeMode.hpp"
-		]
-	}
+        }
+    ]
 }

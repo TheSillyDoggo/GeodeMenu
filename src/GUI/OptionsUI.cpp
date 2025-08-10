@@ -69,6 +69,8 @@ bool OptionsUI::setup()
     node->setContentHeight(170);
     node->updateLayout();
 
+    Module::sortAlphabetically(&module->getOptions());
+
     for (auto option : module->getOptions())
     {
         node->addModule(option);

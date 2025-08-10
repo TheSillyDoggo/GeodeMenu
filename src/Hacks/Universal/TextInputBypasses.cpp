@@ -12,6 +12,7 @@ class CharacterFilterBypass : public Module
             setID("char-filter");
             setCategory("Universal");
             setDescription("Allows you to type any character in any input field");
+            setPriority(4);
         }
 };
 
@@ -24,6 +25,7 @@ class CharacterLimitBypass : public Module
             setID("char-limit");
             setCategory("Universal");
             setDescription("Allows you to type as many letters as you want in any input field");
+            setPriority(3);
         }
 };
 

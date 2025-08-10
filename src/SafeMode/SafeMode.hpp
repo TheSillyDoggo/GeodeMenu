@@ -27,4 +27,5 @@ class SafeMode
         bool shouldDisableLevelProgress();
 
         void addMessage(SafeModeTrigger level, std::string message);
+        std::string getCombinedMessages();
 };

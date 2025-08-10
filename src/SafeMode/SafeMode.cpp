@@ -110,3 +110,22 @@ ccColor3B SafeMode::getIndicatorColour()
 
     return ccc3(0, 255, 0);
 }
+
+std::string SafeMode::getCombinedMessages()
+{
+    std::string str = "";
+
+    for (auto reason : levelLoadReasons)
+    {
+        str.append(reason);
+        str.append("\n");
+    }
+
+    for (auto reason : attemptReasons)
+    {
+        str.append(reason);
+        str.append("\n");
+    }
+
+    return str;
+}

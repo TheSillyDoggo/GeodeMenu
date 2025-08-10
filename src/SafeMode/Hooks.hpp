@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJGameLevel.hpp>
+#include <Geode/modify/EndLevelLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -20,4 +21,9 @@ class $modify (SafeGJGameLevel, GJGameLevel)
     void savePercentage(int p0, bool p1, int p2, int p3, bool p4);
 
     static void onModify(auto& self);
+};
+
+class $modify (SafeEndLevelLayer, EndLevelLayer)
+{
+    virtual void customSetup();
 };

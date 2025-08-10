@@ -29,7 +29,7 @@ void PlayLayerUtils::addObject(GameObject* obj)
 
     if (obj->m_objectType == GameObjectType::UserCoin || obj->m_objectType == GameObjectType::SecretCoin)
     {
-        m_fields->coins.push_back(obj);
+        m_fields->coins.push_back(as<EffectGameObject*>(obj));
     }
 }
 

@@ -11,7 +11,7 @@ class $modify (PlayLayerUtils, PlayLayer)
     {
         CCDrawNode* drawNode = nullptr;
 
-        std::vector<GameObject*> coins = {};
+        std::vector<EffectGameObject*> coins = {};
     };
 
     static PlayLayerUtils* getUtils();

@@ -3,6 +3,7 @@
 #include "../Client/ExtensionManager.hpp"
 #include "Modules/FavouritesTab.hpp"
 #include "Modules/SearchBox.hpp"
+#include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
 {

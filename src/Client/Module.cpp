@@ -198,6 +198,21 @@ bool Module::isFavourited()
     return favourited;
 }
 
+void Module::setDisableWarning(std::string warning)
+{
+    this->onDisableWarning = warning;
+}
+
+bool Module::showDisableWarning()
+{
+    return onDisableWarning.empty() ? false : !Mod::get()->hasSavedValue(fmt::format("{}_disablewarningshown", getID()));
+}
+
+std::string Module::getOnDisableWarning()
+{
+    return onDisableWarning;
+}
+
 void Module::setSafeModeTrigger(SafeModeTrigger trigger)
 {
     this->trigger = trigger;
@@ -232,7 +247,7 @@ void Module::addOption(Module* option)
     option->setParent(this);
 }
 
-std::vector<Module*> Module::getOptions()
+std::vector<Module*>& Module::getOptions()
 {
     return options;
 }
@@ -240,6 +255,16 @@ std::vector<Module*> Module::getOptions()
 void Module::setParent(Module* parent)
 {
     this->parent = parent;
+}
+
+void Module::setPriority(int sortPriority)
+{
+    this->sortPriority = sortPriority;
+}
+
+int Module::getSortPriority()
+{
+    return sortPriority;
 }
 
 Module* Module::getParent()

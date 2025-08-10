@@ -85,6 +85,7 @@ void SearchNode::onJoinDiscord(CCObject* sender)
 void SearchNode::onFilter(CCObject* sender)
 {
     // TODO: IMPLEMENT FILTERS
+    FLAlertLayer::create("Filter menu", "TODO", "OK")->show();
 }
 
 void SearchNode::textChanged(CCTextInputNode* input)

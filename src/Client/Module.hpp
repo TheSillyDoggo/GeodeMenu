@@ -62,6 +62,8 @@ class Module
         Module* parent = nullptr;
         std::vector<Module*> options = {};
         std::string disabledMessage = "";
+        std::string onDisableWarning = "";
+        int sortPriority = 8008135;
 
         void DLL setName(std::string str);
         void DLL setID(std::string str);
@@ -73,6 +75,8 @@ class Module
         void DLL setSafeModeCustom(std::function<bool()> func);
         void DLL setParent(Module* parent);
         void DLL setDisabledMessage(std::string str);
+        void DLL setDisableWarning(std::string warning);
+        void DLL setPriority(int sortPriority);
 
         bool shouldSave();
 
@@ -92,7 +96,7 @@ class Module
         static Module* getByID(std::string id);
         static std::vector<Module*> getAllFavourited();
         static std::vector<Module*>& getAll();
-        static void sortAlphabetically();
+        static void sortAlphabetically(std::vector<Module*>* map);
 
         virtual void setUserEnabled(bool enabled);
         virtual bool getUserEnabled();
@@ -108,7 +112,7 @@ class Module
         void addHook(geode::Hook* hook);
 
         void addOption(Module* option);
-        std::vector<Module*> getOptions();
+        std::vector<Module*>& getOptions();
 
         Module* getParent();
         std::string getName();
@@ -116,8 +120,11 @@ class Module
         std::string getCategory();
         std::string getDescription();
         std::string getDisabledMessage();
+        std::string getOnDisableWarning();
+        bool showDisableWarning();
         SafeModeTrigger getSafeModeTrigger();
         std::function<bool()> getSafeModeCustom();
+        int getSortPriority();
         bool isDisabled();
 
         virtual ModuleNode* getNode();

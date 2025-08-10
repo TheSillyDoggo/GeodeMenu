@@ -15,6 +15,18 @@ class HitboxMultipler : public Module
             setDescription("Change the size of hitboxes");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
+
+        virtual void onToggle()
+        {
+            if (auto bgl = GJBaseGameLayer::get())
+            {
+                for (auto obj : CCArrayExt<GameObject*>(bgl->m_objects))
+                {
+                    obj->setObjectRectDirty(true);
+                    obj->setOrientedRectDirty(true);
+                }
+            }
+        }
 };
 
 class MultiplierPlayer : public InputModule
@@ -31,6 +43,11 @@ class MultiplierPlayer : public InputModule
 
             setStringFilter("1234567890.");
             setMaxCharCount(5);
+        }
+
+        virtual void onToggle()
+        {
+            HitboxMultipler::get()->onToggle();
         }
 };
 
@@ -49,6 +66,11 @@ class MultiplierSolid : public InputModule
             setStringFilter("1234567890.");
             setMaxCharCount(5);
         }
+
+        virtual void onToggle()
+        {
+            HitboxMultipler::get()->onToggle();
+        }
 };
 
 class MultiplierHazard : public InputModule
@@ -65,6 +87,11 @@ class MultiplierHazard : public InputModule
 
             setStringFilter("1234567890.");
             setMaxCharCount(5);
+        }
+
+        virtual void onToggle()
+        {
+            HitboxMultipler::get()->onToggle();
         }
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Client/Module.hpp"
+#include "../../Client/InputModule.hpp"
 
 using namespace geode::prelude;
 
@@ -13,7 +13,40 @@ class ForceSafeMode : public Module
             setID("safe-mode");
             setCategory("Universal");
             setDescription("Disables all level progress and stats");
+            setPriority(2);
+        }
+};
+
+class SafeModeChangeText : public Module
+{
+    public:
+        MODULE_SETUP(SafeModeChangeText)
+        {
+            setName("Change Text");
+            setID("safe-mode/change-text");
+            setDescription("Changes the end screen text to make it obvious if the run is cheated");
+            setDefaultEnabled(true);
+            setPriority(1);
+        }
+};
+
+class SafeModeText : public InputModule
+{
+    public:
+        MODULE_SETUP(SafeModeText)
+        {
+            setName("Text");
+            setID("safe-mode/text");
+            
+            setDefaultString("Safe Mode :3");
+            setPlaceholderString("Text");
+
+            setStringFilterCommon(CommonFilter::Any);
+            setMaxCharCount(50);
+            setPriority(2);
         }
 };
 
 SUBMIT_HACK(ForceSafeMode);
+SUBMIT_OPTION(ForceSafeMode, SafeModeChangeText);
+SUBMIT_OPTION(ForceSafeMode, SafeModeText);

@@ -7,17 +7,25 @@ $on_mod(Loaded)
 {
     Loader::get()->queueInMainThread([]
     {
-        Module::sortAlphabetically();
+        Module::sortAlphabetically(&Module::getAll());
     });
 }
 
-void Module::sortAlphabetically()
+void Module::sortAlphabetically(std::vector<Module*>* map)
 {
-    std::sort(Module::moduleMap.begin(), Module::moduleMap.end(), [](Module* a, Module* b)
+    std::sort(map->begin(), map->end(), [](Module* a, Module* b)
     {
-        auto aN = utils::string::toLower(a->getName());
-        auto bN = utils::string::toLower(b->getName());
+        auto aP = a->getSortPriority();
+        auto bP = b->getSortPriority();
 
-        return aN < bN;
+        if (aP == bP)
+        {
+            auto aN = utils::string::toLower(a->getName());
+            auto bN = utils::string::toLower(b->getName());
+
+            return aN < bN;
+        }
+
+        return aP < bP;
     });
 }

@@ -34,6 +34,7 @@ void InputModule::setString(std::string str)
     auto res = utils::numFromString<float>(str);
     this->textFloat = res.unwrapOr(1.0f);
 
+    onToggle();
     save();
 }
 
@@ -70,6 +71,11 @@ bool InputModule::appendColon()
 void InputModule::setStringFilter(std::string str)
 {
     this->filter = str;
+}
+
+void InputModule::setStringFilterCommon(geode::CommonFilter filter)
+{
+    this->filter = getCommonFilterAllowedChars(filter);
 }
 
 void InputModule::setMaxCharCount(int count)

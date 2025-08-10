@@ -19,6 +19,7 @@ class InputModule : public Module
         void setDefaultString(std::string str);
         void setPlaceholderString(std::string str);
         void setStringFilter(std::string str);
+        void setStringFilterCommon(geode::CommonFilter filter);
         void setMaxCharCount(int count);
         void setDisplayFilter(std::string str);
 
