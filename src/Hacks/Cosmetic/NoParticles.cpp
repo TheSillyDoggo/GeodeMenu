@@ -36,7 +36,7 @@ class $modify (CCParticleSystemQuad)
 {
     virtual void draw()
     {
-        if (NoParticles::get()->getRealEnabled() ? (ParticlesInEditor::get()->getRealEnabled() ? LevelEditorLayer::get() : false) : true)
+        if (NoParticles::get()->getRealEnabled() ? (ParticlesInEditor::get()->getRealEnabled() ? LevelEditorLayer::get() != nullptr : false) : true)
             CCParticleSystemQuad::draw();
     }
 
