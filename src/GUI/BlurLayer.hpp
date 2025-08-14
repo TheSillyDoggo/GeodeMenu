@@ -11,6 +11,7 @@ class CCBlurLayer : public CCLayerColor
 {
     protected:
         CCGLProgram* program;
+        CCGLProgram* program2;
         CCRenderTexture* render;
         CCRenderTexture* render2;
         CCSprite* sprite;
@@ -22,6 +23,7 @@ class CCBlurLayer : public CCLayerColor
 
         void setFirst(bool first);
         void setRadius(float radius);
+        CCGLProgram* createProgram(bool horizontal);
 
     public:
         ~CCBlurLayer();

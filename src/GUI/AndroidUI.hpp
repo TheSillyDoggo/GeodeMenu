@@ -56,3 +56,14 @@ class AndroidUI : public geode::Popup<>
         virtual bool setup();
         virtual void visit();
 };
+
+class QOLModUIOpenEvent : public geode::Event
+{
+    public:
+        AndroidUI* ui;
+
+        QOLModUIOpenEvent(AndroidUI* ui)
+        {
+            this->ui = ui;
+        }
+};

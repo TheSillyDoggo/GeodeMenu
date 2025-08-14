@@ -19,6 +19,7 @@
 	"resources": {
         "files": [
             "resources/fonts/*.ttf",
+			"resources/sounds/*.mp3",
 			"resources/*.png",
 			"resources/*.wav",
 			"resources/*.md",

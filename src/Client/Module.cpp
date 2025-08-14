@@ -274,13 +274,13 @@ Module* Module::getParent()
 
 Module* Module::getByID(std::string id)
 {
-    log::info("todo: implement");
-    return nullptr;
-    //if (moduleMap.contains(id))
-        //return moduleMap[id];
+    for (auto& mod : moduleMap)
+    {
+        if (mod->getID() == id)
+            return mod;
+    }
 
-    // will probably crash but i dont fucking care anymore
-    //return nullptr;
+    return nullptr;
 }
 
 std::vector<Module*> Module::getAllFavourited()

@@ -136,4 +136,6 @@ void CategoryNode::setContentSize(const CCSize& contentSize)
         scroll->setContentSize(contentSize);
         updateUI();
     }
+
+    updateLayout();
 }

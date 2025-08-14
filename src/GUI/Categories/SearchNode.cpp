@@ -1,10 +1,23 @@
 #include "SearchNode.hpp"
 #include "../CategoryTabSprite.hpp"
+#include "../SearchFiltersUI.hpp"
+
+SearchNode* SearchNode::get()
+{
+    return instance;
+}
+
+SearchNode::~SearchNode()
+{
+    instance = nullptr;
+}
 
 bool SearchNode::init()
 {
     if (!CategoryNode::init())
         return false;
+
+    instance = this;
 
     float height = 25;
 
@@ -84,8 +97,7 @@ void SearchNode::onJoinDiscord(CCObject* sender)
 
 void SearchNode::onFilter(CCObject* sender)
 {
-    // TODO: IMPLEMENT FILTERS
-    FLAlertLayer::create("Filter menu", "TODO", "OK")->show();
+    SearchFiltersUI::create()->show();
 }
 
 void SearchNode::textChanged(CCTextInputNode* input)
@@ -104,7 +116,7 @@ void SearchNode::textChanged(CCTextInputNode* input)
         auto id = utils::string::replace(utils::string::toLower(module->getID()), " ", "");
         auto desc = utils::string::replace(utils::string::toLower(module->getDescription()), " ", "");
 
-        if (!showOptions && module->getParent())
+        if (!SearchShowOptions::get()->getRealEnabled() && module->getParent())
             continue;
 
         if (name.find(str) != std::string::npos)
@@ -127,4 +139,10 @@ void SearchNode::textChanged(CCTextInputNode* input)
     }
 
     errorMenu->setVisible(modules.size() == 0);
+}
+
+void SearchShowOptions::onToggle()
+{
+    if (SearchNode::get())
+        SearchNode::get()->textChanged(nullptr);
 }

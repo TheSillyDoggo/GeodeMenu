@@ -2,6 +2,20 @@
 
 std::vector<CCBlurLayer*> layers;
 
+CCBlurLayer* CCBlurLayer::create()
+{
+    auto pRet = new CCBlurLayer();
+
+    if (pRet && pRet->init())
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
 bool CCBlurLayer::init()
 {
     if (!CCLayerColor::init())
@@ -16,15 +30,9 @@ bool CCBlurLayer::init()
     render2->getSprite()->setAnchorPoint(ccp(0, 1));
     render2->retain();
 
-    program = new CCGLProgram();
-    program->initWithVertexShaderFilename("gaussian-blur.vsh"_spr, "gaussian-blur.glsl"_spr);
-
-    program->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
-    program->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
-
-    program->link();
-    program->updateUniforms();
-    program->retain();
+    program = createProgram(true);
+    
+    //program2 = createProgram(false);
 
     auto res = CCEGLView::get()->getFrameSize();
 
@@ -34,8 +42,8 @@ bool CCBlurLayer::init()
     this->uniformFast = program->getUniformLocationForName("fast");
     this->uniformRadius = program->getUniformLocationForName("radius");
 
-    // render->getSprite()->setShaderProgram(program);
-    render2->getSprite()->setShaderProgram(program);
+    render->getSprite()->setShaderProgram(program);
+    //render2->getSprite()->setShaderProgram(program);
     // render->setShaderProgram(program2);
 
     this->addChild(render, 69);
@@ -43,18 +51,20 @@ bool CCBlurLayer::init()
     return true;
 }
 
-CCBlurLayer* CCBlurLayer::create()
+CCGLProgram* CCBlurLayer::createProgram(bool horizontal)
 {
-    auto pRet = new CCBlurLayer();
+    CCGLProgram* program = new CCGLProgram();
 
-    if (pRet && pRet->init())
-    {
-        pRet->autorelease();
-        return pRet;
-    }
+    program->initWithVertexShaderFilename(horizontal ? "gaussian-blur.vsh"_spr : "blur2.vsh"_spr, horizontal ? "gaussian-blur.fsh"_spr : "blur2.fsh"_spr);
 
-    CC_SAFE_DELETE(pRet);
-    return nullptr;
+    program->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
+    program->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+
+    program->link();
+    program->updateUniforms();
+    program->retain();
+
+    return program;
 }
 
 CCBlurLayer::~CCBlurLayer()
@@ -100,13 +110,7 @@ void CCBlurLayer::visit()
 
             //draw
 
-            render2->beginWithClear(0, 0, 0, 0);
-            // setFirst(true);
             render->visit();
-            render2->end();
-
-            setFirst(false);
-            render2->visit();
             return;
         }
     }

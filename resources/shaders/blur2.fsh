@@ -18,7 +18,7 @@ void main()
     scaledRadius *= radius * 10.0 / ((radius * 10.0 + 1.0) * (radius * 10.0 + 1.0) - 1.0);
     float weight = 1.0;
     float weightSum = weight;
-    if (true) {
+    if (false) {
         for (int i = 1; float(i) < scaledRadius; i++) {
             weight -= 1.0 / scaledRadius;
             weightSum += weight * 2.0;

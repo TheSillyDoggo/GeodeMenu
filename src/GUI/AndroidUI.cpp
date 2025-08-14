@@ -27,6 +27,10 @@ bool AndroidUI::setup()
     m_mainLayer->addChild(bg, -1);
     m_mainLayer->setZOrder(80085);
     this->addChild(backMenu);
+
+    auto e = QOLModUIOpenEvent(this);
+    e.post();
+
     return true;
 }
 

@@ -13,9 +13,10 @@ class HideButton : public Module
             setID("hide-btn");
             setCategory("Config");
             setDescription("Hides the button to open the mod");
+            setDefaultEnabled(true);
 
             #ifdef GEODE_IS_MOBILE
-            setDefaultEnabled(true);
+            setDefaultEnabled(false);
             setDisabled(true);
             setDisabledMessage("You can't hide the button on mobile, silly :P");
             #endif
