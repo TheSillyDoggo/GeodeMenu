@@ -9,7 +9,7 @@ struct Notif
 {
     std::string text = "";
     bool playSound = true;
-    float duration = 7.5f;
+    float duration = 5;
 };
 
 class NotifLayer : public CCLayer

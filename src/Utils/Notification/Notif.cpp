@@ -121,6 +121,8 @@ class UIOpenFilter : public EventFilter<QOLModUIOpenEvent>
         }
 };
 
+// TODO: Images for the buttons
+
 class $modify (MenuLayer)
 {
     bool init()
@@ -155,8 +157,6 @@ class $modify (MenuLayer)
 
                     return ListenerResult::Propagate;
                 });
-
-
 
                 GameManager::get()->addEventListener<UIOpenFilter>([this](QOLModUIOpenEvent* ev)
                 {
