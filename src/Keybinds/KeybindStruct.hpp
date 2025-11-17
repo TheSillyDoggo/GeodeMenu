@@ -16,11 +16,24 @@ struct KeyState
     bool isRepeat = false;
 };
 
+struct KeyConfigState
+{
+    bool shiftRequired = false;
+    bool ctrlRequired = false;
+    bool altRequired = false;
+    bool cmdRequired = false;
+
+    enumKeyCodes code = enumKeyCodes::KEY_None;
+    bool activateOnDown = false;
+    bool activateOnRepeat = false;
+    bool activateOnRelease = false;
+};
+
 struct KeybindStruct
 {
     std::string name;
     std::string id;
-    KeyState config;
+    KeyConfigState config;
     bool allowInGameplay = true;
     bool allowInEditor = true;
     bool allowInMenus = true;

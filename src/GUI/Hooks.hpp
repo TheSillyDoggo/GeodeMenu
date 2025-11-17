@@ -8,11 +8,6 @@
 
 using namespace geode::prelude;
 
-class $modify (GUIKeyboardDispatcher, CCKeyboardDispatcher)
-{
-    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat);
-};
-
 class $modify (BallEGLView, CCEGLView)
 {
     virtual void swapBuffers();

@@ -16,16 +16,16 @@ bool KeybindStruct::canBeActivated(KeyState state)
     if (!isEligable())
         return false;
 
-    if (config.shiftHeld != state.shiftHeld)
+    if (config.shiftRequired != state.shiftHeld)
         return false;
     
-    if (config.ctrlHeld != state.ctrlHeld)
+    if (config.ctrlRequired != state.ctrlHeld)
         return false;
         
-    if (config.altHeld != state.altHeld)
+    if (config.altRequired != state.altHeld)
         return false;
 
-    if (config.cmdHeld != state.cmdHeld)
+    if (config.cmdRequired != state.cmdHeld)
         return false;
 
     if (config.code != state.code)

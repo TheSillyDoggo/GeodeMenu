@@ -2,26 +2,6 @@
 #include "AndroidUI.hpp"
 #include "AndroidBall.hpp"
 
-bool GUIKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat)
-{
-    if (!CCScene::get())
-        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat);
-
-    if (down && key == enumKeyCodes::KEY_Tab && !repeat)
-    {
-        if (AndroidUI::get())
-        {
-            return CCKeyboardDispatcher::dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, down, repeat);
-        }            
-        else
-            AndroidUI::addToScene();
-
-        return true;
-    }
-
-    return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat);
-}
-
 void BallEGLView::swapBuffers()
 {
     if (!AndroidUI::get())

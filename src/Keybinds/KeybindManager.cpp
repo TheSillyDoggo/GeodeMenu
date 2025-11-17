@@ -1,5 +1,7 @@
 #include "KeybindManager.hpp"
 #include "ModuleKeybindStruct.hpp"
+#include "FuncKeybindStruct.hpp"
+#include "../GUI/AndroidUI.hpp"
 
 KeybindManager* KeybindManager::get()
 {
@@ -35,9 +37,12 @@ bool KeybindManager::processMSG(KeyState state)
     {
         if (bind->canBeActivated(state))
         {
-            bind->onActivate(state);
+            if (bind->config.activateOnDown == state.isDown && bind->config.activateOnRepeat == state.isRepeat)
+            {
+                bind->onActivate(state);
 
-            capture = true;
+                capture = true;
+            }
         }
     }
 
@@ -46,10 +51,21 @@ bool KeybindManager::processMSG(KeyState state)
 
 $execute
 {
-    // auto str = new ModuleKeybindStruct();
-    // str->modID = "show-hitboxes";
-    // str->type = KeybindType::Hold;
-    // str->config.code = enumKeyCodes::KEY_G;
+    auto openMenu = new FuncKeybindStruct();
+    openMenu->id = "internal/open-menu";
+    openMenu->func = [](KeyState state)
+    {
+        if (AndroidUI::get())
+        {
+            CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false);
+        }            
+        else
+        {
+            AndroidUI::addToScene();
+        }
+    };
+    openMenu->config.code = enumKeyCodes::KEY_Tab;
+    openMenu->config.activateOnDown = true;
 
-    // KeybindManager::get()->addStruct(str);
+    KeybindManager::get()->addStruct(openMenu);
 }

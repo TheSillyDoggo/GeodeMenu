@@ -12,6 +12,7 @@ class AutoClaimQuests : public Module
             setID("auto-claim-quests");
             setCategory("Universal");
             setDescription("Automatically claims a quest after it's completed");
+            setDefaultEnabled(true);
         }
 };
 
