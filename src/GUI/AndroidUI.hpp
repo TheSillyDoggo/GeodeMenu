@@ -33,6 +33,7 @@ class AndroidUI : public geode::Popup<>
             "Labels",
             "Config",
             "spacer",
+            "Profiles",
             "Search",
             "Favourites",
         };

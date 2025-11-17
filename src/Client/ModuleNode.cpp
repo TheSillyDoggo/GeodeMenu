@@ -174,12 +174,6 @@ void ModuleNode::onInfo(CCObject* sender)
     {
         label->limitLabelWidth(270, 0.9f, 0);
     }
-
-    if (!Mod::get()->setSavedValue<bool>("shown-favourites-tutorial", true))
-    {
-        NotifLayer::closeCurrent();
-        NotifLayer::createAndNotify({"Mods can be favourited with the star\nbutton for easy access."});
-    }
 }
 
 bool ModuleNode::init(Module* module)

@@ -123,7 +123,7 @@ class UIOpenFilter : public EventFilter<QOLModUIOpenEvent>
 
 // TODO: Images for the buttons
 
-class $modify (MenuLayer)
+/*class $modify (MenuLayer)
 {
     bool init()
     {
@@ -178,4 +178,4 @@ class $modify (MenuLayer)
 
         return true;
     }
-};
+};*/
