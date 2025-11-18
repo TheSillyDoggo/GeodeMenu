@@ -59,7 +59,7 @@ bool SearchNode::init()
 
     for (size_t i = 0; i < 7; i++)
     {
-        as<CCSprite*>(suggest->getChildByTag(32 + i))->setColor(ccc3(86, 98, 246));
+        static_cast<CCSprite*>(suggest->getChildByTag(32 + i))->setColor(ccc3(86, 98, 246));
     }
 
     auto joinSpr = CategoryTabSprite::create(CategoryTabType::Image, "Click to join!", "discord.png"_spr);
@@ -146,3 +146,19 @@ void SearchShowOptions::onToggle()
     if (SearchNode::get())
         SearchNode::get()->textChanged(nullptr);
 }
+
+/* ::addModule()
+if (module->getParent())
+{
+    auto bg = CCScale9Sprite::create("square02b_small.png");
+    bg->setOpacity(50);
+    bg->setColor(ccc3(255, 255, 0));
+    bg->setScale(0.9f);
+    bg->setContentSize(node->getContentSize() * (1.0f / 0.9f) - ccp(10, 2));
+    bg->setZOrder(-80085);
+    bg->setID("mod-option-search-result-bg");
+    bg->setAnchorPoint(ccp(0, 0));
+    bg->setPosition(ccp(2, 1));
+    node->addChild(bg);
+}
+*/

@@ -92,6 +92,9 @@ bool SafeMode::shouldDisableLevelProgress()
     {
         if (isLevelLoadCheated || isAttemptCheated)
             return true;
+
+        if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+            return true;
     }
 
     if (ForceSafeMode::get()->getRealEnabled())
@@ -107,6 +110,9 @@ ccColor3B SafeMode::getIndicatorColour()
 
     if (isLevelLoadCheated || isAttemptCheated)
         return ccc3(255, 0, 0);
+
+    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+        return ccc3(0, 133, 55);
 
     return ccc3(0, 255, 0);
 }
@@ -126,6 +132,9 @@ std::string SafeMode::getCombinedMessages()
         str.append(reason);
         str.append("\n");
     }
+
+    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+        str.append("<co>Played level</c> from a <cc>start position</c>\n");
 
     return str;
 }

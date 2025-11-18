@@ -102,7 +102,7 @@ void ModuleNode::onToggle(CCObject* sender)
 
 void ModuleNode::onToggleError(CCObject* sender)
 {
-    auto toggler = as<CCMenuItemToggler*>(sender);
+    auto toggler = static_cast<CCMenuItemToggler*>(sender);
     toggler->toggle(!toggler->isToggled());
 
     toggler->m_onButton->setScale(1);
@@ -126,7 +126,7 @@ void ModuleNode::onInfoToggleFavourite(CCObject* sender)
 {
     // 'this' is the alert in the context of this function
 
-    auto mod = as<Module*>(this->getUserData());
+    auto mod = static_cast<Module*>(this->getUserData());
 
     mod->setFavourited(!mod->isFavourited());
 

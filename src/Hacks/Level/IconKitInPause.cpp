@@ -201,7 +201,7 @@ class $modify (CharacterColorPage)
             if (!plr)
                 return;
 
-            plr->m_hasGlow = as<CCMenuItemToggler*>(sender)->isToggled();
+            plr->m_hasGlow = static_cast<CCMenuItemToggler*>(sender)->isToggled();
             plr->updatePlayerGlow();
         }
     }

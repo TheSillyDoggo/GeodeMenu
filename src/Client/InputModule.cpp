@@ -50,7 +50,7 @@ float InputModule::getStringFloat()
 
 int InputModule::getStringInt()
 {
-    return as<int>(textFloat);
+    return static_cast<int>(textFloat);
 }
 
 std::string InputModule::getDefaultString()

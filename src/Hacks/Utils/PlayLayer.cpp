@@ -2,7 +2,7 @@
 
 PlayLayerUtils* PlayLayerUtils::getUtils()
 {
-    return as<PlayLayerUtils*>(get());
+    return static_cast<PlayLayerUtils*>(get());
 }
 
 bool PlayLayerUtils::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
@@ -29,7 +29,12 @@ void PlayLayerUtils::addObject(GameObject* obj)
 
     if (obj->m_objectType == GameObjectType::UserCoin || obj->m_objectType == GameObjectType::SecretCoin)
     {
-        m_fields->coins.push_back(as<EffectGameObject*>(obj));
+        m_fields->coins.push_back(static_cast<EffectGameObject*>(obj));
+    }
+
+    if (obj->m_objectID == 31)
+    {
+        m_fields->startPositions.push_back(static_cast<StartPosObject*>(obj));
     }
 }
 

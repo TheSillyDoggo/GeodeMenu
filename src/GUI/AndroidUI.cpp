@@ -157,7 +157,7 @@ void AndroidUI::updateTabs()
 
 void AndroidUI::onSelectTab(CCObject* sender)
 {
-    selectedCategory = as<CCNode*>(sender)->getID();
+    selectedCategory = static_cast<CCNode*>(sender)->getID();
 
     updateTabs();
 }

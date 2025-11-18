@@ -21,7 +21,7 @@ void BallTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int
 {
     if (pTouches && AndroidBall::get()->shouldFunction() && !AndroidUI::get())
     {
-        if (auto t = as<CCTouch*>(pTouches->anyObject()))
+        if (auto t = static_cast<CCTouch*>(pTouches->anyObject()))
         {
             switch (uIndex)
             {

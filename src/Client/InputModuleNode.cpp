@@ -21,7 +21,7 @@ InputModuleNode::~InputModuleNode()
 
 void InputModuleNode::setup()
 {
-    auto mod = as<InputModule*>(module);
+    auto mod = static_cast<InputModule*>(module);
 
     this->scheduleUpdate();
 
@@ -44,7 +44,7 @@ void InputModuleNode::setup()
 
 void InputModuleNode::textChanged(CCTextInputNode* p0)
 {
-    auto mod = as<InputModule*>(module);
+    auto mod = static_cast<InputModule*>(module);
 
     mod->setString(input->getString());
 
@@ -53,14 +53,14 @@ void InputModuleNode::textChanged(CCTextInputNode* p0)
 
 void InputModuleNode::updateNode()
 {
-    auto mod = as<InputModule*>(module);
+    auto mod = static_cast<InputModule*>(module);
 
     this->input->setString(mod->getString());
 }
 
 void InputModuleNode::update(float dt)
 {
-    auto mod = as<InputModule*>(module);
+    auto mod = static_cast<InputModule*>(module);
 
     if (input->getInputNode()->getString().size() > 0)
         input->getInputNode()->m_textLabel->setString(utils::string::replace(mod->getDisplayFilter(), "%s", input->getString()).c_str());

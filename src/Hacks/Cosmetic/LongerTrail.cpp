@@ -59,7 +59,7 @@ class $modify (PlayerObject)
         if (!PlayerObject::init(player, ship, gameLayer, layer, playLayer))
             return false;
 
-        as<CCLongerStreak*>(m_regularTrail)->m_fields->shouldStreakBeLonger = true;
+        static_cast<CCLongerStreak*>(m_regularTrail)->m_fields->shouldStreakBeLonger = true;
 
         return true;
     }

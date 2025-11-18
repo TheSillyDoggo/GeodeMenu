@@ -93,7 +93,7 @@ void OptionsUI::onInfo(CCObject* sender)
     alert->show();
 
     auto menu = CCMenu::create();
-    // この二行は怖いだ
+    // この二行が怖いだ
     menu->setPosition(CCDirector::get()->getWinSize() / 2 - (alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentSize() / 2) + ccp(25, 25));
     menu->setTouchPriority(-42069);
 
@@ -135,8 +135,8 @@ void OptionsUI::onInfoToggleFavourite(CCObject* sender)
 {
     // 'this' is the alert in the context of this function
 
-    auto mod = as<Module*>(this->getUserData());
-    auto favBtn = as<CCMenuItemToggler*>(this->getUserObject("fav-btn"));
+    auto mod = static_cast<Module*>(this->getUserData());
+    auto favBtn = static_cast<CCMenuItemToggler*>(this->getUserObject("fav-btn"));
 
     favBtn->toggle(!mod->isFavourited());
     mod->setFavourited(!mod->isFavourited());

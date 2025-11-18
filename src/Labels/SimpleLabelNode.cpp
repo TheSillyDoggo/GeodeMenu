@@ -15,7 +15,7 @@ bool SimpleLabelNode::init()
 
     for (size_t i = 0; i < 9; i++)
     {
-        setupLabel(as<SimpleLabelAnchor>(i));
+        setupLabel(static_cast<SimpleLabelAnchor>(i));
     }
 
     return true;
@@ -67,7 +67,7 @@ void SimpleLabelNode::setContentSize(const CCSize& var)
 
     for (size_t i = 0; i < labels.size(); i++)
     {
-        auto ac = as<SimpleLabelAnchor>(i);
+        auto ac = static_cast<SimpleLabelAnchor>(i);
         auto point = getPointForAnchor(ac);
 
         labels[ac]->setPosition(var * point);
@@ -81,7 +81,7 @@ void SimpleLabelNode::update(float dt)
 
     for (size_t i = 0; i < 9; i++)
     {
-        auto ac = as<SimpleLabelAnchor>(i);
+        auto ac = static_cast<SimpleLabelAnchor>(i);
         
         labelStrs[ac] = "";
     }
@@ -92,7 +92,7 @@ void SimpleLabelNode::update(float dt)
 
     for (size_t i = 0; i < 9; i++)
     {
-        auto ac = as<SimpleLabelAnchor>(i);
+        auto ac = static_cast<SimpleLabelAnchor>(i);
 
         labels[ac]->setString(labelStrs[ac].c_str());
         labels[ac]->setScale(0.5f);
