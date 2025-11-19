@@ -138,7 +138,10 @@ class $modify (StartposPlayLayer, PlayLayer)
         PlayLayer::postUpdate(p0);
 
         if (m_fields->ui)
+        {
             m_fields->ui->setVisible(StartposSwitcher::get()->getRealEnabled() && !StartposSwitcherHide::get()->getRealEnabled());
+            m_fields->ui->updateKeybindsVisualizer(false, StartposSwitcherPrev::get()->getKeyCode(), StartposSwitcherNext::get()->getKeyCode());
+        }
     }
 };
 

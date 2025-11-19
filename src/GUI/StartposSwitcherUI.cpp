@@ -36,8 +36,17 @@ bool StartposSwitcherUI::init()
     leftBtn->setTag(-1);
     rightBtn->setTag(1);
 
+    leftKey = KeycodeNode::create(0);
+    rightKey = KeycodeNode::create(0);
+
+    leftKey->setScale(0.75f);
+    rightKey->setScale(0.75f);
+
     leftBtn->setPositionX(-65);
     rightBtn->setPositionX(65);
+
+    leftKey->setPositionX(-56);
+    rightKey->setPositionX(56);
 
     updateUI();
 
@@ -45,6 +54,8 @@ bool StartposSwitcherUI::init()
     this->addChild(label);
     this->addChild(leftBtn);
     this->addChild(rightBtn);
+    this->addChild(leftKey);
+    this->addChild(rightKey);
     return true;
 }
 
@@ -59,6 +70,15 @@ void StartposSwitcherUI::updateDisplayedOpacity(GLubyte parentOpacity)
     label->setOpacity(parentOpacity);
     leftSpr->setOpacity(parentOpacity);
     rightSpr->setOpacity(parentOpacity);
+}
+
+void StartposSwitcherUI::updateKeybindsVisualizer(bool visible, int leftCode, int rightCode)
+{
+    leftKey->setKeycode(leftCode);
+    rightKey->setKeycode(rightCode);
+
+    leftKey->setVisible(visible);
+    rightKey->setVisible(visible);
 }
 
 void StartposSwitcherUI::updateUI()

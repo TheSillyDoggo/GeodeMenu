@@ -1,4 +1,5 @@
 #include "KeybindModuleNode.hpp"
+#include "../GUI/KeycodeListenerLayer.hpp"
 
 KeybindModuleNode* KeybindModuleNode::create(KeybindModule* module)
 {
@@ -22,13 +23,9 @@ void KeybindModuleNode::setup()
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(75, 0.575f, 0);
 
-    keybindBG = CCScale9Sprite::create("geode.loader/black-square.png");
-    keybindBG->setScale(0.5f);
-    keybindLabel = CCLabelBMFont::create("", "goldFont.fnt");
+    keycodeNode = KeycodeNode::create(0);
 
-    keybindBG->addChildAtPosition(keybindLabel, Anchor::Center);
-
-    auto bg = CCMenuItemSpriteExtra::create(keybindBG, this, menu_selector(KeybindModuleNode::onChangeBind));
+    auto bg = CCMenuItemSpriteExtra::create(keycodeNode, this, menu_selector(KeybindModuleNode::onChangeBind));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(bg, Anchor::Right, ccp(-20, 0));
@@ -38,13 +35,20 @@ void KeybindModuleNode::setup()
 
 void KeybindModuleNode::onChangeBind(CCObject* sender)
 {
-    FLAlertLayer::create("Change keybind", "Coming soon!", "OK")->show();
+    auto mod = static_cast<KeybindModule*>(module);
+
+    auto layer = KeycodeListenerLayer::create(mod->getKeyCode(), [this, mod](int code)
+    {
+        mod->setKeyCode(code);
+
+        updateAllNodes(nullptr);
+    });
+    layer->show();
 }
 
 void KeybindModuleNode::updateNode()
 {
     auto mod = static_cast<KeybindModule*>(module);
-    auto str = CCKeyboardDispatcher::get()->keyToString(static_cast<enumKeyCodes>(mod->getKeyCode()));
 
-    keybindLabel->setString(str ? str : "None");
+    keycodeNode->setKeycode(mod->getKeyCode());
 }

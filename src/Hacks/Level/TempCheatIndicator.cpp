@@ -35,6 +35,7 @@ class $modify (PlayLayer)
         m_fields->colour->ignoreAnchorPointForPosition(false);
         m_fields->colour->setAnchorPoint(ccp(0, 1));
         m_fields->colour->setPosition(ccp(2, CCDirector::get()->getWinSize().height - 2));
+        m_fields->colour->setZOrder(6980085);
 
         #ifdef GEODE_IS_MOBILE
         m_fields->colour->setContentSize(ccp(14, 14));

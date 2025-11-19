@@ -2,12 +2,12 @@
 
 #include "ModuleNode.hpp"
 #include "KeybindModule.hpp"
+#include "../GUI/KeycodeNode.hpp"
 
 class KeybindModuleNode : public ModuleNode
 {
     protected:
-        CCScale9Sprite* keybindBG = nullptr;
-        CCLabelBMFont* keybindLabel = nullptr;    
+        KeycodeNode* keycodeNode = nullptr;
 
     public:
         static KeybindModuleNode* create(KeybindModule* module);

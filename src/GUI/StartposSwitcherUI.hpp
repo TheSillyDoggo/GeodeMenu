@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "KeycodeNode.hpp"
 
 using namespace geode::prelude;
 
@@ -10,6 +11,8 @@ class StartposSwitcherUI : public CCMenu
         CCLabelBMFont* label;
         CCSprite* leftSpr;
         CCSprite* rightSpr;
+        KeycodeNode* leftKey;
+        KeycodeNode* rightKey;
         int currentStartpos = 0;
     
     public:
@@ -20,6 +23,7 @@ class StartposSwitcherUI : public CCMenu
         void updateUI();
         void onSwitchBtn(CCObject* sender);
         void setStartposVisual(int index);
+        void updateKeybindsVisualizer(bool visible, int leftCode, int rightCode);
 
         virtual bool init();
         virtual void updateDisplayedOpacity(GLubyte parentOpacity);
