@@ -13,6 +13,9 @@ class KeycodeListenerLayer : public geode::Popup<>
     public:
         static KeycodeListenerLayer* create(int currentBind, std::function<void(int)> onSucceed);
 
+        void onCloseBtn(CCObject* sender);
+
         virtual void keyDown(cocos2d::enumKeyCodes key);
+        virtual void keyBackClicked();
         virtual bool setup();
 };

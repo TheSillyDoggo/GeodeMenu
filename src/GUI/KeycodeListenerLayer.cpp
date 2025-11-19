@@ -35,6 +35,16 @@ void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key)
     return;
 }
 
+void KeycodeListenerLayer::keyBackClicked()
+{
+    keyDown(enumKeyCodes::KEY_Escape);
+}
+
+void KeycodeListenerLayer::onCloseBtn(CCObject* sender)
+{
+    keyDown(enumKeyCodes::KEY_Escape);
+}
+
 bool KeycodeListenerLayer::setup()
 {
     this->m_mainLayer->setVisible(false);
@@ -101,9 +111,16 @@ bool KeycodeListenerLayer::setup()
     deleteContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
     currentContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
 
+    auto menu = CCMenu::create();
+    menu->setAnchorPoint(ccp(0, 0));
+    menu->setScale(0.8f);
+    auto closeBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(KeycodeListenerLayer::onCloseBtn));
+    menu->addChild(closeBtn);
+
     this->addChildAtPosition(title, Anchor::Top, ccp(0, -25));
     this->addChildAtPosition(cancelContainer, Anchor::Center, ccp(0, 10));
     this->addChildAtPosition(deleteContainer, Anchor::Center, ccp(0, -10));
     this->addChildAtPosition(currentContainer, Anchor::Center, ccp(0, 50));
+    this->addChildAtPosition(menu, Anchor::TopLeft, ccp(25, -25));
     return true;
 }
