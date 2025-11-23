@@ -32,6 +32,7 @@ class SearchNode : public CategoryNode, public TextInputDelegate
         static SearchNode* get();
 
         virtual void textChanged(CCTextInputNode* input);
+        virtual void addModule(Module* module);
 
         void onJoinDiscord(CCObject* sender);
         void onFilter(CCObject* sender);

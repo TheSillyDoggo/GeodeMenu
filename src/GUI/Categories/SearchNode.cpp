@@ -14,10 +14,11 @@ SearchNode::~SearchNode()
 
 bool SearchNode::init()
 {
+    instance = this;
+    this->alwaysShowScrollbar = true;
+
     if (!CategoryNode::init())
         return false;
-
-    instance = this;
 
     float height = 25;
 
@@ -83,6 +84,7 @@ bool SearchNode::init()
     errorMenu->setVisible(false);
 
     scroll->setContentHeight(scroll->getContentHeight() - 30);
+    updateUI();
 
     this->addChildAtPosition(textInput, Anchor::TopLeft, ccp(5, -5));
     this->addChildAtPosition(errorMenu, Anchor::Center, ccp(0, -30 / 2));
@@ -147,18 +149,30 @@ void SearchShowOptions::onToggle()
         SearchNode::get()->textChanged(nullptr);
 }
 
-/* ::addModule()
-if (module->getParent())
+void SearchNode::addModule(Module* module)
 {
-    auto bg = CCScale9Sprite::create("square02b_small.png");
-    bg->setOpacity(50);
-    bg->setColor(ccc3(255, 255, 0));
-    bg->setScale(0.9f);
-    bg->setContentSize(node->getContentSize() * (1.0f / 0.9f) - ccp(10, 2));
-    bg->setZOrder(-80085);
-    bg->setID("mod-option-search-result-bg");
-    bg->setAnchorPoint(ccp(0, 0));
-    bg->setPosition(ccp(2, 1));
-    node->addChild(bg);
+    auto node = module->getNode();
+    node->setTag(modules.size());
+
+    modules.emplace(module, node);
+
+    scroll->m_contentLayer->addChild(node);
+    updateUI();
+
+    return;
+    // i cant get it to look good no matter the colour
+    
+    if (module->getParent())
+    {
+        auto bg = CCScale9Sprite::create("square02b_small.png");
+        bg->setOpacity(50);
+        bg->setColor(ccc3(0, 255, 157));
+        bg->setScale(0.9f);
+        bg->setContentSize(node->getContentSize() * (1.0f / 0.9f) - ccp(11, 2));
+        bg->setZOrder(-80085);
+        bg->setID("mod-option-search-result-bg");
+        bg->setAnchorPoint(ccp(0, 0));
+        bg->setPosition(ccp(2, 1));
+        node->addChild(bg);
+    }
 }
-*/

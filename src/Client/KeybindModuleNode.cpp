@@ -21,7 +21,7 @@ void KeybindModuleNode::setup()
 
     auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(75, 0.575f, 0);
+    label->limitLabelWidth(120, 0.575f, 0);
 
     keycodeNode = KeycodeNode::create(0);
 

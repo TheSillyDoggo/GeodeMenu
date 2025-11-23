@@ -67,15 +67,15 @@ void CategoryNode::updateUI()
     float height = std::max<float>((std::floor((modules.size() / 2.0f) + (((modules.size() % 2) == 0) ? 0 : 1))) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;
 
-    scroll->m_contentLayer->setContentHeight(height + 6);
+    scroll->m_contentLayer->setContentHeight(height + (modules.size() == 0 ? 0 : 6));
 
-    bool showScrollbar = height != scroll->getContentHeight();
+    bool showScrollbar = shouldScrollbarShow();
 
     for (auto node : modules)
     {
         auto n = node.second;
 
-        float x = (n->getTag() % 2 == 0) ? 85 : (showScrollbar ? 255 : 260);
+        float x = (n->getTag() % 2 == 0) ? 85 : (showScrollbar ? 252 : 260);
         float y = floor(n->getTag() / 2);
 
         n->setPosition(ccp(x, height2 - (y * 28) + 6));
@@ -83,14 +83,14 @@ void CategoryNode::updateUI()
 
     scroll->moveToTop();
     scroll->setTouchEnabled(height != scroll->getContentHeight());
-    scrollbar->setTouchEnabled(shouldScrollbarShow());
-    scrollbar->setVisible(shouldScrollbarShow());
+    scrollbar->setVisible(showScrollbar);
+    scrollbar->setDisabled(!scroll->isTouchEnabled());
 }
 
 bool CategoryNode::shouldScrollbarShow()
 {
-    return false;
-    //return scroll->isTouchEnabled();
+    //return false;
+    return alwaysShowScrollbar ? true : scroll->isTouchEnabled();
 }
 
 bool CategoryNode::init()
@@ -111,16 +111,19 @@ bool CategoryNode::init()
     scroll = geode::ScrollLayer::create(this->getContentSize());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
+    scroll->setTouchEnabled(false);
 
-    scrollbar = Scrollbar::create(scroll);
+    scrollbar = BetterScrollbar::create(scroll);
     // updates size
     scrollbar->visit();
-    public_cast(scrollbar, m_track)->setScale(0.5f);
+    scrollbar->setUseDynamicHandle(true);
     scrollbar->setVisible(shouldScrollbarShow());
+    scrollbar->setAnchorPoint(ccp(1, 0));
+    scrollbar->setDisabled(true);
     
     this->addChildAtPosition(bg, Anchor::Center);
     this->addChild(scroll);
-    this->addChildAtPosition(scrollbar, Anchor::Right, ccp(-4, 0));
+    this->addChildAtPosition(scrollbar, Anchor::BottomRight);
     return true;
 }
 

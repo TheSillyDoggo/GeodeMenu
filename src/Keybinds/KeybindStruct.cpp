@@ -28,8 +28,16 @@ bool KeybindStruct::canBeActivated(KeyState state)
     if (config.cmdRequired != state.cmdHeld)
         return false;
 
-    if (config.code != state.code)
-        return false;
+    if (config.mod && !(config.mod->getKeyCode() == enumKeyCodes::KEY_None || config.mod->getKeyCode() == enumKeyCodes::KEY_Unknown))
+    {
+        if (config.mod->getKeyCode() != state.code)
+            return false;
+    }
+    else
+    {
+        if (config.code != state.code)
+            return false;
+    }
 
     return true;
 }

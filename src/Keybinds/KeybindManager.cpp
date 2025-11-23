@@ -1,6 +1,7 @@
 #include "KeybindManager.hpp"
 #include "ModuleKeybindStruct.hpp"
 #include "FuncKeybindStruct.hpp"
+#include "../GUI/Modules/MenuKeybind.hpp"
 #include "../GUI/AndroidUI.hpp"
 
 KeybindManager* KeybindManager::get()
@@ -57,7 +58,7 @@ $execute
     {
         if (AndroidUI::get())
         {
-            // close one menu so that option displays etc are gone before the main popup
+            // close one menu so that option displays are gone before the main popup
             CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false);
         }            
         else
