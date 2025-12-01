@@ -11,7 +11,7 @@ class SearchBox : public Module
         {
             setName("Search Box");
             setID("show-searchbox");
-            setCategory("Config");
+            setCategory("Config/Menu");
             setDescription("Shows a search box icon");
             setDefaultEnabled(true);
         }

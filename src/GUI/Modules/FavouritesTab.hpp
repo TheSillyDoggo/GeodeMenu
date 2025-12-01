@@ -11,7 +11,7 @@ class FavouritesTab : public Module
         {
             setName("Favourites Tab");
             setID("show-favourites");
-            setCategory("Config");
+            setCategory("Config/Menu");
             setDescription("Shows a favourites tab");
             setDefaultEnabled(true);
         }

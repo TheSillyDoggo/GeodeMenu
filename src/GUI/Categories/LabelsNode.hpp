@@ -12,3 +12,4 @@ class LabelsNode : public CategoryNode
 
 SUBMIT_CATEGORY("Labels", LabelsNode)
 SUBMIT_CATEGORY("Profiles", LabelsNode)
+SUBMIT_CATEGORY("Config/Language", LabelsNode)

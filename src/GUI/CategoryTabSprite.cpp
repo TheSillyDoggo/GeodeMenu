@@ -101,10 +101,14 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     {
         sprite->setPositionX(-getContentWidth() / 2 + SPRITE_INSET);
         sprite->setScale((getContentHeight() - (SPRITE_INSET * 2)) / sprite->getContentHeight());
+        sprite->setAnchorPoint(ccp(0, 0.5f));
         label->setAnchorPoint(ccp(0, 0.5f));
         label->setPosition(ccp(-getContentWidth() / 2, 0) + ccp(SPRITE_INSET * 2 + sprite->getScaledContentWidth(), 0));
     }
 
     if (sprite && std::string(label->getString()).empty())
-        static_cast<AnchorLayoutOptions*>(sprite->getLayoutOptions())->setOffset(CCPointZero);
+    {
+        sprite->setAnchorPoint(ccp(0.5f, 0.5f));
+        sprite->setPosition(getContentSize() / 2);
+    }
 }

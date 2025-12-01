@@ -10,6 +10,7 @@ using namespace geode::prelude;
 class CategoryNode : public CCMenu
 {
     friend class AndroidUI;
+    friend class SubCategoryNode;
 
     protected:
         static inline std::map<std::string, std::function<CategoryNode*()>> advCategories = {};

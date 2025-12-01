@@ -11,7 +11,7 @@ class HideButton : public Module
         {
             setName("Hide Button");
             setID("hide-btn");
-            setCategory("Config");
+            setCategory("Config/Button");
             setDescription("Hides the button to open the mod");
             setDefaultEnabled(true);
 

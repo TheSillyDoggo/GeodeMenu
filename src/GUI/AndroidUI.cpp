@@ -3,6 +3,7 @@
 #include "../Client/ExtensionManager.hpp"
 #include "Modules/FavouritesTab.hpp"
 #include "Modules/SearchBox.hpp"
+#include "../Client/SubCategoryNode.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
@@ -44,6 +45,27 @@ void AndroidUI::populateModules()
     {
         if (module->getParent())
             continue;
+
+        if (utils::string::split(module->getCategory(), "/").size() > 1)
+        {
+            auto cat2 = utils::string::split(module->getCategory(), "/")[0];
+
+            if (!categories.contains(cat2))
+            {
+                auto cat = CategoryNode::getNode(cat2);
+                cat->setID(cat2);
+                categories.emplace(cat2, cat);
+
+                categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
+            }
+
+            if (auto sub = typeinfo_cast<SubCategoryNode*>(categories[cat2]))
+            {
+                sub->addModule(module, utils::string::split(module->getCategory(), "/")[1]);
+            }
+
+            continue;
+        }
 
         if (!categories.contains(module->getCategory()))
         {
