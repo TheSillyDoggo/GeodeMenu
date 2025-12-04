@@ -112,11 +112,14 @@ void AndroidUI::populateTabs()
 
             tabsMenu->addChild(geode::SpacerNode::create());
 
+            // TODO: Bottom row
+            /*
             bottomTabsContainer = CCMenu::create();
             bottomTabsContainer->ignoreAnchorPointForPosition(false);
             bottomTabsContainer->setContentSize(ccp(100, 20));
             bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Even));
             tabsMenu->addChild(bottomTabsContainer);
+            */
 
             continue;
         }

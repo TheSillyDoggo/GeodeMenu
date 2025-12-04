@@ -53,13 +53,13 @@ void CategoryTabSprite::updateSelection(CategorySelectionType type)
     switch (type)
     {
         case Deselected:
-            label->setColor(ccc3(150, 150, 150));
-            label->setOpacity(150);
+            label->setColor(ccc3(180, 180, 180));
+            label->setOpacity(180);
 
             if (sprite)
             {
-                sprite->setColor(ccc3(150, 150, 150));
-                sprite->setOpacity(150);
+                sprite->setColor(ccc3(180, 180, 180));
+                sprite->setOpacity(180);
             }
             break;
 
