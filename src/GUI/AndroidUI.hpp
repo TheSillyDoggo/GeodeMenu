@@ -12,11 +12,14 @@ using namespace geode::prelude;
 class AndroidUI : public geode::Popup<>
 {
     protected:
+        friend class ThemeNode;
+
         static inline AndroidUI* instance = nullptr;
 
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
         CCMenu* tabsMenu;
+        CCNode* bottomTabsContainer = nullptr;
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
@@ -33,7 +36,7 @@ class AndroidUI : public geode::Popup<>
             "Labels",
             "Config",
             "spacer",
-            // "Profiles",
+            "Profiles",
             "Search",
             "Favourites",
         };

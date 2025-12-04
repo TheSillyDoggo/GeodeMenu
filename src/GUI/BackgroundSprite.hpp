@@ -27,5 +27,8 @@ class BackgroundSprite : public CCNode
         void setGradientDarkenVisible(bool visible);
         void setTheme(int theme);
 
+        void setOpacity(float opacity);
+        void setColour(ccColor3B colour);
+
         CREATE_FUNC(BackgroundSprite);
 };

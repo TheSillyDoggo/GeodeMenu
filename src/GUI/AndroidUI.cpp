@@ -112,6 +112,12 @@ void AndroidUI::populateTabs()
 
             tabsMenu->addChild(geode::SpacerNode::create());
 
+            bottomTabsContainer = CCMenu::create();
+            bottomTabsContainer->ignoreAnchorPointForPosition(false);
+            bottomTabsContainer->setContentSize(ccp(100, 20));
+            bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Even));
+            tabsMenu->addChild(bottomTabsContainer);
+
             continue;
         }
 
@@ -128,6 +134,11 @@ void AndroidUI::populateTabs()
         addTab(category, category, fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)));
     }
 
+    if (bottomTabsContainer)
+    {
+        bottomTabsContainer->updateLayout();
+    }
+
     tabsMenu->updateLayout();
     updateTabs();
 }
@@ -141,6 +152,15 @@ void AndroidUI::addTab(std::string name, std::string id, std::string sprite)
     sprNormal->setContentSize(ccp(100, 20));
     sprHeld->setContentSize(ccp(100, 20));
 
+    if (bottomTabsContainer)
+    {
+        sprNormal->label->setString("");
+        sprNormal->setContentSize(ccp((100 - 5 * 2) / 3, 20));
+
+        sprHeld->label->setString("");
+        sprHeld->setContentSize(ccp((100 - 5 * 2) / 3, 20));
+    }
+
     auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
     btn->setID(id);
     btn->setSelectedImage(sprHeld);
@@ -149,7 +169,10 @@ void AndroidUI::addTab(std::string name, std::string id, std::string sprite)
     sprNormal->setAnchorPoint(ccp(0, 0));
     sprHeld->setPosition(btn->getContentSize() / 2);
 
-    tabsMenu->addChild(btn);
+    if (bottomTabsContainer)
+        bottomTabsContainer->addChild(btn);
+    else
+        tabsMenu->addChild(btn);
 
     categoryBtns[id] = btn;
     categorySprs[id] = sprNormal;

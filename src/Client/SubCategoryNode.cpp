@@ -7,14 +7,14 @@ void SubCategoryNode::updateUI()
 
     for (auto btn : normalSprs)
     {
-        btn.second->updateSelection(btn.first == selectedSub ? CategorySelectionType::Selected : CategorySelectionType::Deselected);
+        btn.second->updateSelection(btn.first == selectedSub[getID()] ? CategorySelectionType::Selected : CategorySelectionType::Deselected);
         btn.second->setContentSize(size);
         btn.second->setPosition(size / 2);
     }
 
     for (auto btn : normalBtns)
     {
-        btn.second->setEnabled(btn.first != selectedSub);
+        btn.second->setEnabled(btn.first != selectedSub[getID()]);
         btn.second->setContentSize(size);
         btn.second->getSelectedImage()->setContentSize(size);
         btn.second->getSelectedImage()->setPosition(size / 2);
@@ -22,7 +22,7 @@ void SubCategoryNode::updateUI()
 
     for (auto node : categoryNodes)
     {
-        node.second->setVisible(node.first == selectedSub);
+        node.second->setVisible(node.first == selectedSub[getID()]);
     }
 
     selectSubMenu->updateLayout();
@@ -80,8 +80,8 @@ void SubCategoryNode::addSubCategory(std::string name)
     normalSprs.emplace(name, sprNormal);
     normalBtns.emplace(name, btn);
 
-    if (selectedSub.empty())
-        selectedSub = name;
+    if (!selectedSub.contains(getID()))
+        selectedSub.emplace(getID(), name);
 
     auto node = CategoryNode::getNode(fmt::format("{}/{}", getID(), name));
     node->bg->setVisible(false);
@@ -95,7 +95,7 @@ void SubCategoryNode::addSubCategory(std::string name)
 
 void SubCategoryNode::onSelectSub(CCObject* sender)
 {
-    selectedSub = static_cast<CCNode*>(sender)->getID();
+    selectedSub[getID()] = static_cast<CCNode*>(sender)->getID();
 
     updateUI();
 }
