@@ -37,7 +37,7 @@ void KeybindModuleNode::onChangeBind(CCObject* sender)
 {
     auto mod = static_cast<KeybindModule*>(module);
 
-    auto layer = KeycodeListenerLayer::create(mod->getKeyCode(), [this, mod](int code)
+    auto layer = KeycodeListenerLayer::create({mod->getKeyCode(), mod->getDefaultKeyCode(), true, !mod->isBindRequired()}, [this, mod](int code)
     {
         mod->setKeyCode(code);
 

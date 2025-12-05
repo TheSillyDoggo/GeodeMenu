@@ -36,6 +36,16 @@ int KeybindModule::getDefaultKeyCode()
     return this->defaultKeyCode;
 }
 
+bool KeybindModule::isBindRequired()
+{
+    return this->mustHaveBind;
+}
+
+void KeybindModule::setBindRequired(bool req)
+{
+    this->mustHaveBind = req;
+}
+
 ModuleNode* KeybindModule::getNode()
 {
     return KeybindModuleNode::create(this);

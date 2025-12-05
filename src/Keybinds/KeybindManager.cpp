@@ -66,7 +66,7 @@ $execute
             AndroidUI::addToScene();
         }
     };
-    openMenu->config.code = enumKeyCodes::KEY_Tab;
+    openMenu->config.mod = MenuKeybind::get();
     openMenu->config.activateOnDown = true;
 
     KeybindManager::get()->addStruct(openMenu);

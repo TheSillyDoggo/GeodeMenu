@@ -55,7 +55,7 @@ CCGLProgram* CCBlurLayer::createProgram(bool horizontal)
 {
     CCGLProgram* program = new CCGLProgram();
 
-    program->initWithVertexShaderFilename(horizontal ? "gaussian-blur.vsh"_spr : "blur2.vsh"_spr, horizontal ? "gaussian-blur.fsh"_spr : "blur2.fsh"_spr);
+    program->initWithVertexShaderFilename("box_blur.vsh"_spr, "box_blur.fsh"_spr);
 
     program->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
     program->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
@@ -69,8 +69,6 @@ CCGLProgram* CCBlurLayer::createProgram(bool horizontal)
 
 CCBlurLayer::~CCBlurLayer()
 {
-    log::info("removing this: {}", this);
-
     program->release();
     render->release();
 

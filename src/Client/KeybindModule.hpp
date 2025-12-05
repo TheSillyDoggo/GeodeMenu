@@ -7,6 +7,7 @@ class KeybindModule : public Module
     protected:
         int keyCode = -1;
         int defaultKeyCode = -1;
+        bool mustHaveBind = false;
 
         virtual void save();
         virtual void load();
@@ -18,6 +19,9 @@ class KeybindModule : public Module
         int getKeyCode();
 
         int getDefaultKeyCode();
+        
+        bool isBindRequired();
+        void setBindRequired(bool req);
 
         virtual ModuleNode* getNode();
 };

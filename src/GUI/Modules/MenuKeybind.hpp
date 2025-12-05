@@ -12,10 +12,11 @@ class MenuKeybind : public KeybindModule
             setName("Menu Keybind:");
             setID("internal/open-menu");
             setDescription("");
-            setCategory("Config");
+            setCategory("Config/Menu");
 
             setDefaultKeyCode(enumKeyCodes::KEY_Tab); // Tab
+            setBindRequired(true);
         }
 };
 
-// SUBMIT_HACK(MenuKeybind);
+SUBMIT_HACK(MenuKeybind);

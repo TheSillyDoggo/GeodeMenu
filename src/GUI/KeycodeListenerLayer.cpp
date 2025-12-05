@@ -1,10 +1,11 @@
 #include "KeycodeListenerLayer.hpp"
 #include "KeycodeNode.hpp"
+#include "BackgroundSprite.hpp"
 
-KeycodeListenerLayer* KeycodeListenerLayer::create(int currentBind, std::function<void(int)> onSucceed)
+KeycodeListenerLayer* KeycodeListenerLayer::create(KeycodeListenerLayerSettings settings, std::function<void(int)> onSucceed)
 {
     auto pRet = new KeycodeListenerLayer();
-    pRet->currentBind = currentBind;
+    pRet->settings = settings;
     pRet->onSucceed = onSucceed;
 
     pRet->initAnchored(0, 0);
@@ -13,13 +14,13 @@ KeycodeListenerLayer* KeycodeListenerLayer::create(int currentBind, std::functio
 
 void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key)
 {
-    if (key == enumKeyCodes::KEY_Escape)
+    if (key == enumKeyCodes::KEY_Escape && this->settings.allowCancel)
     {
         this->removeFromParent();
         return;
     }
 
-    if (key == enumKeyCodes::KEY_Backspace)
+    if (key == enumKeyCodes::KEY_Backspace && this->settings.allowDelete)
     {
         if (onSucceed)
             onSucceed(-1);
@@ -28,11 +29,16 @@ void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key)
         return;
     }
 
+    if (key == enumKeyCodes::KEY_Unknown)
+        return Notification::create("Invalid key")->show();
+    
+    if (!this->settings.allowShiftKeys && (key == enumKeyCodes::KEY_LeftShift || key == enumKeyCodes::KEY_RightShift))
+        return;
+
     if (onSucceed)
         onSucceed(static_cast<int>(key));
 
     this->removeFromParent();
-    return;
 }
 
 void KeycodeListenerLayer::keyBackClicked()
@@ -52,6 +58,9 @@ bool KeycodeListenerLayer::setup()
 
     this->stopAllActions();
     this->runAction(CCFadeTo::create(0.25f, 200));
+
+    auto background = BackgroundSprite::create();
+    background->setContentSize(ccp(240, 120));
 
     auto title = CCLabelBMFont::create("Waiting for key press", "bigFont.fnt");
     title->setScale(0.7f);
@@ -98,7 +107,7 @@ bool KeycodeListenerLayer::setup()
     currentContainer->setScale(0.525f);
 
     auto current1 = CCLabelBMFont::create("Current key:", "bigFont.fnt");
-    auto current2 = KeycodeNode::create(this->currentBind);
+    auto current2 = KeycodeNode::create(this->settings.currentKeycode);
     current2->setScale(1.5f);
     current2->setAnchorPoint(ccp(0.5f, 0.8f));
     current2->setLayoutOptions(AxisLayoutOptions::create()->setCrossAxisAlignment(AxisAlignment::Start));
@@ -107,9 +116,25 @@ bool KeycodeListenerLayer::setup()
     currentContainer->addChild(current2);
 
 
+    auto defaultContainer = CCNode::create();
+    defaultContainer->setAnchorPoint(ccp(0.5f, 0.5f));
+    defaultContainer->setContentWidth(80085);
+    defaultContainer->setScale(0.525f);
+
+    auto default1 = CCLabelBMFont::create("Default key:", "bigFont.fnt");
+    auto default2 = KeycodeNode::create(this->settings.defaultKeycode);
+    default2->setScale(1.5f);
+    default2->setAnchorPoint(ccp(0.5f, 0.8f));
+    default2->setLayoutOptions(AxisLayoutOptions::create()->setCrossAxisAlignment(AxisAlignment::Start));
+
+    defaultContainer->addChild(default1);
+    defaultContainer->addChild(default2);
+
+
     cancelContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
     deleteContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
     currentContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
+    defaultContainer->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setGap(10));
 
     auto menu = CCMenu::create();
     menu->setAnchorPoint(ccp(0, 0));
@@ -117,10 +142,20 @@ bool KeycodeListenerLayer::setup()
     auto closeBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(KeycodeListenerLayer::onCloseBtn));
     menu->addChild(closeBtn);
 
+    this->addChildAtPosition(background, Anchor::Center, ccp(0, 0));
     this->addChildAtPosition(title, Anchor::Top, ccp(0, -25));
-    this->addChildAtPosition(cancelContainer, Anchor::Center, ccp(0, 10));
-    this->addChildAtPosition(deleteContainer, Anchor::Center, ccp(0, -10));
-    this->addChildAtPosition(currentContainer, Anchor::Center, ccp(0, 50));
+
+    if (this->settings.allowCancel)
+        this->addChildAtPosition(cancelContainer, Anchor::Center, ccp(0, this->settings.allowDelete ? -20 : -40));
+    
+    if (this->settings.allowDelete)
+        this->addChildAtPosition(deleteContainer, Anchor::Center, ccp(0, -40));
+
+    this->addChildAtPosition(currentContainer, Anchor::Center, ccp(0, 40));
+
+    if (this->settings.defaultKeycode != -1)
+        this->addChildAtPosition(defaultContainer, Anchor::Center, ccp(0, 20));
+    
     this->addChildAtPosition(menu, Anchor::TopLeft, ccp(25, -25));
     return true;
 }

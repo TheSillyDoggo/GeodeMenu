@@ -39,6 +39,7 @@ struct KeybindStruct
     bool allowInGameplay = true;
     bool allowInEditor = true;
     bool allowInMenus = true;
+    bool sendNotification = false;
 
     bool isEligable();
     bool canBeActivated(KeyState state);
