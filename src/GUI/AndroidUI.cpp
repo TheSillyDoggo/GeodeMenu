@@ -4,10 +4,19 @@
 #include "Modules/FavouritesTab.hpp"
 #include "Modules/SearchBox.hpp"
 #include "../Client/SubCategoryNode.hpp"
+#include "Modules/DisableOpenInLevel.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
 {
+    rt = CCRenderTexture::create(getContentWidth(), getContentHeight());
+    rt->getSprite()->setBlendFunc(this->getBlendFunc());
+
+    drawOpacity = CCLayerColor::create();
+    drawOpacity->setOpacity(255);
+    drawOpacity->setVisible(false);
+    this->addChild(drawOpacity);
+
     bg = BackgroundSprite::create();
     bg->setContentSize(m_size);
     bg->setAnchorPoint(ccp(0, 0));
@@ -32,6 +41,8 @@ bool AndroidUI::setup()
     auto e = QOLModUIOpenEvent(this);
     e.post();
 
+    this->runAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
+
     return true;
 }
 
@@ -43,7 +54,7 @@ void AndroidUI::populateModules()
 
     for (auto module : Module::moduleMap)
     {
-        if (module->getParent())
+        if (module->getParent() || module->getCategory().empty())
             continue;
 
         if (utils::string::split(module->getCategory(), "/").size() > 1)
@@ -230,6 +241,12 @@ AndroidUI* AndroidUI::create()
 
 AndroidUI* AndroidUI::addToScene()
 {
+    if (DisableOpenInLevel::get()->getRealEnabled())
+    {
+        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused)
+            return nullptr;
+    }
+
     auto pRet = create();
     pRet->show();
 
@@ -246,6 +263,54 @@ AndroidUI::~AndroidUI()
     instance = nullptr;
 }
 
+void AndroidUI::runAnimation(MenuAnimation anim)
+{
+    auto winSize = CCDirector::get()->getWinSize();
+    auto moveToMid = CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr);
+
+    switch (anim)
+    {
+        case MenuAnimation::None:
+            return;
+
+        case MenuAnimation::FromTop:
+            m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height + m_size.height / 2));
+
+            m_mainLayer->runAction(moveToMid);
+            return;
+
+        case MenuAnimation::FromBottom:
+            m_mainLayer->setPosition(ccp(winSize.width / 2, -m_size.height / 2));
+
+            m_mainLayer->runAction(moveToMid);
+            return;
+
+        case MenuAnimation::FromLeft:
+            m_mainLayer->setPosition(ccp(-m_size.width / 2, winSize.height / 2));
+
+            m_mainLayer->runAction(moveToMid);
+            return;
+
+        case MenuAnimation::FromRight:
+            m_mainLayer->setPosition(ccp(winSize.width + m_size.width / 2, winSize.height / 2));
+
+            m_mainLayer->runAction(moveToMid);
+            return;
+
+        case MenuAnimation::Scale:
+            m_mainLayer->setScale(0);
+
+            m_mainLayer->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));
+            return;
+
+        case MenuAnimation::FadeIn:
+            drawOpacity->setOpacity(0);
+
+            drawOpacity->runAction(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2));
+            return;
+    }
+}
+
 void AndroidUI::close()
 {
     if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !PlayLayer::get()->m_levelEndAnimationStarted && !GameManager::sharedState()->getGameVariable("0024"))
@@ -258,5 +323,21 @@ void AndroidUI::visit()
 {
     AndroidBall::get()->visit();
 
+    // for an animation i was making, but i couldnt get clipping to work right
+
+    if (drawOpacity->getOpacity() == 255)
+        return geode::Popup<>::visit();
+
+    auto op = getOpacity();
+    this->setOpacity(0);
+
+    rt->beginWithClear(0, 0, 0, op / 255.0f);
     geode::Popup<>::visit();
+    rt->end();
+
+    this->setOpacity(op);
+
+    rt->setPosition(getContentSize() / 2);
+    rt->getSprite()->setOpacity(drawOpacity->getOpacity());
+    rt->visit();
 }

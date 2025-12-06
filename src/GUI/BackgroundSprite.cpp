@@ -66,6 +66,7 @@ void BackgroundSprite::setTheme(int theme)
     outlineSpr->setVisible(theme == -2);
 
     clipping->setVisible(theme == -1);
+    clipping->getStencil()->setVisible(theme == -1);
     gradientOutline->setVisible(theme == -1);
     gradientDarken->setVisible(theme == -1 && gradientDarkenVisible);
 }

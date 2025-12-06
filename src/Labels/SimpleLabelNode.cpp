@@ -87,7 +87,7 @@ void SimpleLabelNode::update(float dt)
     }
     
 
-    addString(SimpleLabelAnchor::TopLeft, "6 7");
+    addString(SimpleLabelAnchor::TopLeft, "");
 
 
     for (size_t i = 0; i < 9; i++)

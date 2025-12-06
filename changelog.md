@@ -1,6 +1,17 @@
 # 2.0.0
 
 - Rewrite entire mod
+- Fixed MANY bugs including:
+-- Startpos switcher not toggling auto safe mode when playing from a startpos
+-- Show Hitboxes not being able to be turned off
+-- Settings not saving
+- Improved UI
+-- Added icons next to many ui elements
+-- Improved code to make it easy to add new features like favourites
+- Added ability to favourite mods
+- Added ability to add keybinds to speedhack presets
+- Added ability to change keybind for the mod menu
+- Added new **Fade In** animation for the menu
 
 # 1.8.0
 

@@ -9,6 +9,17 @@
 
 using namespace geode::prelude;
 
+enum class MenuAnimation
+{
+    None,
+    FromTop,
+    FromBottom,
+    FromLeft,
+    FromRight,
+    Scale,
+    FadeIn
+};
+
 class AndroidUI : public geode::Popup<>
 {
     protected:
@@ -20,6 +31,8 @@ class AndroidUI : public geode::Popup<>
         CCNode* categoryMenu;
         CCMenu* tabsMenu;
         CCNode* bottomTabsContainer = nullptr;
+        Ref<CCRenderTexture> rt = nullptr;
+        CCLayerColor* drawOpacity = nullptr;
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
@@ -53,6 +66,8 @@ class AndroidUI : public geode::Popup<>
         void populateModules();
         void populateTabs();
         void updateTabs();
+
+        void runAnimation(MenuAnimation anim);
 
         void addTab(std::string name, std::string id, std::string sprite);
 
