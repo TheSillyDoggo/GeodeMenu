@@ -63,7 +63,7 @@ bool AndroidBall::getColonThreeSecret()
 
 void AndroidBall::setButtonScale(float scale)
 {
-    scale = clamp<float>(scale, 0.6f, 1.0f);
+    scale = std::clamp<float>(scale, 0.6f, 1.0f);
     this->scale = scale;
 
     background->setScale(scale);

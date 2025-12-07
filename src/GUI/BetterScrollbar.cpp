@@ -50,7 +50,7 @@ void BetterScrollbar::visit()
         float scroll = h == 0 ? 1 : -(layer->m_contentLayer->getPositionY() / h);
         float overflow = (scroll < 0 ? -scroll : (scroll > 1 ? scroll - 1 : 0));
 
-        handleContainer->setPosition(ccp(getInset(), getInset() + (clamp<float>(scroll, 0, 1) * (getContentHeight() - getInset() * 2 - handleH) + (scroll > 1 ? (handleH * overflow) : 0))));
+        handleContainer->setPosition(ccp(getInset(), getInset() + (std::clamp<float>(scroll, 0, 1) * (getContentHeight() - getInset() * 2 - handleH) + (scroll > 1 ? (handleH * overflow) : 0))));
         handleContainer->setContentSize(ccp(getContentWidth() - getInset() * 2, handleH - (handleH * overflow)));
 
         handle->setContentSize(handleContainer->getContentSize() / handle->getScale());
@@ -126,14 +126,14 @@ void BetterScrollbar::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
             if (moveUp && scrollMaxUp != 0)
             {
-                float percent = clamp<float>(prog / scrollMaxUp, 0, 1);
+                float percent = std::clamp<float>(prog / scrollMaxUp, 0, 1);
 
                 layer->m_contentLayer->setPositionY(scrollStart - ((layer->m_contentLayer->getContentHeight() + scrollStart - layer->getContentHeight()) * percent));
             }
 
             if (!moveUp && scrollMaxDown != 0)
             {
-                float percent = clamp<float>(prog / scrollMaxDown, 0, 1);
+                float percent = std::clamp<float>(prog / scrollMaxDown, 0, 1);
 
                 layer->m_contentLayer->setPositionY(scrollStart - (scrollStart * percent));
             }

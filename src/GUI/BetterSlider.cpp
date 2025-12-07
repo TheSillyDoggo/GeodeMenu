@@ -93,7 +93,7 @@ void BetterSlider::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
     float value = (x - (min.x + 5)) / ((max.x - min.x) - 10);
 
     if (!(bypassAllowed && Module::getByID("slider-limit")->getRealEnabled()))
-        value = clamp<float>(value, 0, 1);
+        value = std::clamp<float>(value, 0, 1);
 
     for (size_t i = 0; i < std::min<int>(snapSprites.size(), snapValues.size()); i++)
     {

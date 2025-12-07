@@ -31,30 +31,38 @@ void BoundingBoxClipNode::visit()
     glDisable(0xc11);
 }
 
-#ifdef GEODE_IS_WINDOWS
-
 class $modify (CCEGLView)
 {
     virtual void setScissorInPoints(float x , float y , float w , float h)
-    {
-        if (CCKeyboardDispatcher::get()->getShiftKeyPressed())
-        {
-            GLint viewport[4];
-            glGetIntegerv(GL_VIEWPORT, viewport);
+    {        
+        #ifdef GEODE_IS_WINDOWS
 
-            float zoomFactor = m_fFrameZoomFactor;
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
 
-            float multWidth = viewport[2] / (m_obScreenSize.width * zoomFactor);
-            float multHeight = viewport[3] / (m_obScreenSize.height * zoomFactor);
+        float zoomFactor = m_fFrameZoomFactor;
 
-            x *= multWidth;
-            y *= multHeight;
-            w *= multWidth;
-            h *= multHeight;
-        }
+        float multWidth = viewport[2] / (m_obScreenSize.width * zoomFactor);
+        float multHeight = viewport[3] / (m_obScreenSize.height * zoomFactor);
+
+        x *= multWidth;
+        y *= multHeight;
+        w *= multWidth;
+        h *= multHeight;
 
         CCEGLView::setScissorInPoints(x, y, w, h);
+
+        #elif GEODE_IS_ANDROID
+
+        log::info("1: {}, 2: {}, 3: {}, 4: {}", viewport[0], viewport[1], viewport[2], viewport[3]);
+        log::info("5: {}, 6: {}, 7: {}, 8: {}", m_obViewPortRect.origin.x, m_obViewPortRect.origin.y, m_obScreenSize.width, m_obScreenSize.height);
+
+        CCEGLView::setScissorInPoints(x, y, w, h);
+
+        #else
+
+        CCEGLView::setScissorInPoints(x, y, w, h);
+
+        #endif
     }
 };
-
-#endif
