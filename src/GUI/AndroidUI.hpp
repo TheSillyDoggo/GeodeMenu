@@ -27,6 +27,7 @@ class AndroidUI : public geode::Popup<>
 
         static inline AndroidUI* instance = nullptr;
 
+        CCMenuItemSpriteExtra* backBtn = nullptr;
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
         CCMenu* tabsMenu;

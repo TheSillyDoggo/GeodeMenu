@@ -28,7 +28,7 @@ bool AndroidUI::setup()
     auto backMenu = CCMenu::create();
     backMenu->setPosition(ccp(24, CCDirector::get()->getWinSize().height - 23));
     
-    auto backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
+    backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
 
     populateModules();
@@ -267,6 +267,7 @@ void AndroidUI::runAnimation(MenuAnimation anim)
 {
     auto winSize = CCDirector::get()->getWinSize();
     auto moveToMid = CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr);
+    auto fadeIn = CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr);
 
     switch (anim)
     {
@@ -274,30 +275,45 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             return;
 
         case MenuAnimation::FromTop:
+            backBtn->setOpacity(0);
+            backBtn->runAction(fadeIn);
+
             m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height + m_size.height / 2));
 
             m_mainLayer->runAction(moveToMid);
             return;
 
         case MenuAnimation::FromBottom:
+            backBtn->setOpacity(0);
+            backBtn->runAction(fadeIn);
+
             m_mainLayer->setPosition(ccp(winSize.width / 2, -m_size.height / 2));
 
             m_mainLayer->runAction(moveToMid);
             return;
 
         case MenuAnimation::FromLeft:
+            backBtn->setOpacity(0);
+            backBtn->runAction(fadeIn);
+
             m_mainLayer->setPosition(ccp(-m_size.width / 2, winSize.height / 2));
 
             m_mainLayer->runAction(moveToMid);
             return;
 
         case MenuAnimation::FromRight:
+            backBtn->setOpacity(0);
+            backBtn->runAction(fadeIn);
+
             m_mainLayer->setPosition(ccp(winSize.width + m_size.width / 2, winSize.height / 2));
 
             m_mainLayer->runAction(moveToMid);
             return;
 
         case MenuAnimation::Scale:
+            backBtn->setOpacity(0);
+            backBtn->runAction(fadeIn);
+
             m_mainLayer->setScale(0);
 
             m_mainLayer->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));

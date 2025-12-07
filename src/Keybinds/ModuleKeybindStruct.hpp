@@ -12,7 +12,7 @@ struct ModuleKeybindStruct : public KeybindStruct
 {
     KeybindType type;
     bool invertHold;
-    std::string modID;
+    Module* mod;
 
     virtual void onActivate(KeyState state);
 };

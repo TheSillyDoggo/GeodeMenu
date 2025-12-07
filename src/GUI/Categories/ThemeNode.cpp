@@ -16,14 +16,14 @@ bool ThemeNode::init()
 
     auto animBG = CCScale9Sprite::create("square02b_small.png");
     animBG->setAnchorPoint(ccp(1, 1));
-    animBG->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, (getContentHeight() - 30 + 2.5f / 2) - (30 + 2.5f)) / 0.5f);
+    animBG->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, (getContentHeight() - 30 + 2.5f / 2) - (30 + 28 + 2.5f)) / 0.5f);
     animBG->setScale(0.5f);
     animBG->setColor(ccc3(0, 0, 0));
     animBG->setOpacity(100);
 
     auto miscBG = CCScale9Sprite::create("square02b_small.png");
     miscBG->setAnchorPoint(ccp(1, 0));
-    miscBG->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, 30) / 0.5f);
+    miscBG->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, 30 + 28) / 0.5f);
     miscBG->setScale(0.5f);
     miscBG->setColor(ccc3(0, 0, 0));
     miscBG->setOpacity(100);
@@ -63,11 +63,13 @@ bool ThemeNode::init()
     updateAnimSprite();
 
     blurBG = BlurMenuBG::get()->getNode();
+    colonThree = UseColonThreeButton::get()->getNode();
 
     this->addChildAtPosition(colourBG, Anchor::TopLeft, ccp(2.5f, 0));
     this->addChildAtPosition(animBG, Anchor::TopRight, ccp(-2.5f, 0));
     this->addChildAtPosition(miscBG, Anchor::BottomRight, ccp(-2.5f, 2.5f + 1.25f));
     this->addChildAtPosition(blurBG, Anchor::BottomRight, ccp(-86.5f, 17.5f + 1.25f));
+    this->addChildAtPosition(colonThree, Anchor::BottomRight, ccp(-86.5f, 17.5f + 28 + 1.25f));
     this->addChildAtPosition(colourMenu, Anchor::TopLeft, ccp(5, -2.5f));
     this->addChildAtPosition(animMenu, Anchor::TopRight, ccp(-5, -2.5f));
     return true;

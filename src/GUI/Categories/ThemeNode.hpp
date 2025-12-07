@@ -3,6 +3,7 @@
 #include "../../Client/CategoryNode.hpp"
 #include "../AndroidUI.hpp"
 #include "../Modules/BlurBackground.hpp"
+#include "../Modules/UseColonThreeButton.hpp"
 
 class ThemeNode : public CategoryNode
 {
@@ -11,6 +12,7 @@ class ThemeNode : public CategoryNode
         std::unordered_map<MenuAnimation, CCMenuItemSpriteExtra*> animBtns;
         CCScale9Sprite* colourBG = nullptr;
         ModuleNode* blurBG = nullptr;
+        ModuleNode* colonThree = nullptr;
 
     public:
         CREATE_FUNC(ThemeNode)

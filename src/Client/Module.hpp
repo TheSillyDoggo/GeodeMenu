@@ -43,6 +43,8 @@ enum class SafeModeTrigger
     Custom,
 };
 
+struct ModuleKeybindStruct;
+
 class Module
 {
     protected:
@@ -113,6 +115,9 @@ class Module
 
         void addOption(Module* option);
         std::vector<Module*>& getOptions();
+
+        void setKeybind(ModuleKeybindStruct key);
+        void removeKeybind();
 
         Module* getParent();
         std::string getName();

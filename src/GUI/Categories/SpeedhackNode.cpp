@@ -10,7 +10,7 @@ bool SpeedhackNode::init()
     auto menu = CCMenu::create();
     menu->setPosition(ccp(0, 0));
 
-    input = TextInput::create(100, "Speed");
+    input = TextInput::create(100, "Value");
     input->setString(Speedhack::get()->getText());
     input->setDelegate(this);
     input->setFilter("1234567890.");
@@ -21,11 +21,12 @@ bool SpeedhackNode::init()
     speedLbl->setScale(0.6f);
     speedLbl->setPosition(input->getPosition() + ccp(-70, 0));
 
-    slider = Slider::create(this, menu_selector(SpeedhackNode::onSliderMoved));
+    slider = BetterSlider::create(this, menu_selector(SpeedhackNode::onSliderMoved));
     slider->setPosition(input->getPosition() + ccp(-38, -35));
     slider->setScale(0.9f);
-    slider->setAnchorPoint(ccp(0, 0));
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
+    slider->setRange(0.1f, 3.0f);
+    slider->setSnapValuesRanged({ 1.0f });
+    slider->setValueRanged(Speedhack::get()->getValue());
 
     enabledBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SpeedhackNode::onToggleEnabled), 0.75f);
     enabledBtn->toggle(Speedhack::get()->getEnabled());
@@ -91,19 +92,19 @@ void SpeedhackNode::onToggleGameplay(CCObject* sender)
 
 void SpeedhackNode::onSliderMoved(CCObject* sender)
 {
-    Speedhack::get()->setText(fmt::format("{:.02f}", scaleFloat(slider->getValue(), 0.1f, 3.0f)));
+    Speedhack::get()->setText(fmt::format("{:.02f}", slider->getValueRanged()));
     input->setString(Speedhack::get()->getText());
 }
 
 void SpeedhackNode::onTrash(CCObject* sender)
 {
     Speedhack::get()->setText("");
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
+    slider->setValueRanged(Speedhack::get()->getValue());
     input->setString("");
 }
 
 void SpeedhackNode::textChanged(CCTextInputNode* node)
 {
     Speedhack::get()->setText(input->getString());
-    slider->setValue(utils::clamp<float>(unscaleFloat(Speedhack::get()->getValue(), 0.1f, 3.0f), 0, 1));
+    slider->setValueRanged(Speedhack::get()->getValue());
 }

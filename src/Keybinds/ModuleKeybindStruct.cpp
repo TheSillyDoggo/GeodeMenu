@@ -4,7 +4,7 @@
 
 void ModuleKeybindStruct::onActivate(KeyState state)
 {
-    if (auto mod = Module::getByID(modID))
+    if (mod)
     {
         if (type == KeybindType::Toggle)
         {

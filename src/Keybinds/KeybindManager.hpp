@@ -6,6 +6,7 @@ class KeybindManager
 {
     protected:
         std::vector<KeybindStruct*> structs = {};
+        std::vector<Module*> modules = {};
 
     public:
         static KeybindManager* get();

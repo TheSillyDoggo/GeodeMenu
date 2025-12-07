@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Client/CategoryNode.hpp"
+#include "../BetterSlider.hpp"
 
 using namespace geode::prelude;
 
@@ -11,7 +12,7 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         CCMenuItemToggler* musicBtn = nullptr;
         CCMenuItemToggler* gameplayBtn = nullptr;
         CCMenuItemSpriteExtra* trashBtn = nullptr;
-        Slider* slider = nullptr;
+        BetterSlider* slider = nullptr;
         TextInput* input = nullptr;
 
     public:

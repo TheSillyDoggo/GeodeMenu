@@ -79,6 +79,11 @@ void ModuleNode::updateNode()
         favBtn->toggle(module->isFavourited());
 }
 
+void ModuleNode::onChangeKeybind(CCObject* sender)
+{
+    auto mod = static_cast<Module*>(this->getUserData());
+}
+
 void ModuleNode::onToggle(CCObject* sender)
 {
     if (module->showDisableWarning() && module->getUserEnabled())
@@ -147,10 +152,11 @@ void ModuleNode::onInfo(CCObject* sender)
 
     auto menu = CCMenu::create();
     // この二行は怖いだ
-    menu->setPosition(CCDirector::get()->getWinSize() / 2 - (alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentSize() / 2) + ccp(25, 25));
+    menu->setPosition(CCDirector::get()->getWinSize() / 2 - ccp(0, alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentHeight() / 2) + ccp(0, 25));
     menu->setTouchPriority(-42069);
 
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(ModuleNode::onInfoToggleFavourite));
+    btn->setPositionX(-alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 + 25);
     btn->toggle(module->isFavourited());
 
     btn->setContentSize(btn->getContentSize() * 3);
@@ -166,7 +172,13 @@ void ModuleNode::onInfo(CCObject* sender)
     btn->m_offButton->setColor(ccc3(150, 150, 150));
     btn->m_offButton->setOpacity(150);
 
+    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
+    btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
+    btnKeybind->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25);
+    btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
+
     menu->addChild(btn);
+    menu->addChild(btnKeybind);
     alert->m_mainLayer->addChild(menu, 8008569);
 
     // title

@@ -12,6 +12,7 @@
 - Added ability to add keybinds to speedhack presets
 - Added ability to change keybind for the mod menu
 - Added new **Fade In** animation for the menu
+- Improved button animations
 
 # 1.8.0
 

@@ -31,7 +31,8 @@
 		"sprites": [
 			"resources/sprites/*.png",
 			"resources/sprites/icons/categories/*.png",
-			"resources/sprites/icons/animations/*.png"
+			"resources/sprites/icons/animations/*.png",
+			"resources/sprites/slider/*.png"
 		]
     },
 	"settings": {

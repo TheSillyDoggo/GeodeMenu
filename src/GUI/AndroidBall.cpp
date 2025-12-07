@@ -3,6 +3,9 @@
 #include "Modules/SavePosition.hpp"
 #include "Modules/HideButton.hpp"
 #include "Modules/AllowDragging.hpp"
+#include "Modules/SmoothMoveButton.hpp"
+#include "Modules/ButtonScale.hpp"
+#include "Modules/UseColonThreeButton.hpp"
 #include "../Utils/ColourUtils.hpp"
 
 AndroidBall* AndroidBall::get()
@@ -17,17 +20,28 @@ AndroidBall* AndroidBall::get()
 
 bool AndroidBall::init()
 {
-    background = CCSprite::create("qolmodButtonBG.png"_spr);
-    overlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
-
-    if (SavePosition::get()->getUserEnabled())
-        this->setPosition(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));
-
-    setColonThreeSecret(Mod::get()->getSavedValue<bool>("colon-three-secwet-uwu-:3", false));
-
     this->retain();
     this->onEnter();
     this->scheduleUpdate();
+
+    background = CCSprite::create("qolmodButtonBG.png"_spr);
+    overlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
+
+    this->setOpacity(normalOpacity * 255);
+
+    if (SavePosition::get()->getUserEnabled())
+    {
+        this->setPosition(Mod::get()->getSavedValue("posX", 32), Mod::get()->getSavedValue("posY", CCDirector::get()->getWinSize().height / 2));
+        position = getPosition();
+    }
+    else
+    {
+        this->setPosition(ccp(32, CCDirector::get()->getWinSize().height / 2));
+        position = getPosition();
+    }
+
+    setColonThreeSecret(UseColonThreeButton::get()->getRealEnabled());
+
     this->addChild(background);
     this->addChild(overlay);
     return true;
@@ -47,10 +61,22 @@ bool AndroidBall::getColonThreeSecret()
     return colonThreeEnabled;
 }
 
+void AndroidBall::setButtonScale(float scale)
+{
+    scale = clamp<float>(scale, 0.6f, 1.0f);
+    this->scale = scale;
+
+    background->setScale(scale);
+    overlay->setScale(scale);
+}
+
+void AndroidBall::setSmoothMove(bool smooth)
+{
+    this->smoothMove = smooth;
+}
+
 void AndroidBall::reloadTextures()
 {
-    log::info("Reloading textures");
-
     background->setTexture(CCSprite::create("qolmodButtonBG.png"_spr)->getTexture());
     setColonThreeSecret(colonThreeEnabled);
 }
@@ -78,10 +104,46 @@ void AndroidBall::update(float dt)
     if (!shouldFunction())
         return;
 
-    this->setPositionX(std::min<float>(std::max<float>(0, getPositionX()), CCDirector::get()->getWinSize().width));
-    this->setPositionY(std::min<float>(std::max<float>(0, getPositionY()), CCDirector::get()->getWinSize().height));
+    setSmoothMove(SmoothMoveButton::get()->getRealEnabled());
+    setButtonScale(ButtonScale::get()->getValue());
+
+    if (getColonThreeSecret() != UseColonThreeButton::get()->getRealEnabled())
+        setColonThreeSecret(UseColonThreeButton::get()->getRealEnabled());
+
+    if (smoothMove)
+    {
+        float t = 10 * dt;
+
+        this->setPosition(ccp(
+            std::lerp<float>(getPositionX(), position.x, t),
+            std::lerp<float>(getPositionY(), position.y, t)
+        ));
+    }
+    else
+    {
+        this->setPosition(position);
+    }
+
+    auto winSize = CCDirector::get()->getWinSize();
+
+    this->setPosition(ccp(
+        clamp<float>(getPositionX(), 0, winSize.width),
+        clamp<float>(getPositionY(), 0, winSize.height)
+    ));
 
     overlay->setColor(ColourUtils::get()->getPastel(-1));
+
+    if (!AndroidUI::get() && !getActionByTag(69) && getOpacity() != (normalOpacity * 255) && !isDragging)
+    {
+        auto fadeBack = CCFadeTo::create(0.25f, normalOpacity * 255);
+        fadeBack->setTag(69);
+        this->runAction(fadeBack);
+    }
+}
+
+void AndroidBall::onOpenMenu()
+{
+    AndroidUI::addToScene();
 }
 
 void AndroidBall::visit()
@@ -92,16 +154,27 @@ void AndroidBall::visit()
     CCNode::visit();
 }
 
+void AndroidBall::setOpacity(GLubyte opacity)
+{
+    CCNodeRGBA::setOpacity(opacity);
+
+    background->setOpacity(opacity);
+    overlay->setOpacity(opacity);
+}
+
 bool AndroidBall::ccTouchBegan(CCTouch* touch)
 {
-    CCRect rect = { getPositionX() - 25.0f, getPositionY() - 25.0f, 50, 50 };
+    CCRect rect = { getPositionX() - 25.0f * scale, getPositionY() - 25.0f * scale, 50 * scale, 50 * scale };
 
     if (rect.containsPoint(touch->getLocation()))
     {
         isDragging = true;
 
         this->stopAllActions();
-        this->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.8f), 2));
+        this->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.9f), 2));
+        auto fadeIn = CCFadeTo::create(0.25f, 255);
+        fadeIn->setTag(69);
+        this->runAction(fadeIn);
 
         return true;
     }
@@ -127,7 +200,7 @@ bool AndroidBall::ccTouchMoved(CCTouch* touch)
 
         if (isMoving)
         {
-            setPosition(touch->getLocation() - moveOffset);
+            position = touch->getLocation() - moveOffset;
 
             return true;
         }
@@ -142,18 +215,19 @@ bool AndroidBall::ccTouchEnded(CCTouch* touch)
     {
         onOpenMenu();
     }
+    else
+    {
+        auto fadeBack = CCFadeTo::create(0.25f, normalOpacity * 255);
+        fadeBack->setTag(69);
+        this->runAction(fadeBack);
+    }
 
     this->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
-    Mod::get()->setSavedValue("posX", getPositionX());
-    Mod::get()->setSavedValue("posY", getPositionY());
+    Mod::get()->setSavedValue("posX", position.x);
+    Mod::get()->setSavedValue("posY", position.y);
 
     isDragging = false;
     isMoving = false;
 
     return false;
-}
-
-void AndroidBall::onOpenMenu()
-{
-    AndroidUI::addToScene();
 }
