@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-class BackgroundSprite : public BoundingBoxClipNode
+class BackgroundSprite : public CCNode
 {
     protected:
         int theme = 0;

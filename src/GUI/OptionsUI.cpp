@@ -28,9 +28,10 @@ bool OptionsUI::setup()
 {
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
+    bg->setPosition(this->m_size / 2);
 
     m_buttonMenu->setVisible(false);
-    m_mainLayer->addChildAtPosition(bg, Anchor::Center);
+    m_mainLayer->addChild(bg);
 
     auto title = CCLabelBMFont::create(module->getName().c_str(), "goldFont.fnt");
     title->setScale(0.7f);

@@ -3,7 +3,7 @@
 
 bool BackgroundSprite::init()
 {
-    if (!BoundingBoxClipNode::init())
+    if (!CCNode::init())
         return false;
 
     colouredBG = CCScale9Sprite::create("GJ_square01.png");

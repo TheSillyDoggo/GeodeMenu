@@ -103,6 +103,7 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
         sprite->setScale((getContentHeight() - (SPRITE_INSET * 2)) / sprite->getContentHeight());
         sprite->setAnchorPoint(ccp(0, 0.5f));
         label->setAnchorPoint(ccp(0, 0.5f));
+        label->limitLabelWidth(getContentWidth() - (SPRITE_INSET * 4 + sprite->getScaledContentWidth()), 0.375f, 0);
         label->setPosition(ccp(-getContentWidth() / 2, 0) + ccp(SPRITE_INSET * 2 + sprite->getScaledContentWidth(), 0));
     }
 

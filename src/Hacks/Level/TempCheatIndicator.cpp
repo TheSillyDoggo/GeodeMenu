@@ -11,7 +11,7 @@ class TempCheatIndicator : public Module
         {
             setName("TEMP cheat indicator");
             setID("temp-cheat-indicator");
-            setCategory("Level");
+            setCategory("Labels");
             setDescription("Temporary cheat indicator until labels have been added back");
             setDefaultEnabled(true);
         }

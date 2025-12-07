@@ -83,6 +83,12 @@ void SafeMode::addMessage(SafeModeTrigger level, std::string message)
         case SafeModeTrigger::LevelLoad:
             levelLoadReasons.push_back(message);
             break;
+
+        case SafeModeTrigger::None:
+            break;
+
+        case SafeModeTrigger::Custom:
+            break;
     }
 }
 

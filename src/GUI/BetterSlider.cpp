@@ -181,7 +181,7 @@ void BetterSlider::visit()
     }
 
     fill->setPosition(ccp(2, getContentHeight() / 2));
-    fill->setTextureRect(CCRectMake(0, 0, value01ToXPos(clamp<float>(getValue01(), 0, 1), 2), 8));
+    fill->setTextureRect(CCRectMake(0, 0, value01ToXPos(std::clamp<float>(getValue01(), 0, 1), 2), 8));
 
     CCMenu::visit();
 }
