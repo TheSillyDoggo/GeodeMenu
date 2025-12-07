@@ -50,19 +50,19 @@ class $modify (CCEGLView)
         w *= multWidth;
         h *= multHeight;
 
-        CCEGLView::setScissorInPoints(x, y, w, h);
+        return CCEGLView::setScissorInPoints(x, y, w, h);
 
-        #elif GEODE_IS_ANDROID
+        #endif
+
+        #ifdef GEODE_IS_ANDROID
 
         log::info("1: {}, 2: {}, 3: {}, 4: {}", viewport[0], viewport[1], viewport[2], viewport[3]);
         log::info("5: {}, 6: {}, 7: {}, 8: {}", m_obViewPortRect.origin.x, m_obViewPortRect.origin.y, m_obScreenSize.width, m_obScreenSize.height);
 
-        CCEGLView::setScissorInPoints(x, y, w, h);
-
-        #else
-
-        CCEGLView::setScissorInPoints(x, y, w, h);
+        return CCEGLView::setScissorInPoints(x, y, w, h);
 
         #endif
+
+        CCEGLView::setScissorInPoints(x, y, w, h);
     }
 };
