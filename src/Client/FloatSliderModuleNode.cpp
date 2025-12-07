@@ -30,6 +30,7 @@ void FloatSliderModuleNode::setup()
     slider->setContentWidth(getContentWidth() - label->getScaledContentWidth());
     slider->setScale(0.8f);
     slider->getThumb()->setScale(0.75f);
+    slider->setBypassAllowed(false);
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(slider, Anchor::Right, ccp(-9, -1.5f));
