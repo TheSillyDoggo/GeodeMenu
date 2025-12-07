@@ -29,6 +29,12 @@ void BoundingBoxClipNode::visit()
     CCNode::visit();
 
     glDisable(0xc11);
+
+    GLint viewporta[4];
+    glGetIntegerv(GL_VIEWPORT, viewporta);
+
+    log::error("balls: 1: {}, 2: {}, 3: {}, 4: {}", viewporta[0], viewporta[1], viewporta[2], viewporta[3]);
+    log::error("balls: 5: {}, 6: {}, 7: {}, 8: {}", CCEGLView::get()->m_obViewPortRect.origin.x, CCEGLView::get()->m_obViewPortRect.origin.y, CCEGLView::get()->m_obViewPortRect.size.width, CCEGLView::get()->m_obViewPortRect.size.height);
 }
 
 class $modify (CCEGLView)
@@ -54,13 +60,13 @@ class $modify (CCEGLView)
 
         #endif
 
+        GLint viewporta[4];
+        glGetIntegerv(GL_VIEWPORT, viewporta);
+
+        log::error("1: {}, 2: {}, 3: {}, 4: {}", viewporta[0], viewporta[1], viewporta[2], viewporta[3]);
+        log::error("5: {}, 6: {}, 7: {}, 8: {}", m_obViewPortRect.origin.x, m_obViewPortRect.origin.y, m_obViewPortRect.size.width, m_obViewPortRect.size.height);
+
         #ifdef GEODE_IS_ANDROID
-
-        GLint viewport[4];
-        glGetIntegerv(GL_VIEWPORT, viewport);
-
-        log::info("1: {}, 2: {}, 3: {}, 4: {}", viewport[0], viewport[1], viewport[2], viewport[3]);
-        log::info("5: {}, 6: {}, 7: {}, 8: {}", m_obViewPortRect.origin.x, m_obViewPortRect.origin.y, m_obScreenSize.width, m_obScreenSize.height);
 
         return CCEGLView::setScissorInPoints(x, y, w, h);
 
