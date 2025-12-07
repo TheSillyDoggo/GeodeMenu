@@ -115,8 +115,8 @@ void AndroidBall::update(float dt)
         float t = 10 * dt;
 
         this->setPosition(ccp(
-            std::lerp<float>(getPositionX(), position.x, t),
-            std::lerp<float>(getPositionY(), position.y, t)
+            std::lerp<double>(getPositionX(), position.x, t),
+            std::lerp<double>(getPositionY(), position.y, t)
         ));
     }
     else
@@ -127,8 +127,8 @@ void AndroidBall::update(float dt)
     auto winSize = CCDirector::get()->getWinSize();
 
     this->setPosition(ccp(
-        clamp<float>(getPositionX(), 0, winSize.width),
-        clamp<float>(getPositionY(), 0, winSize.height)
+        std::clamp<float>(getPositionX(), 0, winSize.width),
+        std::clamp<float>(getPositionY(), 0, winSize.height)
     ));
 
     overlay->setColor(ColourUtils::get()->getPastel(-1));
