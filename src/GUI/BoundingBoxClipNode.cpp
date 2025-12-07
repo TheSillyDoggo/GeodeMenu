@@ -56,6 +56,9 @@ class $modify (CCEGLView)
 
         #ifdef GEODE_IS_ANDROID
 
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
         log::info("1: {}, 2: {}, 3: {}, 4: {}", viewport[0], viewport[1], viewport[2], viewport[3]);
         log::info("5: {}, 6: {}, 7: {}, 8: {}", m_obViewPortRect.origin.x, m_obViewPortRect.origin.y, m_obScreenSize.width, m_obScreenSize.height);
 
