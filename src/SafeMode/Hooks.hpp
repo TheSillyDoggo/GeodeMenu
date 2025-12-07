@@ -26,4 +26,6 @@ class $modify (SafeGJGameLevel, GJGameLevel)
 class $modify (SafeEndLevelLayer, EndLevelLayer)
 {
     virtual void customSetup();
+    
+    void playCoinEffect(float duration);
 };

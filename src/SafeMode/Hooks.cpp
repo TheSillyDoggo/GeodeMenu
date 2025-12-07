@@ -121,3 +121,11 @@ void SafeEndLevelLayer::customSetup()
         m_mainLayer->addChild(infoMenu);
     }
 }
+
+void SafeEndLevelLayer::playCoinEffect(float duration)
+{
+    if (SafeMode::get()->shouldDisableLevelProgress())
+        return;
+
+    EndLevelLayer::playCoinEffect(duration);
+}

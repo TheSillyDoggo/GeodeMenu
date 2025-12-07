@@ -243,7 +243,7 @@ AndroidUI* AndroidUI::addToScene()
 {
     if (DisableOpenInLevel::get()->getRealEnabled())
     {
-        if (PlayLayer::get() && !PlayLayer::get()->m_isPaused)
+        if (PlayLayer::get() && !(PlayLayer::get()->m_isPaused || PlayLayer::get()->m_levelEndAnimationStarted))
             return nullptr;
     }
 
