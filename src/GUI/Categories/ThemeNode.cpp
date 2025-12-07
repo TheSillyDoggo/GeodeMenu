@@ -44,6 +44,8 @@ bool ThemeNode::init()
         colourMenu->addChild(addColourBtn(-i));
     }
 
+    colourMenu->addChild(addColourBtn(-1));
+
     colourMenu->updateLayout();
     updateColourSprite();
 
@@ -102,7 +104,7 @@ CCMenuItemSpriteExtra* ThemeNode::addColourBtn(int colour)
 
 CCMenuItemSpriteExtra* ThemeNode::addAnimBtn(MenuAnimation anim)
 {
-    auto size = ccp(130, 25);
+    auto size = ccp(200, 25);
 
     auto spr = getAnimContainer(anim);
     auto spr2 = getAnimContainer(anim);

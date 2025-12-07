@@ -1,10 +1,11 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "BoundingBoxClipNode.hpp"
 
 using namespace geode::prelude;
 
-class BackgroundSprite : public CCNode
+class BackgroundSprite : public BoundingBoxClipNode
 {
     protected:
         int theme = 0;

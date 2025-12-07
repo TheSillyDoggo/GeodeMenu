@@ -6,9 +6,10 @@ using namespace geode::prelude;
 
 class BoundingBoxClipNode : public CCNode
 {
-    public:
+    private:
         CCNode* node;
 
+    public:
         virtual bool init();
         virtual void visit();
 

@@ -3,7 +3,7 @@
 
 bool BackgroundSprite::init()
 {
-    if (!CCNode::init())
+    if (!BoundingBoxClipNode::init())
         return false;
 
     colouredBG = CCScale9Sprite::create("GJ_square01.png");
@@ -105,5 +105,4 @@ void BackgroundSprite::setColour(ccColor3B colour)
     colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : colour);
     outlineSpr->setColor(colour);
     gradientOutline->setColor(colour);
-    gradientDarken->setColor(colour);
 }

@@ -178,7 +178,7 @@ void ModuleNode::onInfo(CCObject* sender)
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
     menu->addChild(btn);
-    menu->addChild(btnKeybind);
+    // menu->addChild(btnKeybind);
     alert->m_mainLayer->addChild(menu, 8008569);
 
     // title
