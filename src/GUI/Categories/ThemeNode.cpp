@@ -61,6 +61,16 @@ bool ThemeNode::init()
         animMenu->addChild(addAnimBtn((MenuAnimation)i));
     }
 
+    auto animPreviewMenu = CCMenu::create();
+    animPreviewMenu->setContentSize(ccp(0, 0));
+    animPreviewMenu->setScale(1.25f);
+
+    auto animPreviewBtn = CCMenuItemSpriteExtra::create(CCSprite::create("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
+    animPreviewBtn->setPosition(ccp(70, 10));
+    animPreviewMenu->addChild(animPreviewBtn);
+
+    animMenu->addChildAtPosition(animPreviewMenu, Anchor::BottomRight, ccp(0, 0));
+
     animMenu->updateLayout();
     updateAnimSprite();
 
@@ -206,8 +216,13 @@ void ThemeNode::onChangeAnim(CCObject* sender)
 
 void ThemeNode::onPreviewAnim(CCObject* sender)
 {
+    auto anim = (MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale);
+
+    if (anim == MenuAnimation::None)
+        FLAlertLayer::create("Preview animation", "There is no animation to preview.", "OK")->show();
+
     if (AndroidUI::get())
-        AndroidUI::get()->runAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
+        AndroidUI::get()->runAnimation(anim);
 }
 
 void ThemeNode::updateColourSprite()
