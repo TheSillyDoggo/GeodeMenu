@@ -75,7 +75,7 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
             float percent = self->progressTilNextTick / self->timeTilNextTick;
             auto endCamPos = self->lastCamPos + (self->lastCamPos - self->lastCamPos2);
             
-            m_objectLayer->setPosition(std::lerp<float>(self->lastCamPos.x, endCamPos.x, percent), std::lerp<float>(self->lastCamPos.y, endCamPos.y, percent));
+            m_objectLayer->setPosition(std::lerp<double>(self->lastCamPos.x, endCamPos.x, percent), std::lerp<double>(self->lastCamPos.y, endCamPos.y, percent));
 
             extrapolateGround(m_groundLayer, percent);
             extrapolateGround(m_groundLayer2, percent);
@@ -95,7 +95,7 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
         float rotateSpeed = (player->m_isBall && player->m_isBallRotating) ? 1.0 : player->m_rotateSpeed;
         float endRot = (player->m_rotationSpeed * rotateSpeed) / 240.0f;
 
-        player->CCNode::setPosition(ccp(std::lerp<float>(player->m_position.x, endXPos, percent), std::lerp<float>(player->m_position.y, endYPos, percent)));
+        player->CCNode::setPosition(ccp(std::lerp<double>(player->m_position.x, endXPos, percent), std::lerp<double>(player->m_position.y, endYPos, percent)));
         player->m_mainLayer->setRotation(std::lerp(0, endRot, percent));
     }
 
@@ -109,7 +109,7 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
         {
             if (typeinfo_cast<CCSpriteBatchNode*>(child))
             {
-                child->setPositionX(std::lerp<float>(0, moveBy, percent));
+                child->setPositionX(std::lerp<double>(0, moveBy, percent));
             }
         }
     }
