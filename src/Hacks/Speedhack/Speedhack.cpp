@@ -22,7 +22,8 @@ void Speedhack::setup()
     setEnabled(Mod::get()->getSavedValue<bool>("speedhack-enabled_enabled", false));
     setMusicEnabled(Mod::get()->getSavedValue<bool>("speedhack-mus_enabled", true));
     setGameplayEnabled(Mod::get()->getSavedValue<bool>("speedhack-gameplay_enabled", false));
-    setText(Mod::get()->getSavedValue<std::string>("speedhack-top_value", "1.0"));
+    setText(Mod::get()->getSavedValue<std::string>("speedhack-top_value", "1.0")); // defaults
+    loadPresets();
 }
 
 bool Speedhack::getEnabled()
@@ -103,6 +104,57 @@ bool Speedhack::gameplayOnlyCheck()
 float Speedhack::getValue()
 {
     return std::min<float>(std::max<float>(value, 0.001f), 999999);
+}
+
+void Speedhack::loadPresets()
+{
+    auto vec = Mod::get()->getSavedValue<std::vector<float>>("speedhack-presets", { 0.1f, 0.25f, 0.3f, 0.50f, 0.75f, 1.0f, 1.50f, 2.0f });
+    presets.clear();
+
+    for (auto pre : vec)
+    {
+        auto struc = SpeedhackPreset(pre);
+        presets.push_back(struc);
+    }
+}
+
+void Speedhack::savePresets()
+{
+    std::vector<float> vec = {};
+
+    for (auto pre : presets)
+    {
+        vec.push_back(pre.value);
+    }
+
+    Mod::get()->setSavedValue<std::vector<float>>("speedhack-presets", vec);
+}
+
+void Speedhack::setPresets(std::vector<SpeedhackPreset> presets)
+{
+    std::sort(presets.begin(), presets.end(), [](SpeedhackPreset a, SpeedhackPreset b)
+    {
+        return a.value < b.value;
+    });
+
+    this->presets = presets;
+    savePresets();
+}
+
+std::vector<SpeedhackPreset> Speedhack::getPresets()
+{
+    return presets;
+}
+
+bool Speedhack::hasPreset(float value)
+{
+    for (auto preset : presets)
+    {
+        if (preset.value == value)
+            return true;
+    }
+
+    return false;
 }
 
 FMOD::ChannelGroup* Speedhack::getMasterChannel()

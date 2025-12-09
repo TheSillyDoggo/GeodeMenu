@@ -13,12 +13,21 @@ class $modify (PlayLayerUtils, PlayLayer)
 
         std::vector<EffectGameObject*> coins = {};
         std::vector<StartPosObject*> startPositions = {};
+        std::vector<GameObject*> speedObjects = {};
+        std::vector<GameObject*> mirrorObjects = {};
+        std::vector<GameObject*> sizeObjects = {};
+        std::vector<GameObject*> dualObjects = {};
+        std::vector<GameObject*> gamemodeObjects = {};
+        std::vector<GameObject*> gravityObjects = {};
     };
 
     static PlayLayerUtils* getUtils();
 
+    void sortByXPos();
+
     void addObject(GameObject* obj);
     virtual void postUpdate(float p0);
+    void createObjectsFromSetupFinished();
 
     static void onModify(auto& self);
 

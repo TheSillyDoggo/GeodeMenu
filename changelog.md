@@ -1,3 +1,15 @@
+# 2.1.0
+
+- Added Frame Extrapolation
+- Added No Glow
+- Added Transparent BG
+- Added Smart StartPos
+- Added Speedhack Presets
+- Added December Snow
+- Removed Auto Claim Quests due to crashes
+- Stopped No Shaders from triggering auto safe mode because the majority of players used it for performance reasons
+- Fixed scroll wheel not working in the menu
+
 # 2.0.0
 
 - Rewrite entire mod
@@ -9,7 +21,6 @@
 -- Added icons next to many ui elements
 -- Improved code to make it easy to add new features like favourites
 - Added ability to favourite mods
-- Added ability to add keybinds to speedhack presets
 - Added ability to change keybind for the mod menu
 - Added new **Fade In** animation for the menu
 - Improved button animations

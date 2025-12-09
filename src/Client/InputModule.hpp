@@ -12,6 +12,7 @@ class InputModule : public Module
         std::string displayFilter = "%s";
         int charLimit = 0;
         float textFloat = 1.0f;
+        std::string hint = "";
 
         virtual void save();
         virtual void load();
@@ -22,6 +23,7 @@ class InputModule : public Module
         void setStringFilterCommon(geode::CommonFilter filter);
         void setMaxCharCount(int count);
         void setDisplayFilter(std::string str);
+        void setHint(std::string hint);
 
     public:
         void setString(std::string str);
@@ -35,6 +37,8 @@ class InputModule : public Module
         int getMaxCharCount();
         std::string getStringFilter();
         std::string getDisplayFilter();
+
+        std::string getHint();
 
         bool appendColon();
 

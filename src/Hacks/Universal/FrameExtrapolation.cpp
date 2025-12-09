@@ -54,7 +54,7 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
 
         auto self = m_fields.self();
 
-        if (isRunning() && dt != 0)
+        if (isRunning() && dt != 0 && !PlayLayer::get()->m_levelEndAnimationStarted)
         {
             if (self->modifiedDeltaReturn != 0)
             {

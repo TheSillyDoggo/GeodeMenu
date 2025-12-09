@@ -88,6 +88,11 @@ void StartposSwitcherUI::updateUI()
 
     label->setString(fmt::format("{} / {}", currentStartpos, PlayLayerUtils::getUtils()->m_fields->startPositions.size()).c_str());
 
+    if (true)
+    {
+        // auto spos = index == 0 ? nullptr : PlayLayerUtils::getUtils()->m_fields->startPositions[m_fields->startPosIndex - 1];
+    }
+
     if (PlayLayerUtils::getUtils()->m_fields->startPositions.size() == 0)
         setScale(0);
 }

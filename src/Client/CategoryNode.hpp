@@ -19,6 +19,8 @@ class CategoryNode : public CCMenu
         BetterScrollbar* scrollbar = nullptr;
         CCScale9Sprite* bg = nullptr;
         bool alwaysShowScrollbar = false;
+
+        ~CategoryNode();
     
     public:
         static CategoryNode* create();
@@ -32,6 +34,7 @@ class CategoryNode : public CCMenu
         virtual void updateUI();
         bool shouldScrollbarShow();
 
+        virtual void scrollWheel(float y, float x);
         virtual void setContentSize(const CCSize& contentSize);
 
         bool init();

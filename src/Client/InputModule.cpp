@@ -107,3 +107,13 @@ std::string InputModule::getDisplayFilter()
 {
     return displayFilter;
 }
+
+void InputModule::setHint(std::string hint)
+{
+    this->hint = hint;
+}
+
+std::string InputModule::getHint()
+{
+    return hint;
+}

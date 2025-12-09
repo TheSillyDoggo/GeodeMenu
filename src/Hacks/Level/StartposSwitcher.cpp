@@ -105,8 +105,6 @@ class $modify (StartposPlayLayer, PlayLayer)
         if (PlayLayerUtils::getUtils()->m_fields->startPositions.empty())
             return;
 
-        std::sort(PlayLayerUtils::getUtils()->m_fields->startPositions.begin(), PlayLayerUtils::getUtils()->m_fields->startPositions.end(), [](auto* a, auto* b) { return a->getPositionX() < b->getPositionX(); });
-
         if (index < 0)
             index = PlayLayerUtils::getUtils()->m_fields->startPositions.size();
 

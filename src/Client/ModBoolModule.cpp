@@ -24,7 +24,7 @@ void ModBoolModule::setUserEnabled(bool enabled)
 
 bool ModBoolModule::getUserEnabled()
 {
-    if (mod)
+    if (mod && mod->isEnabled())
     {
         if (invert)
             return !mod->getSettingValue<bool>(setting);

@@ -1,4 +1,4 @@
-#include "../../Client/Module.hpp"
+/*#include "../../Client/Module.hpp"
 #include <Geode/modify/GameStatsManager.hpp>
 
 using namespace geode::prelude;
@@ -42,4 +42,4 @@ class $modify (GameStatsManager)
             }
         }
     }
-};
+};*/

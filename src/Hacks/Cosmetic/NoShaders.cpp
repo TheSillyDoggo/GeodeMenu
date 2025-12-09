@@ -12,7 +12,6 @@ class NoShaders : public Module
             setID("no-shaders");
             setCategory("Cosmetic");
             setDescription("Disables shaders");
-            setSafeModeTrigger(SafeModeTrigger::Attempt);
         }
 };
 

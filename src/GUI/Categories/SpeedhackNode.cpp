@@ -61,6 +61,39 @@ bool SpeedhackNode::init()
     trashBtn = CCMenuItemSpriteExtra::create(trashSpr, this, menu_selector(SpeedhackNode::onTrash));
     trashBtn->setPosition(input->getPosition() + ccp(75, 0));
 
+    presetMenu = CCMenu::create();
+    presetMenu->setScale(0.41f);
+    presetMenu->setAnchorPoint(ccp(0, 0.5f));
+    presetMenu->setPosition(5, 13);
+    presetMenu->setContentWidth(700);
+    presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(true));
+
+    auto presetConfigMenu = CCMenu::create();
+    presetConfigMenu->setScale(0.41f);
+    presetConfigMenu->setAnchorPoint(ccp(0, 0));
+
+    auto btnNew = CCMenuItemSpriteExtra::create(ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(SpeedhackNode::onAddNewPreset));
+    btnNew->setPositionX(-30);
+
+    sprMode = ButtonSprite::create("X", "bigFont.fnt", "GJ_button_06.png");
+    auto btnMode = CCMenuItemSpriteExtra::create(sprMode, this, menu_selector(SpeedhackNode::onChangePresetMode));
+    btnMode->setPositionX(-80);
+
+    presetConfigMenu->addChild(btnNew);
+    presetConfigMenu->addChild(btnMode);
+
+    deletePresetBG = CCScale9Sprite::create("square02b_small.png");
+    deletePresetBG->setColor(ccc3(0, 0, 0));
+    deletePresetBG->setOpacity(100);
+
+    deletePresetHelp = CCLabelBMFont::create("Tap a preset to remove it", "bigFont.fnt");
+    deletePresetHelp->setScale(0.3f);
+
+    deletePresetBG->setContentSize((deletePresetHelp->getScaledContentSize() + ccp(8, 8)) / 0.5f);
+    deletePresetBG->setScale(0.5f);
+
+    updatePresets();
+
     menu->addChild(input);
     menu->addChild(speedLbl);
     menu->addChild(enabledBtn);
@@ -72,7 +105,89 @@ bool SpeedhackNode::init()
     menu->addChild(trashBtn);
     menu->addChild(slider);
     this->addChild(menu);
+    this->addChild(presetMenu);
+    this->addChildAtPosition(presetConfigMenu, Anchor::BottomRight, ccp(0, 13));
+    this->addChildAtPosition(deletePresetBG, Anchor::Bottom, ccp(0, 35));
+    this->addChildAtPosition(deletePresetHelp, Anchor::Bottom, ccp(0, 35));
     return true;
+}
+
+void SpeedhackNode::updatePresets()
+{
+    for (auto btn : presetBtns)
+    {
+        btn.first->removeFromParent();
+    }
+
+    presetBtns.clear();
+
+    for (auto preset : Speedhack::get()->getPresets())
+    {
+        auto spr = ButtonSprite::create(floatToStringMin2DP(preset.value).c_str(), "bigFont.fnt", presetDeleteMode ? "GJ_button_06.png" : "GJ_button_05.png");
+        auto btn = CCMenuItemSpriteExtra::create(spr, this, presetDeleteMode ? menu_selector(SpeedhackNode::onRemovePreset) : menu_selector(SpeedhackNode::onApplyPreset));
+        presetMenu->addChild(btn);
+        presetBtns.emplace(btn, preset.value);
+    }
+
+    presetMenu->updateLayout();
+    deletePresetHelp->setVisible(presetDeleteMode);
+    deletePresetBG->setVisible(presetDeleteMode);
+
+    sprMode->updateBGImage(presetDeleteMode ? "geode.loader/GE_button_03.png" : "GJ_button_06.png");
+    sprMode->m_label->setString(presetDeleteMode ? "-" : "X");
+}
+
+void SpeedhackNode::onApplyPreset(CCObject* sender)
+{
+    float val = presetBtns[static_cast<CCMenuItemSpriteExtra*>(sender)];
+    auto str = floatToStringMin2DP(val);
+
+    Speedhack::get()->setText(str);
+    slider->setValueRanged(val);
+    input->setString(str);
+}
+
+void SpeedhackNode::onAddNewPreset(CCObject* sender)
+{
+    auto sh = Speedhack::get();
+
+    if (sh->hasPreset(sh->getValue()))
+    {
+        FLAlertLayer::create("Speedhack Preset", fmt::format("There's already a preset with the value <cc>{}</c>", floatToStringMin2DP(sh->getValue())), "OK")->show();
+
+        return;
+    }
+
+    auto presets = sh->getPresets();
+    presets.push_back(SpeedhackPreset(sh->getValue()));
+    sh->setPresets(presets);
+
+    updatePresets();
+}
+
+void SpeedhackNode::onRemovePreset(CCObject* sender)
+{
+    auto sh = Speedhack::get();
+
+    std::vector<SpeedhackPreset> presets = {};
+
+    for (auto pre : sh->getPresets())
+    {
+        if (pre.value == presetBtns[static_cast<CCMenuItemSpriteExtra*>(sender)])
+            continue;
+
+        presets.push_back(pre);
+    }
+
+    sh->setPresets(presets);
+    updatePresets();
+}
+
+void SpeedhackNode::onChangePresetMode(CCObject* sender)
+{
+    presetDeleteMode = !presetDeleteMode;
+
+    updatePresets();
 }
 
 void SpeedhackNode::onToggleEnabled(CCObject* sender)

@@ -38,6 +38,7 @@ class CustomRespawnNormal : public InputModule
 
             setDefaultString("1");
             setPlaceholderString("Time");
+            setHint("sec");
 
             setStringFilter("1234567890.");
             setMaxCharCount(5);
@@ -55,6 +56,7 @@ class CustomRespawnPractice : public InputModule
 
             setDefaultString("0.5");
             setPlaceholderString("Time");
+            setHint("sec");
 
             setStringFilter("1234567890.");
             setMaxCharCount(5);

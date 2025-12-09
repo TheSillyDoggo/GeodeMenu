@@ -1,5 +1,6 @@
 #include "CategoryNode.hpp"
 #include "../Utils/Casts.hpp"
+#include "../GUI/BetterMouseDispatcher.hpp"
 
 CategoryNode* CategoryNode::create()
 {
@@ -101,6 +102,7 @@ bool CategoryNode::init()
     this->setAnchorPoint(ccp(1, 0.5f));
     this->setContentSize(ccp(340, 280 - 10 * 2));
     this->ignoreAnchorPointForPosition(false);
+    MouseDispatcher::betterMouseDispatcherDelegates.push_back(this);
 
     bg = CCScale9Sprite::create("square02b_small.png");
     bg->setContentSize(this->getContentSize() / 0.5f);
@@ -127,6 +129,12 @@ bool CategoryNode::init()
     return true;
 }
 
+void CategoryNode::scrollWheel(float y, float x)
+{
+    if (nodeIsVisible(scroll) && scroll->isTouchEnabled())
+        scroll->scrollLayer(y);
+}
+
 void CategoryNode::setContentSize(const CCSize& contentSize)
 {
     CCMenu::setContentSize(contentSize);
@@ -141,4 +149,9 @@ void CategoryNode::setContentSize(const CCSize& contentSize)
     }
 
     updateLayout();
+}
+
+CategoryNode::~CategoryNode()
+{
+    MouseDispatcher::betterMouseDispatcherDelegates.erase(std::remove(MouseDispatcher::betterMouseDispatcherDelegates.begin(), MouseDispatcher::betterMouseDispatcherDelegates.end(), this), MouseDispatcher::betterMouseDispatcherDelegates.end());
 }

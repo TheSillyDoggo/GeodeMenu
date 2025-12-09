@@ -1,5 +1,12 @@
 #pragma once
 
+#include <vector>
+
+struct SpeedhackPreset
+{
+    float value = 0.0f;
+};
+
 class Speedhack
 {
     protected:
@@ -8,6 +15,7 @@ class Speedhack
         bool gameplayEnabled = false;
         std::string str = "";
         float value = 1.0f;
+        std::vector<SpeedhackPreset> presets = {};
 
     public:
         static Speedhack* get();
@@ -22,6 +30,13 @@ class Speedhack
 
         bool getGameplayEnabled();
         void setGameplayEnabled(bool enabled);
+
+        void loadPresets();
+        void savePresets();
+
+        void setPresets(std::vector<SpeedhackPreset> presets);
+        std::vector<SpeedhackPreset> getPresets();
+        bool hasPreset(float value);
 
         FMOD::ChannelGroup* getMasterChannel();
 
