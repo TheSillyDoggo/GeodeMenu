@@ -60,10 +60,23 @@ class StartposSwitcherHide : public Module
         }
 };
 
+class StartposSwitcherPercentage : public Module
+{
+    public:
+        MODULE_SETUP(StartposSwitcherPercentage)
+        {
+            setName("Use Percentage");
+            setID("startpos-switcher/use-percentage");
+            setDescription("Shows the percentage that each start position is at");
+            setPriority(4);
+        }
+};
+
 SUBMIT_HACK(StartposSwitcher);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPrev);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherNext);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherHide);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPercentage);
 
 class $modify (StartposPlayLayer, PlayLayer)
 {
@@ -139,6 +152,8 @@ class $modify (StartposPlayLayer, PlayLayer)
         {
             m_fields->ui->setVisible(StartposSwitcher::get()->getRealEnabled() && !StartposSwitcherHide::get()->getRealEnabled());
             m_fields->ui->updateKeybindsVisualizer(false, StartposSwitcherPrev::get()->getKeyCode(), StartposSwitcherNext::get()->getKeyCode());
+            m_fields->ui->usePercentage = StartposSwitcherPercentage::get()->getRealEnabled();
+            m_fields->ui->updateUI();
         }
     }
 };

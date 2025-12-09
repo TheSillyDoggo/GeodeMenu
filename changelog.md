@@ -6,6 +6,9 @@
 - Added Smart StartPos
 - Added Speedhack Presets
 - Added December Snow
+- Added Reset Audio Sliders button to Slider Limit Bypass
+- Added Accurate Percentage
+- Added option for Startpos Switcher to show percentages
 - Removed Auto Claim Quests due to crashes
 - Stopped No Shaders from triggering auto safe mode because the majority of players used it for performance reasons
 - Fixed scroll wheel not working in the menu

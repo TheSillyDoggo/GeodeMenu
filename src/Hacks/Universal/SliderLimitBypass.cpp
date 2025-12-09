@@ -1,4 +1,4 @@
-#include "../../Client/Module.hpp"
+#include "../../Client/ButtonModule.hpp"
 #include <Geode/modify/SliderTouchLogic.hpp>
 #include <Geode/modify/GJScaleControl.hpp>
 #include "../../Utils/Num.hpp"
@@ -17,7 +17,48 @@ class SliderLimitBypass : public Module
         }
 };
 
+class SliderLimitBypassResetAudio : public ButtonModule
+{
+    public:
+        MODULE_SETUP(SliderLimitBypassResetAudio)
+        {
+            setName("Reset Audio Sliders");
+            setID("slider-limit/reset-audio-variables");
+            setDescription("Resets the audio sliders to <cc>100%</c> incase it went off screen and you can't get it back.");
+        }
+
+        virtual void onClick()
+        {
+            FMODAudioEngine::sharedEngine()->setBackgroundMusicVolume(1.0f);
+            FMODAudioEngine::sharedEngine()->setEffectsVolume(1.0f);
+
+            if (auto menu = CCScene::get()->getChildByType<MenuLayer>(0))
+            {
+                if (auto options = menu->getChildByType<OptionsLayer>(0))
+                {
+                    if (auto layer = options->getChildByType<CCLayer>(0))
+                    {
+                        if (auto slider = layer->getChildByType<Slider>(0))
+                        {
+                            slider->setValue(1);
+                            slider->updateBar();
+                        }
+
+                        if (auto slider = layer->getChildByType<Slider>(-1))
+                        {
+                            slider->setValue(1);
+                            slider->updateBar();
+                        }
+                    }
+                }
+            }
+
+            FLAlertLayer::create("Reset audio sliders", "The <cl>audio sliders</c> have been reset to <cc>100%</c>", "OK")->show();
+        }
+};
+
 SUBMIT_HACK(SliderLimitBypass)
+SUBMIT_OPTION(SliderLimitBypass, SliderLimitBypassResetAudio)
 
 class $modify (SliderTouchLogic)
 {

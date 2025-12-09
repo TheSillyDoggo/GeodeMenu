@@ -48,6 +48,16 @@ bool StartposSwitcherUI::init()
     leftKey->setPositionX(-56);
     rightKey->setPositionX(56);
 
+    leftPercent = CCLabelBMFont::create("", "bigFont.fnt");
+    leftPercent->setScale(0.45f);
+    leftPercent->setAnchorPoint(ccp(1, 0.5f));
+    leftPercent->setPositionX(-90);
+
+    rightPercent = CCLabelBMFont::create("", "bigFont.fnt");
+    rightPercent->setScale(0.45f);
+    rightPercent->setAnchorPoint(ccp(0, 0.5f));
+    rightPercent->setPositionX(90);
+
     updateUI();
 
     this->updateDisplayedOpacity(150);
@@ -56,6 +66,8 @@ bool StartposSwitcherUI::init()
     this->addChild(rightBtn);
     this->addChild(leftKey);
     this->addChild(rightKey);
+    this->addChild(leftPercent);
+    this->addChild(rightPercent);
     return true;
 }
 
@@ -70,6 +82,8 @@ void StartposSwitcherUI::updateDisplayedOpacity(GLubyte parentOpacity)
     label->setOpacity(parentOpacity);
     leftSpr->setOpacity(parentOpacity);
     rightSpr->setOpacity(parentOpacity);
+    leftPercent->setOpacity(parentOpacity);
+    rightPercent->setOpacity(parentOpacity);
 }
 
 void StartposSwitcherUI::updateKeybindsVisualizer(bool visible, int leftCode, int rightCode)
@@ -81,6 +95,19 @@ void StartposSwitcherUI::updateKeybindsVisualizer(bool visible, int leftCode, in
     rightKey->setVisible(visible);
 }
 
+float StartposSwitcherUI::getPercentForObject(GameObject* go)
+{
+    if (!go || !PlayLayer::get())
+        return 0;
+
+    auto len = PlayLayer::get()->m_levelLength;
+
+    if (len == 0)
+        len = 1;
+
+    return (go->getPositionX() / len) * 100;
+}
+
 void StartposSwitcherUI::updateUI()
 {
     if (!PlayLayerUtils::getUtils())
@@ -88,9 +115,34 @@ void StartposSwitcherUI::updateUI()
 
     label->setString(fmt::format("{} / {}", currentStartpos, PlayLayerUtils::getUtils()->m_fields->startPositions.size()).c_str());
 
-    if (true)
+    if (usePercentage)
     {
-        // auto spos = index == 0 ? nullptr : PlayLayerUtils::getUtils()->m_fields->startPositions[m_fields->startPosIndex - 1];
+        auto index = currentStartpos;
+        auto startPoses = PlayLayerUtils::getUtils()->m_fields->startPositions;
+        float percent = getPercentForObject(index == 0 ? nullptr : startPoses[index - 1]);
+
+        label->setString(fmt::format("{}%", utils::numToString<float>(percent, 2)).c_str());
+
+        index = currentStartpos - 1;
+        if (index == -1)
+            index = startPoses.size();
+
+        percent = getPercentForObject(index == 0 ? nullptr : startPoses[index - 1]);
+        
+        leftPercent->setString(fmt::format("{}%", utils::numToString<float>(percent, 2)).c_str());
+
+        index = currentStartpos + 1;
+        if (index == startPoses.size() + 1)
+            index = 0;
+
+        percent = getPercentForObject(index == 0 ? nullptr : startPoses[index - 1]);
+        
+        rightPercent->setString(fmt::format("{}%", utils::numToString<float>(percent, 2)).c_str());
+    }
+    else
+    {
+        leftPercent->setString("");
+        rightPercent->setString("");
     }
 
     if (PlayLayerUtils::getUtils()->m_fields->startPositions.size() == 0)
