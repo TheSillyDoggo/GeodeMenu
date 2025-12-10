@@ -2,8 +2,11 @@
 
 - Added Noclip Tint on Death
 - Added Classic Percentage
+- Added Pitch Shifter
 - Fixed Coin Tracers not drawing a line if the coins opacity was changed with a trigger
 - Changed Disable Open In-Game to default to off
+- Changed No Particles to allow Menu Snow
+- Made it so you can have custom background colours with Transparent BG
 
 # 2.1.0
 

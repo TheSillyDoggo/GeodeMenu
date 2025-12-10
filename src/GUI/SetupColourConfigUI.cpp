@@ -1,4 +1,4 @@
-#include "SetupColourCOnfigUI.hpp"
+#include "SetupColourConfigUI.hpp"
 
 SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc)
 {

@@ -13,7 +13,7 @@ class TempCheatIndicator : public Module
             setID("temp-cheat-indicator");
             setCategory("Labels");
             setDescription("Temporary cheat indicator until labels have been added back");
-            setDefaultEnabled(true);
+            setDefaultEnabled(false);
         }
 };
 

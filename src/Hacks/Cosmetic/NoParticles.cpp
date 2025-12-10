@@ -36,6 +36,9 @@ class $modify (CCParticleSystemQuad)
 {
     virtual void draw()
     {
+        if (typeinfo_cast<CCParticleSnow*>(this))
+            return CCParticleSystemQuad::draw();
+
         if (NoParticles::get()->getRealEnabled() ? (ParticlesInEditor::get()->getRealEnabled() ? LevelEditorLayer::get() != nullptr : false) : true)
             CCParticleSystemQuad::draw();
     }
