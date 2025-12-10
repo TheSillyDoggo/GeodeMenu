@@ -17,6 +17,7 @@ file(GLOB SOURCES
     src/*.cpp
 	src/*/*.cpp
 	src/*/*/*.cpp
+	src/*/*/*/*.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
@@ -40,7 +41,7 @@ add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 include_directories(include)
 
 # CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
-# todo: make my own
+
 # CPMAddPackage("gh:EclipseMenu/RIFT#main")
 
 # target_link_libraries(${PROJECT_NAME} imgui-cocos rift)

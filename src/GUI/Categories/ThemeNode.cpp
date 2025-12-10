@@ -44,10 +44,24 @@ bool ThemeNode::init()
         colourMenu->addChild(addColourBtn(-i));
     }
 
-    colourMenu->addChild(addColourBtn(-1));
+    auto gradientBtn = addColourBtn(-1);
+    colourMenu->addChild(gradientBtn);
 
     colourMenu->updateLayout();
     updateColourSprite();
+
+    auto colourOptionsMenu = CCMenu::create();
+    colourOptionsMenu->setContentSize(ccp(0, 0));
+    colourOptionsMenu->setTouchPriority(-503);
+
+    auto sprOptions = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
+    sprOptions->setScale(0.5f);
+
+    auto btnOptions = CCMenuItemSpriteExtra::create(sprOptions, this, menu_selector(ThemeNode::onChangeThemeOptions));
+    btnOptions->setPosition((gradientBtn->getPosition() * ccp(0.695, -0.695)) + ccp(22, 41.75f));
+
+    // TODO: make customizable
+    // colourOptionsMenu->addChild(btnOptions);
 
     auto animMenu = CCMenu::create();
     animMenu->setAnchorPoint(ccp(1, 1));
@@ -83,6 +97,7 @@ bool ThemeNode::init()
     this->addChildAtPosition(blurBG, Anchor::BottomRight, ccp(-86.5f, 17.5f + 1.25f));
     this->addChildAtPosition(colonThree, Anchor::BottomRight, ccp(-86.5f, 17.5f + 28 + 1.25f));
     this->addChildAtPosition(colourMenu, Anchor::TopLeft, ccp(5, -2.5f));
+    this->addChildAtPosition(colourOptionsMenu, Anchor::TopLeft, ccp(5, -2.5f));
     this->addChildAtPosition(animMenu, Anchor::TopRight, ccp(-5, -2.5f));
     return true;
 }
@@ -223,6 +238,11 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
 
     if (AndroidUI::get())
         AndroidUI::get()->runAnimation(anim);
+}
+
+void ThemeNode::onChangeThemeOptions(CCObject* sender)
+{
+
 }
 
 void ThemeNode::updateColourSprite()

@@ -166,3 +166,8 @@ FMOD::ChannelGroup* Speedhack::getMasterChannel()
 
     return group;
 }
+
+float Speedhack::getRealDeltaTime()
+{
+    return realDeltatime;
+}

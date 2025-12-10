@@ -19,6 +19,7 @@ SearchFiltersUI* SearchFiltersUI::create()
 
 bool SearchFiltersUI::setup()
 {
+    m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
 

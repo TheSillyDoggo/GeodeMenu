@@ -10,10 +10,9 @@ class DisableOpenInLevel : public Module
         MODULE_SETUP(DisableOpenInLevel)
         {
             setName("Disable Opening In Level");
-            setID("disable-open-in-level");
+            setID("no-open-in-level");
             setCategory("Config/Menu");
             setDescription("Makes it so you can't open the mod menu while in a level.\nJust incase you accidentally bump the tab button");
-            setDefaultEnabled(true);
         }
 };
 

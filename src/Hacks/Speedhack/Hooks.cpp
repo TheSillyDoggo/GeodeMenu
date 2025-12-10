@@ -1,5 +1,6 @@
 #include "Hooks.hpp"
 #include "Speedhack.hpp"
+#include "../../Utils/ColourUtils.hpp"
 
 Mod* cbf = nullptr;
 
@@ -12,6 +13,9 @@ bool CBFCheckMenuLayer::init()
 
 void SpeedhackScheduler::update(float dt)
 {
+    Speedhack::get()->realDeltatime = dt;
+    ColourUtils::get()->update(dt);
+
     float value = Speedhack::get()->getRealValue();
 
     Speedhack::get()->getMasterChannel()->setPitch((Speedhack::get()->getMusicEnabled() && Speedhack::get()->gameplayOnlyCheck()) ? value : 1);

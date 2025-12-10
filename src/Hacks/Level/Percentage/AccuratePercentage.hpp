@@ -1,5 +1,7 @@
-#include "../../Client/InputModule.hpp"
-#include "../Utils/PlayLayer.hpp"
+#pragma once
+
+#include "../../../Client/InputModule.hpp"
+#include "../../Utils/PlayLayer.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 
 using namespace geode::prelude;
@@ -35,24 +37,3 @@ class AccuratePercentagePlaces : public InputModule
 
 SUBMIT_HACK(AccuratePercentage);
 SUBMIT_OPTION(AccuratePercentage, AccuratePercentagePlaces);
-
-class $modify (PlayLayer)
-{
-    void updateProgressbar()
-    {
-        PlayLayer::updateProgressbar();
-
-        if (!(AccuratePercentage::get()->getRealEnabled()))
-            return;
-
-        if (m_percentageLabel)
-        {
-            m_percentageLabel->setString(fmt::format("{}%", utils::numToString<float>(getCurrentPercent(), AccuratePercentagePlaces::get()->getStringInt())).c_str());
-        }
-    }
-
-    static void onModify(auto& self)
-    {
-        (void)self.setHookPriorityPost("PlayLayer::updateProgressbar", Priority::First);
-    }
-};

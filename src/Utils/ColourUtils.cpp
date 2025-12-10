@@ -1,4 +1,6 @@
 #include "ColourUtils.hpp"
+#include "ColourConfig.hpp"
+#include "../GUI/AndroidBall.hpp"
 
 // setup
 $execute
@@ -13,7 +15,6 @@ ColourUtils* ColourUtils::get()
     if (!instance)
     {
         instance = new ColourUtils();
-        instance->setup();
     }
 
     return instance;
@@ -21,14 +22,14 @@ ColourUtils* ColourUtils::get()
 
 void ColourUtils::setup()
 {
-    GameManager::get()->schedule(schedule_selector(ColourUtils::update), 0);
+    
 }
 
 void ColourUtils::update(float dt)
 {
-    for (auto& channel : values)
+    for (size_t i = 0; i < channels.size(); i++)
     {
-        channel.second += dt * speeds[channel.first];
+        values[channels[i]] += dt * speeds[channels[i]];
     }
 }
 
@@ -39,6 +40,7 @@ void ColourUtils::addChannel(Channel channel)
 
     values.emplace(channel, 0);
     speeds.emplace(channel, 1);
+    channels.push_back(channel);
 }
 
 ccColor3B ColourUtils::getChroma(Channel channel)
@@ -55,6 +57,40 @@ ccColor3B ColourUtils::getPastel(Channel channel)
         addChannel(channel);
 
     return hsvToRgb(cchsv((values[channel] * 180) / 10.0f, 155.0f / 255.0f, 1.0f, true, true));
+}
+
+void ColourUtils::setChannelSpeed(Channel channel, float speed)
+{
+    addChannel(channel);
+
+    speeds[channel] = speed;
+}
+
+cocos2d::ccColor3B ColourConfig::colourForConfig(std::string channel)
+{
+    switch (type)
+    {
+        case CustomColour:
+            return customColour;
+
+        case Player1:
+            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value());
+
+        case Player2:
+            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value());
+
+        case PlayerGlow:
+            return GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value());
+
+        case Chroma:
+            return ColourUtils::get()->getChroma(channel);
+
+        case Pastel:
+            return ColourUtils::get()->getPastel(channel);
+        
+        default:
+            return ccWHITE;
+    }
 }
 
 // stolen from somewhere, idk where though :P

@@ -7,6 +7,7 @@
 #include "Modules/ButtonScale.hpp"
 #include "Modules/UseColonThreeButton.hpp"
 #include "../Utils/ColourUtils.hpp"
+#include "../Hacks/Speedhack/Speedhack.hpp"
 
 AndroidBall* AndroidBall::get()
 {
@@ -112,7 +113,7 @@ void AndroidBall::update(float dt)
 
     if (smoothMove)
     {
-        float t = 10 * dt;
+        float t = 10 * Speedhack::get()->getRealDeltaTime();
 
         this->setPosition(ccp(
             std::lerp<double>(getPositionX(), position.x, t),
@@ -131,7 +132,7 @@ void AndroidBall::update(float dt)
         std::clamp<float>(getPositionY(), 0, winSize.height)
     ));
 
-    overlay->setColor(ColourUtils::get()->getPastel(-1));
+    overlay->setColor(ColourUtils::get()->getPastel("ui-button"));
 
     if (!AndroidUI::get() && !getActionByTag(69) && getOpacity() != (normalOpacity * 255) && !isDragging)
     {

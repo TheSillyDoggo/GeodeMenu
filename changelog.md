@@ -1,3 +1,10 @@
+# 2.2.0
+
+- Added Noclip Tint on Death
+- Added Classic Percentage
+- Fixed Coin Tracers not drawing a line if the coins opacity was changed with a trigger
+- Changed Disable Open In-Game to default to off
+
 # 2.1.0
 
 - Added Frame Extrapolation

@@ -66,7 +66,7 @@ void ModuleNode::setup()
         auto optionsSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
         auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
 
-        this->addChildAtPosition(optionsBtn, Anchor::Right, ccp(-16, 0));
+        this->addChildAtPosition(optionsBtn, Anchor::Left, ccp(label->getScaledContentWidth() + 43, 0));
     }
 }
 

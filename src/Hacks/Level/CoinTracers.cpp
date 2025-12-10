@@ -1,4 +1,5 @@
 #include "../../Client/Module.hpp"
+#include "../../Client/ColourModule.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 #include "../Utils/PlayLayer.hpp"
 
@@ -17,7 +18,19 @@ class CoinTracers : public Module
         }
 };
 
+class CoinTracersColour : public ColourModule
+{
+    public:
+        MODULE_SETUP(CoinTracersColour)
+        {
+            setName("Colour:");
+            setID("coin-tracers/colour");
+            setDefaultConfig({ ccc3(255, 0, 0)} );
+        }
+};
+
 SUBMIT_HACK(CoinTracers);
+SUBMIT_OPTION(CoinTracers, CoinTracersColour);
 
 class $modify (PlayLayer)
 {
@@ -28,11 +41,12 @@ class $modify (PlayLayer)
         if (CoinTracers::get()->getRealEnabled())
         {
             auto utils = PlayLayerUtils::getUtils()->m_fields.self();
+            auto col = CoinTracersColour::get()->getColour();
 
             for (auto coin : utils->coins)
             {
-                if (coin->getOpacity() != 0)
-                    utils->drawNode->drawSegment(m_player1->getPosition(), coin->getPosition(), 1, ccc4f(1, 0, 0, 1));
+                if (!coin->hasBeenActivated())
+                    utils->drawNode->drawSegment(m_player1->getPosition(), coin->getPosition(), 1, ccc4f(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, 1));
             }
         }
     }

@@ -24,12 +24,15 @@ class $modify (PlayLayerUtils, PlayLayer)
     static PlayLayerUtils* getUtils();
 
     void sortByXPos();
+    float getCurrentPercentageAdv();
+    int getDecimalsToShow();
 
-    void addObject(GameObject* obj);
-    virtual void postUpdate(float p0);
-    void createObjectsFromSetupFinished();
-
-    static void onModify(auto& self);
+    // hooks
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
+    void addObject(GameObject* obj);
+    void createObjectsFromSetupFinished();
+    virtual void postUpdate(float p0);
+
+    static void onModify(auto& self);
 };

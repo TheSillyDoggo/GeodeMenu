@@ -20,6 +20,7 @@ class ThemeNode : public CategoryNode
         void onChangeAnim(CCObject* sender);
         void onChangeColour(CCObject* sender);
         void onPreviewAnim(CCObject* sender);
+        void onChangeThemeOptions(CCObject* sender);
 
         CCMenuItemSpriteExtra* addColourBtn(int colour);
         void updateColourSprite();

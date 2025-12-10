@@ -1,4 +1,6 @@
 #include "PlayLayer.hpp"
+#include "../Level/Percentage/ClassicPercentage.hpp"
+#include "../Level/Percentage/AccuratePercentage.hpp"
 
 PlayLayerUtils* PlayLayerUtils::getUtils()
 {
@@ -98,6 +100,29 @@ void PlayLayerUtils::sortByXPos()
     SORT_FIELD(self->dualObjects);
     SORT_FIELD(self->gamemodeObjects);
     SORT_FIELD(self->gravityObjects);
+}
+
+float PlayLayerUtils::getCurrentPercentageAdv()
+{
+    if (ClassicPercentage::get()->getRealEnabled())
+    {
+        auto len = PlayLayer::get()->m_levelLength;
+
+        if (len == 0)
+            len = 1;
+
+        return (m_player1->getPositionX() / len) * 100;
+    }
+    else
+        return getCurrentPercent();
+}
+
+int PlayLayerUtils::getDecimalsToShow()
+{
+    if (AccuratePercentage::get()->getRealEnabled())
+        return AccuratePercentagePlaces::get()->getStringInt();
+
+    return m_decimalPercentage ? 2 : 0;
 }
 
 void PlayLayerUtils::onModify(auto& self)
