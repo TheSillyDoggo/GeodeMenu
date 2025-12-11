@@ -18,7 +18,15 @@ void SpeedhackScheduler::update(float dt)
 
     float value = Speedhack::get()->getRealValue();
 
-    // Speedhack::get()->getMasterChannel()->setPitch((Speedhack::get()->getMusicEnabled() && Speedhack::get()->gameplayOnlyCheck()) ? value : 1);
+    static float lastPitch = 0;
+    float pi = (Speedhack::get()->getMusicEnabled() && Speedhack::get()->gameplayOnlyCheck()) ? value : 1;
+
+    if (lastPitch != pi)
+    {
+        Speedhack::get()->getMasterChannel()->setPitch(pi);
+
+        lastPitch = pi;
+    }
 
     if (Speedhack::get()->getGameplayEnabled())
     {

@@ -7,6 +7,8 @@
 - Changed Disable Open In-Game to default to off
 - Changed No Particles to allow Menu Snow
 - Made it so you can have custom background colours with Transparent BG
+- Fixed a bug where SFX / Song triggers / functions (click sounds) randomly stopped working
+- Fixed pulsing objects / wave trail not pulsing correctly
 
 # 2.1.0
 
