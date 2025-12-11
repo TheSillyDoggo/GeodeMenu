@@ -18,7 +18,7 @@ void SpeedhackScheduler::update(float dt)
 
     float value = Speedhack::get()->getRealValue();
 
-    Speedhack::get()->getMasterChannel()->setPitch((Speedhack::get()->getMusicEnabled() && Speedhack::get()->gameplayOnlyCheck()) ? value : 1);
+    // Speedhack::get()->getMasterChannel()->setPitch((Speedhack::get()->getMusicEnabled() && Speedhack::get()->gameplayOnlyCheck()) ? value : 1);
 
     if (Speedhack::get()->getGameplayEnabled())
     {

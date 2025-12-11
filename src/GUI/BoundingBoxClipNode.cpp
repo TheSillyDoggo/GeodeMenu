@@ -37,7 +37,6 @@ class $modify (CCEGLView)
 {
     virtual void setScissorInPoints(float x , float y , float w , float h)
     {
-
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 

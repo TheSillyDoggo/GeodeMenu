@@ -160,9 +160,13 @@ bool Speedhack::hasPreset(float value)
 FMOD::ChannelGroup* Speedhack::getMasterChannel()
 {
     static FMOD::ChannelGroup* group = nullptr;
+    auto fmod = FMODAudioEngine::get();
+
+    if (!fmod->m_system)
+        return nullptr;
 
     if (!group)
-        FMODAudioEngine::sharedEngine()->m_system->getMasterChannelGroup(&group);
+        fmod->m_system->getMasterChannelGroup(&group);
 
     return group;
 }

@@ -1,7 +1,6 @@
 #include "ModuleNode.hpp"
 #include "../GUI/Categories/FavouritesNode.hpp"
 #include "../GUI/OptionsUI.hpp"
-#include "../Utils/Notification/Notif.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
