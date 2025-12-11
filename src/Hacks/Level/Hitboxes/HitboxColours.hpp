@@ -50,7 +50,7 @@ class HitboxInteractable : public ColourModule
         {
             setName("Interactable:");
             setID("show-hitboxes/interactable-colour");
-            setDefaultConfig({ ccc3(0, 255, 255) });
+            setDefaultConfig({ ccc3(0, 255, 0) });
             setPriority(4);
         }
 };
