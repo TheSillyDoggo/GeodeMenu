@@ -3,10 +3,12 @@
 - Added Noclip Tint on Death
 - Added Classic Percentage
 - Added Pitch Shifter
+- Added Hitbox Colour Changer
 - Fixed Coin Tracers not drawing a line if the coins opacity was changed with a trigger
+- Made it so you can have custom background colours with Transparent BG
+- Improved code so that customizable colours can also have chroma / pastel effects
 - Changed Disable Open In-Game to default to off
 - Changed No Particles to allow Menu Snow
-- Made it so you can have custom background colours with Transparent BG
 - Fixed a bug where SFX / Song triggers / functions (click sounds) randomly stopped working
 - Fixed pulsing objects / wave trail not pulsing correctly
 
