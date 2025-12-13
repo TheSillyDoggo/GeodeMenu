@@ -22,9 +22,12 @@ class ColourUtils
         void setup();
 
         ccColor3B hsvToRgb(const ccHSVValue& hsv);
+        ccColor3B lerpColour(const ccColor3B& color1, const ccColor3B& color2, float t);
 
         void setChannelSpeed(Channel channel, float speed);
+        float getLoopedValue(float value);
 
         ccColor3B getChroma(Channel channel);
         ccColor3B getPastel(Channel channel);
+        float getChannelValue(Channel channel);
 };

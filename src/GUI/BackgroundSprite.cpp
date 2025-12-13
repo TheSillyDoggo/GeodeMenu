@@ -1,10 +1,13 @@
 #include "BackgroundSprite.hpp"
 #include "../Utils/Casts.hpp"
+#include "Modules/GradientBGColours.hpp"
 
 bool BackgroundSprite::init()
 {
     if (!CCNode::init())
         return false;
+
+    this->scheduleUpdate();
 
     colouredBG = CCScale9Sprite::create("GJ_square01.png");
     outlineSpr = CCScale9Sprite::create("GJ_square07.png");
@@ -15,10 +18,6 @@ bool BackgroundSprite::init()
     clippingStencil = CCScale9Sprite::create("GJ_square01.png");
     clipping = CCClippingNode::create(clippingStencil);
     clipping->setAlphaThreshold(0.03f);
-
-    auto gm = GameManager::get();
-    gradientBG->setStartColor(gm->colorForIdx(gm->m_playerColor.value()));
-    gradientBG->setEndColor(gm->colorForIdx(gm->m_playerColor2.value()));
 
     gradientOutline = CCScale9Sprite::create("GJ_square07.png");
     gradientDarken = CCScale9Sprite::create("GJ_square01.png");
@@ -41,9 +40,6 @@ bool BackgroundSprite::init()
 
 void BackgroundSprite::setTheme(int theme)
 {
-    if (theme == -2)
-        theme = -6;
-
     this->theme = theme;
 
     auto bgStr = fmt::format("GJ_square0{}.png", theme < 0 ? 6 : theme);
@@ -89,6 +85,12 @@ void BackgroundSprite::setContentSize(const CCSize& contentSize)
     gradientBG->setContentSize(contentSize);
     gradientOutline->setContentSize(contentSize);
     gradientDarken->setContentSize((contentSize - ccp(15, 15)) / 0.5f);
+}
+
+void BackgroundSprite::update(float dt)
+{
+    gradientBG->setStartColor(GradientBGStart::get()->getColour());
+    gradientBG->setEndColor(GradientBGEnd::get()->getColour());
 }
 
 void BackgroundSprite::setOpacity(float opacity)

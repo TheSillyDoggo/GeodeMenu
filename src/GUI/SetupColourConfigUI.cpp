@@ -1,11 +1,13 @@
 #include "SetupColourConfigUI.hpp"
+#include "../Utils/ColourUtils.hpp"
 
-SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc)
+SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects)
 {
     auto pRet = new SetupColourConfigUI();
 
     CCSize size = ccp(360, 250);
     pRet->onFinishFunc = onFinishFunc;
+    pRet->allowEffects = allowEffects;
 
     if (pRet && pRet->initAnchored(size.width, size.height))
     {
@@ -51,30 +53,234 @@ bool SetupColourConfigUI::setup()
     picker->setAnchorPoint(ccp(0, 0));
     picker->setScale(0.8f);
 
-    auto typeMenu = CCMenu::create();
+    typeMenu = CCMenu::create();
     typeMenu->setContentSize(ccp(0, 0));
     typeMenu->setScale(0.8f);
+    typeMenu->setVisible(allowEffects);
 
     auto topRightMenu = CCMenu::create();
-    topRightMenu->setContentSize(ccp(0, 0));
+    topRightMenu->setContentSize(ccp(0, 300));
+    topRightMenu->setAnchorPoint(ccp(0.5f, 1));
+    topRightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setGap(10));
     topRightMenu->setScale(0.75f);
     topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Default", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onSetDefault)));
+    topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Undo", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onUndoChanged)));
+
+    gradientAddStepBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Add Step", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onAddGradientStep));
+    gradientDelStepBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Remove Step", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onDeleteGradientStep));
+    topRightMenu->addChild(gradientAddStepBtn);
+    topRightMenu->addChild(gradientDelStepBtn);
+
+    topRightMenu->updateLayout();
+
+    createGradientPreview();
+    addTypeButtons(typeMenu);
 
     updateUI();
-    addTypeButtons(typeMenu);
 
     m_mainLayer->addChildAtPosition(picker, Anchor::Center, ccp(0, 0));
     m_mainLayer->addChildAtPosition(endColour, Anchor::TopLeft, ccp(30, -30));
     m_mainLayer->addChildAtPosition(startColour, Anchor::TopLeft, ccp(30, -30 - (15 * 1.5f)));
     m_mainLayer->addChildAtPosition(typeMenu, Anchor::BottomRight, ccp(-80, 0));
-    m_mainLayer->addChildAtPosition(topRightMenu, Anchor::TopRight, ccp(-38, -22));
+    m_mainLayer->addChildAtPosition(topRightMenu, Anchor::TopRight, ccp(-38, -12));
 
     return true;
 }
 
+void SetupColourConfigUI::createGradientPreview()
+{
+    gradientPreviewContainer = CCNode::create();
+    gradientPreviewContainer->setContentSize(ccp(180, 50));
+    gradientPreviewContainer->setAnchorPoint(ccp(0.5f, 0.5f));
+    gradientPreviewContainer->setZOrder(6);
+
+    int quality = 400;
+    for (size_t i = 0; i < quality; i++)
+    {
+        float v = (float)i / (float)quality;
+        float xPos = v * gradientPreviewContainer->getContentWidth();
+
+        auto spr = CCLayerColor::create(ccc4(0, 0, 0, 255), gradientPreviewContainer->getContentWidth() - xPos, gradientPreviewContainer->getContentHeight());
+        spr->setAnchorPoint(ccp(0, 0));
+        spr->ignoreAnchorPointForPosition(false);
+        spr->setPosition(ccp(xPos, 0));
+
+        gradientPreviewSprites.emplace(spr, v);
+        gradientPreviewContainer->addChild(spr);
+    }
+
+    gradientTimePreview = createGradientLine(true);
+    gradientPreviewContainer->addChild(gradientTimePreview, 69);
+
+    updateGradientLines();
+
+    gradientLineConfigNode = CCMenu::create();
+    gradientLineConfigNode->setTouchPriority(-508);
+
+    auto lblColour = CCLabelBMFont::create("Colour:", "bigFont.fnt");
+    lblColour->setAnchorPoint(ccp(0, 0.5f));
+    lblColour->setScale(0.45f);
+    lblColour->setPosition(ccp(-50, -17));
+    gradientLineConfigNode->addChild(lblColour);
+
+    gradientLineColour = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+    gradientLineColour->setScale(0.65f);
+
+    auto btn = CCMenuItemSpriteExtra::create(gradientLineColour, this, menu_selector(SetupColourConfigUI::onChangeGradientLineColour));
+    btn->setPosition(ccp(30, -17));
+    gradientLineConfigNode->addChild(btn);
+
+    gradientLineLocation = BetterSlider::create(this, menu_selector(SetupColourConfigUI::onGradientLocationSlider));
+    gradientLineLocation->setScale(0.5f);
+    gradientLineLocation->setPosition(ccp(0, 7));
+    gradientLineLocation->setContentWidth(gradientPreviewContainer->getContentWidth() / 0.5f);
+    gradientLineLocation->getFill()->setOpacity(0);
+    gradientLineLocation->setTouchPriority(-520);
+    gradientLineConfigNode->addChild(gradientLineLocation);
+    
+    m_mainLayer->addChildAtPosition(gradientPreviewContainer, Anchor::Center, ccp(0, 30));
+    m_mainLayer->addChildAtPosition(gradientLineConfigNode, Anchor::Center, ccp(0, -35));
+}
+
+CCNode* SetupColourConfigUI::createGradientLine(bool timePreview, ccColor3B col, bool selected, int tag)
+{
+    auto n = CCNode::create();
+    n->setContentSize(ccp(1, 50));
+    n->setAnchorPoint(ccp(0.5f, 0));
+
+    auto layer = CCLayerColor::create(ccc4(0, 0, 0, 200), n->getContentWidth(), n->getContentHeight());
+    n->addChild(layer);
+
+    if (timePreview)
+    {
+        layer->setColor(ccc3(0, 119, 255));
+
+        auto spr = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
+        spr->setAnchorPoint(ccp(0, 0.5f));
+        spr->setRotation(-90);
+        spr->setScale(0.3f);
+        spr->setPosition(ccp(n->getContentWidth() / 2, n->getContentHeight()));
+
+        n->addChild(spr);
+    }
+    else
+    {
+        layer->setOpacity(100);
+
+        auto menu = CCMenu::create();
+        menu->setPosition(ccp(n->getContentWidth() / 2, -12));
+        menu->setTouchPriority(-512);
+
+        auto spr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+        spr->setColor(col);
+        spr->setScale(0.4f);
+        spr->setOpacity(selected ? 255 : 175);
+
+        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupColourConfigUI::onSelectGradientLine));
+        btn->setTag(tag);
+
+        menu->addChild(btn);
+        n->addChild(menu);
+    }
+
+    return n;
+}
+
+void SetupColourConfigUI::updateGradientPreview()
+{
+    for (auto spr : gradientPreviewSprites)
+    {
+        spr.first->setColor(currentConfig.colourForGradient(spr.second));
+    }
+
+    for (auto line : gradientLines)
+    {
+        line->setPositionX(gradientPreviewContainer->getContentWidth() * currentConfig.gradientLocations[line->getTag()].percentageLocation);
+    }
+
+    gradientLineColour->setColor(currentConfig.gradientLocations[selectedGradientLine].colour);
+    gradientTimePreview->setPositionX(gradientPreviewContainer->getContentWidth() * (ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(previewChannel))));
+}
+
+void SetupColourConfigUI::updateGradientLines()
+{
+    for (auto line : gradientLines)
+    {
+        line->removeFromParent();
+    }
+
+    gradientLines.clear();
+
+    int i = 0;
+    for (auto& line : currentConfig.gradientLocations)
+    {
+        auto l = createGradientLine(false, line.colour, i == selectedGradientLine, i);
+        l->setTag(i);
+        
+        gradientPreviewContainer->addChild(l, 4);
+        gradientLines.push_back(l);
+        i++;
+    }
+}
+
+void SetupColourConfigUI::onSelectGradientLine(CCObject* sender)
+{
+    selectedGradientLine = sender->getTag();
+
+    updateGradientLines();
+}
+
+void SetupColourConfigUI::onChangeGradientLineColour(CCObject* sender)
+{
+    auto ui = SetupColourConfigUI::create([this](ColourConfig conf)
+    {
+        currentConfig.gradientLocations[selectedGradientLine].colour = conf.customColour;
+        updateGradientLines();
+    }, false);
+
+    ui->setStartConfig({ currentConfig.gradientLocations[selectedGradientLine].colour });
+    ui->setDefaultConfig({ ccc3(255, 0, 0) });
+    ui->setPreviewChannel("");
+    ui->show();
+}
+
+void SetupColourConfigUI::onAddGradientStep(CCObject* sender)
+{
+    float x = 0.5f;
+
+    currentConfig.gradientLocations.push_back({
+        currentConfig.colourForGradient(x),
+        x
+    });
+
+    selectedGradientLine = currentConfig.gradientLocations.size() - 1;
+
+    updateGradientLines();
+}
+
+void SetupColourConfigUI::onDeleteGradientStep(CCObject* sender)
+{
+    if (currentConfig.gradientLocations.size() == 1)
+    {
+        FLAlertLayer::create("Gradient Steps", "There must be at least <cc>one</c> gradient step", "OK")->show();
+        return;
+    }
+
+    currentConfig.gradientLocations.erase(currentConfig.gradientLocations.begin() + selectedGradientLine);
+
+    selectedGradientLine = 0;
+
+    updateGradientLines();
+}
+
+void SetupColourConfigUI::onGradientLocationSlider(CCObject* sender)
+{
+    currentConfig.gradientLocations[selectedGradientLine].percentageLocation = gradientLineLocation->getValue01();
+}
+
 void SetupColourConfigUI::addTypeButtons(CCMenu* menu)
 {
-    for (size_t i = 1; i < 5 + 1; i++)
+    for (size_t i = 1; i < 6 + 1; i++)
     {
         std::string labelText = "";
 
@@ -99,9 +305,13 @@ void SetupColourConfigUI::addTypeButtons(CCMenu* menu)
             case Pastel:
                 labelText = "Pastel";
                 break;
+
+            case Gradient:
+                labelText = "Gradient";
+                break;
         }
 
-        float yPos = 30 * (5 - (i - 1));
+        float yPos = 30 * (6 - (i - 1));
 
         auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SetupColourConfigUI::onChangeType), 0.75f);
         toggler->setPosition(ccp(0, yPos));
@@ -128,6 +338,18 @@ void SetupColourConfigUI::updateTypeButtons(CCMenuItemToggler* excluding)
         
         type.first->toggle(type.second == currentConfig.type);
     }
+
+    for (auto child : CCArrayExt<CCNode*>(typeMenu->getChildren()))
+    {
+        if (currentConfig.type == Gradient)
+        {
+            child->setVisible(child->getPositionY() == 30);
+        }
+        else
+        {
+            child->setVisible(true);
+        }
+    }
 }
 
 void SetupColourConfigUI::onChangeType(CCObject* sender)
@@ -140,6 +362,7 @@ void SetupColourConfigUI::onChangeType(CCObject* sender)
         currentConfig.type = configTypes[btn];
 
     updateTypeButtons(btn);
+    updateUI();
 }
 
 void SetupColourConfigUI::update(float dt)
@@ -148,6 +371,10 @@ void SetupColourConfigUI::update(float dt)
 
     startColour->setColor(startConfig.colourForConfig(previewChannel));
     endColour->setColor(currentConfig.colourForConfig(previewChannel));
+
+    gradientLineLocation->setValue01(currentConfig.gradientLocations[selectedGradientLine].percentageLocation);
+
+    updateGradientPreview();
 }
 
 void SetupColourConfigUI::onClose(CCObject* sender)
@@ -161,8 +388,19 @@ void SetupColourConfigUI::onClose(CCObject* sender)
 void SetupColourConfigUI::onSetDefault(CCObject* sender)
 {
     this->currentConfig = defaultConfig;
+    selectedGradientLine = 0;
 
     updateUI();
+    updateTypeButtons(nullptr);
+}
+
+void SetupColourConfigUI::onUndoChanged(CCObject* sender)
+{
+    this->currentConfig = startConfig;
+    selectedGradientLine = 0;
+
+    updateUI();
+    updateTypeButtons(nullptr);
 }
 
 void SetupColourConfigUI::setStartConfig(ColourConfig config)
@@ -171,6 +409,7 @@ void SetupColourConfigUI::setStartConfig(ColourConfig config)
     this->currentConfig = config;
 
     updateUI();
+    updateTypeButtons(nullptr);
 }
 
 void SetupColourConfigUI::setDefaultConfig(ColourConfig config)
@@ -187,8 +426,12 @@ void SetupColourConfigUI::updateUI()
 {
     picker->setColorValue(currentConfig.customColour);
     picker->setTouchEnabled(currentConfig.type == CustomColour);
-
-    updateTypeButtons(nullptr);
+    picker->setVisible(currentConfig.type != Gradient);
+    gradientPreviewContainer->setVisible(currentConfig.type == Gradient);
+    gradientLineConfigNode->setVisible(currentConfig.type == Gradient);
+    gradientAddStepBtn->setVisible(currentConfig.type == Gradient);
+    gradientDelStepBtn->setVisible(currentConfig.type == Gradient);
+    updateGradientLines();
 }
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)

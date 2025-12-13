@@ -41,7 +41,7 @@ class TransparentBGOnlyBlue : public Module
         {
             setName("Only Blue BG");
             setID("trans-bg/only-blue");
-            setDescription("Only changes the colour of blue backgrounds.\nCan mess up some areas like the vaults");
+            setDescription("Only changes the colour of blue backgrounds.\nCan mess up some areas like the vaults if disabled");
             setDefaultEnabled(true);
             setPriority(2);
         }

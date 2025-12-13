@@ -66,7 +66,15 @@ void ColourUtils::setChannelSpeed(Channel channel, float speed)
     speeds[channel] = speed;
 }
 
-cocos2d::ccColor3B ColourConfig::colourForConfig(std::string channel)
+float ColourUtils::getChannelValue(Channel channel)
+{
+    if (values.contains(channel))
+        return values[channel];
+
+    return 0;
+}
+
+ccColor3B ColourConfig::colourForConfig(std::string channel)
 {
     switch (type)
     {
@@ -87,10 +95,54 @@ cocos2d::ccColor3B ColourConfig::colourForConfig(std::string channel)
 
         case Pastel:
             return ColourUtils::get()->getPastel(channel);
+
+        case Gradient:
+            return colourForGradient(ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(channel)));
         
         default:
             return ccWHITE;
     }
+}
+
+ccColor3B ColourConfig::colourForGradient(float v)
+{
+    if (gradientLocations.size() == 1)
+        return gradientLocations[0].colour;
+
+    if (gradientLocations.size() >= 2)
+    {
+        auto gl = gradientLocations;
+        std::sort(gl.begin(), gl.end(), [](GradientLocation a, GradientLocation b)
+        {
+            return a.percentageLocation < b.percentageLocation;
+        });
+
+        for (size_t i = 1; i < gl.size(); i++)
+        {
+            GradientLocation prev = gl[i - 1];
+            GradientLocation cur = gl[i];
+
+            float va = cur.percentageLocation - prev.percentageLocation;
+
+            if (v >= prev.percentageLocation && v <= cur.percentageLocation)
+            {
+                return ColourUtils::get()->lerpColour(prev.colour, cur.colour, (v - prev.percentageLocation) / va);
+            }
+        }
+
+        if (gl[0].percentageLocation > v)
+            return gl[0].colour;
+
+        if (gl[gl.size() - 1].percentageLocation < v)
+            return gl[gl.size() - 1].colour;
+    }
+
+    return ccWHITE;
+}
+
+float ColourUtils::getLoopedValue(float value)
+{
+    return (sinf(value) + 1) / 2;
 }
 
 // stolen from somewhere, idk where though :P
@@ -120,4 +172,19 @@ ccColor3B ColourUtils::hsvToRgb(const ccHSVValue& hsv)
     }
 
     return ccc3(static_cast<uint8_t>(r * 255), static_cast<uint8_t>(g * 255), static_cast<uint8_t>(b * 255));
+}
+
+ccColor3B ColourUtils::lerpColour(const ccColor3B& color1, const ccColor3B& color2, float t)
+{
+    if (t < 0)
+        t = 0;
+
+    if (t > 1)
+        t = 1;
+
+    return ccc3(
+        static_cast<uint8_t>(color1.r + (color2.r - color1.r) * t),
+        static_cast<uint8_t>(color1.g + (color2.g - color1.g) * t),
+        static_cast<uint8_t>(color1.b + (color2.b - color1.b) * t)
+    );
 }

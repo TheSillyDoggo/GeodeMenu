@@ -1,0 +1,52 @@
+#include "ExtraThemeSettingsUI.hpp"
+#include "Modules/GradientBGColours.hpp"
+
+ExtraThemeSettingsUI* ExtraThemeSettingsUI::create()
+{
+    auto pRet = new ExtraThemeSettingsUI();
+
+    CCSize size = ccp(300, 200);
+
+    if (pRet && pRet->initAnchored(size.width, size.height))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
+bool ExtraThemeSettingsUI::setup()
+{
+    m_bgSprite->setVisible(false);
+    bg = BackgroundSprite::create();
+    bg->setContentSize(this->m_size);
+
+    m_buttonMenu->setVisible(false);
+    m_mainLayer->addChildAtPosition(bg, Anchor::Center);
+
+    auto title = CCLabelBMFont::create("Edit Gradient Colours", "goldFont.fnt");
+    title->setScale(0.7f);
+
+    auto menu = CCMenu::create();
+
+    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(ExtraThemeSettingsUI::onClose));
+    menu->addChild(btn);
+
+    auto bg = CCScale9Sprite::create("square02b_small.png");
+    bg->setContentSize(ccp(165, 80) / 0.5f);
+    bg->setScale(0.5f);
+    bg->setColor(ccc3(0, 0, 0));
+    bg->setOpacity(100);
+
+    auto mod1 = GradientBGStart::get()->getNode();
+    auto mod2 = GradientBGEnd::get()->getNode();
+
+    m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
+    m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
+    m_mainLayer->addChildAtPosition(bg, Anchor::Center, ccp(0, 5));
+    m_mainLayer->addChildAtPosition(mod1, Anchor::Center, ccp(6, 5 + 20));
+    m_mainLayer->addChildAtPosition(mod2, Anchor::Center, ccp(6, 5 - 20));
+    return true;
+}

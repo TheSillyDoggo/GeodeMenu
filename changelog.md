@@ -1,3 +1,11 @@
+# 2.3.0
+
+- Readded Transparent theme
+- Made Gradient theme colours changable
+- Added Customizable fade colours into the colour customization menu
+- Fixed incompatibility with "Scrollbar Everywhere!" by user95401
+- Fixed rare crash opening the game when the assets didn't properly extract
+
 # 2.2.0
 
 - Added Noclip Tint on Death

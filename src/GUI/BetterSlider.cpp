@@ -48,6 +48,11 @@ CCNode* BetterSlider::getThumb()
     return thumbContainer;
 }
 
+CCSprite* BetterSlider::getFill()
+{
+    return fill;
+}
+
 bool BetterSlider::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (!nodeIsVisible(this))

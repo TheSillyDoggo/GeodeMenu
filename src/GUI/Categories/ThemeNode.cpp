@@ -1,5 +1,6 @@
 #include "ThemeNode.hpp"
 #include "../BackgroundSprite.hpp"
+#include "../ExtraThemeSettingsUI.hpp"
 #include "../AndroidUI.hpp"
 
 bool ThemeNode::init()
@@ -46,22 +47,16 @@ bool ThemeNode::init()
 
     auto gradientBtn = addColourBtn(-1);
     colourMenu->addChild(gradientBtn);
+    colourMenu->addChild(addColourBtn(-2));
+
+    auto btnOptions = CCMenuItemSpriteExtra::create(ButtonSprite::create("Edit Colours", 80, 80, 0.7f, false, "goldFont.fnt", "GJ_button_04.png", 35), this, menu_selector(ThemeNode::onChangeThemeOptions));
+    btnOptions->setContentSize(gradientBtn->getContentSize());
+    btnOptions->getNormalImage()->setPosition(btnOptions->getContentSize() / 2);
+
+    colourMenu->addChild(btnOptions);
 
     colourMenu->updateLayout();
     updateColourSprite();
-
-    auto colourOptionsMenu = CCMenu::create();
-    colourOptionsMenu->setContentSize(ccp(0, 0));
-    colourOptionsMenu->setTouchPriority(-503);
-
-    auto sprOptions = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
-    sprOptions->setScale(0.5f);
-
-    auto btnOptions = CCMenuItemSpriteExtra::create(sprOptions, this, menu_selector(ThemeNode::onChangeThemeOptions));
-    btnOptions->setPosition((gradientBtn->getPosition() * ccp(0.695, -0.695)) + ccp(22, 41.75f));
-
-    // TODO: make customizable
-    // colourOptionsMenu->addChild(btnOptions);
 
     auto animMenu = CCMenu::create();
     animMenu->setAnchorPoint(ccp(1, 1));
@@ -97,7 +92,6 @@ bool ThemeNode::init()
     this->addChildAtPosition(blurBG, Anchor::BottomRight, ccp(-86.5f, 17.5f + 1.25f));
     this->addChildAtPosition(colonThree, Anchor::BottomRight, ccp(-86.5f, 17.5f + 28 + 1.25f));
     this->addChildAtPosition(colourMenu, Anchor::TopLeft, ccp(5, -2.5f));
-    this->addChildAtPosition(colourOptionsMenu, Anchor::TopLeft, ccp(5, -2.5f));
     this->addChildAtPosition(animMenu, Anchor::TopRight, ccp(-5, -2.5f));
     return true;
 }
@@ -242,7 +236,7 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
 
 void ThemeNode::onChangeThemeOptions(CCObject* sender)
 {
-
+    ExtraThemeSettingsUI::create()->show();
 }
 
 void ThemeNode::updateColourSprite()

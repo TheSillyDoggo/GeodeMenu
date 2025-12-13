@@ -28,6 +28,12 @@ bool AndroidBall::init()
     background = CCSprite::create("qolmodButtonBG.png"_spr);
     overlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
 
+    if (!background)
+        background = CCSprite::createWithSpriteFrameName("exMark_001.png");
+
+    if (!overlay)
+        overlay = CCSprite::createWithSpriteFrameName("exMark_001.png");
+
     this->setOpacity(normalOpacity * 255);
 
     if (SavePosition::get()->getUserEnabled())

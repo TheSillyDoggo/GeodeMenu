@@ -53,6 +53,7 @@ class BetterSlider : public CCMenu
         void setBypassAllowed(bool bypass);
 
         CCNode* getThumb();
+        CCSprite* getFill();
 
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);

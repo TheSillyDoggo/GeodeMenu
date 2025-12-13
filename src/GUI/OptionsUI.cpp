@@ -26,6 +26,7 @@ CCSize OptionsUI::calculateSize()
 
 bool OptionsUI::setup()
 {
+    m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
     bg->setPosition(this->m_size / 2);

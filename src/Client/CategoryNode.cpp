@@ -114,6 +114,7 @@ bool CategoryNode::init()
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(false);
+    scroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     scrollbar = BetterScrollbar::create(scroll);
     // updates size

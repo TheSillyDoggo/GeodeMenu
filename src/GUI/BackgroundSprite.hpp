@@ -24,6 +24,7 @@ class BackgroundSprite : public CCNode
     public:
         virtual bool init();
         virtual void setContentSize(const CCSize& contentSize);
+        virtual void update(float dt);
 
         void setGradientDarkenVisible(bool visible);
         void setTheme(int theme);
