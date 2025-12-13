@@ -1,6 +1,9 @@
 # 2.3.0
 
+- Added Hitbox Trail
+- Added 1 Attempt Practice Complete
 - Readded Transparent theme
+- Fixed player icon not rotating with arrow trigger
 - Made Gradient theme colours changable
 - Added Customizable fade colours into the colour customization menu
 - Fixed incompatibility with "Scrollbar Everywhere!" by user95401

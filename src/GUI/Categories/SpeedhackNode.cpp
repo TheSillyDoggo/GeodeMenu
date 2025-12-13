@@ -16,6 +16,13 @@ bool SpeedhackNode::init()
     input->setFilter("1234567890.");
     input->setPosition(getContentSize() / 2 + ccp(38, 75));
 
+    input->getInputNode()->setUserObject("nwo5.scroll_inputs/input-type-float", CCNode::create());
+    input->getInputNode()->setUserObject("nwo5.scroll_inputs/float-rounding", CCInteger::create(2));
+
+    input->getInputNode()->setUserObject("nwo5.scroll_inputs/step-float", CCFloat::create(0.25f));
+    input->getInputNode()->setUserObject("nwo5.scroll_inputs/small-step-float", CCFloat::create(0.1f));
+    input->getInputNode()->setUserObject("nwo5.scroll_inputs/big-step-float", CCFloat::create(1.0f));
+
     auto speedLbl = CCLabelBMFont::create("Speed:", "bigFont.fnt");
     speedLbl->setAnchorPoint(ccp(1, 0.5f));
     speedLbl->setScale(0.6f);

@@ -48,10 +48,6 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
 
         if (!FrameExtrapolation::get()->getRealEnabled())
         {
-            // todo: this is bad, it breaks stuff with arrow trigger visually
-            // ill fix it later once i get this update out with more features that i had to remove
-            // so that 8 year olds stop threatening to kill and dox me
-            m_player1->m_mainLayer->setRotation(0);
             return;
         }
 

@@ -7,6 +7,7 @@
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
+SUBMIT_HACK(HitboxTrail);
 
 SUBMIT_OPTION(ShowHitboxes, HitboxSolid);
 SUBMIT_OPTION(ShowHitboxes, HitboxHazard);
@@ -18,6 +19,8 @@ SUBMIT_OPTION(ShowHitboxes, HitboxPlayerRot);
 SUBMIT_OPTION(ShowHitboxes, HitboxThickOutline);
 SUBMIT_OPTION(ShowHitboxes, HitboxFill);
 SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
+
+SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
 
 class $modify (PlayLayer)
 {
@@ -32,8 +35,19 @@ class $modify (PlayLayer)
     }
 };
 
+struct HitboxTrailState
+{
+    CCPoint location;
+    CCPoint size;
+};
+
 class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 {
+    struct Fields
+    {
+        std::vector<HitboxTrailState> states = {};
+    };
+
     void drawForPlayer(PlayerObject* po)
     {
         CCPoint squareSize = po->getObjectRect().size;
@@ -62,9 +76,42 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         m_debugDrawNode->drawPolygon(squareVertices2, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(0, 0.25f, 1, 1));
     }
 
+    void drawForState(HitboxTrailState state)
+    {
+        CCPoint squareSize = state.size;
+        CCPoint squarePosition = state.location;
+
+        CCPoint squareVertices[] = {
+            ccp(squarePosition.x - squareSize.x / 2, squarePosition.y - squareSize.y / 2),
+            ccp(squarePosition.x + squareSize.x / 2, squarePosition.y - squareSize.y / 2),
+            ccp(squarePosition.x + squareSize.x / 2, squarePosition.y + squareSize.y / 2),
+            ccp(squarePosition.x - squareSize.x / 2, squarePosition.y + squareSize.y / 2)
+        };
+
+        m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(-1, -1, -1, -1));
+    }
+
     virtual void updateDebugDraw()
     {
         GJBaseGameLayer::updateDebugDraw();
+
+        auto fields = m_fields.self();
+
+        if (HitboxTrail::get()->getRealEnabled())
+        {
+            fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+
+            while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
+            {
+                fields->states.pop_back();
+            }
+            
+            for (auto state : fields->states)
+            {
+                drawForState(state);
+            }
+            
+        }
 
         drawForPlayer(m_player1);
 
