@@ -2,20 +2,9 @@
 
 #include <Geode/Geode.hpp>
 #include "../Client/KeybindModule.hpp"
+#include "KeyState.hpp"
 
 using namespace geode::prelude;
-
-struct KeyState
-{
-    bool shiftHeld = false;
-    bool ctrlHeld = false;
-    bool altHeld = false;
-    bool cmdHeld = false;
-
-    enumKeyCodes code = enumKeyCodes::KEY_None;
-    bool isDown = false;
-    bool isRepeat = false;
-};
 
 struct KeyConfigState
 {

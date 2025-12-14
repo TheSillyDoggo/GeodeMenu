@@ -2,6 +2,10 @@
 
 - Added Hitbox Trail
 - Added 1 Attempt Practice Complete
+- Added Treasure Room Chest Bypass
+- Added Advanced No Particles
+- Added Keybinds
+- Fixed percentage label showing lots of decimals if accurate percentage was disabled
 - Readded Transparent theme
 - Fixed player icon not rotating with arrow trigger
 - Made Gradient theme colours changable

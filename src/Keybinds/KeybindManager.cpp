@@ -1,5 +1,4 @@
 #include "KeybindManager.hpp"
-#include "ModuleKeybindStruct.hpp"
 #include "FuncKeybindStruct.hpp"
 #include "../GUI/Modules/MenuKeybind.hpp"
 #include "../GUI/AndroidUI.hpp"
@@ -33,6 +32,14 @@ KeybindStruct* KeybindManager::getStruct(std::string id)
 bool KeybindManager::processMSG(KeyState state)
 {
     bool capture = false;
+
+    for (auto mod : Module::getAll())
+    {
+        if (mod->getKeybind().isActivated(state))
+        {
+            mod->onKeybindActivated(state);
+        }
+    }
 
     for (auto& bind : structs)
     {

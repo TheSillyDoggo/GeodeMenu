@@ -16,7 +16,12 @@ class $modify (PlayLayer)
 
         if (m_percentageLabel && !m_level->isPlatformer())
         {
-            m_percentageLabel->setString(fmt::format("{}%", utils::numToString<float>(utils->getCurrentPercentageAdv(), utils->getDecimalsToShow())).c_str());
+            auto str = utils::numToString<float>(utils->getCurrentPercentageAdv(), utils->getDecimalsToShow());
+
+            if (utils->getDecimalsToShow() == 0)
+                str = utils::numToString<int>(utils->getCurrentPercentageAdv());
+
+            m_percentageLabel->setString(fmt::format("{}%", str).c_str());
 
             if (BestInPercentage::get()->getRealEnabled())
                 m_percentageLabel->setString(fmt::format("{} / {}%", m_percentageLabel->getString(), m_isPracticeMode ? m_level->m_practicePercent : m_level->m_normalPercent.value()).c_str());

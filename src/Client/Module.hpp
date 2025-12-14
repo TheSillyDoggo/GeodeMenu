@@ -3,6 +3,8 @@
 #include <Geode/Geode.hpp>
 #include "HookMacro.hpp"
 #include "../Utils/DLL.hpp"
+#include "../Keybinds/KeyConfigStruct.hpp"
+#include "../Keybinds/KeyState.hpp"
 
 #define SUBMIT_HACK(func) \
 $on_mod(Loaded) \
@@ -43,8 +45,6 @@ enum class SafeModeTrigger
     Custom,
 };
 
-struct ModuleKeybindStruct;
-
 class Module
 {
     protected:
@@ -66,6 +66,7 @@ class Module
         std::string disabledMessage = "";
         std::string onDisableWarning = "";
         int sortPriority = 8008135;
+        KeyConfigStruct keyConfig = {};
 
         void DLL setName(std::string str);
         void DLL setID(std::string str);
@@ -84,6 +85,9 @@ class Module
 
         virtual void save();
         virtual void load();
+
+        void saveKeyConfig();
+        void loadKeyConfig();
 
     private:
         bool userEnabled = false;
@@ -116,8 +120,10 @@ class Module
         void addOption(Module* option);
         std::vector<Module*>& getOptions();
 
-        void setKeybind(ModuleKeybindStruct key);
+        void setKeybind(KeyConfigStruct key);
         void removeKeybind();
+
+        KeyConfigStruct getKeybind();
 
         Module* getParent();
         std::string getName();
@@ -134,4 +140,5 @@ class Module
 
         virtual ModuleNode* getNode();
         virtual void DLL onToggle();
+        virtual void onKeybindActivated(KeyState state);
 };

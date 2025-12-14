@@ -12,6 +12,7 @@ class ModuleNode : public CCMenu
         Module* module = nullptr;
         CCMenuItemToggler* btn = nullptr;
         CCMenuItemToggler* favBtn = nullptr;
+        CCLabelBMFont* label = nullptr;
 
         ~ModuleNode();
     
@@ -28,6 +29,8 @@ class ModuleNode : public CCMenu
         void onInfoToggleFavourite(CCObject* sender);
         void onOptions(CCObject* sender);
         void onChangeKeybind(CCObject* sender);
+
+        void onUpdateLabelColour(float dt);
 
         virtual void updateNode();
         bool init(Module* module);

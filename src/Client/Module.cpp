@@ -139,6 +139,7 @@ void Module::load()
     setUserEnabled(Mod::get()->getSavedValue<bool>(fmt::format("{}_enabled", getID()), defaultEnabled));
     // nothing should be favourited by default
     setFavourited(Mod::get()->getSavedValue<bool>(fmt::format("{}_favourited", getID()), false));
+    loadKeyConfig();
 }
 
 ModuleNode* Module::getNode()
@@ -281,6 +282,46 @@ Module* Module::getByID(std::string id)
     }
 
     return nullptr;
+}
+
+void Module::saveKeyConfig()
+{
+    Mod::get()->setSavedValue(fmt::format("{}_keyconfig", getID()), keyConfig.save());
+}
+
+void Module::loadKeyConfig()
+{
+    auto value = Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_keyconfig", getID()));
+    KeyConfigStruct keyconf;
+    keyconf.load(value);
+
+    setKeybind(keyconf);
+}
+
+KeyConfigStruct Module::getKeybind()
+{
+    return keyConfig;
+}
+
+void Module::setKeybind(KeyConfigStruct key)
+{
+    this->keyConfig = key;
+
+    saveKeyConfig();
+}
+
+void Module::removeKeybind()
+{
+    this->keyConfig = {};
+
+    saveKeyConfig();
+}
+
+void Module::onKeybindActivated(KeyState state)
+{
+    this->setUserEnabled(!getUserEnabled());
+
+    ModuleNode::updateAllNodes(nullptr);
 }
 
 std::vector<Module*> Module::getAllFavourited()

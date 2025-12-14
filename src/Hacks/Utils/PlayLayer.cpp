@@ -34,6 +34,16 @@ void PlayLayerUtils::addObject(GameObject* obj)
         m_fields->coins.push_back(static_cast<EffectGameObject*>(obj));
     }
 
+    if (obj->m_objectType == GameObjectType::YellowJumpPad || obj->m_objectType == GameObjectType::PinkJumpPad || obj->m_objectType == GameObjectType::GravityPad || obj->m_objectType == GameObjectType::PinkJumpPad || obj->m_objectType == GameObjectType::RedJumpPad || obj->m_objectType == GameObjectType::SpiderPad)
+    {
+        m_fields->padObjects.push_back(static_cast<EffectGameObject*>(obj));
+    }
+
+    if (auto ring = typeinfo_cast<RingObject*>(obj))
+    {
+        m_fields->ringObjects.push_back(ring);
+    }
+
     switch (obj->m_objectID)
     { //thanks prevter :3
         case 10: // Blue Gravity Portal

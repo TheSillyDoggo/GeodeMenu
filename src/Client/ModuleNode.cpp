@@ -1,6 +1,9 @@
 #include "ModuleNode.hpp"
 #include "../GUI/Categories/FavouritesNode.hpp"
 #include "../GUI/OptionsUI.hpp"
+#include "../GUI/Modules/SeperateColourCheatNames.hpp"
+#include "../Utils/ColourUtils.hpp"
+#include "../GUI/EditKeyConfigUI.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -25,7 +28,7 @@ void ModuleNode::setup()
     btn = CCMenuItemToggler::createWithStandardSprites(this, isDisabled ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle), 0.75f);
     btn->toggle(module->getUserEnabled());
 
-    auto label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
+    label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(110 - (hasOptions ? 3 : 0), 0.575f, 0.1f);
 
@@ -43,6 +46,8 @@ void ModuleNode::setup()
         btn->m_onButton->setOpacity(150);
         btn->m_offButton->setOpacity(150);
     }
+
+    this->schedule(schedule_selector(ModuleNode::onUpdateLabelColour));
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));
@@ -79,6 +84,13 @@ void ModuleNode::setup()
     }
 }
 
+void ModuleNode::onUpdateLabelColour(float dt)
+{
+    auto col = SeperateColourCheatNames::get()->getRealEnabled() && (module->getSafeModeTrigger() != SafeModeTrigger::None) ? CheatNameColour::get()->getColour() : ccWHITE;
+
+    label->setColor(col);
+}
+
 void ModuleNode::updateNode()
 {
     if (btn->isToggled() != module->getUserEnabled())
@@ -91,6 +103,15 @@ void ModuleNode::updateNode()
 void ModuleNode::onChangeKeybind(CCObject* sender)
 {
     auto mod = static_cast<Module*>(this->getUserData());
+
+    auto ui = EditKeyConfigUI::create([this, mod](KeyConfigStruct config)
+    {
+        mod->setKeybind(config);
+    });
+
+    ui->setDefaultConfig({ {}, Keycode::KEY_Unknown });
+    ui->setStartConfig(mod->getKeybind());
+    ui->show();
 }
 
 void ModuleNode::onToggle(CCObject* sender)
@@ -187,7 +208,7 @@ void ModuleNode::onInfo(CCObject* sender)
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
     menu->addChild(btn);
-    // menu->addChild(btnKeybind);
+    menu->addChild(btnKeybind);
     alert->m_mainLayer->addChild(menu, 8008569);
 
     // title

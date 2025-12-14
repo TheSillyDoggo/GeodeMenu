@@ -19,6 +19,8 @@ class $modify (PlayLayerUtils, PlayLayer)
         std::vector<GameObject*> dualObjects = {};
         std::vector<GameObject*> gamemodeObjects = {};
         std::vector<GameObject*> gravityObjects = {};
+        std::vector<RingObject*> ringObjects = {};
+        std::vector<EffectGameObject*> padObjects = {};
     };
 
     static PlayLayerUtils* getUtils();
