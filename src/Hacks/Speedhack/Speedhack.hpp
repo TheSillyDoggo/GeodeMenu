@@ -1,10 +1,12 @@
 #pragma once
 
 #include <vector>
+#include "../../Keybinds/KeyConfigStruct.hpp"
 
 struct SpeedhackPreset
 {
     float value = 0.0f;
+    KeyConfigStruct keyConfig = {};
 };
 
 class Speedhack

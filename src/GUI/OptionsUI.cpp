@@ -30,6 +30,7 @@ bool OptionsUI::setup()
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
     bg->setPosition(this->m_size / 2);
+    this->setUserData(module);
 
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChild(bg);
@@ -64,7 +65,13 @@ bool OptionsUI::setup()
     favBtn->m_offButton->setColor(ccc3(150, 150, 150));
     favBtn->m_offButton->setOpacity(150);
 
+    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), this, menu_selector(ModuleNode::onChangeKeybind));
+    btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
+    btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
+    btnKeybind->setPosition(ccp(m_size.width - 18 * 2, -m_size.height + 18 * 2));
+
     menu3->addChild(favBtn);
+    menu3->addChild(btnKeybind);
 
     node = CategoryNode::create();
     node->setAnchorPoint(ccp(0.5f, 0.5f));
@@ -91,15 +98,15 @@ void OptionsUI::onInfo(CCObject* sender)
 {
     auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
     alert->setUserData(module);
-    alert->setUserObject("fav-btn", favBtn);
     alert->show();
 
     auto menu = CCMenu::create();
-    // この二行が怖いだ
-    menu->setPosition(CCDirector::get()->getWinSize() / 2 - (alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentSize() / 2) + ccp(25, 25));
+    // この二行は怖いだ
+    menu->setPosition(CCDirector::get()->getWinSize() / 2 - ccp(0, alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentHeight() / 2) + ccp(0, 25));
     menu->setTouchPriority(-42069);
 
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(OptionsUI::onInfoToggleFavourite));
+    btn->setPositionX(-alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 + 25);
     btn->toggle(module->isFavourited());
 
     btn->setContentSize(btn->getContentSize() * 3);
@@ -115,7 +122,13 @@ void OptionsUI::onInfo(CCObject* sender)
     btn->m_offButton->setColor(ccc3(150, 150, 150));
     btn->m_offButton->setOpacity(150);
 
+    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
+    btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
+    btnKeybind->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25);
+    btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
+
     menu->addChild(btn);
+    menu->addChild(btnKeybind);
     alert->m_mainLayer->addChild(menu, 8008569);
 
     // title

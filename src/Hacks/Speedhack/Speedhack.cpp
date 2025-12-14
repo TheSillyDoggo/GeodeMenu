@@ -116,18 +116,41 @@ void Speedhack::loadPresets()
         auto struc = SpeedhackPreset(pre);
         presets.push_back(struc);
     }
+
+    auto configsValue = Mod::get()->getSavedValue<matjson::Value>("speedhack-presets-keyconfigs");
+
+    if (configsValue.isArray())
+    {
+        for (auto config : configsValue.asArray().unwrap())
+        {
+            for (size_t i = 0; i < presets.size(); i++)
+            {
+                if (presets[i].value == config["value"].asDouble().unwrap())
+                    presets[i].keyConfig.load(config["config"]);
+            }
+        }
+    }
 }
 
 void Speedhack::savePresets()
 {
     std::vector<float> vec = {};
 
+    auto configsValue = matjson::Value::array();
+
     for (auto pre : presets)
     {
         vec.push_back(pre.value);
+
+        matjson::Value keyVal;
+        keyVal["value"] = pre.value;
+        keyVal["config"] = pre.keyConfig.save();
+
+        configsValue.asArray().unwrap().push_back(keyVal);
     }
 
     Mod::get()->setSavedValue<std::vector<float>>("speedhack-presets", vec);
+    Mod::get()->setSavedValue<matjson::Value>("speedhack-presets-keyconfigs", configsValue);
 }
 
 void Speedhack::setPresets(std::vector<SpeedhackPreset> presets)

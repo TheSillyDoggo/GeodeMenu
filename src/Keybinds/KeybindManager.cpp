@@ -2,6 +2,8 @@
 #include "FuncKeybindStruct.hpp"
 #include "../GUI/Modules/MenuKeybind.hpp"
 #include "../GUI/AndroidUI.hpp"
+#include "../Hacks/Speedhack/Speedhack.hpp"
+#include "../Utils/Num.hpp"
 
 KeybindManager* KeybindManager::get()
 {
@@ -38,6 +40,20 @@ bool KeybindManager::processMSG(KeyState state)
         if (mod->getKeybind().isActivated(state))
         {
             mod->onKeybindActivated(state);
+        }
+    }
+
+    for (auto preset : Speedhack::get()->getPresets())
+    {
+        if (preset.keyConfig.isActivated(state))
+        {
+            float val = preset.value;
+            auto str = floatToStringMin2DP(val);
+
+            auto prev = Speedhack::get()->getText();
+
+            Speedhack::get()->setText(str);
+            Speedhack::get()->setEnabled(prev == str ? !Speedhack::get()->getEnabled() : true);
         }
     }
 

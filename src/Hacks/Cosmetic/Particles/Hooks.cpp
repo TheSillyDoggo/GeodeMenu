@@ -72,16 +72,16 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
 
                 if (SpeedChangeParticles::get()->getRealEnabled())
                 {
-                    if (m_sPlistFile.ends_with("speedEffect_normal.plist"))
+                    if (std::string(m_sPlistFile).ends_with("speedEffect_normal.plist"))
                         return;
 
-                    if (m_sPlistFile.ends_with("speedEffect_fast.plist"))
+                    if (std::string(m_sPlistFile).ends_with("speedEffect_fast.plist"))
                         return;
 
-                    if (m_sPlistFile.ends_with("speedEffect_vfast.plist"))
+                    if (std::string(m_sPlistFile).ends_with("speedEffect_vfast.plist"))
                         return;
 
-                    if (m_sPlistFile.ends_with("speedEffect_vvfast.plist"))
+                    if (std::string(m_sPlistFile).ends_with("speedEffect_vvfast.plist"))
                         return;
                 }
             }

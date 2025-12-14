@@ -29,6 +29,9 @@ std::string KeyConfigStruct::configToString()
     auto kts = cocos2d::CCKeyboardDispatcher::get()->keyToString(code);
     std::string key = kts ? kts : "Unknown";
 
+    if (code == Keycode::KEY_C)
+        key = "C"; // for some reason it says "V" instead of C
+
     return fmt::format("{}{}", mod, key);
 }
 
