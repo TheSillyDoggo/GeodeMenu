@@ -98,6 +98,7 @@ void OptionsUI::onInfo(CCObject* sender)
 {
     auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
     alert->setUserData(module);
+    alert->setUserObject("fav-btn", favBtn);
     alert->show();
 
     auto menu = CCMenu::create();
