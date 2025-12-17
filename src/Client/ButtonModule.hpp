@@ -9,5 +9,6 @@ class ButtonModule : public Module
 
         bool shouldSave();
         
+        virtual void onKeybindActivated(KeyState state);
         virtual ModuleNode* getNode();
 };

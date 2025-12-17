@@ -53,11 +53,25 @@ class HitboxTrailMaxPositions : public InputModule
             setName("Stored positions");
             setID("hitbox-trail/stored-positions");
             setDescription("");
+            setPriority(1);
 
             setDefaultString("480");
             setPlaceholderString("Positions");
 
             setStringFilter("1234567890");
             setMaxCharCount(5);
+        }
+};
+
+class HitboxTrailResetOnDeath : public Module
+{
+    public:
+        MODULE_SETUP(HitboxTrailResetOnDeath)
+        {
+            setName("Reset positions on death");
+            setID("hitbox-trail/reset-positions-on-death");
+            setDescription("Resets the stored positions every attempt");
+            setDefaultEnabled(true);
+            setPriority(2);
         }
 };

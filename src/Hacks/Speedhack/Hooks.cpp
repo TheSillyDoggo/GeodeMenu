@@ -1,6 +1,7 @@
 #include "Hooks.hpp"
 #include "Speedhack.hpp"
 #include "../../Utils/ColourUtils.hpp"
+#include "../../Labels/LabelManager.hpp"
 
 Mod* cbf = nullptr;
 
@@ -15,6 +16,7 @@ void SpeedhackScheduler::update(float dt)
 {
     Speedhack::get()->realDeltatime = dt;
     ColourUtils::get()->update(dt);
+    LabelManager::get()->update(dt);
 
     float value = Speedhack::get()->getRealValue();
 

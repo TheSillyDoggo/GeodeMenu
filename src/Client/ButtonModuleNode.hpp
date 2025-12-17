@@ -11,5 +11,6 @@ class ButtonModuleNode : public ModuleNode
 
         void onButtonClicked(CCObject* sender);
 
+        virtual void updateNode();
         virtual void setup();
 };

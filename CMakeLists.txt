@@ -42,8 +42,8 @@ include_directories(include)
 
 # CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
 
-# CPMAddPackage("gh:EclipseMenu/RIFT#main")
+CPMAddPackage("gh:EclipseMenu/RIFT#main")
 
-# target_link_libraries(${PROJECT_NAME} imgui-cocos rift)
+target_link_libraries(${PROJECT_NAME} rift)
 
 setup_geode_mod(${PROJECT_NAME})

@@ -1,5 +1,6 @@
 # 2.4.0
 
+- Added **Labels**
 - Added ability to add keybinds to speedhack presets
 - Added Stop Triggers on Death
 - Added Suicide (Auto kill player)
@@ -7,6 +8,7 @@
 - Added Force Platformer
 - Added Show Touches
 - Changed name of "Ship hold particles" to "Ship boost particles"
+- Fixed crash when favouriting or adding a keybind to a button module (like reset audio variables)
 - Fixed menu animations being affected by speedhack
 - Fixed hide pause menu not hiding when enabled with a keybind
 - Fixed wave trail appearing wrong size when player is mini

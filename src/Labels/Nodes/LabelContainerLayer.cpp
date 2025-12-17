@@ -1,0 +1,105 @@
+#include "LabelContainerLayer.hpp"
+#include "TextLabelNode.hpp"
+
+bool LabelContainerLayer::init()
+{
+    if (!CCLayer::init())
+        return false;
+
+    this->setTouchEnabled(false);
+    this->scheduleUpdate();
+
+    for (size_t i = 0; i < 9; i++)
+    {
+        addAnchorNode((LabelAnchor)i);
+    }
+
+    this->setContentSize(CCDirector::get()->getWinSize() + ccp(-6, 0));
+    this->setPosition(ccp(3, 0));
+    
+    updateConfigs();
+    return true;
+}
+
+void LabelContainerLayer::update(float dt)
+{
+    for (auto node : nodes)
+    {
+        node->update(dt);
+    }
+
+    for (auto node : anchors)
+    {
+        sortNodeChildren(node.second);
+
+        node.second->setPosition(getContentSize() * node.second->getAnchorPoint());
+    }
+
+    for (auto node : nodes)
+    {
+        node->setPosition(node->getPosition() + node->getLabelConfig().offset);
+    }
+}
+
+void LabelContainerLayer::sortNodeChildren(CCNode* node)
+{
+    float height = 0;
+    float y = 0;
+
+    for (size_t i = 0; i < node->getChildrenCount(); i++)
+    {
+        auto n = node->getChildByIndex<CCNode*>(i);
+
+        if (!n->isVisible())
+            continue;
+
+        height += n->getScaledContentHeight();
+    }
+    
+    for (size_t i = 0; i < node->getChildrenCount(); i++)
+    {
+        auto n = node->getChildByIndex<CCNode*>(i);
+
+        if (!n->isVisible())
+            continue;
+
+        if (node->getAnchorPoint().y == 0)
+            n->setPositionY(y - (height * node->getAnchorPoint().y));
+        else if (node->getAnchorPoint().y == 0.5f)
+            n->setPositionY((height / 2) - y);
+        else
+            n->setPositionY(-y);
+        
+        y += n->getScaledContentHeight();
+    }
+}
+
+void LabelContainerLayer::addAnchorNode(LabelAnchor anchor)
+{
+    auto node = CCNode::create();
+    anchors.emplace(anchor, node);
+    node->setAnchorPoint(LabelManager::get()->anchorToPoint(anchor));
+    node->setPosition(getContentSize() * LabelManager::get()->anchorToPoint(anchor));
+
+    this->addChild(node);
+}
+
+void LabelContainerLayer::updateConfigs()
+{
+    for (auto node : nodes)
+    {
+        node->removeFromParent();
+    }
+    
+    nodes.clear();
+
+    for (auto conf : LabelManager::get()->getConfigs())
+    {
+        auto node = TextLabelNode::create();
+        node->setLabelConfig(conf);
+        node->setAnchorPoint(LabelManager::get()->anchorToPoint(conf.anchor));
+
+        nodes.push_back(node);
+        anchors[conf.anchor]->addChild(node);
+    }
+}

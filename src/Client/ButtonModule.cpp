@@ -10,3 +10,8 @@ bool ButtonModule::shouldSave()
 {
     return false;
 }
+
+void ButtonModule::onKeybindActivated(KeyState state)
+{
+    onClick();
+}

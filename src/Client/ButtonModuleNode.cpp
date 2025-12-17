@@ -43,3 +43,8 @@ void ButtonModuleNode::setup()
     this->addChildAtPosition(btn, Anchor::Center, ccp(-4, 0));
     this->addChildAtPosition(infoBtn, Anchor::Center, ccp(spr->getScaledContentWidth() / 2 + 4, 9));
 }
+
+void ButtonModuleNode::updateNode()
+{
+    
+}

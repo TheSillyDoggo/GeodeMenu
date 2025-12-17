@@ -21,6 +21,7 @@ SUBMIT_OPTION(ShowHitboxes, HitboxFill);
 SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
 
 SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailResetOnDeath);
 
 class $modify (PlayLayer)
 {
@@ -117,6 +118,14 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
         if (m_player2 && m_player2->isRunning())
             drawForPlayer(m_player2);
+    }
+
+    void resetLevelVariables()
+    {
+        GJBaseGameLayer::resetLevelVariables();
+
+        if (HitboxTrailResetOnDeath::get()->getRealEnabled())
+            m_fields->states.clear();
     }
 };
 
