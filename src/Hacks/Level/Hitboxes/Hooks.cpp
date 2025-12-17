@@ -50,7 +50,7 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
     void drawForPlayer(PlayerObject* po)
     {
-        CCPoint squareSize = po->getObjectRect().size;
+        CCPoint squareSize = po->getObjectRect(po->m_vehicleSize, po->m_vehicleSize).size;
         CCPoint squarePosition = po->getPosition();
 
         CCPoint squareVertices[] = {

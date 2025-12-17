@@ -36,6 +36,7 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
         bool endscreenParticle = false;
         bool swingFireParticles = false;
         bool collectableParticles = false;
+        bool dashOrbParticles = false;
     };
 
     virtual void draw()
@@ -69,6 +70,7 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
                 CHECK_IF_PARTICLE(EndPortalParticles, endscreenParticle);
                 CHECK_IF_PARTICLE(SwingFireParticles, swingFireParticles);
                 CHECK_IF_PARTICLE(CoinParticles, collectableParticles);
+                CHECK_IF_PARTICLE(DashOrbParticles, dashOrbParticles);
 
                 if (SpeedChangeParticles::get()->getRealEnabled())
                 {
@@ -145,6 +147,9 @@ class $modify (PlayerObject)
 
         if (m_swingBurstParticles2)
             static_cast<NoParticleSystem*>(m_swingBurstParticles2)->m_fields->swingFireParticles = true;
+
+        if (m_dashParticles)
+            static_cast<NoParticleSystem*>(m_dashParticles)->m_fields->dashOrbParticles = true;
     }
 };
 

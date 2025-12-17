@@ -1,3 +1,16 @@
+# 2.4.0
+
+- Added ability to add keybinds to speedhack presets
+- Added Stop Triggers on Death
+- Added Suicide (Auto kill player)
+- Added Freeze Attempts
+- Added Force Platformer
+- Added Show Touches
+- Changed name of "Ship hold particles" to "Ship boost particles"
+- Fixed menu animations being affected by speedhack
+- Fixed hide pause menu not hiding when enabled with a keybind
+- Fixed wave trail appearing wrong size when player is mini
+
 # 2.3.0
 
 - Added Hitbox Trail

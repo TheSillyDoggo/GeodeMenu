@@ -3,6 +3,7 @@
 #include "../GUI/Modules/MenuKeybind.hpp"
 #include "../GUI/AndroidUI.hpp"
 #include "../Hacks/Speedhack/Speedhack.hpp"
+#include "../GUI/Categories/SpeedhackNode.hpp"
 #include "../Utils/Num.hpp"
 
 KeybindManager* KeybindManager::get()
@@ -54,6 +55,9 @@ bool KeybindManager::processMSG(KeyState state)
 
             Speedhack::get()->setText(str);
             Speedhack::get()->setEnabled(prev == str ? !Speedhack::get()->getEnabled() : true);
+
+            if (SpeedhackNode::get())
+                SpeedhackNode::get()->updateUI();
         }
     }
 

@@ -5,6 +5,7 @@
 #include "Modules/SearchBox.hpp"
 #include "../Client/SubCategoryNode.hpp"
 #include "Modules/DisableOpenInLevel.hpp"
+#include "../Utils/RealtimeAction.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
@@ -266,8 +267,8 @@ AndroidUI::~AndroidUI()
 void AndroidUI::runAnimation(MenuAnimation anim)
 {
     auto winSize = CCDirector::get()->getWinSize();
-    auto moveToMid = CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr);
-    auto fadeIn = CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr);
+    auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr));
+    auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
 
     switch (anim)
     {
@@ -316,13 +317,13 @@ void AndroidUI::runAnimation(MenuAnimation anim)
 
             m_mainLayer->setScale(0);
 
-            m_mainLayer->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f));
+            m_mainLayer->runAction(RealtimeAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)));
             return;
 
         case MenuAnimation::FadeIn:
             drawOpacity->setOpacity(0);
 
-            drawOpacity->runAction(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2));
+            drawOpacity->runAction(RealtimeAction::create(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2)));
             return;
     }
 }

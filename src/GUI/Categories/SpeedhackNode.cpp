@@ -1,11 +1,14 @@
 #include "SpeedhackNode.hpp"
 #include "../../Hacks/Speedhack/Speedhack.hpp"
 #include "../../Utils/Num.hpp"
+#include "../EditKeyConfigUI.hpp"
 
 bool SpeedhackNode::init()
 {
     if (!CategoryNode::init())
         return false;
+
+    instance = this;
 
     auto menu = CCMenu::create();
     menu->setPosition(ccp(0, 0));
@@ -75,6 +78,12 @@ bool SpeedhackNode::init()
     presetMenu->setContentWidth(700);
     presetMenu->setLayout(RowLayout::create()->setGap(15)->setAutoScale(true));
 
+    presetKeybindMenu = CCMenu::create();
+    presetKeybindMenu->setScale(0.41f);
+    presetKeybindMenu->setAnchorPoint(ccp(0, 0));
+    presetKeybindMenu->setPosition(5, 25);
+    presetKeybindMenu->setContentWidth(700);
+
     auto presetConfigMenu = CCMenu::create();
     presetConfigMenu->setScale(0.41f);
     presetConfigMenu->setAnchorPoint(ccp(0, 0));
@@ -113,6 +122,7 @@ bool SpeedhackNode::init()
     menu->addChild(slider);
     this->addChild(menu);
     this->addChild(presetMenu);
+    this->addChild(presetKeybindMenu);
     this->addChildAtPosition(presetConfigMenu, Anchor::BottomRight, ccp(0, 13));
     this->addChildAtPosition(deletePresetBG, Anchor::Bottom, ccp(0, 35));
     this->addChildAtPosition(deletePresetHelp, Anchor::Bottom, ccp(0, 35));
@@ -121,6 +131,8 @@ bool SpeedhackNode::init()
 
 void SpeedhackNode::updatePresets()
 {
+    auto presets = Speedhack::get()->getPresets();
+
     for (auto btn : presetBtns)
     {
         btn.first->removeFromParent();
@@ -128,7 +140,7 @@ void SpeedhackNode::updatePresets()
 
     presetBtns.clear();
 
-    for (auto preset : Speedhack::get()->getPresets())
+    for (auto preset : presets)
     {
         auto spr = ButtonSprite::create(floatToStringMin2DP(preset.value).c_str(), "bigFont.fnt", presetDeleteMode ? "GJ_button_06.png" : "GJ_button_05.png");
         auto btn = CCMenuItemSpriteExtra::create(spr, this, presetDeleteMode ? menu_selector(SpeedhackNode::onRemovePreset) : menu_selector(SpeedhackNode::onApplyPreset));
@@ -139,9 +151,55 @@ void SpeedhackNode::updatePresets()
     presetMenu->updateLayout();
     deletePresetHelp->setVisible(presetDeleteMode);
     deletePresetBG->setVisible(presetDeleteMode);
+    presetKeybindMenu->setVisible(!presetDeleteMode);
 
     sprMode->updateBGImage(presetDeleteMode ? "geode.loader/GE_button_03.png" : "GJ_button_06.png");
     sprMode->m_label->setString(presetDeleteMode ? "-" : "X");
+
+    presetKeybindMenu->removeAllChildren();
+
+    for (size_t i = 0; i < presetBtns.size(); i++)
+    {
+        auto oldBtn = presetMenu->getChildByIndex<CCMenuItemSpriteExtra*>(i);
+
+        auto spr = CCSprite::create("keybinds.png"_spr);
+        spr->setScale(2.2f);
+        spr->setOpacity(presets[i].keyConfig.isValid() ? 255 : 150);
+
+        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SpeedhackNode::onSetPresetKeybind));
+        btn->setTag(i);
+        btn->setPosition(oldBtn->getPosition());
+
+        presetKeybindMenu->addChild(btn);
+    }
+}
+
+void SpeedhackNode::onSetPresetKeybind(CCObject* sender)
+{
+    auto presets = Speedhack::get()->getPresets();
+
+    auto ui = EditKeyConfigUI::create([this, sender](KeyConfigStruct config)
+    {
+        auto pre = Speedhack::get()->getPresets();
+        pre[sender->getTag()].keyConfig = config;
+        Speedhack::get()->setPresets(pre);
+
+        updatePresets();
+    });
+
+    ui->setDefaultConfig({ {}, Keycode::KEY_Unknown });
+    ui->setStartConfig(presets[sender->getTag()].keyConfig);
+    ui->show();
+}
+
+void SpeedhackNode::updateUI()
+{
+    input->setString(Speedhack::get()->getText());
+    slider->setValueRanged(Speedhack::get()->getValue());
+
+    enabledBtn->toggle(Speedhack::get()->getEnabled());
+
+    updatePresets();
 }
 
 void SpeedhackNode::onApplyPreset(CCObject* sender)
@@ -229,4 +287,14 @@ void SpeedhackNode::textChanged(CCTextInputNode* node)
 {
     Speedhack::get()->setText(input->getString());
     slider->setValueRanged(Speedhack::get()->getValue());
+}
+
+SpeedhackNode* SpeedhackNode::get()
+{
+    return instance;
+}
+
+SpeedhackNode::~SpeedhackNode()
+{
+    instance = nullptr;
 }

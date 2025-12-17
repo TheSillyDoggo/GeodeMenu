@@ -286,6 +286,9 @@ Module* Module::getByID(std::string id)
 
 void Module::saveKeyConfig()
 {
+    if (!shouldSave())
+        return;
+
     Mod::get()->setSavedValue(fmt::format("{}_keyconfig", getID()), keyConfig.save());
 }
 
@@ -321,6 +324,7 @@ void Module::onKeybindActivated(KeyState state)
 {
     this->setUserEnabled(!getUserEnabled());
 
+    onToggle();
     ModuleNode::updateAllNodes(nullptr);
 }
 

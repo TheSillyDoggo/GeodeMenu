@@ -16,7 +16,7 @@ class DecemberSnow : public Module
         }
 };
 
-SUBMIT_HACK(DecemberSnow)
+SUBMIT_HACK(DecemberSnow);
 
 class $modify (MenuLayer)
 {

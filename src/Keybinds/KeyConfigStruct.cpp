@@ -80,6 +80,14 @@ bool KeyConfigStruct::isActivated(KeyState state)
     return false;
 }
 
+bool KeyConfigStruct::isValid()
+{
+    if (code == (int)Keycode::KEY_Unknown || code == (int)Keycode::KEY_None || code == (int)Keycode::KEY_LeftWindowsKey)
+        return false;
+
+    return true;
+}
+
 matjson::Value KeyConfigStruct::save()
 {
     matjson::Value obj;

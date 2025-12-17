@@ -63,7 +63,7 @@ class ShipHoldParticles : public Module
     public:
         MODULE_SETUP(ShipHoldParticles)
         {
-            setName("Ship hold particles");
+            setName("Ship boost particles");
             setID("no-particles-adv/player-hold-particles");
         }
 };
@@ -93,7 +93,7 @@ class RobotHoldParticles : public Module
     public:
         MODULE_SETUP(RobotHoldParticles)
         {
-            setName("Robot hold particles");
+            setName("Robot boost particles");
             setID("no-particles-adv/robot-hold-particles");
         }
 };
@@ -231,6 +231,17 @@ class CoinParticles : public Module
         }
 };
 
+class DashOrbParticles : public Module
+{
+    public:
+        MODULE_SETUP(DashOrbParticles)
+        {
+            setName("Dash Orb Particles");
+            setID("no-particles-adv/dash-orb-particles");
+            setDescription("Disables particles when using a dash orb");
+        }
+};
+
 SUBMIT_HACK(NoParticlesAdv);
 SUBMIT_OPTION(NoParticlesAdv, ParticleObjects);
 SUBMIT_OPTION(NoParticlesAdv, PlayerGroundParticles);
@@ -253,3 +264,4 @@ SUBMIT_OPTION(NoParticlesAdv, SpeedChangeParticles);
 SUBMIT_OPTION(NoParticlesAdv, EndPortalParticles);
 SUBMIT_OPTION(NoParticlesAdv, SwingFireParticles);
 SUBMIT_OPTION(NoParticlesAdv, CoinParticles);
+SUBMIT_OPTION(NoParticlesAdv, DashOrbParticles);

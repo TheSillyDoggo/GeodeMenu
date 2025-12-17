@@ -8,6 +8,7 @@
 #include "Modules/UseColonThreeButton.hpp"
 #include "../Utils/ColourUtils.hpp"
 #include "../Hacks/Speedhack/Speedhack.hpp"
+#include "../Utils/RealtimeAction.hpp"
 
 AndroidBall* AndroidBall::get()
 {
@@ -142,7 +143,7 @@ void AndroidBall::update(float dt)
 
     if (!AndroidUI::get() && !getActionByTag(69) && getOpacity() != (normalOpacity * 255) && !isDragging)
     {
-        auto fadeBack = CCFadeTo::create(0.25f, normalOpacity * 255);
+        auto fadeBack = RealtimeAction::create(CCFadeTo::create(0.25f, normalOpacity * 255));
         fadeBack->setTag(69);
         this->runAction(fadeBack);
     }
@@ -178,8 +179,8 @@ bool AndroidBall::ccTouchBegan(CCTouch* touch)
         isDragging = true;
 
         this->stopAllActions();
-        this->runAction(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.9f), 2));
-        auto fadeIn = CCFadeTo::create(0.25f, 255);
+        this->runAction(RealtimeAction::create(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.9f), 2)));
+        auto fadeIn = RealtimeAction::create(CCFadeTo::create(0.25f, 255));
         fadeIn->setTag(69);
         this->runAction(fadeIn);
 
@@ -224,12 +225,12 @@ bool AndroidBall::ccTouchEnded(CCTouch* touch)
     }
     else
     {
-        auto fadeBack = CCFadeTo::create(0.25f, normalOpacity * 255);
+        auto fadeBack = RealtimeAction::create(CCFadeTo::create(0.25f, normalOpacity * 255));
         fadeBack->setTag(69);
         this->runAction(fadeBack);
     }
 
-    this->runAction(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1)));
+    this->runAction(RealtimeAction::create(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1))));
     Mod::get()->setSavedValue("posX", position.x);
     Mod::get()->setSavedValue("posY", position.y);
 

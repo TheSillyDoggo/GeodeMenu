@@ -1,5 +1,5 @@
 #include "../../Client/InputModule.hpp"
-#include <Geode/modify/HardStreak.hpp>
+#include <Geode/modify/PlayerObject.hpp>
 
 using namespace geode::prelude;
 
@@ -35,20 +35,18 @@ class WaveTrailThickness : public InputModule
 SUBMIT_HACK(WaveTrailSize);
 SUBMIT_OPTION(WaveTrailSize, WaveTrailThickness);
 
-class $modify (HardStreak)
+class $modify (PlayerObject)
 {
-    void updateStroke(float unused)
+    virtual void update(float dt)
     {
-        if (WaveTrailSize::get()->getRealEnabled())
-            m_waveSize = WaveTrailThickness::get()->getStringFloat();
-        else
-            m_waveSize = 1;
-        
-        HardStreak::updateStroke(unused);
-    }
+        PlayerObject::update(dt);
 
-    static void onModify(auto& self)
-    {
-        (void)self.setHookPriorityPost("HardStreak::updateStroke", Priority::Last);
+        if (m_waveTrail)
+        {
+            if (WaveTrailSize::get()->getRealEnabled())
+                m_waveTrail->m_waveSize = WaveTrailThickness::get()->getStringFloat();
+            else
+                m_waveTrail->m_waveSize = m_vehicleSize;
+        }
     }
 };

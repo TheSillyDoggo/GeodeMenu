@@ -8,7 +8,9 @@ using namespace geode::prelude;
 class SpeedhackNode : public CategoryNode, public TextInputDelegate
 {
     protected:
+        static inline SpeedhackNode* instance = nullptr;
         CCMenu* presetMenu = nullptr;
+        CCMenu* presetKeybindMenu = nullptr;
         ButtonSprite* sprMode = nullptr;
         std::unordered_map<CCMenuItemSpriteExtra*, float> presetBtns = {};
         CCLabelBMFont* deletePresetHelp = nullptr;
@@ -22,8 +24,11 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         BetterSlider* slider = nullptr;
         TextInput* input = nullptr;
 
+        ~SpeedhackNode();
+
     public:
         CREATE_FUNC(SpeedhackNode)
+        static SpeedhackNode* get();
 
         void onToggleEnabled(CCObject* sender);
         void onToggleMusic(CCObject* sender);
@@ -35,9 +40,11 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         void onRemovePreset(CCObject* sender);
         void onAddNewPreset(CCObject* sender);
         void onChangePresetMode(CCObject* sender);
+        void onSetPresetKeybind(CCObject* sender);
 
         void updatePresets();
 
+        void updateUI();
         virtual void textChanged(CCTextInputNode* node);
 
         bool init();

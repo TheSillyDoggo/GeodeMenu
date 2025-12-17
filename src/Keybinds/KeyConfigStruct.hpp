@@ -28,6 +28,7 @@ struct KeyConfigStruct
     std::string configToString();
 
     bool isActivated(KeyState state);
+    bool isValid();
 
     matjson::Value save();
     void load(matjson::Value value);
