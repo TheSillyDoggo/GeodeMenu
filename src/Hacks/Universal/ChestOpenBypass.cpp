@@ -1,5 +1,6 @@
 #include "../../Client/Module.hpp"
 #include <Geode/modify/SecretRewardsLayer.hpp>
+#include <Geode/modify/GameStatsManager.hpp>
 
 using namespace geode::prelude;
 
@@ -25,7 +26,7 @@ class $modify (SecretRewardsLayer)
             return SecretRewardsLayer::onSelectItem(sender);
 
         auto keys = GameStatsManager::sharedState()->getStat("21");
-        GameStatsManager::sharedState()->setStat("21", 9999);
+        GameStatsManager::sharedState()->setStat("21", 999999);
 
         SecretRewardsLayer::onSelectItem(sender);
 
@@ -41,7 +42,7 @@ class $modify (SecretRewardsLayer)
             return SecretRewardsLayer::onGoldChest(sender);
 
         auto keys = GameStatsManager::sharedState()->getStat("43");
-        GameStatsManager::sharedState()->setStat("43", 9999);
+        GameStatsManager::sharedState()->setStat("43", 999999);
 
         SecretRewardsLayer::onGoldChest(sender);
 
@@ -49,5 +50,14 @@ class $modify (SecretRewardsLayer)
 
         if (m_goldKeysLabel)
             m_goldKeysLabel->setString(fmt::format("{}", keys).c_str());
+    }
+};
+
+class $modify (GameStatsManager)
+{
+    void recountSpecialStats()
+    {
+        if (!OpenChestBypass::get()->getRealEnabled())
+            GameStatsManager::recountSpecialStats();
     }
 };

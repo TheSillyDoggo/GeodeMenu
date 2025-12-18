@@ -7,11 +7,14 @@
 - Added Freeze Attempts
 - Added Force Platformer
 - Added Show Touches
+- Added No Orb Pulse
 - Changed name of "Ship hold particles" to "Ship boost particles"
+- Fixed chests unlocked with open chest bypass not saving
 - Fixed crash when favouriting or adding a keybind to a button module (like reset audio variables)
 - Fixed menu animations being affected by speedhack
 - Fixed hide pause menu not hiding when enabled with a keybind
 - Fixed wave trail appearing wrong size when player is mini
+- Fixed player rotating when using a dash orb with no rotation enabled
 
 # 2.3.0
 

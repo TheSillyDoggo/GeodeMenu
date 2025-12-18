@@ -26,10 +26,16 @@ class $modify (GJBaseGameLayer)
         if (NoPlayerRotation::get()->getRealEnabled())
         {
             if (m_player1)
+            {
                 m_player1->setRotation(0);
+                m_player1->m_iconSprite->setRotation(0);
+            }
 
             if (m_player2)
+            {
                 m_player2->setRotation(0);
+                m_player2->m_iconSprite->setRotation(0);
+            }
         }
     }
 };

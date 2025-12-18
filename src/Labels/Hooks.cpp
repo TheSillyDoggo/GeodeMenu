@@ -10,3 +10,19 @@ bool LabelPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObj
 
     return true;
 }
+
+void LabelPlayLayer::resetLevel()
+{
+    PlayLayer::resetLevel();
+
+    if (LabelContainerLayer::get())
+        LabelContainerLayer::get()->onNewAttempt();
+}
+
+void LabelBaseGameLayer::handleButton(bool down, int button, bool isPlayer1)
+{
+    GJBaseGameLayer::handleButton(down, button, isPlayer1);
+
+    if (LabelContainerLayer::get() && down && button == 1)
+        LabelContainerLayer::get()->onPlayerClicked(isPlayer1 ? NoclipPlayerSelector::Player1 : NoclipPlayerSelector::Player2);
+}

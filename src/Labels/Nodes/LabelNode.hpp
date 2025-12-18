@@ -18,8 +18,10 @@ class LabelNode : public CCNode
 
         void updateGeneral(float dt);
         bool isActionActive();
+        bool isVisible();
 
         virtual void setup();
         virtual void labelConfigUpdated();
         virtual void update(float dt);
+        virtual void visit(void);
 };

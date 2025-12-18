@@ -2,6 +2,8 @@
 #include "../../SafeMode/SafeMode.hpp"
 #include "../LabelManager.hpp"
 #include "../../Hacks/Level/Noclip/Hooks.hpp"
+#include "LabelContainerLayer.hpp"
+#include "../BestRun.hpp"
 
 void TextLabelNode::setup()
 {
@@ -75,13 +77,13 @@ void TextLabelNode::updateVariables()
     script->setVariable("attempt", rift::Value::integer(LabelManager::get()->getAttemptCount()));
     script->setVariable("fps", rift::Value::floating(LabelManager::get()->getFPS()));
 
-    /*script->setVariable("player1_cps", rift::Value::integer(LabelLayer::get()->getCPS(false)));
-    script->setVariable("player2_cps", rift::Value::integer(LabelLayer::get()->getCPS(true)));
-    script->setVariable("total_cps", rift::Value::integer(LabelLayer::get()->getTotalCPS()));
+    script->setVariable("player1_cps", rift::Value::integer(LabelContainerLayer::get()->getCPS(NoclipPlayerSelector::Player1)));
+    script->setVariable("player2_cps", rift::Value::integer(LabelContainerLayer::get()->getCPS(NoclipPlayerSelector::Player2)));
+    script->setVariable("total_cps", rift::Value::integer(LabelContainerLayer::get()->getCPS(NoclipPlayerSelector::All)));
 
-    script->setVariable("player1_clicks", rift::Value::integer(LabelLayer::get()->getClicks(false)));
-    script->setVariable("player2_clicks", rift::Value::integer(LabelLayer::get()->getClicks(true)));
-    script->setVariable("total_clicks", rift::Value::integer(LabelLayer::get()->getTotalClicks()));*/
+    script->setVariable("player1_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::Player1)));
+    script->setVariable("player2_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::Player2)));
+    script->setVariable("total_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::All)));
 
     script->setVariable("session_seconds", rift::Value::integer(seconds.count()));
     script->setVariable("session_minutes", rift::Value::integer(minutes.count()));
@@ -120,14 +122,14 @@ void TextLabelNode::updateVariables()
         script->setVariable("practice_best", rift::Value::integer(GJBaseGameLayer::get()->m_level->m_practicePercent));
     }
 
-    /*if (PlayLayer::get())
+    if (PlayLayer::get())
     {
         script->setVariable("bestRun_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestFrom));
         script->setVariable("bestRun_to", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestTo));
         script->setVariable("percentage", rift::Value::floating(PlayLayer::get()->getCurrentPercent()));
-        script->setVariable("last_percentage", rift::Value::floating(LabelLayer::get()->getLastPercentage()));
-        script->setVariable("run_from", rift::Value::floating(as<RunPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
-    }*/
+        script->setVariable("last_percentage", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->lastPercent));
+        script->setVariable("run_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
+    }
 }
 
 TextLabelNode::~TextLabelNode()

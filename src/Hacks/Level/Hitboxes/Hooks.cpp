@@ -4,6 +4,7 @@
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/CCDrawNode.hpp>
+#include <Geode/modify/GameObject.hpp>
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
@@ -127,6 +128,11 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         if (HitboxTrailResetOnDeath::get()->getRealEnabled())
             m_fields->states.clear();
     }
+};
+
+class $modify (GameObject)
+{
+
 };
 
 class $modify (CCDrawNode)

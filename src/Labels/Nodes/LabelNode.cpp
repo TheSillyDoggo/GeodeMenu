@@ -1,4 +1,5 @@
 #include "LabelNode.hpp"
+#include "../../Hacks/Level/Noclip/Noclip.hpp"
 
 bool LabelNode::init()
 {
@@ -9,9 +10,11 @@ bool LabelNode::init()
 
 void LabelNode::updateGeneral(float dt)
 {
+    this->setVisible(isVisible());
     this->setScale(config.scale);
 
-    update(dt);
+    if (isVisible())
+        update(dt);
 }
 
 void LabelNode::setup()
@@ -43,4 +46,23 @@ const LabelConfig& LabelNode::getLabelConfig()
 bool LabelNode::isActionActive()
 {
     return getActionByTag(80085);
+}
+
+bool LabelNode::isVisible()
+{
+    if (!config.visible)
+        return false;
+
+    if (config.noclipOnly)
+        return Noclip::get()->getRealEnabled();
+
+    return true;
+}
+
+void LabelNode::visit(void)
+{
+    if (!isVisible())
+        return;
+
+    CCNode::visit();
 }

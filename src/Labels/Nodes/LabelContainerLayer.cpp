@@ -1,11 +1,23 @@
 #include "LabelContainerLayer.hpp"
 #include "TextLabelNode.hpp"
+#include "../../Hacks/Speedhack/Speedhack.hpp"
+
+LabelContainerLayer* LabelContainerLayer::get()
+{
+    return instance;
+}
+
+LabelContainerLayer::~LabelContainerLayer()
+{
+    instance = nullptr;
+}
 
 bool LabelContainerLayer::init()
 {
     if (!CCLayer::init())
         return false;
 
+    instance = this;
     this->setTouchEnabled(false);
     this->scheduleUpdate();
 
@@ -23,6 +35,21 @@ bool LabelContainerLayer::init()
 
 void LabelContainerLayer::update(float dt)
 {
+    dt = Speedhack::get()->getRealDeltaTime();
+
+    for (size_t i = 0; i < totalCps.size(); i++)
+        totalCps[i] += dt;
+
+    for (size_t i = 0; i < p1Cps.size(); i++)
+        p1Cps[i] += dt;
+
+    for (size_t i = 0; i < p2Cps.size(); i++)
+        p2Cps[i] += dt;
+
+    totalCps.erase(std::remove_if(totalCps.begin(), totalCps.end(), [](float i){ return i > 1; }), totalCps.end());
+    p1Cps.erase(std::remove_if(p1Cps.begin(), p1Cps.end(), [](float i){ return i > 1; }), p1Cps.end());
+    p2Cps.erase(std::remove_if(p2Cps.begin(), p2Cps.end(), [](float i){ return i > 1; }), p2Cps.end());
+
     for (auto node : nodes)
     {
         node->update(dt);
@@ -102,4 +129,62 @@ void LabelContainerLayer::updateConfigs()
         nodes.push_back(node);
         anchors[conf.anchor]->addChild(node);
     }
+}
+
+int LabelContainerLayer::getCPS(NoclipPlayerSelector selector)
+{
+    switch (selector)
+    {
+        case NoclipPlayerSelector::All:
+            return totalCps.size();
+        
+        case NoclipPlayerSelector::Player1:
+            return p1Cps.size();
+        
+        case NoclipPlayerSelector::Player2:
+            return p2Cps.size();
+    }
+
+    return 0;
+}
+
+int LabelContainerLayer::getTotalClicks(NoclipPlayerSelector selector)
+{
+    switch (selector)
+    {
+        case NoclipPlayerSelector::All:
+            return totalClicks;
+        
+        case NoclipPlayerSelector::Player1:
+            return p1Clicks;
+        
+        case NoclipPlayerSelector::Player2:
+            return p2Clicks;
+    }
+
+    return 80085;
+}
+
+void LabelContainerLayer::onPlayerClicked(NoclipPlayerSelector selector)
+{
+    totalClicks++;
+    totalCps.push_back(0);
+
+    if (selector == NoclipPlayerSelector::Player1)
+    {
+        p1Clicks++;
+        p1Cps.push_back(0);
+    }
+    else
+    {
+        p2Clicks++;
+        p2Cps.push_back(0);
+    }
+}
+
+void LabelContainerLayer::onNewAttempt()
+{
+    totalClicks = 0;
+    p1Clicks = 0;
+    p2Clicks = 0;
 }
