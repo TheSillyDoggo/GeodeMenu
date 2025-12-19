@@ -1,6 +1,7 @@
 # 2.4.0
 
 - Added **Labels**
+- Added option to force hide all labels
 - Added ability to add a keybind to enable speedhack
 - Added ability to add keybinds to speedhack presets
 - Added Stop Triggers on Death

@@ -37,4 +37,5 @@ class LabelContainerLayer : public CCLayer
 
         virtual bool init();
         virtual void update(float dt);
+        virtual void visit(void);
 };

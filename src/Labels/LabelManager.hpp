@@ -2,6 +2,7 @@
 
 #include "LabelConfig.hpp"
 #include <chrono>
+#include "../Client/Module.hpp"
 
 class LabelManager
 {
@@ -22,6 +23,7 @@ class LabelManager
         static LabelManager* get();
 
         const std::vector<LabelConfig>& getConfigs();
+        void setConfigs(std::vector<LabelConfig> configs);
 
         cocos2d::CCPoint anchorToPoint(LabelAnchor anchor);
 
@@ -31,4 +33,17 @@ class LabelManager
 
         void load();
         void save();
+};
+
+class HideLabels : public Module
+{
+    public:
+        MODULE_SETUP(HideLabels)
+        {
+            setName("Hide Labels");
+            setID("labels/hide-all-labels");
+            setDescription("Hides all the labels");
+        }
+
+        virtual void onToggle();
 };

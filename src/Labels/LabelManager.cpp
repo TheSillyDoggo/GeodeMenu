@@ -1,5 +1,7 @@
 #include "LabelManager.hpp"
 #include "../Hacks/Speedhack/Speedhack.hpp"
+#include "Nodes/LabelContainerLayer.hpp"
+#include "../GUI/Categories/LabelsNode.hpp"
 
 using namespace geode::prelude;
 
@@ -21,6 +23,25 @@ LabelManager* LabelManager::get()
 const std::vector<LabelConfig>& LabelManager::getConfigs()
 {
     return configs;
+}
+
+void LabelManager::setConfigs(std::vector<LabelConfig> configs)
+{
+    this->configs = configs;
+
+    save();
+
+    if (LabelContainerLayer::get())
+        LabelContainerLayer::get()->updateConfigs();
+    
+    if (LabelsNode::get())
+        LabelsNode::get()->updateUI();
+}
+
+void HideLabels::onToggle()
+{
+    if (LabelsNode::get())
+        LabelsNode::get()->updateUI();
 }
 
 void LabelManager::load()

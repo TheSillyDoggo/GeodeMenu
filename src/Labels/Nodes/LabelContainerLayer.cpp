@@ -35,24 +35,30 @@ bool LabelContainerLayer::init()
 
 void LabelContainerLayer::update(float dt)
 {
-    dt = Speedhack::get()->getRealDeltaTime();
+    if (dt != -1)
+    {
+        dt = Speedhack::get()->getRealDeltaTime();
 
-    for (size_t i = 0; i < totalCps.size(); i++)
-        totalCps[i] += dt;
+        for (size_t i = 0; i < totalCps.size(); i++)
+            totalCps[i] += dt;
 
-    for (size_t i = 0; i < p1Cps.size(); i++)
-        p1Cps[i] += dt;
+        for (size_t i = 0; i < p1Cps.size(); i++)
+            p1Cps[i] += dt;
 
-    for (size_t i = 0; i < p2Cps.size(); i++)
-        p2Cps[i] += dt;
+        for (size_t i = 0; i < p2Cps.size(); i++)
+            p2Cps[i] += dt;
 
-    totalCps.erase(std::remove_if(totalCps.begin(), totalCps.end(), [](float i){ return i > 1; }), totalCps.end());
-    p1Cps.erase(std::remove_if(p1Cps.begin(), p1Cps.end(), [](float i){ return i > 1; }), p1Cps.end());
-    p2Cps.erase(std::remove_if(p2Cps.begin(), p2Cps.end(), [](float i){ return i > 1; }), p2Cps.end());
+        totalCps.erase(std::remove_if(totalCps.begin(), totalCps.end(), [](float i){ return i > 1; }), totalCps.end());
+        p1Cps.erase(std::remove_if(p1Cps.begin(), p1Cps.end(), [](float i){ return i > 1; }), p1Cps.end());
+        p2Cps.erase(std::remove_if(p2Cps.begin(), p2Cps.end(), [](float i){ return i > 1; }), p2Cps.end());
+
+        if (HideLabels::get()->getRealEnabled())
+            return;
+    }
 
     for (auto node : nodes)
     {
-        node->update(dt);
+        node->updateGeneral(dt);
     }
 
     for (auto node : anchors)
@@ -66,6 +72,14 @@ void LabelContainerLayer::update(float dt)
     {
         node->setPosition(node->getPosition() + node->getLabelConfig().offset);
     }
+}
+
+void LabelContainerLayer::visit(void)
+{
+    if (HideLabels::get()->getRealEnabled())
+        return;
+    
+    CCLayer::visit();
 }
 
 void LabelContainerLayer::sortNodeChildren(CCNode* node)
@@ -129,6 +143,8 @@ void LabelContainerLayer::updateConfigs()
         nodes.push_back(node);
         anchors[conf.anchor]->addChild(node);
     }
+
+    update(-1);
 }
 
 int LabelContainerLayer::getCPS(NoclipPlayerSelector selector)
