@@ -16,6 +16,14 @@ class SetupLabelConfigUI : public geode::Popup<>
         CCMenu* pagesMenu = nullptr;
         CCMenu* anchorMenu = nullptr;
         std::unordered_map<LabelAnchor, CCMenuItemToggler*> anchorBtns = {};
+        TextInput* formatInp;
+        TextInput* nameInp;
+        TextInput* scaleInp;
+        TextInput* opacityInp;
+        CCMenuItemToggler* cheatIndicatorToggler;
+        CCMenuItemToggler* noclipOnlyToggler;
+        TextInput* offsetXInp;
+        TextInput* offsetYInp;
         std::vector<CCNode*> pages = {};
         std::vector<CCMenuItemToggler*> pageBtns = {};
         int selectedPage = 0;
@@ -29,6 +37,9 @@ class SetupLabelConfigUI : public geode::Popup<>
 
         void createPages();
         void createAnchorNodes();
+        void createPage1();
+        void createPage2();
+        void createPage3();
 
         void setStartConfig(LabelConfig conf);
         void updateUI();

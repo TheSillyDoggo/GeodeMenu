@@ -46,17 +46,23 @@ bool SetupLabelConfigUI::setup()
     pagesMenu->setContentSize(ccp(770, 20));
 
     createPages();
-    createAnchorNodes();
+    
+    createPage1();
+    createPage2();
+    createPage3();
+
     updateUI();
 
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
-    m_mainLayer->addChildAtPosition(anchorMenu, Anchor::TopRight, ccp(-100, -100));
     m_mainLayer->addChildAtPosition(pagesMenu, Anchor::Top, ccp(0, -22));
     return true;
 }
 
 void SetupLabelConfigUI::onClose(CCObject* sender)
 {
+    currentConfig.cheatIndicator = cheatIndicatorToggler->isToggled();
+    currentConfig.noclipOnly = noclipOnlyToggler->isToggled();
+
     if (onFinish)
         onFinish(currentConfig);
 
@@ -81,6 +87,99 @@ void SetupLabelConfigUI::updateUI()
         toggler->setEnabled(toggler->getTag() != selectedPage);
         toggler->toggle(toggler->getTag() == selectedPage);
     }
+
+    formatInp->setString(currentConfig.formatString);
+
+    nameInp->setString(currentConfig.displayName);
+    scaleInp->setString(utils::numToString<float>(currentConfig.scale, 2));
+    opacityInp->setString(utils::numToString<float>(currentConfig.opacity, 2));
+
+    offsetXInp->setString(utils::numToString<float>(currentConfig.offset.x, 2));
+    offsetYInp->setString(utils::numToString<float>(currentConfig.offset.y, 2));
+
+    cheatIndicatorToggler->toggle(currentConfig.cheatIndicator);
+    noclipOnlyToggler->toggle(currentConfig.noclipOnly);
+}
+
+void SetupLabelConfigUI::createPage1()
+{
+    createAnchorNodes();
+
+    nameInp = TextInput::create(160, "Display Name", "bigFont.fnt");
+    nameInp->setAnchorPoint(ccp(0, 0.5f));
+    nameInp->setScale(0.7f);
+    nameInp->setCommonFilter(CommonFilter::Any);
+    nameInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.displayName = str;
+    });
+
+    scaleInp = TextInput::create(160, "Scale", "bigFont.fnt");
+    scaleInp->setAnchorPoint(ccp(0, 0.5f));
+    scaleInp->setScale(0.7f);
+    scaleInp->setCommonFilter(CommonFilter::Float);
+    scaleInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.scale = utils::numFromString<float>(str).unwrapOr(currentConfig.scale);
+    });
+
+    opacityInp = TextInput::create(160, "Opacity", "bigFont.fnt");
+    opacityInp->setAnchorPoint(ccp(0, 0.5f));
+    opacityInp->setScale(0.7f);
+    opacityInp->setCommonFilter(CommonFilter::Float);
+    opacityInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.opacity = utils::numFromString<float>(str).unwrapOr(currentConfig.opacity);
+    });
+
+    cheatIndicatorToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 1.0f);
+    noclipOnlyToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 1.0f);
+
+    offsetXInp = TextInput::create(60, "X", "bigFont.fnt");
+    offsetXInp->setAnchorPoint(ccp(0, 0.5f));
+    offsetXInp->setScale(0.7f);
+    offsetXInp->setCommonFilter(CommonFilter::Float);
+    offsetXInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.offset.x = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.x);
+    });
+
+    offsetYInp = TextInput::create(60, "Y", "bigFont.fnt");
+    offsetYInp->setAnchorPoint(ccp(0, 0.5f));
+    offsetYInp->setScale(0.7f);
+    offsetYInp->setCommonFilter(CommonFilter::Float);
+    offsetYInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.offset.y = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.y);
+    });
+
+    pages[0]->addChildAtPosition(anchorMenu, Anchor::TopRight, ccp(-100, -100));
+    pages[0]->addChildAtPosition(nameInp, Anchor::TopLeft, ccp(0, -100));
+    pages[0]->addChildAtPosition(scaleInp, Anchor::TopLeft, ccp(0, -130));
+    pages[0]->addChildAtPosition(opacityInp, Anchor::TopLeft, ccp(0, -160));
+    pages[0]->addChildAtPosition(cheatIndicatorToggler, Anchor::TopLeft, ccp(50, -160));
+    pages[0]->addChildAtPosition(noclipOnlyToggler, Anchor::TopLeft, ccp(50, -180));
+    pages[0]->addChildAtPosition(offsetXInp, Anchor::Right, ccp(-90, -50));
+    pages[0]->addChildAtPosition(offsetYInp, Anchor::Right, ccp(-50, -50));
+}
+
+void SetupLabelConfigUI::createPage2()
+{
+    formatInp = TextInput::create(450, "Format", "bigFont.fnt");
+    formatInp->setAnchorPoint(ccp(0.5f, 0.5f));
+    formatInp->setScale(0.7f);
+    formatInp->setCommonFilter(CommonFilter::Any);
+    formatInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.formatString = str;
+    });
+
+    pages[1]->addChildAtPosition(formatInp, Anchor::Center);
+}
+
+void SetupLabelConfigUI::createPage3()
+{
+
 }
 
 void SetupLabelConfigUI::createPages()
@@ -89,13 +188,15 @@ void SetupLabelConfigUI::createPages()
 
     for (size_t i = 0; i < pageNames.size(); i++)
     {
-        auto pg = CCNode::create();
+        auto pg = CCMenu::create();
+        pg->ignoreAnchorPointForPosition(false);
         pg->setContentSize(m_size);
         pg->setTag(i);
         pg->setZOrder(2);
+        pg->setAnchorPoint(ccp(0.5f, 0.5f));
         pages.push_back(pg);
 
-        this->addChild(pg);
+        m_mainLayer->addChildAtPosition(pg, Anchor::Center);
 
         // fmt::format("{}{}.png", ""_spr, utils::string::toLower(pageNames[i]))
         auto off = CategoryTabSprite::create(CategoryTabType::Text, pageNames[i], "");

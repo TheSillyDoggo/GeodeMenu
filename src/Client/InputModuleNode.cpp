@@ -1,4 +1,5 @@
 #include "InputModuleNode.hpp"
+#include "../Localization/LocalizationManager.hpp"
 
 InputModuleNode* InputModuleNode::create(InputModule* module)
 {
@@ -38,14 +39,19 @@ void InputModuleNode::setup()
     input->setScale(0.775f);
     input->setAnchorPoint(ccp(1, 0.5f));
 
-    auto hint = CCLabelBMFont::create(mod->getHint().c_str(), "bigFont.fnt");
-    hint->setOpacity(150);
-    hint->setScale(0.25f);
-    hint->setAnchorPoint(ccp(1, 0));
+    if (!mod->getHint().empty())
+    {
+        auto hint = CCLabelBMFont::create(LocalizationManager::get()->getLocalizedString(fmt::format("input-hints/{}", mod->getHint())).c_str(), "bigFont.fnt");
+        hint->setOpacity(150);
+        hint->setScale(0.25f);
+        hint->setAnchorPoint(ccp(1, 0));
+        hint->setZOrder(3);
+
+        this->addChildAtPosition(hint, Anchor::BottomRight, ccp(-10, (getContentHeight() - input->getScaledContentHeight()) / 2));
+    }
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(input, Anchor::Right, ccp(-10, 0));
-    this->addChildAtPosition(hint, Anchor::BottomRight, ccp(-10, (getContentHeight() - input->getScaledContentHeight()) / 2));
 }
 
 void InputModuleNode::textChanged(CCTextInputNode* p0)

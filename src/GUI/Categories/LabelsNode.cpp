@@ -72,6 +72,7 @@ bool LabelsNode::init()
     presetMenu->updateLayout();
 
     updateUI();
+    labelsScroll->moveToTop();
 
     this->addChildAtPosition(bgTopbar, Anchor::Top);
     this->addChildAtPosition(bgPresets, Anchor::BottomRight);
@@ -105,7 +106,6 @@ void LabelsNode::updateUI()
         i++;
     }
 
-    labelsScroll->moveToTop();
     labelsScroll->setTouchEnabled(height != labelsScroll->getContentHeight());
 }
 
