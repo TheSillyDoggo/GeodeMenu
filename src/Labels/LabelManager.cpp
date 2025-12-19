@@ -62,7 +62,14 @@ void LabelManager::load()
 
 void LabelManager::save()
 {
+    matjson::Value value = matjson::Value::array();
 
+    for (auto conf : configs)
+    {
+        value.asArray().unwrap().push_back(conf.save());
+    }
+
+    Mod::get()->setSavedValue<matjson::Value>("selected-labels", value);
 }
 
 cocos2d::CCPoint LabelManager::anchorToPoint(LabelAnchor anchor)

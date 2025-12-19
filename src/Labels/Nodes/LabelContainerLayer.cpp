@@ -204,3 +204,11 @@ void LabelContainerLayer::onNewAttempt()
     p1Clicks = 0;
     p2Clicks = 0;
 }
+
+void LabelContainerLayer::onEventTriggered(LabelEventType type)
+{
+    for (auto node : nodes)
+    {
+        node->onEventTriggered(type);
+    }
+}

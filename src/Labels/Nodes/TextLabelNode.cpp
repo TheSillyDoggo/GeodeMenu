@@ -30,7 +30,7 @@ void TextLabelNode::labelConfigUpdated()
 
 ccColor3B TextLabelNode::getDesiredColour()
 {
-    return config.cheatIndicator ? SafeMode::get()->getIndicatorColour() : ccWHITE;
+    return config.cheatIndicator ? SafeMode::get()->getIndicatorColour() : label->getColor();
 }
 
 void TextLabelNode::update(float dt)
@@ -59,6 +59,55 @@ void TextLabelNode::update(float dt)
 
         as<CCNode*>(label->getChildren()->objectAtIndex(0))->setScale(2.25f);
         as<CCNode*>(label->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
+    }
+}
+
+void TextLabelNode::onEventTriggered(LabelEventType type)
+{
+    for (auto event : config.events)
+    {
+        if (event.type == type)
+        {
+            label->stopAllActions();
+
+            auto array = CCArray::create();
+            array->retain();
+
+            if (event.fadeIn != -1)
+                array->addObject(CCTintTo::create(event.fadeIn, event.colour.r, event.colour.g, event.colour.b));
+
+            if (event.hold != -1)
+                array->addObject(CCDelayTime::create(event.hold));
+
+            if (event.fadeOut != -1)
+                array->addObject(CCTintTo::create(event.fadeOut, ccWHITE.r, ccWHITE.g, ccWHITE.b));
+
+            auto seq = CCSequence::create(array);
+            seq->setTag(80085);
+
+            label->runAction(seq);
+
+            array->release();
+
+            array = CCArray::create();
+            array->retain();
+
+            if (event.fadeIn != -1)
+                array->addObject(CCFadeTo::create(event.fadeIn, event.colour.a));
+
+            if (event.hold != -1)
+                array->addObject(CCDelayTime::create(event.hold));
+
+            if (event.fadeOut != -1)
+                array->addObject(CCFadeTo::create(event.fadeOut, config.opacity * 255));
+
+            seq = CCSequence::create(array);
+            seq->setTag(800851);
+
+            label->runAction(seq);
+
+            array->release();
+        }
     }
 }
 
@@ -141,4 +190,9 @@ void TextLabelNode::updateVariables()
 TextLabelNode::~TextLabelNode()
 {
     CC_SAFE_DELETE(script);
+}
+
+bool TextLabelNode::isActionActive()
+{
+    return label->getActionByTag(80085) || label->getActionByTag(800851);
 }

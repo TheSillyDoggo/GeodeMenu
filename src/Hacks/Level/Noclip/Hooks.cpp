@@ -1,4 +1,5 @@
 #include "Hooks.hpp"
+#include "../../../Labels/Nodes/LabelContainerLayer.hpp"
 
 #define NOCLIP_BASE() base_cast<NoclipBaseGameLayer*>(this)
 
@@ -67,6 +68,9 @@ void NoclipBaseGameLayer::playerDied(NoclipPlayerSelector selector)
             fields->hasP2DiedThisTick = true;
         }
     }
+
+    if (LabelContainerLayer::get())
+        LabelContainerLayer::get()->onEventTriggered(LabelEventType::PlayerTookDamage);
 }
 
 void NoclipBaseGameLayer::onPostUpdate()

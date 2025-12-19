@@ -17,11 +17,12 @@ class LabelNode : public CCNode
         const LabelConfig& getLabelConfig();
 
         void updateGeneral(float dt);
-        bool isActionActive();
+        virtual bool isActionActive();
         bool isVisible();
 
         virtual void setup();
         virtual void labelConfigUpdated();
         virtual void update(float dt);
         virtual void visit(void);
+        virtual void onEventTriggered(LabelEventType type);
 };

@@ -21,6 +21,8 @@ struct LabelConfig
     bool cheatIndicator = false;
     bool noclipOnly = false;
     bool visible = true;
+    std::vector<LabelEvent> events = {};
 
     static LabelConfig createFromObject(matjson::Value obj);
+    matjson::Value save();
 };

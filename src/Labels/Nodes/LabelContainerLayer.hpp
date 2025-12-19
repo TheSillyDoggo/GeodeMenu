@@ -32,6 +32,7 @@ class LabelContainerLayer : public CCLayer
         int getCPS(NoclipPlayerSelector selector);
         int getTotalClicks(NoclipPlayerSelector selector);
 
+        void onEventTriggered(LabelEventType type);
         void onPlayerClicked(NoclipPlayerSelector selector);
         void onNewAttempt();
 

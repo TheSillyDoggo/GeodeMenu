@@ -42,7 +42,6 @@ LabelConfig LabelConfig::createFromObject(matjson::Value obj)
     if (obj.contains("label_type") && obj["label_type"].isNumber())
         conf.type = (LabelType)obj["label_type"].asInt().unwrap();
 
-    /*
     if (obj.contains("events") && obj["events"].isArray())
     {
         for (auto obj : obj["events"].asArray().unwrap())
@@ -50,10 +49,37 @@ LabelConfig LabelConfig::createFromObject(matjson::Value obj)
             LabelEvent event;
             event.load(obj);
 
-            mod->events.push_back(event);
+            conf.events.push_back(event);
         }
     }
-        */
 
     return conf;
+}
+
+matjson::Value LabelConfig::save()
+{
+    matjson::Value obj;
+
+    obj["display_name"] = displayName;
+    obj["format"] = formatString;
+    obj["scale"] = scale;
+    obj["opacity"] = opacity;
+    obj["font"] = font;
+    obj["side"] = (int)anchor;
+    obj["offset.x"] = offset.x;
+    obj["offset.y"] = offset.y;
+    obj["cheat_indicator"] = cheatIndicator;
+    obj["noclip_only"] = noclipOnly;
+    obj["visible"] = visible;
+
+    matjson::Value eventsArr = obj.array();
+    
+    for (auto event : events)
+    {
+        eventsArr.asArray().unwrap().push_back(event.save());
+    }
+
+    obj["events"] = eventsArr;
+
+    return obj;
 }

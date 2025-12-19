@@ -19,5 +19,7 @@ class TextLabelNode : public LabelNode
 
         virtual void setup();
         virtual void labelConfigUpdated();
+        virtual void onEventTriggered(LabelEventType type);
         virtual void update(float dt);
+        virtual bool isActionActive();
 };

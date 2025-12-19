@@ -45,7 +45,7 @@ const LabelConfig& LabelNode::getLabelConfig()
 
 bool LabelNode::isActionActive()
 {
-    return getActionByTag(80085);
+    return getActionByTag(80085) || getActionByTag(800851);
 }
 
 bool LabelNode::isVisible()
@@ -65,4 +65,9 @@ void LabelNode::visit(void)
         return;
 
     CCNode::visit();
+}
+
+void LabelNode::onEventTriggered(LabelEventType type)
+{
+
 }
