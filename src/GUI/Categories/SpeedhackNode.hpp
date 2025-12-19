@@ -17,9 +17,6 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         CCScale9Sprite* deletePresetBG = nullptr;
         bool presetDeleteMode = false;
 
-        CCMenuItemToggler* enabledBtn = nullptr;
-        CCMenuItemToggler* musicBtn = nullptr;
-        CCMenuItemToggler* gameplayBtn = nullptr;
         CCMenuItemSpriteExtra* trashBtn = nullptr;
         BetterSlider* slider = nullptr;
         TextInput* input = nullptr;

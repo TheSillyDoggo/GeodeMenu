@@ -1,6 +1,5 @@
 #include "Speedhack.hpp"
 #include <Geode/Geode.hpp>
-#include "../../SafeMode/SafeMode.hpp"
 
 using namespace geode::prelude;
 
@@ -19,8 +18,6 @@ Speedhack* Speedhack::get()
 
 void Speedhack::setup()
 {
-    setEnabled(Mod::get()->getSavedValue<bool>("speedhack-enabled_enabled", false));
-    setMusicEnabled(Mod::get()->getSavedValue<bool>("speedhack-mus_enabled", true));
     setGameplayEnabled(Mod::get()->getSavedValue<bool>("speedhack-gameplay_enabled", false));
     setText(Mod::get()->getSavedValue<std::string>("speedhack-top_value", "1.0")); // defaults
     loadPresets();
@@ -28,40 +25,32 @@ void Speedhack::setup()
 
 bool Speedhack::getEnabled()
 {
-    return enabled;
+    return SpeedhackEnabled::get()->getRealEnabled();
 }
 
 void Speedhack::setEnabled(bool value)
 {
-    this->enabled = value;
-
-    Mod::get()->setSavedValue<bool>("speedhack-enabled_enabled", value);
-
-    SafeMode::get()->onSpeedhackChanged();
+    SpeedhackEnabled::get()->setUserEnabled(value);
 }
 
 bool Speedhack::getMusicEnabled()
 {
-    return musicEnabled;
+    return SpeedhackMusic::get()->getRealEnabled();
 }
 
 void Speedhack::setMusicEnabled(bool enabled)
 {
-    this->musicEnabled = enabled;
-
-    Mod::get()->setSavedValue<bool>("speedhack-mus_enabled", enabled);
+    SpeedhackMusic::get()->setUserEnabled(enabled);
 }
 
 bool Speedhack::getGameplayEnabled()
 {
-    return gameplayEnabled;
+    return SpeedhackGameplay::get()->getRealEnabled();
 }
 
 void Speedhack::setGameplayEnabled(bool enabled)
 {
-    gameplayEnabled = enabled;
-
-    Mod::get()->setSavedValue<bool>("speedhack-gameplay_enabled", enabled);
+    SpeedhackGameplay::get()->setUserEnabled(enabled);
 }
 
 std::string Speedhack::getText()

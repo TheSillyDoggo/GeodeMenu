@@ -1,6 +1,7 @@
 # 2.4.0
 
 - Added **Labels**
+- Added ability to add a keybind to enable speedhack
 - Added ability to add keybinds to speedhack presets
 - Added Stop Triggers on Death
 - Added Suicide (Auto kill player)
@@ -8,6 +9,7 @@
 - Added Force Platformer
 - Added Show Touches
 - Added No Orb Pulse
+- Added option to disable dash fire particles
 - Changed name of "Ship hold particles" to "Ship boost particles"
 - Fixed chests unlocked with open chest bypass not saving
 - Fixed crash when favouriting or adding a keybind to a button module (like reset audio variables)

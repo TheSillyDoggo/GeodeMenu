@@ -38,33 +38,6 @@ bool SpeedhackNode::init()
     slider->setSnapValuesRanged({ 1.0f });
     slider->setValueRanged(Speedhack::get()->getValue());
 
-    enabledBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SpeedhackNode::onToggleEnabled), 0.75f);
-    enabledBtn->toggle(Speedhack::get()->getEnabled());
-    enabledBtn->setPosition(slider->getPosition() + ccp(-80, -35));
-
-    auto enabledLbl = CCLabelBMFont::create("Enabled", "bigFont.fnt");
-    enabledLbl->setAnchorPoint(ccp(0, 0.5f));
-    enabledLbl->setScale(0.5f);
-    enabledLbl->setPosition(enabledBtn->getPosition() + ccp(18, 0));
-
-    musicBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SpeedhackNode::onToggleMusic), 0.75f);
-    musicBtn->toggle(Speedhack::get()->getMusicEnabled());
-    musicBtn->setPosition(slider->getPosition() + ccp(-80, -35 - 30));
-
-    auto musicLbl = CCLabelBMFont::create("Speedhack Music", "bigFont.fnt");
-    musicLbl->setAnchorPoint(ccp(0, 0.5f));
-    musicLbl->setScale(0.5f);
-    musicLbl->setPosition(musicBtn->getPosition() + ccp(18, 0));
-
-    gameplayBtn = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SpeedhackNode::onToggleGameplay), 0.75f);
-    gameplayBtn->toggle(Speedhack::get()->getGameplayEnabled());
-    gameplayBtn->setPosition(slider->getPosition() + ccp(-80, -35 - 30 - 30));
-
-    auto gameplayLbl = CCLabelBMFont::create("Gameplay only", "bigFont.fnt");
-    gameplayLbl->setAnchorPoint(ccp(0, 0.5f));
-    gameplayLbl->setScale(0.5f);
-    gameplayLbl->setPosition(gameplayBtn->getPosition() + ccp(18, 0));
-
     auto trashSpr = CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png");
     trashSpr->setScale(0.75f);
 
@@ -108,16 +81,22 @@ bool SpeedhackNode::init()
     deletePresetBG->setContentSize((deletePresetHelp->getScaledContentSize() + ccp(8, 8)) / 0.5f);
     deletePresetBG->setScale(0.5f);
 
+    auto enabledNode = SpeedhackEnabled::get()->getNode();
+    enabledNode->setPosition(slider->getPosition() + ccp(-8, -35));
+
+    auto musicNode = SpeedhackMusic::get()->getNode();
+    musicNode->setPosition(slider->getPosition() + ccp(-8, -35 - 30));
+
+    auto gameplayNode = SpeedhackGameplay::get()->getNode();
+    gameplayNode->setPosition(slider->getPosition() + ccp(-8, -35 - 30 - 30));
+
     updatePresets();
 
     menu->addChild(input);
     menu->addChild(speedLbl);
-    menu->addChild(enabledBtn);
-    menu->addChild(enabledLbl);
-    menu->addChild(gameplayBtn);
-    menu->addChild(gameplayLbl);
-    menu->addChild(musicBtn);
-    menu->addChild(musicLbl);
+    menu->addChild(enabledNode);
+    menu->addChild(musicNode);
+    menu->addChild(gameplayNode);
     menu->addChild(trashBtn);
     menu->addChild(slider);
     this->addChild(menu);
@@ -197,9 +176,8 @@ void SpeedhackNode::updateUI()
     input->setString(Speedhack::get()->getText());
     slider->setValueRanged(Speedhack::get()->getValue());
 
-    enabledBtn->toggle(Speedhack::get()->getEnabled());
-
     updatePresets();
+    ModuleNode::updateAllNodes(nullptr);
 }
 
 void SpeedhackNode::onApplyPreset(CCObject* sender)
