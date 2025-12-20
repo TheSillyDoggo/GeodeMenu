@@ -8,6 +8,8 @@ using namespace geode::prelude;
 
 class SetupLabelConfigUI : public geode::Popup<>
 {
+    friend class LabelEventCell;
+
     protected:
         BackgroundSprite* bg = nullptr;
         std::function<void(LabelConfig)> onFinish = nullptr;
@@ -24,6 +26,8 @@ class SetupLabelConfigUI : public geode::Popup<>
         CCMenuItemToggler* noclipOnlyToggler;
         TextInput* offsetXInp;
         TextInput* offsetYInp;
+        ScrollLayer* eventScroll;
+        CCLabelBMFont* eventsNone;
         std::vector<CCNode*> pages = {};
         std::vector<CCMenuItemToggler*> pageBtns = {};
         int selectedPage = 0;
@@ -32,6 +36,7 @@ class SetupLabelConfigUI : public geode::Popup<>
         static SetupLabelConfigUI* create(std::function<void(LabelConfig)> onFinish);
 
         void onSetAnchor(CCObject* sender);
+        void onAddEvent(CCObject* sender);
         void onClose(CCObject* sender);
         void onChangePage(CCObject* sender);
 
@@ -43,6 +48,7 @@ class SetupLabelConfigUI : public geode::Popup<>
 
         void setStartConfig(LabelConfig conf);
         void updateUI();
+        void updateEventsUI();
 
         virtual bool setup();
 };

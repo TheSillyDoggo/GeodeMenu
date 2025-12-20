@@ -12,10 +12,6 @@ class BlurMenuBG : public Module
             setName("Blur Background");
             setID("blur-background");
             setDescription("Blurs the background behind the mod menu");
-
-            // todo
-            setDisabled(true);
-            setDisabledMessage("Coming soon!");
         }
 };
 

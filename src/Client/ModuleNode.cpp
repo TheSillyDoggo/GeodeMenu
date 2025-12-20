@@ -4,6 +4,7 @@
 #include "../GUI/Modules/SeperateColourCheatNames.hpp"
 #include "../Utils/ColourUtils.hpp"
 #include "../GUI/EditKeyConfigUI.hpp"
+#include "../GUI/BlurLayer.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -177,6 +178,7 @@ void ModuleNode::onOptions(CCObject* sender)
 void ModuleNode::onInfo(CCObject* sender)
 {
     auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->show();
 

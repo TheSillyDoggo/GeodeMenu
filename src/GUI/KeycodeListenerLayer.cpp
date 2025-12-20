@@ -1,6 +1,7 @@
 #include "KeycodeListenerLayer.hpp"
 #include "KeycodeNode.hpp"
 #include "BackgroundSprite.hpp"
+#include "BlurLayer.hpp"
 
 KeycodeListenerLayer* KeycodeListenerLayer::create(KeycodeListenerLayerSettings settings, std::function<void(int)> onSucceed)
 {
@@ -53,6 +54,8 @@ void KeycodeListenerLayer::onCloseBtn(CCObject* sender)
 
 bool KeycodeListenerLayer::setup()
 {
+    // this->addChild(CCBlurLayer::create(), -3);
+
     this->m_mainLayer->setVisible(false);
     this->setAnchorPoint(ccp(0, 0));
 

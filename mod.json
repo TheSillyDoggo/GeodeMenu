@@ -26,6 +26,7 @@
 			"resources/*.ini",
 			"resources/shaders/*.fsh",
 			"resources/shaders/*.vsh",
+			"resources/shaders/*.glsl",
 			"resources/translations/langs/*.json"
         ],
 		"sprites": [

@@ -1,5 +1,6 @@
 #include "ExtraThemeSettingsUI.hpp"
 #include "Modules/GradientBGColours.hpp"
+#include "BlurLayer.hpp"
 
 ExtraThemeSettingsUI* ExtraThemeSettingsUI::create()
 {
@@ -19,6 +20,8 @@ ExtraThemeSettingsUI* ExtraThemeSettingsUI::create()
 
 bool ExtraThemeSettingsUI::setup()
 {
+    this->addChild(CCBlurLayer::create(), -3);
+
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);

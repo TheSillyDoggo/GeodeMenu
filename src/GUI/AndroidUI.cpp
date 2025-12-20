@@ -5,11 +5,14 @@
 #include "Modules/SearchBox.hpp"
 #include "../Client/SubCategoryNode.hpp"
 #include "Modules/DisableOpenInLevel.hpp"
+#include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
 {
+    this->addChild(CCBlurLayer::create(), -3);
+
     rt = CCRenderTexture::create(getContentWidth(), getContentHeight());
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
 
@@ -269,6 +272,9 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     auto winSize = CCDirector::get()->getWinSize();
     auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr));
     auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
+
+    if (BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
+        anim = MenuAnimation::None;
 
     switch (anim)
     {

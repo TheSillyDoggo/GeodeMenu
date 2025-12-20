@@ -1,5 +1,6 @@
 #include "OptionsUI.hpp"
 #include "Categories/FavouritesNode.hpp"
+#include "BlurLayer.hpp"
 
 OptionsUI* OptionsUI::create(Module* mod)
 {
@@ -26,6 +27,8 @@ CCSize OptionsUI::calculateSize()
 
 bool OptionsUI::setup()
 {
+    this->addChild(CCBlurLayer::create(), -3);
+
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
@@ -97,6 +100,7 @@ bool OptionsUI::setup()
 void OptionsUI::onInfo(CCObject* sender)
 {
     auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->setUserObject("fav-btn", favBtn);
     alert->show();

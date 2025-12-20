@@ -1,5 +1,6 @@
 #include "SetupColourConfigUI.hpp"
 #include "../Utils/ColourUtils.hpp"
+#include "BlurLayer.hpp"
 
 SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects)
 {
@@ -21,6 +22,7 @@ SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig
 
 bool SetupColourConfigUI::setup()
 {
+    this->addChild(CCBlurLayer::create(), -3);
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);

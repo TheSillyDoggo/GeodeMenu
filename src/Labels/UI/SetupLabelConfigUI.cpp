@@ -1,6 +1,8 @@
 #include "SetupLabelConfigUI.hpp"
 #include "../LabelManager.hpp"
 #include "../../GUI/CategoryTabSprite.hpp"
+#include "../../GUI/BlurLayer.hpp"
+#include "LabelEventCell.hpp"
 
 SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> onFinish)
 {
@@ -21,6 +23,7 @@ SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> 
 
 bool SetupLabelConfigUI::setup()
 {
+    this->addChild(CCBlurLayer::create(), -3);
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -99,10 +102,15 @@ void SetupLabelConfigUI::updateUI()
 
     cheatIndicatorToggler->toggle(currentConfig.cheatIndicator);
     noclipOnlyToggler->toggle(currentConfig.noclipOnly);
+
+    updateEventsUI();
 }
 
 void SetupLabelConfigUI::createPage1()
 {
+    auto info = InfoAlertButton::create("General Label Options", "These are options for the label", 0.65f);
+    pages[0]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
+
     createAnchorNodes();
 
     nameInp = TextInput::create(160, "Display Name", "bigFont.fnt");
@@ -165,6 +173,9 @@ void SetupLabelConfigUI::createPage1()
 
 void SetupLabelConfigUI::createPage2()
 {
+    auto info = InfoAlertButton::create("Format Label", "Format label help text", 0.65f);
+    pages[1]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
+
     formatInp = TextInput::create(450, "Format", "bigFont.fnt");
     formatInp->setAnchorPoint(ccp(0.5f, 0.5f));
     formatInp->setScale(0.7f);
@@ -179,7 +190,108 @@ void SetupLabelConfigUI::createPage2()
 
 void SetupLabelConfigUI::createPage3()
 {
+    auto info = InfoAlertButton::create("Label Events", "Change the colour of the label when an event happens in-game.\nChanging the time to -1 (inf)\nwill make the action not fade back to white.\nThis can allow for events to set the colour without it fading back", 0.65f);
+    pages[2]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
 
+    auto rightBG = CCScale9Sprite::create("square02b_small.png");
+    rightBG->setContentSize(ccp(75, this->getContentHeight() - 170) / 0.5f);
+    rightBG->setScale(0.55f);
+    rightBG->setAnchorPoint(ccp(1, 0.5f));
+    rightBG->setColor(ccc3(0, 0, 0));
+    rightBG->setOpacity(100);
+
+    auto leftBG = CCScale9Sprite::create("square02b_small.png");
+    leftBG->setContentSize(ccp(210, this->getContentHeight() - 170) / 0.5f);
+    leftBG->setScale(0.55f);
+    leftBG->setAnchorPoint(ccp(0, 0.5f));
+    leftBG->setColor(ccc3(0, 0, 0));
+    leftBG->setOpacity(100);
+
+    auto addNewTitle = CCLabelBMFont::create("Add New", "bigFont.fnt");
+    addNewTitle->setScale(0.5f);
+
+    auto addNewLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    addNewLine->setRotation(90);
+    addNewLine->setScaleY(0.9f);
+
+    eventsNone = CCLabelBMFont::create("No events added yet", "bigFont.fnt");
+    eventsNone->setScale(0.45f);
+
+    eventScroll = ScrollLayer::create(leftBG->getScaledContentSize());
+    eventScroll->m_peekLimitTop = 15;
+    eventScroll->m_peekLimitBottom = 15;
+
+    pages[2]->addChildAtPosition(leftBG, Anchor::Left, ccp(20, 5));
+    pages[2]->addChildAtPosition(eventScroll, Anchor::Left, ccp(20, 5 - eventScroll->getContentHeight() / 2));
+    pages[2]->addChildAtPosition(eventsNone, Anchor::Left, ccp(20 + eventScroll->getContentWidth() / 2, 5));
+    pages[2]->addChildAtPosition(rightBG, Anchor::Right, ccp(-20, 5));
+    pages[2]->addChildAtPosition(addNewTitle, Anchor::TopRight, ccp(-20 - rightBG->getScaledContentWidth() / 2, -50));
+    pages[2]->addChildAtPosition(addNewLine, Anchor::TopRight, ccp(-20 - rightBG->getScaledContentWidth() / 2, -45 - 18));
+
+    for (int i = 0; i < 7; i++)
+    {
+        auto eventType = (LabelEventType)i;
+        std::string lbl = "";
+
+        switch (eventType)
+        {
+            case LabelEventType::PlayerTookDamage:
+                lbl = "Player Took Damage";
+                break;
+
+            case LabelEventType::ClickStarted:
+                lbl = "Click Started";
+                break;
+            case LabelEventType::ClickEnded:
+                lbl = "Click Ended";
+                break;
+            case LabelEventType::P1ClickStarted:
+                lbl = "P1 Click Started";
+                break;
+            case LabelEventType::P1ClickEnded:
+                lbl = "P1 Click Ended";
+                break;
+            case LabelEventType::P2ClickStarted:
+                lbl = "P2 Click Started";
+                break;
+            case LabelEventType::P2ClickEnded:
+                lbl = "P2 Click Ended";
+                break;
+        }
+
+        auto spr = ButtonSprite::create(lbl.c_str(), 90, 90, 0.8f, false, "goldFont.fnt", "GJ_button_04.png", 30);
+        spr->setScale(0.7f);
+        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupLabelConfigUI::onAddEvent));
+        btn->m_scaleMultiplier = 1.1f;
+        btn->setTag(i);
+
+        pages[2]->addChildAtPosition(btn, Anchor::TopRight, ccp(-20 - rightBG->getScaledContentWidth() / 2, -45 - 18 - 18) + ccp(0, -25 * i));
+    }
+
+    updateEventsUI();
+}
+
+void SetupLabelConfigUI::updateEventsUI()
+{
+    eventScroll->m_contentLayer->removeAllChildren();
+
+    float cellHeight = 50;
+    float height = std::max<float>(cellHeight * currentConfig.events.size(), eventScroll->getContentHeight());
+    eventScroll->setTouchEnabled(height != eventScroll->getContentHeight());
+
+    eventScroll->m_contentLayer->setContentHeight(height);
+
+    int i = 0;
+    for (auto event : currentConfig.events)
+    {
+        auto cell = LabelEventCell::create(ccp(eventScroll->getContentWidth(), cellHeight), event, this, i);
+        cell->setPositionY(height - cellHeight * (i + 1));
+        eventScroll->m_contentLayer->addChild(cell);
+
+        i++;
+    }
+
+    eventsNone->setVisible(i == 0);
 }
 
 void SetupLabelConfigUI::createPages()
@@ -307,6 +419,16 @@ void SetupLabelConfigUI::createAnchorNodes()
 
         anchorBtns.emplace(anchor, toggler);
     }
+}
+
+void SetupLabelConfigUI::onAddEvent(CCObject* sender)
+{
+    LabelEvent event;
+    event.type = (LabelEventType)sender->getTag();
+
+    currentConfig.events.push_back(event);
+
+    updateEventsUI();
 }
 
 void SetupLabelConfigUI::onSetAnchor(CCObject* sender)

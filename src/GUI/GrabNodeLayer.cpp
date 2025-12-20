@@ -67,7 +67,7 @@ void GrabNodeLayer::setOnEndDrag(std::function<void()> callback)
 
 void GrabNodeLayer::registerWithTouchDispatcher(void)
 {
-    // CCTouchDispatcher::get()->addTargetedDelegate(this, -503, true);
+    CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
 }
 
 bool GrabNodeLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
