@@ -1,23 +1,23 @@
-#include "LocalizationManager.hpp"
+#include "LocalisationManager.hpp"
 
 using namespace geode::prelude;
 
-LocalizationManager* LocalizationManager::get()
+LocalisationManager* LocalisationManager::get()
 {
-    static LocalizationManager* instance = nullptr;
+    static LocalisationManager* instance = nullptr;
 
     if (!instance)
-        instance = new LocalizationManager();
+        instance = new LocalisationManager();
 
     return instance;
 }
 
-void LocalizationManager::loadLocalizationFile(std::filesystem::path path)
+void LocalisationManager::loadLocalisationFile(std::filesystem::path path)
 {
     loadedJson = file::readJson(path).unwrapOr("{ }");
 }
 
-std::string LocalizationManager::getLocalizedString(std::string id)
+std::string LocalisationManager::getLocalisedString(std::string id)
 {
     // makes it more obvious that theres an error i think
     auto errorStr = utils::string::toUpper(id);
@@ -38,13 +38,19 @@ std::string LocalizationManager::getLocalizedString(std::string id)
     return errorStr;
 }
 
+const matjson::Value& LocalisationManager::getLoadedJson()
+{
+    return loadedJson;
+}
+
 $on_mod(Loaded)
 {
+    // auto path = Mod::get()->getResourcesDir() / "ja-JP.json";
     auto path = Mod::get()->getResourcesDir() / "en-AU.json";
 
     if (std::filesystem::exists(path))
     {
-        LocalizationManager::get()->loadLocalizationFile(path);
+        LocalisationManager::get()->loadLocalisationFile(path);
         // TranslationManager::get()->loadTranslationFromJson(file::readJson(path).unwrapOr("{ }"));
     }
     else

@@ -30,10 +30,16 @@ bool AndroidBall::init()
     overlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
 
     if (!background)
-        background = CCSprite::createWithSpriteFrameName("exMark_001.png");
+    {
+        background = CCSprite::create("circle.png");
+        missingImportantAssets = true;
+    }
 
     if (!overlay)
-        overlay = CCSprite::createWithSpriteFrameName("exMark_001.png");
+    {
+        overlay = CCSprite::create();
+        missingImportantAssets = true;
+    }
 
     this->setOpacity(normalOpacity * 255);
 
@@ -238,4 +244,9 @@ bool AndroidBall::ccTouchEnded(CCTouch* touch)
     isMoving = false;
 
     return false;
+}
+
+bool AndroidBall::areImportantTexturesMissing()
+{
+    return missingImportantAssets;
 }

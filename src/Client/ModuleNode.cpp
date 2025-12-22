@@ -130,6 +130,19 @@ void ModuleNode::onToggle(CCObject* sender)
         return;
     }
 
+    if (module->showEnableWarning() && !module->getUserEnabled())
+    {
+        Loader::get()->queueInMainThread([this]
+        {
+            FLAlertLayer::create("Warning", module->getOnEnableWarning(), "OK")->show();
+            Mod::get()->setSavedValue<bool>(fmt::format("{}_enablewarningshown", getID()), true);
+
+            updateAllNodes(nullptr);
+        });
+
+        return;
+    }
+
     module->setUserEnabled(!module->getUserEnabled());
     updateAllNodes(this);
 

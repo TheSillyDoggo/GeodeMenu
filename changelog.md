@@ -128,7 +128,7 @@
 - Fixed Crash using Chest Unlock Bypass
 - Removed "him" from the credits secret
 - Added **Gold Chest Bypass** to Chest Unlock Bypass
-- Added **Localization / Translations**!!
+- Added **Localisation / Translations**!!
 -- The language can be changed in the **Config** tab of the mod menu
 
 # 1.7.6

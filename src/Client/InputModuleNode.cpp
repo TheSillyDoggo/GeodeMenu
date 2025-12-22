@@ -1,5 +1,6 @@
 #include "InputModuleNode.hpp"
-#include "../Localization/LocalizationManager.hpp"
+#include "../Localisation/LocalisationManager.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 InputModuleNode* InputModuleNode::create(InputModule* module)
 {
@@ -41,7 +42,7 @@ void InputModuleNode::setup()
 
     if (!mod->getHint().empty())
     {
-        auto hint = CCLabelBMFont::create(LocalizationManager::get()->getLocalizedString(fmt::format("input-hints/{}", mod->getHint())).c_str(), "bigFont.fnt");
+        auto hint = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString(fmt::format("input-hints/{}", mod->getHint())).c_str(), "bigFont.fnt");
         hint->setOpacity(150);
         hint->setScale(0.25f);
         hint->setAnchorPoint(ccp(1, 0));

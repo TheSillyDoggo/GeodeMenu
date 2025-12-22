@@ -1,12 +1,13 @@
 #include "LanguageNode.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 bool LanguageNode::init()
 {
     if (!CategoryNode::init())
         return false;
 
-    auto lbl = CCLabelBMFont::create("Work in progress!", "bigFont.fnt");
+    auto lbl = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("ui/coming-soon"), "bigFont.fnt");
     lbl->setScale(0.5f);
 
     this->addChildAtPosition(lbl, Anchor::Center);

@@ -5,6 +5,7 @@
 #include <Geode/modify/CCEGLView.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/modify/CCTouchDispatcher.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -21,4 +22,9 @@ class $modify (BallGameManager, GameManager)
 class $modify (BallTouchDispatcher, CCTouchDispatcher)
 {
     void touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex);
+};
+
+class $modify (BallMenuLayer, MenuLayer)
+{
+    virtual bool init();
 };

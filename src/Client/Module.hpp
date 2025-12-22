@@ -65,6 +65,7 @@ class Module
         std::vector<Module*> options = {};
         std::string disabledMessage = "";
         std::string onDisableWarning = "";
+        std::string onEnableWarning = "";
         int sortPriority = 8008135;
         KeyConfigStruct keyConfig = {};
 
@@ -79,6 +80,7 @@ class Module
         void DLL setParent(Module* parent);
         void DLL setDisabledMessage(std::string str);
         void DLL setDisableWarning(std::string warning);
+        void DLL setEnableWarning(std::string warning);
         void DLL setPriority(int sortPriority);
 
         bool shouldSave();
@@ -132,7 +134,9 @@ class Module
         std::string getDescription();
         std::string getDisabledMessage();
         std::string getOnDisableWarning();
+        std::string getOnEnableWarning();
         bool showDisableWarning();
+        bool showEnableWarning();
         SafeModeTrigger getSafeModeTrigger();
         std::function<bool()> getSafeModeCustom();
         int getSortPriority();

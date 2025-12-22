@@ -2,6 +2,22 @@
 #include "AndroidUI.hpp"
 #include "AndroidBall.hpp"
 
+bool BallMenuLayer::init()
+{
+    if (!MenuLayer::init())
+        return false;
+
+    if (AndroidBall::get()->areImportantTexturesMissing())
+    {
+        Loader::get()->queueInMainThread([this]
+        {
+            FLAlertLayer::create("QOLMod", "Geode <cr>failed</c> to extract assets <cl>required</c> for <co>QOLMod</c> to function.\nIt is <cc>recommended</c> that you <cl>reinstall</c> <co>QOLMod</c> to avoid <cr>crashes</c>", "OK")->show();
+        });
+    }
+
+    return true;
+}
+
 void BallEGLView::swapBuffers()
 {
     if (!AndroidUI::get())

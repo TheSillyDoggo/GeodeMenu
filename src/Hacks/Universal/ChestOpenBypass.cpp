@@ -13,6 +13,7 @@ class OpenChestBypass : public Module
             setID("chest-unlock-bypass");
             setCategory("Universal");
             setDescription("Allows you to open any chest in the <cc>treasure room</c>");
+            setEnableWarning("Opening lots of chests with this cheat may lead to you getting <cr>leaderboard banned</c>.\nIt is not my (the developers) fault if you get banned from opening every chest.\nYou can undo every illegitimately obtained chest by disabling <cc>Treasure Room Chest Bypass</c> and <cl>restarting the game</c>");
         }
 };
 

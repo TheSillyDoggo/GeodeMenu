@@ -1,6 +1,7 @@
 #include "CategoryNode.hpp"
 #include "../Utils/Casts.hpp"
 #include "../GUI/BetterMouseDispatcher.hpp"
+#include "../Utils/Num.hpp"
 
 CategoryNode* CategoryNode::create()
 {
@@ -67,8 +68,9 @@ void CategoryNode::updateUI()
 {
     float height = std::max<float>((std::floor((modules.size() / 2.0f) + (((modules.size() % 2) == 0) ? 0 : 1))) * 28.0f, scroll->getContentHeight());
     float height2 = height - (28 / 2) - 3;
+    float height3 = (modules.size() == 0 ? 0 : 6);
 
-    scroll->m_contentLayer->setContentHeight(height + (modules.size() == 0 ? 0 : 6));
+    scroll->m_contentLayer->setContentHeight(height + height3);
 
     bool showScrollbar = shouldScrollbarShow();
 
@@ -83,7 +85,7 @@ void CategoryNode::updateUI()
     }
 
     scroll->moveToTop();
-    scroll->setTouchEnabled(height != scroll->getContentHeight());
+    scroll->setTouchEnabled(height + height3 != (scroll->getContentHeight() + height3));
     scrollbar->setVisible(showScrollbar);
     scrollbar->setDisabled(!scroll->isTouchEnabled());
 }
@@ -133,7 +135,15 @@ bool CategoryNode::init()
 void CategoryNode::scrollWheel(float y, float x)
 {
     if (nodeIsVisible(scroll) && scroll->isTouchEnabled())
+    {
+        if (auto n = getTopLevelNonSceneNode(this))
+        {
+            if (CCScene::get()->getChildByIndex(-1) != n)
+                return;
+        }
+
         scroll->scrollLayer(y);
+    }
 }
 
 void CategoryNode::setContentSize(const CCSize& contentSize)
@@ -154,5 +164,7 @@ void CategoryNode::setContentSize(const CCSize& contentSize)
 
 CategoryNode::~CategoryNode()
 {
+    // this is terrible
+
     MouseDispatcher::betterMouseDispatcherDelegates.erase(std::remove(MouseDispatcher::betterMouseDispatcherDelegates.begin(), MouseDispatcher::betterMouseDispatcherDelegates.end(), this), MouseDispatcher::betterMouseDispatcherDelegates.end());
 }

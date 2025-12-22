@@ -2,6 +2,8 @@
 #include "../BackgroundSprite.hpp"
 #include "../ExtraThemeSettingsUI.hpp"
 #include "../AndroidUI.hpp"
+#include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 bool ThemeNode::init()
 {
@@ -128,7 +130,7 @@ CCMenuItemSpriteExtra* ThemeNode::addAnimBtn(MenuAnimation anim)
     auto spr = getAnimContainer(anim);
     auto spr2 = getAnimContainer(anim);
     static_cast<CCNodeRGBA*>(spr2->getChildByTag(0))->setColor(ccc3(200, 200, 200));
-    static_cast<CCLabelBMFont*>(spr2->getChildByTag(1))->setColor(ccc3(200, 200, 200));
+    static_cast<AdvLabelBMFont*>(spr2->getChildByTag(1))->setColor(ccc3(200, 200, 200));
 
     auto btn = CCMenuItemSpriteExtra::create(spr, spr2, this, menu_selector(ThemeNode::onChangeAnim));
     btn->m_scaleMultiplier = 1;
@@ -147,46 +149,46 @@ CCNode* ThemeNode::getAnimContainer(MenuAnimation anim)
 {
     auto sprContainer = CCNode::create();
     CCSprite* spr = nullptr;
-    CCLabelBMFont* label = nullptr;
+    AdvLabelBMFont* label = nullptr;
 
     switch (anim)
     {
         case MenuAnimation::None:
             spr = CCSprite::create("none.png"_spr);
-            label = CCLabelBMFont::create("None", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/none"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromTop:
             spr = CCSprite::create("fromside.png"_spr);
             spr->setRotation(90);
-            label = CCLabelBMFont::create("From Top", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-top"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromBottom:
             spr = CCSprite::create("fromside.png"_spr);
             spr->setRotation(270);
-            label = CCLabelBMFont::create("From Bottom", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-bottom"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromLeft:
             spr = CCSprite::create("fromside.png"_spr);
-            label = CCLabelBMFont::create("From Left", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-left"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromRight:
             spr = CCSprite::create("fromside.png"_spr);
             spr->setRotation(180);
-            label = CCLabelBMFont::create("From Right", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-right"), "bigFont.fnt");
             break;
 
         case MenuAnimation::Scale:
             spr = CCSprite::create("scale.png"_spr);
-            label = CCLabelBMFont::create("Scale", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/scale-in"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FadeIn:
             spr = CCSprite::create("fade.png"_spr);
-            label = CCLabelBMFont::create("Fade In", "bigFont.fnt");
+            label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/fade-in"), "bigFont.fnt");
             break;
     }
 
@@ -256,6 +258,6 @@ void ThemeNode::updateAnimSprite()
 
         btn.second->setEnabled((int)btn.first != Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
         static_cast<CCNodeRGBA*>(btn.second->getNormalImage()->getChildByTag(0))->setColor(col);
-        static_cast<CCLabelBMFont*>(btn.second->getNormalImage()->getChildByTag(1))->setColor(col);
+        static_cast<AdvLabelBMFont*>(btn.second->getNormalImage()->getChildByTag(1))->setColor(col);
     }
 }

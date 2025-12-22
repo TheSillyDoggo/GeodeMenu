@@ -7,6 +7,7 @@
 #include "Modules/DisableOpenInLevel.hpp"
 #include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
+#include "../Localisation/LocalisationManager.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
@@ -149,7 +150,9 @@ void AndroidUI::populateTabs()
             categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
-        addTab(category, category, fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)));
+        std::string name = fmt::format("categories/{}", string::toLower(category));
+
+        addTab(LocalisationManager::get()->getLocalisedString(name), category, fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)));
     }
 
     if (bottomTabsContainer)

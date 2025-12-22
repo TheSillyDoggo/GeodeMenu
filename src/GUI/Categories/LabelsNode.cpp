@@ -2,6 +2,7 @@
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Labels/LabelManager.hpp"
 #include "../../Labels/UI/LabelConfigCell.hpp"
+#include "../../Utils/Num.hpp"
 
 #define TOPBAR_SIZE 25
 #define PRESETS_SIZE 115
@@ -234,5 +235,13 @@ LabelsNode* LabelsNode::get()
 void LabelsNode::scrollWheel(float y, float x)
 {
     if (nodeIsVisible(labelsScroll) && labelsScroll->isTouchEnabled())
+    {
+        if (auto n = getTopLevelNonSceneNode(this))
+        {
+            if (CCScene::get()->getChildByIndex(-1) != n)
+                return;
+        }
+
         labelsScroll->scrollLayer(y);
+    }
 }

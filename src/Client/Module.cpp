@@ -204,12 +204,27 @@ void Module::setDisableWarning(std::string warning)
     this->onDisableWarning = warning;
 }
 
+void Module::setEnableWarning(std::string warning)
+{
+    this->onEnableWarning = warning;
+}
+
 bool Module::showDisableWarning()
 {
     return onDisableWarning.empty() ? false : !Mod::get()->hasSavedValue(fmt::format("{}_disablewarningshown", getID()));
 }
 
+bool Module::showEnableWarning()
+{
+    return onEnableWarning.empty() ? false : !Mod::get()->hasSavedValue(fmt::format("{}_enablewarningshown", getID()));
+}
+
 std::string Module::getOnDisableWarning()
+{
+    return onDisableWarning;
+}
+
+std::string Module::getOnEnableWarning()
 {
     return onDisableWarning;
 }

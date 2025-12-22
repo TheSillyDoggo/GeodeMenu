@@ -28,3 +28,22 @@ std::string floatToStringMin2DP(double value)
 	
 	return str;
 }
+
+using namespace geode::prelude;
+
+CCNode* getTopLevelNonSceneNode(CCNode* node)
+{
+	auto n = node;
+
+	int i = 0;
+	while (n && n->getParent())
+	{
+		if (typeinfo_cast<CCScene*>(n->getParent()) || i > 100)
+			break;
+		
+		n = n->getParent();
+		i++;
+	}
+
+	return n;
+}

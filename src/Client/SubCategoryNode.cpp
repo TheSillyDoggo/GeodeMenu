@@ -1,4 +1,5 @@
 #include "SubCategoryNode.hpp"
+#include "../Localisation/LocalisationManager.hpp"
         
 void SubCategoryNode::updateUI()
 {
@@ -60,8 +61,10 @@ void SubCategoryNode::addSubCategory(std::string name)
 {
     auto sprite = fmt::format("{}{}.png", ""_spr, utils::string::toLower(name));
 
-    auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
-    auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
+    std::string nameStr = LocalisationManager::get()->getLocalisedString(fmt::format("categories/{}", utils::string::toLower(name)));
+
+    auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, nameStr, sprite);
+    auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, nameStr, sprite);
     sprHeld->updateSelection(CategorySelectionType::Hovered);
 
     sprNormal->setContentSize(ccp(80, 20));
