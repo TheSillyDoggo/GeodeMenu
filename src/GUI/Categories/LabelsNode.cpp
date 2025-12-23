@@ -3,6 +3,7 @@
 #include "../../Labels/LabelManager.hpp"
 #include "../../Labels/UI/LabelConfigCell.hpp"
 #include "../../Utils/Num.hpp"
+#include "../BetterButtonSprite.hpp"
 
 #define TOPBAR_SIZE 25
 #define PRESETS_SIZE 115
@@ -43,9 +44,9 @@ bool LabelsNode::init()
     hideLabelsNode->setAnchorPoint(ccp(0, 0.5f));
     hideLabelsNode->setScale(0.825f);
 
-    auto editSafezoneBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Edit Safe Zones", 90, 90, 0.8f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(LabelsNode::onEditSafeZones));
+    auto editSafezoneBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Edit Safe Zones", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onEditSafeZones));
     editSafezoneBtn->m_scaleMultiplier = 1.1f;
-    auto importBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Import from file", 90, 90, 0.8f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(LabelsNode::onImportFromFile));
+    auto importBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Import from file", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
     importBtn->m_scaleMultiplier = 1.1f;
 
     auto topBarMenu = CCMenu::create();

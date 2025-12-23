@@ -1,4 +1,5 @@
 #include "AdvLabelBMFont.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 std::string AdvLabelStruct::getTotalString()
 {
@@ -73,8 +74,6 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
 
     for (auto segment : segments)
     {
-        log::warn("segment: {}", segment);
-
         COLCHECK("<ca>", "#9632ff")
         COLCHECK("<cb>", "#4a52e1")
         COLCHECK("<cc>", "#ffff96")
@@ -123,13 +122,12 @@ void AdvLabelBMFont::updateLabel()
 
         if (useTTF)
         {
-            auto spr = CCSprite::createWithTexture(CCLabelTTFCache::get()->getTexture(part.label));
-            spr->setScale(32.5f / spr->getContentHeight());
+            auto lbl = CCLabelBMFont::create(part.label.c_str(), LocalisationManager::get()->getAltFont().c_str());
+            lbl->setColor(col);
+            lbl->setOpacity(part.opacity * getOpacity());
+            lbl->setScale(32.5f / lbl->getContentHeight());
 
-            spr->setColor(col);
-            spr->setOpacity(part.opacity * getOpacity());
-
-            node = spr;
+            node = lbl;
         }
         else
         {
@@ -225,4 +223,16 @@ void AdvLabelBMFont::setString(const char *newString)
 const char* AdvLabelBMFont::getString(void)
 {
     return str.getTotalString().c_str();
+}
+
+void AdvLabelBMFont::setFntFile(const char* fntFile)
+{
+    this->font = fntFile;
+
+    updateLabel();
+}
+
+const char* AdvLabelBMFont::getFntFile()
+{
+    return font.c_str();
 }

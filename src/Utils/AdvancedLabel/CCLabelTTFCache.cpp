@@ -1,3 +1,4 @@
+/*
 #include "AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 
@@ -9,7 +10,8 @@ CCLabelTTFCache* CCLabelTTFCache::get()
     {
         instance = new CCLabelTTFCache();
 
-        instance->label = CCLabelTTF::create("", "Arial.ttf", 32);
+        instance->label = CCLabelTTF::create("hehee おはよう", "KosugiMaru.ttf"_spr, 32);
+        instance->label->m_uReference = 80085;
     }
 
     return instance;
@@ -28,6 +30,8 @@ void CCLabelTTFCache::addTexture(std::string text)
     if (stringsCached.contains(text))
         return;
 
+    #ifndef GEODE_IS_IOS
+
     CCTexture2D* tex = new CCTexture2D();
 
     std::string fontName = "Arial.ttf";
@@ -40,6 +44,8 @@ void CCLabelTTFCache::addTexture(std::string text)
         kCCVerticalTextAlignmentCenter);
 
     stringsCached.emplace(text, tex);
+
+    #endif
 }
 
 void CCLabelTTFCache::flushTextures()
@@ -89,4 +95,4 @@ void CCLabelTTFCache::preloadTextures()
 
     assetsPreloaded = true;
     log::warn("CCLabelTTFCache - cached textures");
-}
+}*/

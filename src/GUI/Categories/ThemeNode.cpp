@@ -4,6 +4,7 @@
 #include "../AndroidUI.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
+#include "../BetterButtonSprite.hpp"
 
 bool ThemeNode::init()
 {
@@ -51,7 +52,7 @@ bool ThemeNode::init()
     colourMenu->addChild(gradientBtn);
     colourMenu->addChild(addColourBtn(-2));
 
-    auto btnOptions = CCMenuItemSpriteExtra::create(ButtonSprite::create("Edit Colours", 80, 80, 0.7f, false, "goldFont.fnt", "GJ_button_04.png", 35), this, menu_selector(ThemeNode::onChangeThemeOptions));
+    auto btnOptions = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(96, 35), LocalisationManager::get()->getLocalisedString("ui/themes-edit-button"), "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(ThemeNode::onChangeThemeOptions));
     btnOptions->setContentSize(gradientBtn->getContentSize());
     btnOptions->getNormalImage()->setPosition(btnOptions->getContentSize() / 2);
 

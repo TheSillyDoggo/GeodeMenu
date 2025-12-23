@@ -1,15 +1,9 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include <Geode/modify/LoadingLayer.hpp>
-#include <Geode/modify/GameManager.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 
-class $modify (LocalisationLoadingLayer, LoadingLayer)
+class $modify (LocalisationMenuLayer, MenuLayer)
 {
-    void loadAssets();
-};
-
-class $modify (LocalisationGameManager, GameManager)
-{
-    void reloadAllStep5();
+    virtual bool init();
 };

@@ -13,6 +13,6 @@ class LocalisationManager
         void loadLocalisationFile(std::filesystem::path path);
 
         const matjson::Value& getLoadedJson();
-
+        std::string getAltFont();
         std::string getLocalisedString(std::string id);
 };

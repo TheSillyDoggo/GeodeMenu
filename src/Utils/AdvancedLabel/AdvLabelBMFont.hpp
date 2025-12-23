@@ -25,7 +25,7 @@ struct AdvLabelStruct
     std::vector<AdvPart> parts = {};
 };
 
-class CCLabelTTFCache
+/*class CCLabelTTFCache
 {
     protected:
         std::unordered_map<std::string, CCTexture2D*> stringsCached = {};
@@ -41,7 +41,7 @@ class CCLabelTTFCache
         void preloadTextures();
 
         CCTexture2D* getTexture(std::string text);
-};
+};*/
 
 enum class AdvLabelTTFUsage
 {
@@ -77,6 +77,9 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
 
         virtual void setString(const char *label);
         virtual const char* getString(void);
+
+        void setFntFile(const char* fntFile);
+        const char* getFntFile();
 
         virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabel(); }
         virtual const ccColor3B& getColor(void) { return colour; }

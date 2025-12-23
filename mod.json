@@ -18,7 +18,8 @@
 	},
 	"resources": {
         "files": [
-            "resources/fonts/*.ttf",
+            "resources/fonts/kosugimaru/*.fnt",
+			"resources/fonts/chiron_goround/*.fnt",
 			"resources/sounds/*.mp3",
 			"resources/*.png",
 			"resources/*.wav",
@@ -30,6 +31,8 @@
 			"resources/translations/langs/*.json"
         ],
 		"sprites": [
+			"resources/fonts/kosugimaru/*.png",
+			"resources/fonts/chiron_goround/*.png",
 			"resources/sprites/*.png",
 			"resources/sprites/icons/categories/*.png",
 			"resources/sprites/icons/animations/*.png",

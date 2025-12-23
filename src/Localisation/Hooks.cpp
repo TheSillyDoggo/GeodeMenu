@@ -1,16 +1,18 @@
 #include "Hooks.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "LocalisationManager.hpp"
 
-void LocalisationLoadingLayer::loadAssets()
+bool LocalisationMenuLayer::init()
 {
-    LoadingLayer::loadAssets();
+    if (!MenuLayer::init())
+        return false;
 
-    CCLabelTTFCache::get()->preloadTextures();
-}
+    auto path = Mod::get()->getResourcesDir() / "en-AU.json";
 
-void LocalisationGameManager::reloadAllStep5()
-{
-    GameManager::reloadAllStep5();
+    if (std::filesystem::exists(path))
+    {
+        LocalisationManager::get()->loadLocalisationFile(path);
+    }
 
-    CCLabelTTFCache::get()->flushTextures();
+    return true;
 }
