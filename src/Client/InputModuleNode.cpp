@@ -29,7 +29,7 @@ void InputModuleNode::setup()
 
     auto label = CCLabelBMFont::create(fmt::format("{}{}", mod->getName(), mod->appendColon() ? ":" : "").c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(75, 0.575f, 0);
+    label->limitLabelWidth(75, 0.5f, 0);
 
     input = TextInput::create(90 + (75 - label->getScaledContentWidth()), mod->getPlaceholderString());
     input->getInputNode()->setUserObject("disable-char-bypass"_spr, CCNode::create());

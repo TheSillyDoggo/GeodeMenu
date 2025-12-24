@@ -1,6 +1,7 @@
 #include "Module.hpp"
 #include "ModuleNode.hpp"
 #include "../SafeMode/SafeMode.hpp"
+#include "../Localisation/LocalisationManager.hpp"
 
 using namespace geode::prelude;
 
@@ -149,7 +150,7 @@ ModuleNode* Module::getNode()
 
 std::string Module::getName()
 {
-    return name;
+    return LocalisationManager::get()->getLocalisedString(fmt::format("names/{}", getID()));
 }
 
 std::string Module::getID()
@@ -164,7 +165,7 @@ std::string Module::getCategory()
 
 std::string Module::getDescription()
 {
-    return description;
+    return LocalisationManager::get()->getLocalisedString(fmt::format("descriptions/{}", getID()));
 }
 
 void Module::setDescription(std::string str)

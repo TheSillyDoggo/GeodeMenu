@@ -2,6 +2,9 @@
 #include "../LabelManager.hpp"
 #include "../../GUI/CategoryTabSprite.hpp"
 #include "../../GUI/BlurLayer.hpp"
+#include "../../GUI/SelectFontUI.hpp"
+#include "../../GUI/BetterButtonSprite.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 #include "LabelEventCell.hpp"
 
 SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> onFinish)
@@ -113,6 +116,9 @@ void SetupLabelConfigUI::createPage1()
 
     createAnchorNodes();
 
+    auto fontSpr = BetterButtonSprite::create(ccp(100, 25), LocalisationManager::get()->getLocalisedString("ui/change-font-button"), "bigFont.fnt", "GJ_button_05.png");
+    auto fontBtn = CCMenuItemSpriteExtra::create(fontSpr, this, menu_selector(SetupLabelConfigUI::onSetFont));
+
     nameInp = TextInput::create(160, "Display Name", "bigFont.fnt");
     nameInp->setAnchorPoint(ccp(0, 0.5f));
     nameInp->setScale(0.7f);
@@ -162,6 +168,7 @@ void SetupLabelConfigUI::createPage1()
     });
 
     pages[0]->addChildAtPosition(anchorMenu, Anchor::TopRight, ccp(-100, -100));
+    pages[0]->addChildAtPosition(fontBtn, Anchor::TopLeft, ccp(100, -100));
     pages[0]->addChildAtPosition(nameInp, Anchor::TopLeft, ccp(0, -100));
     pages[0]->addChildAtPosition(scaleInp, Anchor::TopLeft, ccp(0, -130));
     pages[0]->addChildAtPosition(opacityInp, Anchor::TopLeft, ccp(0, -160));
@@ -443,6 +450,17 @@ void SetupLabelConfigUI::onChangePage(CCObject* sender)
     this->selectedPage = sender->getTag();
 
     updateUI();
+}
+
+void SetupLabelConfigUI::onSetFont(CCObject* sender)
+{
+    auto ui = SelectFontUI::create([this](std::string font)
+    {
+        currentConfig.font = font;
+    });
+    ui->setDefaultFont("bigFont.fnt");
+    ui->setStartFont(currentConfig.font);
+    ui->show();
 }
 
 void SetupLabelConfigUI::setStartConfig(LabelConfig conf)

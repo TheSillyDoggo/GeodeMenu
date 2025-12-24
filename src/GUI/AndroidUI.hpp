@@ -47,6 +47,7 @@ class AndroidUI : public geode::Popup<>
             "Creator",
             "Cosmetic",
             "Speedhack",
+            "Icon Effects",
             "Labels",
             "Config",
             "spacer",

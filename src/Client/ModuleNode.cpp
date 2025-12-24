@@ -29,9 +29,9 @@ void ModuleNode::setup()
     btn = CCMenuItemToggler::createWithStandardSprites(this, isDisabled ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle), 0.75f);
     btn->toggle(module->getUserEnabled());
 
-    label = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
+    label = AdvLabelBMFont::createWithString(module->getName(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(110 - (hasOptions ? 3 : 0), 0.575f, 0.1f);
+    label->limitLabelWidth(110 - (hasOptions ? 3 : 0), 0.5f, 0.1f);
 
     favBtn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleNode::onToggleFavourite));
     favBtn->setScale(0.65f);

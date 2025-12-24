@@ -35,6 +35,7 @@ class SetupLabelConfigUI : public geode::Popup<>
     public:
         static SetupLabelConfigUI* create(std::function<void(LabelConfig)> onFinish);
 
+        void onSetFont(CCObject* sender);
         void onSetAnchor(CCObject* sender);
         void onAddEvent(CCObject* sender);
         void onClose(CCObject* sender);

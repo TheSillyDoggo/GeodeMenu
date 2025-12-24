@@ -4,7 +4,7 @@ matjson::Value LabelEvent::save()
 {
     matjson::Value obj;
 
-    obj["type"] = geode::cast::as<int>(type);
+    obj["type"] = (int)type;
     obj["enabled"] = enabled;
     obj["colour.r"] = colour.r;
     obj["colour.g"] = colour.g;
@@ -20,7 +20,7 @@ matjson::Value LabelEvent::save()
 void LabelEvent::load(matjson::Value obj)
 {
     if (obj.contains("type") && obj["type"].isNumber())
-        type = geode::cast::as<LabelEventType>(obj["type"].asInt().unwrap());
+        type = (LabelEventType)obj["type"].asInt().unwrap();
 
     if (obj.contains("enabled") && obj["enabled"].isBool())
         enabled = obj["enabled"].asBool().unwrap();

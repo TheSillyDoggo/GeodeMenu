@@ -31,7 +31,7 @@ void BetterButtonSprite::visit()
 {
     background->setContentSize(getContentSize());
     label->setPosition(getContentSize() / 2 + ccp(0, 2));
-    label->limitLabelWidth(getContentWidth() - 12, 0.5f, 0);
+    label->limitLabelWidth(getContentWidth() - 12, 1.0f, 0);
 
     CCNode::visit();
 }

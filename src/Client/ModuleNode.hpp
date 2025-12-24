@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "Module.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 using namespace geode::prelude;
 
@@ -12,7 +13,7 @@ class ModuleNode : public CCMenu
         Module* module = nullptr;
         CCMenuItemToggler* btn = nullptr;
         CCMenuItemToggler* favBtn = nullptr;
-        CCLabelBMFont* label = nullptr;
+        AdvLabelBMFont* label = nullptr;
 
         ~ModuleNode();
     

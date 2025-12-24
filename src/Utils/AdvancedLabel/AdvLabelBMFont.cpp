@@ -32,6 +32,11 @@ AdvLabelBMFont* AdvLabelBMFont::createWithString(std::string label, std::string 
     return createWithStruct(structFromString(label), font);
 }
 
+AdvLabelBMFont* AdvLabelBMFont::createWithLocalisation(std::string localisationKey, std::string font)
+{
+    return createWithString(LocalisationManager::get()->getLocalisedString(localisationKey), font);
+}
+
 AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
 {
     AdvLabelStruct str;
@@ -104,12 +109,23 @@ void AdvLabelBMFont::setStruct(AdvLabelStruct str)
 
 void AdvLabelBMFont::updateLabel()
 {
-    this->removeAllChildren();
-
     bool useTTF = useTTFFont();
 
     float x = 0;
     float height = 0;
+
+    for (auto lbl : labelsCached)
+    {
+        for (auto lbl2 : lbl.second)
+        {
+            lbl2->setVisible(false);
+        }
+    }
+
+    int ttfsUsed = 0;
+    int lblsUsed = 0;
+
+    auto fon = LocalisationManager::get()->getAltFont();
 
     for (auto part : str.parts)
     {
@@ -122,16 +138,52 @@ void AdvLabelBMFont::updateLabel()
 
         if (useTTF)
         {
-            auto lbl = CCLabelBMFont::create(part.label.c_str(), LocalisationManager::get()->getAltFont().c_str());
+            CCLabelBMFont* lbl;
+
+            if (labelsCached[fon].size() > ttfsUsed)
+            {
+                lbl = labelsCached[fon][ttfsUsed];
+                lbl->setString(part.label.c_str());
+            }
+            else
+            {
+                lbl = CCLabelBMFont::create(part.label.c_str(), fon.c_str());
+                labelsCached[fon].push_back(lbl);
+
+                this->addChild(lbl);
+            }
+
+            lbl->setVisible(true);
+
+            ttfsUsed++;
+            float height = font == "goldFont.fnt" ? 26 : (font == "chatFont.fnt" ? 16.5f : 32.5f);
+
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
-            lbl->setScale(32.5f / lbl->getContentHeight());
+            lbl->setScale(height / lbl->getContentHeight());
 
             node = lbl;
         }
         else
         {
-            auto lbl = CCLabelBMFont::create(part.label.c_str(), font.c_str());
+            CCLabelBMFont* lbl = nullptr;
+
+            if (labelsCached[font].size() > lblsUsed)
+            {
+                lbl = labelsCached[font][lblsUsed];
+                lbl->setString(part.label.c_str());
+            }
+            else
+            {
+                lbl = CCLabelBMFont::create(part.label.c_str(), font.c_str());
+                labelsCached[font].push_back(lbl);
+
+                this->addChild(lbl);
+            }
+
+            lbl->setVisible(true);
+
+            lblsUsed++;
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
 
@@ -144,8 +196,6 @@ void AdvLabelBMFont::updateLabel()
 
         node->setPosition(ccp(x, 0));
         x += node->getScaledContentWidth();
-
-        this->addChild(node);
     }
 
     this->setContentSize(ccp(x, height));
@@ -235,4 +285,27 @@ void AdvLabelBMFont::setFntFile(const char* fntFile)
 const char* AdvLabelBMFont::getFntFile()
 {
     return font.c_str();
+}
+
+void AdvLabelBMFont::setTTFUsage(AdvLabelTTFUsage usage)
+{
+    this->ttfUsage = usage;
+}
+
+AdvLabelTTFUsage AdvLabelBMFont::getTTFUsage()
+{
+    return ttfUsage;
+}
+
+CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
+{
+    if (!bmConfigs.contains(font))
+    {
+        auto conf = CCBMFontConfiguration::create(font.c_str());
+        conf->m_uReference = 80085; // so we never lose the config
+
+        bmConfigs.emplace(font, conf);
+    }
+
+    return bmConfigs[font];
 }

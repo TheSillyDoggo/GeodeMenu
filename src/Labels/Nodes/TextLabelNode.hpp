@@ -2,11 +2,12 @@
 
 #include "LabelNode.hpp"
 #include <rift.hpp>
+#include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 class TextLabelNode : public LabelNode
 {
     protected:
-        CCLabelBMFont* label = nullptr;
+        AdvLabelBMFont* label = nullptr;
         rift::Script* script = nullptr;
 
         ~TextLabelNode();

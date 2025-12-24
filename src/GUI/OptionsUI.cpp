@@ -1,6 +1,9 @@
 #include "OptionsUI.hpp"
 #include "Categories/FavouritesNode.hpp"
 #include "BlurLayer.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "BetterButtonSprite.hpp"
+#include "../Localisation/LocalisationManager.hpp"
 
 OptionsUI* OptionsUI::create(Module* mod)
 {
@@ -38,14 +41,14 @@ bool OptionsUI::setup()
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChild(bg);
 
-    auto title = CCLabelBMFont::create(module->getName().c_str(), "goldFont.fnt");
+    auto title = AdvLabelBMFont::createWithString(module->getName(), "goldFont.fnt");
     title->setScale(0.7f);
 
     auto menu = CCMenu::create();
     auto menu2 = CCMenu::create();
     auto menu3 = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(OptionsUI::onClose));
+    auto btn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(54.25f, 30), LocalisationManager::get()->getLocalisedString("ui/ok-button"), "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(OptionsUI::onClose));
     menu->addChild(btn);
 
     auto infoBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));

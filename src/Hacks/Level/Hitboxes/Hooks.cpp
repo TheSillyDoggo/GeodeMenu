@@ -5,6 +5,7 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/CCDrawNode.hpp>
 #include <Geode/modify/GameObject.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
@@ -99,9 +100,10 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
         auto fields = m_fields.self();
 
-        if (HitboxTrail::get()->getRealEnabled())
+        if (HitboxTrail::get()->getRealEnabled() && !typeinfo_cast<LevelEditorLayer*>(this))
         {
-            fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+            if (!m_player1->m_isDead)
+                fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
 
             while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
             {
@@ -112,7 +114,6 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
             {
                 drawForState(state);
             }
-            
         }
 
         drawForPlayer(m_player1);
@@ -125,21 +126,74 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
     {
         GJBaseGameLayer::resetLevelVariables();
 
-        if (HitboxTrailResetOnDeath::get()->getRealEnabled())
-            m_fields->states.clear();
+        if (!typeinfo_cast<LevelEditorLayer*>(this))
+        {
+            if (HitboxTrailResetOnDeath::get()->getRealEnabled())
+                m_fields->states.clear();
+        }
     }
 };
 
-class $modify (GameObject)
+class $modify (LevelEditorLayer)
 {
+    void onPlaytest()
+    {
+        LevelEditorLayer::onPlaytest();
 
+        auto hbgl = base_cast<HitboxBaseGameLayer*>(this);
+
+        if (HitboxTrailResetOnDeath::get()->getRealEnabled())
+            hbgl->m_fields->states.clear();
+    }
+
+    virtual void updateVisibility(float dt)
+    {
+        auto en = m_isDebugDrawEnabled;
+
+        if (m_debugDrawNode)
+        {
+            m_isDebugDrawEnabled = (m_isDebugDrawEnabled || ShowHitboxes::get()->getRealEnabled());
+        }
+
+        LevelEditorLayer::updateVisibility(dt);
+
+        if (m_isDebugDrawEnabled)
+        {
+            auto hbgl = base_cast<HitboxBaseGameLayer*>(this);
+
+            auto fields = hbgl->m_fields.self();
+
+            if (HitboxTrail::get()->getRealEnabled())
+            {
+                if (m_playbackMode == PlaybackMode::Playing)
+                    fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+
+                while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
+                {
+                    fields->states.pop_back();
+                }
+                
+                for (auto state : fields->states)
+                {
+                    hbgl->drawForState(state);
+                }
+            }
+
+            hbgl->drawForPlayer(m_player1);
+
+            if (m_player2 && m_player2->isRunning())
+                hbgl->drawForPlayer(m_player2);
+        }
+
+        m_isDebugDrawEnabled = en;
+    }
 };
 
 class $modify (CCDrawNode)
 {
     bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
     {
-        if (PlayLayer::get() && PlayLayer::get()->m_debugDrawNode == this)
+        if (GJBaseGameLayer::get() && GJBaseGameLayer::get()->m_debugDrawNode == this)
         {
             auto border = borderColor;
 

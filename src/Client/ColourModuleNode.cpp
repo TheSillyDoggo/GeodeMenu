@@ -30,7 +30,7 @@ void ColourModuleNode::setup()
 
     auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(110, 0.575f, 0);
+    label->limitLabelWidth(110, 0.5f, 0);
 
     colourSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     colourSpr->setScale(0.65f);

@@ -61,6 +61,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         AdvLabelTTFUsage ttfUsage = AdvLabelTTFUsage::Auto;
         ccColor3B colour = ccWHITE;
         GLubyte opacity = 255;
+        std::unordered_map<std::string, std::vector<CCLabelBMFont*>> labelsCached = {};
 
         static AdvLabelStruct structFromString(std::string lbl);
 
@@ -69,17 +70,23 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
     public:
         static AdvLabelBMFont* createWithStruct(AdvLabelStruct lblStruct, std::string font);
         static AdvLabelBMFont* createWithString(std::string label, std::string font);
+        static AdvLabelBMFont* createWithLocalisation(std::string localisationKey, std::string font);
 
         void limitLabelWidth(float width, float defaultScale, float minScale);
         void setStruct(AdvLabelStruct str);
         void updateLabel();
         bool initWithStruct(AdvLabelStruct lblStruct, std::string font);
 
+        void setTTFUsage(AdvLabelTTFUsage usage);
+        AdvLabelTTFUsage getTTFUsage();
+
         virtual void setString(const char *label);
         virtual const char* getString(void);
 
         void setFntFile(const char* fntFile);
         const char* getFntFile();
+
+        CCBMFontConfiguration* getConfiguration();
 
         virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabel(); }
         virtual const ccColor3B& getColor(void) { return colour; }

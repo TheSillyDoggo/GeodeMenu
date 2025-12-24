@@ -26,20 +26,8 @@ bool AndroidBall::init()
     this->onEnter();
     this->scheduleUpdate();
 
-    background = CCSprite::create("qolmodButtonBG.png"_spr);
-    overlay = CCSprite::create("qolmodButtonOverlay.png"_spr);
-
-    if (!background)
-    {
-        background = CCSprite::create("circle.png");
-        missingImportantAssets = true;
-    }
-
-    if (!overlay)
-    {
-        overlay = CCSprite::create();
-        missingImportantAssets = true;
-    }
+    background = CCSprite::create("circle.png");
+    overlay = CCSprite::create();
 
     this->setOpacity(normalOpacity * 255);
 
@@ -55,6 +43,7 @@ bool AndroidBall::init()
     }
 
     setColonThreeSecret(UseColonThreeButton::get()->getRealEnabled());
+    reloadTextures();
 
     this->addChild(background);
     this->addChild(overlay);
@@ -68,6 +57,16 @@ void AndroidBall::setColonThreeSecret(bool enabled)
         overlay->setTexture(spr->getTexture());
         colonThreeEnabled = enabled;
     }
+    else
+    {
+        overlay->setTexture(CCSprite::create()->getTexture());
+        missingImportantAssets = true;
+    }
+
+    CCRect rect = CCRectZero;
+    rect.size = overlay->getTexture()->getContentSize();
+
+    overlay->setTextureRect(rect);
 }
 
 bool AndroidBall::getColonThreeSecret()
@@ -91,7 +90,22 @@ void AndroidBall::setSmoothMove(bool smooth)
 
 void AndroidBall::reloadTextures()
 {
-    background->setTexture(CCSprite::create("qolmodButtonBG.png"_spr)->getTexture());
+    missingImportantAssets = false;
+
+    auto spr = CCSprite::create("qolmodButtonBG.png"_spr);
+
+    if (!spr)
+    {
+        spr = CCSprite::create("circle.png");
+        missingImportantAssets = true;
+    }
+
+    background->setTexture(spr->getTexture());
+
+    CCRect rect = CCRectZero;
+    rect.size = background->getTexture()->getContentSize();
+    background->setTextureRect(rect);
+
     setColonThreeSecret(colonThreeEnabled);
 }
 

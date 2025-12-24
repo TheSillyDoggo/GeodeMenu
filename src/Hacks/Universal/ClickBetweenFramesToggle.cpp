@@ -9,6 +9,7 @@ class CBFToggle : public ModBoolModule
         MODULE_SETUP(CBFToggle)
         {
             setName("Click between frames");
+            setID("syzzi.click_between_frames/soft-toggle");
             setCategory("Universal");
             setDescription("Toggles the \"CBF Enabled\" option in the cbf mod settings");
             setOptionPointer("syzzi.click_between_frames", "soft-toggle");

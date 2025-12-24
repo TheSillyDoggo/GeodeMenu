@@ -7,8 +7,9 @@
 
 void TextLabelNode::setup()
 {
-    label = CCLabelBMFont::create("", "bigFont.fnt");
+    label = AdvLabelBMFont::createWithStruct({}, "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0));
+    label->setTTFUsage(AdvLabelTTFUsage::None);
 
     this->addChild(label);
 }
@@ -22,7 +23,7 @@ void TextLabelNode::labelConfigUpdated()
 
     auto anchorX = LabelManager::get()->anchorToPoint(config.anchor).x;
 
-    label->setAlignment(anchorX == 0 ? kCCTextAlignmentLeft : (anchorX == 0.5f ? kCCTextAlignmentCenter : kCCTextAlignmentRight));
+    // label->setAlignment(anchorX == 0 ? kCCTextAlignmentLeft : (anchorX == 0.5f ? kCCTextAlignmentCenter : kCCTextAlignmentRight));
     
     CC_SAFE_DELETE(script);
     script = rift::compile(config.formatString).unwrapOr(nullptr);
@@ -57,8 +58,8 @@ void TextLabelNode::update(float dt)
     {
         auto anchorX = LabelManager::get()->anchorToPoint(config.anchor).x;
 
-        as<CCNode*>(label->getChildren()->objectAtIndex(0))->setScale(2.25f);
-        as<CCNode*>(label->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
+        // static_cast<CCNode*>(label->getChildren()->objectAtIndex(0))->setScale(2.25f);
+        // static_cast<CCNode*>(label->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
     }
 }
 
@@ -179,11 +180,11 @@ void TextLabelNode::updateVariables()
 
     if (PlayLayer::get())
     {
-        script->setVariable("bestRun_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestFrom));
-        script->setVariable("bestRun_to", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->bestTo));
+        script->setVariable("bestRun_from", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->bestFrom));
+        script->setVariable("bestRun_to", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->bestTo));
         script->setVariable("percentage", rift::Value::floating(PlayLayer::get()->getCurrentPercent()));
-        script->setVariable("last_percentage", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->lastPercent));
-        script->setVariable("run_from", rift::Value::floating(as<BestPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
+        script->setVariable("last_percentage", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->lastPercent));
+        script->setVariable("run_from", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
     }
 }
 

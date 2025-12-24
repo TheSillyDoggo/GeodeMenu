@@ -54,7 +54,7 @@ class $modify (PlayLayer)
                     {
                         if (coin->hasBeenActivated())
                         {
-                            pickupItem(as<EffectGameObject*>(coin));
+                            pickupItem(static_cast<EffectGameObject*>(coin));
                         }
                     }
                 }

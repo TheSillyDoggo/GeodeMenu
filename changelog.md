@@ -13,6 +13,7 @@
 - Added option to disable dash fire particles in No Particles
 - Added Blur Background
 - Changed name of "Ship hold particles" to "Ship boost particles"
+- Fixed Show Hitboxes and Hitbox Trail not working in the editor
 - Fixed chests unlocked with open chest bypass not saving
 - Fixed crash when favouriting or adding a keybind to a button module (like reset audio variables)
 - Fixed menu animations being affected by speedhack

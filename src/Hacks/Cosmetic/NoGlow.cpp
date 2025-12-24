@@ -9,7 +9,7 @@ class NoGlow : public Module
         MODULE_SETUP(NoGlow)
         {
             setName("No Glow");
-            setID("no-death");
+            setID("no-glow");
             setCategory("Cosmetic");
             setDescription("Disables object glow.\nRequires re-entering the level to apply");
         }

@@ -20,7 +20,7 @@ void FloatSliderModuleNode::setup()
 
     auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
-    label->limitLabelWidth(65, 0.575f, 0);
+    label->limitLabelWidth(65, 0.5f, 0);
 
     slider = BetterSlider::create(this, menu_selector(FloatSliderModuleNode::onSliderMoved));
     slider->setAnchorPoint(ccp(1, 0.5f));
