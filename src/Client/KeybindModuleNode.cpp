@@ -1,5 +1,6 @@
 #include "KeybindModuleNode.hpp"
 #include "../GUI/KeycodeListenerLayer.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 KeybindModuleNode* KeybindModuleNode::create(KeybindModule* module)
 {
@@ -19,7 +20,7 @@ void KeybindModuleNode::setup()
 {
     auto mod = static_cast<KeybindModule*>(module);
 
-    auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
+    auto label = AdvLabelBMFont::createWithString(mod->getName(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(120, 0.5f, 0);
 

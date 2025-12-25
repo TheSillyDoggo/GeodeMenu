@@ -95,11 +95,6 @@ class Module
         bool userEnabled = false;
         bool forceDisabled = false;
 
-        std::vector<geode::Hook*> hooks = {};
-
-        void disableHooks();
-        void enableHooks();
-
     public:
         static Module* getByID(std::string id);
         static std::vector<Module*> getAllFavourited();
@@ -116,8 +111,6 @@ class Module
         bool getForceDisabled();
 
         bool getRealEnabled();
-
-        void addHook(geode::Hook* hook);
 
         void addOption(Module* option);
         std::vector<Module*>& getOptions();

@@ -1,4 +1,5 @@
 #include "ButtonModuleNode.hpp"
+#include "../GUI/BetterButtonSprite.hpp"
 
 ButtonModuleNode* ButtonModuleNode::create(ButtonModule* module)
 {
@@ -21,14 +22,8 @@ void ButtonModuleNode::onButtonClicked(CCObject* sender)
 
 void ButtonModuleNode::setup()
 {
-    auto lbl = CCLabelBMFont::create(module->getName().c_str(), "bigFont.fnt");
-    lbl->limitLabelWidth(180, 0.8f, 0);
-
-    auto spr = CCScale9Sprite::create("GJ_button_05.png");
-    spr->setContentSize(ccp(190, 26 / 0.7f));
+    auto spr = BetterButtonSprite::create(ccp(190, 26 / 0.7f), module->getName(), "bigFont.fnt", "GJ_button_05.png");
     spr->setScale(0.7f);
-
-    spr->addChildAtPosition(lbl, Anchor::Center);
 
     auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(ButtonModuleNode::onButtonClicked));
     btn->m_scaleMultiplier = 1.1f;

@@ -74,6 +74,9 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
 
                 if (SpeedChangeParticles::get()->getRealEnabled())
                 {
+                    if (std::string(m_sPlistFile).ends_with("speedEffect_slow.plist"))
+                        return;
+
                     if (std::string(m_sPlistFile).ends_with("speedEffect_normal.plist"))
                         return;
 

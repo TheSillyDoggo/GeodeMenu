@@ -31,6 +31,7 @@ class SelectFontUI : public geode::Popup<>
         void setStartFont(std::string font);
         void updateUI(CCMenuItemToggler* except = nullptr);
 
+        void onFontHint(CCObject* sender);
         void onSetDefault(CCObject* sender);
         void onUndoChanged(CCObject* sender);
         void onChangeFont(CCObject* sender);

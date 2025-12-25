@@ -27,7 +27,7 @@ void InputModuleNode::setup()
 
     this->scheduleUpdate();
 
-    auto label = CCLabelBMFont::create(fmt::format("{}{}", mod->getName(), mod->appendColon() ? ":" : "").c_str(), "bigFont.fnt");
+    auto label = AdvLabelBMFont::createWithString(fmt::format("{}{}", mod->getName(), mod->appendColon() ? ":" : "").c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(75, 0.5f, 0);
 

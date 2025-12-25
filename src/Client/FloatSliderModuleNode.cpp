@@ -1,4 +1,5 @@
 #include "FloatSliderModuleNode.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 FloatSliderModuleNode* FloatSliderModuleNode::create(FloatSliderModule* module)
 {
@@ -18,7 +19,7 @@ void FloatSliderModuleNode::setup()
 {
     auto mod = static_cast<FloatSliderModule*>(module);
 
-    auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
+    auto label = AdvLabelBMFont::createWithString(mod->getName(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(65, 0.5f, 0);
 

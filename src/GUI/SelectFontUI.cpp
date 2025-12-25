@@ -78,6 +78,12 @@ void SelectFontUI::onChangePage(CCObject* sender)
     updateUI();
 }
 
+void SelectFontUI::onFontHint(CCObject* sender)
+{
+    auto alert = FLAlertLayer::create("Writing system", LocalisationManager::get()->getLocalisedString(fmt::format("font-select/{}", static_cast<CCNode*>(sender)->getID())), LocalisationManager::get()->getLocalisedString("ui/ok-button").c_str());
+    alert->show();
+}
+
 void SelectFontUI::updateUI(CCMenuItemToggler* except)
 {
     for (auto toggler : togglers)
@@ -127,7 +133,10 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("JP", "bigFont.fnt");
         l->setOpacity(150);
 
-        menu->addChild(l);
+        auto btn = CCMenuItemSpriteExtra::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        btn->setID("japanese-supported");
+
+        menu->addChild(btn);
     }
 
     if (config->getCharacterSet()->contains(1047)) // з
@@ -135,7 +144,10 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("RU", "bigFont.fnt");
         l->setOpacity(150);
 
-        menu->addChild(l);
+        auto btn = CCMenuItemSpriteExtra::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        btn->setID("russian-supported");
+
+        menu->addChild(btn);
     }
 
     if (config->getCharacterSet()->contains(51020)) // 음
@@ -143,7 +155,10 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("KO", "bigFont.fnt");
         l->setOpacity(150);
 
-        menu->addChild(l);
+        auto btn = CCMenuItemSpriteExtra::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        btn->setID("korean-supported");
+
+        menu->addChild(btn);
     }
 
     menu->updateLayout();

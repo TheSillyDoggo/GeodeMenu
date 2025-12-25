@@ -11,18 +11,6 @@ void Module::setUserEnabled(bool enabled)
 
     SafeMode::get()->onModuleToggled(this);
 
-    if (forceDisabled)
-    {
-        disableHooks();
-    }
-    else
-    {
-        if (userEnabled)
-            enableHooks();
-        else
-            disableHooks();
-    }
-
     save();
 }
 
@@ -34,18 +22,6 @@ bool Module::getUserEnabled()
 void Module::setForceDisabled(bool forced)
 {
     forceDisabled = forced;
-
-    if (forceDisabled)
-    {
-        disableHooks();
-    }
-    else
-    {
-        if (userEnabled)
-            enableHooks();
-        else
-            disableHooks();
-    }
 }
 
 bool Module::getForceDisabled()
@@ -84,36 +60,6 @@ void Module::setDisabledMessage(std::string str)
 std::string Module::getDisabledMessage()
 {
     return disabledMessage;
-}
-
-// TODO: Fix hooks
-
-void Module::addHook(geode::Hook* hook)
-{
-    hooks.push_back(hook);
-
-    hook->setAutoEnable(false);
-
-    //hook->enable();
-
-    //if (getRealEnabled())
-        //(void)hook->enable();
-}
-
-void Module::enableHooks()
-{
-    for (auto hook : hooks)
-    {
-        (void)hook->enable();
-    }
-}
-
-void Module::disableHooks()
-{
-    for (auto hook : hooks)
-    {
-        (void)hook->disable();
-    }
 }
 
 bool Module::shouldSave()

@@ -1,5 +1,6 @@
 #include "ColourModuleNode.hpp"
 #include "../GUI/SetupColourConfigUI.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 ColourModuleNode* ColourModuleNode::create(ColourModule* module)
 {
@@ -28,7 +29,7 @@ void ColourModuleNode::setup()
 
     this->scheduleUpdate();
 
-    auto label = CCLabelBMFont::create(mod->getName().c_str(), "bigFont.fnt");
+    auto label = AdvLabelBMFont::createWithString(mod->getName(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(110, 0.5f, 0);
 
