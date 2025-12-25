@@ -40,6 +40,7 @@ class SetupLabelConfigUI : public geode::Popup<>
         void onAddEvent(CCObject* sender);
         void onClose(CCObject* sender);
         void onChangePage(CCObject* sender);
+        void onExportToFile(CCObject* sender);
 
         void createPages();
         void createAnchorNodes();

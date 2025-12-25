@@ -1,17 +1,19 @@
 # 2.4.0
 
 - Added **Labels**
-- Added option to force hide all labels
-- Added ability to add a keybind to enable speedhack
-- Added ability to add keybinds to speedhack presets
+- Added Option to force hide all labels
+- Added Ability to add a keybind to enable speedhack
+- Added Ability to add keybinds to speedhack presets
 - Added Stop Triggers on Death
 - Added Suicide (Auto kill player)
 - Added Freeze Attempts
 - Added Force Platformer
 - Added Show Touches
 - Added No Orb Pulse
-- Added option to disable dash fire particles in No Particles
+- Added Option to disable dash fire particles in No Particles
 - Added Blur Background
+- Added Full Options Menu
+- Added Button to end screen when safe mode is on to view the reasons for disabling level progress
 - Changed name of "Ship hold particles" to "Ship boost particles"
 - Fixed Disabling speed change particles not disabling the 0.5x speed particles
 - Fixed Show Hitboxes and Hitbox Trail not working in the editor

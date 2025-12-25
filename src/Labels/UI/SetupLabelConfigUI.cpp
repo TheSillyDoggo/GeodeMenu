@@ -41,11 +41,6 @@ bool SetupLabelConfigUI::setup()
     auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupLabelConfigUI::onClose));
     menu->addChild(btn);
 
-    anchorMenu = CCMenu::create();
-    anchorMenu->setAnchorPoint(ccp(0, 0));
-    anchorMenu->setScale(1.3f);
-    anchorMenu->setContentSize(ccp(0, 0));
-
     pagesMenu = CCMenu::create();
     pagesMenu->setLayout(AxisLayout::create(Axis::Row)->setAutoScale(false)->setAxisReverse(false)->setAxisAlignment(AxisAlignment::Center)->setGap(7.5f));
     pagesMenu->ignoreAnchorPointForPosition(false);
@@ -116,11 +111,99 @@ void SetupLabelConfigUI::createPage1()
 
     createAnchorNodes();
 
+    auto anchorBG = CCScale9Sprite::create("square02b_small.png");
+    anchorBG->setContentSize(ccp((18 * 1.3f * 3) + 15, this->getContentHeight() - 155) / 0.5f);
+    anchorBG->setScale(0.5f);
+    anchorBG->setAnchorPoint(ccp(1, 0.5f));
+    anchorBG->setColor(ccc3(0, 0, 0));
+    anchorBG->setOpacity(100);
+
+    auto anchorTitle = CCLabelBMFont::create("Anchor", "bigFont.fnt");
+    anchorTitle->setScale(0.5f / 0.5f);
+
+    auto anchorLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    anchorLine->setRotation(90);
+    anchorLine->setScaleY(0.9f / 0.5f);
+    anchorLine->setScaleX(1.0f / 0.5f);
+
+    auto offsetTitle = CCLabelBMFont::create("Offset", "bigFont.fnt");
+    offsetTitle->setScale(0.5f / 0.5f);
+
+    auto offsetLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    offsetLine->setRotation(90);
+    offsetLine->setScaleY(0.9f / 0.5f);
+    offsetLine->setScaleX(1.0f / 0.5f);
+
+    offsetXInp = TextInput::create(50, "X", "bigFont.fnt");
+    offsetXInp->setScale(0.7f / 0.5f);
+    offsetXInp->setCommonFilter(CommonFilter::Float);
+    offsetXInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.offset.x = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.x);
+    });
+
+    offsetYInp = TextInput::create(50, "Y", "bigFont.fnt");
+    offsetYInp->setScale(0.7f / 0.5f);
+    offsetYInp->setCommonFilter(CommonFilter::Float);
+    offsetYInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.offset.y = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.y);
+    });
+
+    anchorBG->addChildAtPosition(anchorTitle, Anchor::Top, ccp(0, -23));
+    anchorBG->addChildAtPosition(anchorLine, Anchor::Top, ccp(0, -23 - 13 / 0.5f));
+    anchorBG->addChildAtPosition(anchorMenu, Anchor::Top, ccp(0, -135));
+    anchorBG->addChildAtPosition(offsetTitle, Anchor::Bottom, ccp(0, 90));
+    anchorBG->addChildAtPosition(offsetLine, Anchor::Bottom, ccp(0, 90 - 13 / 0.5f));
+    anchorBG->addChildAtPosition(offsetXInp, Anchor::Bottom, ccp(-42, 27));
+    anchorBG->addChildAtPosition(offsetYInp, Anchor::Bottom, ccp(42, 27));
+
+
+    auto generalBG = CCScale9Sprite::create("square02b_small.png");
+    generalBG->setContentSize(ccp(110, this->getContentHeight() - 155) / 0.5f);
+    generalBG->setScale(0.5f);
+    generalBG->setAnchorPoint(ccp(0.5f, 0.5f));
+    generalBG->setColor(ccc3(0, 0, 0));
+    generalBG->setOpacity(100);
+
+
+    auto infoBG = CCScale9Sprite::create("square02b_small.png");
+    infoBG->setContentSize(ccp(110, this->getContentHeight() - 155) / 0.5f);
+    infoBG->setScale(0.5f);
+    infoBG->setAnchorPoint(ccp(0, 0.5f));
+    infoBG->setColor(ccc3(0, 0, 0));
+    infoBG->setOpacity(100);
+
     auto fontSpr = BetterButtonSprite::create(ccp(100, 25), LocalisationManager::get()->getLocalisedString("ui/change-font-button"), "bigFont.fnt", "GJ_button_05.png");
     auto fontBtn = CCMenuItemSpriteExtra::create(fontSpr, this, menu_selector(SetupLabelConfigUI::onSetFont));
+    fontBtn->m_scaleMultiplier = 1.1f;
 
-    nameInp = TextInput::create(160, "Display Name", "bigFont.fnt");
-    nameInp->setAnchorPoint(ccp(0, 0.5f));
+    auto exportSpr = BetterButtonSprite::create(ccp(100, 25), LocalisationManager::get()->getLocalisedString("ui/export-to-file-button"), "bigFont.fnt", "GJ_button_05.png");
+    auto exportBtn = CCMenuItemSpriteExtra::create(exportSpr, this, menu_selector(SetupLabelConfigUI::onExportToFile));
+    exportBtn->m_scaleMultiplier = 1.1f;
+
+    auto nameTitle = CCLabelBMFont::create("Display Name", "bigFont.fnt");
+    nameTitle->setScale(0.4f);
+
+    auto nameLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    nameLine->setRotation(90);
+    nameLine->setScaleY(0.9f);
+
+    auto scaleTitle = CCLabelBMFont::create("Scale", "bigFont.fnt");
+    scaleTitle->setScale(0.5f);
+
+    auto scaleLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    scaleLine->setRotation(90);
+    scaleLine->setScaleY(0.9f);
+
+    auto opacityTitle = CCLabelBMFont::create("Opacity", "bigFont.fnt");
+    opacityTitle->setScale(0.5f);
+
+    auto opacityLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    opacityLine->setRotation(90);
+    opacityLine->setScaleY(0.9f);
+
+    nameInp = TextInput::create(145, "Display Name", "bigFont.fnt");
     nameInp->setScale(0.7f);
     nameInp->setCommonFilter(CommonFilter::Any);
     nameInp->setCallback([this](const std::string& str)
@@ -128,8 +211,7 @@ void SetupLabelConfigUI::createPage1()
         currentConfig.displayName = str;
     });
 
-    scaleInp = TextInput::create(160, "Scale", "bigFont.fnt");
-    scaleInp->setAnchorPoint(ccp(0, 0.5f));
+    scaleInp = TextInput::create(145, "Scale", "bigFont.fnt");
     scaleInp->setScale(0.7f);
     scaleInp->setCommonFilter(CommonFilter::Float);
     scaleInp->setCallback([this](const std::string& str)
@@ -137,8 +219,7 @@ void SetupLabelConfigUI::createPage1()
         currentConfig.scale = utils::numFromString<float>(str).unwrapOr(currentConfig.scale);
     });
 
-    opacityInp = TextInput::create(160, "Opacity", "bigFont.fnt");
-    opacityInp->setAnchorPoint(ccp(0, 0.5f));
+    opacityInp = TextInput::create(145, "Opacity", "bigFont.fnt");
     opacityInp->setScale(0.7f);
     opacityInp->setCommonFilter(CommonFilter::Float);
     opacityInp->setCallback([this](const std::string& str)
@@ -146,36 +227,37 @@ void SetupLabelConfigUI::createPage1()
         currentConfig.opacity = utils::numFromString<float>(str).unwrapOr(currentConfig.opacity);
     });
 
-    cheatIndicatorToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 1.0f);
-    noclipOnlyToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 1.0f);
+    cheatIndicatorToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
+    noclipOnlyToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
 
-    offsetXInp = TextInput::create(60, "X", "bigFont.fnt");
-    offsetXInp->setAnchorPoint(ccp(0, 0.5f));
-    offsetXInp->setScale(0.7f);
-    offsetXInp->setCommonFilter(CommonFilter::Float);
-    offsetXInp->setCallback([this](const std::string& str)
-    {
-        currentConfig.offset.x = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.x);
-    });
+    auto cheatIndicatorLbl = AdvLabelBMFont::createWithLocalisation("labels/cheat-indicator-label", "bigFont.fnt");
+    auto noclipOnlyLbl = AdvLabelBMFont::createWithLocalisation("labels/noclip-only-label", "bigFont.fnt");
 
-    offsetYInp = TextInput::create(60, "Y", "bigFont.fnt");
-    offsetYInp->setAnchorPoint(ccp(0, 0.5f));
-    offsetYInp->setScale(0.7f);
-    offsetYInp->setCommonFilter(CommonFilter::Float);
-    offsetYInp->setCallback([this](const std::string& str)
-    {
-        currentConfig.offset.y = utils::numFromString<float>(str).unwrapOr(currentConfig.offset.y);
-    });
+    cheatIndicatorLbl->setAnchorPoint(ccp(0, 0.5f));
+    noclipOnlyLbl->setAnchorPoint(ccp(0, 0.5f));
 
-    pages[0]->addChildAtPosition(anchorMenu, Anchor::TopRight, ccp(-100, -100));
-    pages[0]->addChildAtPosition(fontBtn, Anchor::TopLeft, ccp(100, -100));
-    pages[0]->addChildAtPosition(nameInp, Anchor::TopLeft, ccp(0, -100));
-    pages[0]->addChildAtPosition(scaleInp, Anchor::TopLeft, ccp(0, -130));
-    pages[0]->addChildAtPosition(opacityInp, Anchor::TopLeft, ccp(0, -160));
-    pages[0]->addChildAtPosition(cheatIndicatorToggler, Anchor::TopLeft, ccp(50, -160));
-    pages[0]->addChildAtPosition(noclipOnlyToggler, Anchor::TopLeft, ccp(50, -180));
-    pages[0]->addChildAtPosition(offsetXInp, Anchor::Right, ccp(-90, -50));
-    pages[0]->addChildAtPosition(offsetYInp, Anchor::Right, ccp(-50, -50));
+    cheatIndicatorLbl->limitLabelWidth(75, 0.5f, 0);
+    noclipOnlyLbl->limitLabelWidth(75, 0.5f, 0);
+
+    pages[0]->addChildAtPosition(anchorBG, Anchor::Right, ccp(-20, 0));
+    pages[0]->addChildAtPosition(infoBG, Anchor::Left, ccp(20, 0));
+    pages[0]->addChildAtPosition(nameTitle, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 71));
+    pages[0]->addChildAtPosition(nameLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 71 - 13));
+    pages[0]->addChildAtPosition(scaleTitle, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 18));
+    pages[0]->addChildAtPosition(scaleLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 18 - 13));
+    pages[0]->addChildAtPosition(opacityTitle, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38));
+    pages[0]->addChildAtPosition(opacityLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38 - 13));
+
+    pages[0]->addChildAtPosition(generalBG, Anchor::Center, ccp(12.5f, 0));
+    pages[0]->addChildAtPosition(fontBtn, Anchor::Center, ccp(12.5f, -65));
+    pages[0]->addChildAtPosition(exportBtn, Anchor::Center, ccp(12.5f, -35));
+    pages[0]->addChildAtPosition(nameInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 42));
+    pages[0]->addChildAtPosition(scaleInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -11));
+    pages[0]->addChildAtPosition(opacityInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -67));
+    pages[0]->addChildAtPosition(cheatIndicatorToggler, Anchor::Center, ccp(-25, 65));
+    pages[0]->addChildAtPosition(noclipOnlyToggler, Anchor::Center, ccp(-25, 30));
+    pages[0]->addChildAtPosition(cheatIndicatorLbl, Anchor::Center, ccp(-10, 65));
+    pages[0]->addChildAtPosition(noclipOnlyLbl, Anchor::Center, ccp(-10, 30));
 }
 
 void SetupLabelConfigUI::createPage2()
@@ -349,6 +431,12 @@ void SetupLabelConfigUI::createPages()
 
 void SetupLabelConfigUI::createAnchorNodes()
 {
+    anchorMenu = CCMenu::create();
+    anchorMenu->setScale(1.3f / 0.5f);
+    anchorMenu->setAnchorPoint(ccp(0.5f, 0.5f));
+    anchorMenu->ignoreAnchorPointForPosition(false);
+    anchorMenu->setContentSize(ccp(18 * 3, 18 * 3));
+
     for (size_t i = 0; i < 9; i++)
     {
         auto anchor = (LabelAnchor)i;
@@ -421,7 +509,7 @@ void SetupLabelConfigUI::createAnchorNodes()
         sprHeld->setPosition(sprHeld->getContentSize() / 2);
         sprHeld->setAnchorPoint(ccp(0.5f, 0.5f));
 
-        toggler->setPosition(LabelManager::get()->anchorToPoint(anchor) * 18 * 2);
+        toggler->setPosition(LabelManager::get()->anchorToPoint(anchor) * 18 * 2 + sprHeld->getContentSize() / 2);
         anchorMenu->addChild(toggler);
 
         anchorBtns.emplace(anchor, toggler);
@@ -469,4 +557,37 @@ void SetupLabelConfigUI::setStartConfig(LabelConfig conf)
     this->currentConfig = conf;
 
     updateUI();
+}
+
+void SetupLabelConfigUI::onExportToFile(CCObject* sender)
+{
+    auto object = currentConfig.save();
+
+    auto dump = object.dump();
+
+    file::FilePickOptions options;
+
+    file::FilePickOptions::Filter filter;
+    filter.description = "QOLMod Label";
+    filter.files = { "*.qollbl" };
+
+    options.filters.push_back(filter);
+
+    file::pick(file::PickMode::SaveFile, options).listen([this, dump](Result<std::filesystem::path>* path)
+    {
+        if (path->isOk())
+        {
+            auto filePath = path->unwrapOr(Mod::get()->getConfigDir());
+
+            if (!filePath.has_extension())
+                filePath += ".qollbl";
+            
+            auto res = file::writeString(filePath, dump);
+
+            if (res.isOk())
+                FLAlertLayer::create("Success!", "<cg>Success</c> exporting <cc>file</c>!", "OK")->show();
+            else
+                FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> exporting <cc>file</c>!\n<cr>{}</c>", res.unwrapErr()), "OK")->show();
+        }
+    });
 }

@@ -118,7 +118,26 @@ void LabelsNode::onEditSafeZones(CCObject* sender)
 
 void LabelsNode::onImportFromFile(CCObject* sender)
 {
+    file::FilePickOptions options;
 
+    file::FilePickOptions::Filter filter;
+    filter.description = "QOLMod Label";
+    filter.files = { "*.qollbl" };
+
+    options.filters.push_back(filter);
+
+    file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
+    {
+        if (path->isOk())
+        {
+            auto paths = path->unwrap();
+
+            for (auto path : paths)
+            {
+                LabelManager::get()->addFromFile(path);
+            }
+        }
+    });
 }
 
 void LabelsNode::onAddLabel(CCObject* sender)

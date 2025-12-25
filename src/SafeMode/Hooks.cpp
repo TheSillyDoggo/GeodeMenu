@@ -1,6 +1,8 @@
 #include "Hooks.hpp"
 #include "SafeMode.hpp"
 #include "Modules/SafeMode.hpp"
+#include "../GUI/BetterButtonSprite.hpp"
+#include "../Localisation/LocalisationManager.hpp"
 
 bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -79,6 +81,8 @@ void SafeEndLevelLayer::customSetup()
             coin->setVisible(false);
         }
 
+        CCNode* n = nullptr;
+
         if (SafeModeChangeText::get()->getRealEnabled())
         {
             auto str = SafeModeText::get()->getString();
@@ -92,6 +96,9 @@ void SafeEndLevelLayer::customSetup()
                 // i dont even know
                 lbl->setPositionY((m_playLayer->m_level->isPlatformer() ? 147 - (32.5 * 0.5) : 95) - 320 / 2 + CCDirector::get()->getWinSize().height / 2);
                 lbl->setPositionX(CCDirector::get()->getWinSize().width / 2);
+                lbl->setPositionY(lbl->getPositionY() + 18);
+
+                n = lbl;
 
                 m_mainLayer->addChild(lbl);
             }
@@ -101,25 +108,40 @@ void SafeEndLevelLayer::customSetup()
                 {
                     area->setString(str);
                     area->setScale(0.7f);
+                    area->setPositionY(area->getPositionY() + 18);
+
+                    n = area;
                 }
                 else if (auto lbl = m_mainLayer->getChildByType<CCLabelBMFont>(-1))
                 {
                     lbl->setString(str.c_str());
                     lbl->setScale(0.7f);
+                    lbl->setPositionY(lbl->getPositionY() + 18);
+                    
+                    n = lbl;
                 }
             }
         }
 
         auto infoMenu = CCMenu::create();
-        infoMenu->setPosition(CCDirector::get()->getWinSize() / 2 + ccp(-181.5f, 126.5f));
+        infoMenu->setScale(0.65f);
+        infoMenu->setAnchorPoint(ccp(0, 0));
+        infoMenu->setPosition((n ? n->getPosition() : CCPointMake(CCDirector::get()->getWinSize().width, CCDirector::get()->getWinSize().height) / 2) + ccp(0, -37.5f));
         infoMenu->setID("info-menu"_spr);
 
-        auto infoBtn = InfoAlertButton::create("Safe Mode", SafeMode::get()->getCombinedMessages().c_str(), 0.75f);
-        infoBtn->setID("info-button"_spr);
+        auto infoBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(180, 30), LocalisationManager::get()->getLocalisedString("ui/safe-mode-view-reason-button"), "bigFont.fnt", "GJ_button_04.png"), this, menu_selector(SafeEndLevelLayer::onViewReasons));
+        infoBtn->m_scaleMultiplier = 1.1f;
         infoMenu->addChild(infoBtn);
 
         m_mainLayer->addChild(infoMenu);
     }
+}
+
+void SafeEndLevelLayer::onViewReasons(CCObject* sender)
+{
+    auto loc = LocalisationManager::get();
+
+    FLAlertLayer::create(loc->getLocalisedString("names/safe-mode").c_str(), SafeMode::get()->getCombinedMessages(), loc->getLocalisedString("ui/ok-button").c_str())->show();
 }
 
 void SafeEndLevelLayer::playCoinEffect(float duration)

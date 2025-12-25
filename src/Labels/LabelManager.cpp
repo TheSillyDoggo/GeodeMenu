@@ -38,6 +38,27 @@ void LabelManager::setConfigs(std::vector<LabelConfig> configs)
         LabelsNode::get()->updateUI();
 }
 
+bool LabelManager::addFromFile(std::filesystem::path path)
+{
+    auto res = file::readJson(path);
+
+    if (res.isOk())
+    {
+        auto conf = LabelConfig::createFromObject(res.unwrap());
+        conf.displayName = fmt::format("{} ({})", conf.displayName, path.filename().string());
+
+        auto confs = getConfigs();
+        confs.push_back(conf);
+        setConfigs(confs);
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void HideLabels::onToggle()
 {
     if (LabelsNode::get())

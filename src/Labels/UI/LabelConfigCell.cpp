@@ -43,7 +43,7 @@ bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
 
     auto nameLbl = CCLabelBMFont::create(config.displayName.c_str(), "bigFont.fnt");
     nameLbl->setAnchorPoint(ccp(0, 0.5f));
-    nameLbl->limitLabelWidth(180, 0.375f, 0);
+    nameLbl->limitLabelWidth(120, 0.375f, 0);
     nameLbl->setOpacity(vis ? 255 : 150);
 
     for (size_t i = 0; i < 4; i++)

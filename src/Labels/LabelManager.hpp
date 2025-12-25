@@ -25,6 +25,8 @@ class LabelManager
         const std::vector<LabelConfig>& getConfigs();
         void setConfigs(std::vector<LabelConfig> configs);
 
+        bool addFromFile(std::filesystem::path path);
+
         cocos2d::CCPoint anchorToPoint(LabelAnchor anchor);
 
         float getSessionDuration();
