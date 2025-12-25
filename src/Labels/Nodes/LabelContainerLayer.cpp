@@ -25,9 +25,6 @@ bool LabelContainerLayer::init()
     {
         addAnchorNode((LabelAnchor)i);
     }
-
-    this->setContentSize(CCDirector::get()->getWinSize() + ccp(-6, 0));
-    this->setPosition(ccp(3, 0));
     
     updateConfigs();
     return true;
@@ -127,6 +124,11 @@ void LabelContainerLayer::addAnchorNode(LabelAnchor anchor)
 
 void LabelContainerLayer::updateConfigs()
 {
+    auto safe = LabelManager::get()->getSafeZone();
+
+    this->setContentSize(CCDirector::get()->getWinSize() - safe.origin - safe.size);
+    this->setPosition(safe.origin);
+
     for (auto node : nodes)
     {
         node->removeFromParent();

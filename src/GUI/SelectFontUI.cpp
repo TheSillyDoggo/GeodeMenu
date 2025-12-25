@@ -130,7 +130,7 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
 
     if (config->getCharacterSet()->contains(12399)) // わ
     {
-        auto l = AdvLabelBMFont::createWithString("JP", "bigFont.fnt");
+        auto l = AdvLabelBMFont::createWithString("JA", "bigFont.fnt");
         l->setOpacity(150);
 
         auto btn = CCMenuItemSpriteExtra::create(l, this, menu_selector(SelectFontUI::onFontHint));
@@ -160,6 +160,17 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
 
         menu->addChild(btn);
     }
+
+    /*if (config->getCharacterSet()->contains(31627)) // 简
+    {
+        auto l = AdvLabelBMFont::createWithString("ZH", "bigFont.fnt");
+        l->setOpacity(150);
+
+        auto btn = CCMenuItemSpriteExtra::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        btn->setID("chinese-supported");
+
+        menu->addChild(btn);
+    }*/
 
     menu->updateLayout();
     return menu;

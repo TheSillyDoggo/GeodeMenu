@@ -16,6 +16,7 @@ class LabelManager
         float _timeLeft = _updateInterval;
         float _accum = 0;
         int _frames = 0;
+        cocos2d::CCRect safeZone;
 
         void update(float dt);
 
@@ -24,6 +25,9 @@ class LabelManager
 
         const std::vector<LabelConfig>& getConfigs();
         void setConfigs(std::vector<LabelConfig> configs);
+
+        cocos2d::CCRect getSafeZone();
+        void setSafeZone(cocos2d::CCRect rect);
 
         bool addFromFile(std::filesystem::path path);
 

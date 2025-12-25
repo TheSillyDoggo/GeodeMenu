@@ -14,7 +14,7 @@ struct AdvLabelStruct
 
     struct AdvPart
     {
-        AdvPartType type;
+        AdvPartType type = AdvPartType::NewLine;
         std::string label;
         ccColor3B colour = ccWHITE;
         float opacity = 1.0f;
@@ -53,7 +53,7 @@ enum class AdvLabelTTFUsage
 class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProtocol
 {
     protected:
-        static inline std::unordered_map<std::string, CCBMFontConfiguration*> bmConfigs = {};
+        static inline std::unordered_map<std::string, CCLabelBMFont*> bmConfigs = {};
 
         AdvLabelStruct str;
         std::string font;
@@ -62,6 +62,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         ccColor3B colour = ccWHITE;
         GLubyte opacity = 255;
         std::unordered_map<std::string, std::vector<CCLabelBMFont*>> labelsCached = {};
+        std::vector<CCLabelBMFont*> visibleLabels = {};
 
         static AdvLabelStruct structFromString(std::string lbl);
 
@@ -87,6 +88,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         const char* getFntFile();
 
         CCBMFontConfiguration* getConfiguration();
+        CCBMFontConfiguration* getConfiguration(std::string font);
 
         virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabel(); }
         virtual const ccColor3B& getColor(void) { return colour; }

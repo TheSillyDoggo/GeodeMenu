@@ -8,6 +8,7 @@ class LabelsNode : public CategoryNode
         static inline LabelsNode* instance = nullptr;
         CCMenu* presetMenu = nullptr;
         ScrollLayer* labelsScroll = nullptr;
+        AdvLabelBMFont* hintNone = nullptr;
 
         ~LabelsNode();
 

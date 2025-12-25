@@ -31,6 +31,21 @@ float NoclipBaseGameLayer::getNoclipAccuracy(NoclipPlayerSelector selector)
 
 int NoclipBaseGameLayer::getNoclipDeaths(NoclipPlayerSelector selector)
 {
+    switch (selector)
+    {
+        case NoclipPlayerSelector::All:
+            return m_fields->totalDeaths;
+            break;
+
+        case NoclipPlayerSelector::Player1:
+            return m_fields->p1Deaths;
+            break;
+
+        case NoclipPlayerSelector::Player2:
+            return m_fields->p2Deaths;
+            break;
+    }
+
     return 0;
 }
 

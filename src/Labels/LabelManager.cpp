@@ -38,6 +38,24 @@ void LabelManager::setConfigs(std::vector<LabelConfig> configs)
         LabelsNode::get()->updateUI();
 }
 
+CCRect LabelManager::getSafeZone()
+{
+    return safeZone;
+}
+
+void LabelManager::setSafeZone(CCRect rect)
+{
+    this->safeZone = rect;
+
+    save();
+
+    if (LabelContainerLayer::get())
+        LabelContainerLayer::get()->updateConfigs();
+    
+    if (LabelsNode::get())
+        LabelsNode::get()->updateUI();
+}
+
 bool LabelManager::addFromFile(std::filesystem::path path)
 {
     auto res = file::readJson(path);
@@ -79,6 +97,8 @@ void LabelManager::load()
         if (obj.isObject())
             configs.push_back(LabelConfig::createFromObject(obj));
     }
+
+    safeZone = CCRectMake(Mod::get()->getSavedValue<float>("safe-zone.x", 3), Mod::get()->getSavedValue<float>("safe-zone.y", 3), Mod::get()->getSavedValue<float>("safe-zone.width", 3), Mod::get()->getSavedValue<float>("safe-zone.height", 3));
 }
 
 void LabelManager::save()
@@ -91,6 +111,10 @@ void LabelManager::save()
     }
 
     Mod::get()->setSavedValue<matjson::Value>("selected-labels", value);
+    Mod::get()->setSavedValue<float>("safe-zone.x", safeZone.origin.x);
+    Mod::get()->setSavedValue<float>("safe-zone.y", safeZone.origin.y);
+    Mod::get()->setSavedValue<float>("safe-zone.width", safeZone.size.width);
+    Mod::get()->setSavedValue<float>("safe-zone.height", safeZone.size.height);
 }
 
 cocos2d::CCPoint LabelManager::anchorToPoint(LabelAnchor anchor)

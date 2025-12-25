@@ -62,6 +62,16 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
             continue;
         }
 
+        if (ch == '\n')
+        {
+            if (!c.empty())
+                segments.push_back(c);
+
+            segments.push_back("\n");
+            c = "";
+            continue;
+        }
+
         c += ch;
     }
 
@@ -94,7 +104,12 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
         COLCHECK("<cy>", "#ffff00")
         COLCHECK("</c>", "#ffffff")
 
-        str.parts.push_back(AdvLabelStruct::AdvPart({ AdvLabelStruct::AdvPartType::Label, segment, col }));
+        auto type = AdvLabelStruct::AdvPartType::Label;
+
+        if (segment == "\n")
+            type = AdvLabelStruct::AdvPartType::NewLine;
+
+        str.parts.push_back(AdvLabelStruct::AdvPart({ type, segment, col }));
     }
 
     return str;
@@ -110,9 +125,14 @@ void AdvLabelBMFont::setStruct(AdvLabelStruct str)
 void AdvLabelBMFont::updateLabel()
 {
     bool useTTF = useTTFFont();
+    visibleLabels.clear();
 
     float x = 0;
+    float y = 0;
     float height = 0;
+    float width = 0;
+    std::unordered_map<float, float> widthsForLine = {};
+    float lnHeight = font == "goldFont.fnt" ? 26 : (font == "chatFont.fnt" ? 16.5f : 32.5f);
 
     for (auto lbl : labelsCached)
     {
@@ -129,6 +149,15 @@ void AdvLabelBMFont::updateLabel()
 
     for (auto part : str.parts)
     {
+        if (part.type == AdvLabelStruct::AdvPartType::NewLine)
+        {
+            widthsForLine.emplace(y, x);
+            y += lnHeight;
+            x = 0;
+
+            continue;
+        }
+
         CCNode* node = nullptr;
 
         ccColor3B col = part.colour;
@@ -153,14 +182,15 @@ void AdvLabelBMFont::updateLabel()
                 this->addChild(lbl);
             }
 
+            visibleLabels.push_back(lbl);
+
             lbl->setVisible(true);
 
             ttfsUsed++;
-            float height = font == "goldFont.fnt" ? 26 : (font == "chatFont.fnt" ? 16.5f : 32.5f);
 
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
-            lbl->setScale(height / lbl->getContentHeight());
+            lbl->setScale(lnHeight / lbl->getContentHeight());
 
             node = lbl;
         }
@@ -181,24 +211,37 @@ void AdvLabelBMFont::updateLabel()
                 this->addChild(lbl);
             }
 
+            visibleLabels.push_back(lbl);
+
             lbl->setVisible(true);
 
             lblsUsed++;
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
+            lbl->setScale(lnHeight / lbl->getContentHeight());
 
             node = lbl;
         }
 
-        height = std::max<float>(node->getScaledContentHeight(), height);
+        height = std::max<float>(node->getScaledContentHeight() + y, height);
 
         node->setAnchorPoint(ccp(0, 0));
 
-        node->setPosition(ccp(x, 0));
+        node->setPosition(ccp(x, y));
         x += node->getScaledContentWidth();
+        width = std::max<float>(width, x);
     }
 
-    this->setContentSize(ccp(x, height));
+    widthsForLine.emplace(y, x);
+
+    this->setContentSize(ccp(width, height));
+
+    for (auto label : visibleLabels)
+    {
+        float w = (width - widthsForLine[label->getPositionY()]) * 0.5f;
+
+        label->setPosition(ccp(label->getPositionX() + w, height - (label->getPositionY() + lnHeight)));
+    }
 }
 
 bool AdvLabelBMFont::useTTFFont()
@@ -213,18 +256,7 @@ bool AdvLabelBMFont::useTTFFont()
             return false;
 
         case AdvLabelTTFUsage::Auto:
-            if (bmConfigs.contains(font))
-            {
-                conf = bmConfigs[font];
-                conf->m_uReference = 80085;
-            }
-            else
-            {
-                conf = CCBMFontConfiguration::create(font.c_str());
-                conf->m_uReference = 80085; // so we never lose the config
-
-                bmConfigs.emplace(font, conf);
-            }
+            conf = getConfiguration();
 
             charSet = conf->getCharacterSet();
 
@@ -232,6 +264,9 @@ bool AdvLabelBMFont::useTTFFont()
 
             for (auto ch : str.getTotalString())
             {
+                if (ch == '\n')
+                    continue;
+                
                 if (!charSet->contains(ch))
                 {
                     ttf = true;
@@ -301,11 +336,24 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
 {
     if (!bmConfigs.contains(font))
     {
-        auto conf = CCBMFontConfiguration::create(font.c_str());
+        auto conf = CCLabelBMFont::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 
         bmConfigs.emplace(font, conf);
     }
 
-    return bmConfigs[font];
+    return bmConfigs[font]->getConfiguration();
+}
+
+CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
+{
+    if (!bmConfigs.contains(font))
+    {
+        auto conf = CCLabelBMFont::create("", font.c_str());
+        conf->m_uReference = 80085; // so we never lose the config
+
+        bmConfigs.emplace(font, conf);
+    }
+
+    return bmConfigs[font]->getConfiguration();
 }

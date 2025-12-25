@@ -44,8 +44,8 @@ bool LabelsNode::init()
     hideLabelsNode->setAnchorPoint(ccp(0, 0.5f));
     hideLabelsNode->setScale(0.825f);
 
-    auto editSafezoneBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Edit Safe Zones", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onEditSafeZones));
-    editSafezoneBtn->m_scaleMultiplier = 1.1f;
+    //auto editSafezoneBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Edit Safe Zones", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onEditSafeZones));
+    //editSafezoneBtn->m_scaleMultiplier = 1.1f;
     auto importBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Import from file", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
     importBtn->m_scaleMultiplier = 1.1f;
 
@@ -54,7 +54,7 @@ bool LabelsNode::init()
     topBarMenu->ignoreAnchorPointForPosition(false);
     topBarMenu->setContentSize(ccp(770, 30));
     topBarMenu->setScale(0.75f);
-    topBarMenu->addChild(editSafezoneBtn);
+    // topBarMenu->addChild(editSafezoneBtn);
     topBarMenu->addChild(importBtn);
     topBarMenu->updateLayout();
 
@@ -73,8 +73,13 @@ bool LabelsNode::init()
 
     presetMenu->updateLayout();
 
+    hintNone = AdvLabelBMFont::createWithLocalisation("labels/none-added-hint", "bigFont.fnt");
+    hintNone->setScale(0.35f);
+    hintNone->setPosition(labelsScroll->getContentSize() / 2);
+
     updateUI();
     labelsScroll->moveToTop();
+    labelsScroll->addChild(hintNone);
 
     this->addChildAtPosition(bgTopbar, Anchor::Top);
     this->addChildAtPosition(bgPresets, Anchor::BottomRight);
@@ -109,6 +114,7 @@ void LabelsNode::updateUI()
     }
 
     labelsScroll->setTouchEnabled(height != labelsScroll->getContentHeight());
+    hintNone->setVisible(i == 0);
 }
 
 void LabelsNode::onEditSafeZones(CCObject* sender)
