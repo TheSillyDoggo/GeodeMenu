@@ -7,9 +7,10 @@ class LanguageNode : public CategoryNode
     public:
         CREATE_FUNC(LanguageNode)
 
+        void onTest1(CCObject* sender);
+        void onTest2(CCObject* sender);
+
         bool init();
 };
 
-SUBMIT_CATEGORY("Icon Effects", LanguageNode)
-SUBMIT_CATEGORY("Profiles", LanguageNode)
 SUBMIT_CATEGORY("Config/Language", LanguageNode)

@@ -6,6 +6,7 @@
 #include "../Client/ModuleNode.hpp"
 #include "../Client/CategoryNode.hpp"
 #include "../Keybinds/KeyConfigStruct.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 using namespace geode::prelude;
 
@@ -16,7 +17,7 @@ class EditKeyConfigUI : public geode::Popup<>
         KeyConfigStruct defaultConfig;
         KeyConfigStruct startConfig;
         KeyConfigStruct currentConfig;
-        CCLabelBMFont* infoLbl = nullptr;
+        AdvLabelBMFont* infoLbl = nullptr;
         std::function<void(KeyConfigStruct)> onFinish = nullptr;
 
     public:

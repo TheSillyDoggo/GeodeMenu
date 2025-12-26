@@ -1,5 +1,7 @@
 #include "EditKeyConfigUI.hpp"
 #include "BlurLayer.hpp"
+#include "BetterButtonSprite.hpp"
+#include "../Localisation/LocalisationManager.hpp"
 
 EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> onFinish)
 {
@@ -29,19 +31,19 @@ bool EditKeyConfigUI::setup()
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
 
-    auto title = CCLabelBMFont::create("Edit Keybind", "goldFont.fnt");
+    auto title = AdvLabelBMFont::createWithLocalisation("edit-keybind-ui/title", "goldFont.fnt");
     title->setScale(0.7f);
 
     auto menu = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(EditKeyConfigUI::onClose));
+    auto btn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(EditKeyConfigUI::onClose));
     menu->addChild(btn);
 
     this->scheduleUpdate();
 
     
 
-    infoLbl = CCLabelBMFont::create("", "bigFont.fnt");
+    infoLbl = AdvLabelBMFont::createWithString("", "bigFont.fnt");
     infoLbl->setScale(0.65f);
 
     auto topRightMenu = CCMenu::create();
@@ -49,8 +51,8 @@ bool EditKeyConfigUI::setup()
     topRightMenu->setAnchorPoint(ccp(0.5f, 1));
     topRightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setGap(10));
     topRightMenu->setScale(0.75f);
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Default", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(EditKeyConfigUI::onSetDefault)));
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Undo", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(EditKeyConfigUI::onUndoChanged)));
+    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onSetDefault)));
+    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onUndoChanged)));
     topRightMenu->updateLayout();
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
@@ -70,7 +72,7 @@ void EditKeyConfigUI::update(float dt)
     else
     {
         infoLbl->setOpacity(175);
-        infoLbl->setString("No Keybind");
+        infoLbl->setString(LocalisationManager::get()->getLocalisedString("edit-keybind-ui/no-keybind").c_str());
     }
 }
 

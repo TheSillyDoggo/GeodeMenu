@@ -105,6 +105,9 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
             if (!m_player1->m_isDead)
                 fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
 
+            if (m_player2 && m_player2->isRunning() && !m_player2->m_isDead)
+                fields->states.insert(fields->states.begin(), { m_player2->m_position, m_player2->getObjectRect().size });
+
             while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
             {
                 fields->states.pop_back();
@@ -166,7 +169,12 @@ class $modify (LevelEditorLayer)
             if (HitboxTrail::get()->getRealEnabled())
             {
                 if (m_playbackMode == PlaybackMode::Playing)
+                {
                     fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+
+                    if (m_player2 && m_player2->isRunning())
+                        fields->states.insert(fields->states.begin(), { m_player2->m_position, m_player2->getObjectRect().size });
+                }
 
                 while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
                 {

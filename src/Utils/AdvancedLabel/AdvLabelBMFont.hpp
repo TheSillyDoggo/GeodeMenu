@@ -63,6 +63,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         GLubyte opacity = 255;
         std::unordered_map<std::string, std::vector<CCLabelBMFont*>> labelsCached = {};
         std::vector<CCLabelBMFont*> visibleLabels = {};
+        CCTextAlignment alignment = kCCTextAlignmentLeft;
 
         static AdvLabelStruct structFromString(std::string lbl);
 
@@ -86,6 +87,10 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
 
         void setFntFile(const char* fntFile);
         const char* getFntFile();
+
+        virtual void setAlignment(CCTextAlignment alignment);
+
+        std::vector<CCLabelBMFont*> getVisibleLabels();
 
         CCBMFontConfiguration* getConfiguration();
         CCBMFontConfiguration* getConfiguration(std::string font);

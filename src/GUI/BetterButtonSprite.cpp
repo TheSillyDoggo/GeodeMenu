@@ -1,4 +1,10 @@
 #include "BetterButtonSprite.hpp"
+#include "../Localisation/LocalisationManager.hpp"
+
+BetterButtonSprite* BetterButtonSprite::createWithLocalisation(CCSize size, std::string str, std::string fnt, std::string bg)
+{
+    return create(size, LocalisationManager::get()->getLocalisedString(str), fnt, bg);
+}
 
 BetterButtonSprite* BetterButtonSprite::create(CCSize size, std::string str, std::string fnt, std::string bg)
 {

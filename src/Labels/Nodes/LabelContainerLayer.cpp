@@ -101,6 +101,8 @@ void LabelContainerLayer::sortNodeChildren(CCNode* node)
         if (!n->isVisible())
             continue;
 
+        n->setPositionX(0);
+
         if (node->getAnchorPoint().y == 0)
             n->setPositionY(y - (height * node->getAnchorPoint().y));
         else if (node->getAnchorPoint().y == 0.5f)

@@ -127,6 +127,12 @@ std::string SafeMode::getCombinedMessages()
 {
     std::string str = "";
 
+    if (ForceSafeMode::get()->getRealEnabled())
+        str.append("<co>Progress disabled</c> by <cc>safe mode</c>\n");
+
+    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+        str.append("<co>Played level</c> from a <cc>start position</c>\n");
+
     for (auto reason : levelLoadReasons)
     {
         str.append(reason);
@@ -138,9 +144,6 @@ std::string SafeMode::getCombinedMessages()
         str.append(reason);
         str.append("\n");
     }
-
-    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
-        str.append("<co>Played level</c> from a <cc>start position</c>\n");
 
     return str;
 }

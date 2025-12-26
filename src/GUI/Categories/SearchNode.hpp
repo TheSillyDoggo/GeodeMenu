@@ -7,10 +7,7 @@ class SearchShowOptions : public Module
     public:
         MODULE_SETUP(SearchShowOptions)
         {
-            setName("Show options");
             setID("search/show-options");
-            setCategory("");
-            setDescription("Shows mod options in the search results");
             setDefaultEnabled(true);
         }
 

@@ -1,6 +1,7 @@
 #include "ExtraThemeSettingsUI.hpp"
 #include "Modules/GradientBGColours.hpp"
 #include "BlurLayer.hpp"
+#include "BetterButtonSprite.hpp"
 
 ExtraThemeSettingsUI* ExtraThemeSettingsUI::create()
 {
@@ -29,12 +30,13 @@ bool ExtraThemeSettingsUI::setup()
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
 
-    auto title = CCLabelBMFont::create("Edit Gradient Colours", "goldFont.fnt");
+    auto title = AdvLabelBMFont::createWithLocalisation("extra-theme-settings/title", "goldFont.fnt");
     title->setScale(0.7f);
 
     auto menu = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(ExtraThemeSettingsUI::onClose));
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
+    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(ExtraThemeSettingsUI::onClose));
     menu->addChild(btn);
 
     auto bg = CCScale9Sprite::create("square02b_small.png");

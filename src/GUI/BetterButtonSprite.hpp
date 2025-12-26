@@ -14,6 +14,7 @@ class BetterButtonSprite : public CCNode
     public:
         CREATE_FUNC(BetterButtonSprite);
         static BetterButtonSprite* create(CCSize size, std::string str, std::string fnt, std::string bg);
+        static BetterButtonSprite* createWithLocalisation(CCSize size, std::string str, std::string fnt, std::string bg);
 
         void setBGSprite(std::string file);
         void setFont(std::string font);

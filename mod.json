@@ -1,6 +1,6 @@
 {
 	"geode": "4.10.0",
-	"version": "v2.4.0",
+	"version": "v2.4.1",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -28,6 +28,7 @@
 			"resources/shaders/*.fsh",
 			"resources/shaders/*.vsh",
 			"resources/shaders/*.glsl",
+			"resources/translations/*.json",
 			"resources/translations/langs/*.json"
         ],
 		"sprites": [

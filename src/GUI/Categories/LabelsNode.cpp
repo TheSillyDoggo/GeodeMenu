@@ -46,7 +46,7 @@ bool LabelsNode::init()
 
     //auto editSafezoneBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Edit Safe Zones", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onEditSafeZones));
     //editSafezoneBtn->m_scaleMultiplier = 1.1f;
-    auto importBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(90, 30), "Import from file", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
+    auto importBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(90, 30), "ui/import-from-file-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
     importBtn->m_scaleMultiplier = 1.1f;
 
     auto topBarMenu = CCMenu::create();

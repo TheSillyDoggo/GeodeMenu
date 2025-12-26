@@ -1,6 +1,7 @@
 #include "SearchFiltersUI.hpp"
 #include "Categories/SearchNode.hpp"
 #include "BlurLayer.hpp"
+#include "BetterButtonSprite.hpp"
 
 SearchFiltersUI* SearchFiltersUI::create()
 {
@@ -34,7 +35,8 @@ bool SearchFiltersUI::setup()
 
     auto menu = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SearchFiltersUI::onClose));
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
+    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SearchFiltersUI::onClose));
     menu->addChild(btn);
 
     auto node = CategoryNode::create();

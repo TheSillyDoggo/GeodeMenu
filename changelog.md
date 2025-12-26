@@ -1,3 +1,15 @@
+# 2.4.1
+
+- Added Auto Song Download
+- Added Pitch Shifter music only
+- Added support for BetterPicker by FlowVix in colour select popups
+- Fixed Pitch Shifter not applying properly when loading config
+- Fixed Label X Offset making the label move to the right forever
+- Fixed Safe Mode reasons list appearing empty if only safe mode is enabled
+- Fixed Cheat Indicator appearing too small
+- Fixed Hitbox Trail not working for player 2
+- Fixed missing localisation for filter search results
+
 # 2.4.0
 
 - Added **Labels**
@@ -14,6 +26,7 @@
 - Added Blur Background
 - Added Full Options Menu
 - Added Button to end screen when safe mode is on to view the reasons for disabling level progress
+- Added support for colour tags and (some) alternate languages in labels
 - Changed name of "Ship hold particles" to "Ship boost particles"
 - Fixed Disabling speed change particles not disabling the 0.5x speed particles
 - Fixed Show Hitboxes and Hitbox Trail not working in the editor

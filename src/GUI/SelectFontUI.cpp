@@ -248,7 +248,7 @@ bool SelectFontUI::setup()
 
     auto menu = CCMenu::create();
 
-    auto spr = BetterButtonSprite::create(ccp(54.25f, 30), LocalisationManager::get()->getLocalisedString("ui/ok-button"), "goldFont.fnt", "GJ_button_01.png");
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
     auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SelectFontUI::onClose));
     menu->addChild(btn);
 

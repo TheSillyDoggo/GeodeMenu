@@ -1,6 +1,7 @@
 #include "SetupColourConfigUI.hpp"
 #include "../Utils/ColourUtils.hpp"
 #include "BlurLayer.hpp"
+#include "BetterButtonSprite.hpp"
 
 SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects)
 {
@@ -32,12 +33,13 @@ bool SetupColourConfigUI::setup()
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
 
-    auto title = CCLabelBMFont::create("Select Colour", "goldFont.fnt");
+    auto title = AdvLabelBMFont::createWithLocalisation("colour-setup/title", "goldFont.fnt");
     title->setScale(0.7f);
 
     auto menu = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupColourConfigUI::onClose));
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
+    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupColourConfigUI::onClose));
     menu->addChild(btn);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
@@ -50,10 +52,17 @@ bool SetupColourConfigUI::setup()
     endColour = CCLayerColor::create(ccc4(0, 0, 0, 255), 30, 30);
     endColour->ignoreAnchorPointForPosition(false);
 
+    auto prev = GameManager::sharedState()->m_levelEditorLayer;
+
+    if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
+        GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
+
     picker = CCControlColourPicker::colourPicker();
     picker->setDelegate(this);
     picker->setAnchorPoint(ccp(0, 0));
     picker->setScale(0.8f);
+
+    GameManager::sharedState()->m_levelEditorLayer = prev;
 
     typeMenu = CCMenu::create();
     typeMenu->setContentSize(ccp(0, 0));
@@ -65,11 +74,11 @@ bool SetupColourConfigUI::setup()
     topRightMenu->setAnchorPoint(ccp(0.5f, 1));
     topRightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setGap(10));
     topRightMenu->setScale(0.75f);
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Default", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onSetDefault)));
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(ButtonSprite::create("Undo", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onUndoChanged)));
+    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onSetDefault)));
+    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onUndoChanged)));
 
-    gradientAddStepBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Add Step", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onAddGradientStep));
-    gradientDelStepBtn = CCMenuItemSpriteExtra::create(ButtonSprite::create("Remove Step", 56, 56, 0.6f, false, "goldFont.fnt", "GJ_button_04.png", 30), this, menu_selector(SetupColourConfigUI::onDeleteGradientStep));
+    gradientAddStepBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/add-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onAddGradientStep));
+    gradientDelStepBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/remove-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onDeleteGradientStep));
     topRightMenu->addChild(gradientAddStepBtn);
     topRightMenu->addChild(gradientDelStepBtn);
 
@@ -119,7 +128,7 @@ void SetupColourConfigUI::createGradientPreview()
     gradientLineConfigNode = CCMenu::create();
     gradientLineConfigNode->setTouchPriority(-508);
 
-    auto lblColour = CCLabelBMFont::create("Colour:", "bigFont.fnt");
+    auto lblColour = AdvLabelBMFont::createWithLocalisation("colour-setup/colour-hint", "bigFont.fnt");
     lblColour->setAnchorPoint(ccp(0, 0.5f));
     lblColour->setScale(0.45f);
     lblColour->setPosition(ccp(-50, -17));
@@ -289,27 +298,27 @@ void SetupColourConfigUI::addTypeButtons(CCMenu* menu)
         switch ((ColourConfigType)i)
         {
             case Player1:
-                labelText = "Player\nPrimary";
+                labelText = "colour-setup/player-primary";
                 break;
 
             case Player2:
-                labelText = "Player\nSecondary";
+                labelText = "colour-setup/player-secondary";
                 break;
 
             case PlayerGlow:
-                labelText = "Player\nGlow";
+                labelText = "colour-setup/player-glow";
                 break;
 
             case Chroma:
-                labelText = "Chroma";
+                labelText = "colour-setup/chroma";
                 break;
 
             case Pastel:
-                labelText = "Pastel";
+                labelText = "colour-setup/pastel";
                 break;
 
             case Gradient:
-                labelText = "Gradient";
+                labelText = "colour-setup/gradient";
                 break;
         }
 
@@ -318,10 +327,10 @@ void SetupColourConfigUI::addTypeButtons(CCMenu* menu)
         auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SetupColourConfigUI::onChangeType), 0.75f);
         toggler->setPosition(ccp(0, yPos));
 
-        auto label = CCLabelBMFont::create(labelText.c_str(), "bigFont.fnt");
+        auto label = AdvLabelBMFont::createWithLocalisation(labelText.c_str(), "bigFont.fnt");
         label->setAnchorPoint(ccp(0, 0.5f));
         label->setPosition(ccp(18, yPos));
-        label->setScale(0.35f);
+        label->limitLabelWidth(65, 0.35f, 0);
 
         menu->addChild(toggler);
         menu->addChild(label);
@@ -426,6 +435,11 @@ void SetupColourConfigUI::setPreviewChannel(std::string channel)
 
 void SetupColourConfigUI::updateUI()
 {
+    auto prev = GameManager::sharedState()->m_levelEditorLayer;
+
+    if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
+        GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
+
     picker->setColorValue(currentConfig.customColour);
     picker->setTouchEnabled(currentConfig.type == CustomColour);
     picker->setVisible(currentConfig.type != Gradient);
@@ -434,6 +448,8 @@ void SetupColourConfigUI::updateUI()
     gradientAddStepBtn->setVisible(currentConfig.type == Gradient);
     gradientDelStepBtn->setVisible(currentConfig.type == Gradient);
     updateGradientLines();
+
+    GameManager::sharedState()->m_levelEditorLayer = prev;
 }
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)

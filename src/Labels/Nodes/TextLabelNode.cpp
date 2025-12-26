@@ -23,7 +23,7 @@ void TextLabelNode::labelConfigUpdated()
 
     auto anchorX = LabelManager::get()->anchorToPoint(config.anchor).x;
 
-    // label->setAlignment(anchorX == 0 ? kCCTextAlignmentLeft : (anchorX == 0.5f ? kCCTextAlignmentCenter : kCCTextAlignmentRight));
+    label->setAlignment(anchorX == 0 ? kCCTextAlignmentLeft : (anchorX == 0.5f ? kCCTextAlignmentCenter : kCCTextAlignmentRight));
     
     CC_SAFE_DELETE(script);
     script = rift::compile(config.formatString).unwrapOr(nullptr);
@@ -54,12 +54,12 @@ void TextLabelNode::update(float dt)
     label->setString(str.c_str());
     this->setContentSize(label->getScaledContentSize());
 
-    if (label->getChildrenCount() == 1 && str == ".")
+    if (label->getVisibleLabels().size() == 1 && str == ".")
     {
         auto anchorX = LabelManager::get()->anchorToPoint(config.anchor).x;
 
-        // static_cast<CCNode*>(label->getChildren()->objectAtIndex(0))->setScale(2.25f);
-        // static_cast<CCNode*>(label->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
+        static_cast<CCNode*>(label->getVisibleLabels()[0]->getChildren()->objectAtIndex(0))->setScale(2.25f);
+        static_cast<CCNode*>(label->getVisibleLabels()[0]->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
     }
 }
 

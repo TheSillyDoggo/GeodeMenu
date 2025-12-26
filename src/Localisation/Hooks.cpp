@@ -2,17 +2,44 @@
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "LocalisationManager.hpp"
 
-bool LocalisationMenuLayer::init()
+$on_mod (Loaded)
 {
-    if (!MenuLayer::init())
-        return false;
+    LocalisationManager::get();
+};
 
-    auto path = Mod::get()->getResourcesDir() / "en-AU.json";
-
-    if (std::filesystem::exists(path))
+class $modify (LoadingLayer)
+{
+    struct Fields
     {
-        LocalisationManager::get()->loadLocalisationFile(path);
-    }
+        int loadCount = 0;
+    };
 
-    return true;
-}
+    void loadAssets()
+    {
+        LoadingLayer::loadAssets();
+
+        auto font = LocalisationManager::get()->getAltFont();
+
+        if (!font.empty())
+        {
+            if (m_fields->loadCount == 1)
+            {
+                if (!CCTextureCache::get()->textureForKey(utils::string::replace(font, ".fnt", ".png").c_str()))
+                {
+                    if (auto lbl = typeinfo_cast<CCLabelBMFont*>(getChildByID("geode-small-label")))
+                        lbl->setString("QOLMod: Loading language font");
+
+                    Loader::get()->queueInMainThread([this, font]
+                    {
+                        auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
+                        lbl->setScale(0);
+                        lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
+                        CCScene::get()->addChild(lbl);
+                    });
+                }
+            }
+        }
+
+        m_fields->loadCount++;
+    }
+};

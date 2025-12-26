@@ -165,6 +165,12 @@ void AdvLabelBMFont::updateLabel()
         if (col == ccWHITE)
             col = getColor();
 
+        if (!labelsCached.contains(fon))
+            labelsCached.emplace(fon, std::vector<CCLabelBMFont*>({}));
+
+        if (!labelsCached.contains(font))
+            labelsCached.emplace(font, std::vector<CCLabelBMFont*>({}));
+
         if (useTTF)
         {
             CCLabelBMFont* lbl;
@@ -187,7 +193,6 @@ void AdvLabelBMFont::updateLabel()
             lbl->setVisible(true);
 
             ttfsUsed++;
-
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
             lbl->setScale(lnHeight / lbl->getContentHeight());
@@ -238,7 +243,20 @@ void AdvLabelBMFont::updateLabel()
 
     for (auto label : visibleLabels)
     {
-        float w = (width - widthsForLine[label->getPositionY()]) * 0.5f;
+        float al = 0;
+
+        switch (alignment)
+        {
+            case kCCTextAlignmentCenter:
+                al = 0.5f;
+                break;
+
+            case kCCTextAlignmentRight:
+                al = 1;
+                break;
+        }
+
+        float w = (width - widthsForLine[label->getPositionY()]) * al;
 
         label->setPosition(ccp(label->getPositionX() + w, height - (label->getPositionY() + lnHeight)));
     }
@@ -356,4 +374,16 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
     }
 
     return bmConfigs[font]->getConfiguration();
+}
+
+std::vector<CCLabelBMFont*> AdvLabelBMFont::getVisibleLabels()
+{
+    return visibleLabels;
+}
+
+void AdvLabelBMFont::setAlignment(CCTextAlignment alignment)
+{
+    this->alignment = alignment;
+
+    updateLabel();
 }

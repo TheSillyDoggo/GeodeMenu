@@ -48,7 +48,8 @@ bool OptionsUI::setup()
     auto menu2 = CCMenu::create();
     auto menu3 = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(54.25f, 30), LocalisationManager::get()->getLocalisedString("ui/ok-button"), "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(OptionsUI::onClose));
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
+    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(OptionsUI::onClose));
     menu->addChild(btn);
 
     auto infoBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));

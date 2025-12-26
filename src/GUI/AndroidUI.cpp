@@ -267,7 +267,8 @@ AndroidUI* AndroidUI::get()
 
 AndroidUI::~AndroidUI()
 {
-    instance = nullptr;
+    if (instance == this)
+        instance = nullptr;
 }
 
 void AndroidUI::runAnimation(MenuAnimation anim)
@@ -275,6 +276,13 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     auto winSize = CCDirector::get()->getWinSize();
     auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr));
     auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
+
+    backBtn->stopAllActions();
+    drawOpacity->stopAllActions();
+    m_mainLayer->stopAllActions();
+    m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height / 2));
+    m_mainLayer->setScale(1.0f);
+    backBtn->setOpacity(255);
 
     if (BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
         anim = MenuAnimation::None;
@@ -343,6 +351,7 @@ void AndroidUI::close()
         PlatformToolbox::hideCursor();
 
     this->onClose(nullptr);
+    instance = nullptr;
 }
 
 void AndroidUI::visit()
