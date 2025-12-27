@@ -33,7 +33,21 @@ void LocalisationManager::setup()
 
 void LocalisationManager::loadLocalisationFile(std::filesystem::path path)
 {
-    loadedJson = file::readJson(path).unwrapOr("{ }");
+    loadedJson = getCachedFile(path);
+    currentPath = path;
+}
+
+matjson::Value LocalisationManager::getCachedFile(std::filesystem::path path)
+{
+    if (!loadedJsons.contains(path))
+        loadedJsons.emplace(path, file::readJson(path).unwrapOr("{ }"));
+
+    return loadedJsons[path];
+}
+
+std::filesystem::path LocalisationManager::getCurrentLoadedFile()
+{
+    return currentPath;
 }
 
 void LocalisationManager::switchFinished()
@@ -87,6 +101,25 @@ void LocalisationManager::switchLocalisationWithUI(std::string file)
     Mod::get()->setSavedValue<std::string>("loaded-localisation-file", file);
 
     switchLocalisationWithUIPath(Mod::get()->getResourcesDir() / file);
+}
+
+AdvLabelTTFUsage LocalisationManager::getDefaultTTFUsage()
+{
+    if (loadedJson.contains("alt-font-usage") && loadedJson["alt-font-usage"].isString())
+    {
+        auto str = utils::string::toLower(loadedJson["alt-font-usage"].asString().unwrapOr(""));
+
+        if (str == "auto")
+            return AdvLabelTTFUsage::Auto;
+
+        if (str == "forced")
+            return AdvLabelTTFUsage::Forced;
+
+        if (str == "none")
+            return AdvLabelTTFUsage::None;
+    }
+    
+    return AdvLabelTTFUsage::Auto;
 }
 
 std::string LocalisationManager::getLocalisedString(std::string id)

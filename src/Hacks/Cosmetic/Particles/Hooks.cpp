@@ -37,6 +37,7 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
         bool swingFireParticles = false;
         bool collectableParticles = false;
         bool dashOrbParticles = false;
+        bool teleportPortalParticle = false;
     };
 
     virtual void draw()
@@ -71,6 +72,7 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
                 CHECK_IF_PARTICLE(SwingFireParticles, swingFireParticles);
                 CHECK_IF_PARTICLE(CoinParticles, collectableParticles);
                 CHECK_IF_PARTICLE(DashOrbParticles, dashOrbParticles);
+                CHECK_IF_PARTICLE(TeleportPortalParticles, teleportPortalParticle);
 
                 if (SpeedChangeParticles::get()->getRealEnabled())
                 {
@@ -177,6 +179,12 @@ class $modify (GameObject)
         {
             if (typeinfo_cast<RingObject*>(this))
                 static_cast<NoParticleSystem*>(pRet)->m_fields->ringParticle = true;
+
+            if (typeinfo_cast<TeleportPortalObject*>(this))
+            {
+                static_cast<NoParticleSystem*>(pRet)->m_fields->ringParticle = false;
+                static_cast<NoParticleSystem*>(pRet)->m_fields->teleportPortalParticle = true;
+            }
 
             auto obj = this;
 

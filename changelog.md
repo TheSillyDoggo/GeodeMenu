@@ -1,3 +1,8 @@
+# 2.5.0
+
+- Added **Localisation**
+- Added Option to disable teleport portal particles in No Particles
+
 # 2.4.1
 
 - Added Auto Song Download

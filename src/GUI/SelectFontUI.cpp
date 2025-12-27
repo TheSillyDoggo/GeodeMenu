@@ -340,7 +340,17 @@ bool SelectFontUI::setup()
     cell->setPosition(ccp(0, height - (cell->getContentHeight() * 1)));
 
     scroll2->m_contentLayer->addChild(cell);
+
+    cell = createFontCell("lexend.fnt"_spr, 11, "Lexend");
+    cell->setPosition(ccp(0, height - (cell->getContentHeight() * 2)));
+
+    scroll2->m_contentLayer->addChild(cell);
+
+    cell = createFontCell("notosans.fnt"_spr, 12, "Noto Sans");
+    cell->setPosition(ccp(0, height - (cell->getContentHeight() * 3)));
     
+    scroll2->m_contentLayer->addChild(cell);
+
     scroll1->moveToTop();
     scroll2->moveToTop();
     m_mainLayer->addChildAtPosition(borders, Anchor::Center, ccp(-15 / 2, 5));

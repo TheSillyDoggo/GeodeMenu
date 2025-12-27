@@ -242,6 +242,15 @@ class DashOrbParticles : public Module
         }
 };
 
+class TeleportPortalParticles : public Module
+{
+    public:
+        MODULE_SETUP(TeleportPortalParticles)
+        {
+            setID("no-particles-adv/teleport-portal-particles");
+        }
+};
+
 SUBMIT_HACK(NoParticlesAdv);
 SUBMIT_OPTION(NoParticlesAdv, ParticleObjects);
 SUBMIT_OPTION(NoParticlesAdv, PlayerGroundParticles);
@@ -265,3 +274,4 @@ SUBMIT_OPTION(NoParticlesAdv, EndPortalParticles);
 SUBMIT_OPTION(NoParticlesAdv, SwingFireParticles);
 SUBMIT_OPTION(NoParticlesAdv, CoinParticles);
 SUBMIT_OPTION(NoParticlesAdv, DashOrbParticles);
+SUBMIT_OPTION(NoParticlesAdv, TeleportPortalParticles);

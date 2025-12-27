@@ -306,6 +306,8 @@ bool AdvLabelBMFont::initWithStruct(AdvLabelStruct lblStruct, std::string font)
     if (!CCNode::init())
         return false;
 
+    ttfUsage = LocalisationManager::get()->getDefaultTTFUsage();
+
     this->setAnchorPoint(ccp(0.5f, 0.5f));
     this->font = font;
 

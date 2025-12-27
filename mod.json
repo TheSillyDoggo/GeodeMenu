@@ -1,6 +1,6 @@
 {
 	"geode": "4.10.0",
-	"version": "v2.4.1",
+	"version": "v2.5.0",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -20,6 +20,12 @@
         "files": [
             "resources/fonts/kosugimaru/*.fnt",
 			"resources/fonts/kosugimaru/*.png",
+			"resources/fonts/chirongo/*.fnt",
+			"resources/fonts/chirongo/*.png",
+			"resources/fonts/lexend/*.fnt",
+			"resources/fonts/lexend/*.png",
+			"resources/fonts/notosans/*.fnt",
+			"resources/fonts/notosans/*.png",
 			"resources/sounds/*.mp3",
 			"resources/*.png",
 			"resources/*.wav",

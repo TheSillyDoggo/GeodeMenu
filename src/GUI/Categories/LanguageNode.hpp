@@ -2,15 +2,12 @@
 
 #include "../../Client/CategoryNode.hpp"
 
-class LanguageNode : public CategoryNode
+class LanguageNodeUI : public CategoryNode
 {
     public:
-        CREATE_FUNC(LanguageNode)
-
-        void onTest1(CCObject* sender);
-        void onTest2(CCObject* sender);
+        CREATE_FUNC(LanguageNodeUI)
 
         bool init();
 };
 
-SUBMIT_CATEGORY("Config/Language", LanguageNode)
+SUBMIT_CATEGORY("Config/Language", LanguageNodeUI)

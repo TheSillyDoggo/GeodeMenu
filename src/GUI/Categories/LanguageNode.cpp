@@ -1,36 +1,37 @@
 #include "LanguageNode.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
+#include "../../Localisation/UI/LanguageNode.hpp"
 #include "../BetterButtonSprite.hpp"
 
-bool LanguageNode::init()
+bool LanguageNodeUI::init()
 {
     if (!CategoryNode::init())
         return false;
 
-    auto lbl = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("ui/coming-soon"), "bigFont.fnt");
-    lbl->setScale(0.5f);
+    std::vector<std::string> langs = { "en-AU.json", "ja-JP.json", "de-DE.json", "ru-RU.json", "vi-VI.json", "id-ID.json" };
 
-    auto menu = CCMenu::create();
-    auto test1 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(110, 30), "DEV: Load English", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(LanguageNode::onTest1));
-    auto test2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(110, 30), "DEV: Load Japanese", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(LanguageNode::onTest2));
-    test2->setPositionY(-40);
+    int x = 0;
+    int y = 0;
 
-    menu->addChild(test1);
-    menu->addChild(test2);
+    for (auto lang : langs)
+    {
+        auto node = LanguageNode::create(lang);
+        node->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, 60));
+        node->setAnchorPoint(ccp(x, 1));
+        node->setPosition(ccp(x == 0 ? 2.5f : getContentWidth() - 2.5f, getContentHeight() - y * (node->getContentHeight() + 2.5f)) + ccp(0, -25));
+        node->updateLayout();
 
-    this->addChildAtPosition(lbl, Anchor::Center);
-    this->addChildAtPosition(menu, Anchor::Center, ccp(0, -50));
+        this->addChild(node);
+
+        x++;
+
+        if (x == 2)
+        {
+            x = 0;
+            y++;
+        }
+    }
 
     return true;
-}
-
-void LanguageNode::onTest1(CCObject* sender)
-{
-    LocalisationManager::get()->switchLocalisationWithUI("en-AU.json");
-}
-
-void LanguageNode::onTest2(CCObject* sender)
-{
-    LocalisationManager::get()->switchLocalisationWithUI("ja-JP.json");
 }
