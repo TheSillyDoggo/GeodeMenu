@@ -79,14 +79,17 @@ void LocalisationManager::switchLocalisationWithUIPath(std::filesystem::path pat
         {
             Loader::get()->queueInMainThread([this, layer, path, font]
             {
-                auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
-                lbl->setScale(0);
-                lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
-                CCScene::get()->addChild(lbl);
+                Loader::get()->queueInMainThread([this, layer, path, font]
+                {
+                    auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
+                    lbl->setScale(0);
+                    lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
+                    CCScene::get()->addChild(lbl);
 
-                layer->removeFromParent();
+                    layer->removeFromParent();
 
-                switchFinished();
+                    switchFinished();
+                });
             });
         });
 
@@ -171,4 +174,21 @@ std::string LocalisationManager::getAltFont()
     }
 
     return "";
+}
+
+std::vector<std::string> LocalisationManager::getAllLanguageFiles()
+{
+    std::vector<std::string> files = {};
+
+    for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
+    {
+        auto p = file.path().filename();
+
+        if (p.has_extension() && p.extension().string() == ".json")
+        {
+            files.push_back(file.path().filename().string());
+        }
+    }
+
+    return files;
 }

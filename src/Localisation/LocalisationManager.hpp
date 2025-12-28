@@ -23,6 +23,8 @@ class LocalisationManager
 
         AdvLabelTTFUsage getDefaultTTFUsage();
 
+        std::vector<std::string> getAllLanguageFiles();
+
         matjson::Value getCachedFile(std::filesystem::path path);
         std::filesystem::path getCurrentLoadedFile();
 

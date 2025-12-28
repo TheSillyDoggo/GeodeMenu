@@ -1,0 +1,151 @@
+#include "LanguageContributorsUI.hpp"
+#include "../../GUI/BlurLayer.hpp"
+#include "../../GUI/BetterButtonSprite.hpp"
+#include "../../Utils/ColourUtils.hpp"
+#include "../LocalisationManager.hpp"
+
+LanguageContributorsUI* LanguageContributorsUI::create(std::string lang)
+{
+    auto pRet = new LanguageContributorsUI();
+
+    CCSize size = ccp(300, 230);
+    pRet->lang = lang;
+
+    if (pRet && pRet->initAnchored(size.width, size.height))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
+SimplePlayer* LanguageContributorsUI::getPlayer(matjson::Value obj)
+{
+    int iconID = obj["icon-id"].asInt().unwrapOr(1);
+    int primaryCol = obj["primary-col"].asInt().unwrapOr(1);
+    int secondaryCol = obj["secondary-col"].asInt().unwrapOr(1);
+    int glowCol = obj["glow-col"].asInt().unwrapOr(1);
+    bool glowEnabled = obj["glow-enabled"].asBool().unwrapOr(false);
+
+    auto player = SimplePlayer::create(iconID);
+    player->setColor(GameManager::get()->colorForIdx(primaryCol));
+    player->setSecondColor(GameManager::get()->colorForIdx(secondaryCol));
+
+    if (glowEnabled)
+    {
+        player->setGlowOutline(GameManager::get()->colorForIdx(glowCol));
+        player->updateColors();
+    }
+
+    return player;
+}
+
+void LanguageContributorsUI::onPlayerProfile(CCObject* sender)
+{
+    ProfilePage::create(sender->getTag(), false)->show();
+}
+
+bool LanguageContributorsUI::setup()
+{
+    json = LocalisationManager::get()->getCachedFile(Mod::get()->getResourcesDir() / lang);
+
+    this->addChild(CCBlurLayer::create(), -3);
+    this->scheduleUpdate();
+
+    m_bgSprite->setVisible(false);
+
+    auto outline =  CCScale9Sprite::create("GJ_square07.png");
+    outline->setContentSize(m_size);
+    outline->setAnchorPoint(ccp(0.5f, 0.5f));
+    outline->setZOrder(69);
+
+    m_buttonMenu->setVisible(false);
+    m_mainLayer->addChildAtPosition(outline, Anchor::Center);
+
+    auto title = AdvLabelBMFont::createWithLocalisation("language-credits/title", "goldFont.fnt");
+    title->setScale(0.7f);
+
+    auto titleBG = CCScale9Sprite::create("square02b_small.png");
+    titleBG->setColor(ccc3(0, 0, 0));
+    titleBG->setOpacity(100);
+    titleBG->setContentSize((title->getScaledContentSize() + ccp(4, 4)) / 0.5f);
+    titleBG->setScale(0.5f);
+
+    auto menu = CCMenu::create();
+
+    auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
+    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(LanguageContributorsUI::onClose));
+    menu->addChild(btn);
+
+    auto stencil = CCScale9Sprite::create("GJ_square01.png");
+    stencil->setAnchorPoint(ccp(0.5f, 0.5f));
+    stencil->setContentSize(m_size + ccp(-1, -1));
+
+    auto clip = CCClippingNode::create(stencil);
+    clip->setAlphaThreshold(0.03f);
+
+    auto node = CCNode::create();
+    node->setContentSize(ccp(m_size.width, m_size.height));
+    node->setAnchorPoint(ccp(0.5f, 0.5f));
+
+    ground = GJGroundLayer::create(1, 0);
+    ground->setAnchorPoint(ccp(0.5f, 0));
+    ground->setScale(0.85f);
+    ground->setPosition(ccp(m_size.width / 2, 69));
+    ground->setContentWidth(getContentWidth());
+    ground->ignoreAnchorPointForPosition(false);
+    node->addChild(ground, 1);
+
+    nodeBG = CCSprite::create(GameManager::get()->getBGTexture(1));
+    nodeBG->setPosition(node->getContentSize() / 2);
+    nodeBG->setScale(0.85f);
+    node->addChild(nodeBG);
+
+    clip->addChild(stencil);
+    clip->addChild(node);
+
+    int i = 0;
+    auto contributors = json["contributors"].asArray().unwrap();
+    for (auto cont : contributors)
+    {
+        float spacing = 120;
+        float x = ((m_size.width / 2) - (spacing * (contributors.size() - 1)) / 2) + spacing * i;
+
+        auto icon = getPlayer(cont);
+        icon->setZOrder(2);
+        icon->setPosition(ccp(x, ground->getPositionY() + 30 / 2));
+
+        node->addChild(icon);
+
+        auto playerMenu = CCMenu::create();
+        playerMenu->setPosition(icon->getPosition());
+
+        auto name = CCLabelBMFont::create(cont["username"].asString().unwrapOr("Unknown").c_str(), "goldFont.fnt");
+        name->setScale(0.7f);
+
+        auto btn = CCMenuItemSpriteExtra::create(name, this, menu_selector(LanguageContributorsUI::onPlayerProfile));
+        btn->setTag(cont["account-id"].asInt().unwrapOr(1));
+        btn->setPositionY(70);
+
+        playerMenu->addChild(btn);
+
+        node->addChild(playerMenu);
+        i++;
+    }
+
+    m_mainLayer->addChildAtPosition(clip, Anchor::Center);
+    m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
+    m_mainLayer->addChildAtPosition(titleBG, Anchor::Top, ccp(0, -18));
+    m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
+    return true;
+}
+
+void LanguageContributorsUI::update(float dt)
+{
+    auto col = ColourUtils::get()->getPastel("language-credits-background");
+
+    nodeBG->setColor(col);
+    ground->updateGround01Color(ccc3(col.r * 0.7f, col.g * 0.7f, col.b * 0.7f));
+}

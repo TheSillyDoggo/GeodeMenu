@@ -12,6 +12,9 @@ struct AdvLabelStruct
         NewLine,
     };
 
+    bool forceTTF = false;
+    bool forceBM = false;
+
     struct AdvPart
     {
         AdvPartType type = AdvPartType::NewLine;

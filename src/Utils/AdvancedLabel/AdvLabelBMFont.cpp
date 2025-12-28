@@ -43,6 +43,18 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
     std::string c = "";
     std::vector<std::string> segments = {};
 
+    if (lbl.starts_with("<bm>"))
+    {
+        lbl = lbl.substr(4);
+        str.forceBM = true;
+    }
+
+    if (lbl.starts_with("<ttf>"))
+    {
+        lbl = lbl.substr(5);
+        str.forceTTF = true;
+    }
+
     for (auto ch : utils::string::split(lbl))
     {
         if (ch == '<')
@@ -267,6 +279,12 @@ bool AdvLabelBMFont::useTTFFont()
     CCBMFontConfiguration* conf;
     gd::set<unsigned int>* charSet;
     bool ttf;
+
+    if (str.forceTTF)
+        return true;
+
+    if (str.forceBM)
+        return false;
 
     switch (ttfUsage)
     {

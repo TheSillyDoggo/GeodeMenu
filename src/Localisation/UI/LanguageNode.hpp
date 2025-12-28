@@ -21,9 +21,11 @@ class LanguageNode : public CCNode
 
         void onSelectLanguage(CCObject* sender);
         void onViewCredits(CCObject* sender);
+        void onMissingTranslations(CCObject* sender);
 
         float getPercentageComplete();
         int getStringCount(matjson::Value value);
+        std::unordered_map<std::string, std::string> getStrings(matjson::Value value);
 
         virtual void visit();
 

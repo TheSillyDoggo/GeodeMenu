@@ -7,6 +7,8 @@ class LanguageNodeUI : public CategoryNode
     public:
         CREATE_FUNC(LanguageNodeUI)
 
+        virtual void updateUI();
+
         bool init();
 };
 

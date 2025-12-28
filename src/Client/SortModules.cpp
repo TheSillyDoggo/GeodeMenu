@@ -20,8 +20,8 @@ void Module::sortAlphabetically(std::vector<Module*>* map)
 
         if (aP == bP)
         {
-            auto aN = utils::string::toLower(a->getName());
-            auto bN = utils::string::toLower(b->getName());
+            auto aN = utils::string::toLower(a->getID());
+            auto bN = utils::string::toLower(b->getID());
 
             return aN < bN;
         }

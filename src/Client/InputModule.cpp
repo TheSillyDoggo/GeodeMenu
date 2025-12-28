@@ -65,7 +65,7 @@ std::string InputModule::getPlaceholderString()
 
 bool InputModule::appendColon()
 {
-    return true;
+    return !getName().ends_with(":");
 }
 
 void InputModule::setStringFilter(std::string str)

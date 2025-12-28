@@ -1,6 +1,7 @@
 # 2.5.0
 
 - Added **Localisation**
+- Added Trail Cutting
 - Added Option to disable teleport portal particles in No Particles
 
 # 2.4.1
