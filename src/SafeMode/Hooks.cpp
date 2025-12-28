@@ -3,6 +3,7 @@
 #include "Modules/SafeMode.hpp"
 #include "../GUI/BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "../GUI/BetterAlertLayer.hpp"
 
 bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -141,7 +142,7 @@ void SafeEndLevelLayer::onViewReasons(CCObject* sender)
 {
     auto loc = LocalisationManager::get();
 
-    FLAlertLayer::create(loc->getLocalisedString("names/safe-mode").c_str(), SafeMode::get()->getCombinedMessages(), loc->getLocalisedString("ui/ok-button").c_str())->show();
+    BetterAlertLayer::create(loc->getLocalisedString("names/safe-mode").c_str(), SafeMode::get()->getCombinedMessages(), loc->getLocalisedString("ui/ok-button").c_str())->show();
 }
 
 void SafeEndLevelLayer::playCoinEffect(float duration)

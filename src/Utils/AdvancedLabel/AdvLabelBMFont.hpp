@@ -14,6 +14,7 @@ struct AdvLabelStruct
 
     bool forceTTF = false;
     bool forceBM = false;
+    bool splitSpaces = false;
 
     struct AdvPart
     {
@@ -67,8 +68,12 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         std::unordered_map<std::string, std::vector<CCLabelBMFont*>> labelsCached = {};
         std::vector<CCLabelBMFont*> visibleLabels = {};
         CCTextAlignment alignment = kCCTextAlignmentLeft;
+        float maxWidth = 0;
+        bool usingTTFCurrently = false;
+        int lineCount = 0;
+        bool splitEverySpace = false;
 
-        static AdvLabelStruct structFromString(std::string lbl);
+        static AdvLabelStruct structFromString(std::string lbl, bool splitSpaces = false);
 
         bool useTTFFont();
     
@@ -85,6 +90,8 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         void setTTFUsage(AdvLabelTTFUsage usage);
         AdvLabelTTFUsage getTTFUsage();
 
+        bool isUsingTTFCurrently();
+
         virtual void setString(const char *label);
         virtual const char* getString(void);
 
@@ -94,6 +101,10 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         virtual void setAlignment(CCTextAlignment alignment);
 
         std::vector<CCLabelBMFont*> getVisibleLabels();
+
+        void setMaxWidth(float width);
+        void setSplitEverySpace(bool split);
+        int getLineCount();
 
         CCBMFontConfiguration* getConfiguration();
         CCBMFontConfiguration* getConfiguration(std::string font);

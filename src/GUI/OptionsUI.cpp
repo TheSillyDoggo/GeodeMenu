@@ -4,6 +4,7 @@
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "BetterAlertLayer.hpp"
 
 OptionsUI* OptionsUI::create(Module* mod)
 {
@@ -103,7 +104,7 @@ bool OptionsUI::setup()
 
 void OptionsUI::onInfo(CCObject* sender)
 {
-    auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", module->getID()).c_str(), fmt::format("descriptions/{}", module->getID()), "ui/ok-button");
     alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->setUserObject("fav-btn", favBtn);

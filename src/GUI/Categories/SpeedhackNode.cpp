@@ -26,7 +26,7 @@ bool SpeedhackNode::init()
     input->getInputNode()->setUserObject("nwo5.scroll_inputs/small-step-float", CCFloat::create(0.1f));
     input->getInputNode()->setUserObject("nwo5.scroll_inputs/big-step-float", CCFloat::create(1.0f));
 
-    auto speedLbl = CCLabelBMFont::create("Speed:", "bigFont.fnt");
+    auto speedLbl = AdvLabelBMFont::createWithLocalisation("speedhack/speed-label", "bigFont.fnt");
     speedLbl->setAnchorPoint(ccp(1, 0.5f));
     speedLbl->setScale(0.6f);
     speedLbl->setPosition(input->getPosition() + ccp(-70, 0));
@@ -75,7 +75,7 @@ bool SpeedhackNode::init()
     deletePresetBG->setColor(ccc3(0, 0, 0));
     deletePresetBG->setOpacity(100);
 
-    deletePresetHelp = CCLabelBMFont::create("Tap a preset to remove it", "bigFont.fnt");
+    deletePresetHelp = AdvLabelBMFont::createWithLocalisation("speedhack/delete-hint", "bigFont.fnt");
     deletePresetHelp->setScale(0.3f);
 
     deletePresetBG->setContentSize((deletePresetHelp->getScaledContentSize() + ccp(8, 8)) / 0.5f);

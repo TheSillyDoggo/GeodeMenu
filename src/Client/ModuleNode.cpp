@@ -5,6 +5,7 @@
 #include "../Utils/ColourUtils.hpp"
 #include "../GUI/EditKeyConfigUI.hpp"
 #include "../GUI/BlurLayer.hpp"
+#include "../GUI/BetterAlertLayer.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -190,7 +191,7 @@ void ModuleNode::onOptions(CCObject* sender)
 
 void ModuleNode::onInfo(CCObject* sender)
 {
-    auto alert = FLAlertLayer::create(module->getName().c_str(), module->getDescription(), "OK");
+    auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", getID()).c_str(), fmt::format("descriptions/{}", getID()), "ui/ok-button");
     alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->show();

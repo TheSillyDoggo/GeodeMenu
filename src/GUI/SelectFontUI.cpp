@@ -2,6 +2,7 @@
 #include "BlurLayer.hpp"
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "BetterAlertLayer.hpp"
 
 SelectFontUI* SelectFontUI::create(std::function<void(std::string)> onFinish, bool allowNonGDFonts)
 {
@@ -80,7 +81,7 @@ void SelectFontUI::onChangePage(CCObject* sender)
 
 void SelectFontUI::onFontHint(CCObject* sender)
 {
-    auto alert = FLAlertLayer::create("Writing system", LocalisationManager::get()->getLocalisedString(fmt::format("font-select/{}", static_cast<CCNode*>(sender)->getID())), LocalisationManager::get()->getLocalisedString("ui/ok-button").c_str());
+    auto alert = BetterAlertLayer::create("Writing system", LocalisationManager::get()->getLocalisedString(fmt::format("font-select/{}", static_cast<CCNode*>(sender)->getID())), LocalisationManager::get()->getLocalisedString("ui/ok-button").c_str());
     alert->show();
 }
 

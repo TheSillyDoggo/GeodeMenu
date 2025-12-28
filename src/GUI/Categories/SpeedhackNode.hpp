@@ -2,6 +2,7 @@
 
 #include "../../Client/CategoryNode.hpp"
 #include "../BetterSlider.hpp"
+#include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 using namespace geode::prelude;
 
@@ -13,7 +14,7 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         CCMenu* presetKeybindMenu = nullptr;
         ButtonSprite* sprMode = nullptr;
         std::unordered_map<CCMenuItemSpriteExtra*, float> presetBtns = {};
-        CCLabelBMFont* deletePresetHelp = nullptr;
+        AdvLabelBMFont* deletePresetHelp = nullptr;
         CCScale9Sprite* deletePresetBG = nullptr;
         bool presetDeleteMode = false;
 

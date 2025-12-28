@@ -37,11 +37,12 @@ AdvLabelBMFont* AdvLabelBMFont::createWithLocalisation(std::string localisationK
     return createWithString(LocalisationManager::get()->getLocalisedString(localisationKey), font);
 }
 
-AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
+AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpaces)
 {
     AdvLabelStruct str;
     std::string c = "";
     std::vector<std::string> segments = {};
+    str.splitSpaces = splitSpaces;
 
     if (lbl.starts_with("<bm>"))
     {
@@ -82,6 +83,15 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl)
             segments.push_back("\n");
             c = "";
             continue;
+        }
+
+        if (splitSpaces)
+        {
+            if (ch == ' ')
+            {
+                segments.push_back(c);
+                c = "";
+            }
         }
 
         c += ch;
@@ -139,6 +149,8 @@ void AdvLabelBMFont::updateLabel()
     bool useTTF = useTTFFont();
     visibleLabels.clear();
 
+    this->usingTTFCurrently = useTTF;
+
     float x = 0;
     float y = 0;
     float height = 0;
@@ -161,7 +173,9 @@ void AdvLabelBMFont::updateLabel()
 
     for (auto part : str.parts)
     {
-        if (part.type == AdvLabelStruct::AdvPartType::NewLine)
+        bool newLine = part.type == AdvLabelStruct::AdvPartType::NewLine;
+
+        if (newLine)
         {
             widthsForLine.emplace(y, x);
             y += lnHeight;
@@ -207,7 +221,11 @@ void AdvLabelBMFont::updateLabel()
             ttfsUsed++;
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
-            lbl->setScale(lnHeight / lbl->getContentHeight());
+            
+            if (lbl->getContentHeight() == 0)
+                lbl->setScale(1.0f);
+            else
+                lbl->setScale(lnHeight / lbl->getContentHeight());
 
             node = lbl;
         }
@@ -235,14 +253,28 @@ void AdvLabelBMFont::updateLabel()
             lblsUsed++;
             lbl->setColor(col);
             lbl->setOpacity(part.opacity * getOpacity());
-            lbl->setScale(lnHeight / lbl->getContentHeight());
+            
+            if (lbl->getContentHeight() == 0)
+                lbl->setScale(1.0f);
+            else
+                lbl->setScale(lnHeight / lbl->getContentHeight());
 
             node = lbl;
         }
 
-        height = std::max<float>(node->getScaledContentHeight() + y, height);
-
         node->setAnchorPoint(ccp(0, 0));
+
+        if (maxWidth != 0)
+        {
+            if (x + node->getScaledContentWidth() > maxWidth)
+            {
+                widthsForLine.emplace(y, x);
+                y += lnHeight;
+                x = 0;
+            }
+        }
+
+        height = std::max<float>(node->getScaledContentHeight() + y, height);
 
         node->setPosition(ccp(x, y));
         x += node->getScaledContentWidth();
@@ -250,6 +282,7 @@ void AdvLabelBMFont::updateLabel()
     }
 
     widthsForLine.emplace(y, x);
+    lineCount = widthsForLine.size();
 
     this->setContentSize(ccp(width, height));
 
@@ -340,7 +373,7 @@ void AdvLabelBMFont::limitLabelWidth(float width, float defaultScale, float minS
 
 void AdvLabelBMFont::setString(const char *newString)
 {
-    setStruct(structFromString(newString));
+    setStruct(structFromString(newString, splitEverySpace));
 }
 
 const char* AdvLabelBMFont::getString(void)
@@ -406,4 +439,24 @@ void AdvLabelBMFont::setAlignment(CCTextAlignment alignment)
     this->alignment = alignment;
 
     updateLabel();
+}
+
+bool AdvLabelBMFont::isUsingTTFCurrently()
+{
+    return usingTTFCurrently;
+}
+
+void AdvLabelBMFont::setMaxWidth(float width)
+{
+    this->maxWidth = width;
+}
+
+int AdvLabelBMFont::getLineCount()
+{
+    return lineCount;
+}
+
+void AdvLabelBMFont::setSplitEverySpace(bool split)
+{
+    this->splitEverySpace = split;
 }

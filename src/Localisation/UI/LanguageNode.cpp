@@ -72,16 +72,8 @@ bool LanguageNode::init(std::string lang)
     enName->setScale(0.5f);
     enName->setAnchorPoint(ccp(0, 1));
 
-    nativeName = CCLabelTTF::create(json["display_name_native"].asString().unwrapOr("Error").c_str(), "Arial.ttf", 16);
-    nativeName->setScale(0.5f);
-    nativeName->setAnchorPoint(ccp(0, 1));
-
-    bool showNativeName = true;
-    nativeName->setVisible(showNativeName);
-
     this->addChild(bg);
     this->addChildAtPosition(enName, Anchor::TopLeft, ccp(2.5f, -2.5f));
-    this->addChildAtPosition(nativeName, Anchor::TopLeft, ccp(4, (-2.5f * 2) - enName->getScaledContentHeight()));
     this->addChildAtPosition(percentMenu, Anchor::BottomRight, ccp(-2, 2));
     this->addChildAtPosition(useMenu, Anchor::Right);
     this->addChildAtPosition(creditsMenu, Anchor::BottomLeft, ccp(2.5f, 2.5f) + creditsBtn->getContentSize() / 2);
@@ -175,6 +167,15 @@ std::unordered_map<std::string, std::string> LanguageNode::getStrings(matjson::V
 
 void LanguageNode::visit()
 {
+    if (!nativeName)
+    {
+        nativeName = CCLabelTTF::create(json["display_name_native"].asString().unwrapOr("Error").c_str(), "Arial.ttf", 16);
+        nativeName->setScale(0.5f);
+        nativeName->setAnchorPoint(ccp(0, 1));
+
+        this->addChildAtPosition(nativeName, Anchor::TopLeft, ccp(4, (-2.5f * 2) - enName->getScaledContentHeight()));
+    }
+
     bg->setContentSize(getContentSize() / 0.5f);
 
     float off = (getContentHeight() - percentLabel->getScaledContentHeight());
