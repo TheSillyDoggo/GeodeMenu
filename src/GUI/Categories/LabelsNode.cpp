@@ -18,9 +18,9 @@ bool LabelsNode::init()
 
     bg->setPosition(ccp(0, 0));
     bg->setAnchorPoint(ccp(0, 0));
-    bg->setContentSize(ccp((getContentWidth() - PRESETS_SIZE - 5) / 0.5f, bg->getContentHeight() - ((TOPBAR_SIZE + 5) / 0.5f)));
+    bg->setContentSize(ccp((getContentWidth() - PRESETS_SIZE - 5), bg->getContentHeight() - ((TOPBAR_SIZE + 5))));
 
-    labelsScroll = ScrollLayer::create(bg->getContentSize() * 0.5f);
+    labelsScroll = ScrollLayer::create(bg->getContentSize());
     labelsScroll->m_peekLimitTop = 15;
     labelsScroll->m_peekLimitBottom = 15;
     labelsScroll->setTouchEnabled(false);

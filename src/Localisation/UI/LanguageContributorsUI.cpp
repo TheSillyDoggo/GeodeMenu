@@ -1,6 +1,7 @@
 #include "LanguageContributorsUI.hpp"
 #include "../../GUI/BlurLayer.hpp"
 #include "../../GUI/BetterButtonSprite.hpp"
+#include "../../GUI/EasyBG.hpp"
 #include "../../Utils/ColourUtils.hpp"
 #include "../LocalisationManager.hpp"
 
@@ -56,7 +57,7 @@ bool LanguageContributorsUI::setup()
 
     m_bgSprite->setVisible(false);
 
-    auto outline =  CCScale9Sprite::create("GJ_square07.png");
+    auto outline = CCScale9Sprite::create("GJ_square07.png");
     outline->setContentSize(m_size);
     outline->setAnchorPoint(ccp(0.5f, 0.5f));
     outline->setZOrder(69);
@@ -67,11 +68,9 @@ bool LanguageContributorsUI::setup()
     auto title = AdvLabelBMFont::createWithLocalisation("language-credits/title", "goldFont.fnt");
     title->setScale(0.7f);
 
-    auto titleBG = CCScale9Sprite::create("square02b_small.png");
-    titleBG->setColor(ccc3(0, 0, 0));
-    titleBG->setOpacity(100);
-    titleBG->setContentSize((title->getScaledContentSize() + ccp(4, 4)) / 0.5f);
-    titleBG->setScale(0.5f);
+    auto titleBG = EasyBG::create();
+    titleBG->setTargettingNode(title);
+    titleBG->setTargettingOffset(ccp(4, 4));
 
     auto menu = CCMenu::create();
 

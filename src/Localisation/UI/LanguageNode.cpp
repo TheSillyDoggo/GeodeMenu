@@ -113,15 +113,22 @@ void LanguageNode::onMissingTranslations(CCObject* sender)
     }
 
     std::string ss;
+    std::string debugStr;
 
     for (auto key : missingKeys)
     {
-        // ss.append(fmt::format("\"{}\": \"{}\"\n", key.first, utils::string::replace(key.second, "\n", "\\n")));
+        debugStr.append(fmt::format("\"{}\": \"{}\"\n", key.first, utils::string::replace(key.second, "\n", "\\n")));
         ss.append(key.first);
         ss.append("\n");
     }
     
-    auto alert = geode::MDPopup::create(true, "Missing Keys", ss, "OK", nullptr, nullptr);
+    auto alert = geode::MDPopup::create(true, "Missing Keys", ss, "OK", "Copy Strings", [this, debugStr](bool btn2)
+    {
+        if (btn2)
+        {
+            clipboard::write(debugStr);
+        }
+    });
     alert->show();
 }
 
@@ -157,6 +164,15 @@ std::unordered_map<std::string, std::string> LanguageNode::getStrings(matjson::V
                 {
                     if (str1.isString())
                         keys.emplace(fmt::format("{}/{}", type.getKey().value_or(""), str1.getKey().value_or("")), str1.asString().unwrapOr(""));
+
+                    if (str1.isObject())
+                    {
+                        for (auto str2 : str1)
+                        {
+                            if (str2.isString())
+                                keys.emplace(fmt::format("{}/{}/{}", type.getKey().value_or(""), str1.getKey().value_or(""), str2.getKey().value_or("")), str2.asString().unwrapOr(""));
+                        }
+                    }
                 }
             }
         }

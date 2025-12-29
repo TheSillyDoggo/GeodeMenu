@@ -1,6 +1,7 @@
 #include "BetterAlertLayer.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterButtonSprite.hpp"
+#include "BlurLayer.hpp"
 
 BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
@@ -40,6 +41,8 @@ BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, co
 
 bool BetterAlertLayer::init(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
+    this->addChild(CCBlurLayer::create(), -69);
+
     content = AdvLabelBMFont::createWithStruct({}, "chatFont.fnt");
     content->setMaxWidth(width - 30);
     content->setSplitEverySpace(true);

@@ -106,11 +106,8 @@ bool CategoryNode::init()
     this->ignoreAnchorPointForPosition(false);
     MouseDispatcher::betterMouseDispatcherDelegates.push_back(this);
 
-    bg = CCScale9Sprite::create("square02b_small.png");
-    bg->setContentSize(this->getContentSize() / 0.5f);
-    bg->setScale(0.5f);
-    bg->setColor(ccc3(0, 0, 0));
-    bg->setOpacity(100);
+    bg = EasyBG::create();
+    bg->setContentSize(getContentSize());
 
     scroll = geode::ScrollLayer::create(this->getContentSize());
     scroll->m_peekLimitTop = 15;

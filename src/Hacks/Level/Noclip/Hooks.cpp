@@ -143,10 +143,10 @@ class $modify (PlayLayer)
 
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
-        if (p1 == m_anticheatSpike)
+        if (!Noclip::get()->getRealEnabled())
             return PlayLayer::destroyPlayer(p0, p1);
 
-        if (!Noclip::get()->getRealEnabled())
+        if (NOCLIP_BASE()->shouldPlayerRegularDie(p0, p1))
             return PlayLayer::destroyPlayer(p0, p1);
 
         NOCLIP_BASE()->playerDied(p0 == m_player1 ? NoclipPlayerSelector::Player1 : NoclipPlayerSelector::Player2);
@@ -174,3 +174,54 @@ class $modify (PlayLayer)
         m_fields->tintOverlay->setColor(NoclipTintColour::get()->getColour());
     }
 };
+
+bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* go)
+{
+    if (go == m_anticheatSpike)
+        return true;
+
+    if (pl == m_player1)
+    {
+        if (!NoclipPlayer1::get()->getRealEnabled())
+            return true;
+
+        if (NoclipPlayer1UseMinAcc::get()->getRealEnabled())
+        {
+            if (getNoclipAccuracy(NoclipPlayerSelector::Player1) * 100 < NoclipPlayer1MinAcc::get()->getStringFloat())
+            {
+                return true;
+            }
+        }
+
+        if (NoclipPlayer1UseMaxDeaths::get()->getRealEnabled())
+        {
+            if (getNoclipDeaths(NoclipPlayerSelector::Player1) > NoclipPlayer1MaxDeaths::get()->getStringInt())
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        if (!NoclipPlayer2::get()->getRealEnabled())
+            return true;
+
+        if (NoclipPlayer2UseMinAcc::get()->getRealEnabled())
+        {
+            if (getNoclipAccuracy(NoclipPlayerSelector::Player2) * 100 < NoclipPlayer2MinAcc::get()->getStringFloat())
+            {
+                return true;
+            }
+        }
+
+        if (NoclipPlayer2UseMaxDeaths::get()->getRealEnabled())
+        {
+            if (getNoclipDeaths(NoclipPlayerSelector::Player2) > NoclipPlayer2MaxDeaths::get()->getStringInt())
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

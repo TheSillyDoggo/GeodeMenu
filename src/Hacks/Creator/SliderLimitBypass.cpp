@@ -12,7 +12,7 @@ class SliderLimitBypass : public Module
         {
             setName("Slider Limit Bypass");
             setID("slider-limit");
-            setCategory("Universal");
+            setCategory("Creator");
             setDescription("Allows sliders to go beyond the limit of the slider");
         }
 };

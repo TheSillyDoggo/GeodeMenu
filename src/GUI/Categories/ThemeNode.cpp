@@ -5,6 +5,7 @@
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 #include "../BetterButtonSprite.hpp"
+#include "../BetterAlertLayer.hpp"
 
 bool ThemeNode::init()
 {
@@ -231,7 +232,7 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
     auto anim = (MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale);
 
     if (anim == MenuAnimation::None)
-        FLAlertLayer::create("Preview animation", "There is no animation to preview.", "OK")->show();
+        BetterAlertLayer::createWithLocalisation("animation/preview-error-none/title", "animation/preview-error-none/text", "ui/ok-button")->show();
 
     if (AndroidUI::get())
         AndroidUI::get()->runAnimation(anim);

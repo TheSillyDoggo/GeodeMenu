@@ -2,6 +2,8 @@
 #include "../../Hacks/Speedhack/Speedhack.hpp"
 #include "../../Utils/Num.hpp"
 #include "../EditKeyConfigUI.hpp"
+#include "../BetterAlertLayer.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 bool SpeedhackNode::init()
 {
@@ -196,7 +198,11 @@ void SpeedhackNode::onAddNewPreset(CCObject* sender)
 
     if (sh->hasPreset(sh->getValue()))
     {
-        FLAlertLayer::create("Speedhack Preset", fmt::format("There's already a preset with the value <cc>{}</c>", floatToStringMin2DP(sh->getValue())), "OK")->show();
+        auto lm = LocalisationManager::get();
+
+        auto text = utils::string::replace(lm->getLocalisedString("speedhack/add-preset-exist/text"), "%s", floatToStringMin2DP(sh->getValue()));
+
+        BetterAlertLayer::create(lm->getLocalisedString("speedhack/add-preset-exist/title").c_str(), text, lm->getLocalisedString("ui/ok-button").c_str())->show();
 
         return;
     }

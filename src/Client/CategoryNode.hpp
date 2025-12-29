@@ -4,6 +4,7 @@
 #include "Module.hpp"
 #include "ModuleNode.hpp"
 #include "../GUI/BetterScrollbar.hpp"
+#include "../GUI/EasyBG.hpp"
 
 using namespace geode::prelude;
 
@@ -17,7 +18,7 @@ class CategoryNode : public CCMenu
         std::unordered_map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
         BetterScrollbar* scrollbar = nullptr;
-        CCScale9Sprite* bg = nullptr;
+        EasyBG* bg = nullptr;
         bool alwaysShowScrollbar = false;
 
         ~CategoryNode();

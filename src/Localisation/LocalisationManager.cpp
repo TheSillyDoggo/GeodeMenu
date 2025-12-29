@@ -127,9 +127,7 @@ AdvLabelTTFUsage LocalisationManager::getDefaultTTFUsage()
 
 std::string LocalisationManager::getLocalisedString(std::string id)
 {
-    // blank char to force the alt font, since its hard to read pusab
-    auto errorStr = fmt::format("{}", id);
-
+    auto errorStr = fmt::format("<ttf>{}", id);
     auto splits = utils::string::split(id, "/");
 
     if (loadedJson.contains("strings") && loadedJson["strings"].isObject())
@@ -142,15 +140,24 @@ std::string LocalisationManager::getLocalisedString(std::string id)
             {
                 auto combined = id.substr(splits[0].size() + 1);
 
-                if (strings[splits[0]].contains(combined))
+                if (strings[splits[0]].contains(combined) && strings[splits[0]][combined].isString())
                 {
                     return strings[splits[0]][combined].asString().unwrapOr(errorStr);
                 }
 
-                /*if (strings[splits[0]].contains(splits[1]))
+                if (splits.size() > 2)
                 {
-                    return strings[splits[0]][splits[1]].asString().unwrapOr(errorStr);
-                }*/
+                    if (strings[splits[0]].contains(splits[1]) && strings[splits[0]][splits[1]].isObject())
+                    {
+                        if (strings[splits[0]][splits[1]].contains(splits[2]))
+                        {
+                            if (strings[splits[0]][splits[1]][splits[2]].isString())
+                            {
+                                return strings[splits[0]][splits[1]][splits[2]].asString().unwrapOr(errorStr);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

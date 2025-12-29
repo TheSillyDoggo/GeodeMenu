@@ -385,7 +385,7 @@ void SetupLabelConfigUI::updateEventsUI()
 
 void SetupLabelConfigUI::createPages()
 {
-    std::vector<std::string> pageNames = { "General", "Format", "Events" };
+    std::vector<std::string> pageNames = { "<bm>General", "<bm>Format", "<bm>Events" };
 
     for (size_t i = 0; i < pageNames.size(); i++)
     {

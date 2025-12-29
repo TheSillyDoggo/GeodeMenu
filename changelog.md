@@ -1,8 +1,19 @@
 # 2.5.0
 
 - Added **Localisation**
+-- Current Languages are:
+-- Spanish
+-- Vietnamese
+-- German
+-- Indonesian
+-- Russian
+-- Ukrainian
 - Added Trail Cutting
+- Added Per Player Noclip Enabling
+- Added Noclip Max Deaths and Min Accuracy
+- Added Create Custom Rewards
 - Added Option to disable teleport portal particles in No Particles
+- Moved Slider Limit Bypass to Creator category
 
 # 2.4.1
 

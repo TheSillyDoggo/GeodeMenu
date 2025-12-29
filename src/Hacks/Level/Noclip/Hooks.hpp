@@ -40,5 +40,7 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
     void playerDied(NoclipPlayerSelector selector);
     void onPostUpdate();
 
+    bool shouldPlayerRegularDie(PlayerObject* pl, GameObject* go);
+
     void resetNoclipValues();
 };
