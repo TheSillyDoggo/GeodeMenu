@@ -46,6 +46,7 @@ bool BetterAlertLayer::init(FLAlertLayerProtocol* delegate, char const* title, g
     content = AdvLabelBMFont::createWithStruct({}, "chatFont.fnt");
     content->setMaxWidth(width - 30);
     content->setSplitEverySpace(true);
+    content->setLineSpacing(3.5f);
     content->setAlignment(kCCTextAlignmentCenter);
     content->setString(desc.c_str());
 

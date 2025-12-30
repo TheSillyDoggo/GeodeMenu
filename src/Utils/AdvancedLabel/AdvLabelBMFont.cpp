@@ -178,7 +178,7 @@ void AdvLabelBMFont::updateLabel()
         if (newLine)
         {
             widthsForLine.emplace(y, x);
-            y += lnHeight;
+            y += lnHeight + lineSpacing;
             x = 0;
 
             continue;
@@ -269,7 +269,7 @@ void AdvLabelBMFont::updateLabel()
             if (x + node->getScaledContentWidth() > maxWidth)
             {
                 widthsForLine.emplace(y, x);
-                y += lnHeight;
+                y += lnHeight + lineSpacing;
                 x = 0;
             }
         }
@@ -459,4 +459,9 @@ int AdvLabelBMFont::getLineCount()
 void AdvLabelBMFont::setSplitEverySpace(bool split)
 {
     this->splitEverySpace = split;
+}
+
+void AdvLabelBMFont::setLineSpacing(float spacing)
+{
+    this->lineSpacing = spacing;
 }

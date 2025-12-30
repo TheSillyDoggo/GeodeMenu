@@ -32,6 +32,8 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
         int totalDeaths = 0;
         int p1Deaths = 0;
         int p2Deaths = 0;
+
+        GameObject* deathObject;
     };
 
     float getNoclipAccuracy(NoclipPlayerSelector selector);
@@ -39,6 +41,8 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
 
     void playerDied(NoclipPlayerSelector selector);
     void onPostUpdate();
+
+    GameObject* getDeathObject();
 
     bool shouldPlayerRegularDie(PlayerObject* pl, GameObject* go);
 

@@ -185,6 +185,7 @@ void TextLabelNode::updateVariables()
         script->setVariable("percentage", rift::Value::floating(PlayLayer::get()->getCurrentPercent()));
         script->setVariable("last_percentage", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->lastPercent));
         script->setVariable("run_from", rift::Value::floating(static_cast<BestPlayLayer*>(PlayLayer::get())->m_fields->fromPercent));
+        script->setVariable("isPractice", rift::Value::boolean(PlayLayer::get()->m_isPracticeMode));
     }
 }
 

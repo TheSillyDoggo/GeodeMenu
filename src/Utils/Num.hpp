@@ -9,3 +9,4 @@ float unscaleFloat(float v, float min, float max);
 std::string floatToStringMin2DP(double value);
 
 cocos2d::CCNode* getTopLevelNonSceneNode(cocos2d::CCNode* node);
+cocos2d::CCRect getWorldSpaceBoundingBox(cocos2d::CCNode* node);

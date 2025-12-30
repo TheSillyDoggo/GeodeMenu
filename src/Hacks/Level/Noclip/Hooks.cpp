@@ -1,5 +1,6 @@
 #include "Hooks.hpp"
 #include "../../../Labels/Nodes/LabelContainerLayer.hpp"
+#include <Geode/modify/PlayerObject.hpp>
 
 #define NOCLIP_BASE() base_cast<NoclipBaseGameLayer*>(this)
 
@@ -143,6 +144,9 @@ class $modify (PlayLayer)
 
     void destroyPlayer(PlayerObject* p0, GameObject* p1)
     {
+        if (p1 != nullptr)
+            NOCLIP_BASE()->m_fields->deathObject = p1;
+
         if (!Noclip::get()->getRealEnabled())
             return PlayLayer::destroyPlayer(p0, p1);
 
@@ -172,6 +176,19 @@ class $modify (PlayLayer)
         NOCLIP_BASE()->onPostUpdate();
 
         m_fields->tintOverlay->setColor(NoclipTintColour::get()->getColour());
+    }
+};
+
+class $modify (PlayerObject)
+{
+    bool collidedWithObjectInternal(float dt, GameObject* object, cocos2d::CCRect rect, bool skipCheck)
+    {
+        if (PlayLayer::get())
+        {
+            base_cast<NoclipBaseGameLayer*>(PlayLayer::get())->m_fields->deathObject = object;
+        }
+
+        return PlayerObject::collidedWithObjectInternal(dt, object, rect, skipCheck);
     }
 };
 
@@ -224,4 +241,9 @@ bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* g
     }
 
     return false;
+}
+
+GameObject* NoclipBaseGameLayer::getDeathObject()
+{
+    return m_fields->deathObject;
 }

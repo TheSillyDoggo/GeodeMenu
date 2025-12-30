@@ -12,8 +12,13 @@
 - Added Per Player Noclip Enabling
 - Added Noclip Max Deaths and Min Accuracy
 - Added Create Custom Rewards
+- Added Death Object Only option to Show Hitboxes on Death
+- Added Hitbox Trail option to Show Hitboxes on Death
 - Added Option to disable teleport portal particles in No Particles
 - Moved Slider Limit Bypass to Creator category
+- Fixed Blur Background appearing black when turning it on sometimes
+- (Hopefully) Fixed crash using Blur Background on iOS
+-- This is a hopefully because I don't own an apple device to test on </3
 
 # 2.4.1
 

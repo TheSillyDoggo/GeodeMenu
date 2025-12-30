@@ -77,7 +77,7 @@ float Speedhack::getRealValue()
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return 1.0f;
 
-    return std::min<float>(std::max<float>(value, 0.001f), 999999);
+    return std::min<float>(std::max<float>(value, 0.01f), 999999);
 }
 
 bool Speedhack::gameplayOnlyCheck()

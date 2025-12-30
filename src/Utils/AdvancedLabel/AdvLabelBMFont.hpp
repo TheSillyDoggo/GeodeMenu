@@ -72,6 +72,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         bool usingTTFCurrently = false;
         int lineCount = 0;
         bool splitEverySpace = false;
+        float lineSpacing = 0;
 
         static AdvLabelStruct structFromString(std::string lbl, bool splitSpaces = false);
 
@@ -104,6 +105,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
 
         void setMaxWidth(float width);
         void setSplitEverySpace(bool split);
+        void setLineSpacing(float spacing);
         int getLineCount();
 
         CCBMFontConfiguration* getConfiguration();

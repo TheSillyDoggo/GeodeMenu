@@ -56,7 +56,8 @@ bool CCBlurLayer::init()
 
     this->addChild(CCSprite::create());
 
-    validShader = instances.size() != 0;
+    if (instances.size() == 0)
+        validShader = false;
 
     instances.insert(instances.begin(), this);
 
@@ -318,7 +319,7 @@ void setupPostProcess() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    #ifdef GEODE_IS_ANDROID
+    #ifdef GEODE_IS_MOBILE
     auto vertexPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-vert-android.glsl"_spr, false);
     #else
     auto vertexPath = (std::string)CCFileUtils::get()->fullPathForFilename("pp-vert.glsl"_spr, false);

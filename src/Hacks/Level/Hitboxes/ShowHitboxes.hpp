@@ -32,6 +32,27 @@ class ShowHitboxesOnDeath : public Module
         }
 };
 
+class ShowHitboxesOnDeathDeathObjOnly : public Module
+{
+    public:
+        MODULE_SETUP(ShowHitboxesOnDeathDeathObjOnly)
+        {
+            setID("show-hitboxes-on-death/death-object-only");
+            setPriority(1);
+        }
+};
+
+class ShowHitboxesOnDeathTrail : public Module
+{
+    public:
+        MODULE_SETUP(ShowHitboxesOnDeathTrail)
+        {
+            setID("show-hitboxes-on-death/trail");
+            setDefaultEnabled(true);
+            setPriority(2);
+        }
+};
+
 class HitboxTrail : public Module
 {
     public:

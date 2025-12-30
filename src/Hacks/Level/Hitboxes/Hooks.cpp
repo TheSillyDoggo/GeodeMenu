@@ -6,6 +6,7 @@
 #include <Geode/modify/CCDrawNode.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
+#include "../Noclip/Hooks.hpp"
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
@@ -25,18 +26,8 @@ SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailResetOnDeath);
 
-class $modify (PlayLayer)
-{
-    virtual void postUpdate(float dt)
-    {
-        PlayLayer::postUpdate(dt);
-
-        m_debugDrawNode->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
-
-        if (m_debugDrawNode->isVisible() != HitboxUtils::shouldHitboxesBeVisible())
-            updateDebugDraw();
-    }
-};
+SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
+SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);
 
 struct HitboxTrailState
 {
@@ -96,7 +87,36 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
     virtual void updateDebugDraw()
     {
+        std::unordered_map<GameObject*, std::pair<float, float>> hitboxes = {};
+        auto array = CCArrayExt<GameObject*>(m_objects);
+
+        if (m_player1 && m_player1->m_isDead)
+        {
+            if (!ShowHitboxes::get()->getRealEnabled())
+            {
+                if (ShowHitboxesOnDeath::get()->getRealEnabled() && ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled())
+                {
+                    for (auto obj : array)
+                    {
+                        if (obj == reinterpret_cast<NoclipBaseGameLayer*>(this)->getDeathObject())
+                            continue;
+                        
+                        hitboxes.emplace(obj, std::make_pair(obj->m_scaleX, obj->m_scaleY));
+                        obj->m_scaleX = 0;
+                        obj->m_scaleY = 0;
+                        obj->dirtifyObjectRect();
+                    }
+                }
+            }
+        }
+
         GJBaseGameLayer::updateDebugDraw();
+
+        for (auto obj : hitboxes)
+        {
+            obj.first->m_scaleX = obj.second.first;
+            obj.first->m_scaleY = obj.second.second;
+        }
 
         auto fields = m_fields.self();
 
@@ -133,6 +153,37 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         {
             if (HitboxTrailResetOnDeath::get()->getRealEnabled())
                 m_fields->states.clear();
+        }
+    }
+};
+
+class $modify (PlayLayer)
+{
+    virtual void postUpdate(float dt)
+    {
+        PlayLayer::postUpdate(dt);
+
+        m_debugDrawNode->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
+
+        if (m_debugDrawNode->isVisible() != HitboxUtils::shouldHitboxesBeVisible())
+            updateDebugDraw();
+        else
+        {
+            if (ShowHitboxesOnDeath::get()->getRealEnabled() && ShowHitboxesOnDeathTrail::get()->getRealEnabled() && HitboxTrail::get()->getRealEnabled())
+            {
+                auto fields = base_cast<HitboxBaseGameLayer*>(this)->m_fields.self();
+
+                if (!m_player1->m_isDead)
+                    fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+
+                if (m_player2 && m_player2->isRunning() && !m_player2->m_isDead)
+                    fields->states.insert(fields->states.begin(), { m_player2->m_position, m_player2->getObjectRect().size });
+
+                while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
+                {
+                    fields->states.pop_back();
+                }
+            }
         }
     }
 };
@@ -203,6 +254,9 @@ class $modify (CCDrawNode)
     {
         if (GJBaseGameLayer::get() && GJBaseGameLayer::get()->m_debugDrawNode == this)
         {
+            if (verts[0].x == verts[1].x && verts[1].x == verts[2].x && verts[2].x == verts[3].x)
+                return false;
+
             auto border = borderColor;
 
             if (borderColor.r == 0 && borderColor.g == 0.25f && borderColor.b == 1)

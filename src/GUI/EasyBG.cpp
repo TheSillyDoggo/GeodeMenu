@@ -36,3 +36,8 @@ void EasyBG::setTargettingOffset(CCSize offset)
 {
     this->targettingOffset = offset;
 }
+
+CCScale9Sprite* EasyBG::getBG()
+{
+    return bg;
+}

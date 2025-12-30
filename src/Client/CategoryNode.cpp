@@ -148,7 +148,7 @@ void CategoryNode::setContentSize(const CCSize& contentSize)
     CCMenu::setContentSize(contentSize);
 
     if (bg)
-        bg->setContentSize(contentSize / 0.5f);
+        bg->setContentSize(contentSize);
 
     if (scroll)
     {

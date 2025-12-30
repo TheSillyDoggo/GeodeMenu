@@ -17,6 +17,8 @@ class EasyBG : public CCNode
         void setTargettingNode(CCNode* target);
         void setTargettingOffset(CCSize offset);
 
+        CCScale9Sprite* getBG();
+
         virtual bool init();
         virtual void visit();
 };

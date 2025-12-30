@@ -47,3 +47,16 @@ CCNode* getTopLevelNonSceneNode(CCNode* node)
 
 	return n;
 }
+
+CCRect getWorldSpaceBoundingBox(CCNode* node)
+{
+	auto parent = node->getParent();
+	auto bounding_box = node->boundingBox();
+	CCPoint bb_min(bounding_box.getMinX(), bounding_box.getMinY());
+	CCPoint bb_max(bounding_box.getMaxX(), bounding_box.getMaxY());
+
+	auto min = parent ? parent->convertToWorldSpace(bb_min) : bb_min;
+	auto max = parent ? parent->convertToWorldSpace(bb_max) : bb_max;
+
+	return CCRectMake(min.x, min.y, max.x - min.x, max.y - min.y);
+}

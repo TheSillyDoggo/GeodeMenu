@@ -50,6 +50,7 @@ void ModuleNode::setup()
     }
 
     this->schedule(schedule_selector(ModuleNode::onUpdateLabelColour));
+    onUpdateLabelColour(0);
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));

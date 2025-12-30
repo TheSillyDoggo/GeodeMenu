@@ -309,6 +309,7 @@ void SetupLabelConfigUI::createPage3()
     eventScroll = ScrollLayer::create(leftBG->getScaledContentSize());
     eventScroll->m_peekLimitTop = 15;
     eventScroll->m_peekLimitBottom = 15;
+    eventScroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     pages[2]->addChildAtPosition(leftBG, Anchor::Left, ccp(20, 5));
     pages[2]->addChildAtPosition(eventScroll, Anchor::Left, ccp(20, 5 - eventScroll->getContentHeight() / 2));
