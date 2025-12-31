@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Client/CategoryNode.hpp"
+#include "../BetterInputNode.hpp"
 
 class SearchShowOptions : public Module
 {
@@ -17,7 +18,7 @@ class SearchShowOptions : public Module
 class SearchNode : public CategoryNode, public TextInputDelegate
 {
     protected:
-        TextInput* textInput = nullptr;
+        BetterInputNode* textInput = nullptr;
         CCMenu* errorMenu = nullptr;
         CCLabelBMFont* error = nullptr;
         static inline SearchNode* instance = nullptr;

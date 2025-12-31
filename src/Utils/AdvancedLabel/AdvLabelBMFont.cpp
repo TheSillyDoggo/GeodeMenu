@@ -352,6 +352,29 @@ bool AdvLabelBMFont::useTTFFont()
     return false;
 }
 
+bool AdvLabelBMFont::doesLabelContainNonDisplayableCharacter()
+{
+    auto conf = getConfiguration();
+    auto conf2 = getConfiguration(LocalisationManager::get()->getAltFont());
+    auto charSet = conf2->getCharacterSet();
+
+    for (auto ch : str.getTotalString())
+    {
+        if (ch == '\n')
+            continue;
+
+        if ((int)ch == -29)
+            continue;
+        
+        if (!charSet->contains(ch))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool AdvLabelBMFont::initWithStruct(AdvLabelStruct lblStruct, std::string font)
 {
     if (!CCNode::init())

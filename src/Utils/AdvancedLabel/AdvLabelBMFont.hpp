@@ -111,6 +111,8 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         CCBMFontConfiguration* getConfiguration();
         CCBMFontConfiguration* getConfiguration(std::string font);
 
+        bool doesLabelContainNonDisplayableCharacter();
+
         virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabel(); }
         virtual const ccColor3B& getColor(void) { return colour; }
         virtual const ccColor3B& getDisplayedColor(void) { return colour; }

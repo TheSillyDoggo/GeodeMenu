@@ -1,6 +1,7 @@
 #include "SearchNode.hpp"
 #include "../CategoryTabSprite.hpp"
 #include "../SearchFiltersUI.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 SearchNode* SearchNode::get()
 {
@@ -22,18 +23,11 @@ bool SearchNode::init()
 
     float height = 25;
 
-    textInput = TextInput::create((getContentWidth() - 5 * 2) - height - 5, "Search a mod...");
+    textInput = BetterInputNode::create((getContentWidth() - 5 * 2) - height - 5, LocalisationManager::get()->getLocalisedString("search-tab/placeholder"));
     textInput->setAnchorPoint(ccp(0, 1));
     textInput->setDelegate(this);
-    textInput->setCommonFilter(CommonFilter::Any);
-
-    // dear geode team.. why isnt height easily changable
+    // textInput->setCommonFilter(CommonFilter::Any);
     textInput->setContentHeight(height);
-    textInput->getBGSprite()->setPositionY(height / 2);
-    textInput->getBGSprite()->setContentSize(textInput->getContentSize() * 4);
-    textInput->getBGSprite()->setScale(1.0f / 4.0f);
-    textInput->getInputNode()->setPositionY(height / 2);
-    textInput->getInputNode()->setContentHeight(height);
 
     errorMenu = CCMenu::create();
     errorMenu->ignoreAnchorPointForPosition(false);
