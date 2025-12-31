@@ -60,3 +60,20 @@ CCRect getWorldSpaceBoundingBox(CCNode* node)
 
 	return CCRectMake(min.x, min.y, max.x - min.x, max.y - min.y);
 }
+
+void getAllChildrenRecursive(CCNode* node, std::vector<CCNode*>& outChildren)
+{
+	if (!node) return;
+
+	CCArray* children = node->getChildren();
+	if (children && children->count() > 0) {
+		CCObject* pObj = nullptr;
+		CCARRAY_FOREACH(children, pObj) {
+			CCNode* child = dynamic_cast<CCNode*>(pObj);
+			if (child) {
+				outChildren.push_back(child);
+				getAllChildrenRecursive(child, outChildren);
+			}
+		}
+	}
+}

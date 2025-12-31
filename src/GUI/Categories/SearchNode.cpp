@@ -26,7 +26,6 @@ bool SearchNode::init()
     textInput = BetterInputNode::create((getContentWidth() - 5 * 2) - height - 5, LocalisationManager::get()->getLocalisedString("search-tab/placeholder"));
     textInput->setAnchorPoint(ccp(0, 1));
     textInput->setDelegate(this);
-    // textInput->setCommonFilter(CommonFilter::Any);
     textInput->setContentHeight(height);
 
     errorMenu = CCMenu::create();
@@ -79,6 +78,8 @@ bool SearchNode::init()
 
     scroll->setContentHeight(scroll->getContentHeight() - 30);
     updateUI();
+
+    textChanged(nullptr);
 
     this->addChildAtPosition(textInput, Anchor::TopLeft, ccp(5, -5));
     this->addChildAtPosition(errorMenu, Anchor::Center, ccp(0, -30 / 2));

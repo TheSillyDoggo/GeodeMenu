@@ -10,3 +10,4 @@ std::string floatToStringMin2DP(double value);
 
 cocos2d::CCNode* getTopLevelNonSceneNode(cocos2d::CCNode* node);
 cocos2d::CCRect getWorldSpaceBoundingBox(cocos2d::CCNode* node);
+void getAllChildrenRecursive(cocos2d::CCNode* node, std::vector<cocos2d::CCNode*>& outChildren);

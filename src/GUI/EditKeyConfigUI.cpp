@@ -7,7 +7,7 @@ EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> on
 {
     auto pRet = new EditKeyConfigUI();
 
-    CCSize size = ccp(260, 180);
+    CCSize size = ccp(280, 200);
     pRet->onFinish = onFinish;
 
     if (pRet && pRet->initAnchored(size.width, size.height))
@@ -67,7 +67,7 @@ void EditKeyConfigUI::update(float dt)
     if (currentConfig.code != Keycode::KEY_Unknown)
     {
         infoLbl->setOpacity(255);
-        infoLbl->setString(currentConfig.configToString().c_str());
+        infoLbl->setString(fmt::format("<bm>{}", currentConfig.configToString()).c_str());
     }
     else
     {

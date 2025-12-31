@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Client/ColourModule.hpp"
+#include "../../Client/RotationModule.hpp"
 
 using namespace geode::prelude;
 
@@ -28,5 +29,17 @@ class GradientBGEnd : public ColourModule
         }
 };
 
+class GradientBGDirection : public RotationModule
+{
+    public:
+        MODULE_SETUP(GradientBGDirection)
+        {
+            setID("gradient-bg/rotation");
+
+            setDefaultValue(-90);
+        }
+};
+
 SUBMIT_HACK(GradientBGStart);
 SUBMIT_HACK(GradientBGEnd);
+SUBMIT_HACK(GradientBGDirection);

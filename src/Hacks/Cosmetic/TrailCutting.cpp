@@ -1,5 +1,6 @@
 #include "../../Client/InputModule.hpp"
 #include <Geode/modify/CCMotionStreak.hpp>
+#include "../../Utils/Num.hpp"
 
 using namespace geode::prelude;
 
@@ -11,6 +12,8 @@ class TrailCutting : public Module
             setID("trail-cutting");
             setCategory("Cosmetic");
         }
+
+        virtual void onToggle();
 };
 
 class TrailCuttingFPS : public InputModule
@@ -26,6 +29,11 @@ class TrailCuttingFPS : public InputModule
 
             setStringFilter("1234567890.");
             setMaxCharCount(5);
+        }
+
+        virtual void onToggle()
+        {
+            TrailCutting::get()->onToggle();
         }
 };
 
@@ -61,5 +69,21 @@ class $modify (CuttingMotionStreak, CCMotionStreak)
         m_pVertices = (ccVertex2F*)malloc(sizeof(ccVertex2F) * m_uMaxPoints * 2);
         m_pTexCoords = (ccTex2F*)malloc(sizeof(ccTex2F) * m_uMaxPoints * 2);
         m_pColorPointer = (GLubyte*)malloc(sizeof(GLubyte) * m_uMaxPoints * 2 * 4);
+
+        reset();
     }
 };
+
+void TrailCutting::onToggle()
+{
+    std::vector<CCNode*> childs = {};
+    getAllChildrenRecursive(CCScene::get(), childs);
+
+    for (auto node : childs)
+    {
+        if (typeinfo_cast<CCMotionStreak*>(node))
+        {
+            static_cast<CuttingMotionStreak*>(node)->updateMaxPoints(TrailCutting::get()->getRealEnabled() ? TrailCuttingFPS::get()->getStringFloat() : 60 * 5);
+        }
+    }
+}

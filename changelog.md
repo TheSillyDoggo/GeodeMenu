@@ -16,6 +16,7 @@
 - Added Hitbox Trail option to Show Hitboxes on Death
 - Added Option to disable teleport portal particles in No Particles
 - Moved Slider Limit Bypass to Creator category
+- Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes
 - (Hopefully) Fixed crash using Blur Background on iOS
 -- This is a hopefully because I don't own an apple device to test on </3

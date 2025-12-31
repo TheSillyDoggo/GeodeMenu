@@ -12,7 +12,7 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
     protected:
         std::string placeholder;
         std::string font;
-        CCTextAlignment alignment = kCCTextAlignmentCenter;
+        CCTextAlignment alignment = kCCTextAlignmentLeft;
 
         bool isSelected = false;
         std::string text = "";
@@ -29,11 +29,11 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         TextInputDelegate* delegate = nullptr;
 
         CCTextFieldTTF* ttfInput = nullptr;
-        CCEditBox* editBoxInput = nullptr;
         CCLayerColor* cursorCarot = nullptr;
         EasyBG* bg = nullptr;
         AdvLabelBMFont* placeholderLbl = nullptr;
         AdvLabelBMFont* textLbl = nullptr;
+        AdvLabelBMFont* hintLbl = nullptr;
         CCLabelTTF* textLblUser = nullptr;
         bool useTTFView = false;
         CCNode* labelContainer = nullptr;
@@ -48,6 +48,9 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         virtual bool onTextFieldInsertText(CCTextFieldTTF * sender, const char* text, int nLen, cocos2d::enumKeyCodes);
         virtual bool onTextFieldDeleteBackward(CCTextFieldTTF * sender, const char* delText, int nLen);
         virtual bool onDraw(CCTextFieldTTF * sender);
+
+        int getRealCursorPos();
+        void moveCursor(int by);
 
     public:
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");

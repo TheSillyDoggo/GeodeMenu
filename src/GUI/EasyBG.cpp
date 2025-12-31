@@ -19,7 +19,7 @@ bool EasyBG::init()
 void EasyBG::visit()
 {
     if (targetting)
-        this->setContentSize(targetting->getScaledContentSize() + targettingOffset);
+        this->setContentSize((getParent() == targetting ? targetting->getContentSize() : targetting->getScaledContentSize()) + targettingOffset);
 
     bg->setContentSize(getContentSize() / 0.5f);
     bg->setPosition(getContentSize() / 2);
