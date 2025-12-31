@@ -7,7 +7,11 @@
 
 using namespace geode::prelude;
 
-class BetterInputNode : public CCMenu, public CCTextFieldDelegate
+#if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_WINDOWS)
+#define BETTER_INPUT_NODE_USE_EDITBOX
+#endif
+
+class BetterInputNode : public CCMenu, public CCTextFieldDelegate, public CCEditBoxDelegate
 {
     protected:
         std::string placeholder;
@@ -18,8 +22,9 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         std::string text = "";
         int cursorPos = -1;
 
-        CCLayerColor* cursorCarot = nullptr;
         CCTextFieldTTF* ttfInput = nullptr;
+        CCEditBox* editBoxInput = nullptr;
+        CCLayerColor* cursorCarot = nullptr;
         EasyBG* bg = nullptr;
         AdvLabelBMFont* placeholderLbl = nullptr;
         AdvLabelBMFont* textLbl = nullptr;
@@ -35,6 +40,11 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         virtual bool onTextFieldDetachWithIME(CCTextFieldTTF * sender);
         virtual bool onTextFieldInsertText(CCTextFieldTTF * sender, const char* text, int nLen, cocos2d::enumKeyCodes);
         virtual bool onTextFieldDeleteBackward(CCTextFieldTTF * sender, const char* delText, int nLen);
+
+        virtual void editBoxEditingDidBegin(CCEditBox* editBox);
+        virtual void editBoxEditingDidEnd(CCEditBox* editBox);
+        virtual void editBoxTextChanged(CCEditBox* editBox, const gd::string& text);
+        virtual void editBoxReturn(CCEditBox* editBox);
 
     public:
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");

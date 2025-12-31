@@ -1,5 +1,6 @@
 #include "BetterInputNode.hpp"
 #include "../Utils/Num.hpp"
+#include <Geode/cocos/extensions/GUI/CCEditBox/CCEditBoxImpl.h>
 
 BetterInputNode* BetterInputNode::create(float width, std::string placeholder, std::string font)
 {
@@ -29,6 +30,18 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     ttfInput = CCTextFieldTTF::textFieldWithPlaceHolder("", "Arial.ttf", 16);
     ttfInput->setDelegate(this);
     ttfInput->setVisible(false);
+
+    #ifdef BETTER_INPUT_NODE_USE_EDITBOX
+    auto editBoxSpr = CCScale9Sprite::create("GJ_square01.png");
+
+    editBoxInput = CCEditBox::create(ccp(100, 100), editBoxSpr);
+    editBoxInput->setVisible(false);
+    editBoxInput->setTouchEnabled(false);
+    editBoxInput->setInputFlag(EditBoxInputFlag::kEditBoxInputFlagSensitive);
+    editBoxInput->setInputMode(kEditBoxInputModeSingleLine);
+    editBoxInput->setDelegate(this);
+    this->addChild(editBoxInput);
+    #endif
 
     bg = EasyBG::create();
     bg->setTargettingNode(this);
@@ -63,12 +76,20 @@ void BetterInputNode::selectInput(bool selected)
 
     if (selected)
     {
+        #ifdef BETTER_INPUT_NODE_USE_EDITBOX
+        editBoxInput->m_pEditBoxImpl->openKeyboard();
+        #else
         ttfInput->attachWithIME();
+        #endif
         bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
     }
     else
     {
+        #ifdef BETTER_INPUT_NODE_USE_EDITBOX
+        editBoxInput->m_pEditBoxImpl->closeKeyboard();
+        #else
         ttfInput->detachWithIME();
+        #endif
         bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
     }
 }
@@ -113,6 +134,10 @@ void BetterInputNode::setString(std::string str)
     ttfInput->setString(str.c_str());
     textLbl->setString(str.c_str());
 
+    #ifdef BETTER_INPUT_NODE_USE_EDITBOX
+    editBoxInput->setText(str.c_str());
+    #endif
+
     this->text = str;
 }
 
@@ -148,6 +173,10 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
 {
     if (code == enumKeyCodes::KEY_Unknown)
     {
+        #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
+        this->text.clear();
+        #endif
+        
         this->text.append(text);
         setString(this->text);
     }
@@ -162,6 +191,27 @@ bool BetterInputNode::onTextFieldDeleteBackward(CCTextFieldTTF * sender, const c
     setString(this->text.substr(0, this->text.size() - nLen));
 
     return false;
+}
+
+void BetterInputNode::editBoxEditingDidBegin(CCEditBox* editBox)
+{
+    onTextFieldAttachWithIME(nullptr);
+}
+
+void BetterInputNode::editBoxEditingDidEnd(CCEditBox* editBox)
+{
+    onTextFieldDetachWithIME(nullptr);
+}
+
+void BetterInputNode::editBoxTextChanged(CCEditBox* editBox, const gd::string& text)
+{
+    this->text = text;
+    setString(this->text);
+}
+
+void BetterInputNode::editBoxReturn(CCEditBox* editBox)
+{
+
 }
 
 bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
