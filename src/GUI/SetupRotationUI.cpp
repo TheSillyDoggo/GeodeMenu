@@ -67,18 +67,22 @@ bool SetupRotationUI::setup()
     auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupRotationUI::onClose));
     menu->addChild(btn);
 
-    input = BetterInputNode::create(90, "setup-rotation/input-placeholder");
+    input = BetterInputNode::create(100, "setup-rotation/input-placeholder");
     input->setAlignment(kCCTextAlignmentCenter);
     input->setDelegate(this);
     input->setScale(0.8f);
 
-    control = GJRotationControl::create();
-    control->m_delegate = this;
+    auto lbl = AdvLabelBMFont::createWithLocalisation("setup-rotation/input-title", "bigFont.fnt");
+    lbl->limitLabelWidth(90, 0.4f, 0);
+
+    control = BetterRotationControl::create();
+    control->setDelegate(this);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
-    m_mainLayer->addChildAtPosition(input, Anchor::BottomLeft, ccp(50, 60));
-    m_mainLayer->addChildAtPosition(control, Anchor::Center, ccp(0, 5));
+    m_mainLayer->addChildAtPosition(lbl, Anchor::Right, ccp(-60, 12));
+    m_mainLayer->addChildAtPosition(input, Anchor::Right, ccp(-60, -12));
+    m_mainLayer->addChildAtPosition(control, Anchor::Center, ccp(-50, 5));
     return true;
 }
 

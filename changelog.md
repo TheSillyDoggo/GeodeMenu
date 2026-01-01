@@ -15,6 +15,7 @@
 - Added Death Object Only option to Show Hitboxes on Death
 - Added Hitbox Trail option to Show Hitboxes on Death
 - Added Option to disable teleport portal particles in No Particles
+- Added Option to change Gradient BG rotation
 - Moved Slider Limit Bypass to Creator category
 - Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes

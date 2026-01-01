@@ -15,6 +15,8 @@ bool BackgroundSprite::init()
     gradientBG = CCLayerGradient::create(ccc4(0, 0, 0, 255), ccc4(0, 0, 0, 255));
     gradientBG->ignoreAnchorPointForPosition(false);
     gradientBG->setVector(ccp(0, -1));
+    gradientBG->setScaleX(-1);
+    gradientBG->setScaleY(-1);
 
     clippingStencil = CCScale9Sprite::create("GJ_square01.png");
     clipping = CCClippingNode::create(clippingStencil);

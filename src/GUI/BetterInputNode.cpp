@@ -172,24 +172,13 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (code == enumKeyCodes::KEY_Left)
     {
         moveCursor(-1);
-    }
-
-    if (code == enumKeyCodes::KEY_Home)
-    {
-        cursorPos = 0;
-    }
-
-    if (code == enumKeyCodes::KEY_End)
-    {
-        cursorPos = -1;
-    }
+    }   
 
     if (code == enumKeyCodes::KEY_Unknown)
     {
         std::string str = "";
 
         #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
-        this->text.clear();
         str = text;
         #else
         str = this->text;
@@ -308,6 +297,11 @@ int BetterInputNode::getRealCursorPos()
 
 void BetterInputNode::moveCursor(int by)
 {
+    #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
+    cursorPos = -1;
+    return;
+    #endif
+
     if (cursorPos == -1)
     {
         if (by > 0)

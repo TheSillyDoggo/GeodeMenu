@@ -36,7 +36,7 @@ class GradientBGDirection : public RotationModule
         {
             setID("gradient-bg/rotation");
 
-            setDefaultValue(-90);
+            setDefaultValue(90);
         }
 };
 

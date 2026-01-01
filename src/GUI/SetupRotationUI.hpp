@@ -4,6 +4,7 @@
 #include "BackgroundSprite.hpp"
 #include "../Client/CategoryNode.hpp"
 #include "BetterInputNode.hpp"
+#include "BetterRotationControl.hpp"
 
 using namespace geode::prelude;
 
@@ -16,7 +17,7 @@ class SetupRotationUI : public geode::Popup<>, public TextInputDelegate, public 
         float defaultRot = 0;
         std::function<void(float)> onFinish = nullptr;
         BetterInputNode* input = nullptr;
-        GJRotationControl* control = nullptr;
+        BetterRotationControl* control = nullptr;
 
         virtual void textChanged(CCTextInputNode* node);
         virtual void angleChanged(float angle);
