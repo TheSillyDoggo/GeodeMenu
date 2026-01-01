@@ -164,7 +164,7 @@ bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 
 bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * text, int nLen, cocos2d::enumKeyCodes code)
 {
-    return;
+    return true;
     if (code == enumKeyCodes::KEY_Right)
     {
         moveCursor(1);
