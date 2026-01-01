@@ -1,3 +1,5 @@
+# QOLMod
+
 QOLMod is The **Best** Free Mod Menu, It has a user friendly interface with over <ca>70 features</c> to help improve your <cg>Geometry Dash</c> experience such as **Startpos Switcher**, **Show Hitboxes**, **Speedhack**, **Solid Wave Trail** and **much** more.
 
 ## How to use.
@@ -6,7 +8,7 @@ On Android / iOS:
 
 On Windows / Mac:
 - Press **Tab** on your keyboard
-- You can assign keybinds to mods in the **Config** category in the menu
+- You can assign keybinds to mods by pressing the **keyboard** button in the bottom right of a mods info popup
 
 ## Support
 

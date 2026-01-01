@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Noclip.hpp"
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 
@@ -15,6 +14,7 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
 {
     struct Fields
     {
+        bool hasDiedThisAttempt = false;
         int timeInLevel = 0;
 
         bool hasDiedThisTick = false;

@@ -1,6 +1,7 @@
 #include "Hooks.hpp"
 #include "../../../Labels/Nodes/LabelContainerLayer.hpp"
 #include <Geode/modify/PlayerObject.hpp>
+#include "Noclip.hpp"
 
 #define NOCLIP_BASE() base_cast<NoclipBaseGameLayer*>(this)
 
@@ -53,6 +54,8 @@ int NoclipBaseGameLayer::getNoclipDeaths(NoclipPlayerSelector selector)
 void NoclipBaseGameLayer::resetNoclipValues()
 {
     auto fields = m_fields.self();
+
+    fields->hasDiedThisAttempt = false;
 
     fields->totalTicksDead = 0;
     fields->p1TicksDead = 0;
@@ -146,6 +149,9 @@ class $modify (PlayLayer)
     {
         if (p1 != nullptr)
             NOCLIP_BASE()->m_fields->deathObject = p1;
+
+        if (p1 != m_anticheatSpike)
+            NOCLIP_BASE()->m_fields->hasDiedThisAttempt = true;
 
         if (!Noclip::get()->getRealEnabled())
             return PlayLayer::destroyPlayer(p0, p1);

@@ -2,6 +2,7 @@
 
 #include "../../Client/CategoryNode.hpp"
 #include "../BetterSlider.hpp"
+#include "../BetterInputNode.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
 using namespace geode::prelude;
@@ -20,7 +21,7 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
 
         CCMenuItemSpriteExtra* trashBtn = nullptr;
         BetterSlider* slider = nullptr;
-        TextInput* input = nullptr;
+        BetterInputNode* input = nullptr;
 
         ~SpeedhackNode();
 

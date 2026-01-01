@@ -15,18 +15,13 @@ bool SpeedhackNode::init()
     auto menu = CCMenu::create();
     menu->setPosition(ccp(0, 0));
 
-    input = TextInput::create(100, "Value");
+    input = BetterInputNode::create(100, "Value");
     input->setString(Speedhack::get()->getText());
     input->setDelegate(this);
-    input->setFilter("1234567890.");
+    input->setCharFilter("1234567890.");
     input->setPosition(getContentSize() / 2 + ccp(38, 75));
-
-    input->getInputNode()->setUserObject("nwo5.scroll_inputs/input-type-float", CCNode::create());
-    input->getInputNode()->setUserObject("nwo5.scroll_inputs/float-rounding", CCInteger::create(2));
-
-    input->getInputNode()->setUserObject("nwo5.scroll_inputs/step-float", CCFloat::create(0.25f));
-    input->getInputNode()->setUserObject("nwo5.scroll_inputs/small-step-float", CCFloat::create(0.1f));
-    input->getInputNode()->setUserObject("nwo5.scroll_inputs/big-step-float", CCFloat::create(1.0f));
+    input->setNumHoldValues(true, 0.01f, 5.0f, 1.0f);
+    input->setAlignment(kCCTextAlignmentCenter);
 
     auto speedLbl = AdvLabelBMFont::createWithLocalisation("speedhack/speed-label", "bigFont.fnt");
     speedLbl->setAnchorPoint(ccp(1, 0.5f));

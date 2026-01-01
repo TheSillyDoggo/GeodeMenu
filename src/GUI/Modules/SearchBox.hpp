@@ -23,5 +23,17 @@ class SearchBox : public Module
         }
 };
 
+class SearchOnKeyPress : public Module
+{
+    public:
+        MODULE_SETUP(SearchOnKeyPress)
+        {
+            setID("search-on-keypress");
+            setCategory("Config/Menu");
+            setDefaultEnabled(true);
+        }
+};
+
 
 SUBMIT_HACK(SearchBox);
+SUBMIT_HACK(SearchOnKeyPress);

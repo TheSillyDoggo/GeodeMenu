@@ -41,6 +41,23 @@ void SafePlayLayer::showNewBest(bool newReward, int orbs, int diamonds, bool dem
     PlayLayer::showNewBest(newReward, orbs, diamonds, demonKey, noRetry, noTitle);
 }
 
+void SafePlayLayer::postUpdate(float dt)
+{
+    PlayLayer::postUpdate(dt);
+
+    for (auto mod : Module::getAll())
+    {
+        if (mod->getSafeModeTrigger() == SafeModeTrigger::Custom)
+        {
+            if (mod->getSafeModeCustom()())
+            {
+                SafeMode::get()->addMessage(SafeModeTrigger::Attempt, fmt::format("<cc>{}</c> enabled for <co>this attempt</c>", mod->getName()));
+                SafeMode::get()->isAttemptCheated = true;
+            }
+        }
+    }
+}
+
 void SafeGJGameLevel::onModify(auto& self)
 {
     (void)self.setHookPriorityPost("GJGameLevel::savePercentage", Priority::First);

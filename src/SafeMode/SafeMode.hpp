@@ -7,6 +7,8 @@ using namespace geode::prelude;
 
 class SafeMode
 {
+    friend class SafePlayLayer;
+
     protected:
         bool isLevelLoadCheated = false;
         bool isAttemptCheated = false;

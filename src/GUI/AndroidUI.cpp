@@ -8,6 +8,7 @@
 #include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "BetterInputNode.hpp"
 #include "BlurLayer.hpp"
 
 bool AndroidUI::setup()
@@ -354,9 +355,40 @@ void AndroidUI::close()
     instance = nullptr;
 }
 
+void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
+{
+    geode::Popup<>::keyDown(key);
+
+    auto old = selectedCategory;
+
+    if (SearchOnKeyPress::get()->getRealEnabled())
+    {
+        if (selectedCategory != "Search")
+        {
+            selectedCategory = "Search";
+
+            categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(true);
+
+            updateTabs();
+        }
+    }
+
+    selectedCategory = old;
+}
+
 void AndroidUI::visit()
 {
     AndroidBall::get()->visit();
+
+    if (selectedCategory != "Search" && categories["Search"]->isVisible())
+    {
+        if (categories["Search"]->getChildByType<BetterInputNode*>(0)->getString().empty())
+        {
+            categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(false);
+
+            updateTabs();
+        }
+    }
 
     // for an animation i was making, but i couldnt get clipping to work right
 

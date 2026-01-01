@@ -18,6 +18,9 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         std::string text = "";
         int cursorPos = -1;
 
+        int maxChars = -1;
+        std::string charFilter = "";
+
         bool isNumHoldActive = false;
         float numHoldStart = 0;
 
@@ -49,8 +52,12 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         virtual bool onTextFieldDeleteBackward(CCTextFieldTTF * sender, const char* delText, int nLen);
         virtual bool onDraw(CCTextFieldTTF * sender);
 
+        void updateCursorPos(bool isTouchUpdate, CCPoint touchPos);
+
         int getRealCursorPos();
         void moveCursor(int by);
+
+        std::string filterString(std::string ss);
 
     public:
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");
@@ -65,6 +72,9 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
 
         void setDelegate(TextInputDelegate* delegate);
         TextInputDelegate* getDelegate();
+
+        void setMaxChars(int max);
+        void setCharFilter(std::string str);
 
         void setNumHoldValues(bool enabled, float step = 1.0f, float interval = 1.0f, float def = 1.0f);
 

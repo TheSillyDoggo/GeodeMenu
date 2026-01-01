@@ -41,7 +41,7 @@ class SafeModeText : public InputModule
             setDefaultString("Safe Mode :3");
             setPlaceholderString("Text");
 
-            setStringFilterCommon(CommonFilter::Any);
+            setStringFilter("");
             setMaxCharCount(50);
             setPriority(2);
         }

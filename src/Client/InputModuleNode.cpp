@@ -31,14 +31,23 @@ void InputModuleNode::setup()
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(75, 0.5f, 0);
 
-    input = TextInput::create(90 + (75 - label->getScaledContentWidth()), mod->getPlaceholderString());
-    input->getInputNode()->setUserObject("disable-char-bypass"_spr, CCNode::create());
-    input->setMaxCharCount(mod->getMaxCharCount());
-    input->setFilter(mod->getStringFilter());
+    input = BetterInputNode::create(90 + (75 - label->getScaledContentWidth()), mod->getPlaceholderString());
+    input->setMaxChars(mod->getMaxCharCount());
+    input->setCharFilter(mod->getStringFilter());
     input->setString(mod->getString());
     input->setDelegate(this);
     input->setScale(0.775f);
     input->setAnchorPoint(ccp(1, 0.5f));
+
+    if (mod->getStringFilter() == "1234567890")
+    {
+        input->setNumHoldValues(true, 1, 20, utils::numFromString<int>(mod->getDefaultString()).unwrapOr(0));
+    }
+
+    if (mod->getStringFilter() == "1234567890.")
+    {
+        input->setNumHoldValues(true, 1.0f / 10.0f, 20.0f / 10.0f, utils::numFromString<float>(mod->getDefaultString()).unwrapOr(0));
+    }
 
     if (!mod->getHint().empty())
     {
@@ -75,6 +84,6 @@ void InputModuleNode::update(float dt)
 {
     auto mod = static_cast<InputModule*>(module);
 
-    if (input->getInputNode()->getString().size() > 0)
-        input->getInputNode()->m_textLabel->setString(utils::string::replace(mod->getDisplayFilter(), "%s", input->getString()).c_str());
+    // if (input->getString().size() > 0)
+        // input->getInputNode()->m_textLabel->setString(utils::string::replace(mod->getDisplayFilter(), "%s", input->getString()).c_str());
 }

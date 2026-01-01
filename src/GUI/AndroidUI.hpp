@@ -56,6 +56,8 @@ class AndroidUI : public geode::Popup<>
             "Favourites",
         };
 
+        void keyDown(cocos2d::enumKeyCodes key);
+
         ~AndroidUI();
 
     public:

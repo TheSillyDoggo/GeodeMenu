@@ -64,7 +64,7 @@ void SafeMode::onModuleToggled(Module* mod)
 
 void SafeMode::onSpeedhackChanged()
 {
-    if (Speedhack::get()->getRealValue() != 1.0f)
+    if (Speedhack::get()->getRealValue() < 1)
     {
         isAttemptCheated = true;
         addMessage(SafeModeTrigger::Attempt, "<cc>Speedhack</c> enabled for <co>this attempt</c>");

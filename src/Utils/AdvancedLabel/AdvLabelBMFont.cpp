@@ -37,7 +37,7 @@ AdvLabelBMFont* AdvLabelBMFont::createWithLocalisation(std::string localisationK
     return createWithString(LocalisationManager::get()->getLocalisedString(localisationKey), font);
 }
 
-AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpaces)
+AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpaces, bool showTags)
 {
     AdvLabelStruct str;
     std::string c = "";
@@ -106,6 +106,8 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpace
     if (segment == tag) \
     { \
         col = cc3bFromHexString(hex).unwrap(); \
+        if (showTags) \
+            str.parts.push_back(AdvLabelStruct::AdvPart({ AdvLabelStruct::AdvPartType::Label, segment, col })); \
         continue; \
     }
 
@@ -396,7 +398,7 @@ void AdvLabelBMFont::limitLabelWidth(float width, float defaultScale, float minS
 
 void AdvLabelBMFont::setString(const char *newString)
 {
-    setStruct(structFromString(newString, splitEverySpace));
+    setStruct(structFromString(newString, splitEverySpace, showTags));
 }
 
 const char* AdvLabelBMFont::getString(void)
@@ -487,4 +489,25 @@ void AdvLabelBMFont::setSplitEverySpace(bool split)
 void AdvLabelBMFont::setLineSpacing(float spacing)
 {
     this->lineSpacing = spacing;
+}
+
+void AdvLabelBMFont::setShowTags(bool show)
+{
+    this->showTags = show;
+}
+
+std::vector<CCNodeRGBA*> AdvLabelBMFont::getCharacterNodes()
+{
+    std::vector<CCNodeRGBA*> nodes = {};
+
+    for (auto lbl : visibleLabels)
+    {
+        for (auto child : CCArrayExt<CCNodeRGBA*>(lbl->getChildren()))
+        {
+            if (child->isVisible())
+                nodes.push_back(child);
+        }
+    }
+
+    return nodes;
 }

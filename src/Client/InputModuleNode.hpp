@@ -2,12 +2,13 @@
 
 #include "ModuleNode.hpp"
 #include "InputModule.hpp"
+#include "../GUI/BetterInputNode.hpp"
 
 class InputModuleNode : public ModuleNode, public TextInputDelegate
 {
     protected:
         ~InputModuleNode();
-        TextInput* input = nullptr;
+        BetterInputNode* input = nullptr;
     
     public:
         static InputModuleNode* create(InputModule* module);

@@ -4,6 +4,7 @@
 #include "../../../Client/FloatSliderModule.hpp"
 #include "../../../Client/ColourModule.hpp"
 #include "../../../Client/InputModule.hpp"
+#include "Hooks.hpp"
 
 using namespace geode::prelude;
 
@@ -12,11 +13,19 @@ class Noclip : public Module
     public:
         MODULE_SETUP(Noclip)
         {
-            setName("Noclip");
             setID("noclip");
             setCategory("Level");
-            setDescription("Prevents the player from dying");
-            setSafeModeTrigger(SafeModeTrigger::Attempt);
+            setSafeModeTrigger(SafeModeTrigger::Custom);
+            setSafeModeCustom([this]
+            {
+                if (auto pl = PlayLayer::get())
+                {
+                    if (reinterpret_cast<NoclipBaseGameLayer*>(pl)->m_fields->hasDiedThisAttempt)
+                        return true;
+                }
+
+                return false;
+            });
             setPriority(1);
         }
 };

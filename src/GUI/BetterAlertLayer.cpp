@@ -2,6 +2,7 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterButtonSprite.hpp"
 #include "BlurLayer.hpp"
+#include "EasyBG.hpp"
 
 BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
@@ -74,6 +75,12 @@ bool BetterAlertLayer::init(FLAlertLayerProtocol* delegate, char const* title, g
     titleLabel->setAnchorPoint(ccp(0.5f, 1));
     titleLabel->limitLabelWidth(width - 30, 0.9f, 0);
 
+    auto bg2 = EasyBG::create();
+    bg2->setTargettingNode(titleLabel);
+    bg2->setTargettingOffset(ccp(4, 4));
+    bg2->setPosition(titleLabel->getPosition() + ccp(0, -titleLabel->getScaledContentHeight() / 2));
+    bg2->setVisible(titleLabel->isUsingTTFCurrently());
+
     content->setPosition(ccp(getContentWidth() / 2, getContentHeight() / 2 + 5));
 
     auto menu = CCMenu::create();
@@ -87,6 +94,7 @@ bool BetterAlertLayer::init(FLAlertLayerProtocol* delegate, char const* title, g
 
     m_mainLayer->addChild(content, 6);
     m_mainLayer->addChild(titleLabel, 7);
+    m_mainLayer->addChild(bg2, 5);
     m_mainLayer->addChild(menu, 8);
     return true;
 }

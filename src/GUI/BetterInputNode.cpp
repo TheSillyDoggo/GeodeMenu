@@ -1,5 +1,6 @@
 #include "BetterInputNode.hpp"
 #include "../Utils/Num.hpp"
+#include "../Utils/RealtimeAction.hpp"
 
 BetterInputNode* BetterInputNode::create(float width, std::string placeholder, std::string font)
 {
@@ -37,6 +38,7 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     cursorCarot = CCLayerColor::create(ccc4(255, 255, 255, 125), 1.25f, 15);
     cursorCarot->ignoreAnchorPointForPosition(false);
     cursorCarot->setAnchorPoint(ccp(0.5f, 0.5f));
+    cursorCarot->runAction(RealtimeAction::create(CCRepeatForever::create(CCSequence::create(CCFadeTo::create(0.1f, 175), CCDelayTime::create(0.4f), CCFadeTo::create(0.1f, 125), CCDelayTime::create(0.4f), nullptr))));
 
     labelContainer = CCNode::create();
     labelContainer->setAnchorPoint(ccp(0.5f, 0.5f));
@@ -47,6 +49,7 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     labelContainer->addChild(placeholderLbl);
 
     textLbl = AdvLabelBMFont::createWithStruct({}, font);
+    textLbl->setShowTags(true);
     textLbl->setAnchorPoint(ccp(0, 0));
 
     textLblUser = CCLabelTTF::create("", "Arial.ttf", 32);
@@ -69,12 +72,12 @@ void BetterInputNode::selectInput(bool selected)
     if (selected)
     {
         ttfInput->attachWithIME();
-        bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+        bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
     }
     else
     {
         ttfInput->detachWithIME();
-        bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
+        bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 100)));
     }
 }
 
@@ -111,14 +114,18 @@ void BetterInputNode::visit()
     }
 
     cursorCarot->setVisible(isSelected);
-    cursorCarot->setPosition(ccp(labelContainer->getContentWidth() * ((float)getRealCursorPos() / (float)std::max<int>(text.size(), 1)), labelContainer->getContentHeight() / 2));
+    cursorCarot->setPositionY(labelContainer->getContentHeight() / 2);
     cursorCarot->setScale(1.0f / labelContainer->getScale());
+
+    updateCursorPos(false, CCPointZero);
 
     CCMenu::visit();
 }
 
 void BetterInputNode::setString(std::string str)
 {
+    str = filterString(str);
+
     this->text = str;
 
     ttfInput->setString(str.c_str());
@@ -134,6 +141,51 @@ void BetterInputNode::setString(std::string str)
     #ifdef GEODE_IS_DESKTOP
     ttfInput->m_uCursorPos = str.size() + 1;
     #endif
+
+    updateCursorPos(false, CCPointZero);
+}
+
+std::string BetterInputNode::filterString(std::string ss)
+{
+    std::string s;
+    std::string s2;
+
+    if (maxChars != -1)
+        s = ss.substr(0, maxChars);
+    else
+        s = ss;
+    
+    if (!charFilter.empty())
+    {
+        for (auto ch : s)
+        {
+            for (auto ch2 : charFilter)
+            {
+                if (ch2 == ch)
+                {
+                    s2 += ch;
+                    break;
+                }
+            }
+            
+        }
+    }
+    else
+    {
+        s2 += s;
+    }
+
+    return s2;
+}
+
+void BetterInputNode::setMaxChars(int max)
+{
+    this->maxChars = max;
+}
+
+void BetterInputNode::setCharFilter(std::string str)
+{
+    this->charFilter = str;
 }
 
 std::string BetterInputNode::getString()
@@ -153,14 +205,17 @@ CCTextAlignment BetterInputNode::getAlignment()
 
 bool BetterInputNode::onTextFieldAttachWithIME(CCTextFieldTTF * sender)
 {
-    bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+    bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
+    isSelected = true;
 
     return false;
 }
 
 bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 {
-    bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
+    bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 100)));
+    isSelected = false;
+    
     return false;
 }
 
@@ -172,14 +227,60 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (text == "\n" && nLen == 1)
         return true; 
 
-    if (code == enumKeyCodes::KEY_Right)
+    if (CCKeyboardDispatcher::get()->getControlKeyPressed())
     {
-        moveCursor(1);
-    }
+        if (code == enumKeyCodes::KEY_Left)
+        {
+            int by = -1;
 
-    if (code == enumKeyCodes::KEY_Left)
+            char lastChar = 'A';
+
+            for (int i = getRealCursorPos() - 1; i > 0; i--)
+            {
+                if (text[i] == ' ' && lastChar != ' ')
+                {
+                    break;
+                }
+
+                by--;
+                lastChar = text[i];
+            }
+
+            moveCursor(by);
+        }
+
+        if (code == enumKeyCodes::KEY_Right)
+        {
+            int by = 1;
+
+            char lastChar = 'A';
+
+            for (int i = getRealCursorPos(); i < text.size(); i++)
+            {
+                if (text[i] != ' ' && lastChar == ' ')
+                {
+                    by--;
+                    break;
+                }
+
+                by++;
+                lastChar = text[i];
+            }
+
+            moveCursor(by);
+        }
+    }
+    else
     {
-        moveCursor(-1);
+        if (code == enumKeyCodes::KEY_Left)
+        {
+            moveCursor(-1);
+        }
+
+        if (code == enumKeyCodes::KEY_Right)
+        {
+            moveCursor(1);
+        }
     }
 
     if (code == enumKeyCodes::KEY_Unknown)
@@ -208,10 +309,15 @@ bool BetterInputNode::onTextFieldDeleteBackward(CCTextFieldTTF * sender, const c
     if (getRealCursorPos() == 0)
         return false;
     
+    auto cPos = cursorPos;
+
     moveCursor(-nLen);
     
     this->text.erase(getRealCursorPos(), nLen);
     setString(this->text);
+
+    if (cPos == -1)
+        cursorPos = -1;
 
     if (delegate)
         delegate->textChanged(nullptr);
@@ -229,9 +335,15 @@ void BetterInputNode::setNumHoldValues(bool enabled, float step, float interval,
 
 bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
+    if (auto n = getTopLevelNonSceneNode(this))
+    {
+        if (CCScene::get()->getChildByIndex(-1) != n)
+            return false;
+    }
+
     if (getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && nodeIsVisible(this))
     {
-        bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+        bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
 
         return true;
     }
@@ -257,7 +369,14 @@ void BetterInputNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
         float v = numHoldStart + (numHoldStep * steps);
 
-        setString(utils::numToString<float>(v, 2));
+        std::string ss;
+
+        if ((int)v == v)
+            ss = utils::numToString<int>(v, 0);
+        else
+            ss = utils::numToString<float>(v, 2);
+
+        setString(ss);
 
         if (delegate)
             delegate->textChanged(nullptr);
@@ -266,8 +385,7 @@ void BetterInputNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
 void BetterInputNode::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
-    if (!isSelected)
-        cursorPos = -1;
+    updateCursorPos(true, pTouch->getLocation());
     
     selectInput(getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && !isNumHoldActive);
 
@@ -281,7 +399,7 @@ void BetterInputNode::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 
 bool BetterInputNode::onDraw(CCTextFieldTTF * sender)
 {
-    return !useTTFView;
+    return false;
 }
 
 void BetterInputNode::setDelegate(TextInputDelegate* delegate)
@@ -305,6 +423,7 @@ int BetterInputNode::getRealCursorPos()
 void BetterInputNode::moveCursor(int by)
 {
     #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
+    updateCursorPos(false, CCPointZero);
     cursorPos = -1;
     return;
     #endif
@@ -324,4 +443,57 @@ void BetterInputNode::moveCursor(int by)
 
     if (cursorPos >= text.size())
         cursorPos = -1;
+
+    updateCursorPos(false, CCPointZero);
+}
+
+void BetterInputNode::updateCursorPos(bool isTouchUpdate, CCPoint touchPos)
+{
+    auto nodes = textLbl->getCharacterNodes();
+
+    if (isTouchUpdate)
+    {
+        float maxX = getWorldSpaceBoundingBox(textLbl).getMinX();
+        float minX = getWorldSpaceBoundingBox(textLbl).getMinX();
+
+        int i = 0;
+        for (auto node : nodes)
+        {
+            auto bb = getWorldSpaceBoundingBox(node);
+
+            if (touchPos.x > bb.getMinX() - bb.size.width / 2)
+                cursorPos = i;
+
+            maxX = std::max<float>(bb.getMidX(), maxX);
+            i++;
+        }
+
+        if (touchPos.x > maxX)
+        {
+            cursorPos = -1;
+        }
+
+        if (touchPos.x < minX)
+        {
+            cursorPos = 0;
+        }
+    }
+
+    auto cPos = getRealCursorPos();
+
+    if (nodes.size() > cPos)
+    {
+        if (auto n = nodes[cPos])
+        {
+            cursorCarot->setPositionX((n->getPositionX() - n->getScaledContentWidth() / 2) + n->getParent()->getPositionX());
+        }
+        else
+        {
+            cursorCarot->setPositionX(labelContainer->getContentWidth());
+        }
+    }
+    else
+    {
+        cursorCarot->setPositionX(labelContainer->getContentWidth());
+    }
 }

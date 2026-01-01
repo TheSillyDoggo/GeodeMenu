@@ -4,6 +4,7 @@
 -- Current Languages are:
 -- Spanish
 -- Vietnamese
+-- Polish
 -- German
 -- Indonesian
 -- Russian
@@ -16,7 +17,10 @@
 - Added Hitbox Trail option to Show Hitboxes on Death
 - Added Option to disable teleport portal particles in No Particles
 - Added Option to change Gradient BG rotation
+- Added Search on Keypress
 - Moved Slider Limit Bypass to Creator category
+- Made Noclip only trigger Auto Safe Mode when you die
+- Improved all Input Fields used in the UI
 - Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes
 - (Hopefully) Fixed crash using Blur Background on iOS
