@@ -169,6 +169,9 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (!_text)
         return true;
 
+    if (text == "\n" && nLen == 1)
+        return true; 
+
     if (code == enumKeyCodes::KEY_Right)
     {
         moveCursor(1);
@@ -181,8 +184,6 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
 
     if (code == enumKeyCodes::KEY_Unknown)
     {
-        log::info("test: {}, nLen: {}", _text, nLen);
-
         #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
         this->text = "";
         std::string str = std::string(_text);
