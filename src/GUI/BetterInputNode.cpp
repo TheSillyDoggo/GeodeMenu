@@ -186,12 +186,12 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         str.insert(getRealCursorPos(), text);
         #endif
         
-        setString(str);
+        // setString(str);
 
-        //moveCursor(nLen);
+        moveCursor(nLen);
 
-        //if (delegate)
-            //delegate->textChanged(nullptr);
+        if (delegate)
+            delegate->textChanged(nullptr);
     }
     
     return false;
