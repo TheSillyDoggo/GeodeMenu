@@ -177,8 +177,6 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         moveCursor(-1);
     }
 
-    return false;
-
     if (code == enumKeyCodes::KEY_Unknown)
     {
         #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
@@ -190,10 +188,10 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         
         setString(str);
 
-        moveCursor(nLen);
+        //moveCursor(nLen);
 
-        if (delegate)
-            delegate->textChanged(nullptr);
+        //if (delegate)
+            //delegate->textChanged(nullptr);
     }
     
     return false;
