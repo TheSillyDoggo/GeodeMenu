@@ -119,8 +119,6 @@ void BetterInputNode::visit()
 
 void BetterInputNode::setString(std::string str)
 {
-    // ttfInput->m_uCursorPos = str.size() + 1;
-
     ttfInput->setString(str.c_str());
     textLbl->setString(str.c_str());
 
@@ -132,6 +130,10 @@ void BetterInputNode::setString(std::string str)
     }
 
     this->text = str;
+
+    #ifdef GEODE_IS_DESKTOP
+    ttfInput->m_uCursorPos = str.size() + 1;
+    #endif
 }
 
 std::string BetterInputNode::getString()
@@ -162,9 +164,9 @@ bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
     return false;
 }
 
-bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * text, int nLen, cocos2d::enumKeyCodes code)
+bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * _text, int nLen, cocos2d::enumKeyCodes code)
 {
-    if (!text)
+    if (!_text)
         return true;
 
     if (code == enumKeyCodes::KEY_Right)
@@ -180,10 +182,11 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (code == enumKeyCodes::KEY_Unknown)
     {
         #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
-        std::string str = std::string(text);
+        this->text = "";
+        std::string str = std::string(_text);
         #else
         std::string str = this->text;
-        str.insert(getRealCursorPos(), text);
+        str.insert(getRealCursorPos(), _text);
         #endif
         
         setString(str);
