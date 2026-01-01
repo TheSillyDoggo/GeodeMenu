@@ -69,12 +69,12 @@ void BetterInputNode::selectInput(bool selected)
     if (selected)
     {
         ttfInput->attachWithIME();
-        //bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+        bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
     }
     else
     {
         ttfInput->detachWithIME();
-        //bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
+        bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
     }
 }
 
@@ -110,9 +110,9 @@ void BetterInputNode::visit()
             break;
     }
 
-    // cursorCarot->setVisible(isSelected);
-    // cursorCarot->setPosition(ccp(labelContainer->getContentWidth() * ((float)getRealCursorPos() / (float)std::max<int>(text.size(), 1)), labelContainer->getContentHeight() / 2));
-    // cursorCarot->setScale(1.0f / labelContainer->getScale());
+    cursorCarot->setVisible(isSelected);
+    cursorCarot->setPosition(ccp(labelContainer->getContentWidth() * ((float)getRealCursorPos() / (float)std::max<int>(text.size(), 1)), labelContainer->getContentHeight() / 2));
+    cursorCarot->setScale(1.0f / labelContainer->getScale());
 
     CCMenu::visit();
 }
@@ -151,20 +151,20 @@ CCTextAlignment BetterInputNode::getAlignment()
 
 bool BetterInputNode::onTextFieldAttachWithIME(CCTextFieldTTF * sender)
 {
-    //bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+    bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
 
     return false;
 }
 
 bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 {
-    //bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
+    bg->getBG()->runAction(CCFadeTo::create(0.1f, 100));
     return false;
 }
 
 bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * text, int nLen, cocos2d::enumKeyCodes code)
 {
-    return true;
+    return false;
     if (code == enumKeyCodes::KEY_Right)
     {
         moveCursor(1);
@@ -225,7 +225,7 @@ bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && nodeIsVisible(this))
     {
-        // bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
+        bg->getBG()->runAction(CCFadeTo::create(0.1f, 125));
 
         return true;
     }
