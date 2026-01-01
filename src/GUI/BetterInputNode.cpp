@@ -119,7 +119,7 @@ void BetterInputNode::visit()
 
 void BetterInputNode::setString(std::string str)
 {
-    ttfInput->m_uCursorPos = str.size() + 1;
+    // ttfInput->m_uCursorPos = str.size() + 1;
 
     ttfInput->setString(str.c_str());
     textLbl->setString(str.c_str());
@@ -186,7 +186,7 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         str.insert(getRealCursorPos(), text);
         #endif
         
-        // setString(str);
+        setString(str);
 
         moveCursor(nLen);
 
