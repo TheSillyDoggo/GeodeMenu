@@ -164,7 +164,9 @@ bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 
 bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * text, int nLen, cocos2d::enumKeyCodes code)
 {
-    return false;
+    if (!text)
+        return true;
+
     if (code == enumKeyCodes::KEY_Right)
     {
         moveCursor(1);
@@ -173,16 +175,16 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (code == enumKeyCodes::KEY_Left)
     {
         moveCursor(-1);
-    }   
+    }
+
+    return false;
 
     if (code == enumKeyCodes::KEY_Unknown)
     {
-        std::string str = "";
-
         #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
-        str = text;
+        std::string str = std::string(text);
         #else
-        str = this->text;
+        std::string str = this->text;
         str.insert(getRealCursorPos(), text);
         #endif
         
