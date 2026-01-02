@@ -5,6 +5,7 @@
 #include "../Utils/DLL.hpp"
 #include "../Keybinds/KeyConfigStruct.hpp"
 #include "../Keybinds/KeyState.hpp"
+#include "ModuleShortcutConfig.hpp"
 
 #define SUBMIT_HACK(func) \
 $on_mod(Loaded) \
@@ -69,6 +70,10 @@ class Module
         int sortPriority = 8008135;
         KeyConfigStruct keyConfig = {};
 
+        bool shortcutEnabled = false;
+        cocos2d::CCNode* shortcutNode = nullptr;
+        ModuleShortcutConfig shortcutConf = {};
+
         void DLL setName(std::string str);
         void DLL setID(std::string str);
         void DLL setCategory(std::string str);
@@ -90,6 +95,9 @@ class Module
 
         void saveKeyConfig();
         void loadKeyConfig();
+
+        void saveShortcutConfig();
+        void loadShortcutConfig();
 
     private:
         bool userEnabled = false;
@@ -120,6 +128,10 @@ class Module
 
         KeyConfigStruct getKeybind();
 
+        void setShortcutConfig(bool enabled, ModuleShortcutConfig conf);
+        bool isShortcutEnabled();
+        ModuleShortcutConfig getShortcutConfig();
+
         Module* getParent();
         std::string getName();
         std::string getID();
@@ -138,4 +150,5 @@ class Module
         virtual ModuleNode* getNode();
         virtual void DLL onToggle();
         virtual void onKeybindActivated(KeyState state);
+        virtual bool shouldShortcutShowActivated();
 };

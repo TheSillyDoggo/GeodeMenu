@@ -30,6 +30,7 @@ class ModuleNode : public CCMenu
         void onInfoToggleFavourite(CCObject* sender);
         void onOptions(CCObject* sender);
         void onChangeKeybind(CCObject* sender);
+        void onChangeShortcut(CCObject* sender);
 
         void onUpdateLabelColour(float dt);
 

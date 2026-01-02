@@ -190,6 +190,11 @@ void ModuleNode::onOptions(CCObject* sender)
     OptionsUI::create(module)->show();
 }
 
+void ModuleNode::onChangeShortcut(CCObject* sender)
+{
+    module->setShortcutConfig(!module->isShortcutEnabled(), module->getShortcutConfig());
+}
+
 void ModuleNode::onInfo(CCObject* sender)
 {
     auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", getID()).c_str(), fmt::format("descriptions/{}", getID()), "ui/ok-button");
@@ -220,12 +225,19 @@ void ModuleNode::onInfo(CCObject* sender)
     btn->m_offButton->setOpacity(150);
 
     auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
-    btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
+    btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
     btnKeybind->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
+    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(ModuleNode::onChangeShortcut));
+    btnShortcut->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25 - 25);
+
+    btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
+    btnShortcut->m_offButton->setOpacity(150);
+
     menu->addChild(btn);
     menu->addChild(btnKeybind);
+    menu->addChild(btnShortcut);
     alert->m_mainLayer->addChild(menu, 8008569);
 
     // title

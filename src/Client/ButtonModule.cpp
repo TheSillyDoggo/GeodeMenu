@@ -6,11 +6,6 @@ ModuleNode* ButtonModule::getNode()
     return ButtonModuleNode::create(this);
 }
 
-bool ButtonModule::shouldSave()
-{
-    return false;
-}
-
 void ButtonModule::onKeybindActivated(KeyState state)
 {
     onClick();

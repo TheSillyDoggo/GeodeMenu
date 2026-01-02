@@ -2,6 +2,8 @@
 #include "ModuleNode.hpp"
 #include "../SafeMode/SafeMode.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "../GUI/FloatingButton/ModuleShortcutButton.hpp"
+#include "../GUI/FloatingButton/FloatingUIManager.hpp"
 
 using namespace geode::prelude;
 
@@ -87,6 +89,7 @@ void Module::load()
     // nothing should be favourited by default
     setFavourited(Mod::get()->getSavedValue<bool>(fmt::format("{}_favourited", getID()), false));
     loadKeyConfig();
+    loadShortcutConfig();
 }
 
 ModuleNode* Module::getNode()
@@ -306,4 +309,82 @@ std::vector<Module*> Module::getAllFavourited()
 std::vector<Module*>& Module::getAll()
 {
     return moduleMap;
+}
+
+bool Module::shouldShortcutShowActivated()
+{
+    return getRealEnabled();
+}
+
+void Module::saveShortcutConfig()
+{
+    Mod::get()->setSavedValue<bool>(fmt::format("{}_shortcutenabled", getID()), shortcutEnabled);
+
+    auto conf = matjson::Value::object();
+    conf["overlay-sprite"] = shortcutConf.shortcutOverlay;
+    conf["off-bg-sprite"] = shortcutConf.bgOffSprite;
+    conf["on-bg-sprite"] = shortcutConf.bgOnSprite;
+    conf["scale"] = shortcutConf.scale;
+    conf["opacity"] = shortcutConf.opacity;
+    conf["movable"] = shortcutConf.isMovable;
+    conf["visibility/in-game"] = shortcutConf.visibility.showInGame;
+    conf["visibility/in-pause-menu"] = shortcutConf.visibility.showInPauseMenu;
+    conf["visibility/in-menu"] = shortcutConf.visibility.showInMenu;
+    conf["visibility/in-editor"] = shortcutConf.visibility.showInEditor;
+    conf["visibility/in-pause-editor"] = shortcutConf.visibility.showInEditorPauseMenu;
+
+    Mod::get()->setSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", getID()), conf);
+}
+
+void Module::loadShortcutConfig()
+{
+    auto json = Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", getID()), {});
+    ModuleShortcutConfig conf;
+
+    conf.shortcutOverlay = json["overlay-sprite"].asString().unwrapOr(conf.shortcutOverlay);
+    conf.bgOffSprite = json["off-bg-sprite"].asString().unwrapOr(conf.bgOffSprite);
+    conf.bgOnSprite = json["on-bg-sprite"].asString().unwrapOr(conf.bgOnSprite);
+    conf.scale = json["scale"].asDouble().unwrapOr(conf.scale);
+    conf.opacity = json["opacity"].asDouble().unwrapOr(conf.opacity);
+    conf.isMovable = json["movable"].asBool().unwrapOr(conf.isMovable);
+    conf.visibility.showInGame = json["visibility/in-game"].asBool().unwrapOr(true);
+    conf.visibility.showInPauseMenu= json["visibility/in-pause-menu"].asBool().unwrapOr(true);
+    conf.visibility.showInMenu = json["visibility/in-menu"].asBool().unwrapOr(true);
+    conf.visibility.showInEditor = json["visibility/in-editor"].asBool().unwrapOr(true);
+    conf.visibility.showInEditorPauseMenu = json["visibility/in-pause-editor"].asBool().unwrapOr(true);
+
+    setShortcutConfig(Mod::get()->getSavedValue<bool>(fmt::format("{}_shortcutenabled", getID()), false), conf);
+}
+
+void Module::setShortcutConfig(bool enabled, ModuleShortcutConfig conf)
+{
+    if (shortcutNode)
+    {
+        FloatingUIManager::get()->removeButton(static_cast<FloatingUIButton*>(shortcutNode));
+        shortcutNode = nullptr;
+    }
+
+    this->shortcutConf = conf;
+    this->shortcutEnabled = enabled;
+
+    if (shortcutEnabled)
+    {
+        auto btn = ModuleShortcutButton::create(this);
+        btn->setOverlaySprite(shortcutConf.shortcutOverlay);
+        btn->setButtonVisibilityConfig(shortcutConf.visibility);
+
+        shortcutNode = btn;
+    }
+
+    saveShortcutConfig();
+}
+
+bool Module::isShortcutEnabled()
+{
+    return shortcutEnabled;
+}
+
+ModuleShortcutConfig Module::getShortcutConfig()
+{
+    return shortcutConf;
 }

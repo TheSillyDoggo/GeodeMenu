@@ -9,6 +9,7 @@
 -- Indonesian
 -- Russian
 -- Ukrainian
+- Added **Shortcuts**
 - Added Trail Cutting
 - Added Per Player Noclip Enabling
 - Added Noclip Max Deaths and Min Accuracy
@@ -20,6 +21,7 @@
 - Added Search on Keypress
 - Moved Slider Limit Bypass to Creator category
 - Made Noclip only trigger Auto Safe Mode when you die
+- Made Speedhack only trigger Auto Safe Mode when speedhack is below 1.0
 - Improved all Input Fields used in the UI
 - Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes

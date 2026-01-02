@@ -10,6 +10,7 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterInputNode.hpp"
 #include "BlurLayer.hpp"
+#include "FloatingButton/FloatingUIManager.hpp"
 
 bool AndroidUI::setup()
 {
@@ -378,7 +379,8 @@ void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
 
 void AndroidUI::visit()
 {
-    AndroidBall::get()->visit();
+    FloatingUIManager::get()->visit();
+    AndroidBall::get()->visit();    
 
     if (selectedCategory != "Search" && categories["Search"]->isVisible())
     {
