@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "FloatingUIButton.hpp"
 
-class FloatingUIManager
+class FloatingUIManager : public cocos2d::CCNode
 {
     protected:
         std::vector<FloatingUIButton*> buttons = {};
@@ -21,6 +21,6 @@ class FloatingUIManager
 
         void updateSprites();
 
-        void visit();
+        virtual void visit();
         bool touches(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent, unsigned int uIndex);
 };

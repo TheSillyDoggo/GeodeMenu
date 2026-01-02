@@ -8,7 +8,10 @@ FloatingUIManager* FloatingUIManager::get()
     static FloatingUIManager* instance = nullptr;
 
     if (!instance)
+    {
         instance = new FloatingUIManager();
+        CCDirector::get()->setNotificationNode(instance);
+    }
 
     return instance;
 }
@@ -16,11 +19,13 @@ FloatingUIManager* FloatingUIManager::get()
 void FloatingUIManager::addButton(FloatingUIButton* btn)
 {
     buttons.push_back(btn);
+    this->addChild(btn);
 }
 
 void FloatingUIManager::removeButton(FloatingUIButton* btn)
 {
     buttons.erase(std::remove(buttons.begin(), buttons.end(), btn), buttons.end());
+    this->removeChild(btn);
 }
 
 void FloatingUIManager::updateSprites()
@@ -50,10 +55,7 @@ void FloatingUIManager::visit()
 
     sortButtons();
 
-    for (auto btn : buttons)
-    {
-        btn->visit();
-    }
+    return CCNode::visit();
 }
 
 bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)

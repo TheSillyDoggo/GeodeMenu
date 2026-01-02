@@ -4,8 +4,8 @@
 
 void FloatingEGLView::swapBuffers()
 {
-    if (!AndroidUI::get())
-        FloatingUIManager::get()->visit();
+    // if (!AndroidUI::get())
+        // FloatingUIManager::get()->visit();
 
     CCEGLView::swapBuffers();
 }
