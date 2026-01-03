@@ -11,7 +11,7 @@ FloatingUIManager* FloatingUIManager::get()
     if (!instance)
     {
         instance = new FloatingUIManager();
-        CCDirector::get()->setNotificationNode(new FloatingUIDrawHook());
+        CCDirector::get()->m_pNotificationNode = new FloatingUIDrawHook();
     }
 
     return instance;
