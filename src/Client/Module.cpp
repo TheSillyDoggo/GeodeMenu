@@ -360,7 +360,7 @@ void Module::setShortcutConfig(bool enabled, ModuleShortcutConfig conf)
 {
     if (shortcutNode)
     {
-        FloatingUIManager::get()->removeButton(static_cast<FloatingUIButton*>(shortcutNode));
+        FloatingUIManager::get()->removeButton(static_cast<ModuleShortcutButton*>(shortcutNode));
         shortcutNode = nullptr;
     }
 
@@ -370,8 +370,12 @@ void Module::setShortcutConfig(bool enabled, ModuleShortcutConfig conf)
     if (shortcutEnabled)
     {
         auto btn = ModuleShortcutButton::create(this);
+        btn->setBackgroundSprites(shortcutConf.bgOffSprite, shortcutConf.bgOnSprite);
         btn->setOverlaySprite(shortcutConf.shortcutOverlay);
         btn->setButtonVisibilityConfig(shortcutConf.visibility);
+        btn->setMovable(shortcutConf.isMovable);
+        btn->setBaseScale(shortcutConf.scale);
+        btn->setBaseOpacity(shortcutConf.opacity);
 
         shortcutNode = btn;
     }

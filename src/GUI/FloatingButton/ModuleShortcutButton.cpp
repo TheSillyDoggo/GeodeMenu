@@ -1,5 +1,6 @@
 #include "ModuleShortcutButton.hpp"
 #include "../../Client/ModuleNode.hpp"
+#include "../../Client/ButtonModule.hpp"
 
 ModuleShortcutButton* ModuleShortcutButton::create(Module* module)
 {
@@ -24,17 +25,26 @@ void ModuleShortcutButton::setup()
 
     this->setOnClick([this]
     {
+        if (typeinfo_cast<ButtonModule*>(mod))
+        {
+            static_cast<ButtonModule*>(mod)->onClick();
+            return;
+        }
+
         mod->setUserEnabled(!mod->getUserEnabled());
 
         mod->onToggle();
         ModuleNode::updateAllNodes(nullptr);
     });
 
-    auto def = CCDirector::get()->getWinSize() / 2;
+    auto def = ccp(
+        CCDirector::get()->getWinSize().width - 30,
+        CCDirector::get()->getWinSize().height / 2
+    );
     
     auto pos = ccp(
-        Mod::get()->getSavedValue<float>(fmt::format("{}_shortcutpos.x", mod->getID()), def.width),
-        Mod::get()->getSavedValue<float>(fmt::format("{}_shortcutpos.y", mod->getID()), def.height)
+        Mod::get()->getSavedValue<float>(fmt::format("{}_shortcutpos.x", mod->getID()), def.x),
+        Mod::get()->getSavedValue<float>(fmt::format("{}_shortcutpos.y", mod->getID()), def.y)
     );
 
     this->updatePosition(pos);
@@ -43,6 +53,15 @@ void ModuleShortcutButton::setup()
 
 void ModuleShortcutButton::updatePosition(cocos2d::CCPoint point)
 {
+    if (CCDirector::get()->getWinSize().width != 0)
+    {
+        auto safe = utils::getSafeAreaRect();
+        point.x = std::max<float>(safe.getMinX(), point.x);
+        point.x = std::min<float>(safe.getMaxX(), point.x);
+        point.y = std::max<float>(safe.getMinY(), point.y);
+        point.y = std::min<float>(safe.getMaxY(), point.y);
+    }
+
     FloatingUIButton::updatePosition(point);
     position = point;
 
@@ -53,8 +72,8 @@ void ModuleShortcutButton::updatePosition(cocos2d::CCPoint point)
 void ModuleShortcutButton::updateSprs()
 {
     auto bg = mod->shouldShortcutShowActivated() ? 
-        "geode.loader/baseCircle_Medium_Green.png" : 
-        "geode.loader/baseCircle_Medium_Gray.png";
+        bgOnSpr : 
+        bgOffSpr;
 
     updateSprites(bg, overlaySprite, true, false);
 }
@@ -63,6 +82,12 @@ void ModuleShortcutButton::setOverlaySprite(std::string spr)
 {
     this->overlaySprite = spr;
     updateSprs();
+}
+
+void ModuleShortcutButton::setBackgroundSprites(std::string bgOff, std::string bgOn)
+{
+    this->bgOffSpr = bgOff;
+    this->bgOnSpr = bgOn;
 }
 
 void ModuleShortcutButton::update(float dt)

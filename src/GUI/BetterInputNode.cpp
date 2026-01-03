@@ -369,6 +369,9 @@ void BetterInputNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
         float v = numHoldStart + (numHoldStep * steps);
 
+        if (charFilter.find("-") == std::string::npos)
+            v = std::max<float>(v, 0);
+
         std::string ss;
 
         if ((int)v == v)

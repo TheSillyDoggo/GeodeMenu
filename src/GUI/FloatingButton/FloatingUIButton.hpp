@@ -42,6 +42,8 @@ class FloatingUIButton : public cocos2d::CCNode
         void setOnClick(std::function<void()> onClick);
         void setButtonVisibilityConfig(FloatingUIButtonVisibility conf);
         void setMovable(bool movable);
+        void setBaseScale(float scale);
+        void setBaseOpacity(float opacity);
 
         void updateSprites(std::string background, std::string overlay, bool backgroundSpriteSheet, bool overlaySpriteSheet);
         void updateSprites();

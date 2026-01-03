@@ -44,7 +44,7 @@ class $modify (PlayerObject)
         if (m_waveTrail)
         {
             if (WaveTrailSize::get()->getRealEnabled())
-                m_waveTrail->m_waveSize = WaveTrailThickness::get()->getStringFloat();
+                m_waveTrail->m_waveSize = WaveTrailThickness::get()->getStringFloat() * m_vehicleSize;
             else
                 m_waveTrail->m_waveSize = m_vehicleSize;
         }

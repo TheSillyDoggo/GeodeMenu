@@ -9,6 +9,8 @@ class ModuleShortcutButton : public FloatingUIButton
         Module* mod = nullptr;
         bool lastUpdated = false;
         std::string overlaySprite = "";
+        std::string bgOffSpr = "geode.loader/baseCircle_Medium_Gray.png";
+        std::string bgOnSpr = "geode.loader/baseCircle_Medium_Green.png";
 
     public:
         static ModuleShortcutButton* create(Module* module);
@@ -16,6 +18,7 @@ class ModuleShortcutButton : public FloatingUIButton
         void setup();
         void updateSprs();
         void setOverlaySprite(std::string spr);
+        void setBackgroundSprites(std::string bgOff, std::string bgOn);
 
         virtual void updatePosition(cocos2d::CCPoint point);
         virtual void update(float dt);

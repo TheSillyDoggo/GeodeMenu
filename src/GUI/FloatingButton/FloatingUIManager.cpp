@@ -1,5 +1,6 @@
 #include "FloatingUIManager.hpp"
 #include "../AndroidUI.hpp"
+#include "../Modules/DisableShortcuts.hpp"
 
 using namespace geode::prelude;
 
@@ -10,7 +11,7 @@ FloatingUIManager* FloatingUIManager::get()
     if (!instance)
     {
         instance = new FloatingUIManager();
-        CCDirector::get()->setNotificationNode(instance);
+        CCDirector::get()->setNotificationNode(new FloatingUIDrawHook());
     }
 
     return instance;
@@ -24,6 +25,9 @@ void FloatingUIManager::addButton(FloatingUIButton* btn)
 
 void FloatingUIManager::removeButton(FloatingUIButton* btn)
 {
+    if (std::find(buttons.begin(), buttons.end(), btn) == buttons.end())
+        return;
+
     buttons.erase(std::remove(buttons.begin(), buttons.end(), btn), buttons.end());
     this->removeChild(btn);
 }
@@ -50,6 +54,9 @@ int FloatingUIManager::getHighestButtonZ()
 
 void FloatingUIManager::visit()
 {
+    if (DisableShortcuts::get()->getRealEnabled())
+        return;
+
     if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
         return;
 
@@ -58,8 +65,18 @@ void FloatingUIManager::visit()
     return CCNode::visit();
 }
 
+void FloatingUIDrawHook::visit()
+{
+    if (!AndroidUI::get())
+
+    FloatingUIManager::get()->visit();
+};
+
 bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
 {
+    if (DisableShortcuts::get()->getRealEnabled())
+        return false;
+
     if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
 

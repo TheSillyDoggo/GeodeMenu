@@ -51,10 +51,10 @@ bool FloatingUIButtonVisibility::shouldShow()
     }
     else if (auto ed = LevelEditorLayer::get())
     {
-        if (pl->m_isPaused && showInEditorPauseMenu)
+        if (ed->getChildByType<EditorPauseLayer>(0) && showInEditorPauseMenu)
             return true;
 
-        if (!pl->m_isPaused && showInEditor)
+        if (!ed->getChildByType<EditorPauseLayer>(0) && showInEditor)
             return true;
     }
     else
@@ -160,6 +160,31 @@ void FloatingUIButton::setMovable(bool movable)
     this->movable = movable;
 }
 
+void FloatingUIButton::setBaseScale(float scale)
+{
+    if (scale > 1)
+        scale = 1;
+
+    if (scale < 0.1f)
+        scale = 0.1f;
+
+    this->scale = scale;
+
+    updateSprites();
+}
+
+void FloatingUIButton::setBaseOpacity(float opacity)
+{
+    if (opacity > 1)
+        opacity = 1;
+
+    if (opacity < 0.1f)
+        opacity = 0.1f;
+
+    _opacity = opacity;
+    this->opacity = opacity;
+}
+
 void FloatingUIButton::updatePosition(cocos2d::CCPoint point)
 {
     auto safe = utils::getSafeAreaRect();
@@ -212,10 +237,21 @@ void FloatingUIButton::ccTouchMoved(CCTouch* touch)
 
 void FloatingUIButton::ccTouchEnded(CCTouch* touch)
 {
-    if (!isMoving)
+    if (movable)
     {
-        if (onClick)
-            onClick();
+        if (!isMoving)
+        {
+            if (onClick)
+                onClick();
+        }
+    }
+    else
+    {
+        if (cocos2d::ccpDistance(position, touch->getLocation()) < (BUTTON_RADIUS / 2) * scale)
+        {
+            if (onClick)
+                onClick();
+        }
     }
 
     this->stopAllActions();

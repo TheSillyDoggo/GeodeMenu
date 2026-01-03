@@ -9,6 +9,7 @@
 -- Indonesian
 -- Russian
 -- Ukrainian
+-- This also added support for searching for mods in other languages, however this may not work on Android until the next Geode launcher update
 - Added **Shortcuts**
 - Added Trail Cutting
 - Added Per Player Noclip Enabling
@@ -23,6 +24,7 @@
 - Made Noclip only trigger Auto Safe Mode when you die
 - Made Speedhack only trigger Auto Safe Mode when speedhack is below 1.0
 - Improved all Input Fields used in the UI
+- Fixed Wave Trail appearing wrong size when Wave Trail Size is enabled
 - Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes
 - (Hopefully) Fixed crash using Blur Background on iOS

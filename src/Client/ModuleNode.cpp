@@ -6,6 +6,7 @@
 #include "../GUI/EditKeyConfigUI.hpp"
 #include "../GUI/BlurLayer.hpp"
 #include "../GUI/BetterAlertLayer.hpp"
+#include "../GUI/SetupShortcutUI.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -192,7 +193,14 @@ void ModuleNode::onOptions(CCObject* sender)
 
 void ModuleNode::onChangeShortcut(CCObject* sender)
 {
-    module->setShortcutConfig(!module->isShortcutEnabled(), module->getShortcutConfig());
+    auto mod = static_cast<Module*>(this->getUserData());
+
+    auto ui = SetupShortcutUI::create([this, mod](bool enabled, ModuleShortcutConfig conf)
+    {
+        mod->setShortcutConfig(enabled, conf);
+    });
+    ui->setStartConfig(mod->isShortcutEnabled(), mod->getShortcutConfig());
+    ui->show();
 }
 
 void ModuleNode::onInfo(CCObject* sender)
@@ -229,11 +237,11 @@ void ModuleNode::onInfo(CCObject* sender)
     btnKeybind->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(ModuleNode::onChangeShortcut));
+    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), alert, menu_selector(ModuleNode::onChangeShortcut));
     btnShortcut->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25 - 25);
 
-    btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
-    btnShortcut->m_offButton->setOpacity(150);
+    // btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
+    // btnShortcut->m_offButton->setOpacity(150);
 
     menu->addChild(btn);
     menu->addChild(btnKeybind);
