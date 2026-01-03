@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "../CLanguage.hpp"
 
 using namespace geode::prelude;
 
@@ -8,7 +9,7 @@ class LanguageNode : public CCNode
 {
     protected:
         std::string lang = "en-AU.json";
-        matjson::Value json = {};
+        CLanguage* language = nullptr;
         
         CCScale9Sprite* bg;
         CCLabelBMFont* percentLabel;
@@ -24,8 +25,6 @@ class LanguageNode : public CCNode
         void onMissingTranslations(CCObject* sender);
 
         float getPercentageComplete();
-        int getStringCount(matjson::Value value);
-        std::unordered_map<std::string, std::string> getStrings(matjson::Value value);
 
         virtual void visit();
 

@@ -19,6 +19,18 @@ LocalisationManager* LocalisationManager::get()
 
 void LocalisationManager::setup()
 {
+    for (auto file : getAllLanguageFilesPath())
+    {
+        auto data = file::readJson(file);
+
+        if (data.isOk())
+        {
+            auto lang = CLanguage::createWithJSON(data.unwrap());
+
+            languages.emplace(file, lang);
+        }
+    }
+
     auto path = Mod::get()->getResourcesDir() / Mod::get()->getSavedValue<std::string>("loaded-localisation-file", "en-AU.json");
 
     if (std::filesystem::exists(path))
@@ -33,16 +45,12 @@ void LocalisationManager::setup()
 
 void LocalisationManager::loadLocalisationFile(std::filesystem::path path)
 {
-    loadedJson = getCachedFile(path);
+    currentLang = nullptr;
+
+    if (languages.contains(path))
+        currentLang = languages[path];
+
     currentPath = path;
-}
-
-matjson::Value LocalisationManager::getCachedFile(std::filesystem::path path)
-{
-    if (!loadedJsons.contains(path))
-        loadedJsons.emplace(path, file::readJson(path).unwrapOr("{ }"));
-
-    return loadedJsons[path];
 }
 
 std::filesystem::path LocalisationManager::getCurrentLoadedFile()
@@ -108,18 +116,19 @@ void LocalisationManager::switchLocalisationWithUI(std::string file)
 
 AdvLabelTTFUsage LocalisationManager::getDefaultTTFUsage()
 {
-    if (loadedJson.contains("alt-font-usage") && loadedJson["alt-font-usage"].isString())
+    if (currentLang)
     {
-        auto str = utils::string::toLower(loadedJson["alt-font-usage"].asString().unwrapOr(""));
+        switch (currentLang->getFontUsageMode())
+        {
+            case 0:
+                return AdvLabelTTFUsage::Forced;
 
-        if (str == "auto")
-            return AdvLabelTTFUsage::Auto;
+            case 1:
+                return AdvLabelTTFUsage::Auto;
 
-        if (str == "forced")
-            return AdvLabelTTFUsage::Forced;
-
-        if (str == "none")
-            return AdvLabelTTFUsage::None;
+            case 2:
+                return AdvLabelTTFUsage::None;
+        }
     }
     
     return AdvLabelTTFUsage::Auto;
@@ -128,59 +137,27 @@ AdvLabelTTFUsage LocalisationManager::getDefaultTTFUsage()
 std::string LocalisationManager::getLocalisedString(std::string id)
 {
     auto errorStr = fmt::format("<ttf>{}", id);
-    auto splits = utils::string::split(id, "/");
-
-    if (loadedJson.contains("strings") && loadedJson["strings"].isObject())
-    {
-        auto strings = loadedJson["strings"];
-
-        if (splits.size() > 1)
-        {
-            if (strings.contains(splits[0]) && strings[splits[0]].isObject())
-            {
-                auto combined = id.substr(splits[0].size() + 1);
-
-                if (strings[splits[0]].contains(combined) && strings[splits[0]][combined].isString())
-                {
-                    return strings[splits[0]][combined].asString().unwrapOr(errorStr);
-                }
-
-                if (splits.size() > 2)
-                {
-                    if (strings[splits[0]].contains(splits[1]) && strings[splits[0]][splits[1]].isObject())
-                    {
-                        if (strings[splits[0]][splits[1]].contains(splits[2]))
-                        {
-                            if (strings[splits[0]][splits[1]][splits[2]].isString())
-                            {
-                                return strings[splits[0]][splits[1]][splits[2]].asString().unwrapOr(errorStr);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    
+    if (currentLang && currentLang->containsKey(id))
+        return currentLang->stringForKey(id);
 
     return errorStr;
 }
 
-const matjson::Value& LocalisationManager::getLoadedJson()
+CLanguage* LocalisationManager::languageForPath(std::filesystem::path path)
 {
-    return loadedJson;
+    if (languages.contains(path))
+        return languages[path];
+
+    return nullptr;
 }
 
 std::string LocalisationManager::getAltFont()
 {
-    if (loadedJson.contains("font") && loadedJson["font"].isString())
-    {
-        if (loadedJson["font"].asString().unwrapOr("") == "chatFont.fnt")
-            return "chatFont.fnt";
-        else
-            return fmt::format("{}{}", ""_spr, loadedJson["font"].asString().unwrapOr(""));
-    }
+    if (!currentLang)
+        return "notosans.fnt"_spr;
 
-    return "";
+    return currentLang->getFont();
 }
 
 std::vector<std::string> LocalisationManager::getAllLanguageFiles()
@@ -194,6 +171,23 @@ std::vector<std::string> LocalisationManager::getAllLanguageFiles()
         if (p.has_extension() && p.extension().string() == ".json")
         {
             files.push_back(file.path().filename().string());
+        }
+    }
+
+    return files;
+}
+
+std::vector<std::filesystem::path> LocalisationManager::getAllLanguageFilesPath()
+{
+    std::vector<std::filesystem::path> files = {};
+
+    for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
+    {
+        auto p = file.path().filename();
+
+        if (p.has_extension() && p.extension().string() == ".json")
+        {
+            files.push_back(file);
         }
     }
 

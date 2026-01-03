@@ -3,11 +3,13 @@
 #include <Geode/Geode.hpp>
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
+#include "CLanguage.hpp"
+
 class LocalisationManager
 {
     protected:
-        std::unordered_map<std::filesystem::path, matjson::Value> loadedJsons = {};
-        matjson::Value loadedJson;
+        std::unordered_map<std::filesystem::path, CLanguage*> languages = {};
+        CLanguage* currentLang = nullptr;
         std::filesystem::path currentPath;
 
         void loadLocalisationFile(std::filesystem::path path);
@@ -24,11 +26,11 @@ class LocalisationManager
         AdvLabelTTFUsage getDefaultTTFUsage();
 
         std::vector<std::string> getAllLanguageFiles();
+        std::vector<std::filesystem::path> getAllLanguageFilesPath();
 
-        matjson::Value getCachedFile(std::filesystem::path path);
         std::filesystem::path getCurrentLoadedFile();
-
-        const matjson::Value& getLoadedJson();
         std::string getAltFont();
         std::string getLocalisedString(std::string id);
+
+        CLanguage* languageForPath(std::filesystem::path path);
 };

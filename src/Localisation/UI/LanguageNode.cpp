@@ -24,7 +24,7 @@ bool LanguageNode::init(std::string lang)
 
     this->lang = lang;
     bool inUse = LocalisationManager::get()->getCurrentLoadedFile() == (Mod::get()->getResourcesDir() / lang);
-    json = LocalisationManager::get()->getCachedFile(Mod::get()->getResourcesDir() / lang);
+    language = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / lang);
     
     this->setID(lang);
 
@@ -58,7 +58,7 @@ bool LanguageNode::init(std::string lang)
     useMenu->addChild(useBtn);
 
     auto creditsMenu = CCMenu::create();
-    creditsMenu->setVisible(json.contains("contributors") && json["contributors"].isArray() && json["contributors"].asArray().unwrap().size() > 0);
+    creditsMenu->setVisible(language->getContributors().size() > 0);
 
     auto creditsSpr = BetterButtonSprite::createWithLocalisation(ccp(120, 28), "ui/language-contributors-button", "bigFont.fnt", "GJ_button_04.png");
     creditsSpr->setScale(0.65f);
@@ -68,7 +68,7 @@ bool LanguageNode::init(std::string lang)
 
     creditsMenu->addChild(creditsBtn);
 
-    enName = CCLabelBMFont::create(json["display_name_english"].asString().unwrapOr("Error").c_str(), "bigFont.fnt");
+    enName = CCLabelBMFont::create(language->getEnglishName().c_str(), "bigFont.fnt");
     enName->setScale(0.5f);
     enName->setAnchorPoint(ccp(0, 1));
 
@@ -94,9 +94,9 @@ void LanguageNode::onViewCredits(CCObject* sender)
 
 void LanguageNode::onMissingTranslations(CCObject* sender)
 {
-    auto en = LocalisationManager::get()->getCachedFile(Mod::get()->getResourcesDir() / "en-AU.json");
-    auto keys = getStrings(en);
-    auto keys2 = getStrings(json);
+    auto en = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / "en-AU.json");
+    auto keys = en->getStrings();
+    auto keys2 = language->getStrings();
 
     std::unordered_map<std::string, std::string> missingKeys = {};
 
@@ -137,55 +137,16 @@ float LanguageNode::getPercentageComplete()
     if (lang == "en-AU.json")
         return 1;
 
-    auto en = LocalisationManager::get()->getCachedFile(Mod::get()->getResourcesDir() / "en-AU.json");
+    auto en = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / "en-AU.json");
 
-    return (float)getStringCount(json) / (float)getStringCount(en);
-}
-
-int LanguageNode::getStringCount(matjson::Value value)
-{
-    return getStrings(value).size();
-}
-
-std::unordered_map<std::string, std::string> LanguageNode::getStrings(matjson::Value value)
-{
-    std::unordered_map<std::string, std::string> keys = {};
-
-    if (value.contains("strings") && value["strings"].isObject())
-    {
-        for (auto type : value["strings"])
-        {
-            if (type.isString())
-                keys.emplace(type.getKey().value_or(""), type.asString().unwrapOr(""));
-
-            if (type.isObject())
-            {
-                for (auto str1 : type)
-                {
-                    if (str1.isString())
-                        keys.emplace(fmt::format("{}/{}", type.getKey().value_or(""), str1.getKey().value_or("")), str1.asString().unwrapOr(""));
-
-                    if (str1.isObject())
-                    {
-                        for (auto str2 : str1)
-                        {
-                            if (str2.isString())
-                                keys.emplace(fmt::format("{}/{}/{}", type.getKey().value_or(""), str1.getKey().value_or(""), str2.getKey().value_or("")), str2.asString().unwrapOr(""));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return keys;
+    return (float)language->getStringCount() / (float)en->getStringCount();
 }
 
 void LanguageNode::visit()
 {
     if (!nativeName)
     {
-        nativeName = CCLabelTTF::create(json["display_name_native"].asString().unwrapOr("Error").c_str(), "Arial.ttf", 16);
+        nativeName = CCLabelTTF::create(language->getNativeName().c_str(), "Arial.ttf", 16);
         nativeName->setScale(0.5f);
         nativeName->setAnchorPoint(ccp(0, 1));
 

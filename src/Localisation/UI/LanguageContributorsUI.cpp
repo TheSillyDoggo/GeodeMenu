@@ -22,21 +22,15 @@ LanguageContributorsUI* LanguageContributorsUI::create(std::string lang)
     return nullptr;
 }
 
-SimplePlayer* LanguageContributorsUI::getPlayer(matjson::Value obj)
+SimplePlayer* LanguageContributorsUI::getPlayer(CLanguageContributor obj)
 {
-    int iconID = obj["icon-id"].asInt().unwrapOr(1);
-    int primaryCol = obj["primary-col"].asInt().unwrapOr(1);
-    int secondaryCol = obj["secondary-col"].asInt().unwrapOr(1);
-    int glowCol = obj["glow-col"].asInt().unwrapOr(1);
-    bool glowEnabled = obj["glow-enabled"].asBool().unwrapOr(false);
+    auto player = SimplePlayer::create(obj.iconID);
+    player->setColor(GameManager::get()->colorForIdx(obj.primaryCol));
+    player->setSecondColor(GameManager::get()->colorForIdx(obj.secondaryCol));
 
-    auto player = SimplePlayer::create(iconID);
-    player->setColor(GameManager::get()->colorForIdx(primaryCol));
-    player->setSecondColor(GameManager::get()->colorForIdx(secondaryCol));
-
-    if (glowEnabled)
+    if (obj.glowEnabled)
     {
-        player->setGlowOutline(GameManager::get()->colorForIdx(glowCol));
+        player->setGlowOutline(GameManager::get()->colorForIdx(obj.glowCol));
         player->updateColors();
     }
 
@@ -50,7 +44,7 @@ void LanguageContributorsUI::onPlayerProfile(CCObject* sender)
 
 bool LanguageContributorsUI::setup()
 {
-    json = LocalisationManager::get()->getCachedFile(Mod::get()->getResourcesDir() / lang);
+    language = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / lang);
 
     this->addChild(CCBlurLayer::create(), -3);
     this->scheduleUpdate();
@@ -106,7 +100,7 @@ bool LanguageContributorsUI::setup()
     clip->addChild(node);
 
     int i = 0;
-    auto contributors = json["contributors"].asArray().unwrap();
+    auto contributors = language->getContributors();
     for (auto cont : contributors)
     {
         float spacing = 120;
@@ -121,11 +115,11 @@ bool LanguageContributorsUI::setup()
         auto playerMenu = CCMenu::create();
         playerMenu->setPosition(icon->getPosition());
 
-        auto name = CCLabelBMFont::create(cont["username"].asString().unwrapOr("Unknown").c_str(), "goldFont.fnt");
+        auto name = CCLabelBMFont::create(cont.username.c_str(), "goldFont.fnt");
         name->setScale(0.7f);
 
         auto btn = CCMenuItemSpriteExtra::create(name, this, menu_selector(LanguageContributorsUI::onPlayerProfile));
-        btn->setTag(cont["account-id"].asInt().unwrapOr(1));
+        btn->setTag(cont.accountID);
         btn->setPositionY(70);
 
         playerMenu->addChild(btn);

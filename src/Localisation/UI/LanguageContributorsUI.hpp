@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "../CLanguage.hpp"
 
 using namespace geode::prelude;
 
@@ -8,14 +9,14 @@ class LanguageContributorsUI : public geode::Popup<>
 {
     protected:
         std::string lang;
-        matjson::Value json;
+        CLanguage* language = nullptr;
         CCSprite* nodeBG;
         GJGroundLayer* ground;
 
     public:
         static LanguageContributorsUI* create(std::string lang);
 
-        SimplePlayer* getPlayer(matjson::Value obj);
+        SimplePlayer* getPlayer(CLanguageContributor obj);
 
         void onPlayerProfile(CCObject* sender);
 
