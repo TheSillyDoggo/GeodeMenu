@@ -228,7 +228,8 @@ bool AndroidBall::ccTouchMoved(CCTouch* touch)
 
         if (isMoving)
         {
-            position = touch->getLocation() - moveOffset;
+            //position = touch->getLocation() - moveOffset;
+            position = touch->getLocation();
 
             return true;
         }

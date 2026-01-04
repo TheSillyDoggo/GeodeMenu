@@ -3,6 +3,8 @@
 #include <Geode/Geode.hpp>
 #include "../../Client/ButtonModule.hpp"
 
+using namespace geode::prelude;
+
 class OpenSettings : public ButtonModule
 {
     public:
@@ -16,7 +18,9 @@ class OpenSettings : public ButtonModule
 
         virtual void onClick()
         {
-            OptionsLayer::create()->showLayer(false);
+            auto ui = OptionsLayer::create();
+            ui->showLayer(false);
+            ui->setZOrder(CCScene::get()->getHighestChildZ() + 1);
         }
 };
 

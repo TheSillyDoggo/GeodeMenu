@@ -23,12 +23,17 @@ class $modify (PlayLayer)
     {
         auto fmod = FMODAudioEngine::get();
         auto pulse1 = fmod->m_pulse1;
+        auto pulse2 = m_audioEffectsLayer->m_audioScale;
 
         if (NoOrbPulse::get()->getRealEnabled())
+        {
             fmod->m_pulse1 = 1.0f;
+            m_audioEffectsLayer->m_audioScale = 1.0f;
+        }
 
         PlayLayer::updateVisibility(dt);
 
         fmod->m_pulse1 = pulse1;
+        m_audioEffectsLayer->m_audioScale = pulse2;
     }
 };

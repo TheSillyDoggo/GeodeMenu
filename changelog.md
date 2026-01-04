@@ -30,6 +30,7 @@
 - Fixed Blur Background appearing black when turning it on sometimes
 - Fixed Player moving incorrectly with Frame Extrapolation enabled
 - Fixed Player being rotated incorrectly with Frame Extrapolation enabled
+- Fixed No Orb Pulse not working on levels with main level songs
 - (Hopefully) Fixed crash using Blur Background on iOS
 -- This is a hopefully because I don't own an apple device to test on </3
 

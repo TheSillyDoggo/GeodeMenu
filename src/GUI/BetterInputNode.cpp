@@ -484,19 +484,29 @@ void BetterInputNode::updateCursorPos(bool isTouchUpdate, CCPoint touchPos)
 
     auto cPos = getRealCursorPos();
 
-    if (nodes.size() > cPos)
+    if (useTTFView)
     {
-        if (auto n = nodes[cPos])
+        if (text.size() == 0)
+            cursorCarot->setPositionX(labelContainer->getContentWidth());
+        else
+            cursorCarot->setPositionX(labelContainer->getContentWidth() * ((float)getRealCursorPos() / (float)text.size()));
+    }
+    else
+    {
+        if (nodes.size() > cPos)
         {
-            cursorCarot->setPositionX((n->getPositionX() - n->getScaledContentWidth() / 2) + n->getParent()->getPositionX());
+            if (auto n = nodes[cPos])
+            {
+                cursorCarot->setPositionX((n->getPositionX() * n->getParent()->getScaleX() - n->getScaledContentWidth() / 2) + n->getParent()->getPositionX());
+            }
+            else
+            {
+                cursorCarot->setPositionX(labelContainer->getContentWidth());
+            }
         }
         else
         {
             cursorCarot->setPositionX(labelContainer->getContentWidth());
         }
-    }
-    else
-    {
-        cursorCarot->setPositionX(labelContainer->getContentWidth());
     }
 }
