@@ -34,6 +34,8 @@ class FloatingUIButton : public cocos2d::CCNode
         virtual void update(float dt);
         ~FloatingUIButton();
 
+        void animate(bool release);
+
     public:
         static FloatingUIButton* create(std::function<void()> onClick);
 

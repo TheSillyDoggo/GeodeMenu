@@ -20,6 +20,7 @@
 - Added Option to disable teleport portal particles in No Particles
 - Added Option to change Gradient BG rotation
 - Added Search on Keypress
+- Added Buttons to open pause, toggle practice mode, and restart attempt
 - Moved Slider Limit Bypass to Creator category
 - Made Noclip only trigger Auto Safe Mode when you die
 - Made Speedhack only trigger Auto Safe Mode when speedhack is below 1.0
@@ -27,6 +28,8 @@
 - Fixed Wave Trail appearing wrong size when Wave Trail Size is enabled
 - Fixed Run Info Show In Percentage
 - Fixed Blur Background appearing black when turning it on sometimes
+- Fixed Player moving incorrectly with Frame Extrapolation enabled
+- Fixed Player being rotated incorrectly with Frame Extrapolation enabled
 - (Hopefully) Fixed crash using Blur Background on iOS
 -- This is a hopefully because I don't own an apple device to test on </3
 

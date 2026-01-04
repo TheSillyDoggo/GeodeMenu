@@ -51,6 +51,9 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
             return;
         }
 
+        if (isFlipping())
+            return;
+
         auto self = m_fields.self();
 
         if (isRunning() && dt != 0 && !PlayLayer::get()->m_levelEndAnimationStarted)
@@ -73,6 +76,9 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
             // the percentage towards the next tick we are
             float percent = self->progressTilNextTick / self->timeTilNextTick;
             auto endCamPos = self->lastCamPos + (self->lastCamPos - self->lastCamPos2);
+            //endCamPos = m_gameState.m_cameraPosition2 - m_gameState.m_cameraOffset;
+
+            //log::info("xPos: {}, {}", .x, m_gameState.m_cameraOffset.x);
             
             m_objectLayer->setPosition(std::lerp<double>(self->lastCamPos.x, endCamPos.x, percent), std::lerp<double>(self->lastCamPos.y, endCamPos.y, percent));
 
@@ -86,16 +92,28 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
         }
     }
 
+    float playerGetRotatedHitbox(PlayerObject* player)
+    {
+        float rot = 0;
+
+        if (player->m_isSideways)
+        {
+            rot = -90;
+        }
+
+        return rot;
+    }
+
     void extrapolatePlayer(PlayerObject* player, float percent)
     {
         float endXPos = player->m_position.x + (player->m_position.x - player->m_lastPosition.x);
         float endYPos = player->m_position.y + (player->m_position.y - player->m_lastPosition.y);
 
         float rotateSpeed = (player->m_isBall && player->m_isBallRotating) ? 1.0 : player->m_rotateSpeed;
-        float endRot = (player->m_rotationSpeed * rotateSpeed) / 240.0f;
+        float endRot = ((player->m_rotationSpeed * rotateSpeed) / 240.0f);
 
         player->CCNode::setPosition(ccp(std::lerp<double>(player->m_position.x, endXPos, percent), std::lerp<double>(player->m_position.y, endYPos, percent)));
-        player->m_mainLayer->setRotation(std::lerp(0, endRot, percent));
+        player->m_mainLayer->setRotation(std::lerp(0, endRot, percent) + playerGetRotatedHitbox(player));
     }
 
     void extrapolateGround(GJGroundLayer* ground, float percent)

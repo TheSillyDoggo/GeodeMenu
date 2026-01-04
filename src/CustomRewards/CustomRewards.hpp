@@ -10,7 +10,7 @@ class CreateCustomReward : public ButtonModule
             setID("create-custom-reward");
             setCategory("Universal");
 
-            setPriority(sortPriority + 69);
+            setPriority(sortPriority + 1);
         }
 
         virtual void onClick();

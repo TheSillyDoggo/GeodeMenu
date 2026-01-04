@@ -20,7 +20,8 @@ uniform bool fast;
 uniform bool first;
 uniform float radius;
 
-void main() {
+void main()
+{
     float scaledRadius = radius * screenSize.y * 0.5;
     vec2 texOffset = 1.0 / screenSize;
 

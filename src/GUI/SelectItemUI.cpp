@@ -89,6 +89,10 @@ void SelectItemUI::updateUI()
             items.push_back("theme.png"_spr);
             items.push_back("universal.png"_spr);
             items.push_back("preview.png"_spr);
+            items.push_back("restart.png"_spr);
+            items.push_back("practice-checkpoint.png"_spr);
+            items.push_back("settings-cog.png"_spr);
+            items.push_back("speaker.png"_spr);
             break;
     }
 
@@ -136,7 +140,20 @@ bool SelectItemUI::setup()
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
 
-    auto title = AdvLabelBMFont::createWithLocalisation("select-item/title", "goldFont.fnt");
+    std::string titleStr = "select-item/title-generic";
+
+    switch (type)
+    {
+        case SelectItemType::ShortcutBG:
+            titleStr = "select-item/title-background";
+            break;
+
+        case SelectItemType::ShortcutOverlay:
+            titleStr = "select-item/title-icon";
+            break;
+    }
+
+    auto title = AdvLabelBMFont::createWithLocalisation(titleStr, "goldFont.fnt");
     title->setScale(0.7f);
 
     auto menu = CCMenu::create();

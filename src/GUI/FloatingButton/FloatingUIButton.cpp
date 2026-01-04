@@ -140,6 +140,28 @@ void FloatingUIButton::update(float dt)
     }
 }
 
+void FloatingUIButton::animate(bool release)
+{
+    this->stopAllActions();
+
+    bool useGDAnim = false;
+
+    if (useGDAnim)
+    {
+        if (!release)
+            this->runAction(RealtimeAction::create(CCEaseBounceOut::create(CCScaleTo::create(0.3f, 1.26f))));
+        else
+            this->runAction(RealtimeAction::create(CCEaseBounceOut::create(CCScaleTo::create(0.3f, 1.0f))));
+    }
+    else
+    {
+        if (release)
+            this->runAction(RealtimeAction::create(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1))));
+        else
+            this->runAction(RealtimeAction::create(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.9f), 2)));
+    }
+}
+
 FloatingUIButton::~FloatingUIButton()
 {
     FloatingUIManager::get()->removeButton(this);
@@ -208,8 +230,7 @@ bool FloatingUIButton::ccTouchBegan(CCTouch* touch)
     {
         setZOrder(FloatingUIManager::get()->getHighestButtonZ() + 1);
 
-        this->stopAllActions();
-        this->runAction(RealtimeAction::create(CCEaseInOut::create(CCScaleTo::create(0.1f, 0.9f), 2)));
+        animate(false);
 
         isMoving = false;
         isSelected = true;
@@ -254,7 +275,6 @@ void FloatingUIButton::ccTouchEnded(CCTouch* touch)
         }
     }
 
-    this->stopAllActions();
-    this->runAction(RealtimeAction::create(CCEaseBackOut::create(CCScaleTo::create(0.35f, 1))));
+    animate(true);
     isSelected = false;
 }

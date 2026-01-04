@@ -42,7 +42,8 @@
 			"resources/sprites/slider/*.png",
 			"resources/sprites/icons/categories/*.png",
 			"resources/sprites/icons/animations/*.png",
-			"resources/sprites/icons/anchors/*.png"
+			"resources/sprites/icons/anchors/*.png",
+			"resources/sprites/icons/shortcuts/*.png"
 		]
     },
 	"settings": {
