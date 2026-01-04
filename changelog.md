@@ -1,3 +1,7 @@
+# 2.5.1
+
+- Fixed XDBot not working if you had tps bypass enabled in a previous version
+
 # 2.5.0
 
 - Added **Localisation**
