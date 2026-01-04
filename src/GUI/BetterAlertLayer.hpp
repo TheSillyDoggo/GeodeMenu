@@ -5,11 +5,22 @@
 
 using namespace geode::prelude;
 
-class BetterAlertLayer : public FLAlertLayer
+class BetterAlertLayer : public geode::Popup<>
 {
     protected:
+        CCScale9Sprite* bg = nullptr;
         AdvLabelBMFont* titleLabel = nullptr;
         AdvLabelBMFont* content = nullptr;
+
+        FLAlertLayerProtocol* delegate;
+        char const* title;
+        std::string desc;
+        char const* btn1;
+        char const* btn2;
+        float width;
+        bool scroll;
+        float height;
+        float textScale;
 
     public:
         static BetterAlertLayer* create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale);
@@ -20,5 +31,5 @@ class BetterAlertLayer : public FLAlertLayer
 
         void onButton(CCObject* sender);
 
-        bool init(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale);
+        virtual bool setup();
 };

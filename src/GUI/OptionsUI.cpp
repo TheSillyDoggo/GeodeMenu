@@ -117,8 +117,7 @@ void OptionsUI::onInfo(CCObject* sender)
 
     auto menu = CCMenu::create();
     // この二行は怖いだ
-    menu->setPosition(CCDirector::get()->getWinSize() / 2 - ccp(0, alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentHeight() / 2) + ccp(0, 25));
-    menu->setTouchPriority(-42069);
+    menu->setPosition(ccp(0, 25));
 
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(OptionsUI::onInfoToggleFavourite));
     btn->setPositionX(-alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 + 25);
@@ -139,11 +138,11 @@ void OptionsUI::onInfo(CCObject* sender)
 
     auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
     btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
-    btnKeybind->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25);
+    btnKeybind->setPositionX(alert->m_mainLayer->getContentWidth() - 25);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
     auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), alert, menu_selector(ModuleNode::onChangeShortcut));
-    btnShortcut->setPositionX(alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 - 25 - 25);
+    btnShortcut->setPositionX(alert->m_mainLayer->getContentWidth() - 25 - 25);
 
     // btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
     // btnShortcut->m_offButton->setOpacity(150);

@@ -8,7 +8,17 @@ BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char 
 {
     auto pRet = new BetterAlertLayer();
 
-    if (pRet && pRet->init(delegate, title, desc, btn1, btn2, width, scroll, height, textScale))
+    pRet->delegate = delegate;
+    pRet->title = title;
+    pRet->desc = desc;
+    pRet->btn1 = btn1;
+    pRet->btn2 = btn2;
+    pRet->width = width;
+    pRet->scroll = scroll;
+    pRet->height = height;
+    pRet->textScale = textScale;
+
+    if (pRet && pRet->initAnchored(0, 0))
     {
         pRet->autorelease();
         return pRet;
@@ -40,62 +50,43 @@ BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, co
     return create(lm->getLocalisedString(title).c_str(), lm->getLocalisedString(desc), lm->getLocalisedString(btn).c_str());
 }
 
-bool BetterAlertLayer::init(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
+bool BetterAlertLayer::setup()
 {
     this->addChild(CCBlurLayer::create(), -69);
 
+    m_bgSprite->setVisible(false);
+    m_buttonMenu->setVisible(false);
+
     content = AdvLabelBMFont::createWithStruct({}, "chatFont.fnt");
-    content->setMaxWidth(width - 30);
+    content->setMaxWidth(width - 60);
     content->setSplitEverySpace(true);
     content->setLineSpacing(3.5f);
     content->setAlignment(kCCTextAlignmentCenter);
     content->setString(desc.c_str());
 
-    std::string ss;
+    float desHeight = std::max<float>(140.0, content->getScaledContentHeight() + 100);
 
-    for (size_t i = 0; i < content->getLineCount(); i++)
-    {
-        ss.append("boobs\n");
-    }
+    m_mainLayer->setContentSize(ccp(width, desHeight));
 
-    if (!FLAlertLayer::init(delegate, title, ss, btn1, btn2, width, scroll, height, textScale))
-        return false;
-
-    auto oldTitle = m_mainLayer->getChildByType<CCLabelBMFont>(0);
-    auto area = m_mainLayer->getChildByType<TextArea>(0);
-    auto bg = m_mainLayer->getChildByType<CCScale9Sprite>(0);
-    auto men = m_mainLayer->getChildByType<CCMenu>(0);
-
-    oldTitle->setVisible(false);
-    area->setVisible(false);
-    men->setVisible(false);
+    bg = CCScale9Sprite::create("square01_001.png");
+    bg->setContentSize(ccp(width, desHeight));
 
     titleLabel = AdvLabelBMFont::createWithString(title, "goldFont.fnt");
-    titleLabel->setPosition(ccp(getContentWidth() / 2, getContentHeight() / 2 + bg->getScaledContentHeight() / 2 + -15));
     titleLabel->setAnchorPoint(ccp(0.5f, 1));
-    titleLabel->limitLabelWidth(width - 30, 0.9f, 0);
-
-    auto bg2 = EasyBG::create();
-    bg2->setTargettingNode(titleLabel);
-    bg2->setTargettingOffset(ccp(4, 4));
-    bg2->setPosition(titleLabel->getPosition() + ccp(0, -titleLabel->getScaledContentHeight() / 2));
-    bg2->setVisible(titleLabel->isUsingTTFCurrently());
-
-    content->setPosition(ccp(getContentWidth() / 2, getContentHeight() / 2 + 5));
+    titleLabel->limitLabelWidth(width - 60, 0.9f, 0);
 
     auto menu = CCMenu::create();
-    menu->setTouchPriority(-512);
-    menu->setPosition(ccp(getContentWidth() / 2, getContentHeight() / 2 - bg->getScaledContentHeight() / 2 + 30));
+    menu->setZOrder(8);
 
     auto spr = BetterButtonSprite::create(ccp(54.25f, 30), btn1, "goldFont.fnt", "GJ_button_01.png");
     auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(BetterAlertLayer::onButton));
     btn->setTag(1);
     menu->addChild(btn);
 
-    m_mainLayer->addChild(content, 6);
-    m_mainLayer->addChild(titleLabel, 7);
-    m_mainLayer->addChild(bg2, 5);
-    m_mainLayer->addChild(menu, 8);
+    m_mainLayer->addChildAtPosition(bg, Anchor::Center);
+    m_mainLayer->addChildAtPosition(content, Anchor::Center, ccp(0, 5));
+    m_mainLayer->addChildAtPosition(titleLabel, Anchor::Top, ccp(0, -15));
+    m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 30));
     return true;
 }
 
@@ -103,10 +94,10 @@ void BetterAlertLayer::onButton(CCObject* sender)
 {
     if (sender->getTag() == 1)
     {
-        this->onBtn1(m_button1->getParent());
+        this->onBtn1(sender);
     }
     else
     {
-        this->onBtn2(m_button2->getParent());
+        this->onBtn2(sender);
     }
 }
