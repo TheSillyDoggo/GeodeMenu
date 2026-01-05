@@ -224,8 +224,10 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
     if (!_text)
         return true;
 
-    if (_text == "\n" && nLen == 1)
-        return false;
+    log::info("nLen: {}, text: {}", nLen, _text);
+
+    if (_text[0] == '\n' && nLen == 1)
+        return true;
 
     if (CCKeyboardDispatcher::get()->getControlKeyPressed())
     {
