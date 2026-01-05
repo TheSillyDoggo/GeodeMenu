@@ -47,6 +47,18 @@ class SafeModeText : public InputModule
         }
 };
 
+class SafeModeEndScreenCheatIndicator : public Module
+{
+    public:
+        MODULE_SETUP(SafeModeEndScreenCheatIndicator)
+        {
+            setID("safe-mode/end-screen-cheat-indicator");
+            setDefaultEnabled(true);
+            setPriority(3);
+        }
+};
+
 SUBMIT_HACK(ForceSafeMode);
 SUBMIT_OPTION(ForceSafeMode, SafeModeChangeText);
 SUBMIT_OPTION(ForceSafeMode, SafeModeText);
+SUBMIT_OPTION(ForceSafeMode, SafeModeEndScreenCheatIndicator);

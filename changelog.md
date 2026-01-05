@@ -1,3 +1,10 @@
+# 2.5.2
+
+- Added TPS Bypass
+- Added End-screen Cheat Indicator to Auto Safe Mode
+- Fixed Hitboxes always showing in the editor
+- Fixed being able to switch startpos on the end screen
+
 # 2.5.1
 
 - Fixed XDBot not working if you had tps bypass enabled in a previous version

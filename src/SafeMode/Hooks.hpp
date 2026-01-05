@@ -27,8 +27,14 @@ class $modify (SafeGJGameLevel, GJGameLevel)
 
 class $modify (SafeEndLevelLayer, EndLevelLayer)
 {
+    struct Fields
+    {
+        CCNode* ci = nullptr;
+    };
+
     virtual void customSetup();
 
+    void updateCheatIndicator(float);
     void onViewReasons(CCObject* sender);
     
     void playCoinEffect(float duration);

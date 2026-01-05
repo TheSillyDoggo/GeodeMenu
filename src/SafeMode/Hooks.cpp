@@ -4,6 +4,7 @@
 #include "../GUI/BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "../GUI/BetterAlertLayer.hpp"
+#include "UI/CheatIndicator.hpp"
 
 bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -74,6 +75,16 @@ void SafeGJGameLevel::savePercentage(int p0, bool p1, int p2, int p3, bool p4)
 void SafeEndLevelLayer::customSetup()
 {
     EndLevelLayer::customSetup();
+
+    auto ci = CheatIndicator::create();
+    ci->setPosition(CCDirector::get()->getWinSize() / 2 + (m_listLayer->getContentSize() / 2 * ccp(-1, 1)) + ccp(10, -14));
+    ci->setScale(1.25f);
+    
+    m_fields->ci = ci;
+    m_mainLayer->addChild(ci);
+
+    this->schedule(schedule_selector(SafeEndLevelLayer::updateCheatIndicator));
+    updateCheatIndicator(0);
     
     if (SafeMode::get()->shouldDisableLevelProgress())
     {
@@ -160,6 +171,11 @@ void SafeEndLevelLayer::onViewReasons(CCObject* sender)
     auto loc = LocalisationManager::get();
 
     BetterAlertLayer::create(loc->getLocalisedString("names/safe-mode").c_str(), SafeMode::get()->getCombinedMessages(), loc->getLocalisedString("ui/ok-button").c_str())->show();
+}
+
+void SafeEndLevelLayer::updateCheatIndicator(float)
+{
+    m_fields->ci->setVisible(SafeModeEndScreenCheatIndicator::get()->getRealEnabled());
 }
 
 void SafeEndLevelLayer::playCoinEffect(float duration)

@@ -166,11 +166,14 @@ class $modify (StartposUILayer, UILayer)
         {
             if (auto pl = static_cast<StartposPlayLayer*>(PlayLayer::get()))
             {
-                if (key == StartposSwitcherPrev::get()->getKeyCode())
-                    pl->switchStartPosByAmount(-1);
+                if (!pl->m_levelEndAnimationStarted)
+                {
+                    if (key == StartposSwitcherPrev::get()->getKeyCode())
+                        pl->switchStartPosByAmount(-1);
 
-                if (key == StartposSwitcherNext::get()->getKeyCode())
-                    pl->switchStartPosByAmount(1);
+                    if (key == StartposSwitcherNext::get()->getKeyCode())
+                        pl->switchStartPosByAmount(1);
+                }
             }
         }
 

@@ -29,6 +29,15 @@ SUBMIT_OPTION(HitboxTrail, HitboxTrailResetOnDeath);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);
 
+void ShowHitboxes::onToggle()
+{
+    if (auto pl = PlayLayer::get())
+    {
+        pl->m_debugDrawNode->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? pl->m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
+        pl->updateDebugDraw();
+    }
+}
+
 struct HitboxTrailState
 {
     CCPoint location;
@@ -87,6 +96,9 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
     virtual void updateDebugDraw()
     {
+        if (typeinfo_cast<LevelEditorLayer*>(this))
+            return GJBaseGameLayer::updateDebugDraw();
+
         std::unordered_map<GameObject*, std::pair<float, float>> hitboxes = {};
         auto array = CCArrayExt<GameObject*>(m_objects);
 
@@ -120,7 +132,7 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
         auto fields = m_fields.self();
 
-        if (HitboxTrail::get()->getRealEnabled() && !typeinfo_cast<LevelEditorLayer*>(this))
+        if (HitboxTrail::get()->getRealEnabled())
         {
             if (!m_player1->m_isDead)
                 fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
@@ -202,17 +214,13 @@ class $modify (LevelEditorLayer)
 
     virtual void updateVisibility(float dt)
     {
-        auto en = m_isDebugDrawEnabled;
-
-        if (m_debugDrawNode)
+        if (GameManager::get()->getGameVariable("0045") || ShowHitboxes::get()->getRealEnabled())
         {
-            m_isDebugDrawEnabled = (m_isDebugDrawEnabled || ShowHitboxes::get()->getRealEnabled());
-        }
+            auto en = m_isDebugDrawEnabled;
+            m_isDebugDrawEnabled = true;
 
-        LevelEditorLayer::updateVisibility(dt);
+            LevelEditorLayer::updateVisibility(dt);
 
-        if (m_isDebugDrawEnabled)
-        {
             auto hbgl = base_cast<HitboxBaseGameLayer*>(this);
 
             auto fields = hbgl->m_fields.self();
@@ -242,9 +250,13 @@ class $modify (LevelEditorLayer)
 
             if (m_player2 && m_player2->isRunning())
                 hbgl->drawForPlayer(m_player2);
-        }
 
-        m_isDebugDrawEnabled = en;
+            m_isDebugDrawEnabled = en;
+        }
+        else
+        {
+            LevelEditorLayer::updateVisibility(dt);
+        }
     }
 };
 

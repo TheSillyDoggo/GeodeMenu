@@ -70,6 +70,8 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
                 self->progressTilNextTick += dt;
             }
 
+            // log::info("time: {}", m_extraDelta / (1.0f / 240.0f));
+
             if (self->timeTilNextTick == 0)
                 return;
 

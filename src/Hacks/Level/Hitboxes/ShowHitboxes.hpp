@@ -17,6 +17,8 @@ class ShowHitboxes : public Module
             setSafeModeTrigger(SafeModeTrigger::Attempt);
             setPriority(3);
         }
+
+        virtual void onToggle();
 };
 
 class ShowHitboxesOnDeath : public Module
