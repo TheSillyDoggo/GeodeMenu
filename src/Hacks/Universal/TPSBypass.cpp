@@ -27,7 +27,7 @@ class TPSBypassValue : public InputModule
             setHint("tps");
 
             setStringFilter("1234567890.");
-            setMaxCharCount(5);
+            setMaxCharCount(8);
         }
 
         double getTPSDelta()

@@ -69,6 +69,8 @@ void BetterInputNode::selectInput(bool selected)
 {
     isSelected = selected;
 
+    ttfInput->setString(text.c_str());
+
     if (selected)
     {
         ttfInput->attachWithIME();
@@ -222,11 +224,14 @@ bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
 bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * _text, int nLen, cocos2d::enumKeyCodes code)
 {
     if (!_text)
-        return true;
+    {
+        setString("");
 
-    log::info("nLen: {}, text: {}", nLen, _text);
+        if (delegate)
+            delegate->textChanged(nullptr);
+    }
 
-    if (_text[0] == '\n' && nLen == 1)
+    if (nLen == 1 && _text[0] == '\n')
         return true;
 
     if (CCKeyboardDispatcher::get()->getControlKeyPressed())
