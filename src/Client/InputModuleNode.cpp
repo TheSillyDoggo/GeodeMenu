@@ -27,16 +27,17 @@ void InputModuleNode::setup()
 
     this->scheduleUpdate();
 
-    auto label = AdvLabelBMFont::createWithString(fmt::format("{}{}", mod->getName(), mod->appendColon() ? ":" : "").c_str(), "bigFont.fnt");
+    label = AdvLabelBMFont::createWithString(fmt::format("{}{}", mod->getName(), mod->appendColon() ? ":" : "").c_str(), "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(75, 0.5f, 0);
 
-    input = BetterInputNode::create(90 + (75 - label->getScaledContentWidth()), mod->getPlaceholderString());
+    input = BetterInputNode::create(getContentWidth() - 4 - label->getScaledContentWidth() - 15, mod->getPlaceholderString());
+    input->setContentHeight(getContentHeight() - 2.5f * 2);
+    input->setAnchorPoint(ccp(1, 0.5f));
     input->setMaxChars(mod->getMaxCharCount());
     input->setCharFilter(mod->getStringFilter());
     input->setString(mod->getString());
     input->setDelegate(this);
-    input->setScale(0.775f);
     input->setAnchorPoint(ccp(1, 0.5f));
 
     if (mod->getStringFilter() == "1234567890")
@@ -57,11 +58,11 @@ void InputModuleNode::setup()
         hint->setAnchorPoint(ccp(1, 0));
         hint->setZOrder(3);
 
-        this->addChildAtPosition(hint, Anchor::BottomRight, ccp(-10, (getContentHeight() - input->getScaledContentHeight()) / 2));
+        this->addChildAtPosition(hint, Anchor::BottomRight, ccp(-2.5f, (getContentHeight() - input->getScaledContentHeight()) / 2));
     }
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
-    this->addChildAtPosition(input, Anchor::Right, ccp(-10, 0));
+    this->addChildAtPosition(input, Anchor::Right, ccp(-2.5f, 0));
 }
 
 void InputModuleNode::textChanged(CCTextInputNode* p0)

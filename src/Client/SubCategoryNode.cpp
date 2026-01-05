@@ -1,5 +1,6 @@
 #include "SubCategoryNode.hpp"
 #include "../Localisation/LocalisationManager.hpp"
+#include "../Utils/RealtimeAction.hpp"
         
 void SubCategoryNode::updateUI()
 {
@@ -33,6 +34,8 @@ bool SubCategoryNode::init()
 {
     if (!CategoryNode::init())
         return false;
+
+    this->scheduleUpdate();
 
     float height = 25;
 
@@ -101,4 +104,34 @@ void SubCategoryNode::onSelectSub(CCObject* sender)
     selectedSub[getID()] = static_cast<CCNode*>(sender)->getID();
 
     updateUI();
+}
+
+void SubCategoryNode::update(float dt)
+{
+    for (auto btn : normalBtns)
+    {
+        bool sel = btn.second->m_bSelected || (btn.first == selectedSub[getID()]);
+        float opacity = sel ? 125 : 100;
+
+        if (!categoryBtnsSelCheck.contains(btn.second))
+        {
+            categoryBtnsSelCheck.emplace(btn.second, sel);
+
+            static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->setOpacity(opacity);
+            static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->setOpacity(opacity);
+        }
+        else
+        {
+            if (categoryBtnsSelCheck[btn.second] != sel)
+            {
+                categoryBtnsSelCheck[btn.second] = sel;
+
+                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->stopAllActions();
+                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->stopAllActions();
+
+                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
+                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
+            }
+        }
+    }
 }

@@ -9,6 +9,7 @@ class SubCategoryNode : public CategoryNode
         CCMenu* selectSubMenu = nullptr;
         std::unordered_map<std::string, CategoryTabSprite*> normalSprs = {};
         std::unordered_map<std::string, CCMenuItemSpriteExtra*> normalBtns = {};
+        std::unordered_map<CCMenuItemSpriteExtra*, bool> categoryBtnsSelCheck = {};
         std::unordered_map<std::string, CategoryNode*> categoryNodes = {};
         static inline std::unordered_map<std::string, std::string> selectedSub = {};
     
@@ -22,4 +23,5 @@ class SubCategoryNode : public CategoryNode
         virtual void updateUI();
 
         bool init();
+        virtual void update(float dt);
 };

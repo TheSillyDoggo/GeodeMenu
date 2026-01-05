@@ -78,10 +78,14 @@ void CategoryNode::updateUI()
     {
         auto n = node.second;
 
-        float x = (n->getTag() % 2 == 0) ? 85 : (showScrollbar ? 252 : 260);
+        bool right = (n->getTag() % 2 != 0);
+        float usWidth = showScrollbar ? getContentWidth() - scrollbar->getScaledContentWidth() + 2.5f : getContentWidth();
+
+        float x = right ? 85 : (showScrollbar ? 252 : 260);
         float y = floor(n->getTag() / 2);
 
-        n->setPosition(ccp(x, height2 - (y * 28) + 6));
+        n->setAnchorPoint(ccp(right ? 1 : 0, 0.5f));
+        n->setPosition(ccp(right ? usWidth - 2.5f : 2.5f, height2 - (y * 28) + 6));
     }
 
     scroll->moveToTop();

@@ -286,3 +286,19 @@ ModuleNode::~ModuleNode()
 {
     nodes.erase(std::find(nodes.begin(), nodes.end(), this));
 }
+
+void ModuleNode::draw()
+{
+    #ifndef QOLMOD_GUI_DEBUG
+    return;
+    #endif
+
+    ccDrawSolidRect(ccp(0, 0), getContentSize(), ccc4f(1, 0, 0, 1));
+
+    if (label)
+    {
+        auto bb = label->boundingBox();
+
+        ccDrawSolidRect(ccp(bb.getMinX(), bb.getMinY()), ccp(bb.getMaxX(), bb.getMaxY()), ccc4f(0, 0, 1, 1));
+    }
+}

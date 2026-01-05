@@ -11,10 +11,12 @@
 #include "BetterInputNode.hpp"
 #include "BlurLayer.hpp"
 #include "FloatingButton/FloatingUIManager.hpp"
+#include "EasyBG.hpp"
 
 bool AndroidUI::setup()
 {
     this->addChild(CCBlurLayer::create(), -3);
+    this->scheduleUpdate();
 
     rt = CCRenderTexture::create(getContentWidth(), getContentHeight());
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
@@ -102,22 +104,19 @@ void AndroidUI::populateModules()
 
 void AndroidUI::populateTabs()
 {
-    auto bg = CCScale9Sprite::create("square02b_small.png");
-    bg->setContentSize(ccp(110, m_size.height - 10 * 2) / 0.5f);
+    auto bg = EasyBG::create();
+    bg->setContentSize(ccp(110, m_size.height - 10 * 2));
     bg->setAnchorPoint(ccp(0, 0.5f));
-    bg->setScale(0.5f);
-    bg->setColor(ccc3(0, 0, 0));
-    bg->setOpacity(100);
 
     tabsMenu = CCMenu::create();
-    tabsMenu->setContentSize((bg->getContentSize() / 2) + ccp(0, -10));
+    tabsMenu->setContentSize((bg->getContentSize()) + ccp(0, -5));
     tabsMenu->setAnchorPoint(ccp(0, 0.5f));
     tabsMenu->ignoreAnchorPointForPosition(false);
-    tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(3.5f));
+    tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f));
     tabsMenu->getLayout()->ignoreInvisibleChildren(true);
     
     m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
-    m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 5, 0));
+    m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 2.5f, 0));
 
     for (auto category : categoryOrders)
     {
@@ -131,13 +130,13 @@ void AndroidUI::populateTabs()
             tabsMenu->addChild(geode::SpacerNode::create());
 
             // TODO: Bottom row
-            /*
+            
             bottomTabsContainer = CCMenu::create();
             bottomTabsContainer->ignoreAnchorPointForPosition(false);
-            bottomTabsContainer->setContentSize(ccp(100, 20));
-            bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Even));
+            bottomTabsContainer->setContentSize(ccp(105, 20));
+            bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Between));
             tabsMenu->addChild(bottomTabsContainer);
-            */
+            
 
             continue;
         }
@@ -172,16 +171,16 @@ void AndroidUI::addTab(std::string name, std::string id, std::string sprite)
     auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
     sprHeld->updateSelection(CategorySelectionType::Hovered);
 
-    sprNormal->setContentSize(ccp(100, 20));
-    sprHeld->setContentSize(ccp(100, 20));
+    sprNormal->setContentSize(ccp(105, 20));
+    sprHeld->setContentSize(ccp(105, 20));
 
     if (bottomTabsContainer)
     {
         sprNormal->label->setString("");
-        sprNormal->setContentSize(ccp((100 - 5 * 2) / 3, 20));
+        sprNormal->setContentSize(ccp((105 - 2.5f) / 2, 20));
 
         sprHeld->label->setString("");
-        sprHeld->setContentSize(ccp((100 - 5 * 2) / 3, 20));
+        sprHeld->setContentSize(ccp((105 - 2.5f) / 2, 20));
     }
 
     auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
@@ -409,4 +408,34 @@ void AndroidUI::visit()
     rt->setPosition(getContentSize() / 2);
     rt->getSprite()->setOpacity(drawOpacity->getOpacity());
     rt->visit();
+}
+
+void AndroidUI::update(float dt)
+{
+    for (auto btn : categoryBtns)
+    {
+        bool sel = btn.second->m_bSelected || (btn.second == categoryBtns[selectedCategory]);
+        float opacity = sel ? 125 : 100;
+
+        if (!categoryBtnsSelCheck.contains(btn.second))
+        {
+            categoryBtnsSelCheck.emplace(btn.second, sel);
+
+            static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->setOpacity(opacity);
+            static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->setOpacity(opacity);
+        }
+        else
+        {
+            if (categoryBtnsSelCheck[btn.second] != sel)
+            {
+                categoryBtnsSelCheck[btn.second] = sel;
+
+                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->stopAllActions();
+                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->stopAllActions();
+
+                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
+                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
+            }
+        }
+    }
 }

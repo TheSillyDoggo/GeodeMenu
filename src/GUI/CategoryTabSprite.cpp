@@ -21,13 +21,14 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
     if (!CCNode::init())
         return false;
 
-    outline = CCScale9Sprite::create("GJ_square07.png");
-    outline->setScale(0.5f);
+    outline = CCScale9Sprite::create("squareOverlay.png"_spr);
 
     background = CCScale9Sprite::create("square02b_small.png");
     background->setColor(ccc3(0, 0, 0));
     background->setOpacity(100);
     background->setScale(0.5f);
+
+    outline->setScale(0.6f);
 
     if (!icon.empty())
     {
@@ -94,7 +95,7 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
     label->limitLabelWidth((this->getContentWidth() - 7.5f) / 0.5f, 0.75f, 0.1f);
     label->setScale(label->getScale() / 2);
 
-    outline->setContentSize(contentSize * 2);
+    outline->setContentSize(contentSize / 0.6f);
     background->setContentSize(contentSize * 2);
 
     if (sprite && label->getContentWidth() != 0)

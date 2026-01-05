@@ -35,5 +35,6 @@ class ModuleNode : public CCMenu
         void onUpdateLabelColour(float dt);
 
         virtual void updateNode();
+        virtual void draw();
         bool init(Module* module);
 };

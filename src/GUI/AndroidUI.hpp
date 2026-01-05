@@ -36,6 +36,7 @@ class AndroidUI : public geode::Popup<>
         CCLayerColor* drawOpacity = nullptr;
         std::map<std::string, CategoryNode*> categories = {};
         std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
+        std::map<CCMenuItemSpriteExtra*, bool> categoryBtnsSelCheck = {};
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
         // static to keep between reopens
         static inline std::string selectedCategory = "Level";
@@ -78,6 +79,7 @@ class AndroidUI : public geode::Popup<>
         void close();
         virtual bool setup();
         virtual void visit();
+        virtual void update(float dt);
 };
 
 class QOLModUIOpenEvent : public geode::Event
