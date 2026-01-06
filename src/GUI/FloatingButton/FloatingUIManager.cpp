@@ -94,7 +94,7 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
 
     #ifdef GEODE_IS_MOBILE
     if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
+        return false;
     #endif
 
     sortButtons();
