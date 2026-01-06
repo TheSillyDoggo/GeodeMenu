@@ -128,6 +128,7 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         {
             obj.first->m_scaleX = obj.second.first;
             obj.first->m_scaleY = obj.second.second;
+            obj.first->dirtifyObjectRect();
         }
 
         auto fields = m_fields.self();

@@ -2,6 +2,7 @@
 
 - Fixed minor UI issues
 - Added warning when using shortcuts with textureldr installed
+- Fixed Hitboxes disappearing when using show hitboxes on death death object only
 
 # 2.5.2
 
