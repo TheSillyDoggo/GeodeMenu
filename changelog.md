@@ -1,7 +1,7 @@
 # 2.5.3
 
 - Fixed minor UI issues
-- Fixed Floating buttons making screen black with textureldr installed
+- Added warning when using shortcuts with textureldr installed
 
 # 2.5.2
 

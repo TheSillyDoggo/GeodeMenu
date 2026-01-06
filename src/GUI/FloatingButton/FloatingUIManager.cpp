@@ -60,6 +60,11 @@ void FloatingUIManager::visit()
     if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
         return;
 
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     sortButtons();
 
     return CCNode::visit();
@@ -86,6 +91,11 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
 
     if (AndroidUI::get())
         return false;
+
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
 
     sortButtons();
     std::reverse(buttons.begin(), buttons.end());

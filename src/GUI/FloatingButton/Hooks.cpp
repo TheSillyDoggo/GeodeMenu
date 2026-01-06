@@ -6,7 +6,23 @@ bool FloatingMenuLayer::init()
 {
     FloatingUIManager::get()->updateSprites();
 
-    return MenuLayer::init();
+    MenuLayer::init();
+    
+    #ifdef GEODE_IS_MOBILE
+
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+    {
+        if (FloatingUIManager::get()->buttons.size() > 0)
+        {
+            auto alert = FLAlertLayer::create("Shortcuts", "Shortcuts are currently not supported with textureldr installed\nsorry :c", "OK");
+            alert->m_scene = this;
+            alert->show();
+        }
+    }
+
+    #endif
+
+    return true;
 }
 
 void FloatingTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)

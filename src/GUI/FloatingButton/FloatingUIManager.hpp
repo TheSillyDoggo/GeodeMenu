@@ -11,6 +11,8 @@ class FloatingUIDrawHook : public cocos2d::CCNode
 
 class FloatingUIManager : public cocos2d::CCNode
 {
+    friend struct FloatingMenuLayer;
+
     protected:
         std::vector<FloatingUIButton*> buttons = {};
         FloatingUIButton* selected = nullptr;
