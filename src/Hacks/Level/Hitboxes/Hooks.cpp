@@ -112,6 +112,9 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
                     {
                         if (obj == reinterpret_cast<NoclipBaseGameLayer*>(this)->getDeathObject())
                             continue;
+
+                        if (!obj->getParent() || obj->isVisible())
+                            continue;
                         
                         hitboxes.emplace(obj, std::make_pair(obj->m_scaleX, obj->m_scaleY));
                         obj->m_scaleX = 0;
