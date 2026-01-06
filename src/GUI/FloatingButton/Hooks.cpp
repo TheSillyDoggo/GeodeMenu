@@ -27,8 +27,16 @@ bool FloatingMenuLayer::init()
 
 void FloatingTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
 {
+    #ifdef GEODE_IS_MOBILE
+    if (!Loader::get()->getLoadedMod("geode.texture-loader"))
+    {
+        if (FloatingUIManager::get()->touches(pTouches, pEvent, uIndex))
+            return;
+    }
+    #else
     if (FloatingUIManager::get()->touches(pTouches, pEvent, uIndex))
         return;
+    #endif
 
     CCTouchDispatcher::touches(pTouches, pEvent, uIndex);
 }

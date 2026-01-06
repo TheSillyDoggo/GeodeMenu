@@ -79,6 +79,11 @@ void FloatingUIButton::updateSprites()
 {
     this->removeAllChildren();
 
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     if (!background.empty())
     {
         CCSprite* bg = nullptr;
@@ -116,6 +121,11 @@ void FloatingUIButton::updateSprites()
 
 void FloatingUIButton::update(float dt)
 {
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     auto v = visibilityConf.shouldShow();
 
     this->setVisible(v);

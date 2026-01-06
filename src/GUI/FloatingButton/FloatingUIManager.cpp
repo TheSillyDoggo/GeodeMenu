@@ -11,7 +11,15 @@ FloatingUIManager* FloatingUIManager::get()
     if (!instance)
     {
         instance = new FloatingUIManager();
+        #ifdef GEODE_IS_MOBILE
+        if (!Loader::get()->getLoadedMod("geode.texture-loader"))
+            CCDirector::get()->m_pNotificationNode = new FloatingUIDrawHook();
+
+        #else
+
         CCDirector::get()->m_pNotificationNode = new FloatingUIDrawHook();
+
+        #endif
     }
 
     return instance;
@@ -20,6 +28,12 @@ FloatingUIManager* FloatingUIManager::get()
 void FloatingUIManager::addButton(FloatingUIButton* btn)
 {
     buttons.push_back(btn);
+
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     this->addChild(btn);
 }
 
@@ -29,11 +43,22 @@ void FloatingUIManager::removeButton(FloatingUIButton* btn)
         return;
 
     buttons.erase(std::remove(buttons.begin(), buttons.end(), btn), buttons.end());
+
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     this->removeChild(btn);
 }
 
 void FloatingUIManager::updateSprites()
 {
+    #ifdef GEODE_IS_MOBILE
+    if (Loader::get()->getLoadedMod("geode.texture-loader"))
+        return;
+    #endif
+
     for (auto btn : buttons)
     {
         btn->updateSprites();
