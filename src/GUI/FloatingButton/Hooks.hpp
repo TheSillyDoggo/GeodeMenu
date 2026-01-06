@@ -7,11 +7,6 @@
 
 using namespace geode::prelude;
 
-class $modify (FloatingEGLView, CCEGLView)
-{
-    virtual void swapBuffers();
-};
-
 class $modify (FloatingMenuLayer, MenuLayer)
 {
     bool init();

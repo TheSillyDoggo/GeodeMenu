@@ -2,14 +2,6 @@
 #include "FloatingUIManager.hpp"
 #include "../AndroidUI.hpp"
 
-void FloatingEGLView::swapBuffers()
-{
-    // if (!AndroidUI::get())
-        // FloatingUIManager::get()->visit();
-
-    CCEGLView::swapBuffers();
-}
-
 bool FloatingMenuLayer::init()
 {
     FloatingUIManager::get()->updateSprites();

@@ -89,9 +89,9 @@ void FloatingUIButton::updateSprites()
         else
             bg = CCSprite::create(background.c_str());
 
-        if (!bg->getUserObject("geode.texture-loader/fallback.png"))
+        if (bg)
         {
-            if (bg)
+            if (!bg->getUserObject("geode.texture-loader/fallback.png"))
             {
                 bg->setPosition(getContentSize() / 2);
                 bg->setScale(scale);
@@ -109,9 +109,9 @@ void FloatingUIButton::updateSprites()
         else
             ov = CCSprite::create(overlay.c_str());
 
-        if (!ov->getUserObject("geode.texture-loader/fallback.png"))
+        if (ov)
         {
-            if (ov)
+            if (!ov->getUserObject("geode.texture-loader/fallback.png"))
             {
                 ov->setPosition(getContentSize() / 2);
                 ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
