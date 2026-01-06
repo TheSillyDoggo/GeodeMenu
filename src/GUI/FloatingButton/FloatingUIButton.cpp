@@ -88,12 +88,15 @@ void FloatingUIButton::updateSprites()
             bg = CCSprite::createWithSpriteFrameName(background.c_str());
         else
             bg = CCSprite::create(background.c_str());
-        
-        if (bg)
+
+        if (!bg->getUserObject("geode.texture-loader/fallback.png"))
         {
-            bg->setPosition(getContentSize() / 2);
-            bg->setScale(scale);
-            this->addChild(bg);
+            if (bg)
+            {
+                bg->setPosition(getContentSize() / 2);
+                bg->setScale(scale);
+                this->addChild(bg);
+            }
         }
     }
 
@@ -106,11 +109,14 @@ void FloatingUIButton::updateSprites()
         else
             ov = CCSprite::create(overlay.c_str());
 
-        if (ov)
+        if (!ov->getUserObject("geode.texture-loader/fallback.png"))
         {
-            ov->setPosition(getContentSize() / 2);
-            ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
-            this->addChild(ov);
+            if (ov)
+            {
+                ov->setPosition(getContentSize() / 2);
+                ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
+                this->addChild(ov);
+            }
         }
     }
 }
