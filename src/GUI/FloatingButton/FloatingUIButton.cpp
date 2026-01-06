@@ -35,7 +35,6 @@ bool FloatingUIButton::init()
     this->scheduleUpdate();
     this->onEnter();
 
-    updateSprites();
     return true;
 }
 
@@ -91,12 +90,9 @@ void FloatingUIButton::updateSprites()
 
         if (bg)
         {
-            if (!bg->getUserObject("geode.texture-loader/fallback.png"))
-            {
-                bg->setPosition(getContentSize() / 2);
-                bg->setScale(scale);
-                this->addChild(bg);
-            }
+            bg->setPosition(getContentSize() / 2);
+            bg->setScale(scale);
+            this->addChild(bg);
         }
     }
 
@@ -111,12 +107,9 @@ void FloatingUIButton::updateSprites()
 
         if (ov)
         {
-            if (!ov->getUserObject("geode.texture-loader/fallback.png"))
-            {
-                ov->setPosition(getContentSize() / 2);
-                ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
-                this->addChild(ov);
-            }
+            ov->setPosition(getContentSize() / 2);
+            ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
+            this->addChild(ov);
         }
     }
 }

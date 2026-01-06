@@ -67,7 +67,11 @@ void FloatingUIManager::visit()
 
 void FloatingUIDrawHook::visit()
 {
-    if (!AndroidUI::get())
+    if (!CCScene::get())
+        return;
+
+    if (AndroidUI::get())
+        return;
 
     FloatingUIManager::get()->visit();
 };
