@@ -14,9 +14,16 @@ bool FloatingMenuLayer::init()
     {
         if (FloatingUIManager::get()->buttons.size() > 0)
         {
-            auto alert = FLAlertLayer::create("Shortcuts", "Shortcuts are currently not supported with textureldr installed\nsorry :c", "OK");
-            alert->m_scene = this;
-            alert->show();
+            static bool shownWarning = false;
+
+            if (!shownWarning)
+            {
+                shownWarning = true;
+
+                auto alert = FLAlertLayer::create("QOLMod", "Shortcuts are currently not supported with textureldr installed\nsorry :c", "OK");
+                alert->m_scene = this;
+                alert->show();
+            }
         }
     }
 
