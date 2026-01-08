@@ -48,7 +48,7 @@ class $modify (GJBaseGameLayer)
 {
     float getModifiedDelta(float dt)
     {
-        if (!TPSBypassEnabled::get()->getRealEnabled())
+        if (!TPSBypassEnabled::get()->getRealEnabled() || m_isEditor)
             return GJBaseGameLayer::getModifiedDelta(dt);
 
         double extraDelta = 0;
@@ -74,7 +74,7 @@ class $modify (GJBaseGameLayer)
 
     virtual void update(float dt)
     {
-        if (TPSBypassEnabled::get()->getRealEnabled() && m_started)
+        if (TPSBypassEnabled::get()->getRealEnabled() && m_started && !m_isEditor)
         {
             int mod = TPSBypassValue::get()->getDeltaMod();
             for (size_t i = 0; i < mod; i++)
