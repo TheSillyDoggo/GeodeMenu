@@ -52,17 +52,17 @@ bool SetupColourConfigUI::setup()
     endColour = CCLayerColor::create(ccc4(0, 0, 0, 255), 30, 30);
     endColour->ignoreAnchorPointForPosition(false);
 
-    auto prev = GameManager::sharedState()->m_levelEditorLayer;
+    // auto prev = GameManager::sharedState()->m_levelEditorLayer;
 
-    if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
-        GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
+    // if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
+        // GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
 
     picker = CCControlColourPicker::colourPicker();
     picker->setDelegate(this);
     picker->setAnchorPoint(ccp(0, 0));
     picker->setScale(0.8f);
 
-    GameManager::sharedState()->m_levelEditorLayer = prev;
+    // GameManager::sharedState()->m_levelEditorLayer = prev;
 
     typeMenu = CCMenu::create();
     typeMenu->setContentSize(ccp(0, 0));
@@ -435,10 +435,10 @@ void SetupColourConfigUI::setPreviewChannel(std::string channel)
 
 void SetupColourConfigUI::updateUI()
 {
-    auto prev = GameManager::sharedState()->m_levelEditorLayer;
+    // auto prev = GameManager::sharedState()->m_levelEditorLayer;
 
-    if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
-        GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
+    // if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
+        // GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
 
     picker->setColorValue(currentConfig.customColour);
     picker->setTouchEnabled(currentConfig.type == CustomColour);
@@ -449,7 +449,7 @@ void SetupColourConfigUI::updateUI()
     gradientDelStepBtn->setVisible(currentConfig.type == Gradient);
     updateGradientLines();
 
-    GameManager::sharedState()->m_levelEditorLayer = prev;
+    // GameManager::sharedState()->m_levelEditorLayer = prev;
 }
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
