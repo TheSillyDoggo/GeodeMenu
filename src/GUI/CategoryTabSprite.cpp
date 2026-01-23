@@ -21,7 +21,8 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
     if (!CCNode::init())
         return false;
 
-    outline = CCScale9Sprite::create("squareOverlay.png"_spr);
+    // outline = CCScale9Sprite::create("squareOverlay.png"_spr);
+    outline = CCScale9Sprite::create("GJ_square07.png");
 
     background = CCScale9Sprite::create("square02b_small.png");
     background->setColor(ccc3(0, 0, 0));

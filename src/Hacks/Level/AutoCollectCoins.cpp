@@ -19,7 +19,7 @@ class AutoCollectCoins : public Module
 
 SUBMIT_HACK(AutoCollectCoins);
 
-/*class $modify (PlayLayer)
+class $modify (PlayLayer)
 {
     void resetLevel()
     {
@@ -34,4 +34,4 @@ SUBMIT_HACK(AutoCollectCoins);
             }
         }
     }
-};*/
+};

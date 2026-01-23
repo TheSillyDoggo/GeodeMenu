@@ -199,6 +199,7 @@ void ModuleNode::onChangeShortcut(CCObject* sender)
     {
         mod->setShortcutConfig(enabled, conf);
     });
+    ui->modID = mod->getID();
     ui->setStartConfig(mod->isShortcutEnabled(), mod->getShortcutConfig());
     ui->show();
 }

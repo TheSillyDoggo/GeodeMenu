@@ -4,6 +4,7 @@
 #include "BetterButtonSprite.hpp"
 #include "EasyBG.hpp"
 #include "SelectItemUI.hpp"
+#include "SetupColourConfigUI.hpp"
 
 SetupShortcutUI* SetupShortcutUI::create(std::function<void(bool, ModuleShortcutConfig)> onFinish)
 {
@@ -43,6 +44,11 @@ void SetupShortcutUI::updateUI()
     visInEditor->toggle(conf.visibility.showInEditor);
     visInEditorPause->toggle(conf.visibility.showInEditorPauseMenu);
 
+    updateSprs();
+}
+
+void SetupShortcutUI::updateSprs()
+{
     bgOffSpr->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(conf.bgOffSprite.empty() ? "GJ_deleteIcon_001.png" : conf.bgOffSprite.c_str()));
     bgOnSpr->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(conf.bgOffSprite.empty() ? "GJ_deleteIcon_001.png" : conf.bgOnSprite.c_str()));
 
@@ -80,6 +86,17 @@ void SetupShortcutUI::onClose(CCObject* sender)
     geode::Popup<>::onClose(sender);
 }
 
+void SetupShortcutUI::onSelectColour(CCObject* sender)
+{
+    auto ui = SetupColourConfigUI::create([this](ColourConfig conf)
+    {
+        this->conf.colour = conf;
+    });
+    ui->setStartConfig(conf.colour);
+    ui->setDefaultConfig({ccc3(255, 255, 255)});
+    ui->show();
+}
+
 void SetupShortcutUI::onSelectSprite(CCObject* sender)
 {
     SelectItemUI* ui = nullptr;
@@ -90,7 +107,7 @@ void SetupShortcutUI::onSelectSprite(CCObject* sender)
             ui = SelectItemUI::create(SelectItemType::ShortcutBG, [this](std::string spr)
             {
                 conf.bgOffSprite = spr;
-                updateUI();
+                updateSprs();
             });
             ui->setSelectedItem(conf.bgOffSprite);
             ui->show();
@@ -101,7 +118,7 @@ void SetupShortcutUI::onSelectSprite(CCObject* sender)
             ui = SelectItemUI::create(SelectItemType::ShortcutBG, [this](std::string spr)
             {
                 conf.bgOnSprite = spr;
-                updateUI();
+                updateSprs();
             });
             ui->setSelectedItem(conf.bgOnSprite);
             ui->show();
@@ -112,7 +129,7 @@ void SetupShortcutUI::onSelectSprite(CCObject* sender)
             ui = SelectItemUI::create(SelectItemType::ShortcutOverlay, [this](std::string spr)
             {
                 conf.shortcutOverlay = spr;
-                updateUI();
+                updateSprs();
             });
             ui->setSelectedItem(conf.shortcutOverlay);
             ui->show();
@@ -142,6 +159,8 @@ bool SetupShortcutUI::setup()
 
     float size = 25;
     float spacing = 2.5f;
+
+    this->scheduleUpdate();
 
     auto enabledMenu = CCMenu::create();
     auto spritesMenu = CCMenu::create();
@@ -177,6 +196,12 @@ bool SetupShortcutUI::setup()
 
         spritesMenu->addChild(node);
     }
+
+    colSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+    colSpr->setScale(0.6f);
+    auto colBtn = CCMenuItemSpriteExtra::create(colSpr, this, menu_selector(SetupShortcutUI::onSelectColour));
+    colBtn->setPosition(ccp(60, 0));
+    spritesMenu->addChild(colBtn);
     
 
     auto spritesBG = EasyBG::create();
@@ -282,4 +307,9 @@ bool SetupShortcutUI::setup()
     m_mainLayer->addChildAtPosition(scaleTitle, Anchor::Right, ccp(-15 - 5 - 70, -60) + ccp(-70 / 2, 27));
     m_mainLayer->addChildAtPosition(opacityTitle, Anchor::Right, ccp(-15, -60) + ccp(-70 / 2, 27));
     return true;
+}
+
+void SetupShortcutUI::update(float dt)
+{
+    colSpr->setColor(conf.colour.colourForConfig(fmt::format("{}_shortcut", modID)));
 }

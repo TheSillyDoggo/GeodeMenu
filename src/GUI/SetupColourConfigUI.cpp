@@ -378,7 +378,7 @@ void SetupColourConfigUI::onChangeType(CCObject* sender)
 
 void SetupColourConfigUI::update(float dt)
 {
-    currentConfig.customColour = picker->getColorValue();
+    // currentConfig.customColour = picker->getColorValue();
 
     startColour->setColor(startConfig.colourForConfig(previewChannel));
     endColour->setColor(currentConfig.colourForConfig(previewChannel));

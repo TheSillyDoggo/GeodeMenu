@@ -19,7 +19,7 @@ SUBMIT_HACK(SolidWaveTrail);
 
 class $modify (CCDrawNode)
 {
-    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
     {
         ccColor4F fill = fillColor;
 
@@ -32,6 +32,6 @@ class $modify (CCDrawNode)
             }
         }
 
-        return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor);
+        return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor, alignment);
     }
 };

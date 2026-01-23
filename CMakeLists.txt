@@ -21,6 +21,7 @@ file(GLOB SOURCES
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_link_options(/errorlimit:0)
 
 # Windows specific settings
 if (WIN32)

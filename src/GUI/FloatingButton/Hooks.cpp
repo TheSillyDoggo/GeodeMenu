@@ -4,6 +4,8 @@
 
 bool FloatingMenuLayer::init()
 {
+    return MenuLayer::init();
+
     FloatingUIManager::get()->updateSprites();
 
     MenuLayer::init();

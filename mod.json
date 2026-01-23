@@ -1,8 +1,8 @@
 {
-	"geode": "4.10.0",
-	"version": "v2.5.6",
+	"geode": "5.0.0-alpha.1",
+	"version": "v2.6.0",
 	"gd": {
-		"win": "2.2074",
+		"win": "2.2081",
 		"android": "2.2074",
 		"mac": "2.2074",
 		"ios": "2.2074"
@@ -55,12 +55,5 @@
 		"utility",
 		"customization",
 		"universal"
-	],
-	"incompatibilities": [
-        {
-            "id": "TheSillyDoggo.Cheats",
-            "version": "*",
-            "importance": "superseded"
-        }
-    ]
+	]
 }

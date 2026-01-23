@@ -99,4 +99,7 @@ void ModuleShortcutButton::update(float dt)
     }
     
     FloatingUIButton::update(dt);
+
+    if (overlaySpr)
+        overlaySpr->setColor(mod->getShortcutConfig().colour.colourForConfig(fmt::format("{}_shortcut", mod->getID())));
 }

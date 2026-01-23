@@ -26,6 +26,21 @@ bool AndroidUI::setup()
     drawOpacity->setVisible(false);
     this->addChild(drawOpacity);
 
+    bottomLeft = VersionInfoNode::create(VersionInfoType::GeodeAndGD);
+    bottomLeft->setAnchorPoint(ccp(0, 0));
+    bottomLeft->setPosition(ccp(5, 2.5f));
+    bottomLeft->setColor(ccc3(100, 100, 100));
+    bottomLeft->setScale(0.5f);
+    this->addChild(bottomLeft);
+
+    bottomRight = VersionInfoNode::create(VersionInfoType::QOLMod);
+    bottomRight->setAnchorPoint(ccp(1, 0));
+    bottomRight->setPosition(ccp(CCDirector::get()->getWinSize().width - 5, 2.5f));
+    bottomRight->setColor(ccc3(100, 100, 100));
+    bottomRight->setScale(0.5f);
+    this->addChild(bottomRight);
+    
+
     bg = BackgroundSprite::create();
     bg->setContentSize(m_size);
     bg->setAnchorPoint(ccp(0, 0));
@@ -131,11 +146,11 @@ void AndroidUI::populateTabs()
 
             // TODO: Bottom row
             
-            bottomTabsContainer = CCMenu::create();
+            /*bottomTabsContainer = CCMenu::create();
             bottomTabsContainer->ignoreAnchorPointForPosition(false);
             bottomTabsContainer->setContentSize(ccp(105, 20));
             bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Between));
-            tabsMenu->addChild(bottomTabsContainer);
+            tabsMenu->addChild(bottomTabsContainer);*/
             
 
             continue;
@@ -277,6 +292,10 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     auto winSize = CCDirector::get()->getWinSize();
     auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr));
     auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
+    auto fadeInVersion = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
+    auto fadeInVersion2 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
+    auto fadeInVersion3 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
+    auto fadeInBG = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.14f, 150), nullptr));
 
     backBtn->stopAllActions();
     drawOpacity->stopAllActions();
@@ -284,6 +303,9 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height / 2));
     m_mainLayer->setScale(1.0f);
     backBtn->setOpacity(255);
+    bottomLeft->setOpacity(150);
+    bottomRight->setOpacity(150);
+    this->setOpacity(150);
 
     if (BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
         anim = MenuAnimation::None;
@@ -300,6 +322,10 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height + m_size.height / 2));
 
             m_mainLayer->runAction(moveToMid);
+            bottomLeft->runAction(fadeInVersion);
+            bottomRight->runAction(fadeInVersion2);
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
 
         case MenuAnimation::FromBottom:
@@ -309,6 +335,10 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             m_mainLayer->setPosition(ccp(winSize.width / 2, -m_size.height / 2));
 
             m_mainLayer->runAction(moveToMid);
+            bottomLeft->runAction(fadeInVersion);
+            bottomRight->runAction(fadeInVersion2);
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
 
         case MenuAnimation::FromLeft:
@@ -318,6 +348,10 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             m_mainLayer->setPosition(ccp(-m_size.width / 2, winSize.height / 2));
 
             m_mainLayer->runAction(moveToMid);
+            bottomLeft->runAction(fadeInVersion);
+            bottomRight->runAction(fadeInVersion2);
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
 
         case MenuAnimation::FromRight:
@@ -327,6 +361,10 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             m_mainLayer->setPosition(ccp(winSize.width + m_size.width / 2, winSize.height / 2));
 
             m_mainLayer->runAction(moveToMid);
+            bottomLeft->runAction(fadeInVersion);
+            bottomRight->runAction(fadeInVersion2);
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
 
         case MenuAnimation::Scale:
@@ -336,12 +374,17 @@ void AndroidUI::runAnimation(MenuAnimation anim)
             m_mainLayer->setScale(0);
 
             m_mainLayer->runAction(RealtimeAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)));
+            bottomLeft->runAction(fadeInVersion);
+            bottomRight->runAction(fadeInVersion2);
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
 
         case MenuAnimation::FadeIn:
             drawOpacity->setOpacity(0);
-
             drawOpacity->runAction(RealtimeAction::create(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2)));
+            this->setOpacity(0);
+            this->runAction(fadeInBG);
             return;
     }
 }
@@ -355,9 +398,9 @@ void AndroidUI::close()
     instance = nullptr;
 }
 
-void AndroidUI::keyDown(cocos2d::enumKeyCodes key)
+void AndroidUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 {
-    geode::Popup<>::keyDown(key);
+    geode::Popup<>::keyDown(key, 0);
 
     auto old = selectedCategory;
 

@@ -25,7 +25,7 @@ class KeycodeListenerLayer : public geode::Popup<>
 
         void onCloseBtn(CCObject* sender);
 
-        virtual void keyDown(cocos2d::enumKeyCodes key);
+        virtual void keyDown(cocos2d::enumKeyCodes key, double timestamp);
         virtual void keyBackClicked();
         virtual bool setup();
 };

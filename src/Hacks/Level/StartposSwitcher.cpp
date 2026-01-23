@@ -160,7 +160,7 @@ class $modify (StartposPlayLayer, PlayLayer)
 
 class $modify (StartposUILayer, UILayer)
 {
-    void handleKeypress(cocos2d::enumKeyCodes key, bool down)
+    void handleKeypress(cocos2d::enumKeyCodes key, bool down, double unk)
     {
         if (down && StartposSwitcher::get()->getRealEnabled())
         {
@@ -177,6 +177,6 @@ class $modify (StartposUILayer, UILayer)
             }
         }
 
-        UILayer::handleKeypress(key, down);
+        UILayer::handleKeypress(key, down, unk);
     }
 };

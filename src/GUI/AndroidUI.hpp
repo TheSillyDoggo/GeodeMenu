@@ -6,6 +6,8 @@
 #include "../Client/ModuleNode.hpp"
 #include "../Client/CategoryNode.hpp"
 #include "CategoryTabSprite.hpp"
+#include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "VersionInfoNode.hpp"
 
 using namespace geode::prelude;
 
@@ -40,6 +42,8 @@ class AndroidUI : public geode::Popup<>
         std::map<std::string, CategoryTabSprite*> categorySprs = {};
         // static to keep between reopens
         static inline std::string selectedCategory = "Level";
+        VersionInfoNode* bottomLeft = nullptr;
+        VersionInfoNode* bottomRight = nullptr;
 
         std::vector<std::string> categoryOrders =
         {
@@ -57,7 +61,7 @@ class AndroidUI : public geode::Popup<>
             "Favourites",
         };
 
-        void keyDown(cocos2d::enumKeyCodes key);
+        void keyDown(cocos2d::enumKeyCodes keym, double timestamp);
 
         ~AndroidUI();
 

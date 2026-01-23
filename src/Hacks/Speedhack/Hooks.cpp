@@ -7,6 +7,7 @@ Mod* cbf = nullptr;
 
 bool CBFCheckMenuLayer::init()
 {
+    return MenuLayer::init();
     cbf = Loader::get()->getLoadedMod("syzzi.click_between_frames");
 
     return MenuLayer::init();

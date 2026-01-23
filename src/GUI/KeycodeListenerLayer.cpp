@@ -13,7 +13,7 @@ KeycodeListenerLayer* KeycodeListenerLayer::create(KeycodeListenerLayerSettings 
     return pRet;
 }
 
-void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key)
+void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 {
     if (key == enumKeyCodes::KEY_Escape && this->settings.allowCancel)
     {
@@ -44,12 +44,12 @@ void KeycodeListenerLayer::keyDown(cocos2d::enumKeyCodes key)
 
 void KeycodeListenerLayer::keyBackClicked()
 {
-    keyDown(enumKeyCodes::KEY_Escape);
+    keyDown(enumKeyCodes::KEY_Escape, 0);
 }
 
 void KeycodeListenerLayer::onCloseBtn(CCObject* sender)
 {
-    keyDown(enumKeyCodes::KEY_Escape);
+    keyDown(enumKeyCodes::KEY_Escape, 0);
 }
 
 bool KeycodeListenerLayer::setup()

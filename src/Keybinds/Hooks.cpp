@@ -1,6 +1,6 @@
 #include "Hooks.hpp"
 
-bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat)
+bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat, double unk)
 {
     KeyState struc;
     struc.shiftHeld = getShiftKeyPressed();
@@ -14,5 +14,5 @@ bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool re
     if (KeybindManager::get()->processMSG(struc))
         return true;
 
-    return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat);
+    return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat, unk);
 }

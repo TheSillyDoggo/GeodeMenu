@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "../GUI/FloatingButton/FloatingUIButton.hpp"
+#include "../Utils/ColourConfig.hpp"
 
 struct ModuleShortcutConfig
 {
@@ -12,4 +13,5 @@ struct ModuleShortcutConfig
     float scale = 0.8f;
     float opacity = 0.8f;
     bool isMovable = true;
+    ColourConfig colour = { cocos2d::ccc3(255, 255, 255) };
 };

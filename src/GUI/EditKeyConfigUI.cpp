@@ -105,7 +105,7 @@ void EditKeyConfigUI::setStartConfig(KeyConfigStruct config)
     this->currentConfig = startConfig;
 }
 
-void EditKeyConfigUI::keyDown(cocos2d::enumKeyCodes key)
+void EditKeyConfigUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 {
     if (key == enumKeyCodes::KEY_Shift || key == enumKeyCodes::KEY_LeftShift || key == enumKeyCodes::KEY_RightShift || key == enumKeyCodes::KEY_None || key == enumKeyCodes::KEY_Unknown || key == enumKeyCodes::KEY_LeftWindowsKey)
         return;

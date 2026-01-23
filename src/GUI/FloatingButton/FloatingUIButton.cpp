@@ -42,10 +42,10 @@ bool FloatingUIButtonVisibility::shouldShow()
 {
     if (auto pl = PlayLayer::get())
     {
-        if (pl->m_isPaused && showInPauseMenu)
+        if (CCScene::get()->getChildByType<PauseLayer>(0) && showInPauseMenu)
             return true;
 
-        if (!pl->m_isPaused && showInGame)
+        if (!CCScene::get()->getChildByType<PauseLayer>(0) && showInGame)
             return true;
     }
     else if (auto ed = LevelEditorLayer::get())
@@ -78,6 +78,7 @@ void FloatingUIButton::updateSprites(std::string background, std::string overlay
 void FloatingUIButton::updateSprites()
 {
     this->removeAllChildren();
+    overlaySpr = nullptr;
 
     #ifdef GEODE_IS_MOBILE
     if (Loader::get()->getLoadedMod("geode.texture-loader"))
@@ -114,6 +115,7 @@ void FloatingUIButton::updateSprites()
         {
             ov->setPosition(getContentSize() / 2);
             ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
+            overlaySpr = ov;
             this->addChild(ov);
         }
     }

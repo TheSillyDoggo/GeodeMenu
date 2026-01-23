@@ -30,7 +30,7 @@ class EditKeyConfigUI : public geode::Popup<>
         void onUndoChanged(CCObject* sender);
         void onClose(CCObject* sender);
 
-        virtual void keyDown(cocos2d::enumKeyCodes key);
+        virtual void keyDown(cocos2d::enumKeyCodes key, double timestamp);
         virtual void update(float dt);
         virtual bool setup();
 };

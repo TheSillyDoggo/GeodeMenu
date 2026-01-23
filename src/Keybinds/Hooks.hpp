@@ -5,5 +5,5 @@
 
 class $modify (KeybindDispatcher, CCKeyboardDispatcher)
 {
-    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat);
+    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat, double unk);
 };

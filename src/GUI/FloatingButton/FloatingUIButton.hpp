@@ -26,6 +26,7 @@ class FloatingUIButton : public cocos2d::CCNode
         std::function<void()> onClick = nullptr;
         std::string background = "";
         std::string overlay = "";
+        cocos2d::CCSprite* overlaySpr = nullptr;
         bool isMoving = false;
         float _opacity = 0.8f;
         cocos2d::CCPoint position = cocos2d::CCPointZero;

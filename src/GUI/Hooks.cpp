@@ -4,6 +4,7 @@
 
 bool BallMenuLayer::init()
 {
+    return MenuLayer::init();
     if (!MenuLayer::init())
         return false;
 

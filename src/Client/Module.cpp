@@ -332,6 +332,10 @@ void Module::saveShortcutConfig()
     conf["visibility/in-menu"] = shortcutConf.visibility.showInMenu;
     conf["visibility/in-editor"] = shortcutConf.visibility.showInEditor;
     conf["visibility/in-pause-editor"] = shortcutConf.visibility.showInEditorPauseMenu;
+    conf["colour_colour"] = shortcutConf.colour.customColour;
+    conf["colour_opacity"] = shortcutConf.colour.opacity;
+    conf["colour_chromaspeed"] = shortcutConf.colour.chromaSpeed;
+    conf["colour_type"] = (int)shortcutConf.colour.type;
 
     Mod::get()->setSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", getID()), conf);
 }
@@ -352,6 +356,15 @@ void Module::loadShortcutConfig()
     conf.visibility.showInMenu = json["visibility/in-menu"].asBool().unwrapOr(true);
     conf.visibility.showInEditor = json["visibility/in-editor"].asBool().unwrapOr(true);
     conf.visibility.showInEditorPauseMenu = json["visibility/in-pause-editor"].asBool().unwrapOr(true);
+    if (json["colour_colour"].isObject())
+    {
+        conf.colour.customColour.r = json["colour_colour"]["r"].asInt().unwrapOr(255);
+        conf.colour.customColour.g = json["colour_colour"]["g"].asInt().unwrapOr(255);
+        conf.colour.customColour.b = json["colour_colour"]["b"].asInt().unwrapOr(255);
+    }
+    conf.colour.opacity = json["colour_opacity"].asDouble().unwrapOr(1);
+    conf.colour.chromaSpeed = json["colour_chromaspeed"].asDouble().unwrapOr(1);
+    conf.colour.type = (ColourConfigType)json["colour_type"].asInt().unwrapOr(0);
 
     setShortcutConfig(Mod::get()->getSavedValue<bool>(fmt::format("{}_shortcutenabled", getID()), false), conf);
 }

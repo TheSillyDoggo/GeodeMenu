@@ -98,10 +98,10 @@ bool SafeMode::shouldDisableLevelProgress()
     {
         if (isLevelLoadCheated || isAttemptCheated)
             return true;
-
-        if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
-            return true;
     }
+
+    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+        return true;
 
     if (ForceSafeMode::get()->getRealEnabled())
         return true;

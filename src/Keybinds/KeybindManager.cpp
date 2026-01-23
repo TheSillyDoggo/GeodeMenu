@@ -86,7 +86,7 @@ $execute
         if (AndroidUI::get())
         {
             // close one menu so that option displays are gone before the main popup
-            CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false);
+            CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false, 0);
         }            
         else
         {

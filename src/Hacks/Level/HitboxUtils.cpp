@@ -19,6 +19,15 @@ bool HitboxUtils::shouldHitboxesBeVisible()
                 return true;
             }
         }
+        
+        if (gjbgl->m_hitboxesOnDeath)
+        {
+            if (gjbgl->m_player1 && gjbgl->m_player1->m_isDead)
+                return true;
+
+            if (gjbgl->m_player2 && gjbgl->m_player2->m_isDead)
+                return true;
+        }
     }
 
     return false;

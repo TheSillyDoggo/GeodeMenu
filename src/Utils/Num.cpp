@@ -68,7 +68,7 @@ void getAllChildrenRecursive(CCNode* node, std::vector<CCNode*>& outChildren)
 	CCArray* children = node->getChildren();
 	if (children && children->count() > 0) {
 		CCObject* pObj = nullptr;
-		CCARRAY_FOREACH(children, pObj) {
+		for (auto pObj : CCArrayExt<CCObject*>(children)) {
 			CCNode* child = dynamic_cast<CCNode*>(pObj);
 			if (child) {
 				outChildren.push_back(child);

@@ -266,7 +266,7 @@ class $modify (LevelEditorLayer)
 
 class $modify (CCDrawNode)
 {
-    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
     {
         if (GJBaseGameLayer::get() && GJBaseGameLayer::get()->m_debugDrawNode == this)
         {
@@ -299,9 +299,9 @@ class $modify (CCDrawNode)
             if (borderWidth == 0)
                 borderWidth = 1;
 
-            return CCDrawNode::drawPolygon(verts, count, HitboxFill::get()->getRealEnabled() ? fill : fillColor, borderWidth * (HitboxThickOutline::get()->getRealEnabled() ? 2 : 1), border);
+            return CCDrawNode::drawPolygon(verts, count, HitboxFill::get()->getRealEnabled() ? fill : fillColor, borderWidth * (HitboxThickOutline::get()->getRealEnabled() ? 2 : 1), border, alignment);
         }
 
-        return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+        return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor, alignment);
     }
 };

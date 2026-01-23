@@ -150,14 +150,13 @@ class $modify (PlayLayer)
         if (p1 != nullptr)
             NOCLIP_BASE()->m_fields->deathObject = p1;
 
-        if (p1 != m_anticheatSpike)
-            NOCLIP_BASE()->m_fields->hasDiedThisAttempt = true;
-
         if (!Noclip::get()->getRealEnabled())
             return PlayLayer::destroyPlayer(p0, p1);
 
         if (NOCLIP_BASE()->shouldPlayerRegularDie(p0, p1))
             return PlayLayer::destroyPlayer(p0, p1);
+
+        NOCLIP_BASE()->m_fields->hasDiedThisAttempt = true;
 
         NOCLIP_BASE()->playerDied(p0 == m_player1 ? NoclipPlayerSelector::Player1 : NoclipPlayerSelector::Player2);
 

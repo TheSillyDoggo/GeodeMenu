@@ -12,7 +12,7 @@ class $modify (PlayLayer)
     void updateProgressbar()
     {
         PlayLayer::updateProgressbar();
-
+        
         auto utils = PlayLayerUtils::getUtils();
 
         if (m_percentageLabel && !m_level->isPlatformer())
