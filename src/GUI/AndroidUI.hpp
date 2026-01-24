@@ -8,6 +8,7 @@
 #include "CategoryTabSprite.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "VersionInfoNode.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
@@ -22,7 +23,7 @@ enum class MenuAnimation
     FadeIn
 };
 
-class AndroidUI : public geode::Popup<>
+class AndroidUI : public PopupBase
 {
     protected:
         friend class ThemeNode;

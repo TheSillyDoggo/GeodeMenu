@@ -4,7 +4,6 @@
 #include "../GUI/Modules/SeperateColourCheatNames.hpp"
 #include "../Utils/ColourUtils.hpp"
 #include "../GUI/EditKeyConfigUI.hpp"
-#include "../GUI/BlurLayer.hpp"
 #include "../GUI/BetterAlertLayer.hpp"
 #include "../GUI/SetupShortcutUI.hpp"
 
@@ -207,7 +206,6 @@ void ModuleNode::onChangeShortcut(CCObject* sender)
 void ModuleNode::onInfo(CCObject* sender)
 {
     auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", getID()).c_str(), fmt::format("descriptions/{}", getID()), "ui/ok-button");
-    alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->show();
 
@@ -216,7 +214,7 @@ void ModuleNode::onInfo(CCObject* sender)
     menu->setPosition(ccp(0, 25));
 
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(ModuleNode::onInfoToggleFavourite));
-    btn->setPositionX(-alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 + 25);
+    btn->setPositionX(25);
     btn->toggle(module->isFavourited());
 
     btn->setContentSize(btn->getContentSize() * 3);

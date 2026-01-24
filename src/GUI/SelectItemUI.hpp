@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "BackgroundSprite.hpp"
 #include "BetterInputNode.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
@@ -12,7 +13,7 @@ enum class SelectItemType
     ShortcutOverlay,
 };
 
-class SelectItemUI : public geode::Popup<>
+class SelectItemUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

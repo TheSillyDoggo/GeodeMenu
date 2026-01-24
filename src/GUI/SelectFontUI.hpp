@@ -4,10 +4,11 @@
 #include "BackgroundSprite.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "BetterScrollbar.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SelectFontUI : public geode::Popup<>
+class SelectFontUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

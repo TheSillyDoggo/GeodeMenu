@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
@@ -14,7 +15,7 @@ struct KeycodeListenerLayerSettings
     bool allowModifiers = true;
 };
 
-class KeycodeListenerLayer : public geode::Popup<>
+class KeycodeListenerLayer : public PopupBase
 {
     protected:
         KeycodeListenerLayerSettings settings;

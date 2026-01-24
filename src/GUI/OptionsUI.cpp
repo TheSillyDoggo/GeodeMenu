@@ -1,6 +1,5 @@
 #include "OptionsUI.hpp"
 #include "Categories/FavouritesNode.hpp"
-#include "BlurLayer.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
@@ -31,8 +30,6 @@ CCSize OptionsUI::calculateSize()
 
 bool OptionsUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
-
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
@@ -110,7 +107,6 @@ bool OptionsUI::setup()
 void OptionsUI::onInfo(CCObject* sender)
 {
     auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", module->getID()).c_str(), fmt::format("descriptions/{}", module->getID()), "ui/ok-button");
-    alert->addChild(CCBlurLayer::create(), -3);
     alert->setUserData(module);
     alert->setUserObject("fav-btn", favBtn);
     alert->show();
@@ -120,7 +116,7 @@ void OptionsUI::onInfo(CCObject* sender)
     menu->setPosition(ccp(0, 25));
 
     auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(OptionsUI::onInfoToggleFavourite));
-    btn->setPositionX(-alert->m_mainLayer->getChildByType<CCScale9Sprite>(0)->getContentWidth() / 2 + 25);
+    btn->setPositionX(25);
     btn->toggle(module->isFavourited());
 
     btn->setContentSize(btn->getContentSize() * 3);

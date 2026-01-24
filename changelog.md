@@ -4,6 +4,7 @@
 - Added Version Info texts into the main UI
 - Added option to change shortcut icon colour
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
+- Improved Blur BG Performance and switched to using Blur API
 
 # 2.5.3
 

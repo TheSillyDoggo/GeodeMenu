@@ -2,13 +2,13 @@
 
 #include <Geode/Geode.hpp>
 #include "../../GUI/BackgroundSprite.hpp"
-#include "../../GUI/BlurLayer.hpp"
 #include "../../GUI/BetterButtonSprite.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "../../GUI/PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class CustomRewardSetupUI : public geode::Popup<>
+class CustomRewardSetupUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

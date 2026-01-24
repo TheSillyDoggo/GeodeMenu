@@ -1,5 +1,5 @@
 #include "SelectFontUI.hpp"
-#include "BlurLayer.hpp"
+
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterAlertLayer.hpp"
@@ -11,7 +11,7 @@ SelectFontUI* SelectFontUI::create(std::function<void(std::string)> onFinish, bo
     pRet->onFinish = onFinish;
     pRet->allowNonGDFonts = allowNonGDFonts;
 
-    if (pRet && pRet->initAnchored(360, 250))
+    if (pRet && pRet->init(360, 250))
     {
         pRet->autorelease();
         return pRet;
@@ -69,7 +69,7 @@ void SelectFontUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(currentFont);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SelectFontUI::onChangePage(CCObject* sender)
@@ -234,7 +234,7 @@ CCMenu* SelectFontUI::createFontCell(std::string font, int index, std::string na
 
 bool SelectFontUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);

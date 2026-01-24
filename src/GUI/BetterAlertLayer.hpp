@@ -2,10 +2,11 @@
 
 #include <Geode/Geode.hpp>
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class BetterAlertLayer : public geode::Popup<>
+class BetterAlertLayer : public PopupBase
 {
     protected:
         CCScale9Sprite* bg = nullptr;

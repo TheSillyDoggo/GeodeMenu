@@ -7,10 +7,11 @@
 #include "../Client/CategoryNode.hpp"
 #include "../Keybinds/KeyConfigStruct.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class EditKeyConfigUI : public geode::Popup<>
+class EditKeyConfigUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

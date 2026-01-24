@@ -1,6 +1,6 @@
 #include "SetupShortcutUI.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
-#include "BlurLayer.hpp"
+
 #include "BetterButtonSprite.hpp"
 #include "EasyBG.hpp"
 #include "SelectItemUI.hpp"
@@ -83,7 +83,7 @@ void SetupShortcutUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(shortcutEnabled, conf);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SetupShortcutUI::onSelectColour(CCObject* sender)
@@ -140,7 +140,7 @@ void SetupShortcutUI::onSelectSprite(CCObject* sender)
 
 bool SetupShortcutUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
 
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();

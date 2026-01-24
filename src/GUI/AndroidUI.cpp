@@ -9,13 +9,14 @@
 #include "../Utils/RealtimeAction.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterInputNode.hpp"
-#include "BlurLayer.hpp"
+
 #include "FloatingButton/FloatingUIManager.hpp"
 #include "EasyBG.hpp"
+#include <BlurAPI.hpp>
 
 bool AndroidUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    instance = this;
     this->scheduleUpdate();
 
     rt = CCRenderTexture::create(getContentWidth(), getContentHeight());
@@ -128,7 +129,6 @@ void AndroidUI::populateTabs()
     tabsMenu->setAnchorPoint(ccp(0, 0.5f));
     tabsMenu->ignoreAnchorPointForPosition(false);
     tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f));
-    tabsMenu->getLayout()->ignoreInvisibleChildren(true);
     
     m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
     m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 2.5f, 0));
@@ -251,7 +251,6 @@ AndroidUI* AndroidUI::create()
     if (pRet && pRet->initAnchored(475.f, 280.f))
     {
         PlatformToolbox::showCursor();
-        instance = pRet;
         pRet->m_noElasticity = true;
 
         pRet->autorelease();
@@ -307,7 +306,7 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     bottomRight->setOpacity(150);
     this->setOpacity(150);
 
-    if (BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
+    if (/*BlurMenuBG::get()->getRealEnabled() && BlurAPI::isBlurAPIEnabled() && */anim == MenuAnimation::FadeIn)
         anim = MenuAnimation::None;
 
     switch (anim)
@@ -400,7 +399,7 @@ void AndroidUI::close()
 
 void AndroidUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 {
-    geode::Popup<>::keyDown(key, 0);
+    PopupBase::keyDown(key, 0);
 
     auto old = selectedCategory;
 
@@ -437,13 +436,13 @@ void AndroidUI::visit()
     // for an animation i was making, but i couldnt get clipping to work right
 
     if (drawOpacity->getOpacity() == 255)
-        return geode::Popup<>::visit();
+        return PopupBase::visit();
 
     auto op = getOpacity();
     this->setOpacity(0);
 
     rt->beginWithClear(0, 0, 0, op / 255.0f);
-    geode::Popup<>::visit();
+    PopupBase::visit();
     rt->end();
 
     this->setOpacity(op);

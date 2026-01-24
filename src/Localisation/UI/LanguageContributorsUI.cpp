@@ -1,5 +1,4 @@
 #include "LanguageContributorsUI.hpp"
-#include "../../GUI/BlurLayer.hpp"
 #include "../../GUI/BetterButtonSprite.hpp"
 #include "../../GUI/EasyBG.hpp"
 #include "../../Utils/ColourUtils.hpp"
@@ -46,7 +45,7 @@ bool LanguageContributorsUI::setup()
 {
     language = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / lang);
 
-    this->addChild(CCBlurLayer::create(), -3);
+    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);

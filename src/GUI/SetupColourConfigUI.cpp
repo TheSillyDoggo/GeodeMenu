@@ -1,6 +1,6 @@
 #include "SetupColourConfigUI.hpp"
 #include "../Utils/ColourUtils.hpp"
-#include "BlurLayer.hpp"
+
 #include "BetterButtonSprite.hpp"
 
 SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects)
@@ -23,7 +23,7 @@ SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig
 
 bool SetupColourConfigUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -393,7 +393,7 @@ void SetupColourConfigUI::onClose(CCObject* sender)
     if (onFinishFunc)
         onFinishFunc(currentConfig);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SetupColourConfigUI::onSetDefault(CCObject* sender)
@@ -435,11 +435,6 @@ void SetupColourConfigUI::setPreviewChannel(std::string channel)
 
 void SetupColourConfigUI::updateUI()
 {
-    // auto prev = GameManager::sharedState()->m_levelEditorLayer;
-
-    // if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
-        // GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
-
     picker->setColorValue(currentConfig.customColour);
     picker->setTouchEnabled(currentConfig.type == CustomColour);
     picker->setVisible(currentConfig.type != Gradient);
@@ -448,11 +443,9 @@ void SetupColourConfigUI::updateUI()
     gradientAddStepBtn->setVisible(currentConfig.type == Gradient);
     gradientDelStepBtn->setVisible(currentConfig.type == Gradient);
     updateGradientLines();
-
-    // GameManager::sharedState()->m_levelEditorLayer = prev;
 }
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
 {
-
+    this->currentConfig.customColour = colour;
 }

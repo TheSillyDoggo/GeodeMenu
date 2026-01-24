@@ -1,5 +1,5 @@
 #include "SetupRotationUI.hpp"
-#include "BlurLayer.hpp"
+
 #include "BetterButtonSprite.hpp"
 #include "../Utils/Num.hpp"
 
@@ -37,7 +37,7 @@ void SetupRotationUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(rot);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SetupRotationUI::updateUI()
@@ -49,7 +49,7 @@ void SetupRotationUI::updateUI()
 
 bool SetupRotationUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
 
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();

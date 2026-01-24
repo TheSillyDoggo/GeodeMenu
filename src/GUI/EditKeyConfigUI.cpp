@@ -1,5 +1,5 @@
 #include "EditKeyConfigUI.hpp"
-#include "BlurLayer.hpp"
+
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 
@@ -22,7 +22,7 @@ EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> on
 
 bool EditKeyConfigUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
 
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
@@ -91,7 +91,7 @@ void EditKeyConfigUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(currentConfig);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void EditKeyConfigUI::setDefaultConfig(KeyConfigStruct config)

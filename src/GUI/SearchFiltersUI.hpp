@@ -5,10 +5,11 @@
 #include "../Client/Module.hpp"
 #include "../Client/ModuleNode.hpp"
 #include "../Client/CategoryNode.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SearchFiltersUI : public geode::Popup<>
+class SearchFiltersUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

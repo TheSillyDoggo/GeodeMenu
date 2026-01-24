@@ -1,6 +1,6 @@
 #include "SelectItemUI.hpp"
 #include "BetterButtonSprite.hpp"
-#include "BlurLayer.hpp"
+
 
 SelectItemUI* SelectItemUI::create(SelectItemType type, std::function<void(std::string)> onFinish)
 {
@@ -25,7 +25,7 @@ void SelectItemUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(selectedItem);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SelectItemUI::onSelectItem(CCObject* sender)
@@ -131,7 +131,7 @@ void SelectItemUI::updateUI()
 
 bool SelectItemUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
 
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();

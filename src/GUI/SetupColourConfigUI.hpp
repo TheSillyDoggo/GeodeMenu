@@ -7,10 +7,11 @@
 #include "../Client/CategoryNode.hpp"
 #include "../Utils/ColourConfig.hpp"
 #include "BetterSlider.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SetupColourConfigUI : public geode::Popup<>, public ColorPickerDelegate
+class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate
 {
     protected:
         bool allowEffects = false;

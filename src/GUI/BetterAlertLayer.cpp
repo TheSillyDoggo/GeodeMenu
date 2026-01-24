@@ -1,7 +1,6 @@
 #include "BetterAlertLayer.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterButtonSprite.hpp"
-#include "BlurLayer.hpp"
 #include "EasyBG.hpp"
 
 BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
@@ -18,7 +17,7 @@ BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char 
     pRet->height = height;
     pRet->textScale = textScale;
 
-    if (pRet && pRet->initAnchored(0, 0))
+    if (pRet && pRet->init(0, 0))
     {
         pRet->autorelease();
         return pRet;
@@ -52,8 +51,6 @@ BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, co
 
 bool BetterAlertLayer::setup()
 {
-    this->addChild(CCBlurLayer::create(), -69);
-
     m_bgSprite->setVisible(false);
     m_buttonMenu->setVisible(false);
 

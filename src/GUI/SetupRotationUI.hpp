@@ -5,10 +5,11 @@
 #include "../Client/CategoryNode.hpp"
 #include "BetterInputNode.hpp"
 #include "BetterRotationControl.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SetupRotationUI : public geode::Popup<>, public TextInputDelegate, public GJRotationControlDelegate
+class SetupRotationUI : public PopupBase, public TextInputDelegate, public GJRotationControlDelegate
 {
     protected:
         BackgroundSprite* bg;

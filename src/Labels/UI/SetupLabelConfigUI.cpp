@@ -1,7 +1,6 @@
 #include "SetupLabelConfigUI.hpp"
 #include "../LabelManager.hpp"
 #include "../../GUI/CategoryTabSprite.hpp"
-#include "../../GUI/BlurLayer.hpp"
 #include "../../GUI/SelectFontUI.hpp"
 #include "../../GUI/BetterButtonSprite.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
@@ -26,7 +25,7 @@ SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> 
 
 bool SetupLabelConfigUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -67,7 +66,7 @@ void SetupLabelConfigUI::onClose(CCObject* sender)
     if (onFinish)
         onFinish(currentConfig);
 
-    geode::Popup<>::onClose(sender);
+    PopupBase::onClose(sender);
 }
 
 void SetupLabelConfigUI::updateUI()

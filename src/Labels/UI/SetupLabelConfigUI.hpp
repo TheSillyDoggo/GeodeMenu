@@ -3,10 +3,11 @@
 #include <Geode/Geode.hpp>
 #include "../../GUI/BackgroundSprite.hpp"
 #include "../LabelConfig.hpp"
+#include "../../GUI/PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SetupLabelConfigUI : public geode::Popup<>
+class SetupLabelConfigUI : public PopupBase
 {
     friend class LabelEventCell;
 

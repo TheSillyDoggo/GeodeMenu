@@ -1,6 +1,5 @@
 #include "SearchFiltersUI.hpp"
 #include "Categories/SearchNode.hpp"
-#include "BlurLayer.hpp"
 #include "BetterButtonSprite.hpp"
 
 SearchFiltersUI* SearchFiltersUI::create()
@@ -21,7 +20,7 @@ SearchFiltersUI* SearchFiltersUI::create()
 
 bool SearchFiltersUI::setup()
 {
-    this->addChild(CCBlurLayer::create(), -3);
+    
 
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();

@@ -4,10 +4,11 @@
 #include "BackgroundSprite.hpp"
 #include "../Client/ModuleShortcutConfig.hpp"
 #include "BetterInputNode.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class SetupShortcutUI : public geode::Popup<>
+class SetupShortcutUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;

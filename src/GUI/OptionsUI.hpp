@@ -5,10 +5,11 @@
 #include "../Client/Module.hpp"
 #include "../Client/ModuleNode.hpp"
 #include "../Client/CategoryNode.hpp"
+#include "PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class OptionsUI : public geode::Popup<>
+class OptionsUI : public PopupBase
 {
     protected:
         Module* module = nullptr;

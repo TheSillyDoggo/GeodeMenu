@@ -2,10 +2,11 @@
 
 #include <Geode/Geode.hpp>
 #include "../CLanguage.hpp"
+#include "../../GUI/PopupBase.hpp"
 
 using namespace geode::prelude;
 
-class LanguageContributorsUI : public geode::Popup<>
+class LanguageContributorsUI : public PopupBase
 {
     protected:
         std::string lang;
