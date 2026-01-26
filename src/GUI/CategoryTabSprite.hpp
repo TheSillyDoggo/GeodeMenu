@@ -32,5 +32,5 @@ class CategoryTabSprite : public CCNode
 
         void updateSelection(CategorySelectionType type);
 
-        virtual void setContentSize(const CCSize& contentSize);
+        virtual void visit();
 };

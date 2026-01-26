@@ -71,6 +71,7 @@ void SubCategoryNode::addSubCategory(std::string name)
     sprHeld->updateSelection(CategorySelectionType::Hovered);
 
     sprNormal->setContentSize(ccp(80, 20));
+    sprNormal->setAnchorPoint(ccp(0.5f, 0.5f));
     sprHeld->setContentSize(ccp(80, 20));
 
     auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(SubCategoryNode::onSelectSub));
@@ -78,7 +79,9 @@ void SubCategoryNode::addSubCategory(std::string name)
     btn->setSelectedImage(sprHeld);
     btn->m_scaleMultiplier = 1;
 
-    sprNormal->setAnchorPoint(ccp(0, 0));
+    sprNormal->setAnchorPoint(ccp(0.5f, 0.5f));
+    sprHeld->setAnchorPoint(ccp(0.5f, 0.5f));
+    
     sprHeld->setPosition(btn->getContentSize() / 2);
 
     selectSubMenu->addChild(btn);

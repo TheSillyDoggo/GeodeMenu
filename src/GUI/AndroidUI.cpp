@@ -19,7 +19,7 @@ bool AndroidUI::setup()
     instance = this;
     this->scheduleUpdate();
 
-    rt = CCRenderTexture::create(getContentWidth(), getContentHeight());
+    rt = CCRenderTexture::create(getContentWidth(), getContentHeight(), kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
 
     drawOpacity = CCLayerColor::create();
@@ -56,9 +56,14 @@ bool AndroidUI::setup()
     backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
 
+    catMenu = CategorySelectMenu::create();
+    catMenu->setAnchorPoint(ccp(0, 0.5f));
+    catMenu->setContentSize(ccp(105, 255));
+
     populateModules();
     populateTabs();
 
+    m_mainLayer->addChildAtPosition(catMenu, Anchor::Left, ccp(10 + 2.5f, 0));
     m_mainLayer->addChild(bg, -1);
     m_mainLayer->setZOrder(80085);
     this->addChild(backMenu);
@@ -123,36 +128,15 @@ void AndroidUI::populateTabs()
     auto bg = EasyBG::create();
     bg->setContentSize(ccp(110, m_size.height - 10 * 2));
     bg->setAnchorPoint(ccp(0, 0.5f));
-
-    tabsMenu = CCMenu::create();
-    tabsMenu->setContentSize((bg->getContentSize()) + ccp(0, -5));
-    tabsMenu->setAnchorPoint(ccp(0, 0.5f));
-    tabsMenu->ignoreAnchorPointForPosition(false);
-    tabsMenu->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f));
-    
     m_mainLayer->addChildAtPosition(bg, Anchor::Left, ccp(10, 0));
-    m_mainLayer->addChildAtPosition(tabsMenu, Anchor::Left, ccp(10 + 2.5f, 0));
+
+    bool bottom = false;
 
     for (auto category : categoryOrders)
     {
         if (category == "spacer")
         {
-            for (auto category : ExtensionManager::get()->getCategories())
-            {
-                addTab(category.name, fmt::format("{}/{}", category.modID, category.name), category.sprite);
-            }
-
-            tabsMenu->addChild(geode::SpacerNode::create());
-
-            // TODO: Bottom row
-            
-            /*bottomTabsContainer = CCMenu::create();
-            bottomTabsContainer->ignoreAnchorPointForPosition(false);
-            bottomTabsContainer->setContentSize(ccp(105, 20));
-            bottomTabsContainer->setLayout(AxisLayout::create()->setAutoScale(false)->setAxisAlignment(AxisAlignment::Between));
-            tabsMenu->addChild(bottomTabsContainer);*/
-            
-
+            bottom = true; // so me core
             continue;
         }
 
@@ -166,82 +150,28 @@ void AndroidUI::populateTabs()
             categoryMenu->addChildAtPosition(cat, Anchor::Right, ccp(-10, 0));
         }
 
-        std::string name = fmt::format("categories/{}", string::toLower(category));
-
-        addTab(LocalisationManager::get()->getLocalisedString(name), category, fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)));
+        catMenu->addCategory(LocalisationManager::get()->getLocalisedString(fmt::format("categories/{}", utils::string::toLower(category))), fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)), category, bottom ? CategoryType::Bottom : CategoryType::Standard);
     }
 
-    if (bottomTabsContainer)
+    catMenu->setSelectedCategory(selectedCategory);
+    catMenu->setCallback([this](std::string tab)
     {
-        bottomTabsContainer->updateLayout();
-    }
+        selectedCategory = tab;
+        updateTabs();
+    });
 
-    tabsMenu->updateLayout();
     updateTabs();
-}
-
-void AndroidUI::addTab(std::string name, std::string id, std::string sprite)
-{
-    auto sprNormal = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
-    auto sprHeld = CategoryTabSprite::create(CategoryTabType::Text, name, sprite);
-    sprHeld->updateSelection(CategorySelectionType::Hovered);
-
-    sprNormal->setContentSize(ccp(105, 20));
-    sprHeld->setContentSize(ccp(105, 20));
-
-    if (bottomTabsContainer)
-    {
-        sprNormal->label->setString("");
-        sprNormal->setContentSize(ccp((105 - 2.5f) / 2, 20));
-
-        sprHeld->label->setString("");
-        sprHeld->setContentSize(ccp((105 - 2.5f) / 2, 20));
-    }
-
-    auto btn = CCMenuItemSpriteExtra::create(sprNormal, this, menu_selector(AndroidUI::onSelectTab));
-    btn->setID(id);
-    btn->setSelectedImage(sprHeld);
-    btn->m_scaleMultiplier = 1;
-
-    sprNormal->setAnchorPoint(ccp(0, 0));
-    sprHeld->setPosition(btn->getContentSize() / 2);
-
-    if (bottomTabsContainer)
-        bottomTabsContainer->addChild(btn);
-    else
-        tabsMenu->addChild(btn);
-
-    categoryBtns[id] = btn;
-    categorySprs[id] = sprNormal;
 }
 
 void AndroidUI::updateTabs()
 {
-    for (auto btn : categoryBtns)
-    {
-        btn.second->setEnabled(selectedCategory != btn.first);
-    }
-    
-    for (auto spr : categorySprs)
-    {
-        spr.second->updateSelection(selectedCategory != spr.first ? CategorySelectionType::Deselected : CategorySelectionType::Selected);
-    }
-
     for (auto category : categories)
     {
         category.second->setVisible(category.first == selectedCategory);
     }
 
-    categoryBtns["Search"]->setVisible(SearchBox::get()->getRealEnabled());
-    categoryBtns["Favourites"]->setVisible(FavouritesTab::get()->getRealEnabled());
-    tabsMenu->updateLayout();
-}
-
-void AndroidUI::onSelectTab(CCObject* sender)
-{
-    selectedCategory = static_cast<CCNode*>(sender)->getID();
-
-    updateTabs();
+    catMenu->getButton("Search")->setVisible(SearchBox::get()->getRealEnabled());
+    catMenu->getButton("Favourites")->setVisible(FavouritesTab::get()->getRealEnabled());
 }
 
 AndroidUI* AndroidUI::create()
@@ -306,7 +236,7 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     bottomRight->setOpacity(150);
     this->setOpacity(150);
 
-    if (/*BlurMenuBG::get()->getRealEnabled() && BlurAPI::isBlurAPIEnabled() && */anim == MenuAnimation::FadeIn)
+    if (BlurAPI::isBlurAPIEnabled() && BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
         anim = MenuAnimation::None;
 
     switch (anim)
@@ -399,21 +329,32 @@ void AndroidUI::close()
 
 void AndroidUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 {
-    PopupBase::keyDown(key, 0);
+    PopupBase::keyDown(key, timestamp);
 
     auto old = selectedCategory;
 
-    if (SearchOnKeyPress::get()->getRealEnabled())
+    // ?
+    /*if (SearchOnKeyPress::get()->getRealEnabled())
     {
         if (selectedCategory != "Search")
         {
             selectedCategory = "Search";
 
-            categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(true);
+            auto inp = categories["Search"]->getChildByType<BetterInputNode*>(0);
+
+            inp->selectInput(true);
+
+            if (inp->getString().empty())
+            {
+                if (auto ch = CCKeyboardDispatcher::get()->keyToString(key))
+                {
+                    inp->setString(" ");
+                }
+            }
 
             updateTabs();
         }
-    }
+    }*/
 
     selectedCategory = old;
 }
@@ -423,7 +364,7 @@ void AndroidUI::visit()
     FloatingUIManager::get()->visit();
     AndroidBall::get()->visit();    
 
-    if (selectedCategory != "Search" && categories["Search"]->isVisible())
+    /*if (selectedCategory != "Search" && categories["Search"]->isVisible())
     {
         if (categories["Search"]->getChildByType<BetterInputNode*>(0)->getString().empty())
         {
@@ -431,7 +372,7 @@ void AndroidUI::visit()
 
             updateTabs();
         }
-    }
+    }*/
 
     // for an animation i was making, but i couldnt get clipping to work right
 
@@ -450,34 +391,4 @@ void AndroidUI::visit()
     rt->setPosition(getContentSize() / 2);
     rt->getSprite()->setOpacity(drawOpacity->getOpacity());
     rt->visit();
-}
-
-void AndroidUI::update(float dt)
-{
-    for (auto btn : categoryBtns)
-    {
-        bool sel = btn.second->m_bSelected || (btn.second == categoryBtns[selectedCategory]);
-        float opacity = sel ? 125 : 100;
-
-        if (!categoryBtnsSelCheck.contains(btn.second))
-        {
-            categoryBtnsSelCheck.emplace(btn.second, sel);
-
-            static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->setOpacity(opacity);
-            static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->setOpacity(opacity);
-        }
-        else
-        {
-            if (categoryBtnsSelCheck[btn.second] != sel)
-            {
-                categoryBtnsSelCheck[btn.second] = sel;
-
-                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->stopAllActions();
-                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->stopAllActions();
-
-                static_cast<CategoryTabSprite*>(btn.second->getNormalImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
-                static_cast<CategoryTabSprite*>(btn.second->getSelectedImage())->background->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, opacity)));
-            }
-        }
-    }
 }

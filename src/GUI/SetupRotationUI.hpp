@@ -19,6 +19,7 @@ class SetupRotationUI : public PopupBase, public TextInputDelegate, public GJRot
         std::function<void(float)> onFinish = nullptr;
         BetterInputNode* input = nullptr;
         BetterRotationControl* control = nullptr;
+        bool callbackOnEveryChange = false;
 
         virtual void textChanged(CCTextInputNode* node);
         virtual void angleChanged(float angle);
@@ -28,6 +29,7 @@ class SetupRotationUI : public PopupBase, public TextInputDelegate, public GJRot
 
         void setDefaultRot(float value);
         void setStartRot(float value);
+        void setRunCallbackOnEveryChange(bool v);
 
         void onClose(CCObject* sender);
 

@@ -46,6 +46,7 @@ void RotationModuleNode::onChangeRotation(CCObject* sender)
     });
     ui->setDefaultRot(mod->getDefaultValue());
     ui->setStartRot(mod->getRotationDegrees());
+    ui->setRunCallbackOnEveryChange(true);
     ui->show();
 }
 

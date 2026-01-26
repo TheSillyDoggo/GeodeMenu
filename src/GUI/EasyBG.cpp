@@ -1,4 +1,6 @@
 #include "EasyBG.hpp"
+#include <BlurAPI.hpp>
+#include "Modules/BlurBackground.hpp"
 
 bool EasyBG::init()
 {
@@ -11,6 +13,9 @@ bool EasyBG::init()
     bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
     bg->setScale(0.5f);
+
+    if (BlurMenuBG::get()->getRealEnabled())
+        BlurAPI::addBlur(bg);
 
     this->addChild(bg);
     return true;

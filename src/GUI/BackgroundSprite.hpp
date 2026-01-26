@@ -5,6 +5,16 @@
 
 using namespace geode::prelude;
 
+enum class BackgroundTheme
+{
+    Gradient = -1,
+    Darken = -2,
+    Geode1 = -4,
+    Geode2 = -5,
+    Geode3 = -6,
+    Soggy = -7,
+};
+
 class BackgroundSprite : public CCNode
 {
     protected:
@@ -18,6 +28,9 @@ class BackgroundSprite : public CCNode
         CCScale9Sprite* gradientDarken = nullptr;
         CCClippingNode* clipping = nullptr;
         CCScale9Sprite* clippingStencil = nullptr;
+        CCScale9Sprite* clippingStencil2 = nullptr;
+        CCClippingNode* clippingCustom = nullptr;
+        CCSprite* customImg = nullptr;
 
         bool gradientDarkenVisible = true;
         

@@ -10,12 +10,17 @@ bool PopupBase::init(float width, float height)
         return false;
 
     if (BlurMenuBG::get()->getRealEnabled())
-        BlurAPI::addBlur(this);
+    {
+        blurLayer = CCLayerColor::create(ccc4(0, 0, 0, 0));
+        BlurAPI::addBlur(blurLayer);
+
+        this->addChild(blurLayer, -69);
+    }
 
     CCTouchDispatcher::get()->registerForcePrio(this, 2);
     this->setKeypadEnabled(true);
     this->setTouchEnabled(true);
-    this->setKeyboardEnabled(false);
+    this->setKeyboardEnabled(true);
 
     m_size = ccp(width, height);
     m_bgSprite = CCScale9Sprite::create("GJ_square01.png");

@@ -23,11 +23,13 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
 
     // outline = CCScale9Sprite::create("squareOverlay.png"_spr);
     outline = CCScale9Sprite::create("GJ_square07.png");
+    outline->setAnchorPoint(ccp(0, 0));
 
     background = CCScale9Sprite::create("square02b_small.png");
     background->setColor(ccc3(0, 0, 0));
     background->setOpacity(100);
     background->setScale(0.5f);
+    background->setAnchorPoint(ccp(0, 0));
 
     outline->setScale(0.6f);
 
@@ -41,9 +43,10 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
     }
 
     label = AdvLabelBMFont::createWithString(name.c_str(), "bigFont.fnt");
+    label->setAnchorPoint(ccp(0, 0.5f));
 
-    this->addChildAtPosition(background, Anchor::Center);
-    this->addChildAtPosition(outline, Anchor::Center);
+    this->addChild(background);
+    this->addChild(outline);
     this->addChild(label);
     return true;
 }
@@ -89,24 +92,22 @@ void CategoryTabSprite::updateSelection(CategorySelectionType type)
     };
 }
 
-void CategoryTabSprite::setContentSize(const CCSize& contentSize)
+void CategoryTabSprite::visit()
 {
-    CCNode::setContentSize(contentSize);
+    auto contentSize = getContentSize();
 
     label->limitLabelWidth((this->getContentWidth() - 7.5f) / 0.5f, 0.75f, 0.1f);
     label->setScale(label->getScale() / 2);
 
     outline->setContentSize(contentSize / 0.6f);
     background->setContentSize(contentSize * 2);
-
+    
     if (sprite && label->getContentWidth() != 0)
     {
-        sprite->setPositionX(-getContentWidth() / 2 + SPRITE_INSET);
+        sprite->setPosition(ccp(SPRITE_INSET, getContentHeight() / 2));
         sprite->setScale((getContentHeight() - (SPRITE_INSET * 2)) / sprite->getContentHeight());
-        sprite->setAnchorPoint(ccp(0, 0.5f));
-        label->setAnchorPoint(ccp(0, 0.5f));
         label->limitLabelWidth(getContentWidth() - (SPRITE_INSET * 4 + sprite->getScaledContentWidth()), 0.375f, 0);
-        label->setPosition(ccp(-getContentWidth() / 2, 0) + ccp(SPRITE_INSET * 2 + sprite->getScaledContentWidth(), 0));
+        label->setPosition(ccp(SPRITE_INSET * 2 + sprite->getScaledContentWidth(), getContentHeight() / 2));
     }
 
     if (sprite && label->getContentWidth() == 0)
@@ -114,4 +115,12 @@ void CategoryTabSprite::setContentSize(const CCSize& contentSize)
         sprite->setAnchorPoint(ccp(0.5f, 0.5f));
         sprite->setPosition(ccp(0, 0));
     }
+
+    if (!sprite)
+    {
+        label->setAnchorPoint(ccp(0.5f, 0.5f));
+        label->setPosition(getContentSize() / 2);
+    }
+
+    CCNode::visit();
 }

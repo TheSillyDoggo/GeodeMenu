@@ -9,6 +9,7 @@ class PopupBase : public cocos2d::CCLayerColor
         bool m_noElasticity = false;
         cocos2d::extension::CCScale9Sprite* m_bgSprite = nullptr;
         cocos2d::CCMenu* m_buttonMenu = nullptr;
+        cocos2d::CCLayerColor* blurLayer = nullptr;
 
         virtual void keyBackClicked();
         virtual void registerWithTouchDispatcher(void);

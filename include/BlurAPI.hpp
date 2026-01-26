@@ -40,7 +40,7 @@ namespace BlurAPI
 
     inline bool isBlurAPIEnabled()
     {
-        if (auto blur = geode::Loader::get()->getLoadedMod("thesillydoggo.blur_api"))
+        if (auto blur = geode::Loader::get()->getLoadedMod("thesillydoggo.blur-api"))
         {
             if (blur->getSettingValue<bool>("enabled"))
                 return true;

@@ -24,12 +24,18 @@ void SetupRotationUI::setDefaultRot(float value)
 {
     this->defaultRot = value;
 }
+
 void SetupRotationUI::setStartRot(float value)
 {
     this->startRot = value;
     this->rot = value;
 
     updateUI();
+}
+
+void SetupRotationUI::setRunCallbackOnEveryChange(bool v)
+{
+    this->callbackOnEveryChange = v;
 }
 
 void SetupRotationUI::onClose(CCObject* sender)
@@ -49,8 +55,6 @@ void SetupRotationUI::updateUI()
 
 bool SetupRotationUI::setup()
 {
-    
-
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
@@ -108,4 +112,10 @@ void SetupRotationUI::angleChanged(float angle)
 {
     rot = angle;
     updateUI();
+
+    if (callbackOnEveryChange)
+    {
+        if (onFinish)
+            onFinish(rot);
+    }
 }

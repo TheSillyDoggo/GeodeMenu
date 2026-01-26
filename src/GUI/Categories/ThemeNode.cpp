@@ -52,6 +52,7 @@ bool ThemeNode::init()
     auto gradientBtn = addColourBtn(-1);
     colourMenu->addChild(gradientBtn);
     colourMenu->addChild(addColourBtn(-2));
+    colourMenu->addChild(addColourBtn(-7));
 
     auto btnOptions = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(96, 35), LocalisationManager::get()->getLocalisedString("ui/themes-edit-button"), "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(ThemeNode::onChangeThemeOptions));
     btnOptions->setContentSize(gradientBtn->getContentSize());

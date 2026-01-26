@@ -19,6 +19,7 @@ bool BackgroundSprite::init()
     gradientBG->setScaleY(-1);
 
     clippingStencil = CCScale9Sprite::create("GJ_square01.png");
+    clippingStencil2 = CCScale9Sprite::create("GJ_square01.png");
     clipping = CCClippingNode::create(clippingStencil);
     clipping->setAlphaThreshold(0.03f);
 
@@ -32,10 +33,18 @@ bool BackgroundSprite::init()
     clipping->addChild(gradientBG);
     clipping->addChild(gradientDarken);
 
+    clippingCustom = CCClippingNode::create(clippingStencil2);
+    clippingCustom->setAlphaThreshold(0.03f);
+
+    customImg = CCSprite::create("sog.png"_spr);
+    clippingCustom->addChild(customImg);
+    clippingCustom->addChild(gradientDarken);
+
     setTheme(Mod::get()->getSavedValue<int>("theme", -6));
 
     this->addChildAtPosition(colouredBG, Anchor::Center);
     this->addChildAtPosition(clipping, Anchor::Center);
+    this->addChildAtPosition(clippingCustom, Anchor::Center);
     this->addChildAtPosition(outlineSpr, Anchor::Center);
     this->addChildAtPosition(gradientOutline, Anchor::Center);
     return true;
@@ -66,15 +75,17 @@ void BackgroundSprite::setTheme(int theme)
 
     clipping->setVisible(theme == -1);
     clipping->getStencil()->setVisible(theme == -1);
-    gradientOutline->setVisible(theme == -1);
-    gradientDarken->setVisible(theme == -1 && gradientDarkenVisible);
+    gradientOutline->setVisible(theme == -1 || theme == -7);
+    gradientDarken->setVisible((theme == -1 || theme == -7) && gradientDarkenVisible);
+
+    clippingCustom->setVisible(theme == -7);
 }
 
 void BackgroundSprite::setGradientDarkenVisible(bool visible)
 {
     gradientDarkenVisible = visible;
 
-    gradientDarken->setVisible(theme == -1 && gradientDarkenVisible);
+    gradientDarken->setVisible((theme == -1 || theme == -7) && gradientDarkenVisible);
 }
 
 void BackgroundSprite::setContentSize(const CCSize& contentSize)
@@ -85,9 +96,12 @@ void BackgroundSprite::setContentSize(const CCSize& contentSize)
     outlineSpr->setContentSize(contentSize);
 
     clippingStencil->setContentSize(contentSize - ccp(2, 2));
+    clippingStencil2->setContentSize(contentSize - ccp(2, 2));
     gradientBG->setContentSize(contentSize);
     gradientOutline->setContentSize(contentSize);
     gradientDarken->setContentSize((contentSize - ccp(15, 15)) / 0.5f);
+    customImg->setScaleX(getContentWidth() / customImg->getContentWidth());
+    customImg->setScaleY(getContentHeight() / customImg->getContentHeight());
 }
 
 void BackgroundSprite::update(float dt)

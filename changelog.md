@@ -5,6 +5,8 @@
 - Added option to change shortcut icon colour
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Improved Blur BG Performance and switched to using Blur API
+- Fixed White Square when using Fade In animation
+- Added Soggy Cat theme
 
 # 2.5.3
 

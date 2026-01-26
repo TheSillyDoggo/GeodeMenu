@@ -9,6 +9,7 @@
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "VersionInfoNode.hpp"
 #include "PopupBase.hpp"
+#include "CategorySelectMenu.hpp"
 
 using namespace geode::prelude;
 
@@ -30,17 +31,14 @@ class AndroidUI : public PopupBase
 
         static inline AndroidUI* instance = nullptr;
 
+        CategorySelectMenu* catMenu = nullptr;
         CCMenuItemSpriteExtra* backBtn = nullptr;
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
-        CCMenu* tabsMenu;
         CCNode* bottomTabsContainer = nullptr;
         Ref<CCRenderTexture> rt = nullptr;
         CCLayerColor* drawOpacity = nullptr;
         std::map<std::string, CategoryNode*> categories = {};
-        std::map<std::string, CCMenuItemSpriteExtra*> categoryBtns = {};
-        std::map<CCMenuItemSpriteExtra*, bool> categoryBtnsSelCheck = {};
-        std::map<std::string, CategoryTabSprite*> categorySprs = {};
         // static to keep between reopens
         static inline std::string selectedCategory = "Level";
         VersionInfoNode* bottomLeft = nullptr;
@@ -71,20 +69,15 @@ class AndroidUI : public PopupBase
         static AndroidUI* addToScene();
         static AndroidUI* get();
 
-        void onSelectTab(CCObject* sender);
-
         void populateModules();
         void populateTabs();
         void updateTabs();
 
         void runAnimation(MenuAnimation anim);
 
-        void addTab(std::string name, std::string id, std::string sprite);
-
         void close();
         virtual bool setup();
         virtual void visit();
-        virtual void update(float dt);
 };
 
 class QOLModUIOpenEvent : public geode::Event
