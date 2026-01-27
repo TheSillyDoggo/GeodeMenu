@@ -7,6 +7,7 @@
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
 #include "../Noclip/Hooks.hpp"
+#include "HitboxNode.hpp"
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
@@ -49,6 +50,8 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
     struct Fields
     {
         std::vector<HitboxTrailState> states = {};
+        std::vector<HitboxTrailState> statesBlue = {};
+        HitboxNode* node = nullptr;
     };
 
     void drawForPlayer(PlayerObject* po)
@@ -79,7 +82,7 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         m_debugDrawNode->drawPolygon(squareVertices2, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(0, 0.25f, 1, 1));
     }
 
-    void drawForState(HitboxTrailState state)
+    void drawForState(HitboxTrailState state, bool blue = false)
     {
         CCPoint squareSize = state.size;
         CCPoint squarePosition = state.location;
@@ -91,13 +94,21 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
             ccp(squarePosition.x - squareSize.x / 2, squarePosition.y + squareSize.y / 2)
         };
 
-        m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, ccc4f(-1, -1, -1, -1));
+        m_debugDrawNode->drawPolygon(squareVertices, 4, ccc4f(0, 0, 0, 0), 0.35f, blue ? ccc4f(0, 0.25f, 1, 1) : ccc4f(-1, -1, -1, -1));
     }
 
     virtual void updateDebugDraw()
     {
         if (typeinfo_cast<LevelEditorLayer*>(this))
             return GJBaseGameLayer::updateDebugDraw();
+
+        if (!m_fields->node)
+        {
+            m_fields->node = HitboxNode::create();
+            m_debugDrawNode->getParent()->addChild(m_fields->node);
+        }
+
+        m_fields->node->updateNode();
 
         std::unordered_map<GameObject*, std::pair<float, float>> hitboxes = {};
         auto array = CCArrayExt<GameObject*>(m_objects);
@@ -136,29 +147,45 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
         auto fields = m_fields.self();
 
+        drawForPlayer(m_player1);
+
+        if (m_player2 && m_player2->isRunning())
+            drawForPlayer(m_player2);
+
         if (HitboxTrail::get()->getRealEnabled())
         {
             if (!m_player1->m_isDead)
+            {
                 fields->states.insert(fields->states.begin(), { m_player1->m_position, m_player1->getObjectRect().size });
+                fields->statesBlue.insert(fields->statesBlue.begin(), { m_player1->m_position, m_player1->getObjectRect(0.25f, 0.25f).size });
+            }
 
             if (m_player2 && m_player2->isRunning() && !m_player2->m_isDead)
+            {
                 fields->states.insert(fields->states.begin(), { m_player2->m_position, m_player2->getObjectRect().size });
+                fields->statesBlue.insert(fields->statesBlue.begin(), { m_player2->m_position, m_player2->getObjectRect(0.25f, 0.25f).size });
+            }
 
             while (fields->states.size() > HitboxTrailMaxPositions::get()->getStringInt())
             {
                 fields->states.pop_back();
+            }
+
+            while (fields->statesBlue.size() > HitboxTrailMaxPositions::get()->getStringInt())
+            {
+                fields->statesBlue.pop_back();
             }
             
             for (auto state : fields->states)
             {
                 drawForState(state);
             }
+
+            for (auto state : fields->statesBlue)
+            {
+                drawForState(state, true);
+            }
         }
-
-        drawForPlayer(m_player1);
-
-        if (m_player2 && m_player2->isRunning())
-            drawForPlayer(m_player2);
     }
 
     void resetLevelVariables()
@@ -168,7 +195,10 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
         if (!typeinfo_cast<LevelEditorLayer*>(this))
         {
             if (HitboxTrailResetOnDeath::get()->getRealEnabled())
+            {
                 m_fields->states.clear();
+                m_fields->statesBlue.clear();
+            }
         }
     }
 };
