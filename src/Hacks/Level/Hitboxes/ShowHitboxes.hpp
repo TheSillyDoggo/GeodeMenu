@@ -98,3 +98,14 @@ class HitboxTrailResetOnDeath : public Module
             setPriority(2);
         }
 };
+
+class HitboxTrailDarkenByAge : public Module
+{
+    public:
+        MODULE_SETUP(HitboxTrailDarkenByAge)
+        {
+            setID("hitbox-trail/darken-by-age");
+            setDefaultEnabled(true);
+            setPriority(3);
+        }
+};

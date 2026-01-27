@@ -1,5 +1,6 @@
 #include "HitboxNode.hpp"
 #include "HitboxColours.hpp"
+#include "ShowHitboxes.hpp"
 
 using namespace geode::prelude;
 
@@ -9,20 +10,6 @@ bool HitboxNode::init()
         return false;
 
     return true;
-}
-
-void HitboxNode::updateNode()
-{
-    this->clear();
-
-    if (auto gjbgl = GJBaseGameLayer::get())
-    {
-        forEachObject(gjbgl, [this](GameObject* obj)
-        {
-            if (shouldObjectDraw(obj))
-                drawObjectHitbox(obj);
-        });
-    }
 }
 
 HitboxColourType HitboxNode::getObjectColour(GameObject* obj)
@@ -150,22 +137,20 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
         return;
     }
 
-    if (obj->m_isOrientedBoxDirty)
-        obj->calculateOrientedBox();
-
-    auto rect = obj->m_orientedBox;
-
-    if (!rect)
-        return;
+    auto r = obj->m_objectRect;
 
     if (obj->m_objectType == GameObjectType::Slope)
     {
-        auto r = obj->getObjectRect();
-
         CCPoint vertices[] = {
             ccp(r.getMaxX(), r.getMinY()), // br
             ccp(r.getMinX(), r.getMaxY()), // tl
             ccp(r.getMinX(), r.getMinY()), // bl
+        };
+
+        CCPoint hypotenuse[] = { // i wish i was high on potenuse
+            vertices[0],
+            vertices[1],
+            vertices[2],
         };
 
         switch (obj->m_slopeDirection)
@@ -173,11 +158,17 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
             case 0:
             case 7:
                 vertices[1] = ccp(r.getMaxX(), r.getMaxY());
+                hypotenuse[0] = vertices[1];
+                hypotenuse[1] = vertices[2];
+                hypotenuse[2] = vertices[0];
                 break;
 
             case 3:
             case 6:
                 vertices[0] = ccp(r.getMaxX(), r.getMaxY());
+                hypotenuse[0] = vertices[2];
+                hypotenuse[1] = vertices[0];
+                hypotenuse[2] = vertices[1];
                 break;
 
             case 1:
@@ -185,21 +176,35 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
                 vertices[2] = ccp(r.getMinX(), r.getMaxY());
                 vertices[1] = ccp(r.getMaxX(), r.getMaxY());
                 vertices[0] = ccp(r.getMaxX(), r.getMinY());
+                hypotenuse[0] = vertices[0];
+                hypotenuse[1] = vertices[2];
+                hypotenuse[2] = vertices[1];
                 break;
         }
 
         drawPolygon(vertices, 3, ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, BorderAlignment::Inside);
+
+        if (obj->m_slopeIsHazard)
+        {
+            drawLine(hypotenuse[0], hypotenuse[1], ccc4FFromccc3B(colourForType(HitboxColourType::Hazard)), getHitboxThickness(), hypotenuse[2]);
+        }
         return;
     }
 
     CCPoint vertices[] = {
-        rect->m_corners[0],
-        rect->m_corners[1],
-        rect->m_corners[2],
-        rect->m_corners[3]
+        ccp(r.getMinX(), r.getMinY()),
+        ccp(r.getMaxX(), r.getMinY()),
+        ccp(r.getMaxX(), r.getMaxY()),
+        ccp(r.getMinX(), r.getMaxY()),
     };
 
-    // obj->m_isOrientedBoxDirty = true;
+    if (obj->m_orientedBox)
+    {
+        vertices[0] = obj->m_orientedBox->m_corners[0];
+        vertices[1] = obj->m_orientedBox->m_corners[1];
+        vertices[2] = obj->m_orientedBox->m_corners[2];
+        vertices[3] = obj->m_orientedBox->m_corners[3];
+    }
 
     float v = 0;
 
@@ -207,6 +212,125 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
         v = HitboxFillOpacity::get()->getValue();
 
     drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, BorderAlignment::Inside);
+}
+
+void HitboxNode::drawPlayerTrails()
+{
+    if (!HitboxTrail::get()->getRealEnabled())
+        return;
+
+    auto reg = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerReg));
+    auto mini = ccc4FFromccc3B(colourForType(HitboxColourType::Solid));
+
+    float decrement = (1.0f / (float)HitboxTrailMaxPositions::get()->getStringInt()) * 0.75f;
+
+    int i = 0;
+    for (auto state : trailStates)
+    {
+        CCPoint vertices[] = {
+            ccp(state.rectReg.getMinX(), state.rectReg.getMinY()),
+            ccp(state.rectReg.getMaxX(), state.rectReg.getMinY()),
+            ccp(state.rectReg.getMaxX(), state.rectReg.getMaxY()),
+            ccp(state.rectReg.getMinX(), state.rectReg.getMaxY())
+        };
+
+        if (HitboxTrailDarkenByAge::get()->getRealEnabled())
+        {
+            reg.r = std::clamp<float>(reg.r - decrement, 0, 1);
+            reg.g = std::clamp<float>(reg.g - decrement, 0, 1);
+            reg.b = std::clamp<float>(reg.b - decrement, 0, 1);
+        }
+
+        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), reg, BorderAlignment::Inside);
+    }
+    
+    i = 0;
+    for (auto state : trailStates)
+    {
+        CCPoint vertices[] = {
+            ccp(state.rectBlue.getMinX(), state.rectBlue.getMinY()),
+            ccp(state.rectBlue.getMaxX(), state.rectBlue.getMinY()),
+            ccp(state.rectBlue.getMaxX(), state.rectBlue.getMaxY()),
+            ccp(state.rectBlue.getMinX(), state.rectBlue.getMaxY())
+        };
+
+        if (HitboxTrailDarkenByAge::get()->getRealEnabled())
+        {
+            mini.r = std::clamp<float>(mini.r - decrement, 0, 1);
+            mini.g = std::clamp<float>(mini.g - decrement, 0, 1);
+            mini.b = std::clamp<float>(mini.b - decrement, 0, 1);
+        }
+
+        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), mini, BorderAlignment::Inside);
+    }
+}
+
+void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
+{
+    auto reg = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerReg));
+    auto rot = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerRot));
+    auto mini = ccc4FFromccc3B(colourForType(HitboxColourType::Solid));
+
+    CCPoint vertices[4];
+
+    if (auto ob = plr->m_orientedBox)
+    {
+        vertices[0] = ob->m_corners[0];
+        vertices[1] = ob->m_corners[1];
+        vertices[2] = ob->m_corners[2];
+        vertices[3] = ob->m_corners[3];
+
+        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), rot, BorderAlignment::Inside);
+    }
+
+    auto rect = plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize);
+    vertices[0] = ccp(rect.getMinX(), rect.getMinY());
+    vertices[1] = ccp(rect.getMaxX(), rect.getMinY());
+    vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
+    vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
+
+    drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), reg, BorderAlignment::Inside);
+
+    rect = plr->getObjectRect(0.25f, 0.25f);
+    vertices[0] = ccp(rect.getMinX(), rect.getMinY());
+    vertices[1] = ccp(rect.getMaxX(), rect.getMinY());
+    vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
+    vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
+
+    drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), mini, BorderAlignment::Inside);
+}
+
+void HitboxNode::storePlayerTrail(PlayerObject* plr)
+{
+    trailStates.push_front({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.25f, 0.25f) });
+    
+    if (trailStates.size() > HitboxTrailMaxPositions::get()->getStringInt())
+        trailStates.pop_back();
+}
+
+void HitboxNode::resetTrails()
+{
+    trailStates.clear();
+}
+
+void HitboxNode::updateNode()
+{
+    this->clear();
+
+    if (auto gjbgl = GJBaseGameLayer::get())
+    {
+        forEachObject(gjbgl, [this](GameObject* obj)
+        {
+            if (shouldObjectDraw(obj))
+                drawObjectHitbox(obj);
+        });
+
+        drawPlayerTrails();
+        drawPlayerHitbox(gjbgl->m_player1);
+
+        if (gjbgl->m_player2 && gjbgl->m_player2->isRunning())
+            drawPlayerHitbox(gjbgl->m_player2);
+    }
 }
 
 void HitboxNode::forEachObject(GJBaseGameLayer* game, const std::function<void(GameObject*)>& callback)
@@ -245,4 +369,11 @@ void HitboxNode::forEachObject(GJBaseGameLayer* game, const std::function<void(G
             }
         }
     }
+}
+
+void HitboxNode::drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, cocos2d::ccColor4F colour, float thickness, cocos2d::CCPoint towards)
+{
+    // this is good enough for now, i dont care that it doesnt align properly
+
+    drawSegment(point1, point2, thickness, colour);
 }

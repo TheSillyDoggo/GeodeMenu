@@ -1,0 +1,35 @@
+#include "HitboxColours.hpp"
+#include "ShowHitboxes.hpp"
+#include "../HitboxUtils.hpp"
+
+SUBMIT_HACK(ShowHitboxes);
+SUBMIT_HACK(ShowHitboxesOnDeath);
+SUBMIT_HACK(HitboxTrail);
+
+SUBMIT_OPTION(ShowHitboxes, HitboxSolid);
+SUBMIT_OPTION(ShowHitboxes, HitboxHazard);
+SUBMIT_OPTION(ShowHitboxes, HitboxPassable);
+SUBMIT_OPTION(ShowHitboxes, HitboxInteractable);
+SUBMIT_OPTION(ShowHitboxes, HitboxPlayer);
+SUBMIT_OPTION(ShowHitboxes, HitboxPlayerRot);
+
+SUBMIT_OPTION(ShowHitboxes, HitboxThickOutline);
+SUBMIT_OPTION(ShowHitboxes, HitboxFill);
+SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
+
+SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailResetOnDeath);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailDarkenByAge);
+
+SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
+SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);
+
+// TODO: fix
+void ShowHitboxes::onToggle()
+{
+    if (auto pl = PlayLayer::get())
+    {
+        pl->m_debugDrawNode->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? pl->m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
+        pl->updateDebugDraw();
+    }
+}

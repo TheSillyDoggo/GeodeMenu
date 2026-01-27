@@ -7,6 +7,11 @@
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed White Square when using Fade In animation
 - Added Soggy Cat theme
+- Improved Show Hitboxes
+-- Uses custom node to draw hitboxes
+-- Hitbox outlines now draw inside the bounds of the object
+-- Added support for show hitboxes to more objects
+-- Hitbox trail now uses std::deque for faster performance
 
 # 2.5.3
 

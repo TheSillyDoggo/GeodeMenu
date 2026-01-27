@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include <deque>
 
 enum class HitboxColourType
 {
@@ -13,9 +14,16 @@ enum class HitboxColourType
     PlayerRot,
 };
 
+struct PlayerHitboxState
+{
+    cocos2d::CCRect rectReg;
+    cocos2d::CCRect rectBlue;
+};
+
 class HitboxNode : public cocos2d::CCDrawNode
 {
     protected:
+        std::deque<PlayerHitboxState> trailStates = {};
 
         bool shouldFillHitboxes();
         float getHitboxThickness();
@@ -26,10 +34,17 @@ class HitboxNode : public cocos2d::CCDrawNode
         // thanks prevter
         void forEachObject(GJBaseGameLayer* game, const std::function<void(GameObject*)>& callback);
 
+        void drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, cocos2d::ccColor4F colour, float thickness, cocos2d::CCPoint towards);
+
     public:
         CREATE_FUNC(HitboxNode);
 
         void drawObjectHitbox(GameObject* obj);
+        void drawPlayerHitbox(PlayerObject* plr);
+
+        void drawPlayerTrails();
+        void storePlayerTrail(PlayerObject* plr);
+        void resetTrails();
 
         virtual bool init();
         void updateNode();
