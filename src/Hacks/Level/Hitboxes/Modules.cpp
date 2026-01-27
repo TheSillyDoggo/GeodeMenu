@@ -1,6 +1,7 @@
 #include "HitboxColours.hpp"
 #include "ShowHitboxes.hpp"
 #include "../HitboxUtils.hpp"
+#include "Hooks.hpp"
 
 SUBMIT_HACK(ShowHitboxes);
 SUBMIT_HACK(ShowHitboxesOnDeath);
@@ -24,12 +25,10 @@ SUBMIT_OPTION(HitboxTrail, HitboxTrailDarkenByAge);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);
 
-// TODO: fix
 void ShowHitboxes::onToggle()
 {
-    if (auto pl = PlayLayer::get())
+    if (auto gjbgl = GJBaseGameLayer::get())
     {
-        pl->m_debugDrawNode->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? pl->m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
-        pl->updateDebugDraw();
+        base_cast<HitboxBaseGameLayer*>(gjbgl)->onTick(false);
     }
 }

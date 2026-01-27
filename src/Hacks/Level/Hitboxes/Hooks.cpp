@@ -42,6 +42,16 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
         fields->node->setScale(copy->getScale());
         fields->nodeContainer->setRotation(m_gameState.m_cameraAngle);
 
+        if (ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled() && (m_player1->m_isDead || (m_player2 && m_player2->m_isDead)))
+        {
+            if (ShowHitboxes::get()->getRealEnabled() || (m_isDebugDrawEnabled && m_isPracticeMode))
+                fields->node->setOnlyObject(nullptr);
+            else
+                fields->node->setOnlyObject(base_cast<NoclipBaseGameLayer*>(this)->getDeathObject());
+        }
+        else
+            fields->node->setOnlyObject(nullptr);
+
         fields->node->updateNode();
     }
 

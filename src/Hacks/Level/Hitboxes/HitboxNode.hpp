@@ -24,6 +24,7 @@ class HitboxNode : public cocos2d::CCDrawNode
 {
     protected:
         std::deque<PlayerHitboxState> trailStates = {};
+        GameObject* onlyObject = nullptr;
 
         bool shouldFillHitboxes();
         float getHitboxThickness();
@@ -45,6 +46,8 @@ class HitboxNode : public cocos2d::CCDrawNode
         void drawPlayerTrails();
         void storePlayerTrail(PlayerObject* plr);
         void resetTrails();
+
+        void setOnlyObject(GameObject* go);
 
         virtual bool init();
         void updateNode();

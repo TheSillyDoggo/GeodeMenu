@@ -1,6 +1,7 @@
 #include "HitboxNode.hpp"
 #include "HitboxColours.hpp"
 #include "ShowHitboxes.hpp"
+#include "../Noclip/Hooks.hpp"
 
 using namespace geode::prelude;
 
@@ -111,6 +112,9 @@ bool HitboxNode::shouldObjectDraw(GameObject* obj)
         return false;
 
     if (getObjectColour(obj) == HitboxColourType::Unk)
+        return false;
+
+    if (onlyObject && obj != onlyObject)
         return false;
 
     return true;
@@ -376,4 +380,9 @@ void HitboxNode::drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, coco
     // this is good enough for now, i dont care that it doesnt align properly
 
     drawSegment(point1, point2, thickness, colour);
+}
+
+void HitboxNode::setOnlyObject(GameObject* go)
+{
+    this->onlyObject = go;
 }
