@@ -61,7 +61,14 @@ bool KeybindManager::processMSG(KeyState state)
             if (SpeedhackNode::get())
                 SpeedhackNode::get()->updateUI();
 
-            NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/notification-speedhack-set"), "%s", str));
+            if (prev != str)
+            {
+                NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/notification-speedhack-set"), "%s", str));
+            }
+            else
+            {
+                NotificationManager::get()->notifyToast(SpeedhackEnabled::get()->getNotificationString());
+            }
         }
     }
 

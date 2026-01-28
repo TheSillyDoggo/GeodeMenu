@@ -293,9 +293,7 @@ void Module::onKeybindActivated(KeyState state)
     onToggle();
     ModuleNode::updateAllNodes(nullptr);
 
-    auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
-
-    NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName()));
+    NotificationManager::get()->notifyToast(getNotificationString());
 }
 
 std::vector<Module*> Module::getAllFavourited()
@@ -409,4 +407,11 @@ bool Module::isShortcutEnabled()
 ModuleShortcutConfig Module::getShortcutConfig()
 {
     return shortcutConf;
+}
+
+std::string Module::getNotificationString()
+{
+    auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
+
+    return utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName());
 }

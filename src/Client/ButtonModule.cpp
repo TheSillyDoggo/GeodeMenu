@@ -1,5 +1,7 @@
 #include "ButtonModule.hpp"
 #include "ButtonModuleNode.hpp"
+#include <LocalisationManager.hpp>
+#include <NotificationManager.hpp>
 
 ModuleNode* ButtonModule::getNode()
 {
@@ -9,4 +11,10 @@ ModuleNode* ButtonModule::getNode()
 void ButtonModule::onKeybindActivated(KeyState state)
 {
     onClick();
+    NotificationManager::get()->notifyToast(getNotificationString());
+}
+
+std::string ButtonModule::getNotificationString()
+{
+    return utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/button-pressed"), "%s", getName());
 }

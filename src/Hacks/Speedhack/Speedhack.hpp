@@ -25,6 +25,8 @@ class SpeedhackEnabled : public Module
         {
             SafeMode::get()->onSpeedhackChanged();
         }
+
+        virtual std::string getNotificationString();
 };
 
 class SpeedhackMusic : public Module

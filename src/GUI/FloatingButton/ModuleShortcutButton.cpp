@@ -30,6 +30,7 @@ void ModuleShortcutButton::setup()
         if (typeinfo_cast<ButtonModule*>(mod))
         {
             static_cast<ButtonModule*>(mod)->onClick();
+            NotificationManager::get()->notifyToast(mod->getNotificationString());
             return;
         }
 
@@ -37,9 +38,7 @@ void ModuleShortcutButton::setup()
         mod->onToggle();
         ModuleNode::updateAllNodes(nullptr);
 
-        auto str = mod->getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
-
-        NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", mod->getName()));
+        NotificationManager::get()->notifyToast(mod->getNotificationString());
     });
 
     auto def = ccp(

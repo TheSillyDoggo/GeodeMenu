@@ -1,5 +1,6 @@
 #include "Speedhack.hpp"
 #include <Geode/Geode.hpp>
+#include <LocalisationManager.hpp>
 
 using namespace geode::prelude;
 
@@ -186,4 +187,11 @@ FMOD::ChannelGroup* Speedhack::getMasterChannel()
 float Speedhack::getRealDeltaTime()
 {
     return realDeltatime;
+}
+
+std::string SpeedhackEnabled::getNotificationString()
+{
+    auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
+
+    return utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", LocalisationManager::get()->getLocalisedString("categories/speedhack"));
 }

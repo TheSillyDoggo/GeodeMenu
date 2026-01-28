@@ -9,4 +9,5 @@ class ButtonModule : public Module
         
         virtual void onKeybindActivated(KeyState state);
         virtual ModuleNode* getNode();
+        virtual std::string getNotificationString();
 };

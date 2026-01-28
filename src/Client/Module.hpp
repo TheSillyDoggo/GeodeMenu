@@ -151,4 +151,5 @@ class Module
         virtual void DLL onToggle();
         virtual void onKeybindActivated(KeyState state);
         virtual bool shouldShortcutShowActivated();
+        virtual std::string getNotificationString();
 };

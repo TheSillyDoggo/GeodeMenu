@@ -36,8 +36,8 @@ class NotificationsDuration : public InputModule
             setID("notifications/duration");
             setPriority(2);
 
-            setDefaultString("2.5");
-            setPlaceholderString("2.5");
+            setDefaultString("2.0");
+            setPlaceholderString("2.0");
             setHint("seconds");
 
             setStringFilter("1234567890.");
