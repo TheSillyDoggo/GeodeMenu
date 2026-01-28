@@ -13,11 +13,14 @@ class FrameExtrapolation : public Module
             setID("frame-extrapolation");
             setCategory("Universal");
             setDescription("Smooths between frames by predicting where the player will be the next frame using its velocity.");
+            setDisabled(true);
+            setDisabledMessage("Frame extrapolation is temporarily disabled due to bugs");
         }
 };
 
 SUBMIT_HACK(FrameExtrapolation)
 
+/*
 class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
 {
     struct Fields
@@ -132,4 +135,4 @@ class $modify (ExtrapolatedGameLayer, GJBaseGameLayer)
             }
         }
     }
-};
+};*/

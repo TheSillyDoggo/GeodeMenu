@@ -401,7 +401,7 @@ void SetupLabelConfigUI::createPages()
 
         // fmt::format("{}{}.png", ""_spr, utils::string::toLower(pageNames[i]))
         auto off = CategoryTabSprite::create(CategoryTabType::Text, pageNames[i], "");
-        off->setContentSize(ccp(80, 20));
+        off->setContentSize(ccp(80, 20));        
         off->updateSelection(CategorySelectionType::Deselected);
 
         auto held = CategoryTabSprite::create(CategoryTabType::Text, pageNames[i], "");
@@ -418,9 +418,11 @@ void SetupLabelConfigUI::createPages()
         toggler->m_offButton->setSelectedImage(held);
         toggler->m_onButton->m_scaleMultiplier = 1;
 
-        off->setAnchorPoint(ccp(0, 0));
         held->setPosition(held->getContentSize() / 2);
-        on->setAnchorPoint(ccp(0, 0));
+
+        off->setAnchorPoint(ccp(0.5f, 0.5f));
+        held->setAnchorPoint(ccp(0.5f, 0.5f));
+        on->setAnchorPoint(ccp(0.5f, 0.5f));
 
         pagesMenu->addChild(toggler);
         pageBtns.push_back(toggler);

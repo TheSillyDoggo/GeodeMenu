@@ -13,6 +13,8 @@ class LabelNode : public CCNode
         virtual bool init();
 
     public:
+        static LabelNode* createForType(LabelType type);
+
         void setLabelConfig(LabelConfig config);
         const LabelConfig& getLabelConfig();
 

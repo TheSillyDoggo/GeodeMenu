@@ -87,6 +87,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         void limitLabelWidth(float width, float defaultScale, float minScale);
         void setStruct(AdvLabelStruct str);
         void updateLabel();
+        void updateLabelQuick();
         bool initWithStruct(AdvLabelStruct lblStruct, std::string font);
 
         void setTTFUsage(AdvLabelTTFUsage usage);
@@ -117,7 +118,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
 
         bool doesLabelContainNonDisplayableCharacter();
 
-        virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabel(); }
+        virtual void setColor(const ccColor3B& color) { this->colour = color; updateLabelQuick(); }
         virtual const ccColor3B& getColor(void) { return colour; }
         virtual const ccColor3B& getDisplayedColor(void) { return colour; }
         virtual GLubyte getDisplayedOpacity(void) { return opacity; }

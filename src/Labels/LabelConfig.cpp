@@ -71,6 +71,7 @@ matjson::Value LabelConfig::save()
     obj["cheat_indicator"] = cheatIndicator;
     obj["noclip_only"] = noclipOnly;
     obj["visible"] = visible;
+    obj["label_type"] = (int)type;
 
     matjson::Value eventsArr = obj.array();
     

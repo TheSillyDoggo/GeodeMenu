@@ -146,7 +146,12 @@ void LanguageNode::visit()
 {
     if (!nativeName)
     {
-        nativeName = CCLabelTTF::create(language->getNativeName().c_str(), "Arial.ttf", 16);
+        auto name = language->getNativeName();
+
+        if (name == "Error")
+            name = this->lang;
+
+        nativeName = CCLabelTTF::create(name.c_str(), "Arial.ttf", 16);
         nativeName->setScale(0.5f);
         nativeName->setAnchorPoint(ccp(0, 1));
 

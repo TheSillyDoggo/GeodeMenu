@@ -1,6 +1,7 @@
 #include "PopupBase.hpp"
 #include <BlurAPI.hpp>
 #include "Modules/BlurBackground.hpp"
+#include "../Utils/RealtimeAction.hpp"
 
 using namespace geode::prelude;
 
@@ -77,8 +78,8 @@ void PopupBase::show()
     if (!m_noElasticity)
     {
         m_mainLayer->setScale(0);
-        m_mainLayer->runAction(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1.0f), 0.6f));
-        this->runAction(CCFadeTo::create(0.14f, 150));
+        m_mainLayer->runAction(RealtimeAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1.0f), 0.6f)));
+        this->runAction(RealtimeAction::create(CCFadeTo::create(0.14f, 150)));
     }
 }
 

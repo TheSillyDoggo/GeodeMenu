@@ -5,6 +5,8 @@
 #include "../Hacks/Speedhack/Speedhack.hpp"
 #include "../GUI/Categories/SpeedhackNode.hpp"
 #include "../Utils/Num.hpp"
+#include <NotificationManager.hpp>
+#include <LocalisationManager.hpp>
 
 KeybindManager* KeybindManager::get()
 {
@@ -58,6 +60,8 @@ bool KeybindManager::processMSG(KeyState state)
 
             if (SpeedhackNode::get())
                 SpeedhackNode::get()->updateUI();
+
+            NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/notification-speedhack-set"), "%s", str));
         }
     }
 

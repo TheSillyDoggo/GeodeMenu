@@ -5,7 +5,8 @@
 
 enum class LabelType
 {
-    Text,
+    Text = 0,
+    KeyChecker = 1,
 };
 
 struct LabelConfig

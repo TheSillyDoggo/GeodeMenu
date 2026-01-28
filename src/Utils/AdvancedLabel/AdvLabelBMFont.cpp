@@ -190,9 +190,6 @@ void AdvLabelBMFont::updateLabel()
 
         ccColor3B col = part.colour;
 
-        if (col == ccWHITE)
-            col = getColor();
-
         if (!labelsCached.contains(fon))
             labelsCached.emplace(fon, std::vector<CCLabelBMFont*>({}));
 
@@ -217,6 +214,7 @@ void AdvLabelBMFont::updateLabel()
             }
 
             visibleLabels.push_back(lbl);
+            lbl->setUserFlag("no-colour", col == ccWHITE);
 
             lbl->setVisible(true);
 
@@ -249,6 +247,7 @@ void AdvLabelBMFont::updateLabel()
             }
 
             visibleLabels.push_back(lbl);
+            lbl->setUserFlag("no-colour", col == ccWHITE);
 
             lbl->setVisible(true);
 
@@ -306,6 +305,17 @@ void AdvLabelBMFont::updateLabel()
         float w = (width - widthsForLine[label->getPositionY()]) * al;
 
         label->setPosition(ccp(label->getPositionX() + w, height - (label->getPositionY() + lnHeight)));
+    }
+
+    updateLabelQuick();
+}
+
+void AdvLabelBMFont::updateLabelQuick()
+{
+    for (auto label : visibleLabels)
+    {
+        if (label->getUserFlag("no-colour"))
+            label->setColor(colour);
     }
 }
 

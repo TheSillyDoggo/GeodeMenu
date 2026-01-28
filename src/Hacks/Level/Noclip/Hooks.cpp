@@ -139,7 +139,7 @@ class $modify (PlayLayer)
 
         m_fields->tintOverlay = CCLayerColor::create(ccc4(0, 0, 0, 0));
         m_fields->tintOverlay->setID("noclip-tint-overlay"_spr);
-        m_fields->tintOverlay->setZOrder(1);
+        m_fields->tintOverlay->setZOrder(9);
         
         this->addChild(m_fields->tintOverlay);
         return true;
@@ -202,6 +202,9 @@ bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* g
     if (go == m_anticheatSpike)
         return true;
 
+    if (m_levelEndAnimationStarted)
+        return true;
+
     if (pl == m_player1)
     {
         if (!NoclipPlayer1::get()->getRealEnabled())
@@ -251,4 +254,18 @@ bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* g
 GameObject* NoclipBaseGameLayer::getDeathObject()
 {
     return m_fields->deathObject;
+}
+
+void NoclipEditorLayer::playerTookDamage(PlayerObject* player)
+{
+    if (Noclip::get()->getRealEnabled())
+    {
+        if (NoclipPlayer1::get()->getRealEnabled() && player == m_player1)
+            return;
+
+        if (NoclipPlayer2::get()->getRealEnabled() && player == m_player2)
+            return;
+    }
+
+    LevelEditorLayer::playerTookDamage(player);
 }

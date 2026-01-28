@@ -17,7 +17,6 @@
 bool AndroidUI::setup()
 {
     instance = this;
-    this->scheduleUpdate();
 
     rt = CCRenderTexture::create(getContentWidth(), getContentHeight(), kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
@@ -333,29 +332,6 @@ void AndroidUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 
     auto old = selectedCategory;
 
-    // ?
-    /*if (SearchOnKeyPress::get()->getRealEnabled())
-    {
-        if (selectedCategory != "Search")
-        {
-            selectedCategory = "Search";
-
-            auto inp = categories["Search"]->getChildByType<BetterInputNode*>(0);
-
-            inp->selectInput(true);
-
-            if (inp->getString().empty())
-            {
-                if (auto ch = CCKeyboardDispatcher::get()->keyToString(key))
-                {
-                    inp->setString(" ");
-                }
-            }
-
-            updateTabs();
-        }
-    }*/
-
     selectedCategory = old;
 }
 
@@ -363,16 +339,6 @@ void AndroidUI::visit()
 {
     FloatingUIManager::get()->visit();
     AndroidBall::get()->visit();    
-
-    /*if (selectedCategory != "Search" && categories["Search"]->isVisible())
-    {
-        if (categories["Search"]->getChildByType<BetterInputNode*>(0)->getString().empty())
-        {
-            categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(false);
-
-            updateTabs();
-        }
-    }*/
 
     // for an animation i was making, but i couldnt get clipping to work right
 

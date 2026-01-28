@@ -1,17 +1,27 @@
 # 2.6.0
 
-- Added support for GD 2.2081
+- Added **support for GD 2.2081**
 - Added Version Info texts into the main UI
 - Added option to change shortcut icon colour
+- Added Soggy Cat theme
+- Added Notifications when toggling shortcuts or keybinds
+- Added High FPS Rotation
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed White Square when using Fade In animation
-- Added Soggy Cat theme
+- Fixed crash when loading an invalid language file
+- Fixed no shaders impacting performance
+- Fixed Auto Safe Mode being triggered by levels with spike endscreens
+- Fixed Input Fields not working with Show Touches enabled
+- Fixed Noclip not working in editor
+- Fixed Noclip tint overlay not working when shaders are enabled
 - Improved Show Hitboxes
 -- Uses custom node to draw hitboxes
 -- Hitbox outlines now draw inside the bounds of the object
 -- Added support for show hitboxes to more objects
 -- Hitbox trail now uses std::deque for faster performance
+- Localisation
+-- Added French
 
 # 2.5.3
 

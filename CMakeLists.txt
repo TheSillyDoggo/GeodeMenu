@@ -39,12 +39,13 @@ else()
 endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
-include_directories(include)
+include_directories(include src/Client src/Hacks/Speedhack src/Utils src/Notifications src/Localisation)
 
 # CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
 
 CPMAddPackage("gh:EclipseMenu/RIFT#v1")
+CPMAddPackage("gh:rapidfuzz/rapidfuzz-cpp#main")
 
-target_link_libraries(${PROJECT_NAME} rift)
+target_link_libraries(${PROJECT_NAME} rift rapidfuzz::rapidfuzz)
 
 setup_geode_mod(${PROJECT_NAME})

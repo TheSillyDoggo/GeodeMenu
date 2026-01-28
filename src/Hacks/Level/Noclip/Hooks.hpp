@@ -2,6 +2,7 @@
 
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 
 enum class NoclipPlayerSelector
 {
@@ -47,4 +48,9 @@ class $modify (NoclipBaseGameLayer, GJBaseGameLayer)
     bool shouldPlayerRegularDie(PlayerObject* pl, GameObject* go);
 
     void resetNoclipValues();
+};
+
+class $modify (NoclipEditorLayer, LevelEditorLayer)
+{
+    virtual void playerTookDamage(PlayerObject* player);
 };

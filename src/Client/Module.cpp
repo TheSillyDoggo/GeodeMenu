@@ -4,6 +4,7 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "../GUI/FloatingButton/ModuleShortcutButton.hpp"
 #include "../GUI/FloatingButton/FloatingUIManager.hpp"
+#include "../Notifications/NotificationManager.hpp"
 
 using namespace geode::prelude;
 
@@ -291,6 +292,10 @@ void Module::onKeybindActivated(KeyState state)
 
     onToggle();
     ModuleNode::updateAllNodes(nullptr);
+
+    auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
+
+    NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName()));
 }
 
 std::vector<Module*> Module::getAllFavourited()

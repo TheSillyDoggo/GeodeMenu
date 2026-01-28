@@ -17,6 +17,7 @@ class OpenSettings : public ButtonModule
         virtual void onClick()
         {
             auto ui = OptionsLayer::create();
+            CCScene::get()->addChild(ui);
             ui->showLayer(false);
             ui->setZOrder(CCScene::get()->getHighestChildZ() + 1);
         }

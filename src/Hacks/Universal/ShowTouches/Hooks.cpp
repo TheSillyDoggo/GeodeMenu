@@ -20,16 +20,17 @@ SUBMIT_HACK(ShowTouches)
 SUBMIT_OPTION(ShowTouches, CircleColour)
 SUBMIT_OPTION(ShowTouches, TrailColour)
 
-
 class $modify (CCTouchDispatcher)
 {
     void touches(CCSet* touches, CCEvent* event, unsigned int type)
     {
         if (!CCScene::get())
-            return CCTouchDispatcher::touches(touches, event, type);;
+            return CCTouchDispatcher::touches(touches, event, type);
 
         if (CCScene::get()->getChildByType<LoadingLayer>(0))
-            return CCTouchDispatcher::touches(touches, event, type);;
+            return CCTouchDispatcher::touches(touches, event, type);
+
+        CCTouchDispatcher::touches(touches, event, type);
 
         if (auto touch = static_cast<CCTouch*>(touches->anyObject()))
         {
@@ -43,7 +44,5 @@ class $modify (CCTouchDispatcher)
                 CCTouchTrail::remove(touch);
             }
         }
-
-        CCTouchDispatcher::touches(touches, event, type);
     }
 };

@@ -19,6 +19,8 @@ LocalisationManager* LocalisationManager::get()
 
 void LocalisationManager::setup()
 {
+    placeholder = CLanguage::createWithJSON("{}");
+
     for (auto file : getAllLanguageFilesPath())
     {
         auto data = file::readJson(file);
@@ -149,7 +151,7 @@ CLanguage* LocalisationManager::languageForPath(std::filesystem::path path)
     if (languages.contains(path))
         return languages[path];
 
-    return nullptr;
+    return placeholder;
 }
 
 std::string LocalisationManager::getAltFont()

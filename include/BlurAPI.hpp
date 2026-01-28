@@ -2,7 +2,7 @@
 
 #include <Geode/Geode.hpp>
 
-#define BLUR_TAG "thesillydoggo.blur_api/blur-options"
+#define BLUR_TAG "thesillydoggo.blur-api/blur-options"
 
 namespace BlurAPI
 {
@@ -44,6 +44,19 @@ namespace BlurAPI
         {
             if (blur->getSettingValue<bool>("enabled"))
                 return true;
+        }
+
+        return false;
+    }
+
+    inline bool willLoad()
+    {
+        if (auto blur = geode::Loader::get()->getInstalledMod("thesillydoggo.blur-api"))
+        {
+            if (blur->shouldLoad())
+            {
+                return true;
+            }
         }
 
         return false;

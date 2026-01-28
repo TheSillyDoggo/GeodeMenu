@@ -1,6 +1,8 @@
 #include "ModuleShortcutButton.hpp"
 #include "../../Client/ModuleNode.hpp"
 #include "../../Client/ButtonModule.hpp"
+#include "../../Notifications/NotificationManager.hpp"
+#include "../../Localisation/LocalisationManager.hpp"
 
 ModuleShortcutButton* ModuleShortcutButton::create(Module* module)
 {
@@ -32,9 +34,12 @@ void ModuleShortcutButton::setup()
         }
 
         mod->setUserEnabled(!mod->getUserEnabled());
-
         mod->onToggle();
         ModuleNode::updateAllNodes(nullptr);
+
+        auto str = mod->getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
+
+        NotificationManager::get()->notifyToast(utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", mod->getName()));
     });
 
     auto def = ccp(

@@ -140,7 +140,7 @@ void LabelContainerLayer::updateConfigs()
 
     for (auto conf : LabelManager::get()->getConfigs())
     {
-        auto node = TextLabelNode::create();
+        auto node = LabelNode::createForType(conf.type);
         node->setLabelConfig(conf);
         node->setAnchorPoint(LabelManager::get()->anchorToPoint(conf.anchor));
 

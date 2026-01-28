@@ -19,11 +19,11 @@ SUBMIT_HACK(NoShaders);
 
 class $modify (ShaderLayer)
 {
-    virtual void visit()
+    void performCalculations()
     {
         if (NoShaders::get()->getRealEnabled())
-            return CCNode::visit();
+            return;
 
-        ShaderLayer::visit();
+        ShaderLayer::performCalculations();
     }
 };

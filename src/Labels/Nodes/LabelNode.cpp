@@ -1,5 +1,19 @@
 #include "LabelNode.hpp"
 #include "../../Hacks/Level/Noclip/Noclip.hpp"
+#include "TextLabelNode.hpp"
+#include "KeyCheckerNode.hpp"
+
+LabelNode* LabelNode::createForType(LabelType type)
+{
+    switch (type)
+    {
+        case LabelType::KeyChecker:
+            return KeyCheckerNode::create();
+
+        default:
+            return TextLabelNode::create();
+    }
+}
 
 bool LabelNode::init()
 {

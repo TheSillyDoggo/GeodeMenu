@@ -10,6 +10,7 @@ class LocalisationManager
     protected:
         std::unordered_map<std::filesystem::path, CLanguage*> languages = {};
         CLanguage* currentLang = nullptr;
+        CLanguage* placeholder = nullptr;
         std::filesystem::path currentPath;
 
         void loadLocalisationFile(std::filesystem::path path);

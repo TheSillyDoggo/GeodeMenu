@@ -38,7 +38,13 @@ SimplePlayer* LanguageContributorsUI::getPlayer(CLanguageContributor obj)
 
 void LanguageContributorsUI::onPlayerProfile(CCObject* sender)
 {
-    ProfilePage::create(sender->getTag(), false)->show();
+    auto pfp = ProfilePage::create(sender->getTag(), false);
+    pfp->show();
+
+    if (pfp->m_usernameLabel && std::string(pfp->m_usernameLabel->getString()) == "-")
+    {
+        pfp->m_usernameLabel->setString(static_cast<CCNode*>(sender)->getID().c_str());
+    }
 }
 
 bool LanguageContributorsUI::setup()
@@ -119,6 +125,7 @@ bool LanguageContributorsUI::setup()
 
         auto btn = CCMenuItemSpriteExtra::create(name, this, menu_selector(LanguageContributorsUI::onPlayerProfile));
         btn->setTag(cont.accountID);
+        btn->setID(cont.username);
         btn->setPositionY(70);
 
         playerMenu->addChild(btn);
