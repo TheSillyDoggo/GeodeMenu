@@ -16,5 +16,5 @@ void ButtonModule::onKeybindActivated(KeyState state)
 
 std::string ButtonModule::getNotificationString()
 {
-    return utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/button-pressed"), "%s", getName());
+    return utils::string::replace(LocalisationManager::get()->getLocalisedString("ui/notification-button-pressed"), "%s", getName());
 }

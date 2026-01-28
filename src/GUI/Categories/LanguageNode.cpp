@@ -10,7 +10,7 @@ bool LanguageNodeUI::init()
         return false;
 
     auto langs = LocalisationManager::get()->getAllLanguageFiles();
-    float height = (std::ceil((langs.size() / 2) / 2) * 2) * 2 * (60 + 2.5f);
+    float height = std::ceil(langs.size() / 2) * (60 + 2.5f);
 
     int x = 0;
     int y = 0;

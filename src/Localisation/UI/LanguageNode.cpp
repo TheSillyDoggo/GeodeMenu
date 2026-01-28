@@ -119,7 +119,7 @@ void LanguageNode::onMissingTranslations(CCObject* sender)
     {
         debugStr.append(fmt::format("\"{}\": \"{}\"\n", key.first, utils::string::replace(key.second, "\n", "\\n")));
         ss.append(key.first);
-        ss.append("\n");
+        ss.append("\n\n");
     }
     
     auto alert = geode::MDPopup::create(true, "Missing Keys", ss, "OK", "Copy Strings", [this, debugStr](bool btn2)

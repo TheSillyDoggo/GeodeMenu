@@ -20,6 +20,7 @@ bool AndroidUI::setup()
 
     rt = CCRenderTexture::create(getContentWidth(), getContentHeight(), kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
+    rt->getSprite()->getTexture()->setAntiAliasTexParameters();
 
     drawOpacity = CCLayerColor::create();
     drawOpacity->setOpacity(255);
@@ -230,6 +231,7 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     m_mainLayer->stopAllActions();
     m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height / 2));
     m_mainLayer->setScale(1.0f);
+    drawOpacity->setOpacity(255);
     backBtn->setOpacity(255);
     bottomLeft->setOpacity(150);
     bottomRight->setOpacity(150);

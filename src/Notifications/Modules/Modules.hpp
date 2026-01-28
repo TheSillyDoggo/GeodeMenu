@@ -62,6 +62,7 @@ class NotificationsBlur : public Module
         {
             setID("notifications/blur");
             setPriority(4);
+            setDefaultEnabled(true);
 
             if (!BlurAPI::willLoad())
             {

@@ -15,6 +15,8 @@
 - Fixed Input Fields not working with Show Touches enabled
 - Fixed Noclip not working in editor
 - Fixed Noclip tint overlay not working when shaders are enabled
+- Updated button to colour the white circle outline pastel in sync with the icon
+- Fixed language select menu scrolling down too far
 - Improved Show Hitboxes
 -- Uses custom node to draw hitboxes
 -- Hitbox outlines now draw inside the bounds of the object
