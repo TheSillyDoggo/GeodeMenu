@@ -74,7 +74,6 @@ bool NotificationNode::init(std::string msg, float time)
 void NotificationNode::notificationEnded(CCObject* sender)
 {
     NotificationManager::get()->removeNotification(this);
-    this->removeFromParent();
 }
 
 void NotificationNode::update(float dt)
