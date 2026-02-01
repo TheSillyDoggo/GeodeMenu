@@ -42,6 +42,17 @@ BetterAlertLayer* BetterAlertLayer::create(char const* title, const gd::string& 
     return BetterAlertLayer::create(nullptr, title, desc, btn, nullptr, 300.0);
 }
 
+BetterAlertLayer* BetterAlertLayer::createWithLocalisation(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
+{
+    auto lm = LocalisationManager::get();
+
+    std::string titlel = lm->getLocalisedString(title);
+    desc = lm->getLocalisedString(desc);
+    std::string btn1l = lm->getLocalisedString(btn1);
+
+    return create(delegate, titlel.c_str(), desc, btn1l.c_str(), btn2, width, scroll, height, textScale);
+}
+
 BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, const gd::string& desc, char const* btn)
 {
     auto lm = LocalisationManager::get();
@@ -89,6 +100,9 @@ bool BetterAlertLayer::setup()
 
 void BetterAlertLayer::onButton(CCObject* sender)
 {
+    if (delegate)
+        delegate->FLAlert_Clicked(base_cast<FLAlertLayer*>(this), (sender->getTag() != 1));
+
     if (sender->getTag() == 1)
     {
         this->onBtn1(sender);

@@ -3,6 +3,7 @@
 #include "../../GUI/EasyBG.hpp"
 #include "../../Utils/ColourUtils.hpp"
 #include "../LocalisationManager.hpp"
+#include <BetterAlertLayer.hpp>
 
 LanguageContributorsUI* LanguageContributorsUI::create(std::string lang)
 {
@@ -38,6 +39,15 @@ SimplePlayer* LanguageContributorsUI::getPlayer(CLanguageContributor obj)
 
 void LanguageContributorsUI::onPlayerProfile(CCObject* sender)
 {
+    if (!sender)
+        return;
+
+    if (!Mod::get()->setSavedValue<bool>("has-shown-language-credits-warning", true))
+    {
+        onInfo(sender);
+        return;
+    }
+
     auto pfp = ProfilePage::create(sender->getTag(), false);
     pfp->show();
 
@@ -47,11 +57,25 @@ void LanguageContributorsUI::onPlayerProfile(CCObject* sender)
     }
 }
 
+void LanguageContributorsUI::onInfo(CCObject* sender)
+{
+    auto alert = BetterAlertLayer::createWithLocalisation(this, "language-credits/warning/title", "language-credits/warning/text", "ui/ok-button", nullptr, 340, false, 0, 1.0f);
+    alert->show();
+
+    if (!static_cast<CCNode*>(sender)->getID().empty())
+    {
+        alert->setUserData(sender);
+    }
+}
+
+void LanguageContributorsUI::FLAlert_Clicked(FLAlertLayer* layer, bool btn2)
+{
+    onPlayerProfile(static_cast<CCNode*>(layer->getUserData()));
+}
+
 bool LanguageContributorsUI::setup()
 {
-    language = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / lang);
-
-    
+    language = LocalisationManager::get()->languageForPath(Mod::get()->getResourcesDir() / lang);    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -134,8 +158,16 @@ bool LanguageContributorsUI::setup()
         i++;
     }
 
+    auto infoMenu = CCMenu::create();
+
+    auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+    infoSpr->setScale(0.75f);
+    auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(LanguageContributorsUI::onInfo));
+    infoMenu->addChild(infoBtn);
+
     m_mainLayer->addChildAtPosition(clip, Anchor::Center);
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
+    m_mainLayer->addChildAtPosition(infoMenu, Anchor::TopRight, ccp(-15, -15));
     m_mainLayer->addChildAtPosition(titleBG, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     return true;

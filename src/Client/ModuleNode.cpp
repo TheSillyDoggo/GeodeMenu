@@ -27,7 +27,7 @@ void ModuleNode::setup()
     bool hasOptions = module->getOptions().size() > 0;
     bool isDisabled = module->isDisabled();
 
-    btn = CCMenuItemToggler::createWithStandardSprites(this, isDisabled ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle), 0.75f);
+    btn = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
     btn->toggle(module->getUserEnabled());
 
     label = AdvLabelBMFont::createWithString(module->getName(), "bigFont.fnt");
@@ -42,13 +42,6 @@ void ModuleNode::setup()
     favBtn->m_offButton->setColor(ccc3(150, 150, 150));
     favBtn->m_offButton->setOpacity(150);
 
-    if (isDisabled)
-    {
-        label->setOpacity(150);
-        btn->m_onButton->setOpacity(150);
-        btn->m_offButton->setOpacity(150);
-    }
-
     this->schedule(schedule_selector(ModuleNode::onUpdateLabelColour));
     onUpdateLabelColour(0);
 
@@ -61,7 +54,7 @@ void ModuleNode::setup()
         auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
         infoSpr->setScale(0.55f + 0.35f);
 
-        auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
+        infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
 
         infoSpr->setScale(infoSpr->getScale() - 0.35f);
 
@@ -85,11 +78,16 @@ void ModuleNode::setup()
         // this->addChild(tooltipBtn);
         // tooltipBtn->setUserObject("alphalaneous.tooltips/tooltip", CCString::create("ASDFUISDFGSDFGIYU"));
     }
+
+    updateNode();
 }
 
 void ModuleNode::onUpdateLabelColour(float dt)
 {
     auto col = SeperateColourCheatNames::get()->getRealEnabled() && (module->getSafeModeTrigger() != SafeModeTrigger::None) ? CheatNameColour::get()->getColour() : ccWHITE;
+
+    if (module->isDisabled())
+        col = ccc3(150, 150, 150);
 
     label->setColor(col);
 }
@@ -101,6 +99,17 @@ void ModuleNode::updateNode()
 
     if (favBtn->isToggled() != module->isFavourited())
         favBtn->toggle(module->isFavourited());
+
+    auto c = module->isDisabled() ? ccc3(150, 150, 150) : ccWHITE;
+
+    btn->setTarget(this, module->isDisabled() ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle));
+    btn->m_onButton->setColor(c);
+    btn->m_offButton->setColor(c);
+
+    if (infoBtn)
+        infoBtn->setColor(c);
+
+    onUpdateLabelColour(0);
 }
 
 void ModuleNode::onChangeKeybind(CCObject* sender)

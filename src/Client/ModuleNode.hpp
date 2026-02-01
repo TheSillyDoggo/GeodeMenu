@@ -13,6 +13,7 @@ class ModuleNode : public CCMenu
         Module* module = nullptr;
         CCMenuItemToggler* btn = nullptr;
         CCMenuItemToggler* favBtn = nullptr;
+        CCMenuItemSpriteExtra* infoBtn = nullptr;
         AdvLabelBMFont* label = nullptr;
 
         ~ModuleNode();

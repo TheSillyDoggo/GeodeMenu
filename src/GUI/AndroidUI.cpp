@@ -226,9 +226,12 @@ void AndroidUI::runAnimation(MenuAnimation anim)
     auto fadeInVersion3 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
     auto fadeInBG = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.14f, 150), nullptr));
 
+    this->stopAllActions();
     backBtn->stopAllActions();
     drawOpacity->stopAllActions();
     m_mainLayer->stopAllActions();
+    bottomLeft->stopAllActions();
+    bottomRight->stopAllActions();
     m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height / 2));
     m_mainLayer->setScale(1.0f);
     drawOpacity->setOpacity(255);
@@ -313,8 +316,6 @@ void AndroidUI::runAnimation(MenuAnimation anim)
         case MenuAnimation::FadeIn:
             drawOpacity->setOpacity(0);
             drawOpacity->runAction(RealtimeAction::create(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2)));
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
             return;
     }
 }
