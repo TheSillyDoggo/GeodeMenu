@@ -1,16 +1,9 @@
 #include "AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 
-std::string AdvLabelStruct::getTotalString()
+const std::string& AdvLabelStruct::getTotalString()
 {
-    std::string ss;
-
-    for (auto part : parts)
-    {
-        ss.append(part.label);
-    }
-
-    return ss;
+    return totalString;
 }
 
 AdvLabelBMFont* AdvLabelBMFont::createWithStruct(AdvLabelStruct lblStruct, std::string font)
@@ -43,6 +36,7 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpace
     std::string c = "";
     std::vector<std::string> segments = {};
     str.splitSpaces = splitSpaces;
+    str.totalString = lbl;
 
     if (lbl.starts_with("<bm>"))
     {
@@ -293,6 +287,9 @@ void AdvLabelBMFont::updateLabel()
 
         switch (alignment)
         {
+            case kCCTextAlignmentLeft:
+                break;
+
             case kCCTextAlignmentCenter:
                 al = 0.5f;
                 break;

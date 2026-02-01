@@ -15,6 +15,7 @@ struct AdvLabelStruct
     bool forceTTF = false;
     bool forceBM = false;
     bool splitSpaces = false;
+    std::string totalString = "";
 
     struct AdvPart
     {
@@ -24,7 +25,7 @@ struct AdvLabelStruct
         float opacity = 1.0f;
     };
 
-    std::string getTotalString();
+    const std::string& getTotalString();
 
     std::vector<AdvPart> parts = {};
 };

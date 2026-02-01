@@ -16,7 +16,7 @@ namespace QOLMod
             void submit();
     };
 
-    class AddCategoryEvent : public geode::Event
+    /*class AddCategoryEvent : public geode::Event
     {
         public:
             CategoryExt category;
@@ -31,5 +31,5 @@ namespace QOLMod
     {
         auto e = AddCategoryEvent(*this);
         e.post();
-    }
+    }*/
 };

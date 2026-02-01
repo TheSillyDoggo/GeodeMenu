@@ -38,6 +38,9 @@ bool VersionInfoNode::init(VersionInfoType type)
 
 void VersionInfoNode::updateLabel()
 {
+    if (!label || !circle)
+        return;
+
     switch (type)
     {
         case VersionInfoType::GD:
@@ -82,6 +85,11 @@ bool VersionInfoNode::isChecking()
 
 void VersionInfoNode::checkForUpdate()
 {
+    updateChecksFinished = true;
+    updateAvailable = false;
+    updateLabel();
+    return;
+
     static bool hasCheckedForUpdates = false;
 
     if (hasCheckedForUpdates)
@@ -90,7 +98,7 @@ void VersionInfoNode::checkForUpdate()
         return;
     }
 
-    updateListener.bind([this](Mod::CheckUpdatesTask::Event* event)
+    /*updateListener.bind([this](Mod::CheckUpdatesTask::Event* event)
     {
         if (auto value = event->getValue())
         {
@@ -116,7 +124,7 @@ void VersionInfoNode::checkForUpdate()
         }
     });
 
-    updateListener.setFilter(Mod::get()->checkUpdates());
+    updateListener.setFilter(Mod::get()->checkUpdates());*/
 }
 
 void VersionInfoNode::setColor(const ccColor3B& color)

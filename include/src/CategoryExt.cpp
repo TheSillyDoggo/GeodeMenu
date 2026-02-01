@@ -4,7 +4,7 @@
 using namespace geode::prelude;
 using namespace QOLMod;
 
-$execute
+/*$execute
 {
     new EventListener<EventFilter<AddCategoryEvent>>(+[](AddCategoryEvent* ev)
     {
@@ -14,4 +14,4 @@ $execute
 
         return ListenerResult::Stop;
     });
-}
+}*/

@@ -68,8 +68,8 @@ bool AndroidUI::setup()
     m_mainLayer->setZOrder(80085);
     this->addChild(backMenu);
 
-    auto e = QOLModUIOpenEvent(this);
-    e.post();
+    // auto e = QOLModUIOpenEvent(this);
+    // e.post();
 
     this->runAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
 

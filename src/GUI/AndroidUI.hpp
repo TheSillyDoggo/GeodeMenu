@@ -80,7 +80,7 @@ class AndroidUI : public PopupBase
         virtual void visit();
 };
 
-class QOLModUIOpenEvent : public geode::Event
+/*class QOLModUIOpenEvent : public geode::Event
 {
     public:
         AndroidUI* ui;
@@ -89,4 +89,4 @@ class QOLModUIOpenEvent : public geode::Event
         {
             this->ui = ui;
         }
-};
+};*/

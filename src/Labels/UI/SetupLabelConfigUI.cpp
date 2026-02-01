@@ -575,7 +575,7 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
-    file::pick(file::PickMode::SaveFile, options).listen([this, dump](Result<std::filesystem::path>* path)
+    /*file::pick(file::PickMode::SaveFile, options).listen([this, dump](Result<std::filesystem::path>* path)
     {
         if (path->isOk())
         {
@@ -591,5 +591,5 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
             else
                 FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> exporting <cc>file</c>!\n<cr>{}</c>", res.unwrapErr()), "OK")->show();
         }
-    });
+    });*/
 }
