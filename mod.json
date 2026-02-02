@@ -3,9 +3,9 @@
 	"version": "v2.6.0",
 	"gd": {
 		"win": "2.2081",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
 	},
 	"early-load": true,
 	"id": "thesillydoggo.qolmod",

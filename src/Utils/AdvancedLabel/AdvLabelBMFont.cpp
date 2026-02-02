@@ -1,5 +1,6 @@
 #include "AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
+#include <FastBMFontConfig.hpp>
 
 const std::string& AdvLabelStruct::getTotalString()
 {
@@ -439,6 +440,7 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
 {
     if (!bmConfigs.contains(font))
     {
+        FastBMFontConfig::quickLoad(font.c_str());
         auto conf = CCLabelBMFont::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 
@@ -452,6 +454,7 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
 {
     if (!bmConfigs.contains(font))
     {
+        FastBMFontConfig::quickLoad(font.c_str());
         auto conf = CCLabelBMFont::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 

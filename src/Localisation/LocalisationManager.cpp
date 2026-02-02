@@ -1,6 +1,7 @@
 #include "LocalisationManager.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../GUI/AndroidUI.hpp"
+#include <FastBMFontConfig.hpp>
 
 using namespace geode::prelude;
 
@@ -91,10 +92,7 @@ void LocalisationManager::switchLocalisationWithUIPath(std::filesystem::path pat
             {
                 Loader::get()->queueInMainThread([this, layer, path, font]
                 {
-                    auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
-                    lbl->setScale(0);
-                    lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
-                    CCScene::get()->addChild(lbl);
+                    FastBMFontConfig::quickLoad(font.c_str());
 
                     layer->removeFromParent();
 

@@ -6,6 +6,7 @@
 - Added Soggy Cat theme
 - Added Notifications when toggling shortcuts or keybinds
 - Added High FPS Rotation
+- Added per gamemode no player rotation options
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed White Square when using Fade In animation
@@ -17,6 +18,7 @@
 - Fixed Noclip tint overlay not working when shaders are enabled
 - Updated button to colour the white circle outline pastel in sync with the icon
 - Fixed language select menu scrolling down too far
+- Improved font loading performance from 30 secs to 30 ms
 - Improved Show Hitboxes
 -- Uses custom node to draw hitboxes
 -- Hitbox outlines now draw inside the bounds of the object

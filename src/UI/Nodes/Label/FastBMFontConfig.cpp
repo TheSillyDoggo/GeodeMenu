@@ -1,35 +1,45 @@
-/*#include <Geode/Geode.hpp>
-#include <Geode/modify/CCBMFontConfiguration.hpp>
+#include "FastBMFontConfig.hpp"
 
 using namespace geode::prelude;
-using namespace std::chrono;
 
-void* __address = 0x0;
-
-float fast_stof(std::string_view sv)
+FastBMFontConfig* FastBMFontConfig::create(const char* fntFile)
 {
-    float value;
-    auto [ptr, ec] = std::from_chars(sv.data(), sv.data() + sv.size(), value);
-    if (ec == std::errc()) return value;
-    return 0.0f;
+    auto pRet = new FastBMFontConfig();
+
+    if (pRet && pRet->init(fntFile))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+
+    CC_SAFE_DELETE(pRet);
+    return nullptr;
+}
+
+bool FastBMFontConfig::init(const char* fntFile)
+{
+    m_pKerningDictionary = nullptr;
+    m_pFontDefDictionary = nullptr;
+    
+    m_pCharacterSet = this->parseConfigFile(fntFile);
+
+    return m_pCharacterSet;
 }
 
 float faster_stof(std::string_view sv, size_t start, size_t count)
 {
     float value;
     auto [ptr, ec] = std::from_chars(sv.data() + start, sv.data() + start + count, value);
-    if (ec == std::errc()) return value;
+    if (ptr != sv.data() + start && ec == std::errc()) return value;
     return 0.0f;
 }
 
-gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const char *FNTfile)
+gd::set<unsigned int>* FastBMFontConfig::parseConfigFile(const char* fntFile)
 {
-    auto start = steady_clock::now();
-
     auto ccfu = CCFileUtils::get();
 
     gd::set<unsigned int>* charsSet = new gd::set<unsigned int>();
-    auto fullpath = ccfu->fullPathForFilename(FNTfile, false);
+    auto fullpath = ccfu->fullPathForFilename(fntFile, false);
 
     std::ifstream file(fullpath);
     std::vector<char> buffer(1024);
@@ -48,7 +58,7 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             auto beg = line.find('"') + 1;
             auto end = line.find('"', beg);
 
-            self->m_sAtlasName = ccfu->fullPathFromRelativeFile(std::string(line.substr(beg, end - beg)).c_str(), FNTfile);
+            m_sAtlasName = ccfu->fullPathFromRelativeFile(std::string(line.substr(beg, end - beg)).c_str(), fntFile);
             continue;
         }
         if (line.starts_with("common lineHeight"))
@@ -56,7 +66,7 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             auto beg = line.find('=') + 1;
             auto end = line.find(' ', beg);
 
-            self->m_nCommonHeight = faster_stof(line, beg, end-beg);
+            m_nCommonHeight = faster_stof(line, beg, end-beg);
             continue;
         }
         if (line.starts_with("chars count="))
@@ -64,12 +74,14 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             int max = faster_stof(line, line.find('=') + 1, 8);
 
             elementPool = static_cast<tCCFontDefHashElement*>(malloc(sizeof(tCCFontDefHashElement) * max));
+            continue;
         }
         if (line.starts_with("kernings count="))
         {
             int max = faster_stof(line, line.find('=') + 1, 8);
 
             kerningPool = static_cast<tCCKerningHashElement*>(malloc(sizeof(tCCKerningHashElement) * max));
+            continue;
         }
         if (line.starts_with("kerning first"))
         {
@@ -95,14 +107,14 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
 
             element->amount = amount;
             element->key = (first<<16) | (second&0xffff);
-            HASH_ADD_INT(self->m_pKerningDictionary, key, element);
+            HASH_ADD_INT(m_pKerningDictionary, key, element);
             continue;
         }
         if (line.starts_with("char "))
         {
             if (!elementPool)
             {
-                log::error("uhh");
+                log::error("This shouldn't have happened!\n{}: {}", fntFile, line);
                 continue;
             }
 
@@ -111,8 +123,8 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             *element = {};
             
             #define KEYPAIR(var) \
-            static size_t GEODE_CONCAT(var, beg) = 0; \
-            static size_t GEODE_CONCAT(var, end) = 0;
+            size_t GEODE_CONCAT(var, beg) = 0; \
+            size_t GEODE_CONCAT(var, end) = 0;
 
             KEYPAIR(charID);
             KEYPAIR(x);
@@ -124,38 +136,31 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             KEYPAIR(xadvance);
 
             charIDbeg = line.find('=') + strlen("=");
-            charIDend = line.find('x', charIDbeg) - 1;
+            charIDend = line.find('x', charIDbeg);
 
-            // xbeg = line.find('=', charIDend) + strlen("=");
-            xbeg = charIDend + 3;
+            xbeg = charIDend + strlen("x=");
             xend = xbeg + 6;
 
-            // ybeg = line.find('=', xend) + strlen("=");
-            ybeg = xend + 2;
+            ybeg = xend + strlen("y=");
             yend = ybeg + 6;
 
-            // widthbeg = line.find('=', yend) + strlen("=");
-            widthbeg = yend + 6;
+            widthbeg = yend + strlen("width=");
             widthend = widthbeg + 6;
 
-            // heightbeg = line.find('=', widthend) + strlen("=");
-            heightbeg = widthend + 7;
+            heightbeg = widthend + strlen("height=");
             heightend = heightbeg + 6;
 
-            // xoffsetbeg = line.find('=', heightend) + strlen("=");
-            xoffsetbeg = heightend + 8;
+            xoffsetbeg = heightend + strlen("xoffset=");
             xoffsetend = xoffsetbeg + 6;
 
-            // yoffsetbeg = line.find('=', xoffsetend) + strlen("=");
-            yoffsetbeg = xoffsetend + 8;
+            yoffsetbeg = xoffsetend + strlen("yoffset=");
             yoffsetend = yoffsetbeg + 6;
 
-            // xadvancebeg = line.find('=', yoffsetend) + strlen("=");
-            xadvancebeg = yoffsetend + 9;
+            xadvancebeg = yoffsetend + strlen("xadvance=");
             xadvanceend = xadvancebeg + 6;
 
 
-            element->fontDef.charID = faster_stof(line, charIDbeg, charIDend-charIDbeg);
+            element->fontDef.charID = faster_stof(line, charIDbeg, charIDend-charIDbeg - 1);
             element->fontDef.rect.origin.x =    faster_stof(line, xbeg, xend-xbeg);
             element->fontDef.rect.origin.y =    faster_stof(line, ybeg, yend-ybeg);
             element->fontDef.rect.size.width =  faster_stof(line, widthbeg, widthend-widthbeg);
@@ -165,7 +170,7 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
             element->fontDef.xAdvance =         faster_stof(line, xadvancebeg, xadvanceend-xadvancebeg);
 
             element->key = element->fontDef.charID;
-            HASH_ADD_INT(self->m_pFontDefDictionary, key, element);
+            HASH_ADD_INT(m_pFontDefDictionary, key, element);
 
             charsSet->insert(element->fontDef.charID);
             continue;
@@ -177,54 +182,23 @@ gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const ch
         }
     }
     
-
     file.close();
-
-
-    auto end = steady_clock::now();
-
-    auto duration = duration_cast<nanoseconds>(end - start);
-
-    log::info("Parsed {} in {}ns", FNTfile, duration.count());
-
     return charsSet;
 }
 
-/*gd::set<unsigned int>* HK__parseConfigFile(CCBMFontConfiguration* self, const char *FNTfile)
+bool hookEnabled = false;
+
+CCBMFontConfiguration* FastBMFontConfiguration::create(const char *FNTfile)
 {
-    auto start = steady_clock::now();
+    if (hookEnabled)
+        return FastBMFontConfig::create(FNTfile);
 
-    auto pRet = reinterpret_cast<gd::set<unsigned int>*(__cdecl*)(CCBMFontConfiguration*, const char*)>(__address)(self, FNTfile);
+    return CCBMFontConfiguration::create(FNTfile);
+}
 
-    auto end = steady_clock::now();
-
-    auto duration = duration_cast<nanoseconds>(end - start);
-
-    log::info("Parsed {} in {}ms", FNTfile, duration.count());
-
-    return pRet;
-}*/
-
-// chatFont: 1248600ns
-// chirongo: 49405200ns
-// chirongo: 45881000ns
-// chirongo: 46889900ns
-// chirongo: 19086600ns
-// chirongo: 46914600ns
-// chirongo: 45058800ns
-// chirongo: 11317200ns
-// chirongo: 9751500ns
-
-/*$execute
+void FastBMFontConfig::quickLoad(const char* fntFile)
 {
-    __address = reinterpret_cast<void*>(GetProcAddress(
-        GetModuleHandle("libcocos2d.dll"), "?parseConfigFile@CCBMFontConfiguration@cocos2d@@AEAAPEAV?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@PEBD@Z"
-    ));
-
-    Mod::get()->hook(
-        __address,
-        &HK__parseConfigFile,
-        "cocos2d::CCBMFontConfiguration::initWithFNTfile",
-        tulip::hook::TulipConvention::Thiscall
-    );
-}*/
+    hookEnabled = true;
+    cocos2d::FNTConfigLoadFile(fntFile);
+    hookEnabled = false;
+}
