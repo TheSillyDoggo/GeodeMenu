@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "../CLanguage.hpp"
+#include <FallbackLabel.hpp>
 
 using namespace geode::prelude;
 
@@ -14,7 +15,7 @@ class LanguageNode : public CCNode
         CCScale9Sprite* bg;
         CCLabelBMFont* percentLabel;
         CCLabelBMFont* enName;
-        CCLabelTTF* nativeName;
+        FallbackLabel* nativeName;
         CCMenu* useMenu = nullptr;
 
     public:

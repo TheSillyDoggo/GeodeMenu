@@ -46,7 +46,7 @@ SUBMIT_OPTION(TPSBypassEnabled, TPSBypassValue)
 
 class $modify (GJBaseGameLayer)
 {
-    float getModifiedDelta(float dt)
+    double getModifiedDelta(float dt)
     {
         if (!TPSBypassEnabled::get()->getRealEnabled() || m_isEditor)
             return GJBaseGameLayer::getModifiedDelta(dt);

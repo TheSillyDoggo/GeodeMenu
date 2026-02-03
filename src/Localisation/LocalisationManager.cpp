@@ -193,3 +193,17 @@ std::vector<std::filesystem::path> LocalisationManager::getAllLanguageFilesPath(
 
     return files;
 }
+
+#include "ShapingEngine.hpp"
+
+std::string LocalisationManager::reshapeArabicString(std::string str)
+{
+    #ifdef GEODE_IS_MOBILE
+    return str; // mobile renders arabic correctly with CCLabelTTF
+    #endif
+
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring ws = converter.from_bytes(str);
+    
+    return ShapingEngine::render(ws, true);
+}

@@ -151,7 +151,10 @@ void LanguageNode::visit()
         if (name == "Error")
             name = this->lang;
 
-        nativeName = CCLabelTTF::create(name.c_str(), "Arial.ttf", 16);
+        nativeName = FallbackLabel::create(name.c_str(), "bigFont.fnt");
+        nativeName->setForceFallback(true);
+        nativeName->setTTFFallback(true);
+        nativeName->updateLabel();
         nativeName->setScale(0.5f);
         nativeName->setAnchorPoint(ccp(0, 1));
 

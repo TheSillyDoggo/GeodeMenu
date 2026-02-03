@@ -32,6 +32,7 @@ class LocalisationManager
         std::filesystem::path getCurrentLoadedFile();
         std::string getAltFont();
         std::string getLocalisedString(std::string id);
+        std::string reshapeArabicString(std::string str);
 
         CLanguage* languageForPath(std::filesystem::path path);
 };
