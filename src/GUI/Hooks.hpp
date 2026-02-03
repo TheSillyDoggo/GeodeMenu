@@ -9,11 +9,6 @@
 
 using namespace geode::prelude;
 
-class $modify (BallEGLView, CCEGLView)
-{
-    virtual void swapBuffers();
-};
-
 class $modify (BallGameManager, GameManager)
 {
     void reloadAllStep5();

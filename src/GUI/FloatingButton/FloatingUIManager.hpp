@@ -3,12 +3,6 @@
 #include <Geode/Geode.hpp>
 #include "FloatingUIButton.hpp"
 
-class FloatingUIDrawHook : public cocos2d::CCNode
-{
-    public:
-        virtual void visit();
-};
-
 class FloatingUIManager : public cocos2d::CCNode
 {
     friend struct FloatingMenuLayer;

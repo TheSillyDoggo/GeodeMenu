@@ -4,6 +4,8 @@
 
 using namespace geode::prelude;
 
+// #define QOLMOD_SEPERATE_COLOURS
+
 class ColourUtils
 {
     using Channel = std::string;
@@ -11,6 +13,7 @@ class ColourUtils
 
     protected:
         std::vector<Channel> channels = {};
+        float globalValue = 0;
         std::unordered_map<Channel, float> values = {};
         std::unordered_map<Channel, float> speeds = {};
 

@@ -94,20 +94,26 @@ void ModuleNode::onUpdateLabelColour(float dt)
 
 void ModuleNode::updateNode()
 {
-    if (btn->isToggled() != module->getUserEnabled())
-        btn->toggle(module->getUserEnabled());
+    if (btn)
+    {
+        if (btn->isToggled() != module->getUserEnabled())
+            btn->toggle(module->getUserEnabled());
+    }
 
     if (favBtn->isToggled() != module->isFavourited())
         favBtn->toggle(module->isFavourited());
 
     auto c = module->isDisabled() ? ccc3(150, 150, 150) : ccWHITE;
 
-    btn->setTarget(this, module->isDisabled() ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle));
-    btn->m_onButton->setColor(c);
-    btn->m_offButton->setColor(c);
+    if (btn)
+    {
+        btn->setTarget(this, module->isDisabled() ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle));
+        btn->m_onButton->setColor(c);
+        btn->m_offButton->setColor(c);
+    }
 
-    if (infoBtn)
-        infoBtn->setColor(c);
+    // if (infoBtn)
+        // infoBtn->setColor(c);
 
     onUpdateLabelColour(0);
 }

@@ -27,10 +27,14 @@ void ColourUtils::setup()
 
 void ColourUtils::update(float dt)
 {
+    #ifdef QOLMOD_SEPERATE_COLOURS
     for (size_t i = 0; i < channels.size(); i++)
     {
         values[channels[i]] += dt * speeds[channels[i]];
     }
+    #else
+    globalValue += dt;
+    #endif
 }
 
 void ColourUtils::addChannel(Channel channel)
@@ -48,7 +52,7 @@ ccColor3B ColourUtils::getChroma(Channel channel)
     if (!values.contains(channel))
         addChannel(channel);
 
-    return hsvToRgb(cchsv((values[channel] * 180) / 10.0f, 1.0f, 1.0f, true, true));
+    return hsvToRgb(cchsv((getChannelValue(channel) * 180) / 10.0f, 1.0f, 1.0f, true, true));
 }
 
 ccColor3B ColourUtils::getPastel(Channel channel)
@@ -56,7 +60,7 @@ ccColor3B ColourUtils::getPastel(Channel channel)
     if (!values.contains(channel))
         addChannel(channel);
 
-    return hsvToRgb(cchsv((values[channel] * 180) / 10.0f, 155.0f / 255.0f, 1.0f, true, true));
+    return hsvToRgb(cchsv((getChannelValue(channel) * 180) / 10.0f, 155.0f / 255.0f, 1.0f, true, true));
 }
 
 void ColourUtils::setChannelSpeed(Channel channel, float speed)
@@ -68,14 +72,21 @@ void ColourUtils::setChannelSpeed(Channel channel, float speed)
 
 float ColourUtils::getChannelValue(Channel channel)
 {
+    #ifdef QOLMOD_SEPERATE_COLOURS
     if (values.contains(channel))
         return values[channel];
+    #else
+    if (speeds.contains(channel))
+        return globalValue * speeds[channel];
+    #endif
 
     return 0;
 }
 
 ccColor3B ColourConfig::colourForConfig(std::string channel)
 {
+    ColourUtils::get()->setChannelSpeed(channel, chromaSpeed);
+
     switch (type)
     {
         case CustomColour:

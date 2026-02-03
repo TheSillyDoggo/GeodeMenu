@@ -7,7 +7,7 @@ SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig
 {
     auto pRet = new SetupColourConfigUI();
 
-    CCSize size = ccp(360, 250);
+    CCSize size = ccp(380, 250);
     pRet->onFinishFunc = onFinishFunc;
     pRet->allowEffects = allowEffects;
 
@@ -84,6 +84,30 @@ bool SetupColourConfigUI::setup()
 
     topRightMenu->updateLayout();
 
+    bottomLeft = CCMenu::create();
+    bottomLeft->setVisible(this->allowEffects);
+    bottomLeft->setScale(0.65f);
+    bottomLeft->setContentSize(ccp(0, 0));
+
+    speedSlider = BetterSlider::create(this, menu_selector(SetupColourConfigUI::onSpeedSliderChanged));
+    speedSlider->setRange(0.1f, 5);
+    speedSlider->setSnapValuesRanged({1.0f});
+    speedSlider->setPosition(ccp(0, 0));
+    speedSlider->setContentWidth(150);
+    bottomLeft->addChild(speedSlider);
+
+    speedInput = BetterInputNode::create(45, "Speed");
+    speedInput->setAlignment(kCCTextAlignmentCenter);
+    speedInput->setAnchorPoint(ccp(0, 0.5f));
+    speedInput->setPosition(ccp(speedSlider->getContentWidth() / 2 + 12, 0));
+    speedInput->setDelegate(this);
+    bottomLeft->addChild(speedInput);
+
+    auto speedTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/effect-speed", "goldFont.fnt");
+    speedTitle->setPosition(ccp(((speedSlider->getScaledContentWidth() + 12 + speedInput->getScaledContentWidth()) / 2) - speedSlider->getScaledContentWidth() / 2, 38));
+    speedTitle->limitLabelWidth((speedSlider->getScaledContentWidth() + 12 + speedInput->getScaledContentWidth()) - 10, 0.85f, 0);
+    bottomLeft->addChild(speedTitle);
+
     createGradientPreview();
     addTypeButtons(typeMenu);
 
@@ -94,6 +118,7 @@ bool SetupColourConfigUI::setup()
     m_mainLayer->addChildAtPosition(startColour, Anchor::TopLeft, ccp(30, -30 - (15 * 1.5f)));
     m_mainLayer->addChildAtPosition(typeMenu, Anchor::BottomRight, ccp(-80, 0));
     m_mainLayer->addChildAtPosition(topRightMenu, Anchor::TopRight, ccp(-38, -12));
+    m_mainLayer->addChildAtPosition(bottomLeft, Anchor::BottomLeft, ccp(65, 25));
 
     return true;
 }
@@ -210,7 +235,7 @@ void SetupColourConfigUI::updateGradientPreview()
     }
 
     gradientLineColour->setColor(currentConfig.gradientLocations[selectedGradientLine].colour);
-    gradientTimePreview->setPositionX(gradientPreviewContainer->getContentWidth() * (ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(previewChannel))));
+    gradientTimePreview->setPositionX(gradientPreviewContainer->getContentWidth() * (ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(fmt::format("{}_preview", previewChannel)))));
 }
 
 void SetupColourConfigUI::updateGradientLines()
@@ -320,6 +345,10 @@ void SetupColourConfigUI::addTypeButtons(CCMenu* menu)
             case Gradient:
                 labelText = "colour-setup/gradient";
                 break;
+
+            case CustomColour:
+                labelText = "meowwww meeowwwwww meowwww mrrp mrrowwwwww~~";
+                break;
         }
 
         float yPos = 30 * (6 - (i - 1));
@@ -378,10 +407,8 @@ void SetupColourConfigUI::onChangeType(CCObject* sender)
 
 void SetupColourConfigUI::update(float dt)
 {
-    // currentConfig.customColour = picker->getColorValue();
-
     startColour->setColor(startConfig.colourForConfig(previewChannel));
-    endColour->setColor(currentConfig.colourForConfig(previewChannel));
+    endColour->setColor(currentConfig.colourForConfig(fmt::format("{}_preview", previewChannel)));
 
     gradientLineLocation->setValue01(currentConfig.gradientLocations[selectedGradientLine].percentageLocation);
 
@@ -443,9 +470,24 @@ void SetupColourConfigUI::updateUI()
     gradientAddStepBtn->setVisible(currentConfig.type == Gradient);
     gradientDelStepBtn->setVisible(currentConfig.type == Gradient);
     updateGradientLines();
+    speedSlider->setValueRanged(currentConfig.chromaSpeed);
+    speedInput->setString(utils::numToString<double>(currentConfig.chromaSpeed, 2));
+    bottomLeft->setVisible(this->allowEffects && (currentConfig.type >= Chroma));
+}
+
+void SetupColourConfigUI::onSpeedSliderChanged(CCObject* sender)
+{
+    currentConfig.chromaSpeed = speedSlider->getValueRanged();
+    speedInput->setString(utils::numToString<double>(currentConfig.chromaSpeed, 2));
 }
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
 {
     this->currentConfig.customColour = colour;
+}
+
+void SetupColourConfigUI::textChanged(CCTextInputNode* node)
+{
+    currentConfig.chromaSpeed = utils::numFromString<double>(speedInput->getString()).unwrapOr(currentConfig.chromaSpeed);
+    speedSlider->setValueRanged(currentConfig.chromaSpeed);
 }

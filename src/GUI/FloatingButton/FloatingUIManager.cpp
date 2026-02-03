@@ -11,15 +11,6 @@ FloatingUIManager* FloatingUIManager::get()
     if (!instance)
     {
         instance = new FloatingUIManager();
-        #ifdef GEODE_IS_MOBILE
-        if (!Loader::get()->getLoadedMod("geode.texture-loader"))
-            CCDirector::get()->m_pNotificationNode = new FloatingUIDrawHook();
-
-        #else
-
-        CCDirector::get()->m_pNotificationNode = new FloatingUIDrawHook();
-
-        #endif
     }
 
     return instance;
@@ -82,9 +73,6 @@ void FloatingUIManager::visit()
     if (DisableShortcuts::get()->getRealEnabled())
         return;
 
-    if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
-        return;
-
     #ifdef GEODE_IS_MOBILE
     if (Loader::get()->getLoadedMod("geode.texture-loader"))
         return;
@@ -94,17 +82,6 @@ void FloatingUIManager::visit()
 
     return CCNode::visit();
 }
-
-void FloatingUIDrawHook::visit()
-{
-    if (!CCScene::get())
-        return;
-
-    if (AndroidUI::get())
-        return;
-
-    FloatingUIManager::get()->visit();
-};
 
 bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
 {

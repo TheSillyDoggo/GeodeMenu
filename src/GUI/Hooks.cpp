@@ -19,14 +19,6 @@ bool BallMenuLayer::init()
     return true;
 }
 
-void BallEGLView::swapBuffers()
-{
-    if (!AndroidUI::get())
-        AndroidBall::get()->visit();
-
-    CCEGLView::swapBuffers();
-}
-
 void BallGameManager::reloadAllStep5()
 {
     GameManager::reloadAllStep5();

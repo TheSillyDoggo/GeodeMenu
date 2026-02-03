@@ -8,10 +8,11 @@
 #include "../Utils/ColourConfig.hpp"
 #include "BetterSlider.hpp"
 #include "PopupBase.hpp"
+#include "BetterInputNode.hpp"
 
 using namespace geode::prelude;
 
-class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate
+class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public TextInputDelegate
 {
     protected:
         bool allowEffects = false;
@@ -25,6 +26,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate
         std::string previewChannel = "";
         CCControlColourPicker* picker = nullptr;
         CCMenu* typeMenu = nullptr;
+        CCMenu* bottomLeft = nullptr;
         std::map<CCMenuItemToggler*, ColourConfigType> configTypes = {};
         CCNode* gradientPreviewContainer = nullptr;
         std::unordered_map<CCLayerColor*, float> gradientPreviewSprites = {};
@@ -36,6 +38,10 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate
         BetterSlider* gradientLineLocation = nullptr;
         CCMenuItemSpriteExtra* gradientAddStepBtn = nullptr;
         CCMenuItemSpriteExtra* gradientDelStepBtn = nullptr;
+        BetterSlider* speedSlider = nullptr;
+        BetterInputNode* speedInput = nullptr;
+
+        virtual void textChanged(CCTextInputNode* node);
 
     public:
         static SetupColourConfigUI* create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects = true);
@@ -49,6 +55,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate
         void onGradientLocationSlider(CCObject* sender);
         void onAddGradientStep(CCObject* sender);
         void onDeleteGradientStep(CCObject* sender);
+        void onSpeedSliderChanged(CCObject* sender);
 
         void setStartConfig(ColourConfig config);
         void setDefaultConfig(ColourConfig config);

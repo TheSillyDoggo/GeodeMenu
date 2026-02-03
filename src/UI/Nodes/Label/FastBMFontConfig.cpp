@@ -57,8 +57,10 @@ gd::set<unsigned int>* FastBMFontConfig::parseConfigFile(const char* fntFile)
         {
             auto beg = line.find('"') + 1;
             auto end = line.find('"', beg);
+            // auto page = std::string(line.substr(beg, end - beg)).c_str();
+            std::string page = "bigFont.png";
 
-            m_sAtlasName = ccfu->fullPathFromRelativeFile(std::string(line.substr(beg, end - beg)).c_str(), fntFile);
+            m_sAtlasName = ccfu->fullPathFromRelativeFile(page.c_str(), fntFile);
             continue;
         }
         if (line.starts_with("common lineHeight"))
@@ -190,8 +192,8 @@ bool hookEnabled = false;
 
 CCBMFontConfiguration* FastBMFontConfiguration::create(const char *FNTfile)
 {
-    if (hookEnabled)
-        return FastBMFontConfig::create(FNTfile);
+    // if (hookEnabled)
+        // return FastBMFontConfig::create(FNTfile);
 
     return CCBMFontConfiguration::create(FNTfile);
 }
