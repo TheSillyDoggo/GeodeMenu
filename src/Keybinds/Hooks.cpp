@@ -1,5 +1,7 @@
 #include "Hooks.hpp"
 
+#ifndef GEODE_IS_IOS
+
 bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat, double unk)
 {
     KeyState struc;
@@ -16,3 +18,5 @@ bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool re
 
     return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat, unk);
 }
+
+#endif
