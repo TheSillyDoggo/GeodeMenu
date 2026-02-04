@@ -5,8 +5,21 @@ bool FallbackLabelProtocol::shouldUseFallback(std::string_view string, gd::set<u
     if (forceFallback)
         return true;
 
-    if (fallbackFont.empty())
-        return false;
+    if (auto ttf = geode::cast::typeinfo_cast<TTFFallbackLabelProtocol*>(this))
+    {
+        if (ttf->getTTFFallback())
+            return true;
+        else
+        {
+            if (fallbackFont.empty())
+                return false;
+        }
+    }
+    else
+    {
+        if (fallbackFont.empty())
+            return false;
+    }
 
     if (!charSet)
         return false;

@@ -29,6 +29,9 @@ void FallbackLabel::visit()
 {
     if (ttfSprite)
     {
+        ttfSprite->setOpacity(getOpacity());
+        ttfSprite->setColor(getColor());
+
         this->transform();
         return ttfSprite->visit();
     }
@@ -57,7 +60,12 @@ void FallbackLabel::updateLabel()
         }
         else
         {
+            std::string oldFnt = getFntFile();
 
+            m_sFntFile = getFallbackFnt();
+            CCLabelBMFont::updateLabel();
+            m_sFntFile = oldFnt;
+            return;
         }
     }
 

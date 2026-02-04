@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include <FallbackLabel.hpp>
 
 using namespace geode::prelude;
 
@@ -58,7 +59,7 @@ enum class AdvLabelTTFUsage
 class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProtocol
 {
     protected:
-        static inline std::unordered_map<std::string, CCLabelBMFont*> bmConfigs = {};
+        static inline std::unordered_map<std::string, FallbackLabel*> bmConfigs = {};
 
         AdvLabelStruct str;
         std::string font;
@@ -66,8 +67,8 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         AdvLabelTTFUsage ttfUsage = AdvLabelTTFUsage::Auto;
         ccColor3B colour = ccWHITE;
         GLubyte opacity = 255;
-        std::unordered_map<std::string, std::vector<CCLabelBMFont*>> labelsCached = {};
-        std::vector<CCLabelBMFont*> visibleLabels = {};
+        std::unordered_map<std::string, std::vector<FallbackLabel*>> labelsCached = {};
+        std::vector<FallbackLabel*> visibleLabels = {};
         CCTextAlignment alignment = kCCTextAlignmentLeft;
         float maxWidth = 0;
         bool usingTTFCurrently = false;
@@ -104,7 +105,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
 
         virtual void setAlignment(CCTextAlignment alignment);
 
-        std::vector<CCLabelBMFont*> getVisibleLabels();
+        std::vector<FallbackLabel*> getVisibleLabels();
 
         void setMaxWidth(float width);
         void setSplitEverySpace(bool split);

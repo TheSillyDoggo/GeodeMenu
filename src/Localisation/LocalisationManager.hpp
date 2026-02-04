@@ -35,4 +35,5 @@ class LocalisationManager
         std::string reshapeArabicString(std::string str);
 
         CLanguage* languageForPath(std::filesystem::path path);
+        CLanguage* getCurrentLang();
 };

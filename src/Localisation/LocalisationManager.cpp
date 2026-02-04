@@ -194,6 +194,11 @@ std::vector<std::filesystem::path> LocalisationManager::getAllLanguageFilesPath(
     return files;
 }
 
+CLanguage* LocalisationManager::getCurrentLang()
+{
+    return currentLang ? currentLang : placeholder;
+}
+
 #include "ShapingEngine.hpp"
 
 std::string LocalisationManager::reshapeArabicString(std::string str)

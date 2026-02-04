@@ -9,6 +9,7 @@ CLanguage* CLanguage::createWithJSON(matjson::Value value)
     pRet->displayNameEnglish = value["display_name_english"].asString().unwrapOr("Error");
     pRet->displayNameNative = value["display_name_native"].asString().unwrapOr("Error");
     pRet->font = value["font"].asString().unwrapOr("notosans.fnt");
+    pRet->useTrueTypeFallback = value["use-true-type-fallback"].asBool().unwrapOr(false);
 
     std::string usage = value["alt-font-usage"].asString().unwrapOr("Auto");
 
@@ -120,4 +121,9 @@ const std::string CLanguage::getFont()
 const int& CLanguage::getFontUsageMode()
 {
     return fontUsageMode;
+}
+
+const bool& CLanguage::getTrueTypeFallback()
+{
+    return useTrueTypeFallback;
 }

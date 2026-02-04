@@ -186,14 +186,14 @@ void AdvLabelBMFont::updateLabel()
         ccColor3B col = part.colour;
 
         if (!labelsCached.contains(fon))
-            labelsCached.emplace(fon, std::vector<CCLabelBMFont*>({}));
+            labelsCached.emplace(fon, std::vector<FallbackLabel*>({}));
 
         if (!labelsCached.contains(font))
-            labelsCached.emplace(font, std::vector<CCLabelBMFont*>({}));
+            labelsCached.emplace(font, std::vector<FallbackLabel*>({}));
 
         if (useTTF)
         {
-            CCLabelBMFont* lbl;
+            FallbackLabel* lbl;
 
             if (labelsCached[fon].size() > ttfsUsed)
             {
@@ -202,7 +202,12 @@ void AdvLabelBMFont::updateLabel()
             }
             else
             {
-                lbl = CCLabelBMFont::create(part.label.c_str(), fon.c_str());
+                lbl = FallbackLabel::create(part.label.c_str(), fon.c_str());
+                if (LocalisationManager::get()->getCurrentLang()->getTrueTypeFallback())
+                {
+                    lbl->setTTFFallback(true);
+                    lbl->setForceFallback(true);
+                }
                 labelsCached[fon].push_back(lbl);
 
                 this->addChild(lbl);
@@ -226,7 +231,7 @@ void AdvLabelBMFont::updateLabel()
         }
         else
         {
-            CCLabelBMFont* lbl = nullptr;
+            FallbackLabel* lbl = nullptr;
 
             if (labelsCached[font].size() > lblsUsed)
             {
@@ -235,7 +240,7 @@ void AdvLabelBMFont::updateLabel()
             }
             else
             {
-                lbl = CCLabelBMFont::create(part.label.c_str(), font.c_str());
+                lbl = FallbackLabel::create(part.label.c_str(), font.c_str());
                 labelsCached[font].push_back(lbl);
 
                 this->addChild(lbl);
@@ -441,7 +446,7 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
     if (!bmConfigs.contains(font))
     {
         FastBMFontConfig::quickLoad(font.c_str());
-        auto conf = CCLabelBMFont::create("", font.c_str());
+        auto conf = FallbackLabel::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 
         bmConfigs.emplace(font, conf);
@@ -455,7 +460,7 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
     if (!bmConfigs.contains(font))
     {
         FastBMFontConfig::quickLoad(font.c_str());
-        auto conf = CCLabelBMFont::create("", font.c_str());
+        auto conf = FallbackLabel::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 
         bmConfigs.emplace(font, conf);
@@ -464,7 +469,7 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
     return bmConfigs[font]->getConfiguration();
 }
 
-std::vector<CCLabelBMFont*> AdvLabelBMFont::getVisibleLabels()
+std::vector<FallbackLabel*> AdvLabelBMFont::getVisibleLabels()
 {
     return visibleLabels;
 }

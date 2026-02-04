@@ -24,6 +24,7 @@ class CLanguage
         std::string displayNameNative = "";
         std::string font = "";
         int fontUsageMode = 0;
+        bool useTrueTypeFallback = false;
 
         void loadFromObject(matjson::Value object, std::string stem = "");
 
@@ -36,6 +37,7 @@ class CLanguage
         const std::string& getNativeName();
         const std::string getFont();
         const int& getFontUsageMode();
+        const bool& getTrueTypeFallback();
 
         int getStringCount();
         bool containsKey(std::string key);
