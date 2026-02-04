@@ -1,5 +1,3 @@
-#ifdef QOLMOD_FAST_CONFIG
-
 #include "FastBMFontConfig.hpp"
 
 using namespace geode::prelude;
@@ -30,10 +28,14 @@ bool FastBMFontConfig::init(const char* fntFile)
 
 float faster_stof(std::string_view sv, size_t start, size_t count)
 {
+    #ifdef QOLMOD_FAST_CONFIG
     float value;
     auto [ptr, ec] = std::from_chars(sv.data() + start, sv.data() + start + count, value);
     if (ptr != sv.data() + start && ec == std::errc()) return value;
     return 0.0f;
+    #else
+    return 0;
+    #endif
 }
 
 gd::set<unsigned int>* FastBMFontConfig::parseConfigFile(const char* fntFile)
@@ -202,9 +204,10 @@ CCBMFontConfiguration* FastBMFontConfiguration::create(const char *FNTfile)
 
 void FastBMFontConfig::quickLoad(const char* fntFile)
 {
+    #ifdef QOLMOD_FAST_CONFIG
     hookEnabled = true;
+    #endif
+
     cocos2d::FNTConfigLoadFile(fntFile);
     hookEnabled = false;
 }
-
-#endif
