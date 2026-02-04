@@ -1,3 +1,5 @@
+#ifdef QOLMOD_FAST_CONFIG
+
 #include "FastBMFontConfig.hpp"
 
 using namespace geode::prelude;
@@ -204,3 +206,5 @@ void FastBMFontConfig::quickLoad(const char* fntFile)
     cocos2d::FNTConfigLoadFile(fntFile);
     hookEnabled = false;
 }
+
+#endif

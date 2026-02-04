@@ -1,3 +1,5 @@
+#ifdef QOLMOD_FAST_CONFIG
+
 #pragma once
 
 #include <Geode/Geode.hpp>
@@ -18,3 +20,5 @@ class $modify (FastBMFontConfiguration, cocos2d::CCBMFontConfiguration)
 {
     static CCBMFontConfiguration* create(const char *FNTfile);
 };
+
+#endif
