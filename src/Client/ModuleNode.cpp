@@ -69,16 +69,6 @@ void ModuleNode::setup()
         this->addChildAtPosition(optionsBtn, Anchor::Left, ccp(label->getScaledContentWidth() + 43, 0));
     }
 
-    if (hasDesc)
-    {
-        // tooltips integration
-        // auto tooltipBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, nullptr);
-        // tooltipBtn->setAnchorPoint(ccp(0, 0));
-        // tooltipBtn->setContentSize(getContentSize());
-        // this->addChild(tooltipBtn);
-        // tooltipBtn->setUserObject("alphalaneous.tooltips/tooltip", CCString::create("ASDFUISDFGSDFGIYU"));
-    }
-
     updateNode();
 }
 
@@ -112,8 +102,8 @@ void ModuleNode::updateNode()
         btn->m_offButton->setColor(c);
     }
 
-    // if (infoBtn)
-        // infoBtn->setColor(c);
+    if (infoBtn)
+        infoBtn->setColor(c);
 
     onUpdateLabelColour(0);
 }

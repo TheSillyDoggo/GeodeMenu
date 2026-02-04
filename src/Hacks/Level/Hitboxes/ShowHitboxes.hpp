@@ -2,6 +2,7 @@
 
 #include "../../../Client/Module.hpp"
 #include "../../../Client/InputModule.hpp"
+#include <ColourModule.hpp>
 
 using namespace geode::prelude;
 
@@ -107,5 +108,38 @@ class HitboxTrailDarkenByAge : public Module
             setID("hitbox-trail/darken-by-age");
             setDefaultEnabled(true);
             setPriority(3);
+        }
+};
+
+class HitboxTrailDoClickColours : public Module
+{
+    public:
+        MODULE_SETUP(HitboxTrailDoClickColours)
+        {
+            setID("hitbox-trail/click-colours");
+            setDefaultEnabled(true);
+            setPriority(4);
+        }
+};
+
+class HitboxTrailStartClickCol : public ColourModule
+{
+    public:
+        MODULE_SETUP(HitboxTrailStartClickCol)
+        {
+            setID("hitbox-trail/start-click-colour");
+            setDefaultConfig({ ccc3(0, 255, 0) });
+            setPriority(5);
+        }
+};
+
+class HitboxTrailEndClickCol : public ColourModule
+{
+    public:
+        MODULE_SETUP(HitboxTrailEndClickCol)
+        {
+            setID("hitbox-trail/end-click-colour");
+            setDefaultConfig({ ccc3(0, 255, 255) });
+            setPriority(6);
         }
 };

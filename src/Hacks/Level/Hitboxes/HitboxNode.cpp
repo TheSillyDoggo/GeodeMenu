@@ -225,8 +225,10 @@ void HitboxNode::drawPlayerTrails()
 
     auto reg = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerReg));
     auto mini = ccc4FFromccc3B(colourForType(HitboxColourType::Solid));
+    auto max = HitboxTrailMaxPositions::get()->getStringInt();
+    auto size = trailStates.size();
 
-    float decrement = (1.0f / (float)HitboxTrailMaxPositions::get()->getStringInt()) * 0.75f;
+    float decrement = (1.0f / (float)max) * 0.75f;
 
     int i = 0;
     for (auto state : trailStates)
@@ -238,14 +240,36 @@ void HitboxNode::drawPlayerTrails()
             ccp(state.rectReg.getMinX(), state.rectReg.getMaxY())
         };
 
-        if (HitboxTrailDarkenByAge::get()->getRealEnabled())
+        ccColor4F col = reg;
+
+        if (HitboxTrailDoClickColours::get()->getRealEnabled())
         {
-            reg.r = std::clamp<float>(reg.r - decrement, 0, 1);
-            reg.g = std::clamp<float>(reg.g - decrement, 0, 1);
-            reg.b = std::clamp<float>(reg.b - decrement, 0, 1);
+            switch (state.clickState)
+            {
+                case 1:
+                    col = ccc4FFromccc3B(HitboxTrailStartClickCol::get()->getColour());
+                    break;
+
+                case 2:
+                    col = ccc4FFromccc3B(HitboxTrailEndClickCol::get()->getColour());
+                    break;
+
+                default:
+                    break;
+            }
         }
 
-        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), reg, BorderAlignment::Inside);
+        if (HitboxTrailDarkenByAge::get()->getRealEnabled())
+        {
+            float v = (float)(size - i) * decrement;
+
+            col.r = std::clamp<float>(col.r - v, 0, 1);
+            col.g = std::clamp<float>(col.g - v, 0, 1);
+            col.b = std::clamp<float>(col.b - v, 0, 1);
+        }
+
+        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col, BorderAlignment::Inside);
+        i++;
     }
     
     i = 0;
@@ -258,14 +282,19 @@ void HitboxNode::drawPlayerTrails()
             ccp(state.rectBlue.getMinX(), state.rectBlue.getMaxY())
         };
 
+        ccColor4F col = mini;
+
         if (HitboxTrailDarkenByAge::get()->getRealEnabled())
         {
-            mini.r = std::clamp<float>(mini.r - decrement, 0, 1);
-            mini.g = std::clamp<float>(mini.g - decrement, 0, 1);
-            mini.b = std::clamp<float>(mini.b - decrement, 0, 1);
+            float v = (float)(size - i) * decrement;
+
+            col.r = std::clamp<float>(col.r - v, 0, 1);
+            col.g = std::clamp<float>(col.g - v, 0, 1);
+            col.b = std::clamp<float>(col.b - v, 0, 1);
         }
 
-        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), mini, BorderAlignment::Inside);
+        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col, BorderAlignment::Inside);
+        i++;
     }
 }
 
@@ -306,10 +335,26 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
 
 void HitboxNode::storePlayerTrail(PlayerObject* plr)
 {
-    trailStates.push_front({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.25f, 0.25f) });
+    char clickState = 0;
+    bool jump = plr->m_holdingButtons[(int)PlayerButton::Jump];
+
+    if (playerClicks.contains(plr))
+    {
+        if (playerClicks[plr] != jump)
+        {
+            if (jump)
+                clickState = 1;
+            else
+                clickState = 2;
+        }
+    }
+    
+    playerClicks[plr] = jump;
+
+    trailStates.push_back({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.25f, 0.25f), clickState });
     
     if (trailStates.size() > HitboxTrailMaxPositions::get()->getStringInt())
-        trailStates.pop_back();
+        trailStates.pop_front();
 }
 
 void HitboxNode::resetTrails()

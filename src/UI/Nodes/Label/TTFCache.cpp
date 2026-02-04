@@ -17,8 +17,6 @@ TTFCache* TTFCache::get()
 
 CCTexture2D* TTFCache::getTexture(std::string text)
 {
-    text = LocalisationManager::get()->reshapeArabicString(text);
-
     if (!stringsCached.contains(text))
         addTexture(text);
 
@@ -30,13 +28,12 @@ void TTFCache::addTexture(std::string text)
     if (stringsCached.contains(text))
         return;
 
-    #ifndef GEODE_IS_IOS
-
     CCTexture2D* tex = new CCTexture2D();
+    auto text2 = LocalisationManager::get()->reshapeArabicString(text);
 
     std::string fontName = "Arial.ttf";
 
-    tex->initWithString(text.c_str(),
+    tex->initWithString(text2.c_str(),
         fontName.c_str(),
         16 * CC_CONTENT_SCALE_FACTOR(),
         CC_SIZE_POINTS_TO_PIXELS(CCSizeZero),
@@ -44,8 +41,6 @@ void TTFCache::addTexture(std::string text)
         kCCVerticalTextAlignmentCenter);
 
     stringsCached.emplace(text, tex);
-
-    #endif
 }
 
 void TTFCache::flushTextures()

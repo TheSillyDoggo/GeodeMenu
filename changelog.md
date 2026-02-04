@@ -19,12 +19,12 @@
 - Fixed Noclip tint overlay not working when shaders are enabled
 - Updated button to colour the white circle outline pastel in sync with the icon
 - Fixed language select menu scrolling down too far
-- Improved font loading performance from 30 secs to 30 ms
 - Improved Show Hitboxes
 -- Uses custom node to draw hitboxes
 -- Hitbox outlines now draw inside the bounds of the object
 -- Added support for show hitboxes to more objects
 -- Hitbox trail now uses std::deque for faster performance
+-- Added Hitbox trail seperate click and release colours
 - Localisation
 -- Added support for right-to-left languages (such as Arabic)
 -- Added Arabic

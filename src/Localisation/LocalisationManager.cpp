@@ -203,12 +203,14 @@ CLanguage* LocalisationManager::getCurrentLang()
 
 std::string LocalisationManager::reshapeArabicString(std::string str)
 {
-    #ifdef GEODE_IS_MOBILE
+#ifdef GEODE_IS_MOBILE
     return str; // mobile renders arabic correctly with CCLabelTTF
-    #endif
+#endif
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring ws = converter.from_bytes(str);
+#undef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
     
     return ShapingEngine::render(ws, true);
 }

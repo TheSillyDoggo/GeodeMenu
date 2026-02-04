@@ -18,6 +18,7 @@ struct PlayerHitboxState
 {
     cocos2d::CCRect rectReg;
     cocos2d::CCRect rectBlue;
+    char clickState = 0;
 };
 
 class HitboxNode : public cocos2d::CCDrawNode
@@ -25,6 +26,7 @@ class HitboxNode : public cocos2d::CCDrawNode
     protected:
         std::deque<PlayerHitboxState> trailStates = {};
         GameObject* onlyObject = nullptr;
+        std::unordered_map<PlayerObject*, bool> playerClicks = {};
 
         bool shouldFillHitboxes();
         float getHitboxThickness();
