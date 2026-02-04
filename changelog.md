@@ -26,6 +26,8 @@
 -- Added support for show hitboxes to more objects
 -- Hitbox trail now uses std::deque for faster performance
 - Localisation
+-- Added support for right-to-left languages (such as Arabic)
+-- Added Arabic
 -- Added French
 
 # 2.5.3
