@@ -13,5 +13,5 @@ class $modify (LabelPlayLayer, PlayLayer)
 
 class $modify (LabelBaseGameLayer, GJBaseGameLayer)
 {
-    void handleButton(bool down, int button, bool isPlayer1, double timestamp);
+    void handleButton(bool down, int button, bool isPlayer1);
 };
