@@ -143,3 +143,25 @@ class HitboxTrailEndClickCol : public ColourModule
             setPriority(6);
         }
 };
+
+class HitboxTrailHoldClickColours : public Module
+{
+    public:
+        MODULE_SETUP(HitboxTrailHoldClickColours)
+        {
+            setID("hitbox-trail/hold-click-colours");
+            setDefaultEnabled(false);
+            setPriority(7);
+        }
+};
+
+class HitboxTrailMidClickCol : public ColourModule
+{
+    public:
+        MODULE_SETUP(HitboxTrailMidClickCol)
+        {
+            setID("hitbox-trail/hold-click-colour");
+            setDefaultConfig({ ccc3(0, 210, 0) });
+            setPriority(8);
+        }
+};

@@ -4,7 +4,6 @@
 - Added Version Info texts into the main UI
 - Added option to change shortcut icon colour
 - Added Soggy Cat theme
-- Added Notifications when toggling shortcuts or keybinds
 - Added High FPS Rotation
 - Added per gamemode no player rotation options
 - Added Effect Speed slider to pastel / chroma colours
@@ -25,7 +24,8 @@
 -- Added support for show hitboxes to more objects
 -- Hitbox trail now uses std::deque for faster performance
 -- Added Hitbox trail seperate click and release colours
-- Localisation
+-- Made Hitbox trail not depend on fps
+- Localisation:
 -- Added support for right-to-left languages (such as Arabic)
 -- Added Arabic
 -- Added French

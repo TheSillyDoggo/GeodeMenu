@@ -53,6 +53,9 @@ void LabelContainerLayer::update(float dt)
             return;
     }
 
+    highestP1CPS = std::max<int>(p1Cps.size(), highestP1CPS);
+    highestP2CPS = std::max<int>(p2Cps.size(), highestP2CPS);
+
     for (auto node : nodes)
     {
         node->updateGeneral(dt);
@@ -185,6 +188,23 @@ int LabelContainerLayer::getTotalClicks(NoclipPlayerSelector selector)
     return 80085;
 }
 
+int LabelContainerLayer::getHighestCPS(NoclipPlayerSelector selector)
+{
+    switch (selector)
+    {
+        case NoclipPlayerSelector::All:
+            return std::max<int>(highestP1CPS, highestP2CPS);
+        
+        case NoclipPlayerSelector::Player1:
+            return highestP1CPS;
+        
+        case NoclipPlayerSelector::Player2:
+            return highestP2CPS;
+    }
+
+    return 80085;
+}
+
 void LabelContainerLayer::onPlayerClicked(NoclipPlayerSelector selector)
 {
     totalClicks++;
@@ -207,6 +227,8 @@ void LabelContainerLayer::onNewAttempt()
     totalClicks = 0;
     p1Clicks = 0;
     p2Clicks = 0;
+    highestP1CPS = 0;
+    highestP2CPS = 0;
 }
 
 void LabelContainerLayer::onEventTriggered(LabelEventType type)

@@ -254,6 +254,11 @@ void HitboxNode::drawPlayerTrails()
                     col = ccc4FFromccc3B(HitboxTrailEndClickCol::get()->getColour());
                     break;
 
+                case 3:
+                    if (HitboxTrailHoldClickColours::get()->getRealEnabled())
+                        col = ccc4FFromccc3B(HitboxTrailMidClickCol::get()->getColour());
+                    break;
+
                 default:
                     break;
             }
@@ -337,6 +342,9 @@ void HitboxNode::storePlayerTrail(PlayerObject* plr)
 {
     char clickState = 0;
     bool jump = plr->m_holdingButtons[(int)PlayerButton::Jump];
+
+    if (jump)
+        clickState = 3;
 
     if (playerClicks.contains(plr))
     {

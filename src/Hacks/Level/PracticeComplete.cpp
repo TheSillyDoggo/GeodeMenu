@@ -26,7 +26,7 @@ class $modify (PlayLayer)
         bool hasRespawnedWithCheckpoint;
     };
 
-    void resetLevel()
+    virtual void resetLevel()
     {
         m_fields->hasRespawnedWithCheckpoint = false;
 

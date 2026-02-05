@@ -168,7 +168,7 @@ class $modify (PlayLayer)
         }
     }
 
-    void resetLevel()
+    virtual void resetLevel()
     {
         PlayLayer::resetLevel();
 

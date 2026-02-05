@@ -207,10 +207,6 @@ std::string LocalisationManager::reshapeArabicString(std::string str)
     return str; // mobile renders arabic correctly with CCLabelTTF
 #endif
 
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws = converter.from_bytes(str);
-#undef _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
-    
+    std::wstring ws = utils::string::utf8ToWide(str);
     return ShapingEngine::render(ws, true);
 }

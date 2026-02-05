@@ -24,6 +24,8 @@ SUBMIT_OPTION(HitboxTrail, HitboxTrailDarkenByAge);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailDoClickColours);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailStartClickCol);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailEndClickCol);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailHoldClickColours);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailMidClickCol);
 
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);

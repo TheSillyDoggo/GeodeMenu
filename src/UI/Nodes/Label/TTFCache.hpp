@@ -7,6 +7,7 @@ class TTFCache
 {
     protected:
         std::unordered_map<std::string, cocos2d::CCTexture2D*> stringsCached = {};
+        bool assetsPreloaded = false;
 
         void addTexture(std::string text);
 

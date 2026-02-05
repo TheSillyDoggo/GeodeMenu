@@ -14,6 +14,8 @@ class LabelContainerLayer : public CCLayer
         int totalClicks = 0;
         int p1Clicks = 0;
         int p2Clicks = 0;
+        int highestP1CPS = 0;
+        int highestP2CPS = 0;
 
         std::vector<float> totalCps;
         std::vector<float> p1Cps;
@@ -31,6 +33,7 @@ class LabelContainerLayer : public CCLayer
 
         int getCPS(NoclipPlayerSelector selector);
         int getTotalClicks(NoclipPlayerSelector selector);
+        int getHighestCPS(NoclipPlayerSelector selector);
 
         void onEventTriggered(LabelEventType type);
         void onPlayerClicked(NoclipPlayerSelector selector);

@@ -137,6 +137,10 @@ void TextLabelNode::updateVariables()
     script->setVariable("player2_cps", rift::Value::integer(LabelContainerLayer::get()->getCPS(NoclipPlayerSelector::Player2)));
     script->setVariable("total_cps", rift::Value::integer(LabelContainerLayer::get()->getCPS(NoclipPlayerSelector::All)));
 
+    script->setVariable("player1_max_cps", rift::Value::integer(LabelContainerLayer::get()->getHighestCPS(NoclipPlayerSelector::Player1)));
+    script->setVariable("player2_max_cps", rift::Value::integer(LabelContainerLayer::get()->getHighestCPS(NoclipPlayerSelector::Player2)));
+    script->setVariable("max_cps", rift::Value::integer(LabelContainerLayer::get()->getHighestCPS(NoclipPlayerSelector::All)));
+
     script->setVariable("player1_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::Player1)));
     script->setVariable("player2_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::Player2)));
     script->setVariable("total_clicks", rift::Value::integer(LabelContainerLayer::get()->getTotalClicks(NoclipPlayerSelector::All)));

@@ -51,43 +51,21 @@ void TTFCache::flushTextures()
     }
 
     stringsCached.clear();
-    // assetsPreloaded = false;
+    assetsPreloaded = false;
 
     log::warn("TTFCache - flushed textures");
 }
 
 void TTFCache::preloadTextures()
 {
-    /*if (assetsPreloaded)
+    if (assetsPreloaded)
         return;
 
-    for (auto obj : LocalisationManager::get()->getLoadedJson())
+    for (auto str : LocalisationManager::get()->getCurrentLang()->getStrings())
     {
-        if (obj.isObject())
-        {
-            for (auto str : obj)
-            {
-                if (str.isString())
-                {
-                    addTexture(str.asString().unwrapOr(""));
-                    continue;
-                }
-
-                if (str.isObject())
-                {
-                    for (auto str2 : str)
-                    {
-                        if (str2.isString())
-                        {
-                            addTexture(str2.asString().unwrapOr(""));
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
+        addTexture(str.second);
     }
 
     assetsPreloaded = true;
-    log::warn("TTFCache - cached textures");*/
+    log::warn("TTFCache - cached textures");
 }

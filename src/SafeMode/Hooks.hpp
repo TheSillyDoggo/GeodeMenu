@@ -13,8 +13,8 @@ class $modify (SafePlayLayer, PlayLayer)
 
     void showNewBest(bool newReward, int orbs, int diamonds, bool demonKey, bool noRetry, bool noTitle);
     void levelComplete();
-    void resetLevel();
     
+    virtual void resetLevel();
     virtual void postUpdate(float dt);
 };
 

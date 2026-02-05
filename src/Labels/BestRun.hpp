@@ -20,7 +20,7 @@ class $modify (BestPlayLayer, PlayLayer)
         float lastPercent;
 	};
 
-	void resetLevel();
+	virtual void resetLevel();
     virtual void destroyPlayer(PlayerObject* p0, GameObject* p1);
 
     std::string getRoundedString(float f);

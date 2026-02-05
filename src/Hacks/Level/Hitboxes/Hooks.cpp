@@ -59,10 +59,17 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
     {
         if (HitboxTrail::get()->getRealEnabled() && (fields->node->isVisible() ? true : ShowHitboxesOnDeathTrail::get()->getRealEnabled()))
         {
-            fields->node->storePlayerTrail(m_player1);
+            if (!m_levelEndAnimationStarted)
+            {
+                if (!m_player1->m_isDead)
+                    fields->node->storePlayerTrail(m_player1);
 
-            if (m_player2 && m_player2->isRunning())
-                fields->node->storePlayerTrail(m_player2);
+                if (m_player2 && m_player2->isRunning())
+                {
+                    if (!m_player2->m_isDead)
+                        fields->node->storePlayerTrail(m_player2);
+                }
+            }
         }
     }
 }
@@ -90,23 +97,29 @@ void HitboxEditorLayer::onPlaytest()
     }
 }
 
-void HitboxPlayLayer::postUpdate(float dt)
-{
-    PlayLayer::postUpdate(dt);
-
-    base_cast<HitboxBaseGameLayer*>(this)->onTick(true);
-}
-
-void HitboxEditorLayer::postUpdate(float dt)
-{
-    LevelEditorLayer::postUpdate(dt);
-
-    base_cast<HitboxBaseGameLayer*>(this)->onTick(true);
-}
-
 void HitboxEditorLayer::updateVisibility(float dt)
 {
     LevelEditorLayer::updateVisibility(dt);
 
     base_cast<HitboxBaseGameLayer*>(this)->onTick(false);
+}
+
+bool isEndTickCameraUpdate = false;
+
+void HitboxBaseGameLayer::checkRepellPlayer()
+{
+    GJBaseGameLayer::checkRepellPlayer();
+
+    isEndTickCameraUpdate = true;
+}
+
+void HitboxBaseGameLayer::updateCamera(float dt)
+{
+    GJBaseGameLayer::updateCamera(dt);
+
+    if (isEndTickCameraUpdate)
+    {
+        onTick(true);
+    }
+    isEndTickCameraUpdate = false;
 }
