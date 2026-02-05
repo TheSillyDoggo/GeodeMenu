@@ -28,6 +28,8 @@ class HitboxNode : public cocos2d::CCDrawNode
         GameObject* onlyObject = nullptr;
         std::unordered_map<PlayerObject*, bool> playerClicks = {};
 
+        cocos2d::CCRect getObjectRect(GameObject* obj);
+
         bool shouldFillHitboxes();
         float getHitboxThickness();
         bool shouldObjectDraw(GameObject* obj);

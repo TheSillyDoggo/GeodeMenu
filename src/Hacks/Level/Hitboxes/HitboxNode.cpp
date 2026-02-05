@@ -130,6 +130,25 @@ float HitboxNode::getHitboxThickness()
     return 0.35f * (HitboxThickOutline::get()->getRealEnabled() ? 2 : 1);
 }
 
+cocos2d::CCRect HitboxNode::getObjectRect(GameObject* obj)
+{
+    if (obj->m_isObjectRectDirty)
+    {
+        auto save1 = obj->m_isObjectRectDirty;
+        auto save2 = obj->m_boxOffsetCalculated;
+
+        auto rec = obj->getObjectRect();
+
+        obj->m_isObjectRectDirty = save1;
+        obj->m_boxOffsetCalculated = save2;
+        return rec;
+    }
+    else
+    {
+        return obj->m_objectRect;
+    }
+}
+
 void HitboxNode::drawObjectHitbox(GameObject* obj)
 {
     auto col = colourForType(getObjectColour(obj));
@@ -141,7 +160,7 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
         return;
     }
 
-    auto r = obj->m_objectRect;
+    auto r = getObjectRect(obj);
 
     if (obj->m_objectType == GameObjectType::Slope)
     {

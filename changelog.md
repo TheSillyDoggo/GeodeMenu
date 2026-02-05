@@ -8,6 +8,7 @@
 - Added High FPS Rotation
 - Added per gamemode no player rotation options
 - Added Effect Speed slider to pastel / chroma colours
+- Added Unlock Main Demon Levels
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed White Square when using Fade In animation

@@ -29,12 +29,7 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
     if (fields->node->isVisible())
     {
         auto dd = m_isDebugDrawEnabled;
-        m_isDebugDrawEnabled = true;
-
-        // updateDebugDraw();
-
-        m_isDebugDrawEnabled = dd;
-        m_debugDrawNode->setVisible(false);
+        m_debugDrawNode->setVisible(m_isEditor);
 
         auto copy = m_debugDrawNode->getParent();
         fields->nodeContainer->setPosition(CCDirector::get()->getWinSize() / 2);
@@ -102,6 +97,14 @@ void HitboxEditorLayer::updateVisibility(float dt)
     LevelEditorLayer::updateVisibility(dt);
 
     base_cast<HitboxBaseGameLayer*>(this)->onTick(false);
+}
+
+void HitboxPlayLayer::postUpdate(float dt)
+{
+    PlayLayer::postUpdate(dt);
+
+    if (!m_started)
+        base_cast<HitboxBaseGameLayer*>(this)->onTick(false);
 }
 
 bool isEndTickCameraUpdate = false;

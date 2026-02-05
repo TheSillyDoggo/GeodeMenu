@@ -27,7 +27,7 @@ class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
 
 class $modify (HitboxPlayLayer, PlayLayer)
 {
-    
+    virtual void postUpdate(float dt);
 };
 
 class $modify (HitboxEditorLayer, LevelEditorLayer)
