@@ -22,8 +22,6 @@ NotificationManager* NotificationManager::get()
 
 void NotificationManager::notifyToast(std::string toastStr, float time)
 {
-    return;
-
     if (time == -1)
         time = NotificationsDuration::get()->getStringFloat();
 

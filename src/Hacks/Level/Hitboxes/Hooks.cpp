@@ -31,7 +31,7 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
         auto dd = m_isDebugDrawEnabled;
         m_isDebugDrawEnabled = true;
 
-        updateDebugDraw();
+        // updateDebugDraw();
 
         m_isDebugDrawEnabled = dd;
         m_debugDrawNode->setVisible(false);

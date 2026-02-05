@@ -4,6 +4,7 @@
 - Added Version Info texts into the main UI
 - Added option to change shortcut icon colour
 - Added Soggy Cat theme
+- Added Notifications when toggling shortcuts or keybinds
 - Added High FPS Rotation
 - Added per gamemode no player rotation options
 - Added Effect Speed slider to pastel / chroma colours
