@@ -1,6 +1,7 @@
 #include <Geode/Geode.hpp>
 #include "../../Client/ButtonModule.hpp"
 #include <BetterAlertLayer.hpp>
+#include <LocalisationManager.hpp>
 
 using namespace geode::prelude;
 
@@ -10,9 +11,9 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
         MODULE_SETUP(UncompleteLevel)
         {
             setID("shortcut/uncomplete-level");
-            setCategory("Universal");
+            setCategory("Shortcuts");
 
-            setPriority(sortPriority + 2);
+            setPriority(sortPriority + 3);
         }
 
         virtual void onClick()
@@ -36,7 +37,14 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
                 return;
             }
 
-            auto alert = BetterAlertLayer::createWithLocalisation(this, "names/shortcut/uncomplete-level", "uncomplete-level/found-confirmation", "ui/cancel-button", "ui/confirm-button", 320, false, 280, 1.0f);
+            auto t = LocalisationManager::get()->getLocalisedString("names/shortcut/uncomplete-level");
+            auto text = LocalisationManager::get()->getLocalisedString("uncomplete-level/found-confirmation");
+            auto cac = LocalisationManager::get()->getLocalisedString("ui/cancel-button");
+            auto con = LocalisationManager::get()->getLocalisedString("ui/confirm-button");
+
+            text = utils::string::replace(text, "%s", level->m_levelName);
+
+            auto alert = BetterAlertLayer::create(this, t.c_str(), text, cac.c_str(), con.c_str(), 320, false, 280, 1.0f);
             alert->setUserData(level);
             alert->show();
         }

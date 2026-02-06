@@ -8,7 +8,7 @@ class CreateCustomReward : public ButtonModule
         MODULE_SETUP(CreateCustomReward)
         {
             setID("create-custom-reward");
-            setCategory("Universal");
+            setCategory("Shortcuts");
 
             setPriority(sortPriority + 1);
         }

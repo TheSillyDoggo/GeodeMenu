@@ -7,7 +7,7 @@ class RestartAttempt : public ButtonModule
         MODULE_SETUP(RestartAttempt)
         {
             setID("shortcut/restart-attempt");
-            setCategory("Level");
+            setCategory("Shortcuts");
 
             setPriority(sortPriority + 1);
         }

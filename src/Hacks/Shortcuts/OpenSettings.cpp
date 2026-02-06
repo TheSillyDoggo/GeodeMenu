@@ -9,7 +9,7 @@ class OpenSettings : public ButtonModule
         MODULE_SETUP(OpenSettings)
         {
             setID("shortcut/open-settings");
-            setCategory("Universal");
+            setCategory("Shortcuts");
 
             setPriority(sortPriority + 2);
         }

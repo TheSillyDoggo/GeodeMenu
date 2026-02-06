@@ -10,8 +10,8 @@
 - Added Effect Speed slider to pastel / chroma colours
 - Added Unlock Main Demon Levels
 - Added Uncomplete Level
-- Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Improved Blur BG Performance and switched to using Blur API
+- Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Fixed White Square when using Fade In animation
 - Fixed crash when loading an invalid language file
 - Fixed no shaders impacting performance
@@ -22,6 +22,7 @@
 - Updated button to colour the white circle outline pastel in sync with the icon
 - Fixed language select menu scrolling down too far
 - Improved Show Hitboxes
+- Moved all shortcut buttons to its own category
 -- Uses custom node to draw hitboxes
 -- Hitbox outlines now draw inside the bounds of the object
 -- Added support for show hitboxes to more objects

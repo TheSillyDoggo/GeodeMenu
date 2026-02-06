@@ -7,7 +7,7 @@ class TogglePractice : public ButtonModule
         MODULE_SETUP(TogglePractice)
         {
             setID("shortcut/toggle-practice");
-            setCategory("Level");
+            setCategory("Shortcuts");
 
             setPriority(sortPriority + 2);
         }
