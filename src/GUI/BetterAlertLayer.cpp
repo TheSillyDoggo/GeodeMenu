@@ -50,6 +50,13 @@ BetterAlertLayer* BetterAlertLayer::createWithLocalisation(FLAlertLayerProtocol*
     desc = lm->getLocalisedString(desc);
     std::string btn1l = lm->getLocalisedString(btn1);
 
+    if (btn2)
+    {
+        std::string btn2l = lm->getLocalisedString(btn2);
+
+        btn2 = btn2l.c_str();
+    }
+
     return create(delegate, titlel.c_str(), desc, btn1l.c_str(), btn2, width, scroll, height, textScale);
 }
 
@@ -87,9 +94,25 @@ bool BetterAlertLayer::setup()
     menu->setZOrder(8);
 
     auto spr = BetterButtonSprite::create(ccp(54.25f, 30), btn1, "goldFont.fnt", "GJ_button_01.png");
+    spr->fixSize();
     auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(BetterAlertLayer::onButton));
     btn->setTag(1);
     menu->addChild(btn);
+
+    if (btn2)
+    {
+        auto spr2 = BetterButtonSprite::create(ccp(54.25f, 30), btn2, "goldFont.fnt", "GJ_button_01.png");
+        spr2->fixSize();
+
+        float w = spr->getScaledContentWidth() / 2 + spr2->getScaledContentWidth() / 2 + 10;
+
+        auto btn2 = CCMenuItemSpriteExtra::create(spr2, this, menu_selector(BetterAlertLayer::onButton));
+        btn2->setTag(2);
+        menu->addChild(btn2);
+
+        btn->setPositionX(-w / 2);
+        btn2->setPositionX(w / 2);
+    }
 
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
     m_mainLayer->addChildAtPosition(content, Anchor::Center, ccp(0, 5));

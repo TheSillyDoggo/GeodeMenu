@@ -19,6 +19,7 @@ class BetterButtonSprite : public CCNode
         void setBGSprite(std::string file);
         void setFont(std::string font);
         void setString(std::string str);
+        void fixSize();
 
         virtual bool init();
         virtual void visit();

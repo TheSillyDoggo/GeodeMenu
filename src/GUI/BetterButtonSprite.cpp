@@ -33,6 +33,12 @@ bool BetterButtonSprite::init()
     return true;
 }
 
+void BetterButtonSprite::fixSize()
+{
+    label->setScale(1.0f);
+    this->setContentSize(label->getScaledContentSize() + ccp(16, 4));
+}
+
 void BetterButtonSprite::visit()
 {
     background->setContentSize(getContentSize());
