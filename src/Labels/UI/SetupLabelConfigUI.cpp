@@ -575,21 +575,24 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
-    /*file::pick(file::PickMode::SaveFile, options).listen([this, dump](Result<std::filesystem::path>* path)
+    async::spawn(file::pick(file::PickMode::SaveFile, options), [this, dump](Result<std::optional<std::filesystem::path>> result)
     {
-        if (path->isOk())
+        if (result.isOk())
         {
-            auto filePath = path->unwrapOr(Mod::get()->getConfigDir());
+            if (result.unwrap().has_value())
+            {
+                auto filePath = result.unwrap().value_or(Mod::get()->getConfigDir());
 
-            if (!filePath.has_extension())
-                filePath += ".qollbl";
-            
-            auto res = file::writeString(filePath, dump);
+                if (!filePath.has_extension())
+                    filePath += ".qollbl";
+                
+                auto res = file::writeString(filePath, dump);
 
-            if (res.isOk())
-                FLAlertLayer::create("Success!", "<cg>Success</c> exporting <cc>file</c>!", "OK")->show();
-            else
-                FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> exporting <cc>file</c>!\n<cr>{}</c>", res.unwrapErr()), "OK")->show();
+                if (res.isOk())
+                    FLAlertLayer::create("Success!", "<cg>Success</c> exporting <cc>file</c>!", "OK")->show();
+                else
+                    FLAlertLayer::create("Failure!", fmt::format("<cr>Failed</c> exporting <cc>file</c>!\n<cr>{}</c>", res.unwrapErr()), "OK")->show();
+            }
         }
-    });*/
+    });
 }

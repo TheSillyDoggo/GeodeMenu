@@ -137,7 +137,7 @@ class $modify (StartposPlayLayer, PlayLayer)
             if (m_isPracticeMode)
                 resetLevelFromStart();
 
-            reinterpret_cast<PlayLayer*>(this)->PlayLayer::resetLevel();
+            PlayLayer::resetLevel();
             startMusic();
         }
 

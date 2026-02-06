@@ -15,7 +15,7 @@ class RestartAttempt : public ButtonModule
         virtual void onClick()
         {
             if (PlayLayer::get())
-                PlayLayer::get()->resetLevel();
+                PlayLayer::get()->PlayLayer::resetLevel();
         }
 };
 

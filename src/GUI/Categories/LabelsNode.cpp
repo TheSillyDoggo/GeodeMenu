@@ -132,18 +132,18 @@ void LabelsNode::onImportFromFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
-    /*file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
+    async::spawn(file::pickMany(options), [this](file::PickManyResult path)
     {
-        if (path->isOk())
+        if (path.isOk())
         {
-            auto paths = path->unwrap();
+            auto paths = path.unwrap();
 
             for (auto path : paths)
             {
                 LabelManager::get()->addFromFile(path);
             }
         }
-    });*/
+    });
 }
 
 void LabelsNode::onAddLabel(CCObject* sender)

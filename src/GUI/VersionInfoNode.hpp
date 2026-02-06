@@ -17,7 +17,7 @@ class VersionInfoNode : public cocos2d::CCNodeRGBA
         AdvLabelBMFont* label = nullptr;
         LoadingCircleSprite* circle = nullptr;
         VersionInfoType type = VersionInfoType::GD;
-        // EventListener<Mod::CheckUpdatesTask> updateListener;
+        geode::async::TaskHolder<geode::Mod::CheckUpdatesTask> updateListener;
         bool updateChecksFinished = false;
         static inline bool updateAvailable = false;
 
