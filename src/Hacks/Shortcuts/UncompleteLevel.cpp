@@ -31,7 +31,7 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
                 }
             }
 
-            if (!level)
+            if (!level || level->m_levelType != GJLevelType::Saved)
             {
                 BetterAlertLayer::createWithLocalisation("ui/title-error", "uncomplete-level/no-level-found", "ui/ok-button")->show();
                 return;
@@ -51,7 +51,7 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
 
         virtual void FLAlert_Clicked(FLAlertLayer* layer, bool btn2)
         {
-            GJGameLevel* level = reinterpret_cast<GJGameLevel*>(layer->getUserData());
+            GJGameLevel* level = static_cast<GJGameLevel*>(layer->getUserData());
 
             if (btn2)
             {
@@ -82,6 +82,19 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
                     GameStatsManager::get()->setStat("5", GameStatsManager::get()->getStat("5") - 1);
                 }
 
+                for (auto i = 0; i < level->m_coins; i++)
+                {
+                    auto key = level->getCoinKey(i + 1);
+                    if (GameStatsManager::get()->hasUserCoin(key) && level->m_coinsVerified.value() > 0)
+                    {
+                        GameStatsManager::get()->setStat("12", GameStatsManager::get()->getStat("12") - 1);
+                        GameStatsManager::get()->m_verifiedUserCoins->removeObjectForKey(key);
+                    }
+                    else if (GameStatsManager::get()->hasPendingUserCoin(key))
+                    {
+                        GameStatsManager::get()->m_pendingUserCoins->removeObjectForKey(key);
+                    }
+                }
 
                 GameLevelManager::get()->saveLevel(level);
             }
