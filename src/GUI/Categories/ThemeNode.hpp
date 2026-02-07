@@ -4,6 +4,7 @@
 #include "../AndroidUI.hpp"
 #include "../Modules/BlurBackground.hpp"
 #include "../Modules/UseColonThreeButton.hpp"
+#include <BetterButtonSprite.hpp>
 
 class ThemeNode : public CategoryNode
 {
@@ -13,6 +14,7 @@ class ThemeNode : public CategoryNode
         CCScale9Sprite* colourBG = nullptr;
         ModuleNode* blurBG = nullptr;
         ModuleNode* colonThree = nullptr;
+        BetterButtonSprite* btnSpr = nullptr;
 
     public:
         CREATE_FUNC(ThemeNode)

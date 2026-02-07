@@ -43,7 +43,7 @@ void BetterButtonSprite::visit()
 {
     background->setContentSize(getContentSize());
     label->setPosition(getContentSize() / 2 + ccp(0, 2));
-    label->limitLabelWidth(getContentWidth() - 12, 1.0f, 0);
+    label->limitLabelWidth(getContentWidth() - 12, maxTextScale, 0);
 
     CCNode::visit();
 }
@@ -70,4 +70,9 @@ void BetterButtonSprite::setFont(std::string font)
 void BetterButtonSprite::setString(std::string str)
 {
     label->setString(str.c_str());
+}
+
+void BetterButtonSprite::setMaxTextScale(float scale)
+{
+    this->maxTextScale = scale;
 }

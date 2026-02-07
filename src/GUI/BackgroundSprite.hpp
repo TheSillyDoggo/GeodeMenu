@@ -45,5 +45,7 @@ class BackgroundSprite : public CCNode
         void setOpacity(float opacity);
         void setColour(ccColor3B colour);
 
+        void updateCustomSprite();
+
         CREATE_FUNC(BackgroundSprite);
 };

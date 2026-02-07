@@ -10,6 +10,7 @@ class BetterButtonSprite : public CCNode
     protected:
         CCScale9Sprite* background = nullptr;
         AdvLabelBMFont* label = nullptr;
+        float maxTextScale = 1.0f;
 
     public:
         CREATE_FUNC(BetterButtonSprite);
@@ -20,6 +21,7 @@ class BetterButtonSprite : public CCNode
         void setFont(std::string font);
         void setString(std::string str);
         void fixSize();
+        void setMaxTextScale(float scale);
 
         virtual bool init();
         virtual void visit();

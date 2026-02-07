@@ -3,14 +3,18 @@
 - Added **support for GD 2.2081**
 - Added Version Info texts into the main UI
 - Added option to change shortcut icon colour
-- Added Soggy Cat theme
+- Added Custom Image theme
 - Added Notifications when toggling shortcuts or keybinds
 - Added High FPS Rotation
 - Added per gamemode no player rotation options
 - Added Effect Speed slider to pastel / chroma colours
 - Added Unlock Main Demon Levels
 - Added Uncomplete Level
+- Added Clone Level shortcut
+- Added No Custom Object Limit
+- Added Show Touches scale options
 - Improved Blur BG Performance and switched to using Blur API
+- Fixed Show Touches trail being affected by speedhack
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Fixed White Square when using Fade In animation
 - Fixed crash when loading an invalid language file

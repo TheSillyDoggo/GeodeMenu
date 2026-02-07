@@ -71,7 +71,7 @@ bool SearchNode::init()
     joinBtn->setPosition(ccp(100 / 2, 0));
     errorMenu->addChild(joinBtn);
 
-    joinSpr->setAnchorPoint(ccp(0, 0));
+    joinSpr2->setAnchorPoint(ccp(0.5f, 0.5f));
     joinSpr2->setPosition(joinSpr->getContentSize() / 2);
 
     errorMenu->setVisible(false);

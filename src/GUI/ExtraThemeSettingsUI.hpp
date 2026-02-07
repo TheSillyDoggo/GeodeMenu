@@ -11,9 +11,14 @@ class ExtraThemeSettingsUI : public PopupBase
 {
     protected:
         BackgroundSprite* bg;
+        BackgroundSprite* imagePreview;
+        bool image = false;
 
     public:
-        static ExtraThemeSettingsUI* create();
+        static ExtraThemeSettingsUI* create(bool image = false);
+
+        void onSelectImage(CCObject* sender);
+        void onResetDefault(CCObject* sender);
 
         virtual bool setup();
 };

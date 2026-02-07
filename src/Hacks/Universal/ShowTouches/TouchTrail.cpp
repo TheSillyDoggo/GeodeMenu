@@ -1,5 +1,6 @@
 #include "TouchTrail.hpp"
 #include "Colours.hpp"
+#include <Speedhack.hpp>
 
 bool CCTouchTrail::init(CCTouch* touch)
 {
@@ -13,9 +14,9 @@ bool CCTouchTrail::init(CCTouch* touch)
 
     streak = CCMotionStreak::create(0.3f, 2, 10, ccc3(255, 255, 255), "streak_05_001.png");
     streak->setUserObject("ignore-longer-trail"_spr, CCBool::create(true));
+    streak->unscheduleUpdate();
 
-    circle = CCSprite::createWithSpriteFrameName("d_circle_02_001.png");
-    circle->setScale(0.2f);
+    circle = CCSprite::createWithSpriteFrameName("d_circle_02_001.png");    
     circle->setOpacity(150);
 
     auto clip = CCClippingNode::create(circle);
@@ -24,6 +25,8 @@ bool CCTouchTrail::init(CCTouch* touch)
 
     clip->addChild(streak);
 
+    update(0);
+
     this->addChild(clip);
     this->addChild(circle);
     return true;
@@ -31,6 +34,8 @@ bool CCTouchTrail::init(CCTouch* touch)
 
 void CCTouchTrail::update(float dt)
 {
+    dt = Speedhack::get()->getRealDeltaTime();
+
     auto pos = touch->getLocation();
 
     streak->setPosition(pos);
@@ -38,6 +43,11 @@ void CCTouchTrail::update(float dt)
 
     circle->setColor(CircleColour::get()->getColour());
     streak->setColor(TrailColour::get()->getColour());
+
+    circle->setScale(TrailScale::get()->getStringFloat() * 0.2f);
+    streak->setStroke(TrailScale::get()->getStringFloat() * 10);
+
+    streak->CCMotionStreak::update(dt);
 }
 
 CCTouchTrail* CCTouchTrail::create(CCTouch* touch)

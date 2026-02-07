@@ -4,7 +4,6 @@
 #include "../AndroidUI.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
-#include "../BetterButtonSprite.hpp"
 #include "../BetterAlertLayer.hpp"
 
 bool ThemeNode::init()
@@ -54,7 +53,8 @@ bool ThemeNode::init()
     colourMenu->addChild(addColourBtn(-2));
     colourMenu->addChild(addColourBtn(-7));
 
-    auto btnOptions = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(96, 35), LocalisationManager::get()->getLocalisedString("ui/themes-edit-button"), "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(ThemeNode::onChangeThemeOptions));
+    btnSpr = BetterButtonSprite::create(ccp(96, 35), "", "goldFont.fnt", "GJ_button_04.png");
+    auto btnOptions = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(ThemeNode::onChangeThemeOptions));
     btnOptions->setContentSize(gradientBtn->getContentSize());
     btnOptions->getNormalImage()->setPosition(btnOptions->getContentSize() / 2);
 
@@ -241,16 +241,23 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
 
 void ThemeNode::onChangeThemeOptions(CCObject* sender)
 {
-    ExtraThemeSettingsUI::create()->show();
+    auto theme = Mod::get()->getSavedValue<int>("theme", -6);
+
+    ExtraThemeSettingsUI::create(theme == -7)->show();
 }
 
 void ThemeNode::updateColourSprite()
 {
+    auto theme = Mod::get()->getSavedValue<int>("theme", -6);
+
     for (auto btn : colourBtns)
     {
-        btn.second->setEnabled(btn.first != Mod::get()->getSavedValue<int>("theme", -6));
-        static_cast<BackgroundSprite*>(btn.second->getNormalImage())->setColour(btn.first == Mod::get()->getSavedValue<int>("theme", -6) ? ccc3(255, 255, 255) : ccc3(125, 125, 125));
+        btn.second->setEnabled(btn.first != theme);
+        static_cast<BackgroundSprite*>(btn.second->getNormalImage())->setColour(btn.first == theme ? ccc3(255, 255, 255) : ccc3(125, 125, 125));
     }
+
+    auto key = theme == -7 ? "ui/themes-edit-image-button" : "ui/themes-edit-button";
+    btnSpr->setString(LocalisationManager::get()->getLocalisedString(key));
 }
 
 void ThemeNode::updateAnimSprite()

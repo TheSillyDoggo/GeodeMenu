@@ -28,6 +28,7 @@ class AndroidUI : public PopupBase
 {
     protected:
         friend class ThemeNode;
+        friend class ExtraThemeSettingsUI;
 
         static inline AndroidUI* instance = nullptr;
 

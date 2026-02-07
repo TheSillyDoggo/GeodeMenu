@@ -29,11 +29,57 @@ class UncompleteLevel : public ButtonModule, public FLAlertLayerProtocol
                 {
                     level = info->m_level;
                 }
+
+                if (auto edit = scene->getChildByType<EditLevelLayer>(0))
+                {
+                    level = edit->m_level;
+                }
+
+                if (auto select = scene->getChildByType<LevelSelectLayer>(0))
+                {
+                    if (auto page = typeinfo_cast<LevelPage*>(select->m_scrollLayer->getPage(select->m_scrollLayer->m_page)))
+                    {
+                        level = page->m_level;
+                    }
+                }
             }
 
-            if (!level || level->m_levelType != GJLevelType::Saved)
+            if (!level)
             {
                 BetterAlertLayer::createWithLocalisation("ui/title-error", "uncomplete-level/no-level-found", "ui/ok-button")->show();
+                return;
+            }
+
+            if (level->m_levelType != GJLevelType::Saved)
+            {
+                auto t = LocalisationManager::get()->getLocalisedString("ui/title-error");
+                auto text = LocalisationManager::get()->getLocalisedString("uncomplete-level/wrong-type-confirmation");
+                auto cac = LocalisationManager::get()->getLocalisedString("ui/ok-button");
+
+                std::string type = fmt::format("GJLevelType::unknown ({})", (int)level->m_levelType);
+
+                switch (level->m_levelType)
+                {
+                    case GJLevelType::Default:
+                        type = "GJLevelType::Default";
+                        break;
+                    case GJLevelType::Main:
+                        type = "GJLevelType::Main";
+                        break;
+                    case GJLevelType::Editor:
+                        type = "GJLevelType::Editor";
+                        break;
+                    case GJLevelType::Saved:
+                        type = "GJLevelType::Saved";
+                        break;
+                    case GJLevelType::SearchResult:
+                        type = "GJLevelType::SearchResult";
+                        break;
+                }
+
+                text = utils::string::replace(text, "%s", type);
+
+                BetterAlertLayer::create(t.c_str(), text, cac.c_str())->show();
                 return;
             }
 

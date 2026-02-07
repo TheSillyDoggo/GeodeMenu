@@ -19,6 +19,7 @@ class ShowTouches : public Module
 SUBMIT_HACK(ShowTouches)
 SUBMIT_OPTION(ShowTouches, CircleColour)
 SUBMIT_OPTION(ShowTouches, TrailColour)
+SUBMIT_OPTION(ShowTouches, TrailScale)
 
 class $modify (CCTouchDispatcher)
 {

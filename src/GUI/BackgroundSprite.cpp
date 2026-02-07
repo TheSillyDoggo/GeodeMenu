@@ -79,6 +79,7 @@ void BackgroundSprite::setTheme(int theme)
     gradientDarken->setVisible((theme == -1 || theme == -7) && gradientDarkenVisible);
 
     clippingCustom->setVisible(theme == -7);
+    updateCustomSprite();
 }
 
 void BackgroundSprite::setGradientDarkenVisible(bool visible)
@@ -125,4 +126,15 @@ void BackgroundSprite::setColour(ccColor3B colour)
     colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : colour);
     outlineSpr->setColor(colour);
     gradientOutline->setColor(colour);
+}
+
+void BackgroundSprite::updateCustomSprite()
+{
+    auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
+    CCTexture2D* texture = CCTextureCache::get()->addImage(path.c_str(), true);
+
+    if (!texture || path.empty())
+        texture = CCTextureCache::get()->addImage("sog.png"_spr, true);
+
+    customImg->setTexture(texture);
 }
