@@ -50,7 +50,7 @@ class $modify (PlayerObject)
 
         if (m_regularTrail)
         {
-            bool en = m_regularTrail->m_bStroke;
+            bool en = true;
 
             if (ForceTrailOn::get()->getRealEnabled())
                 en = true;
@@ -67,7 +67,7 @@ class $modify (PlayerObject)
                 }
             }
 
-            m_regularTrail->m_bStroke = en;
+            m_regularTrail->setVisible(en);
         }
     }
 };

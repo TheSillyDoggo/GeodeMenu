@@ -10,10 +10,12 @@
 - Added Effect Speed slider to pastel / chroma colours
 - Added Unlock Main Demon Levels
 - Added Uncomplete Level
-- Added Clone Level shortcut
 - Added No Custom Object Limit
 - Added Show Touches scale options
 - Added RGBH inputs to colour select popups
+- Added Clone Level shortcut
+- Added Open Graphics Settings shortcut
+- Added Hide Editor UI
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed Show Touches trail being affected by speedhack
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
@@ -24,6 +26,7 @@
 - Fixed Input Fields not working with Show Touches enabled
 - Fixed Noclip not working in editor
 - Fixed Noclip tint overlay not working when shaders are enabled
+- Fixed trail appearing for one frame when Force Trail Off is enabled
 - Updated button to colour the white circle outline pastel in sync with the icon
 - Fixed language select menu scrolling down too far
 - Improved Show Hitboxes
