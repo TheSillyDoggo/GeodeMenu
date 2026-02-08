@@ -13,6 +13,7 @@
 - Added Clone Level shortcut
 - Added No Custom Object Limit
 - Added Show Touches scale options
+- Added RGBH inputs to colour select popups
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed Show Touches trail being affected by speedhack
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled

@@ -15,9 +15,13 @@ class ThemeNode : public CategoryNode
         ModuleNode* blurBG = nullptr;
         ModuleNode* colonThree = nullptr;
         BetterButtonSprite* btnSpr = nullptr;
+        static inline ThemeNode* instance = nullptr;
+
+        ~ThemeNode();
 
     public:
         CREATE_FUNC(ThemeNode)
+        static ThemeNode* get();
 
         void onChangeAnim(CCObject* sender);
         void onChangeColour(CCObject* sender);
@@ -26,6 +30,7 @@ class ThemeNode : public CategoryNode
 
         CCMenuItemSpriteExtra* addColourBtn(int colour);
         void updateColourSprite();
+        void updateCustomImageSprite();
 
         CCMenuItemSpriteExtra* addAnimBtn(MenuAnimation anim);
         CCNode* getAnimContainer(MenuAnimation anim);

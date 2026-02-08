@@ -2,6 +2,7 @@
 #include "Modules/GradientBGColours.hpp"
 #include "BetterButtonSprite.hpp"
 #include <AndroidUI.hpp>
+#include <Categories/ThemeNode.hpp>
 
 ExtraThemeSettingsUI* ExtraThemeSettingsUI::create(bool image)
 {
@@ -111,6 +112,11 @@ void ExtraThemeSettingsUI::onSelectImage(CCObject* sender)
                 {
                     AndroidUI::get()->bg->updateCustomSprite();
                 }
+
+                if (ThemeNode::get())
+                {
+                    ThemeNode::get()->updateCustomImageSprite();
+                }
             }
         }
     });
@@ -125,5 +131,10 @@ void ExtraThemeSettingsUI::onResetDefault(CCObject* sender)
     if (AndroidUI::get())
     {
         AndroidUI::get()->bg->updateCustomSprite();
+    }
+
+    if (ThemeNode::get())
+    {
+        ThemeNode::get()->updateCustomImageSprite();
     }
 }

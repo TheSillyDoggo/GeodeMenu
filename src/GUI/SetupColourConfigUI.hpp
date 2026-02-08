@@ -40,6 +40,11 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         CCMenuItemSpriteExtra* gradientDelStepBtn = nullptr;
         BetterSlider* speedSlider = nullptr;
         BetterInputNode* speedInput = nullptr;
+        CCNode* colArea = nullptr;
+        BetterInputNode* rInput = nullptr;
+        BetterInputNode* gInput = nullptr;
+        BetterInputNode* bInput = nullptr;
+        BetterInputNode* hexInput = nullptr;
 
         virtual void textChanged(CCTextInputNode* node);
 
@@ -60,6 +65,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         void setStartConfig(ColourConfig config);
         void setDefaultConfig(ColourConfig config);
         void updateUI();
+        void updateInputs(BetterInputNode* except);
 
         void setPreviewChannel(std::string channel);
 

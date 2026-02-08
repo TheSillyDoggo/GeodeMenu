@@ -11,6 +11,8 @@ bool ThemeNode::init()
     if (!CategoryNode::init())
         return false;
 
+    instance = this;
+
     colourBG = CCScale9Sprite::create("square02b_small.png");
     colourBG->setAnchorPoint(ccp(0, 1));
     colourBG->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, getContentHeight() - 30 + 2.5f / 2) / 0.5f);
@@ -101,6 +103,17 @@ bool ThemeNode::init()
     return true;
 }
 
+ThemeNode::~ThemeNode()
+{
+    if (instance == this)
+        instance = nullptr;
+}
+
+ThemeNode* ThemeNode::get()
+{
+    return instance;
+}
+
 CCMenuItemSpriteExtra* ThemeNode::addColourBtn(int colour)
 {
     float width = ((colourBG->getScaledContentWidth() - (2.5f * 3)) / 2) / 0.695f;
@@ -124,6 +137,18 @@ CCMenuItemSpriteExtra* ThemeNode::addColourBtn(int colour)
     colourBtns.emplace(colour, btn);
 
     return btn;
+}
+
+void ThemeNode::updateCustomImageSprite()
+{
+    for (auto btn : colourBtns)
+    {
+        if (btn.second->getTag() == -7)
+        {
+            static_cast<BackgroundSprite*>(btn.second->getNormalImage())->updateCustomSprite();
+            static_cast<BackgroundSprite*>(btn.second->getSelectedImage())->updateCustomSprite();
+        }
+    }
 }
 
 CCMenuItemSpriteExtra* ThemeNode::addAnimBtn(MenuAnimation anim)

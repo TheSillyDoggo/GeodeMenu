@@ -21,6 +21,7 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     if (!CCMenu::init())
         return false;
 
+    this->setPosition(ccp(0, 0));
     this->setContentSize(ccp(width, 30));
     this->setAnchorPoint(ccp(0.5f, 0.5f));
     this->ignoreAnchorPointForPosition(false);
@@ -228,7 +229,7 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         setString("");
 
         if (delegate)
-            delegate->textChanged(nullptr);
+            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
     }
 
     if (nLen == 1 && _text[0] == '\n')
@@ -305,7 +306,7 @@ bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char 
         moveCursor(nLen);
 
         if (delegate)
-            delegate->textChanged(nullptr);
+            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
     }
     
     return false;
@@ -327,7 +328,7 @@ bool BetterInputNode::onTextFieldDeleteBackward(CCTextFieldTTF * sender, const c
         cursorPos = -1;
 
     if (delegate)
-        delegate->textChanged(nullptr);
+        delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
 
     return false;
 }
@@ -389,7 +390,7 @@ void BetterInputNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
         setString(ss);
 
         if (delegate)
-            delegate->textChanged(nullptr);
+            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
     }
 }
 

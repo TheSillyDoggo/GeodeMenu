@@ -23,7 +23,6 @@ SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig
 
 bool SetupColourConfigUI::setup()
 {
-    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -108,6 +107,61 @@ bool SetupColourConfigUI::setup()
     speedTitle->limitLabelWidth((speedSlider->getScaledContentWidth() + 12 + speedInput->getScaledContentWidth()) - 10, 0.85f, 0);
     bottomLeft->addChild(speedTitle);
 
+    colArea = CCNode::create();
+
+    rInput = BetterInputNode::create(50, "R");
+    rInput->setAlignment(kCCTextAlignmentCenter);
+    rInput->setTag(1);
+    rInput->setScale(0.6f);
+    rInput->setPosition(ccp(-38, 20));
+    rInput->setDelegate(this);
+
+    gInput = BetterInputNode::create(50, "G");
+    gInput->setAlignment(kCCTextAlignmentCenter);
+    gInput->setTag(2);
+    gInput->setScale(0.6f);
+    gInput->setPosition(ccp(0, 20));
+    gInput->setDelegate(this);
+
+    bInput = BetterInputNode::create(50, "B");
+    bInput->setAlignment(kCCTextAlignmentCenter);
+    bInput->setTag(3);
+    bInput->setScale(0.6f);
+    bInput->setPosition(ccp(38, 20));
+    bInput->setDelegate(this);
+
+    hexInput = BetterInputNode::create(110, "HEX");
+    hexInput->setAlignment(kCCTextAlignmentCenter);
+    hexInput->setTag(4);
+    hexInput->setScale(0.6f);
+    hexInput->setPosition(ccp(0, -20));
+    hexInput->setDelegate(this);
+
+    auto rTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/red", "goldFont.fnt");
+    rTitle->setScale(0.5f);
+    rTitle->setPosition(rInput->getPosition() + ccp(0, 19));
+
+    auto gTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/green", "goldFont.fnt");
+    gTitle->setScale(0.5f);
+    gTitle->setPosition(gInput->getPosition() + ccp(0, 19));
+
+    auto bTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/blue", "goldFont.fnt");
+    bTitle->setScale(0.5f);
+    bTitle->setPosition(bInput->getPosition() + ccp(0, 19));
+
+    auto hexTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/hex", "goldFont.fnt");
+    hexTitle->setScale(0.5f);
+    hexTitle->setPosition(hexInput->getPosition() + ccp(0, 19));
+
+    colArea->addChild(rInput);
+    colArea->addChild(gInput);
+    colArea->addChild(bInput);
+    colArea->addChild(hexInput);
+    colArea->addChild(rTitle);
+    colArea->addChild(gTitle);
+    colArea->addChild(bTitle);
+    colArea->addChild(hexTitle);
+
     createGradientPreview();
     addTypeButtons(typeMenu);
 
@@ -119,6 +173,7 @@ bool SetupColourConfigUI::setup()
     m_mainLayer->addChildAtPosition(typeMenu, Anchor::BottomRight, ccp(-80, 0));
     m_mainLayer->addChildAtPosition(topRightMenu, Anchor::TopRight, ccp(-38, -12));
     m_mainLayer->addChildAtPosition(bottomLeft, Anchor::BottomLeft, ccp(65, 25));
+    m_mainLayer->addChildAtPosition(colArea, Anchor::Left, ccp(65, 0));
 
     return true;
 }
@@ -473,6 +528,8 @@ void SetupColourConfigUI::updateUI()
     speedSlider->setValueRanged(currentConfig.chromaSpeed);
     speedInput->setString(utils::numToString<double>(currentConfig.chromaSpeed, 2));
     bottomLeft->setVisible(this->allowEffects && (currentConfig.type >= Chroma));
+    colArea->setVisible(currentConfig.type != Gradient);
+    updateInputs(nullptr);
 }
 
 void SetupColourConfigUI::onSpeedSliderChanged(CCObject* sender)
@@ -488,6 +545,51 @@ void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
 
 void SetupColourConfigUI::textChanged(CCTextInputNode* node)
 {
+    if (node->getTag() > 0)
+    {
+        switch (node->getTag())
+        {
+            case 1:
+                currentConfig.customColour.r = utils::numFromString<int>(rInput->getString()).unwrapOr(currentConfig.customColour.r);
+                updateInputs(rInput);
+                break;
+
+            case 2:
+                currentConfig.customColour.g = utils::numFromString<int>(gInput->getString()).unwrapOr(currentConfig.customColour.g);
+                updateInputs(gInput);
+                break;
+
+            case 3:
+                currentConfig.customColour.b = utils::numFromString<int>(bInput->getString()).unwrapOr(currentConfig.customColour.g);
+                updateInputs(bInput);
+                break;
+
+            case 4:
+                currentConfig.customColour = cc3bFromHexString(hexInput->getString(), true).unwrapOr(currentConfig.customColour);
+                updateInputs(hexInput);
+                break;
+        }
+
+        return;
+    }
+
     currentConfig.chromaSpeed = utils::numFromString<double>(speedInput->getString()).unwrapOr(currentConfig.chromaSpeed);
     speedSlider->setValueRanged(currentConfig.chromaSpeed);
+}
+
+void SetupColourConfigUI::updateInputs(BetterInputNode* except)
+{
+    if (except != rInput)
+        rInput->setString(utils::numToString<int>(currentConfig.customColour.r));
+
+    if (except != gInput)
+        gInput->setString(utils::numToString<int>(currentConfig.customColour.g));
+
+    if (except != bInput)
+        bInput->setString(utils::numToString<int>(currentConfig.customColour.b));
+
+    if (except != hexInput)
+        hexInput->setString(cc3bToHexString(currentConfig.customColour));
+
+    picker->setColorValue(currentConfig.customColour);
 }
