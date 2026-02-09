@@ -14,8 +14,8 @@ class $modify (ZoomPauseLayer, PauseLayer)
         if (HidePauseMenu::get()->getRealEnabled())
             return true;
 
-        if (m_fields->node->zoom != 0)
-            return true;
+        // if (m_fields->node->zoom != 0)
+            // return true;
 
         return false;
     }
@@ -29,9 +29,9 @@ class $modify (ZoomPauseLayer, PauseLayer)
     {
         PauseLayer::customSetup();
 
-        m_fields->node = ZoomInterceptNode::create();
+        // m_fields->node = ZoomInterceptNode::create();
 
-        this->addChild(m_fields->node);
+        // this->addChild(m_fields->node);
         this->schedule(schedule_selector(ZoomPauseLayer::updateVisibility));
     }
 };

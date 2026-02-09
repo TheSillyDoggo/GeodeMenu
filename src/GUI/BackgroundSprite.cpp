@@ -36,8 +36,6 @@ bool BackgroundSprite::init()
     clippingCustom = CCClippingNode::create(clippingStencil2);
     clippingCustom->setAlphaThreshold(0.03f);
 
-    customImg = CCSprite::create("sog.png"_spr);
-    clippingCustom->addChild(customImg);
     clippingCustom->addChild(gradientDarken);
 
     setTheme(Mod::get()->getSavedValue<int>("theme", -6));
@@ -130,11 +128,16 @@ void BackgroundSprite::setColour(ccColor3B colour)
 
 void BackgroundSprite::updateCustomSprite()
 {
+    if (customImg)
+        customImg->removeFromParent();
+
     auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
-    CCTexture2D* texture = CCTextureCache::get()->addImage(path.c_str(), true);
+    customImg = CCSprite::create(path.c_str());
 
-    if (!texture || path.empty())
-        texture = CCTextureCache::get()->addImage("sog.png"_spr, true);
+    if (!customImg || path.empty())
+        customImg = CCSprite::create("sog.png"_spr);
 
-    customImg->setTexture(texture);
+    clippingCustom->addChild(customImg);
+    customImg->setScaleX(getContentWidth() / customImg->getContentWidth());
+    customImg->setScaleY(getContentHeight() / customImg->getContentHeight());
 }

@@ -15,6 +15,10 @@ class ZoomInterceptNode : public CCLayer
 
         CREATE_FUNC(ZoomInterceptNode);
 
+        void setPreviewPos(CCPoint pos);
+        void setZoom(float zool);
+        void updatePositions();
+
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);

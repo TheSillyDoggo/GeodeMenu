@@ -11,17 +11,16 @@ bool ZoomInterceptNode::init()
     this->scheduleUpdate();
     this->registerWithTouchDispatcher();
 
+    setPreviewPos(getContentSize() / 2);
     return true;
 }
 
 void ZoomInterceptNode::update(float dt)
 {
-    return;
-
     if (auto pl = PlayLayer::get())
     {
         pl->setScale(1.0f + zoom);
-        pl->setPosition(zoomedPos);
+        pl->setPosition((-zoomedPos + (pl->getContentSize() * pl->getAnchorPoint())) * pl->getScale());
     }
 }
 
@@ -36,15 +35,27 @@ ZoomInterceptNode::~ZoomInterceptNode()
 
 void ZoomInterceptNode::scrollWheel(float y, float x)
 {
-    return;
+    float oldZoom = zoom;
 
-    // if (y < 0)
-        zoom += y * -0.03f;
-    // else
+    setZoom(zoom + (y * -0.03f));
 
-    zoomedPos = ccpLerp(zoomedPos, (getMousePos() - (CCDirector::get()->getWinSize() / 2)), (6 * 0.03f));
+    if (zoom == 0)
+    {
+        return;
+    }
 
-    zoom = std::clamp<float>(zoom, 0, 5);
+    CCPoint endPos;
+
+    if (y < 0)
+        endPos = getMousePos();
+    else
+        endPos = getContentSize() / 2;
+
+    auto abs = std::abs<float>(zoom - oldZoom);
+
+    // log::info("abs: {}", abs);
+
+    setPreviewPos(ccpLerp(zoomedPos, endPos, abs));
 }
 
 bool ZoomInterceptNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
@@ -66,6 +77,26 @@ void ZoomInterceptNode::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 }
 
 void ZoomInterceptNode::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
+{
+
+}
+
+void ZoomInterceptNode::setPreviewPos(CCPoint pos)
+{
+    this->zoomedPos = pos;
+}
+
+void ZoomInterceptNode::setZoom(float zool)
+{
+    zoom = std::clamp<float>(zool, 0, 5);
+
+    if (zoom == 0)
+        setPreviewPos(getContentSize() / 2);
+    else
+        updatePositions();
+}
+
+void ZoomInterceptNode::updatePositions()
 {
 
 }
