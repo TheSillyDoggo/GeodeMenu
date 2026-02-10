@@ -16,6 +16,7 @@
 - Added Clone Level shortcut
 - Added Open Graphics Settings shortcut
 - Added Hide Editor UI
+- Added Fast Endscreen
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed Show Touches trail being affected by speedhack
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
