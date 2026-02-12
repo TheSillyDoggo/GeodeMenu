@@ -69,6 +69,8 @@ bool KeybindManager::processMSG(KeyState state)
             {
                 NotificationManager::get()->notifyToast(SpeedhackEnabled::get()->getNotificationString());
             }
+
+            capture = true;
         }
     }
 

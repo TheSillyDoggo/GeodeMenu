@@ -1,6 +1,37 @@
 #include "Hooks.hpp"
+#include <Geode/utils/Keyboard.hpp>
 
-#ifndef GEODE_IS_IOS
+using namespace geode::prelude;
+
+$execute
+{
+    KeyboardInputEvent()
+    .listen(+[](const geode::KeyboardInputData& event)
+    {
+        KeyState struc;
+        struc.shiftHeld = event.modifiers & KeyboardInputData::Mods_Shift;
+        struc.ctrlHeld = event.modifiers & KeyboardInputData::Mods_Control;
+        // struc.cmdHeld = event.modifiers & KeyboardInputData::Mods_Control;
+        struc.altHeld = event.modifiers & KeyboardInputData::Mods_Alt;
+        struc.code = event.key;
+        struc.isDown = event.action == KeyboardInputData::Action::Press;
+        struc.isRepeat = event.action == KeyboardInputData::Action::Repeat;
+
+        if (KeybindManager::get()->processMSG(struc))
+            return ListenerResult::Stop;
+
+        return ListenerResult::Propagate;
+    }).leak();
+
+    /*MouseInputEvent()
+    .listen(+[](const geode::MouseInputData& event)
+    {
+        return ListenerResult::Propagate;
+    })
+    .leak();*/
+}
+
+/*#ifndef GEODE_IS_IOS
 
 bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool repeat, double unk)
 {
@@ -19,4 +50,4 @@ bool KeybindDispatcher::dispatchKeyboardMSG(enumKeyCodes key, bool down, bool re
     return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, repeat, unk);
 }
 
-#endif
+#endif*/
