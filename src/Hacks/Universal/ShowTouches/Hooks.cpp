@@ -19,7 +19,9 @@ class ShowTouches : public Module
 SUBMIT_HACK(ShowTouches)
 SUBMIT_OPTION(ShowTouches, CircleColour)
 SUBMIT_OPTION(ShowTouches, TrailColour)
-SUBMIT_OPTION(ShowTouches, TrailScale)
+SUBMIT_OPTION(ShowTouches, CircleScale)
+SUBMIT_OPTION(ShowTouches, TrailEnabled)
+SUBMIT_OPTION(ShowTouches, ShowTouchDuration)
 
 class $modify (CCTouchDispatcher)
 {
@@ -37,7 +39,7 @@ class $modify (CCTouchDispatcher)
         {
             if (type == CCTOUCHBEGAN && ShowTouches::get()->getRealEnabled())
             {
-                CCScene::get()->addChild(CCTouchTrail::create(touch), CCScene::get()->getHighestChildZ() + 1);
+                OverlayManager::get()->addChild(CCTouchTrail::create(touch), 999999);
             }
 
             if (type >= CCTOUCHENDED)

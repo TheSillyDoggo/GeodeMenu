@@ -17,6 +17,8 @@
 - Added Open Graphics Settings shortcut
 - Added Hide Editor UI
 - Added Fast Endscreen
+- Added Show Touches duration option
+- Added Show Touches disable trail option
 - Improved Blur BG Performance and switched to using Blur API
 - Fixed Shortcuts moving incorrectly with multiple fingers on screen
 - Fixed Show Touches trail being affected by speedhack

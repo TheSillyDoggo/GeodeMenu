@@ -7,6 +7,7 @@ enum class LabelType
 {
     Text = 0,
     KeyChecker = 1,
+    Image = 2,
 };
 
 struct LabelConfig
@@ -23,6 +24,8 @@ struct LabelConfig
     bool noclipOnly = false;
     bool visible = true;
     std::vector<LabelEvent> events = {};
+    // Image
+    std::string imageLocation = "";
 
     static LabelConfig createFromObject(matjson::Value obj);
     matjson::Value save();

@@ -2,6 +2,7 @@
 #include "../../Hacks/Level/Noclip/Noclip.hpp"
 #include "TextLabelNode.hpp"
 #include "KeyCheckerNode.hpp"
+#include "ImageNode.hpp"
 
 LabelNode* LabelNode::createForType(LabelType type)
 {
@@ -9,6 +10,9 @@ LabelNode* LabelNode::createForType(LabelType type)
     {
         case LabelType::KeyChecker:
             return KeyCheckerNode::create();
+
+        case LabelType::Image:
+            return ImageNode::create();
 
         default:
             return TextLabelNode::create();

@@ -27,10 +27,10 @@ class TrailColour : public ColourModule
         }
 };
 
-class TrailScale : public InputModule
+class CircleScale : public InputModule
 {
     public:
-        MODULE_SETUP(TrailScale)
+        MODULE_SETUP(CircleScale)
         {
             setID("show-touches/scale");
 
@@ -39,5 +39,27 @@ class TrailScale : public InputModule
 
             setStringFilter("1234567890.");
             setMaxCharCount(4);
+        }
+};
+
+class TrailEnabled : public Module
+{
+    public:
+        MODULE_SETUP(TrailEnabled)
+        {
+            setID("show-touches/use-trail");
+            setDefaultEnabled(true);
+            setPriority(4);
+        }
+};
+
+class ShowTouchDuration : public Module
+{
+    public:
+        MODULE_SETUP(ShowTouchDuration)
+        {
+            setID("show-touches/show-duration");
+            setDefaultEnabled(false);
+            setPriority(5);
         }
 };

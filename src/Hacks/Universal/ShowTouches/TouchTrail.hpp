@@ -11,6 +11,8 @@ class CCTouchTrail : public CCNode
         CCTouch* touch;
         CCMotionStreak* streak;
         CCSprite* circle;
+        CCLabelBMFont* durationLabel = nullptr;
+        float duration = 0;
 
         bool init(CCTouch* touch);
 
