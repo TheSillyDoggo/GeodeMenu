@@ -102,43 +102,48 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
     sortButtons();
     std::reverse(buttons.begin(), buttons.end());
 
-    if (auto touch = static_cast<CCTouch*>(pTouches->anyObject()))
+    switch (uIndex)
     {
-        switch (uIndex)
-        {
-            case ccTouchType::CCTOUCHBEGAN:
-                selected = nullptr;
-
-                for (auto button : buttons)
+        case CCTOUCHBEGAN:
+            for (auto button : buttons)
+            {
+                for (auto item : *pTouches->m_pSet)
                 {
-                    if (button->ccTouchBegan(touch))
+                    if (auto touch = typeinfo_cast<CCTouch*>(item))
                     {
-                        selected = button;
-                        return true;
+                        if (button->ccTouchBegan(touch))
+                        {
+                            trackingTouches.emplace(touch, button);
+                            return true;
+                        }
                     }
                 }
-                
-                break;
+            }
+            
+            break;
 
-            case ccTouchType::CCTOUCHMOVED:
-                if (selected)
+        case CCTOUCHMOVED:
+            for (auto tracked : trackingTouches)
+            {
+                tracked.second->ccTouchMoved(tracked.first);
+            }
+
+            break;
+
+        case CCTOUCHENDED:
+            for (auto item : *pTouches->m_pSet)
+            {
+                if (auto touch = typeinfo_cast<CCTouch*>(item))
                 {
-                    selected->ccTouchMoved(touch);
-                    return true;
+                    if (trackingTouches.contains(touch))
+                    {
+                        trackingTouches[touch]->ccTouchEnded(touch);
+                        trackingTouches.erase(touch);
+                    }
                 }
-                
-                break;
+            }
 
-            case ccTouchType::CCTOUCHENDED:
-                if (selected)
-                {
-                    selected->ccTouchEnded(touch);
-                    return true;
-                }
-
-                selected = nullptr;
-                break;
-        }
+            break;
     }
 
     return false;

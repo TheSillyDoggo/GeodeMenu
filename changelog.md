@@ -18,6 +18,7 @@
 - Added Hide Editor UI
 - Added Fast Endscreen
 - Improved Blur BG Performance and switched to using Blur API
+- Fixed Shortcuts moving incorrectly with multiple fingers on screen
 - Fixed Show Touches trail being affected by speedhack
 - Fixed being able to complete levels when playing from a startpos with auto safe mode disabled
 - Fixed White Square when using Fade In animation

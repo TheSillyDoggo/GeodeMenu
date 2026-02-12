@@ -9,7 +9,7 @@ class FloatingUIManager : public cocos2d::CCNode
 
     protected:
         std::vector<FloatingUIButton*> buttons = {};
-        FloatingUIButton* selected = nullptr;
+        std::unordered_map<cocos2d::CCTouch*, FloatingUIButton*> trackingTouches = {};
 
         void sortButtons();
 
