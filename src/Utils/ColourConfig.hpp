@@ -2,13 +2,13 @@
 
 enum ColourConfigType
 {
-    CustomColour,
-    Player1,
-    Player2,
-    PlayerGlow,
-    Chroma,
-    Pastel,
-    Gradient,
+    CustomColour = 0,
+    Player1 = 1,
+    Player2 = 2,
+    PlayerGlow = 3,
+    Chroma = 4,
+    Pastel = 5,
+    Gradient = 6,
 };
 
 struct ColourConfig

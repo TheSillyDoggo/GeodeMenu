@@ -27,7 +27,6 @@ bool ExtraThemeSettingsUI::setup()
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
     bg->setZOrder(-10);
-    bg->setTheme(-6);
 
     m_buttonMenu->setVisible(false);
     m_mainLayer->addChildAtPosition(bg, Anchor::Center);
@@ -46,6 +45,8 @@ bool ExtraThemeSettingsUI::setup()
 
     if (image)
     {
+        bg->setTheme(-6);
+        
         imagePreview = BackgroundSprite::create();
         imagePreview->setTheme(-7);
         imagePreview->setContentSize(ccp(260, 120));

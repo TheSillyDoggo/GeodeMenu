@@ -87,6 +87,16 @@ class HitboxTrailMaxPositions : public InputModule
         }
 };
 
+class HitboxTrailNoLimit : public Module
+{
+    public:
+        MODULE_SETUP(HitboxTrailNoLimit)
+        {
+            setID("hitbox-trail/no-limit");
+            setPriority(2);
+        }
+};
+
 class HitboxTrailResetOnDeath : public Module
 {
     public:
@@ -96,7 +106,7 @@ class HitboxTrailResetOnDeath : public Module
             setID("hitbox-trail/reset-positions-on-death");
             setDescription("Resets the stored positions every attempt");
             setDefaultEnabled(true);
-            setPriority(2);
+            setPriority(3);
         }
 };
 
@@ -107,7 +117,7 @@ class HitboxTrailDarkenByAge : public Module
         {
             setID("hitbox-trail/darken-by-age");
             setDefaultEnabled(true);
-            setPriority(3);
+            setPriority(4);
         }
 };
 
@@ -118,7 +128,7 @@ class HitboxTrailDoClickColours : public Module
         {
             setID("hitbox-trail/click-colours");
             setDefaultEnabled(true);
-            setPriority(4);
+            setPriority(5);
         }
 };
 
@@ -129,7 +139,7 @@ class HitboxTrailStartClickCol : public ColourModule
         {
             setID("hitbox-trail/start-click-colour");
             setDefaultConfig({ ccc3(0, 255, 0) });
-            setPriority(5);
+            setPriority(6);
         }
 };
 
@@ -140,7 +150,7 @@ class HitboxTrailEndClickCol : public ColourModule
         {
             setID("hitbox-trail/end-click-colour");
             setDefaultConfig({ ccc3(0, 255, 255) });
-            setPriority(6);
+            setPriority(7);
         }
 };
 
@@ -151,7 +161,7 @@ class HitboxTrailHoldClickColours : public Module
         {
             setID("hitbox-trail/hold-click-colours");
             setDefaultEnabled(false);
-            setPriority(7);
+            setPriority(8);
         }
 };
 
@@ -162,6 +172,6 @@ class HitboxTrailMidClickCol : public ColourModule
         {
             setID("hitbox-trail/hold-click-colour");
             setDefaultConfig({ ccc3(0, 210, 0) });
-            setPriority(8);
+            setPriority(9);
         }
 };

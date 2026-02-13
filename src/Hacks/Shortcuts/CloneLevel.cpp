@@ -2,6 +2,7 @@
 #include "../../Client/ButtonModule.hpp"
 #include <BetterAlertLayer.hpp>
 #include <LocalisationManager.hpp>
+#include <Utils.hpp>
 
 using namespace geode::prelude;
 
@@ -18,31 +19,7 @@ class CloneLevel : public ButtonModule
 
         virtual void onClick()
         {
-            GJGameLevel* level = nullptr;
-
-            if (auto gjbgl = GJBaseGameLayer::get())
-                level = gjbgl->m_level;
-
-            if (auto scene = CCScene::get())
-            {
-                if (auto info = scene->getChildByType<LevelInfoLayer>(0))
-                {
-                    level = info->m_level;
-                }
-
-                if (auto edit = scene->getChildByType<EditLevelLayer>(0))
-                {
-                    level = edit->m_level;
-                }
-
-                if (auto select = scene->getChildByType<LevelSelectLayer>(0))
-                {
-                    if (auto page = typeinfo_cast<LevelPage*>(select->m_scrollLayer->getPage(select->m_scrollLayer->m_page)))
-                    {
-                        level = page->m_level;
-                    }
-                }
-            }
+            GJGameLevel* level = qolmod::utils::getCurrentLevel();
 
             if (!level)
             {

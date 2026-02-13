@@ -41,6 +41,7 @@
 -- Hitbox trail now uses std::deque for faster performance
 -- Added Hitbox trail seperate click and release colours
 -- Made Hitbox trail not depend on fps
+-- Added No Limit option to hitbox trail
 - Localisation:
 -- Added support for right-to-left languages (such as Arabic)
 -- Added Arabic

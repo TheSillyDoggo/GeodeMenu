@@ -19,6 +19,7 @@ SUBMIT_OPTION(ShowHitboxes, HitboxFill);
 SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
 
 SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailNoLimit);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailResetOnDeath);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailDarkenByAge);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailDoClickColours);

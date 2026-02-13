@@ -249,6 +249,11 @@ void HitboxNode::drawPlayerTrails()
 
     float decrement = (1.0f / (float)max) * 0.75f;
 
+    if (HitboxTrailNoLimit::get()->getRealEnabled())
+    {
+        decrement = (1.0f / (float)std::max<int>(max, 480)) * 0.75f;
+    }
+
     int i = 0;
     for (auto state : trailStates)
     {
@@ -380,8 +385,11 @@ void HitboxNode::storePlayerTrail(PlayerObject* plr)
 
     trailStates.push_back({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.25f, 0.25f), clickState });
     
-    if (trailStates.size() > HitboxTrailMaxPositions::get()->getStringInt())
-        trailStates.pop_front();
+    if (!HitboxTrailNoLimit::get()->getRealEnabled())
+    {
+        if (trailStates.size() > HitboxTrailMaxPositions::get()->getStringInt())
+            trailStates.pop_front();
+    }
 }
 
 void HitboxNode::resetTrails()
