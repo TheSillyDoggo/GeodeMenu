@@ -5,6 +5,8 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "../GUI/BetterAlertLayer.hpp"
 #include "UI/CheatIndicator.hpp"
+#include "Modules/AutoSafeMode.hpp"
+#include "Modules/SafeMode.hpp"
 
 bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -86,7 +88,7 @@ void SafeEndLevelLayer::customSetup()
     this->schedule(schedule_selector(SafeEndLevelLayer::updateCheatIndicator));
     updateCheatIndicator(0);
     
-    if (SafeMode::get()->shouldDisableLevelProgress())
+    if (SafeMode::get()->shouldDisableLevelProgress() && (AutoSafeMode::get()->getRealEnabled() || ForceSafeMode::get()->getRealEnabled()))
     {
         bool hasHiddenCoin = false;
 

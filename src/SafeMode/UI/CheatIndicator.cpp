@@ -11,6 +11,8 @@ bool CheatIndicator::init()
     spr = CCSprite::createWithSpriteFrameName("uiDot_001.png");
     spr->setAnchorPoint(ccp(0, 0));
 
+    update(0);
+
     this->setAnchorPoint(ccp(0.5f, 0.5f));
     this->setContentSize(spr->getContentSize());
     this->scheduleUpdate();

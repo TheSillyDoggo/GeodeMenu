@@ -137,7 +137,19 @@ ccColor3B ColourConfig::colourForGradient(float v)
 
             if (v >= prev.percentageLocation && v <= cur.percentageLocation)
             {
-                return ColourUtils::get()->lerpColour(prev.colour, cur.colour, (v - prev.percentageLocation) / va);
+                auto percent = (v - prev.percentageLocation) / va;
+
+                if (smoothGradient)
+                {
+                    return ColourUtils::get()->lerpColour(prev.colour, cur.colour, percent);
+                }
+                else
+                {
+                    if (percent >= 0.5f)
+                        return cur.colour;
+                    else
+                        return prev.colour;
+                }
             }
         }
 

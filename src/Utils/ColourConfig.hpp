@@ -24,6 +24,7 @@ struct ColourConfig
     float chromaSpeed = 1.0f;
     ColourConfigType type = CustomColour;
     std::vector<GradientLocation> gradientLocations = { { cocos2d::ccc3(255, 0, 0), 0 }, { cocos2d::ccc3(0, 255, 0), 1 } };
+    bool smoothGradient = true;
 
     cocos2d::ccColor3B colourForConfig(std::string channel);
     cocos2d::ccColor3B colourForGradient(float v);

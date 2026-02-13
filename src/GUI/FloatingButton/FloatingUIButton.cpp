@@ -97,7 +97,8 @@ void FloatingUIButton::updateSprites()
         if (bg)
         {
             bg->setPosition(getContentSize() / 2);
-            bg->setScale(scale);
+            bg->setScale(BUTTON_RADIUS / std::max<float>(bg->getContentWidth(), bg->getContentHeight()));
+            bg->setScale(scale * bg->getScale());
             this->addChild(bg);
         }
     }

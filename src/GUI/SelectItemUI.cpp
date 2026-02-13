@@ -65,6 +65,9 @@ void SelectItemUI::updateUI()
             items.push_back("geode.loader/baseCircle_Medium_Gray.png");
             items.push_back("geode.loader/baseCircle_Medium_Green.png");
             items.push_back("geode.loader/baseCircle_Medium_Pink.png");
+            items.push_back("geode1.png"_spr);
+            items.push_back("geode2.png"_spr);
+            items.push_back("geode3.png"_spr);
             break;
 
         case SelectItemType::ShortcutOverlay:
