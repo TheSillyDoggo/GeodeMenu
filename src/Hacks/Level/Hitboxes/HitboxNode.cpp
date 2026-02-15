@@ -10,6 +10,9 @@ bool HitboxNode::init()
     if (!CCDrawNode::init())
         return false;
 
+    if (!HitboxTrailNoLimit::get()->getRealEnabled())
+        trailStates.reserve(HitboxTrailMaxPositions::get()->getStringInt() * sizeof(PlayerHitboxState));
+
     return true;
 }
 
@@ -388,7 +391,8 @@ void HitboxNode::storePlayerTrail(PlayerObject* plr)
     if (!HitboxTrailNoLimit::get()->getRealEnabled())
     {
         if (trailStates.size() > HitboxTrailMaxPositions::get()->getStringInt())
-            trailStates.pop_front();
+            trailStates.erase(trailStates.begin());
+            // trailStates.pop_front();
     }
 }
 

@@ -10,7 +10,7 @@ GradientPoint::GradientPoint(float position, cocos2d::ccColor4B colour)
 
 bool BetterGradientNode::init()
 {
-    if (!CCSprite::init())
+    if (!CCNode::init())
         return false;
 
     return true;
@@ -18,7 +18,7 @@ bool BetterGradientNode::init()
 
 void BetterGradientNode::draw()
 {
-    CCSprite::draw();
+    
 }
 /*
 #include <Geode/modify/MenuLayer.hpp>

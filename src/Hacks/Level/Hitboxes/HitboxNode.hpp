@@ -24,7 +24,7 @@ struct PlayerHitboxState
 class HitboxNode : public cocos2d::CCDrawNode
 {
     protected:
-        std::deque<PlayerHitboxState> trailStates = {};
+        std::vector<PlayerHitboxState> trailStates = {};
         GameObject* onlyObject = nullptr;
         std::unordered_map<PlayerObject*, bool> playerClicks = {};
 

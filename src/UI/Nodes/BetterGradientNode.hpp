@@ -10,7 +10,7 @@ struct GradientPoint
     GradientPoint(float position, cocos2d::ccColor4B colour);
 };
 
-class BetterGradientNode : public cocos2d::CCSprite
+class BetterGradientNode : public cocos2d::CCNode
 {
     protected:
 
