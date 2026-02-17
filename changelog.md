@@ -1,3 +1,11 @@
+# 2.6.1
+
+- Added culling to hitbox trail for better performance
+- Localisation:
+-- Added support for languages that don't split words by spaces
+-- Fixed descriptions appearing weird in Arabic
+-- Added Japanese
+
 # 2.6.0
 
 - Added **support for GD 2.2081**

@@ -74,10 +74,15 @@ bool BetterAlertLayer::setup()
 
     content = AdvLabelBMFont::createWithStruct({}, "chatFont.fnt");
     content->setMaxWidth(width - 60);
+    content->setSplitByEveryChar(LocalisationManager::get()->getCurrentLang()->getSplitEachChar());
     content->setSplitEverySpace(true);
     content->setLineSpacing(3.5f);
     content->setAlignment(kCCTextAlignmentCenter);
-    content->setString(desc.c_str());
+
+    if (LocalisationManager::get()->getCurrentLang()->getDontTouchDescriptions())
+        content->setStruct({ false, false, false, desc, { { AdvLabelStruct::AdvPartType::Label, desc } } });
+    else
+        content->setString(desc.c_str());
 
     float desHeight = std::max<float>(140.0, content->getScaledContentHeight() + 100);
 

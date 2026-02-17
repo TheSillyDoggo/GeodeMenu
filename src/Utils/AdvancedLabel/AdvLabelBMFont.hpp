@@ -76,8 +76,9 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         bool splitEverySpace = false;
         float lineSpacing = 0;
         bool showTags = false;
+        bool splitChars = false;
 
-        static AdvLabelStruct structFromString(std::string lbl, bool splitSpaces = false, bool showTags = false);
+        static AdvLabelStruct structFromString(std::string lbl, bool splitSpaces = false, bool showTags = false, bool splitChars = false);
 
         bool useTTFFont();
     
@@ -112,6 +113,7 @@ class AdvLabelBMFont : public CCNode, public CCRGBAProtocol, public CCLabelProto
         void setLineSpacing(float spacing);
         int getLineCount();
         void setShowTags(bool show);
+        void setSplitByEveryChar(bool split);
 
         CCBMFontConfiguration* getConfiguration();
         CCBMFontConfiguration* getConfiguration(std::string font);

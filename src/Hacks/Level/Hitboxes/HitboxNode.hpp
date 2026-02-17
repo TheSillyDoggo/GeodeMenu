@@ -38,8 +38,8 @@ class HitboxNode : public cocos2d::CCDrawNode
         bool objTypeMatchesAny(GameObject* obj, std::vector<GameObjectType> types);
         // thanks prevter
         void forEachObject(GJBaseGameLayer* game, const std::function<void(GameObject*)>& callback);
-
         void drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, cocos2d::ccColor4F colour, float thickness, cocos2d::CCPoint towards);
+        bool shouldRenderState(PlayerHitboxState* state);
 
     public:
         CREATE_FUNC(HitboxNode);

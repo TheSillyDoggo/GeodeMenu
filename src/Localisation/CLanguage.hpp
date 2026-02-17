@@ -25,6 +25,8 @@ class CLanguage
         std::string font = "";
         int fontUsageMode = 0;
         bool useTrueTypeFallback = false;
+        bool splitDescByEveryChar = false;
+        bool dontTouchDescriptions = false;
 
         void loadFromObject(matjson::Value object, std::string stem = "");
 
@@ -38,6 +40,8 @@ class CLanguage
         const std::string getFont();
         const int& getFontUsageMode();
         const bool& getTrueTypeFallback();
+        const bool& getSplitEachChar();
+        const bool& getDontTouchDescriptions();
 
         int getStringCount();
         bool containsKey(std::string key);

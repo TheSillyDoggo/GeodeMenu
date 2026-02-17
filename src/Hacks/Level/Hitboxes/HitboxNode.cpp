@@ -8,7 +8,7 @@ using namespace geode::prelude;
 bool HitboxNode::init()
 {
     if (!CCDrawNode::init())
-        return false;
+        return false;    
 
     if (!HitboxTrailNoLimit::get()->getRealEnabled())
         trailStates.reserve(HitboxTrailMaxPositions::get()->getStringInt() * sizeof(PlayerHitboxState));
@@ -240,6 +240,32 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
     drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, BorderAlignment::Inside);
 }
 
+bool HitboxNode::shouldRenderState(PlayerHitboxState* state)
+{
+    if (auto gjbgl = GJBaseGameLayer::get())
+    {
+        auto size = CCDirector::get()->getWinSize() / gjbgl->m_gameState.m_cameraZoom;
+        size.height = std::max<float>(size.width, size.height);
+        size.width = size.height;
+
+        float outer = size.width * 0.4f; 
+
+        if (state->rectReg.getMinX() > gjbgl->m_gameState.m_cameraPosition.x + size.width + outer)
+            return false;
+
+        if (state->rectReg.getMaxX() < gjbgl->m_gameState.m_cameraPosition.x - outer)
+            return false;
+
+        if (state->rectReg.getMinY() > gjbgl->m_gameState.m_cameraPosition.y + size.height + outer)
+            return false;
+
+        if (state->rectReg.getMaxY() < gjbgl->m_gameState.m_cameraPosition.y - outer)
+            return false;
+    }
+
+    return true;
+}
+
 void HitboxNode::drawPlayerTrails()
 {
     if (!HitboxTrail::get()->getRealEnabled())
@@ -258,8 +284,14 @@ void HitboxNode::drawPlayerTrails()
     }
 
     int i = 0;
-    for (auto state : trailStates)
+    for (auto& state : trailStates)
     {
+        if (!shouldRenderState(&state))
+        {
+            i++;
+            continue;
+        }
+
         CCPoint vertices[] = {
             ccp(state.rectReg.getMinX(), state.rectReg.getMinY()),
             ccp(state.rectReg.getMaxX(), state.rectReg.getMinY()),
@@ -305,8 +337,14 @@ void HitboxNode::drawPlayerTrails()
     }
     
     i = 0;
-    for (auto state : trailStates)
+    for (auto& state : trailStates)
     {
+        if (!shouldRenderState(&state))
+        {
+            i++;
+            continue;
+        }
+
         CCPoint vertices[] = {
             ccp(state.rectBlue.getMinX(), state.rectBlue.getMinY()),
             ccp(state.rectBlue.getMaxX(), state.rectBlue.getMinY()),
