@@ -1,6 +1,7 @@
 #include "AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 #include <FastBMFontConfig.hpp>
+#include <Utils.hpp>
 
 const std::string& AdvLabelStruct::getTotalString()
 {
@@ -53,59 +54,57 @@ AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpace
 
     if (splitChars)
     {
-        for (auto ch : utils::string::utf8ToWide(lbl))
+        for (auto ch : qolmod::utils::toWideString(lbl))
         {
-            segments.push_back(utils::string::wideToUtf8(std::wstring(1, ch)));
+            segments.push_back(qolmod::utils::toUTF8String(std::wstring(1, ch)));
         }
-
-        goto END;
     }
-
-    for (auto ch : utils::string::split(lbl))
+    else
     {
-        if (ch == '<')
+        for (auto ch : utils::string::split(lbl))
         {
-            if (!c.empty())
-                segments.push_back(c);
-
-            c = "<";
-            continue;
-        }
-
-        if (ch == '>')
-        {
-            c += ">";
-            segments.push_back(c);
-            c = "";
-            continue;
-        }
-
-        if (ch == '\n')
-        {
-            if (!c.empty())
-                segments.push_back(c);
-
-            segments.push_back("\n");
-            c = "";
-            continue;
-        }
-
-        if (splitSpaces)
-        {
-            if (ch == ' ')
+            if (ch == '<')
             {
+                if (!c.empty())
+                    segments.push_back(c);
+
+                c = "<";
+                continue;
+            }
+
+            if (ch == '>')
+            {
+                c += ">";
                 segments.push_back(c);
                 c = "";
+                continue;
             }
+
+            if (ch == '\n')
+            {
+                if (!c.empty())
+                    segments.push_back(c);
+
+                segments.push_back("\n");
+                c = "";
+                continue;
+            }
+
+            if (splitSpaces)
+            {
+                if (ch == ' ')
+                {
+                    segments.push_back(c);
+                    c = "";
+                }
+            }
+
+            c += ch;
         }
 
-        c += ch;
+        if (!c.empty())
+            segments.push_back(c);
     }
-
-    if (!c.empty())
-        segments.push_back(c);
-
-    END:
 
     ccColor3B col = ccWHITE;
 
@@ -525,7 +524,7 @@ void AdvLabelBMFont::setShowTags(bool show)
 
 void AdvLabelBMFont::setSplitByEveryChar(bool split)
 {
-    this->splitChars = true;
+    this->splitChars = split;
 }
 
 std::vector<CCNodeRGBA*> AdvLabelBMFont::getCharacterNodes()

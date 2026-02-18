@@ -15,6 +15,7 @@ class ModuleNode : public CCMenu
         CCMenuItemToggler* favBtn = nullptr;
         CCMenuItemSpriteExtra* infoBtn = nullptr;
         AdvLabelBMFont* label = nullptr;
+        bool disabled = false;
 
         ~ModuleNode();
     
@@ -34,6 +35,7 @@ class ModuleNode : public CCMenu
         void onChangeShortcut(CCObject* sender);
 
         void onUpdateLabelColour(float dt);
+        bool isDisabled();
 
         virtual void updateNode();
         virtual void draw();

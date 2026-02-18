@@ -8,6 +8,9 @@ $execute
     KeyboardInputEvent()
     .listen(+[](const geode::KeyboardInputData& event)
     {
+        if (CCIMEDispatcher::sharedDispatcher()->hasDelegate())
+            return ListenerResult::Propagate;
+
         KeyState struc;
         struc.shiftHeld = event.modifiers & KeyboardInputData::Mods_Shift;
         struc.ctrlHeld = event.modifiers & KeyboardInputData::Mods_Control;

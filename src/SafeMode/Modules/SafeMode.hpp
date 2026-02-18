@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../../Client/InputModule.hpp"
+#include "SafeMode.hpp"
+#include "DisableCheatsInMenu.hpp"
 
 using namespace geode::prelude;
 
@@ -62,3 +64,4 @@ SUBMIT_HACK(ForceSafeMode);
 SUBMIT_OPTION(ForceSafeMode, SafeModeChangeText);
 SUBMIT_OPTION(ForceSafeMode, SafeModeText);
 SUBMIT_OPTION(ForceSafeMode, SafeModeEndScreenCheatIndicator);
+SUBMIT_OPTION(ForceSafeMode, SafeModeDisableCheats);

@@ -6,6 +6,7 @@
 #include "../GUI/EditKeyConfigUI.hpp"
 #include "../GUI/BetterAlertLayer.hpp"
 #include "../GUI/SetupShortcutUI.hpp"
+#include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -25,7 +26,6 @@ void ModuleNode::setup()
 {
     bool hasDesc = module->getDescription().size() > 0;
     bool hasOptions = module->getOptions().size() > 0;
-    bool isDisabled = module->isDisabled();
 
     btn = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
     btn->toggle(module->getUserEnabled());
@@ -76,8 +76,12 @@ void ModuleNode::onUpdateLabelColour(float dt)
 {
     auto col = SeperateColourCheatNames::get()->getRealEnabled() && (module->getSafeModeTrigger() != SafeModeTrigger::None) ? CheatNameColour::get()->getColour() : ccWHITE;
 
-    if (module->isDisabled())
-        col = ccc3(150, 150, 150);
+    if (isDisabled())
+    {
+        col.r = (float)col.r * (150.0f / 255.0f);
+        col.g = (float)col.g * (150.0f / 255.0f);
+        col.b = (float)col.b * (150.0f / 255.0f);
+    }
 
     label->setColor(col);
 }
@@ -93,11 +97,21 @@ void ModuleNode::updateNode()
     if (favBtn->isToggled() != module->isFavourited())
         favBtn->toggle(module->isFavourited());
 
-    auto c = module->isDisabled() ? ccc3(150, 150, 150) : ccWHITE;
+    
+    disabled = false;
+    if (SafeModeDisableCheats::get()->getRealEnabled())
+    {
+        if (module->getSafeModeTrigger() != SafeModeTrigger::None)
+        {
+            disabled = true;
+        }
+    }
+
+    auto c = isDisabled() ? ccc3(150, 150, 150) : ccWHITE;
 
     if (btn)
     {
-        btn->setTarget(this, module->isDisabled() ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle));
+        btn->setTarget(this, isDisabled() ? menu_selector(ModuleNode::onToggleError) : menu_selector(ModuleNode::onToggle));
         btn->m_onButton->setColor(c);
         btn->m_offButton->setColor(c);
     }
@@ -128,7 +142,7 @@ void ModuleNode::onToggle(CCObject* sender)
     {
         Loader::get()->queueInMainThread([this]
         {
-            FLAlertLayer::create("Warning", module->getOnDisableWarning(), "OK")->show();
+            BetterAlertLayer::create("Warning", module->getOnDisableWarning(), "OK")->show();
             Mod::get()->setSavedValue<bool>(fmt::format("{}_disablewarningshown", getID()), true);
 
             updateAllNodes(nullptr);
@@ -141,7 +155,7 @@ void ModuleNode::onToggle(CCObject* sender)
     {
         Loader::get()->queueInMainThread([this]
         {
-            FLAlertLayer::create("Warning", module->getOnEnableWarning(), "OK")->show();
+            BetterAlertLayer::create("Warning", module->getOnEnableWarning(), "OK")->show();
             Mod::get()->setSavedValue<bool>(fmt::format("{}_enablewarningshown", getID()), true);
 
             updateAllNodes(nullptr);
@@ -151,9 +165,9 @@ void ModuleNode::onToggle(CCObject* sender)
     }
 
     module->setUserEnabled(!module->getUserEnabled());
-    updateAllNodes(this);
-
     module->onToggle();
+
+    updateAllNodes(this);
 }
 
 void ModuleNode::onToggleError(CCObject* sender)
@@ -167,7 +181,17 @@ void ModuleNode::onToggleError(CCObject* sender)
     toggler->m_onButton->stopAllActions();
     toggler->m_offButton->stopAllActions();
 
-    FLAlertLayer::create(module->getName().c_str(), module->getDisabledMessage(), "OK")->show();
+    std::string disabledMsg = module->getDisabledMessage();
+
+    if (SafeModeDisableCheats::get()->getRealEnabled())
+    {
+        if (module->getSafeModeTrigger() != SafeModeTrigger::None)
+        {
+            disabledMsg = "Cheats are <cr>disabled</c> by safe mode option";
+        }
+    }
+
+    BetterAlertLayer::create(module->getName().c_str(), disabledMsg, "OK")->show();
 }
 
 void ModuleNode::onToggleFavourite(CCObject* sender)
@@ -275,6 +299,11 @@ bool ModuleNode::init(Module* module)
     nodes.push_back(this);
 
     return true;
+}
+
+bool ModuleNode::isDisabled()
+{
+    return module->isDisabled() || disabled;
 }
 
 void ModuleNode::updateAllNodes(ModuleNode* except)

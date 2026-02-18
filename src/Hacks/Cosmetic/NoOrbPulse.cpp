@@ -1,4 +1,5 @@
 #include "../../Client/Module.hpp"
+#include "../../Client/FloatSliderModule.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 
 using namespace geode::prelude;
@@ -15,7 +16,20 @@ class NoOrbPulse : public Module
         }
 };
 
+class NoOrbPulseSize : public FloatSliderModule
+{
+    public:
+        MODULE_SETUP(NoOrbPulseSize)
+        {
+            setID("no-orb-pulse/size");
+            setDefaultValue(0.7f);
+            setSnapValues({0.7f});
+            setRange(0.2f, 1.0f);
+        }
+};
+
 SUBMIT_HACK(NoOrbPulse);
+SUBMIT_OPTION(NoOrbPulse, NoOrbPulseSize);
 
 class $modify (PlayLayer)
 {
@@ -27,8 +41,8 @@ class $modify (PlayLayer)
 
         if (NoOrbPulse::get()->getRealEnabled())
         {
-            fmod->m_pulse1 = 1.0f;
-            m_audioEffectsLayer->m_audioScale = 1.0f;
+            fmod->m_pulse1 = NoOrbPulseSize::get()->getValue();
+            m_audioEffectsLayer->m_audioScale = NoOrbPulseSize::get()->getValue();
         }
 
         PlayLayer::updateVisibility(dt);

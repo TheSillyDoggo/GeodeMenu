@@ -5,6 +5,7 @@
 #include "../GUI/FloatingButton/ModuleShortcutButton.hpp"
 #include "../GUI/FloatingButton/FloatingUIManager.hpp"
 #include "../Notifications/NotificationManager.hpp"
+#include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 
 using namespace geode::prelude;
 
@@ -36,6 +37,12 @@ bool Module::getRealEnabled()
 {
     if (forceDisabled)
         return false;
+
+    if (getSafeModeTrigger() != SafeModeTrigger::None)
+    {
+        if (SafeModeDisableCheats::get()->getRealEnabled())
+            return false;
+    }
 
     return userEnabled;
 }

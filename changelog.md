@@ -1,6 +1,10 @@
 # 2.6.1
 
 - Added culling to hitbox trail for better performance
+- Added Safe Mode disable cheats in UI
+- Added No Orb Pulse custom size
+- Fixed missing names and descriptions for No Circles options
+- Fixed keybinds activating when typing in a search box
 - Localisation:
 -- Added support for languages that don't split words by spaces
 -- Fixed descriptions appearing weird in Arabic

@@ -1,8 +1,9 @@
 #include "Utils.hpp"
+#include <codecvt>
 
 using namespace geode::prelude;
 
-GJGameLevel* qolmod::utils::getCurrentLevel()
+GJGameLevel* qolmod::utils::getCurrentLevel(bool requireLevelData)
 {
     if (auto gjbgl = GJBaseGameLayer::get())
         return gjbgl->m_level;
@@ -19,14 +20,33 @@ GJGameLevel* qolmod::utils::getCurrentLevel()
             return edit->m_level;
         }
 
-        if (auto select = scene->getChildByType<LevelSelectLayer>(0))
+        if (!requireLevelData)
         {
-            if (auto page = typeinfo_cast<LevelPage*>(select->m_scrollLayer->getPage(select->m_scrollLayer->m_page)))
+            if (auto select = scene->getChildByType<LevelSelectLayer>(0))
             {
-                return page->m_level;
+                if (auto page = typeinfo_cast<LevelPage*>(select->m_scrollLayer->getPage(select->m_scrollLayer->m_page)))
+                {
+                    return page->m_level;
+                }
             }
         }
     }
 
     return nullptr;
+}
+
+std::wstring qolmod::utils::toWideString(std::string str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring ws = converter.from_bytes(str);
+
+    return ws;
+}
+
+std::string qolmod::utils::toUTF8String(std::wstring ws)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::string str = converter.to_bytes(ws);
+
+    return str;
 }
