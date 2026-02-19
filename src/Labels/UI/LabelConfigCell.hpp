@@ -11,7 +11,7 @@ class LabelConfigCell : public CCNode
         CCSize size;
         LabelConfig config;
         int index;
-        CCScale9Sprite* bg;
+        NineSlice* bg;
         CCMenuItemToggler* visibleToggler;
 
     public:

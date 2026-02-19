@@ -32,9 +32,11 @@ class SetupLabelConfigUI : public PopupBase
         std::vector<CCNode*> pages = {};
         std::vector<CCMenuItemToggler*> pageBtns = {};
         int selectedPage = 0;
+        LabelType type = LabelType::Text;
+        CCSprite* imagePreview = nullptr;
 
     public:
-        static SetupLabelConfigUI* create(std::function<void(LabelConfig)> onFinish);
+        static SetupLabelConfigUI* create(std::function<void(LabelConfig)> onFinish, LabelType type);
 
         void onSetFont(CCObject* sender);
         void onSetAnchor(CCObject* sender);
@@ -42,12 +44,14 @@ class SetupLabelConfigUI : public PopupBase
         void onClose(CCObject* sender);
         void onChangePage(CCObject* sender);
         void onExportToFile(CCObject* sender);
+        void onSelectImage(CCObject* sender);
 
         void createPages();
         void createAnchorNodes();
         void createPage1();
         void createPage2();
         void createPage3();
+        void updateImagePreview();
 
         void setStartConfig(LabelConfig conf);
         void updateUI();

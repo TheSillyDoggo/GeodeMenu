@@ -27,7 +27,7 @@ bool LabelEventCell::init(CCSize size, LabelEvent config, SetupLabelConfigUI* ui
 
     this->setContentSize(size);
 
-    auto bg = CCScale9Sprite::create("square02b_001.png");
+    auto bg = geode::NineSlice::create("square02b_001.png");
     bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
     bg->setID("background");

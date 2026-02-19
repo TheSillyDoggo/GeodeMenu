@@ -1,8 +1,11 @@
 # 2.6.2
 
+- Added Image label type
+- Added Fast Chests
 - Fixed Hitbox Trail rendering incorrectly in the editor
 - Fixed show hitboxes being delayed by one frame in the editor
 - Fixed extremely rare crash opening the menu
+- Fixed small line appearing through labels in UI
 
 # 2.6.1
 

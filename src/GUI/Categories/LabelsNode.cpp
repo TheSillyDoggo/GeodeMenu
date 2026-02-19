@@ -7,7 +7,7 @@
 
 #define TOPBAR_SIZE 25
 #define PRESETS_SIZE 115
-#define PRESETS_SCALE 0.575f
+#define PRESETS_SCALE 0.525f
 
 bool LabelsNode::init()
 {
@@ -204,6 +204,11 @@ void LabelsNode::onAddLabel(CCObject* sender)
             conf.formatString = "{leftPad((clock_hours < 10 ? \"0\" : \"\") + clock_hours + \"\", 2)}:{leftPad((clock_minutes < 10 ? \"0\" : \"\") + clock_minutes, 2)}:{leftPad((clock_seconds < 10 ? \"0\" : \"\") + clock_seconds + \"\", 2)}";
             break;
 
+        case 10:
+            conf.displayName = "Image";
+            conf.type = LabelType::Image;
+            break;
+
         default:
             conf.displayName = "Custom Label";
             conf.formatString = "Default Format";
@@ -244,6 +249,7 @@ void LabelsNode::addPresets()
     PRESET_BUTTON("Session Time", 7);
     PRESET_BUTTON("Best Run", 8);
     PRESET_BUTTON("Clock", 9);
+    PRESET_BUTTON("Image", 10);
 
     PRESET_BUTTON("Custom", -69);
 }

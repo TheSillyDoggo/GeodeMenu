@@ -29,7 +29,7 @@ bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
 
     this->setContentSize(size);
 
-    bg = CCScale9Sprite::create("square02b_001.png");
+    bg = NineSlice::create("square02b_001.png");
     bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
     bg->setID("background");
@@ -48,7 +48,7 @@ bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
 
     for (size_t i = 0; i < 4; i++)
     {
-        auto back = CCScale9Sprite::create("square02_small.png");
+        auto back = NineSlice::create("square02_small.png");
         back->setOpacity(100);
         back->setContentSize(ccp(18, 18) * 3);
         back->setScale(1.0f / 3.0f);
@@ -162,7 +162,7 @@ void LabelConfigCell::onOptions(CCObject* sender)
         confs[index] = conf;
         
         LabelManager::get()->setConfigs(confs);
-    });
+    }, config.type);
 
     auto confs = LabelManager::get()->getConfigs();
 

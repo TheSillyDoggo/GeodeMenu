@@ -12,10 +12,10 @@ $execute
             return ListenerResult::Propagate;
 
         KeyState struc;
-        struc.shiftHeld = event.modifiers & KeyboardInputData::Mods_Shift;
-        struc.ctrlHeld = event.modifiers & KeyboardInputData::Mods_Control;
-        // struc.cmdHeld = event.modifiers & KeyboardInputData::Mods_Control;
-        struc.altHeld = event.modifiers & KeyboardInputData::Mods_Alt;
+        struc.shiftHeld = event.modifiers & KeyboardModifier::Shift;
+        struc.ctrlHeld = event.modifiers & KeyboardModifier::Control;
+        struc.cmdHeld = event.modifiers & KeyboardModifier::Super;
+        struc.altHeld = event.modifiers & KeyboardModifier::Alt;
         struc.code = event.key;
         struc.isDown = event.action == KeyboardInputData::Action::Press;
         struc.isRepeat = event.action == KeyboardInputData::Action::Repeat;

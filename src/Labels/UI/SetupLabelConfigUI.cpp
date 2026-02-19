@@ -6,12 +6,13 @@
 #include "../../Localisation/LocalisationManager.hpp"
 #include "LabelEventCell.hpp"
 
-SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> onFinish)
+SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> onFinish, LabelType type)
 {
     auto pRet = new SetupLabelConfigUI();
 
     CCSize size = ccp(360, 250);
     pRet->onFinish = onFinish;
+    pRet->type = type;
 
     if (pRet && pRet->initAnchored(size.width, size.height))
     {
@@ -25,7 +26,6 @@ SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> 
 
 bool SetupLabelConfigUI::setup()
 {
-    
     this->scheduleUpdate();
 
     m_bgSprite->setVisible(false);
@@ -261,19 +261,51 @@ void SetupLabelConfigUI::createPage1()
 
 void SetupLabelConfigUI::createPage2()
 {
-    auto info = InfoAlertButton::create("Format Label", "Format label help text", 0.65f);
-    pages[1]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
-
-    formatInp = TextInput::create(450, "Format", "bigFont.fnt");
-    formatInp->setAnchorPoint(ccp(0.5f, 0.5f));
-    formatInp->setScale(0.7f);
-    formatInp->setCommonFilter(CommonFilter::Any);
-    formatInp->setCallback([this](const std::string& str)
+    if (type == LabelType::Text)
     {
-        currentConfig.formatString = str;
-    });
+        auto info = InfoAlertButton::create("Format Label", "Format label help text", 0.65f);
+        pages[1]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
 
-    pages[1]->addChildAtPosition(formatInp, Anchor::Center);
+        formatInp = TextInput::create(450, "Format", "bigFont.fnt");
+        formatInp->setAnchorPoint(ccp(0.5f, 0.5f));
+        formatInp->setScale(0.7f);
+        formatInp->setCommonFilter(CommonFilter::Any);
+        formatInp->setCallback([this](const std::string& str)
+        {
+            currentConfig.formatString = str;
+        });
+
+        pages[1]->addChildAtPosition(formatInp, Anchor::Center);
+    }
+
+    if (type == LabelType::Image)
+    {
+        auto info = InfoAlertButton::create("Label Image", "This allows you to customize the image used for the label", 0.65f);
+        pages[1]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
+
+        auto spr1 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/import-from-file-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
+        spr1->setMaxTextScale(0.6f);
+        auto btn1 = CCMenuItemSpriteExtra::create(spr1, this, menu_selector(SetupLabelConfigUI::onSelectImage));
+        btn1->setTag(1);
+        btn1->setPosition(ccp(-120 / 2 - 2.5f, 70));
+        btn1->m_scaleMultiplier = 1.1f;
+
+        auto spr2 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/default-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
+        spr2->setMaxTextScale(0.6f);
+        auto btn2 = CCMenuItemSpriteExtra::create(spr2, this, menu_selector(SetupLabelConfigUI::onSelectImage));
+        btn2->setTag(2);
+        btn2->setPosition(ccp(120 / 2 + 2.5f, 70));
+        btn2->m_scaleMultiplier = 1.1f;
+        
+        pages[1]->addChildAtPosition(btn1, Anchor::Bottom, btn1->getPosition());
+        pages[1]->addChildAtPosition(btn2, Anchor::Bottom, btn2->getPosition());
+
+        formatInp = TextInput::create(450, "Format", "bigFont.fnt");
+        formatInp->setVisible(false);
+
+        pages[1]->addChildAtPosition(formatInp, Anchor::Center);
+        return;
+    }
 }
 
 void SetupLabelConfigUI::createPage3()
@@ -386,6 +418,11 @@ void SetupLabelConfigUI::updateEventsUI()
 void SetupLabelConfigUI::createPages()
 {
     std::vector<std::string> pageNames = { "<bm>General", "<bm>Format", "<bm>Events" };
+
+    if (type == LabelType::Image)
+    {
+        pageNames[1] = "<bm>Image";
+    }
 
     for (size_t i = 0; i < pageNames.size(); i++)
     {
@@ -558,6 +595,7 @@ void SetupLabelConfigUI::setStartConfig(LabelConfig conf)
     this->startConfig = conf;
     this->currentConfig = conf;
 
+    updateImagePreview();
     updateUI();
 }
 
@@ -595,4 +633,60 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
             }
         }
     });
+}
+
+void SetupLabelConfigUI::onSelectImage(CCObject* sender)
+{
+    if (sender->getTag() == 2)
+    {
+        currentConfig.imageLocation = "";
+        updateImagePreview();
+    }
+    else
+    {
+        file::FilePickOptions options;
+        options.defaultPath = Mod::get()->getConfigDir();
+
+        file::FilePickOptions::Filter filter;
+        filter.description = "Image File";
+        filter.files = { "*.png" };
+        options.filters.push_back(filter);
+
+        async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<std::filesystem::path>> result)
+        {
+            if (result.isOk())
+            {
+                if (result.unwrap().has_value())
+                {
+                    auto filePath = result.unwrap().value_or("");
+
+                    currentConfig.imageLocation = filePath.string();
+                    updateImagePreview();
+                }
+            }
+        });
+    }
+}
+
+void SetupLabelConfigUI::updateImagePreview()
+{
+    if (imagePreview)
+    {
+        imagePreview->removeFromParent();
+        imagePreview = nullptr;
+    }
+
+    imagePreview = CCSprite::create(currentConfig.imageLocation.c_str());
+
+    if (!imagePreview)
+    {
+        imagePreview = CCSprite::create("sog.png"_spr);
+    }
+
+    if (!imagePreview)
+        return;
+
+    imagePreview->setScale(std::min<float>(75.0f / imagePreview->getContentHeight(), 1));
+    imagePreview->setVisible(type == LabelType::Image);
+    pages[1]->addChildAtPosition(imagePreview, Anchor::Center, ccp(0, 30));
 }
