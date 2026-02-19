@@ -5,6 +5,7 @@
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
 #include <Geode/modify/GJGameState.hpp>
+#include <Geode/modify/EditorUI.hpp>
 #include "HitboxNode.hpp"
 
 class $modify (HitboxBaseGameLayer, GJBaseGameLayer)
@@ -35,4 +36,9 @@ class $modify (HitboxEditorLayer, LevelEditorLayer)
     void onPlaytest();
 
     virtual void updateVisibility(float dt);
+};
+
+class $modify (HitboxEditorUI, EditorUI)
+{
+    virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 };

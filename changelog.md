@@ -1,3 +1,9 @@
+# 2.6.2
+
+- Fixed Hitbox Trail rendering incorrectly in the editor
+- Fixed show hitboxes being delayed by one frame in the editor
+- Fixed extremely rare crash opening the menu
+
 # 2.6.1
 
 - Added culling to hitbox trail for better performance

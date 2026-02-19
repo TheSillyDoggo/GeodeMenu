@@ -244,6 +244,12 @@ bool HitboxNode::shouldRenderState(PlayerHitboxState* state)
 {
     if (auto gjbgl = GJBaseGameLayer::get())
     {
+        if (auto editor = typeinfo_cast<LevelEditorLayer*>(gjbgl))
+        {
+            if (editor->m_playbackMode != PlaybackMode::Playing)
+                return true;
+        }
+
         auto size = CCDirector::get()->getWinSize() / gjbgl->m_gameState.m_cameraZoom;
         size.height = std::max<float>(size.width, size.height);
         size.width = size.height;

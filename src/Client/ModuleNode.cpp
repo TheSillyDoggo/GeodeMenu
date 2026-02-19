@@ -34,20 +34,11 @@ void ModuleNode::setup()
     label->setAnchorPoint(ccp(0, 0.5f));
     label->limitLabelWidth(110 - (hasOptions ? 3 : 0), 0.5f, 0.1f);
 
-    favBtn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleNode::onToggleFavourite));
-    favBtn->setScale(0.65f);
-    favBtn->toggle(module->isFavourited());
-    favBtn->setVisible(false);
-
-    favBtn->m_offButton->setColor(ccc3(150, 150, 150));
-    favBtn->m_offButton->setOpacity(150);
-
     this->schedule(schedule_selector(ModuleNode::onUpdateLabelColour));
     onUpdateLabelColour(0);
 
     this->addChildAtPosition(btn, Anchor::Left, ccp(15, 0));
     this->addChildAtPosition(label, Anchor::Left, ccp(30, 0));
-    this->addChildAtPosition(favBtn, Anchor::Left, ccp(30 + label->getScaledContentWidth() + 9, -8));
 
     if (hasDesc && !hasOptions)
     {
@@ -93,10 +84,6 @@ void ModuleNode::updateNode()
         if (btn->isToggled() != module->getUserEnabled())
             btn->toggle(module->getUserEnabled());
     }
-
-    if (favBtn->isToggled() != module->isFavourited())
-        favBtn->toggle(module->isFavourited());
-
     
     disabled = false;
     if (SafeModeDisableCheats::get()->getRealEnabled())

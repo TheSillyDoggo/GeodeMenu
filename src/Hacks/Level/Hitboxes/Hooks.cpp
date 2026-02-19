@@ -126,3 +126,10 @@ void HitboxBaseGameLayer::updateCamera(float dt)
     }
     isEndTickCameraUpdate = false;
 }
+
+void HitboxEditorUI::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
+{
+    EditorUI::ccTouchMoved(touch, event);
+
+    base_cast<HitboxBaseGameLayer*>(m_editorLayer)->onTick(false);
+}
