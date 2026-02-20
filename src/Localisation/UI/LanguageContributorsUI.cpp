@@ -175,7 +175,7 @@ bool LanguageContributorsUI::setup()
 
 void LanguageContributorsUI::update(float dt)
 {
-    auto col = ColourUtils::get()->getPastel("language-credits-background");
+    auto col = ColourUtils::get()->getPastel("preview-background");
 
     nodeBG->setColor(col);
     ground->updateGround01Color(ccc3(col.r * 0.7f, col.g * 0.7f, col.b * 0.7f));

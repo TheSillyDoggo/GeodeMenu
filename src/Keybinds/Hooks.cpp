@@ -1,5 +1,8 @@
 #include "Hooks.hpp"
 #include <Geode/utils/Keyboard.hpp>
+#include <Geode/modify/CCIMEDispatcher.hpp>
+#include <BetterInputNode.hpp>
+#include "Casts.hpp"
 
 using namespace geode::prelude;
 
@@ -9,7 +12,14 @@ $execute
     .listen(+[](const geode::KeyboardInputData& event)
     {
         if (CCIMEDispatcher::sharedDispatcher()->hasDelegate())
+        {
+            if (auto inp = BetterInputNode::getSelected())
+            {
+                inp->handleKeypress(event.key, event.action);
+            }
+
             return ListenerResult::Propagate;
+        }
 
         KeyState struc;
         struc.shiftHeld = event.modifiers & KeyboardModifier::Shift;

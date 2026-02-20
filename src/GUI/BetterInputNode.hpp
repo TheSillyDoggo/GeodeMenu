@@ -7,7 +7,7 @@
 
 using namespace geode::prelude;
 
-class BetterInputNode : public CCMenu, public CCTextFieldDelegate
+class BetterInputNode : public CCMenu
 {
     protected:
         std::string placeholder;
@@ -29,9 +29,10 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         float numHoldInterval = 20;
         float numHoldDefault = 1.0f;
 
+        static inline BetterInputNode* selectedInput = nullptr;
         TextInputDelegate* delegate = nullptr;
 
-        CCTextFieldTTF* ttfInput = nullptr;
+        geode::TextInput* textInput = nullptr;
         CCLayerColor* cursorCarot = nullptr;
         EasyBG* bg = nullptr;
         AdvLabelBMFont* placeholderLbl = nullptr;
@@ -46,21 +47,17 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent);
 
-        virtual bool onTextFieldAttachWithIME(CCTextFieldTTF * sender);
-        virtual bool onTextFieldDetachWithIME(CCTextFieldTTF * sender);
-        virtual bool onTextFieldInsertText(CCTextFieldTTF * sender, const char* text, int nLen, cocos2d::enumKeyCodes);
-        virtual bool onTextFieldDeleteBackward(CCTextFieldTTF * sender, const char* delText, int nLen);
-        virtual bool onDraw(CCTextFieldTTF * sender);
-
         void updateCursorPos(bool isTouchUpdate, CCPoint touchPos);
 
         int getRealCursorPos();
         void moveCursor(int by);
 
         std::string filterString(std::string ss);
+        ~BetterInputNode();
 
     public:
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");
+        static BetterInputNode* getSelected();
 
         void selectInput(bool selected);
 
@@ -77,6 +74,8 @@ class BetterInputNode : public CCMenu, public CCTextFieldDelegate
         void setCharFilter(std::string str);
 
         void setNumHoldValues(bool enabled, float step = 1.0f, float interval = 1.0f, float def = 1.0f);
+
+        void handleKeypress(cocos2d::enumKeyCodes key, KeyboardInputData::Action action);
 
         void visit();
         bool init(float width, std::string placeholder, std::string font = "bigFont.fnt");

@@ -1,3 +1,8 @@
+# 2.6.3
+
+- Fixed Input nodes not working on macOS and android (with floating keyboards)
+- Fixed colour gradients not saving
+
 # 2.6.2
 
 - Added Image label type

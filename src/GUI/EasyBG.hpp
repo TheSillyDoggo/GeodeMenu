@@ -7,7 +7,7 @@ using namespace geode::prelude;
 class EasyBG : public CCNode
 {
     protected:
-        CCScale9Sprite* bg = nullptr;
+        NineSlice* bg = nullptr;
         CCNode* targetting = nullptr;
         CCSize targettingOffset = CCPointZero;
 
@@ -17,7 +17,7 @@ class EasyBG : public CCNode
         void setTargettingNode(CCNode* target);
         void setTargettingOffset(CCSize offset);
 
-        CCScale9Sprite* getBG();
+        NineSlice* getBG();
 
         virtual bool init();
         virtual void visit();

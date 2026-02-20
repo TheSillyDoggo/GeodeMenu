@@ -9,7 +9,7 @@ bool EasyBG::init()
 
     this->setAnchorPoint(ccp(0.5f, 0.5f));
 
-    bg = CCScale9Sprite::create("square02b_small.png");
+    bg = NineSlice::create("square02b_small.png");
     bg->setColor(ccc3(0, 0, 0));
     bg->setOpacity(100);
     bg->setScale(0.5f);
@@ -42,7 +42,7 @@ void EasyBG::setTargettingOffset(CCSize offset)
     this->targettingOffset = offset;
 }
 
-CCScale9Sprite* EasyBG::getBG()
+NineSlice* EasyBG::getBG()
 {
     return bg;
 }

@@ -16,6 +16,11 @@ BetterInputNode* BetterInputNode::create(float width, std::string placeholder, s
     return nullptr;
 }
 
+BetterInputNode* BetterInputNode::getSelected()
+{
+    return selectedInput;
+}
+
 bool BetterInputNode::init(float width, std::string placeholder, std::string font)
 {
     if (!CCMenu::init())
@@ -28,9 +33,25 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     this->setTouchEnabled(true);
     this->setTouchPriority(-80085);
 
-    ttfInput = CCTextFieldTTF::textFieldWithPlaceHolder("", "Arial.ttf", 16);
-    ttfInput->setDelegate(this);
-    ttfInput->setVisible(false);
+    textInput = geode::TextInput::create(69, "");
+    textInput->setVisible(false);
+    textInput->getInputNode()->setTouchEnabled(false);
+    textInput->setCallback([this](const std::string& str)
+    {
+        if (cursorPos != -1)
+        {
+            auto diff = str.size() - this->getString().size();
+            cursorPos += diff;
+            updateCursorPos(false, CCPointZero);
+        }
+
+        setString(str);
+
+        if (delegate)
+            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
+    });
+    textInput->getInputNode()->setUserObject("force-char-bypass"_spr, CCNode::create());
+    textInput->getInputNode()->setUserObject("force-filter-bypass"_spr, CCNode::create());
 
     bg = EasyBG::create();
     bg->setTargettingNode(this);
@@ -61,7 +82,7 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     labelContainer->addChild(cursorCarot);
 
     this->addChild(bg);
-    this->addChild(ttfInput);
+    this->addChild(textInput);
     this->addChild(labelContainer);
     return true;
 }
@@ -70,16 +91,18 @@ void BetterInputNode::selectInput(bool selected)
 {
     isSelected = selected;
 
-    ttfInput->setString(text.c_str());
+    textInput->setString(text.c_str());
 
     if (selected)
     {
-        ttfInput->attachWithIME();
+        textInput->focus();
+        selectedInput = this;
         bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
     }
     else
     {
-        ttfInput->detachWithIME();
+        textInput->defocus();
+        selectedInput = nullptr;
         bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 100)));
     }
 }
@@ -131,7 +154,7 @@ void BetterInputNode::setString(std::string str)
 
     this->text = str;
 
-    ttfInput->setString(str.c_str());
+    textInput->setString(str.c_str());
     textLbl->setString(str.c_str());
 
     useTTFView = textLbl->doesLabelContainNonDisplayableCharacter();
@@ -140,10 +163,6 @@ void BetterInputNode::setString(std::string str)
     {
         textLblUser->setString(str.c_str());
     }
-
-    #ifdef GEODE_IS_DESKTOP
-    ttfInput->m_uCursorPos = str.size() + 1;
-    #endif
 
     updateCursorPos(false, CCPointZero);
 }
@@ -204,133 +223,6 @@ void BetterInputNode::setAlignment(CCTextAlignment alignment)
 CCTextAlignment BetterInputNode::getAlignment()
 {
     return alignment;
-}
-
-bool BetterInputNode::onTextFieldAttachWithIME(CCTextFieldTTF * sender)
-{
-    bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
-    isSelected = true;
-
-    return false;
-}
-
-bool BetterInputNode::onTextFieldDetachWithIME(CCTextFieldTTF * sender)
-{
-    bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 100)));
-    isSelected = false;
-    
-    return false;
-}
-
-bool BetterInputNode::onTextFieldInsertText(CCTextFieldTTF * sender, const char * _text, int nLen, cocos2d::enumKeyCodes code)
-{
-    if (!_text)
-    {
-        setString("");
-
-        if (delegate)
-            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
-    }
-
-    if (nLen == 1 && _text[0] == '\n')
-        return true;
-
-    if (CCKeyboardDispatcher::get()->getControlKeyPressed())
-    {
-        if (code == enumKeyCodes::KEY_Left)
-        {
-            int by = -1;
-
-            char lastChar = 'A';
-
-            for (int i = getRealCursorPos() - 1; i > 0; i--)
-            {
-                if (text[i] == ' ' && lastChar != ' ')
-                {
-                    break;
-                }
-
-                by--;
-                lastChar = text[i];
-            }
-
-            moveCursor(by);
-        }
-
-        if (code == enumKeyCodes::KEY_Right)
-        {
-            int by = 1;
-
-            char lastChar = 'A';
-
-            for (int i = getRealCursorPos(); i < text.size(); i++)
-            {
-                if (text[i] != ' ' && lastChar == ' ')
-                {
-                    by--;
-                    break;
-                }
-
-                by++;
-                lastChar = text[i];
-            }
-
-            moveCursor(by);
-        }
-    }
-    else
-    {
-        if (code == enumKeyCodes::KEY_Left)
-        {
-            moveCursor(-1);
-        }
-
-        if (code == enumKeyCodes::KEY_Right)
-        {
-            moveCursor(1);
-        }
-    }
-
-    if (code == enumKeyCodes::KEY_Unknown)
-    {
-        #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
-        this->text = "";
-        std::string str = std::string(_text);
-        #else
-        std::string str = this->text;
-        str.insert(getRealCursorPos(), _text);
-        #endif
-        
-        setString(str);
-
-        moveCursor(nLen);
-
-        if (delegate)
-            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
-    }
-    
-    return false;
-}
-
-bool BetterInputNode::onTextFieldDeleteBackward(CCTextFieldTTF * sender, const char * delText, int nLen)
-{
-    if (getRealCursorPos() == 0)
-        return false;
-    
-    auto cPos = cursorPos;
-
-    moveCursor(-nLen);
-    
-    this->text.erase(getRealCursorPos(), nLen);
-    setString(this->text);
-
-    if (cPos == -1)
-        cursorPos = -1;
-
-    if (delegate)
-        delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
-
-    return false;
 }
 
 void BetterInputNode::setNumHoldValues(bool enabled, float step, float interval, float def)
@@ -406,11 +298,6 @@ void BetterInputNode::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 void BetterInputNode::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 {
     ccTouchEnded(pTouch, pEvent);
-}
-
-bool BetterInputNode::onDraw(CCTextFieldTTF * sender)
-{
-    return false;
 }
 
 void BetterInputNode::setDelegate(TextInputDelegate* delegate)
@@ -491,6 +378,7 @@ void BetterInputNode::updateCursorPos(bool isTouchUpdate, CCPoint touchPos)
     }
 
     auto cPos = getRealCursorPos();
+    textInput->getInputNode()->m_textField->m_uCursorPos = cursorPos;
 
     if (useTTFView)
     {
@@ -517,4 +405,84 @@ void BetterInputNode::updateCursorPos(bool isTouchUpdate, CCPoint touchPos)
             cursorCarot->setPositionX(labelContainer->getContentWidth());
         }
     }
+}
+
+void BetterInputNode::handleKeypress(cocos2d::enumKeyCodes key, KeyboardInputData::Action action)
+{
+    if (action != KeyboardInputData::Action::Release)
+    {
+        if (CCKeyboardDispatcher::get()->getControlKeyPressed())
+        {
+            if (key == enumKeyCodes::KEY_Left)
+            {
+                int by = -1;
+
+                char lastChar = 'A';
+
+                for (int i = getRealCursorPos() - 1; i > 0; i--)
+                {
+                    if (text[i] == ' ' && lastChar != ' ')
+                    {
+                        break;
+                    }
+
+                    by--;
+                    lastChar = text[i];
+                }
+
+                moveCursor(by);
+            }
+
+            if (key == enumKeyCodes::KEY_Right)
+            {
+                int by = 1;
+
+                char lastChar = 'A';
+
+                for (int i = getRealCursorPos(); i < text.size(); i++)
+                {
+                    if (text[i] != ' ' && lastChar == ' ')
+                    {
+                        by--;
+                        break;
+                    }
+
+                    by++;
+                    lastChar = text[i];
+                }
+
+                moveCursor(by);
+            }
+        }
+        else
+        {
+            if (key == enumKeyCodes::KEY_Left)
+            {
+                moveCursor(-1);
+            }
+
+            if (key == enumKeyCodes::KEY_Right)
+            {
+                moveCursor(1);
+            }
+        }
+
+        if (key == enumKeyCodes::KEY_Home)
+        {
+            cursorPos = 0;
+            updateCursorPos(false, CCPointZero);
+        }
+
+        if (key == enumKeyCodes::KEY_End)
+        {
+            cursorPos = -1;
+            updateCursorPos(false, CCPointZero);
+        }
+    }
+}
+
+BetterInputNode::~BetterInputNode()
+{
+    if (selectedInput == this)
+        selectedInput = nullptr;
 }

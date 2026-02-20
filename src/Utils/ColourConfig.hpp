@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Geode/Geode.hpp>
+
 enum ColourConfigType
 {
     CustomColour = 0,
@@ -28,4 +30,7 @@ struct ColourConfig
 
     cocos2d::ccColor3B colourForConfig(std::string channel);
     cocos2d::ccColor3B colourForGradient(float v);
+
+    matjson::Value toJson();
+    void fromJson(matjson::Value value);
 };

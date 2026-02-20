@@ -163,6 +163,65 @@ ccColor3B ColourConfig::colourForGradient(float v)
     return ccWHITE;
 }
 
+matjson::Value ColourConfig::toJson()
+{
+    matjson::Value value;
+
+    value["colour"]["r"] = customColour.r;
+    value["colour"]["g"] = customColour.g;
+    value["colour"]["b"] = customColour.b;
+    value["opacity"] = opacity;
+    value["chromaSpeed"] = chromaSpeed;
+    value["type"] = (int)type;
+    value["smooth-gradient"] = smoothGradient;
+
+    auto arr = matjson::Value::array();
+
+    for (auto grad : gradientLocations)
+    {
+        matjson::Value gr;
+        gr["location"] = grad.percentageLocation;
+        gr["colour"]["r"] = grad.colour.r;
+        gr["colour"]["g"] = grad.colour.g;
+        gr["colour"]["b"] = grad.colour.b;
+
+        arr.push(gr);
+    }
+
+    value["gradient-values"] = arr;
+
+    return value;
+}
+
+void ColourConfig::fromJson(matjson::Value value)
+{
+    customColour.r = value["colour"]["r"].asInt().unwrapOr(customColour.r);
+    customColour.g = value["colour"]["g"].asInt().unwrapOr(customColour.g);
+    customColour.b = value["colour"]["b"].asInt().unwrapOr(customColour.b);
+    opacity = value["opacity"].asDouble().unwrapOr(opacity);
+    chromaSpeed = value["chromaSpeed"].asDouble().unwrapOr(chromaSpeed);
+    type = (ColourConfigType)value["type"].asInt().unwrapOr((int)type);
+    smoothGradient = value["smooth-gradient"].asBool().unwrapOr(smoothGradient);
+
+    if (value.contains("gradient-values") && value["gradient-values"].isArray())
+    {
+        gradientLocations.clear();
+
+        for (auto grad : value["gradient-values"].asArray().unwrap())
+        {
+            gradientLocations.push_back(
+            {
+                ccc3(
+                    grad["colour"]["r"].asInt().unwrapOr(255),
+                    grad["colour"]["g"].asInt().unwrapOr(255),
+                    grad["colour"]["b"].asInt().unwrapOr(255)
+                ),
+                (float)grad["location"].asDouble().unwrapOr(0.5f)
+            });
+        }
+    }
+}
+
 float ColourUtils::getLoopedValue(float value)
 {
     return (sinf(value) + 1) / 2;
