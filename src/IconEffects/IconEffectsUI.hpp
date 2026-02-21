@@ -23,12 +23,15 @@ class IconEffectsUI : public CategoryNode
     public:
         CREATE_FUNC(IconEffectsUI)
 
+        std::pair<IconicGamemodeType, bool> getSelected();
         void updateSelection();
 
         void onSelectType(CCObject* sender);
         void onTest(CCObject* sender);
         void onTest2(CCObject* sender);
         void onTest3(CCObject* sender);
+        void onTest4(CCObject* sender);
+        void onTest5(CCObject* sender);
 
         CCMenuItemSpriteExtra* createPreviewButton(IconicGamemodeType gamemode, bool player2);
 

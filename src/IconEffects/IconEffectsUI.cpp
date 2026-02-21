@@ -51,10 +51,31 @@ bool IconEffectsUI::init()
     auto btn2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Secondary", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest2));
     auto btn3 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Glow", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest3));
 
+
+    auto menu2 = CCMenu::create();
+    menu2->setContentSize(ccp(100, 100));
+    menu2->setPosition(ccp(30, 100));
+
+    auto b2tn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Invert", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
+    auto b2tn2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Same", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
+    auto b2tn3 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Seperate", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
+    b2tn->setTag(1);
+    b2tn2->setTag(2);
+    b2tn3->setTag(3);
+
+    auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onTest5), 1.0f);
+    toggler->setPosition(ccp(-50, -50));
+    toggler->toggle(IconicManager::get()->getSeperateColours());
+
     menu->addChildAtPosition(btn, Anchor::TopRight);
     menu->addChildAtPosition(btn2, Anchor::Right);
     menu->addChildAtPosition(btn3, Anchor::BottomRight);
+    menu2->addChildAtPosition(b2tn, Anchor::TopRight);
+    menu2->addChildAtPosition(b2tn2, Anchor::Right);
+    menu2->addChildAtPosition(b2tn3, Anchor::BottomRight);
+    menu2->addChild(toggler);
     this->addChild(menu);
+    this->addChild(menu2);
     this->addChild(n);
     return true;
 }
@@ -138,11 +159,34 @@ CCMenuItemSpriteExtra* IconEffectsUI::createPreviewButton(IconicGamemodeType gam
     return btn;
 }
 
+std::pair<IconicGamemodeType, bool> IconEffectsUI::getSelected()
+{
+    IconicGamemodeType gamemode = selectedType.first;
+    bool player2 = selectedType.second;
+
+    if (IconicManager::get()->getDualMode() != IconicDualMode::Seperate)
+        player2 = false;
+
+    if (!IconicManager::get()->getSeperateColours())
+        gamemode = IconicGamemodeType::Cube;
+
+    return { gamemode, player2 };
+}
+
 void IconEffectsUI::updateSelection()
 {
     for (auto data : previewNodes)
     {
-        bool sel = selectedType.first == data.gamemode && selectedType.second == data.player2;
+        bool chk1 = selectedType.first == data.gamemode;
+        bool chk2 = selectedType.second == data.player2;
+
+        if (IconicManager::get()->getDualMode() != IconicDualMode::Seperate)
+            chk2 = true;
+
+        if (!IconicManager::get()->getSeperateColours())
+            chk1 = true;
+
+        bool sel = chk1 && chk2;
 
         data.btn->setEnabled(!sel);
         data.shader->setColor(sel ? ccc3(255, 255, 255) : ccc3(100, 100, 100));
@@ -166,7 +210,7 @@ void IconEffectsUI::onSelectType(CCObject* sender)
 
 void IconEffectsUI::onTest(CCObject* sender)
 {
-    auto conf = IconicManager::get()->getConfig(selectedType.first, selectedType.second);
+    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
     auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
     {
@@ -178,7 +222,7 @@ void IconEffectsUI::onTest(CCObject* sender)
 
 void IconEffectsUI::onTest2(CCObject* sender)
 {
-    auto conf = IconicManager::get()->getConfig(selectedType.first, selectedType.second);
+    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
     auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
     {
@@ -190,7 +234,7 @@ void IconEffectsUI::onTest2(CCObject* sender)
 
 void IconEffectsUI::onTest3(CCObject* sender)
 {
-    auto conf = IconicManager::get()->getConfig(selectedType.first, selectedType.second);
+    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
     auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
     {
@@ -198,6 +242,33 @@ void IconEffectsUI::onTest3(CCObject* sender)
     });
     ui->setStartConfig(conf->getGlowConfig());
     ui->show();
+}
+
+void IconEffectsUI::onTest4(CCObject* sender)
+{
+    switch (sender->getTag())
+    {
+        case 1:
+            IconicManager::get()->setDualMode(IconicDualMode::Invert);
+            break;
+
+        case 2:
+            IconicManager::get()->setDualMode(IconicDualMode::Same);
+            break;
+
+        case 3:
+            IconicManager::get()->setDualMode(IconicDualMode::Seperate);
+            break;
+    }
+
+    updateSelection();
+}
+
+void IconEffectsUI::onTest5(CCObject* sender)
+{
+    IconicManager::get()->setSeperateColours(!IconicManager::get()->getSeperateColours());
+
+    updateSelection();
 }
 
 void IconEffectsUI::update(float dt)

@@ -90,24 +90,25 @@ bool KeybindManager::processMSG(KeyState state)
     return capture;
 }
 
-$execute
-{
-    auto openMenu = new FuncKeybindStruct();
-    openMenu->id = "internal/open-menu";
-    openMenu->func = [](KeyState state)
-    {
-        if (AndroidUI::get())
-        {
-            // close one menu so that option displays are gone before the main popup
-            CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false, 0);
-        }            
-        else
-        {
-            AndroidUI::addToScene();
-        }
-    };
-    openMenu->config.mod = MenuKeybind::get();
-    openMenu->config.activateOnDown = true;
+#include <Geode/loader/SettingV3.hpp>
 
-    KeybindManager::get()->addStruct(openMenu);
-}
+using namespace geode::prelude;
+
+$on_mod(Loaded)
+{
+    listenForKeybindSettingPresses("open-menu-keybind", [](Keybind const& keybind, bool down, bool repeat, double timestamp)
+    {
+        if (down && !repeat)
+        {
+            if (AndroidUI::get())
+            {
+                // close one menu so that option displays are gone before the main popup
+                CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false, 0);
+            }            
+            else
+            {
+                AndroidUI::addToScene();
+            }
+        }
+});
+};

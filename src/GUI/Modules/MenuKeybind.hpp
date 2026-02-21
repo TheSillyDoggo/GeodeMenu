@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "../../Client/KeybindModule.hpp"
 
@@ -19,4 +19,4 @@ class MenuKeybind : public KeybindModule
         }
 };
 
-SUBMIT_HACK(MenuKeybind);
+SUBMIT_HACK(MenuKeybind);*/

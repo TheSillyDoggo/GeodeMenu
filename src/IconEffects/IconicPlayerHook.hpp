@@ -11,6 +11,7 @@ class IconicPlayerHook : public cocos2d::CCNode
         PlayerObject* player = nullptr;
         SimplePlayer* simple = nullptr;
         bool enabled = false;
+        bool player2 = false;
         IconicConfig* config = nullptr;
 
         struct DefaultValues

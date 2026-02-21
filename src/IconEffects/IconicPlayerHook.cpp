@@ -54,6 +54,55 @@ void IconicPlayerHook::update(float dt)
             simple->setSecondColor(config->getSecondary());
             simple->setGlowOutline(config->getGlow());
         }
+
+        if (player)
+        {
+            if (player->m_isShip)
+            {
+                config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
+                auto config2 = IconicManager::get()->getConfig(player->m_isPlatformer ? IconicGamemodeType::Jetpack : IconicGamemodeType::Ship, player2);
+
+                player->setColor(config->getPrimary());
+                player->setSecondColor(config->getSecondary());
+                player->setGlowColor(config->getGlow());
+
+                player->m_vehicleSprite->setColor(config2->getPrimary());
+                player->m_vehicleSpriteSecondary->setColor(config2->getSecondary());
+                player->m_vehicleGlow->setColor(config2->getGlow());
+            }
+            else if (player->m_isBird)
+            {
+                config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
+                auto config2 = IconicManager::get()->getConfig(IconicGamemodeType::Bird, player2);
+
+                player->setColor(config->getPrimary());
+                player->setSecondColor(config->getSecondary());
+                player->setGlowColor(config->getGlow());
+
+                player->m_vehicleSprite->setColor(config2->getPrimary());
+                player->m_vehicleSpriteSecondary->setColor(config2->getSecondary());
+                player->m_vehicleGlow->setColor(config2->getGlow());
+            }
+            else
+            {
+                if (player->m_isBall)
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Ball, player2);
+                else if (player->m_isDart)
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2);
+                else if (player->m_isRobot)
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Robot, player2);
+                else if (player->m_isSpider)
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Spider, player2);
+                else if (player->m_isSwing)
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Swing, player2);
+                else
+                    config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
+
+                player->setColor(config->getPrimary());
+                player->setSecondColor(config->getSecondary());
+                player->setGlowColor(config->getGlow());
+            }
+        }
     }
 }
 
@@ -83,6 +132,7 @@ bool IconicPlayerHook::isEnabled()
 
 void IconicPlayerHook::setGamemode(IconicGamemodeType gamemode, bool player2)
 {
+    this->player2 = player2;
     config = IconicManager::get()->getConfig(gamemode, player2);
 }
 
@@ -97,14 +147,14 @@ void IconicPlayerHook::saveDefault()
 
     if (player)
     {
-        auto gh = player->m_ghostType;
-        player->toggleGhostEffect(GhostType::Enabled);
+        // auto gh = player->m_ghostType;
+        // player->toggleGhostEffect(GhostType::Enabled);
 
-        values.ghost = player->m_ghostTrail->m_color;
+        // values.ghost = player->m_ghostTrail->m_color;
         // values.trail = player->m_ghostTrail
         // values.wave = player->m_ghostTrail
 
-        player->toggleGhostEffect(gh);
+        // player->toggleGhostEffect(gh);
     }
 }
 

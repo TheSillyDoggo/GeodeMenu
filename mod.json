@@ -52,7 +52,12 @@
 		}
     },
 	"settings": {
-		
+		"open-menu-keybind": {
+			"type": "keybind",
+			"name": "Open Menu Bind",
+			"default": "Tab",
+			"priority": 8008135
+		}
 	},
 	"tags": [
 		"cheat",

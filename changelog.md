@@ -2,6 +2,7 @@
 
 - Fixed Input nodes not working on macOS and android (with floating keyboards)
 - Fixed colour gradients not saving
+- Fixed keybind to open menu not working sometimes
 
 # 2.6.2
 

@@ -11,6 +11,8 @@ class IconicConfig
         ColourConfig primary = {};
         ColourConfig secondary = {};
         ColourConfig glow = {};
+        IconicGamemodeType gamemode;
+        bool player2;
 
     public:
         static IconicConfig* create(IconicGamemodeType gamemode, bool player2);

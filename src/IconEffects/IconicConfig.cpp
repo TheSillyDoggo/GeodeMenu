@@ -1,5 +1,6 @@
 #include "IconicConfig.hpp"
 #include <Geode/Geode.hpp>
+#include "IconicManager.hpp"
 
 using namespace geode::prelude;
 
@@ -8,6 +9,8 @@ IconicConfig* IconicConfig::create(IconicGamemodeType gamemode, bool player2)
     auto pRet = new IconicConfig();
 
     std::string gm = "";
+    pRet->gamemode = gamemode;
+    pRet->player2 = player2;
 
     switch (gamemode)
     {
@@ -78,16 +81,86 @@ void IconicConfig::load()
 
 cocos2d::ccColor3B IconicConfig::getPrimary()
 {
+    auto gm = gamemode;
+
+    if (!IconicManager::get()->getSeperateColours())
+        gm = IconicGamemodeType::Cube;
+
+    if (player2)
+    {
+        switch (IconicManager::get()->getDualMode())
+        {
+            case IconicDualMode::Invert:
+                return IconicManager::get()->getConfig(gm, false)->getSecondary();
+
+            case IconicDualMode::Same:
+                return IconicManager::get()->getConfig(gm, false)->getPrimary();
+
+            case IconicDualMode::Seperate:
+            default:
+                break;
+        }
+    }
+
+    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
+        return IconicManager::get()->getConfig(gm, player2)->getPrimary();
+
     return primary.colourForConfig(fmt::format("{}_primary", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getSecondary()
 {
+    auto gm = gamemode;
+
+    if (!IconicManager::get()->getSeperateColours())
+        gm = IconicGamemodeType::Cube;
+
+    if (player2)
+    {
+        switch (IconicManager::get()->getDualMode())
+        {
+            case IconicDualMode::Invert:
+                return IconicManager::get()->getConfig(gm, false)->getPrimary();
+
+            case IconicDualMode::Same:
+                return IconicManager::get()->getConfig(gm, false)->getSecondary();
+
+            case IconicDualMode::Seperate:
+            default:
+                break;
+        }
+    }
+
+    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
+        return IconicManager::get()->getConfig(gm, player2)->getSecondary();
+
     return secondary.colourForConfig(fmt::format("{}_secondary", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getGlow()
 {
+    auto gm = gamemode;
+
+    if (!IconicManager::get()->getSeperateColours())
+        gm = IconicGamemodeType::Cube;
+
+    if (player2)
+    {
+        switch (IconicManager::get()->getDualMode())
+        {
+            case IconicDualMode::Invert:
+            case IconicDualMode::Same:
+                return IconicManager::get()->getConfig(gm, false)->getGlow();
+
+            case IconicDualMode::Seperate:
+            default:
+                break;
+        }
+    }
+
+    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
+        return IconicManager::get()->getConfig(gm, player2)->getGlow();
+
     return glow.colourForConfig(fmt::format("{}_glow", saveStr));
 }
 
