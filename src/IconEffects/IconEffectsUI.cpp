@@ -19,6 +19,16 @@ bool IconEffectsUI::init()
     bg->setContentHeight(70);
     updateLayout();
 
+    dualBG = EasyBG::create();
+    dualBG->setAnchorPoint(ccp(0, 0));
+    dualBG->setContentSize(ccp(110, getContentHeight() - bg->getContentHeight() - 2.5f * 2));
+    dualBG->setZOrder(-69);
+
+    effectsBG = EasyBG::create();
+    effectsBG->setAnchorPoint(ccp(0, 0));
+    effectsBG->setContentSize(ccp(getContentWidth() - dualBG->getContentWidth() - 2.5f * 2, getContentHeight() - bg->getContentHeight() - 2.5f * 2));
+    effectsBG->setZOrder(-69);
+
     int x = 0;
     auto n = CCMenu::create();
 
@@ -44,12 +54,15 @@ bool IconEffectsUI::init()
     updateSelection();
 
     auto menu = CCMenu::create();
-    menu->setContentSize(ccp(100, 100));
+    menu->setContentSize(ccp(250, 100));
     menu->setPosition(ccp(100, 100));
 
     auto btn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Primary", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest));
     auto btn2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Secondary", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest2));
     auto btn3 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Glow", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest3));
+    auto btn4 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Trail", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest6));
+    auto btn5 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Ghost", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest7));
+    auto btn6 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Wave Trail", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest8));
 
 
     auto menu2 = CCMenu::create();
@@ -70,6 +83,9 @@ bool IconEffectsUI::init()
     menu->addChildAtPosition(btn, Anchor::TopRight);
     menu->addChildAtPosition(btn2, Anchor::Right);
     menu->addChildAtPosition(btn3, Anchor::BottomRight);
+    menu->addChildAtPosition(btn4, Anchor::BottomLeft);
+    menu->addChildAtPosition(btn5, Anchor::Left);
+    menu->addChildAtPosition(btn6, Anchor::TopLeft);
     menu2->addChildAtPosition(b2tn, Anchor::TopRight);
     menu2->addChildAtPosition(b2tn2, Anchor::Right);
     menu2->addChildAtPosition(b2tn3, Anchor::BottomRight);
@@ -77,6 +93,8 @@ bool IconEffectsUI::init()
     this->addChild(menu);
     this->addChild(menu2);
     this->addChild(n);
+    this->addChildAtPosition(dualBG, Anchor::BottomLeft);
+    this->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
     return true;
 }
 
@@ -269,6 +287,42 @@ void IconEffectsUI::onTest5(CCObject* sender)
     IconicManager::get()->setSeperateColours(!IconicManager::get()->getSeperateColours());
 
     updateSelection();
+}
+
+void IconEffectsUI::onTest6(CCObject* sender)
+{
+    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+
+    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
+    {
+        conf->setTrailConfig(con);
+    });
+    ui->setStartConfig(conf->getTrailConfig());
+    ui->show();
+}
+
+void IconEffectsUI::onTest7(CCObject* sender)
+{
+    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+
+    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
+    {
+        conf->setGhostConfig(con);
+    });
+    ui->setStartConfig(conf->getGhostConfig());
+    ui->show();
+}
+
+void IconEffectsUI::onTest8(CCObject* sender)
+{
+    auto conf = IconicManager::get()->getConfig(IconicGamemodeType::Dart, getSelected().second);
+
+    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
+    {
+        conf->setWaveTrailConfig(con);
+    });
+    ui->setStartConfig(conf->getWaveTrailConfig());
+    ui->show();
 }
 
 void IconEffectsUI::update(float dt)

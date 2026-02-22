@@ -19,6 +19,8 @@ class IconEffectsUI : public CategoryNode
         };
         std::vector<PreviewNodeData> previewNodes = {};
         std::pair<IconicGamemodeType, bool> selectedType = { IconicGamemodeType::Cube, false };
+        EasyBG* dualBG = nullptr;
+        EasyBG* effectsBG = nullptr;
 
     public:
         CREATE_FUNC(IconEffectsUI)
@@ -32,6 +34,9 @@ class IconEffectsUI : public CategoryNode
         void onTest3(CCObject* sender);
         void onTest4(CCObject* sender);
         void onTest5(CCObject* sender);
+        void onTest6(CCObject* sender);
+        void onTest7(CCObject* sender);
+        void onTest8(CCObject* sender);
 
         CCMenuItemSpriteExtra* createPreviewButton(IconicGamemodeType gamemode, bool player2);
 

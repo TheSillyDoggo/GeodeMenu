@@ -59,29 +59,29 @@ void IconicPlayerHook::update(float dt)
         {
             if (player->m_isShip)
             {
-                config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
-                auto config2 = IconicManager::get()->getConfig(player->m_isPlatformer ? IconicGamemodeType::Jetpack : IconicGamemodeType::Ship, player2);
+                config = IconicManager::get()->getConfig(player->m_isPlatformer ? IconicGamemodeType::Jetpack : IconicGamemodeType::Ship, player2);
+                auto config2 = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
 
-                player->setColor(config->getPrimary());
-                player->setSecondColor(config->getSecondary());
-                player->setGlowColor(config->getGlow());
+                player->setColor(config2->getPrimary());
+                player->setSecondColor(config2->getSecondary());
+                player->setGlowColor(config2->getGlow());
 
-                player->m_vehicleSprite->setColor(config2->getPrimary());
-                player->m_vehicleSpriteSecondary->setColor(config2->getSecondary());
-                player->m_vehicleGlow->setColor(config2->getGlow());
+                player->m_vehicleSprite->setColor(config->getPrimary());
+                player->m_vehicleSpriteSecondary->setColor(config->getSecondary());
+                player->m_vehicleGlow->setColor(config->getGlow());
             }
             else if (player->m_isBird)
             {
-                config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
-                auto config2 = IconicManager::get()->getConfig(IconicGamemodeType::Bird, player2);
+                config = IconicManager::get()->getConfig(IconicGamemodeType::Bird, player2);
+                auto config2 = IconicManager::get()->getConfig(IconicGamemodeType::Cube, player2);
 
-                player->setColor(config->getPrimary());
-                player->setSecondColor(config->getSecondary());
-                player->setGlowColor(config->getGlow());
+                player->setColor(config2->getPrimary());
+                player->setSecondColor(config2->getSecondary());
+                player->setGlowColor(config2->getGlow());
 
-                player->m_vehicleSprite->setColor(config2->getPrimary());
-                player->m_vehicleSpriteSecondary->setColor(config2->getSecondary());
-                player->m_vehicleGlow->setColor(config2->getGlow());
+                player->m_vehicleSprite->setColor(config->getPrimary());
+                player->m_vehicleSpriteSecondary->setColor(config->getSecondary());
+                player->m_vehicleGlow->setColor(config->getGlow());
             }
             else
             {
@@ -102,6 +102,15 @@ void IconicPlayerHook::update(float dt)
                 player->setSecondColor(config->getSecondary());
                 player->setGlowColor(config->getGlow());
             }
+
+            if (player->m_regularTrail)
+                player->m_regularTrail->setColor(config->getTrail());
+
+            if (player->m_ghostTrail)
+                player->m_ghostTrail->m_color = config->getGhost();
+
+            if (player->m_waveTrail)
+                player->m_waveTrail->setColor(config->getWaveTrail());
         }
     }
 }
