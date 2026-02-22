@@ -15,6 +15,8 @@ class $modify (CBFCheckMenuLayer, MenuLayer)
 class $modify (SpeedhackScheduler, CCScheduler)
 {
     virtual void update(float dt);
+
+    void pauseTarget(CCObject *pTarget);
 };
 
 class $modify (SpeedhackBaseGameLayer, GJBaseGameLayer)

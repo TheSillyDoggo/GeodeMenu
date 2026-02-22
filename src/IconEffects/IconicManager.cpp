@@ -49,7 +49,7 @@ void IconicManager::setup()
     auto parent = Mod::get()->getSavedValue<matjson::Value>("iconic-config");
     
     seperate = parent["use-seperate-colours"].asBool().unwrapOr(seperate);
-    dualMode = (IconicDualMode)parent["dual-mode"].asInt().unwrapOr((int)dualMode);
+    dualMode = (IconicDualMode)parent["dual-mode"].asInt().unwrapOr(Mod::get()->setSavedValue<bool>("same-dual", false) ? (int)IconicDualMode::Same : (int)IconicDualMode::Seperate);
 }
 
 IconicDualMode IconicManager::getDualMode()

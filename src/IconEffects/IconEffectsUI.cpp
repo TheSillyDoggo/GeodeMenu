@@ -51,51 +51,116 @@ bool IconEffectsUI::init()
     n->setAnchorPoint(ccp(0, 0));
     n->setScale(0.85f);
 
+    auto menu = CCMenu::create();
+    menu->setContentSize(ccp(0, 0));
+
+    for (size_t i = 1; i < (int)IconicEffectType::WaveTrail + 1; i++)
+    {
+        createEffectNodes((IconicEffectType)i, i - 1, menu);
+    }
+
     updateSelection();
 
-    auto menu = CCMenu::create();
-    menu->setContentSize(ccp(250, 100));
-    menu->setPosition(ccp(100, 100));
+    auto dualMenu = CCMenu::create();
+    dualMenu->setAnchorPoint(ccp(0, 0));
+    dualMenu->ignoreAnchorPointForPosition(false);
+    dualMenu->setContentSize(dualBG->getContentSize());
 
-    auto btn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Primary", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest));
-    auto btn2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Secondary", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest2));
-    auto btn3 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Glow", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest3));
-    auto btn4 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Trail", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest6));
-    auto btn5 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Ghost", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest7));
-    auto btn6 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Wave Trail", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest8));
+    auto sprOff = BetterButtonSprite::createWithLocalisation(CCSizeMake(dualMenu->getContentWidth() - 15, 35), "iconic/seperate-label", "bigFont.fnt", "geode.loader/GE_button_05.png");
+    sprOff->setMaxTextScale(0.4f);
 
+    auto sprOn = BetterButtonSprite::createWithLocalisation(CCSizeMake(dualMenu->getContentWidth() - 15, 35), "iconic/seperate-label", "bigFont.fnt", "geode.loader/GE_button_01.png");
+    sprOn->setMaxTextScale(0.4f);
 
-    auto menu2 = CCMenu::create();
-    menu2->setContentSize(ccp(100, 100));
-    menu2->setPosition(ccp(30, 100));
+    seperateToggle = CCMenuItemToggler::create(sprOn, sprOff, this, menu_selector(IconEffectsUI::onToggleSeperate));
+    seperateToggle->toggle(IconicManager::get()->getSeperateColours());
+    seperateToggle->setPosition(ccp(dualMenu->getContentWidth() / 2, 25.5f));
+    seperateToggle->m_offButton->m_scaleMultiplier = 1.1f;
+    seperateToggle->m_onButton->m_scaleMultiplier = 1.1f;
 
-    auto b2tn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Invert", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
-    auto b2tn2 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Same", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
-    auto b2tn3 = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(CCSizeMake(100, 30), "Seperate", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(IconEffectsUI::onTest4));
-    b2tn->setTag(1);
-    b2tn2->setTag(2);
-    b2tn3->setTag(3);
+    dualMenu->addChild(seperateToggle);
 
-    auto toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onTest5), 1.0f);
-    toggler->setPosition(ccp(-50, -50));
-    toggler->toggle(IconicManager::get()->getSeperateColours());
-
-    menu->addChildAtPosition(btn, Anchor::TopRight);
-    menu->addChildAtPosition(btn2, Anchor::Right);
-    menu->addChildAtPosition(btn3, Anchor::BottomRight);
-    menu->addChildAtPosition(btn4, Anchor::BottomLeft);
-    menu->addChildAtPosition(btn5, Anchor::Left);
-    menu->addChildAtPosition(btn6, Anchor::TopLeft);
-    menu2->addChildAtPosition(b2tn, Anchor::TopRight);
-    menu2->addChildAtPosition(b2tn2, Anchor::Right);
-    menu2->addChildAtPosition(b2tn3, Anchor::BottomRight);
-    menu2->addChild(toggler);
-    this->addChild(menu);
-    this->addChild(menu2);
+    createDualNodes(IconicDualMode::Invert, 0, dualMenu);
+    createDualNodes(IconicDualMode::Same, 1, dualMenu);
+    createDualNodes(IconicDualMode::Seperate, 2, dualMenu);
+    
     this->addChild(n);
     this->addChildAtPosition(dualBG, Anchor::BottomLeft);
     this->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
+    this->addChildAtPosition(menu, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, effectsBG->getContentHeight()) + ccp(17.5f, -17.5f));
+    this->addChildAtPosition(dualMenu, Anchor::BottomLeft);
     return true;
+}
+
+void IconEffectsUI::createDualNodes(IconicDualMode mode, int y, CCMenu* menu)
+{
+    DualModeData data;
+    data.mode = mode;
+
+    data.toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onDualMode), 0.65f);
+    data.toggler->setPosition(ccp(20, 100 - 20 * y));
+    data.toggler->setTag((int)mode);
+
+    menu->addChild(data.toggler);
+    dualNodes.push_back(data);
+}
+
+void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* menu)
+{
+    float y = _y * -30;
+    EffectEditData data;
+
+    data.toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onToggleOverride), 0.65f);
+    data.toggler->setPosition(ccp(0, y));
+    data.toggler->setTag((int)type);
+
+    std::string formatStr = "";
+
+    switch (type)
+    {
+        case IconicEffectType::Primary:
+            formatStr = "iconic/override-primary-label";
+            break;
+
+        case IconicEffectType::Secondary:
+            formatStr = "iconic/override-secondary-label";
+            break;
+
+        case IconicEffectType::Glow:
+            formatStr = "iconic/override-glow-label";
+            break;
+
+        case IconicEffectType::Trail:
+            formatStr = "iconic/override-trail-label";
+            break;
+
+        case IconicEffectType::Ghost:
+            formatStr = "iconic/override-ghost-label";
+            break;
+
+        case IconicEffectType::WaveTrail:
+            formatStr = "iconic/override-wave-trail-label";
+            break;
+    }
+
+    data.label = AdvLabelBMFont::createWithLocalisation(formatStr, "bigFont.fnt");
+    data.label->setPosition(ccp(16, y));
+    data.label->setAnchorPoint(ccp(0, 0.5f));
+    data.label->limitLabelWidth(140, 0.55f, 0);
+
+    data.sprite = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
+    data.sprite->setScale(0.65f);
+
+    data.colourBtn = CCMenuItemSpriteExtra::create(data.sprite, this, menu_selector(IconEffectsUI::onEditColour));
+    data.colourBtn->setTag((int)type);
+    data.colourBtn->setPosition(ccp(190, y));
+    // data.colourBtn->setPosition(ccp(data.label->getScaledContentWidth() + 35, y));
+
+    menu->addChild(data.label);
+    menu->addChild(data.colourBtn);
+    menu->addChild(data.toggler);
+
+    editNodes.emplace(type, data);
 }
 
 CCMenuItemSpriteExtra* IconEffectsUI::createPreviewButton(IconicGamemodeType gamemode, bool player2)
@@ -209,6 +274,15 @@ void IconEffectsUI::updateSelection()
         data.btn->setEnabled(!sel);
         data.shader->setColor(sel ? ccc3(255, 255, 255) : ccc3(100, 100, 100));
     }
+
+    auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+
+    editNodes[IconicEffectType::Primary].toggler->toggle(config->getUseOverride(IconicEffectType::Primary));
+    editNodes[IconicEffectType::Secondary].toggler->toggle(config->getUseOverride(IconicEffectType::Secondary));
+    editNodes[IconicEffectType::Glow].toggler->toggle(config->getUseOverride(IconicEffectType::Glow));
+    editNodes[IconicEffectType::Trail].toggler->toggle(config->getUseOverride(IconicEffectType::Trail));
+    editNodes[IconicEffectType::Ghost].toggler->toggle(config->getUseOverride(IconicEffectType::Ghost));
+    editNodes[IconicEffectType::WaveTrail].toggler->toggle(config->getUseOverride(IconicEffectType::WaveTrail));
 }
 
 void IconEffectsUI::onSelectType(CCObject* sender)
@@ -220,112 +294,138 @@ void IconEffectsUI::onSelectType(CCObject* sender)
     auto circle = CCCircleWave::create(0, 25, 0.2f, true);
     circle->setPosition(n->getContentSize() / 2);
     circle->m_circleMode = CircleMode::Outline;
+    circle->setUserFlag("allow-circle"_spr, true);
 
     n->addChild(circle);
 
     updateSelection();
 }
 
-void IconEffectsUI::onTest(CCObject* sender)
+void IconEffectsUI::onToggleOverride(CCObject* sender)
 {
-    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+    auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
-    {
-        conf->setPrimaryConfig(con);
-    });
-    ui->setStartConfig(conf->getPrimaryConfig());
-    ui->show();
+    config->setUseOverride((IconicEffectType)sender->getTag(), !config->getUseOverride((IconicEffectType)sender->getTag()));
 }
 
-void IconEffectsUI::onTest2(CCObject* sender)
-{
-    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
-    {
-        conf->setSecondaryConfig(con);
-    });
-    ui->setStartConfig(conf->getSecondaryConfig());
-    ui->show();
-}
-
-void IconEffectsUI::onTest3(CCObject* sender)
-{
-    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
-
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
-    {
-        conf->setGlowConfig(con);
-    });
-    ui->setStartConfig(conf->getGlowConfig());
-    ui->show();
-}
-
-void IconEffectsUI::onTest4(CCObject* sender)
-{
-    switch (sender->getTag())
-    {
-        case 1:
-            IconicManager::get()->setDualMode(IconicDualMode::Invert);
-            break;
-
-        case 2:
-            IconicManager::get()->setDualMode(IconicDualMode::Same);
-            break;
-
-        case 3:
-            IconicManager::get()->setDualMode(IconicDualMode::Seperate);
-            break;
-    }
-
-    updateSelection();
-}
-
-void IconEffectsUI::onTest5(CCObject* sender)
+void IconEffectsUI::onToggleSeperate(CCObject* sender)
 {
     IconicManager::get()->setSeperateColours(!IconicManager::get()->getSeperateColours());
 
     updateSelection();
 }
 
-void IconEffectsUI::onTest6(CCObject* sender)
+void IconEffectsUI::onDualMode(CCObject* sender)
 {
-    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+    IconicManager::get()->setDualMode((IconicDualMode)sender->getTag());
 
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
+    updateSelection();
+}
+
+void IconEffectsUI::onEditColour(CCObject* sender)
+{
+    auto gm = getSelected().first;
+    auto type = (IconicEffectType)sender->getTag();
+
+    if (type == IconicEffectType::WaveTrail)
+        gm = IconicGamemodeType::Dart;
+
+    auto conf = IconicManager::get()->getConfig(gm, getSelected().second);
+
+    auto ui = SetupColourConfigUI::create([this, conf, type](ColourConfig con)
     {
-        conf->setTrailConfig(con);
+        switch (type)
+        {
+            case IconicEffectType::Primary:
+                conf->setPrimaryConfig(con);
+                break;
+
+            case IconicEffectType::Secondary:
+                conf->setSecondaryConfig(con);
+                break;
+
+            case IconicEffectType::Glow:
+                conf->setGlowConfig(con);
+                break;
+
+            case IconicEffectType::Trail:
+                conf->setTrailConfig(con);
+                break;
+
+            case IconicEffectType::Ghost:
+                conf->setGhostConfig(con);
+                break;
+
+            case IconicEffectType::WaveTrail:
+                conf->setWaveTrailConfig(con);
+                break;
+        }
     });
-    ui->setStartConfig(conf->getTrailConfig());
+
+    switch (type)
+    {
+        case IconicEffectType::Primary:
+            ui->setStartConfig(conf->getPrimaryConfig());
+            break;
+
+        case IconicEffectType::Secondary:
+            ui->setStartConfig(conf->getSecondaryConfig());
+            break;
+
+        case IconicEffectType::Glow:
+            ui->setStartConfig(conf->getGlowConfig());
+            break;
+
+        case IconicEffectType::Trail:
+            ui->setStartConfig(conf->getTrailConfig());
+            break;
+
+        case IconicEffectType::Ghost:
+            ui->setStartConfig(conf->getGhostConfig());
+            break;
+
+        case IconicEffectType::WaveTrail:
+            ui->setStartConfig(conf->getWaveTrailConfig());
+            break;
+    }
+
     ui->show();
 }
 
-void IconEffectsUI::onTest7(CCObject* sender)
-{
-    auto conf = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
-
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
-    {
-        conf->setGhostConfig(con);
-    });
-    ui->setStartConfig(conf->getGhostConfig());
-    ui->show();
-}
-
-void IconEffectsUI::onTest8(CCObject* sender)
-{
-    auto conf = IconicManager::get()->getConfig(IconicGamemodeType::Dart, getSelected().second);
-
-    auto ui = SetupColourConfigUI::create([this, conf](ColourConfig con)
-    {
-        conf->setWaveTrailConfig(con);
-    });
-    ui->setStartConfig(conf->getWaveTrailConfig());
-    ui->show();
-}
+#define DISABLED_CHECK($type) \
+if (!config->getUseOverride(IconicEffectType::$type)) \
+    editNodes[IconicEffectType::$type].sprite->setColor(ccc3( \
+        editNodes[IconicEffectType::$type].sprite->getColor().r * (100.0f / 255.0f), \
+        editNodes[IconicEffectType::$type].sprite->getColor().g * (100.0f / 255.0f), \
+        editNodes[IconicEffectType::$type].sprite->getColor().b * (100.0f / 255.0f) \
+    )); \
+editNodes[IconicEffectType::$type].colourBtn->setEnabled(config->getUseOverride(IconicEffectType::$type));
 
 void IconEffectsUI::update(float dt)
 {
-    
+    auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+
+    editNodes[IconicEffectType::Primary].sprite->setColor(config->getPrimary());
+    editNodes[IconicEffectType::Secondary].sprite->setColor(config->getSecondary());
+    editNodes[IconicEffectType::Glow].sprite->setColor(config->getGlow());
+    editNodes[IconicEffectType::Trail].sprite->setColor(config->getTrail());
+    editNodes[IconicEffectType::Ghost].sprite->setColor(config->getGhost());
+    editNodes[IconicEffectType::WaveTrail].sprite->setColor(config->getWaveTrail());
+
+    ccColor3B disabled = ccc3(150, 150, 150);
+
+    editNodes[IconicEffectType::Primary].label->setColor(config->getUseOverride(IconicEffectType::Primary) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Secondary].label->setColor(config->getUseOverride(IconicEffectType::Secondary) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Glow].label->setColor(config->getUseOverride(IconicEffectType::Glow) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Trail].label->setColor(config->getUseOverride(IconicEffectType::Trail) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Ghost].label->setColor(config->getUseOverride(IconicEffectType::Ghost) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::WaveTrail].label->setColor(config->getUseOverride(IconicEffectType::WaveTrail) ? ccWHITE : disabled);
+
+    DISABLED_CHECK(Primary);
+    DISABLED_CHECK(Secondary);
+    DISABLED_CHECK(Glow);
+    DISABLED_CHECK(Trail);
+    DISABLED_CHECK(Ghost);
+    DISABLED_CHECK(WaveTrail);
 }

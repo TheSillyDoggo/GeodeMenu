@@ -49,6 +49,31 @@ void SpeedhackScheduler::update(float dt)
     CCScheduler::update(dt * value);
 }
 
+bool isNodeUnpausable(CCNode* node)
+{
+    if (!node)
+        return false;
+
+    if (node->getUserFlag("unpausable"_spr))
+        return true;
+
+    if (node->getParent())
+        return isNodeUnpausable(node->getParent());
+
+    return false;
+}
+
+void SpeedhackScheduler::pauseTarget(CCObject *pTarget)
+{
+    if (auto node = typeinfo_cast<CCNode*>(pTarget))
+    {
+        if (isNodeUnpausable(node))
+            return;
+    }
+
+    CCScheduler::pauseTarget(pTarget);
+}
+
 void SpeedhackBaseGameLayer::update(float dt)
 {
     if (Speedhack::get()->getGameplayEnabled())

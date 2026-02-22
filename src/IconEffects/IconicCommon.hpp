@@ -17,3 +17,20 @@ enum class IconicGamemodeType
     Bird = 5,
     Dart = 6,
 };
+
+enum class IconicEffectType
+{
+    Primary = 1,
+    Secondary = 2,
+    Glow = 3,
+    Trail = 4,
+    Ghost = 5,
+    WaveTrail = 6,
+};
+
+enum class IconicDualMode
+{
+    Invert = 0,
+    Same = 1,
+    Seperate = 2,
+};

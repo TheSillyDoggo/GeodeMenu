@@ -8,6 +8,9 @@ class IconicConfig
 {
     protected:
         std::string saveStr = "";
+        IconicGamemodeType gamemode;
+        bool player2;
+        
         ColourConfig primary = {};
         ColourConfig secondary = {};
         ColourConfig glow = {};
@@ -20,14 +23,14 @@ class IconicConfig
         bool trailEnabled = false;
         bool ghostEnabled = false;
         bool waveTrailEnabled = false;
-        IconicGamemodeType gamemode;
-        bool player2;
 
     public:
         static IconicConfig* create(IconicGamemodeType gamemode, bool player2);
 
-        cocos2d::ccColor3B getPrimary();
-        cocos2d::ccColor3B getSecondary();
+        cocos2d::ccColor3B getDefault(IconicEffectType type);
+
+        cocos2d::ccColor3B getPrimary(bool ignoreP2 = false);
+        cocos2d::ccColor3B getSecondary(bool ignoreP2 = false);
         cocos2d::ccColor3B getGlow();
         cocos2d::ccColor3B getTrail();
         cocos2d::ccColor3B getGhost();
@@ -46,6 +49,9 @@ class IconicConfig
         void setTrailConfig(ColourConfig config);
         void setGhostConfig(ColourConfig config);
         void setWaveTrailConfig(ColourConfig config);
+
+        bool getUseOverride(IconicEffectType type);
+        void setUseOverride(IconicEffectType type, bool v);
 
         void save();
         void load();

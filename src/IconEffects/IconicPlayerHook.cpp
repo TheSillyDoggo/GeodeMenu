@@ -38,6 +38,7 @@ bool IconicPlayerHook::init()
 
     saveDefault();
     setEnabled(true);
+    setUserFlag("unpausable"_spr);
 
     config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, false);
 
@@ -110,7 +111,12 @@ void IconicPlayerHook::update(float dt)
                 player->m_ghostTrail->m_color = config->getGhost();
 
             if (player->m_waveTrail)
+            {
                 player->m_waveTrail->setColor(config->getWaveTrail());
+
+                if (!player->m_waveTrail->isRunning())
+                    player->m_waveTrail->updateStroke(1);
+            }
         }
     }
 }
@@ -156,14 +162,7 @@ void IconicPlayerHook::saveDefault()
 
     if (player)
     {
-        // auto gh = player->m_ghostType;
-        // player->toggleGhostEffect(GhostType::Enabled);
-
-        // values.ghost = player->m_ghostTrail->m_color;
-        // values.trail = player->m_ghostTrail
-        // values.wave = player->m_ghostTrail
-
-        // player->toggleGhostEffect(gh);
+        
     }
 }
 

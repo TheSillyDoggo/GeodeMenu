@@ -26,6 +26,7 @@ bool BetterButtonSprite::init()
     this->setAnchorPoint(ccp(0.5f, 0.5f));
 
     label = AdvLabelBMFont::createWithString("", "bigFont.fnt");
+    label->setAlignment(kCCTextAlignmentCenter);
 
     setBGSprite("GJ_button_01.png");
 

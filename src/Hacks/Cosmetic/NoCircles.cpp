@@ -123,6 +123,9 @@ class $modify (CCCircleWave)
 
     virtual void draw()
     {
+        if (getUserFlag("allow-circle"_spr))
+            return CCCircleWave::draw();
+
         if (PlayLayer::get())
         {
             if (NoCirclesClassic::get()->getRealEnabled())

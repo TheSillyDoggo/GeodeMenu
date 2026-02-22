@@ -3,13 +3,6 @@
 #include "IconicPlayerHook.hpp"
 #include "IconicConfig.hpp"
 
-enum class IconicDualMode
-{
-    Invert = 0,
-    Same = 1,
-    Seperate = 2,
-};
-
 class IconicManager
 {
     protected:

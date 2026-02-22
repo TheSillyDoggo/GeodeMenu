@@ -20,14 +20,16 @@ class $modify (IconicBaseGameLayer, GJBaseGameLayer)
         {
             m_fields->hookP1 = IconicPlayerHook::create(m_player1);
             m_fields->hookP1->setGamemode(IconicGamemodeType::Cube, false);
-            m_player1->addChild(m_fields->hookP1);
+            m_fields->hookP1->setID("player1"_spr);
+            this->addChild(m_fields->hookP1);
         }
 
         if (m_player2)
         {
             m_fields->hookP2 = IconicPlayerHook::create(m_player2);
             m_fields->hookP2->setGamemode(IconicGamemodeType::Cube, true);
-            m_player2->addChild(m_fields->hookP2);
+            m_fields->hookP2->setID("player2"_spr);
+            this->addChild(m_fields->hookP2);
         }
     }
 };

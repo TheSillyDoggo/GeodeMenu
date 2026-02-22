@@ -110,168 +110,73 @@ void IconicConfig::load()
     save();
 }
 
-cocos2d::ccColor3B IconicConfig::getPrimary()
+#define PRE_CHECK($gamemode, $func) \
+if (player2 && IconicManager::get()->getDualMode() == IconicDualMode::Same) \
+    return IconicManager::get()->getConfig(gamemode, false)->$func(); \
+if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::$gamemode) \
+    return IconicManager::get()->getConfig(IconicGamemodeType::$gamemode, player2)->$func();
+
+#define PRE_CHECK_DART() \
+if (gamemode != IconicGamemodeType::Dart) \
+    return IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2)->getWaveTrail();
+
+cocos2d::ccColor3B IconicConfig::getPrimary(bool ignoreP2)
 {
-    auto gm = gamemode;
+    PRE_CHECK(Cube, getPrimary)
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Cube;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-                return IconicManager::get()->getConfig(gm, false)->getSecondary();
-
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getPrimary();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
-        return IconicManager::get()->getConfig(gm, player2)->getPrimary();
+    if (!primaryEnabled)
+        return getDefault(IconicEffectType::Primary);
 
     return primary.colourForConfig(fmt::format("{}_primary", saveStr));
 }
 
-cocos2d::ccColor3B IconicConfig::getSecondary()
+cocos2d::ccColor3B IconicConfig::getSecondary(bool ignoreP2)
 {
-    auto gm = gamemode;
+    PRE_CHECK(Cube, getSecondary)
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Cube;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-                return IconicManager::get()->getConfig(gm, false)->getPrimary();
-
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getSecondary();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
-        return IconicManager::get()->getConfig(gm, player2)->getSecondary();
+    if (!secondaryEnabled)
+        return getDefault(IconicEffectType::Secondary);
 
     return secondary.colourForConfig(fmt::format("{}_secondary", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getGlow()
 {
-    auto gm = gamemode;
+    PRE_CHECK(Cube, getGlow)
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Cube;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getGlow();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
-        return IconicManager::get()->getConfig(gm, player2)->getGlow();
+    if (!glowEnabled)
+        return getDefault(IconicEffectType::Glow);
 
     return glow.colourForConfig(fmt::format("{}_glow", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getTrail()
 {
-    auto gm = gamemode;
+    PRE_CHECK(Cube, getTrail)
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Cube;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getTrail();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
-        return IconicManager::get()->getConfig(gm, player2)->getTrail();
+    if (!trailEnabled)
+        return getDefault(IconicEffectType::Trail);
 
     return trail.colourForConfig(fmt::format("{}_trail", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getGhost()
 {
-    auto gm = gamemode;
+    PRE_CHECK(Cube, getGhost)
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Cube;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getGhost();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Cube)
-        return IconicManager::get()->getConfig(gm, player2)->getGhost();
+    if (!ghostEnabled)
+        return getDefault(IconicEffectType::Ghost);
 
     return ghost.colourForConfig(fmt::format("{}_ghost", saveStr));
 }
 
 cocos2d::ccColor3B IconicConfig::getWaveTrail()
 {
-    auto gm = gamemode;
+    PRE_CHECK(Dart, getWaveTrail)
+    PRE_CHECK_DART()
 
-    if (!IconicManager::get()->getSeperateColours())
-        gm = IconicGamemodeType::Dart;
-
-    if (player2)
-    {
-        switch (IconicManager::get()->getDualMode())
-        {
-            case IconicDualMode::Invert:
-            case IconicDualMode::Same:
-                return IconicManager::get()->getConfig(gm, false)->getWaveTrail();
-
-            case IconicDualMode::Seperate:
-            default:
-                break;
-        }
-    }
-
-    if (!IconicManager::get()->getSeperateColours() && gamemode != IconicGamemodeType::Dart)
-        return IconicManager::get()->getConfig(gm, player2)->getWaveTrail();
+    if (!waveTrailEnabled)
+        return getDefault(IconicEffectType::WaveTrail);
 
     return waveTrail.colourForConfig(fmt::format("{}_wave", saveStr));
 }
@@ -346,4 +251,104 @@ void IconicConfig::setWaveTrailConfig(ColourConfig config)
     waveTrail = config;
 
     save();
+}
+
+bool IconicConfig::getUseOverride(IconicEffectType type)
+{
+    switch (type)
+    {
+        case IconicEffectType::Primary:
+            return primaryEnabled;
+
+        case IconicEffectType::Secondary:
+            return secondaryEnabled;
+
+        case IconicEffectType::Glow:
+            return glowEnabled;
+
+        case IconicEffectType::Trail:
+            return trailEnabled;
+
+        case IconicEffectType::Ghost:
+            return ghostEnabled;
+
+        case IconicEffectType::WaveTrail:
+            if (gamemode != IconicGamemodeType::Dart)
+                return IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2)->getUseOverride(IconicEffectType::WaveTrail);
+
+            return waveTrailEnabled;
+    }
+
+    return false;
+}
+
+void IconicConfig::setUseOverride(IconicEffectType type, bool v)
+{
+    switch (type)
+    {
+        case IconicEffectType::Primary:
+            primaryEnabled = v;
+            break;
+
+        case IconicEffectType::Secondary:
+            secondaryEnabled = v;
+            break;
+
+        case IconicEffectType::Glow:
+            glowEnabled = v;
+            break;
+
+        case IconicEffectType::Trail:
+            trailEnabled = v;
+            break;
+
+        case IconicEffectType::Ghost:
+            ghostEnabled = v;
+            break;
+
+        case IconicEffectType::WaveTrail:
+            if (gamemode != IconicGamemodeType::Dart)
+            {
+                auto conf = IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2);
+                conf->setUseOverride(IconicEffectType::WaveTrail, v);
+                return;
+            }
+            waveTrailEnabled = v;
+            break;
+    }
+
+    save();
+}
+
+cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
+{
+    auto gm = GameManager::get();
+    bool secondary = player2;
+
+    switch (type)
+    {
+        case IconicEffectType::Primary:
+            return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        case IconicEffectType::Secondary:
+            return gm->colorForIdx(!secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        case IconicEffectType::Glow:
+            return gm->colorForIdx(gm->m_playerGlowColor.value());
+
+        case IconicEffectType::Trail:
+            return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        case IconicEffectType::Ghost:
+            return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        case IconicEffectType::WaveTrail:
+            if (gm->getGameVariable(GameVar::SwitchWaveTrailCol))
+                secondary = !secondary;
+
+            return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        default:
+            return ccc3(255, 0, 220);
+    }
 }
