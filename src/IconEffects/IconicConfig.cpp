@@ -58,6 +58,7 @@ void IconicConfig::save()
     value["trail"] = trail.toJson();
     value["ghost"] = ghost.toJson();
     value["wave-trail"] = waveTrail.toJson();
+    value["fine-outline"] = fineOutline.toJson();
 
     value["modes"]["primary"] = primaryEnabled;
     value["modes"]["secondary"] = secondaryEnabled;
@@ -65,6 +66,7 @@ void IconicConfig::save()
     value["modes"]["trail"] = trailEnabled;
     value["modes"]["ghost"] = ghostEnabled;
     value["modes"]["wave-trail"] = waveTrailEnabled;
+    value["modes"]["fine-outline"] = fineOutlineEnabled;
 
     auto parent = Mod::get()->getSavedValue<matjson::Value>("iconic-config");
     parent[saveStr] = value;
@@ -124,6 +126,9 @@ cocos2d::ccColor3B IconicConfig::getPrimary(bool ignoreP2)
 {
     PRE_CHECK(Cube, getPrimary)
 
+    if (player2 && IconicManager::get()->getDualMode() == IconicDualMode::Invert)
+        return IconicManager::get()->getConfig(gamemode, false)->getSecondary();
+
     if (!primaryEnabled)
         return getDefault(IconicEffectType::Primary);
 
@@ -133,6 +138,9 @@ cocos2d::ccColor3B IconicConfig::getPrimary(bool ignoreP2)
 cocos2d::ccColor3B IconicConfig::getSecondary(bool ignoreP2)
 {
     PRE_CHECK(Cube, getSecondary)
+
+    if (player2 && IconicManager::get()->getDualMode() == IconicDualMode::Invert)
+        return IconicManager::get()->getConfig(gamemode, false)->getPrimary();
 
     if (!secondaryEnabled)
         return getDefault(IconicEffectType::Secondary);
@@ -144,6 +152,9 @@ cocos2d::ccColor3B IconicConfig::getGlow()
 {
     PRE_CHECK(Cube, getGlow)
 
+    if (player2 && IconicManager::get()->getDualMode() == IconicDualMode::Invert)
+        return IconicManager::get()->getConfig(gamemode, false)->getGlow();
+
     if (!glowEnabled)
         return getDefault(IconicEffectType::Glow);
 
@@ -154,6 +165,14 @@ cocos2d::ccColor3B IconicConfig::getTrail()
 {
     PRE_CHECK(Cube, getTrail)
 
+    if (IconicManager::get()->getDualMode() == IconicDualMode::Invert && player2)
+    {
+        auto conf = IconicManager::get()->getConfig(gamemode, false);
+
+        if (conf->getUseOverride(IconicEffectType::Trail))
+            return conf->getTrail();
+    }
+    
     if (!trailEnabled)
         return getDefault(IconicEffectType::Trail);
 
@@ -163,6 +182,14 @@ cocos2d::ccColor3B IconicConfig::getTrail()
 cocos2d::ccColor3B IconicConfig::getGhost()
 {
     PRE_CHECK(Cube, getGhost)
+
+    if (IconicManager::get()->getDualMode() == IconicDualMode::Invert && player2)
+    {
+        auto conf = IconicManager::get()->getConfig(gamemode, false);
+
+        if (conf->getUseOverride(IconicEffectType::Ghost))
+            return conf->getGhost();
+    }
 
     if (!ghostEnabled)
         return getDefault(IconicEffectType::Ghost);
@@ -175,10 +202,28 @@ cocos2d::ccColor3B IconicConfig::getWaveTrail()
     PRE_CHECK(Dart, getWaveTrail)
     PRE_CHECK_DART()
 
+    if (IconicManager::get()->getDualMode() == IconicDualMode::Invert && player2)
+    {
+        auto conf = IconicManager::get()->getConfig(gamemode, false);
+
+        if (conf->getUseOverride(IconicEffectType::WaveTrail))
+            return conf->getWaveTrail();
+    }
+
     if (!waveTrailEnabled)
         return getDefault(IconicEffectType::WaveTrail);
 
     return waveTrail.colourForConfig(fmt::format("{}_wave", saveStr));
+}
+
+cocos2d::ccColor3B IconicConfig::getFineOutline()
+{
+    PRE_CHECK(Cube, getFineOutline)
+
+    if (!fineOutlineEnabled)
+        return getDefault(IconicEffectType::FineOutline);
+
+    return fineOutline.colourForConfig(fmt::format("{}_fineoutline", saveStr));
 }
 
 ColourConfig IconicConfig::getPrimaryConfig()
@@ -209,6 +254,11 @@ ColourConfig IconicConfig::getGhostConfig()
 ColourConfig IconicConfig::getWaveTrailConfig()
 {
     return waveTrail;
+}
+
+ColourConfig IconicConfig::getFineOutlineConfig()
+{
+    return fineOutline;
 }
 
 void IconicConfig::setPrimaryConfig(ColourConfig config)
@@ -253,6 +303,13 @@ void IconicConfig::setWaveTrailConfig(ColourConfig config)
     save();
 }
 
+void IconicConfig::setFineOutlineConfig(ColourConfig config)
+{
+    fineOutline = config;
+
+    save();
+}
+
 bool IconicConfig::getUseOverride(IconicEffectType type)
 {
     switch (type)
@@ -277,6 +334,21 @@ bool IconicConfig::getUseOverride(IconicEffectType type)
                 return IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2)->getUseOverride(IconicEffectType::WaveTrail);
 
             return waveTrailEnabled;
+
+        case IconicEffectType::FineOutline:
+            if (fineOutlineEnabled)
+            {
+                if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+                {
+                    fineOutlineEnabled = false;
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
     }
 
     return false;
@@ -315,6 +387,10 @@ void IconicConfig::setUseOverride(IconicEffectType type, bool v)
             }
             waveTrailEnabled = v;
             break;
+
+        case IconicEffectType::FineOutline:
+            fineOutlineEnabled = v;
+            break;
     }
 
     save();
@@ -347,6 +423,21 @@ cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
                 secondary = !secondary;
 
             return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+
+        case IconicEffectType::FineOutline:
+            if (auto fine = Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+            {
+                if (fine->getSavedValue<bool>("override-color"))
+                {
+                    return fine->getSavedValue<ccColor3B>(player2 ? "p2-color" : "p1-color");
+                }
+                else
+                {
+                    return GameManager::get()->colorForIdx(fine->getSavedValue<int64_t>(player2 ? "outline-color-p2" : "outline-color-p1"));
+                }
+            }
+
+            return ccBLACK;
 
         default:
             return ccc3(255, 0, 220);

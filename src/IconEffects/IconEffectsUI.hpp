@@ -38,17 +38,23 @@ class IconEffectsUI : public CategoryNode
         EasyBG* effectsBG = nullptr;
         CCMenuItemToggler* seperateToggle = nullptr;
 
+        void addCircleToNode(CCNode* node, float scale = 1.0f);
+        void updateFineOutline();
+
     public:
         CREATE_FUNC(IconEffectsUI)
 
         std::pair<IconicGamemodeType, bool> getSelected();
         void updateSelection();
+        void updateDualMode();
+        void updateOverride();
 
         void onSelectType(CCObject* sender);
         void onToggleOverride(CCObject* sender);
         void onEditColour(CCObject* sender);
         void onToggleSeperate(CCObject* sender);
         void onDualMode(CCObject* sender);
+        void onProfiles(CCObject* sender);
 
         void createDualNodes(IconicDualMode mode, int y, CCMenu* menu);
         void createEffectNodes(IconicEffectType type, int y, CCMenu* menu);

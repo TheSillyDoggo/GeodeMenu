@@ -26,6 +26,7 @@ enum class IconicEffectType
     Trail = 4,
     Ghost = 5,
     WaveTrail = 6,
+    FineOutline = 7,
 };
 
 enum class IconicDualMode

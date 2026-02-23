@@ -5,6 +5,7 @@
 #include <SetupColourConfigUI.hpp>
 #include "IconicManager.hpp"
 #include <BetterButtonSprite.hpp>
+#include <BetterAlertLayer.hpp>
 #include <ColourUtils.hpp>
 
 bool IconEffectsUI::init()
@@ -53,8 +54,9 @@ bool IconEffectsUI::init()
 
     auto menu = CCMenu::create();
     menu->setContentSize(ccp(0, 0));
+    menu->setScale(0.85f);
 
-    for (size_t i = 1; i < (int)IconicEffectType::WaveTrail + 1; i++)
+    for (size_t i = 1; i < (int)IconicEffectType::FineOutline + 1; i++)
     {
         createEffectNodes((IconicEffectType)i, i - 1, menu);
     }
@@ -72,7 +74,7 @@ bool IconEffectsUI::init()
     auto sprOn = BetterButtonSprite::createWithLocalisation(CCSizeMake(dualMenu->getContentWidth() - 15, 35), "iconic/seperate-label", "bigFont.fnt", "geode.loader/GE_button_01.png");
     sprOn->setMaxTextScale(0.4f);
 
-    seperateToggle = CCMenuItemToggler::create(sprOn, sprOff, this, menu_selector(IconEffectsUI::onToggleSeperate));
+    seperateToggle = CCMenuItemToggler::create(sprOff, sprOn, this, menu_selector(IconEffectsUI::onToggleSeperate));
     seperateToggle->toggle(IconicManager::get()->getSeperateColours());
     seperateToggle->setPosition(ccp(dualMenu->getContentWidth() / 2, 25.5f));
     seperateToggle->m_offButton->m_scaleMultiplier = 1.1f;
@@ -83,11 +85,19 @@ bool IconEffectsUI::init()
     createDualNodes(IconicDualMode::Invert, 0, dualMenu);
     createDualNodes(IconicDualMode::Same, 1, dualMenu);
     createDualNodes(IconicDualMode::Seperate, 2, dualMenu);
+    updateDualMode();
+
+    auto profilesSpr = CCSprite::createWithSpriteFrameName("GJ_profileButton_001.png");
+    profilesSpr->setScale(0.65f);
+
+    auto profilesBtn = CCMenuItemSpriteExtra::create(profilesSpr, this, menu_selector(IconEffectsUI::onProfiles));
+    profilesBtn->setPosition(ccp(dualMenu->getContentWidth() / 2, dualMenu->getContentHeight() - 30));
+    dualMenu->addChild(profilesBtn);
     
     this->addChild(n);
     this->addChildAtPosition(dualBG, Anchor::BottomLeft);
     this->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
-    this->addChildAtPosition(menu, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, effectsBG->getContentHeight()) + ccp(17.5f, -17.5f));
+    this->addChildAtPosition(menu, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, effectsBG->getContentHeight()) + ccp(15.0f, -15.0f));
     this->addChildAtPosition(dualMenu, Anchor::BottomLeft);
     return true;
 }
@@ -98,11 +108,46 @@ void IconEffectsUI::createDualNodes(IconicDualMode mode, int y, CCMenu* menu)
     data.mode = mode;
 
     data.toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onDualMode), 0.65f);
-    data.toggler->setPosition(ccp(20, 100 - 20 * y));
+    data.toggler->setPosition(ccp(16, 118 - 27 * y));
     data.toggler->setTag((int)mode);
 
+    std::string key;
+
+    switch (mode)
+    {
+        case IconicDualMode::Invert:
+            key = "iconic/dual-mode-invert";
+            break;
+
+        case IconicDualMode::Same:
+            key = "iconic/dual-mode-same";
+            break;
+            
+        case IconicDualMode::Seperate:
+            key = "iconic/dual-mode-seperate";
+            break;
+    }
+
+    data.label = AdvLabelBMFont::createWithLocalisation(key, "goldFont.fnt");
+    data.label->setAnchorPoint(ccp(0, 0.5f));
+    data.label->setPosition(ccp(32, data.toggler->getPositionY()));
+    data.label->limitLabelWidth(70, 0.55f, 0);
+
     menu->addChild(data.toggler);
+    menu->addChild(data.label);
     dualNodes.push_back(data);
+}
+
+void IconEffectsUI::updateDualMode()
+{
+    for (auto data : dualNodes)
+    {
+        bool enabled = IconicManager::get()->getDualMode() == data.mode;
+        
+        data.toggler->setEnabled(!enabled);
+        data.toggler->toggle(enabled);
+        data.label->setColor(enabled ? ccWHITE : ccc3(150, 150, 150));
+    }
 }
 
 void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* menu)
@@ -141,19 +186,23 @@ void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* men
         case IconicEffectType::WaveTrail:
             formatStr = "iconic/override-wave-trail-label";
             break;
+
+        case IconicEffectType::FineOutline:
+            formatStr = "iconic/override-fine-outline-label";
+            break;
     }
 
     data.label = AdvLabelBMFont::createWithLocalisation(formatStr, "bigFont.fnt");
     data.label->setPosition(ccp(16, y));
     data.label->setAnchorPoint(ccp(0, 0.5f));
-    data.label->limitLabelWidth(140, 0.55f, 0);
+    data.label->limitLabelWidth(170, 0.55f, 0);
 
     data.sprite = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     data.sprite->setScale(0.65f);
 
     data.colourBtn = CCMenuItemSpriteExtra::create(data.sprite, this, menu_selector(IconEffectsUI::onEditColour));
     data.colourBtn->setTag((int)type);
-    data.colourBtn->setPosition(ccp(190, y));
+    data.colourBtn->setPosition(ccp(228, y));
     // data.colourBtn->setPosition(ccp(data.label->getScaledContentWidth() + 35, y));
 
     menu->addChild(data.label);
@@ -283,6 +332,43 @@ void IconEffectsUI::updateSelection()
     editNodes[IconicEffectType::Trail].toggler->toggle(config->getUseOverride(IconicEffectType::Trail));
     editNodes[IconicEffectType::Ghost].toggler->toggle(config->getUseOverride(IconicEffectType::Ghost));
     editNodes[IconicEffectType::WaveTrail].toggler->toggle(config->getUseOverride(IconicEffectType::WaveTrail));
+    editNodes[IconicEffectType::FineOutline].toggler->toggle(config->getUseOverride(IconicEffectType::FineOutline));
+
+    updateOverride();
+}
+
+void IconEffectsUI::updateOverride()
+{
+    auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
+    ccColor3B disabled = ccc3(150, 150, 150);
+
+    editNodes[IconicEffectType::Primary].label->setColor(config->getUseOverride(IconicEffectType::Primary) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Secondary].label->setColor(config->getUseOverride(IconicEffectType::Secondary) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Glow].label->setColor(config->getUseOverride(IconicEffectType::Glow) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Trail].label->setColor(config->getUseOverride(IconicEffectType::Trail) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::Ghost].label->setColor(config->getUseOverride(IconicEffectType::Ghost) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::WaveTrail].label->setColor(config->getUseOverride(IconicEffectType::WaveTrail) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::FineOutline].label->setColor(config->getUseOverride(IconicEffectType::FineOutline) ? ccWHITE : disabled);
+
+    if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+    {
+        editNodes[IconicEffectType::FineOutline].toggler->m_offButton->setColor(ccc3(150, 150, 150));
+    }
+}
+
+void IconEffectsUI::addCircleToNode(CCNode* node, float scale)
+{
+    auto circle = CCCircleWave::create(0, 25 * scale, 0.2f, true);
+    circle->setPosition(node->getContentSize() / 2);
+    circle->m_circleMode = CircleMode::Outline;
+    circle->setUserFlag("allow-circle"_spr, true);
+
+    node->addChild(circle);
+}
+
+void IconEffectsUI::onProfiles(CCObject* sender)
+{
+    BetterAlertLayer::createWithLocalisation("iconic/profiles-title", "ui/coming-soon", "ui/ok-button")->show();
 }
 
 void IconEffectsUI::onSelectType(CCObject* sender)
@@ -291,23 +377,34 @@ void IconEffectsUI::onSelectType(CCObject* sender)
     selectedType.first = (IconicGamemodeType)n->getTag();
     selectedType.second = n->getUserFlag("player2");
 
-    auto circle = CCCircleWave::create(0, 25, 0.2f, true);
-    circle->setPosition(n->getContentSize() / 2);
-    circle->m_circleMode = CircleMode::Outline;
-    circle->setUserFlag("allow-circle"_spr, true);
-
-    n->addChild(circle);
+    addCircleToNode(n);
 
     updateSelection();
 }
 
 void IconEffectsUI::onToggleOverride(CCObject* sender)
 {
+    if ((IconicEffectType)sender->getTag() == IconicEffectType::FineOutline)
+    {
+        if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+        {
+            auto toggler = editNodes[IconicEffectType::FineOutline].toggler;
+            toggler->toggle(!false);
+            toggler->m_offButton->setScale(1.0f);
+
+            BetterAlertLayer::createWithLocalisation("ui/title-error", "iconic/fine-outline-missing-error", "ui/ok-button")->show();
+            return;
+        }
+    }
+
     auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
-    config->setUseOverride((IconicEffectType)sender->getTag(), !config->getUseOverride((IconicEffectType)sender->getTag()));
-}
+    addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
 
+    config->setUseOverride((IconicEffectType)sender->getTag(), !config->getUseOverride((IconicEffectType)sender->getTag()));
+
+    updateOverride();
+}
 
 void IconEffectsUI::onToggleSeperate(CCObject* sender)
 {
@@ -320,7 +417,10 @@ void IconEffectsUI::onDualMode(CCObject* sender)
 {
     IconicManager::get()->setDualMode((IconicDualMode)sender->getTag());
 
+    addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
+
     updateSelection();
+    updateDualMode();
 }
 
 void IconEffectsUI::onEditColour(CCObject* sender)
@@ -360,6 +460,10 @@ void IconEffectsUI::onEditColour(CCObject* sender)
             case IconicEffectType::WaveTrail:
                 conf->setWaveTrailConfig(con);
                 break;
+
+            case IconicEffectType::FineOutline:
+                conf->setFineOutlineConfig(con);
+                break;
         }
     });
 
@@ -388,6 +492,10 @@ void IconEffectsUI::onEditColour(CCObject* sender)
         case IconicEffectType::WaveTrail:
             ui->setStartConfig(conf->getWaveTrailConfig());
             break;
+
+        case IconicEffectType::FineOutline:
+            ui->setStartConfig(conf->getFineOutlineConfig());
+            break;
     }
 
     ui->show();
@@ -412,15 +520,7 @@ void IconEffectsUI::update(float dt)
     editNodes[IconicEffectType::Trail].sprite->setColor(config->getTrail());
     editNodes[IconicEffectType::Ghost].sprite->setColor(config->getGhost());
     editNodes[IconicEffectType::WaveTrail].sprite->setColor(config->getWaveTrail());
-
-    ccColor3B disabled = ccc3(150, 150, 150);
-
-    editNodes[IconicEffectType::Primary].label->setColor(config->getUseOverride(IconicEffectType::Primary) ? ccWHITE : disabled);
-    editNodes[IconicEffectType::Secondary].label->setColor(config->getUseOverride(IconicEffectType::Secondary) ? ccWHITE : disabled);
-    editNodes[IconicEffectType::Glow].label->setColor(config->getUseOverride(IconicEffectType::Glow) ? ccWHITE : disabled);
-    editNodes[IconicEffectType::Trail].label->setColor(config->getUseOverride(IconicEffectType::Trail) ? ccWHITE : disabled);
-    editNodes[IconicEffectType::Ghost].label->setColor(config->getUseOverride(IconicEffectType::Ghost) ? ccWHITE : disabled);
-    editNodes[IconicEffectType::WaveTrail].label->setColor(config->getUseOverride(IconicEffectType::WaveTrail) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::FineOutline].sprite->setColor(config->getFineOutline());
 
     DISABLED_CHECK(Primary);
     DISABLED_CHECK(Secondary);
@@ -428,4 +528,10 @@ void IconEffectsUI::update(float dt)
     DISABLED_CHECK(Trail);
     DISABLED_CHECK(Ghost);
     DISABLED_CHECK(WaveTrail);
+    DISABLED_CHECK(FineOutline);
+}
+
+void IconEffectsUI::updateFineOutline()
+{
+
 }

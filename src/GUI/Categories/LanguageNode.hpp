@@ -9,6 +9,7 @@ class LanguageNodeUI : public CategoryNode
 
         virtual void updateUI();
 
+        void onContribute(CCObject* sender);
         bool init();
 };
 

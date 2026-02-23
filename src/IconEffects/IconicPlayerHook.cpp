@@ -65,7 +65,7 @@ void IconicPlayerHook::update(float dt)
 
                 player->setColor(config2->getPrimary());
                 player->setSecondColor(config2->getSecondary());
-                player->setGlowColor(config2->getGlow());
+                player->m_iconGlow->setColor(config2->getGlow());
 
                 player->m_vehicleSprite->setColor(config->getPrimary());
                 player->m_vehicleSpriteSecondary->setColor(config->getSecondary());
@@ -78,7 +78,7 @@ void IconicPlayerHook::update(float dt)
 
                 player->setColor(config2->getPrimary());
                 player->setSecondColor(config2->getSecondary());
-                player->setGlowColor(config2->getGlow());
+                player->m_iconGlow->setColor(config2->getGlow());
 
                 player->m_vehicleSprite->setColor(config->getPrimary());
                 player->m_vehicleSpriteSecondary->setColor(config->getSecondary());
@@ -101,7 +101,7 @@ void IconicPlayerHook::update(float dt)
 
                 player->setColor(config->getPrimary());
                 player->setSecondColor(config->getSecondary());
-                player->setGlowColor(config->getGlow());
+                player->m_iconGlow->setColor(config->getGlow());
             }
 
             if (player->m_regularTrail)
@@ -116,6 +116,11 @@ void IconicPlayerHook::update(float dt)
 
                 if (!player->m_waveTrail->isRunning())
                     player->m_waveTrail->updateStroke(1);
+            }
+
+            if (auto fine = typeinfo_cast<CCSprite*>(player->getChildByIDRecursive("alphalaneous.fine_outline/black_outline")))
+            {
+                fine->setColor(config->getFineOutline());
             }
         }
     }

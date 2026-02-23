@@ -17,12 +17,14 @@ class IconicConfig
         ColourConfig trail = {};
         ColourConfig ghost = {};
         ColourConfig waveTrail = {};
+        ColourConfig fineOutline = {};
         bool primaryEnabled = false;
         bool secondaryEnabled = false;
         bool glowEnabled = false;
         bool trailEnabled = false;
         bool ghostEnabled = false;
         bool waveTrailEnabled = false;
+        bool fineOutlineEnabled = false;
 
     public:
         static IconicConfig* create(IconicGamemodeType gamemode, bool player2);
@@ -35,6 +37,7 @@ class IconicConfig
         cocos2d::ccColor3B getTrail();
         cocos2d::ccColor3B getGhost();
         cocos2d::ccColor3B getWaveTrail();
+        cocos2d::ccColor3B getFineOutline();
 
         ColourConfig getPrimaryConfig();
         ColourConfig getSecondaryConfig();
@@ -42,6 +45,7 @@ class IconicConfig
         ColourConfig getTrailConfig();
         ColourConfig getGhostConfig();
         ColourConfig getWaveTrailConfig();
+        ColourConfig getFineOutlineConfig();
 
         void setPrimaryConfig(ColourConfig config);
         void setSecondaryConfig(ColourConfig config);
@@ -49,6 +53,7 @@ class IconicConfig
         void setTrailConfig(ColourConfig config);
         void setGhostConfig(ColourConfig config);
         void setWaveTrailConfig(ColourConfig config);
+        void setFineOutlineConfig(ColourConfig config);
 
         bool getUseOverride(IconicEffectType type);
         void setUseOverride(IconicEffectType type, bool v);
