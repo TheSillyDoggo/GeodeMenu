@@ -66,7 +66,8 @@ class $modify (PlayerObject)
                     en = false;
                 }
             }
-
+            
+            m_regularTrail->m_bStroke = en;
             m_regularTrail->setVisible(en);
         }
     }

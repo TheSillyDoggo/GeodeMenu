@@ -1,3 +1,15 @@
+# 2.7.1
+
+- Added scrollbar to languages tab
+- Fixed crash opening profile on the main menu
+- Fixed Language Contribute button not working
+- Fixed rare crash when using auto download song without accepting the newgrounds tos
+- Fixed force trail on not working
+- Fixed hitbox trail allocating 30x more memory than it needs
+- Fixed exiting a level going back to the main menu when icon kit in pause is used
+- Fixed show hitboxes not working with mirror portal
+- Fixed game being frozen on Android 32
+
 # 2.7.0
 
 - Added **Icon Effects**

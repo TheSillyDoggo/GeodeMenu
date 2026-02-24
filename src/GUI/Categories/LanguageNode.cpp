@@ -51,7 +51,7 @@ bool LanguageNodeUI::init()
     for (auto lang : langs)
     {
         auto node = LanguageNode::create(lang);
-        node->setContentSize(ccp((getContentWidth() - 2.5f * 3) / 2, 60));
+        node->setContentSize(ccp(((getContentWidth() - 2.5f * 3 - scrollbar->getScaledContentWidth())) / 2, 60));
         node->updateLayout();
         nodes.push_back(node);
 
@@ -66,7 +66,7 @@ bool LanguageNodeUI::init()
     for (auto node : nodes)
     {
         node->setAnchorPoint(ccp(x, 1));
-        node->setPosition(ccp(x == 0 ? 2.5f : getContentWidth() - 2.5f, (height) - (y * (node->getContentHeight() + 2.5f))));
+        node->setPosition(ccp(x == 0 ? 2.5f : (getContentWidth() - 2.5f - scrollbar->getScaledContentWidth()), (height) - (y * (node->getContentHeight() + 2.5f))));
 
         x++;
 
@@ -88,11 +88,11 @@ void LanguageNodeUI::updateUI()
 
     scroll->moveToTop();
     scroll->setTouchEnabled(true);
-    scrollbar->setVisible(false);
-    scrollbar->setDisabled(true);
+    scrollbar->setVisible(true);
+    scrollbar->setDisabled(false);
 }
 
 void LanguageNodeUI::onContribute(CCObject* sender)
 {
-    geode::utils::web::openLinkInBrowser("github.com/TheSillyDoggo/QOLMod-Translations/");
+    geode::utils::web::openLinkInBrowser("https://github.com/TheSillyDoggo/QOLMod-Translations/");
 }

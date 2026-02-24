@@ -12,6 +12,11 @@ class TPSBypassEnabled : public Module
             setCategory("Universal");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
             setPriority(5);
+
+            #ifdef GEODE_IS_ANDROID32
+            setDisabled(true);
+            setDisabledMessage("TPS Bypass is disabled on android32 due to breaking gameplay");
+            #endif
         }
 };
 
@@ -43,6 +48,8 @@ class TPSBypassValue : public InputModule
 
 SUBMIT_HACK(TPSBypassEnabled)
 SUBMIT_OPTION(TPSBypassEnabled, TPSBypassValue)
+
+#ifndef GEODE_IS_ANDROID32
 
 class $modify (GJBaseGameLayer)
 {
@@ -96,3 +103,5 @@ $execute
     // Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x2322d2), { 0x41, 0xbb, 0x01, 0x00, 0x00, 0x00 });
     // Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x2322ca), { 0x90, 0x90, 0x90, 0x90 });
 };
+
+#endif

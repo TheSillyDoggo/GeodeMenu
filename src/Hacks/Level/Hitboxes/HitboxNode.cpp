@@ -11,7 +11,7 @@ bool HitboxNode::init()
         return false;    
 
     if (!HitboxTrailNoLimit::get()->getRealEnabled())
-        trailStates.reserve(HitboxTrailMaxPositions::get()->getStringInt() * sizeof(PlayerHitboxState));
+        trailStates.reserve(HitboxTrailMaxPositions::get()->getStringInt());
 
     return true;
 }

@@ -73,6 +73,17 @@ class $modify (CCLayer)
 
 class $modify (GJGarageLayer)
 {
+    virtual bool init()
+    {
+        auto pre = GameManager::get()->m_sceneEnum;
+        auto ret = GJGarageLayer::init();
+        
+        if (PlayLayer::get())
+            GameManager::get()->m_sceneEnum = pre;
+
+        return ret;
+    }
+
     void onSelect(cocos2d::CCObject* sender)
     {
         GJGarageLayer::onSelect(sender);

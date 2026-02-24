@@ -34,7 +34,8 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
         auto copy = m_debugDrawNode->getParent();
         fields->nodeContainer->setPosition(CCDirector::get()->getWinSize() / 2);
         fields->node->setPosition(copy->getPosition() - fields->nodeContainer->getPosition());
-        fields->node->setScale(copy->getScale());
+        fields->node->setScaleX(copy->getScaleX());
+        fields->node->setScaleY(copy->getScaleY());
         fields->nodeContainer->setRotation(m_gameState.m_cameraAngle);
 
         if (ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled() && (m_player1->m_isDead || (m_player2 && m_player2->m_isDead)))
