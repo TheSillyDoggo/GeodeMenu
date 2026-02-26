@@ -36,7 +36,7 @@ bool AndroidUI::setup()
 
     bottomRight = VersionInfoNode::create(VersionInfoType::QOLMod);
     bottomRight->setAnchorPoint(ccp(1, 0));
-    bottomRight->setPosition(ccp(CCDirector::get()->getWinSize().width - 5, 2.5f));
+    bottomRight->setPosition(ccp(getContentSize().width - 5, 2.5f));
     bottomRight->setColor(ccc3(100, 100, 100));
     bottomRight->setScale(0.5f);
     this->addChild(bottomRight);
@@ -51,7 +51,7 @@ bool AndroidUI::setup()
     m_buttonMenu->setVisible(false);
 
     auto backMenu = CCMenu::create();
-    backMenu->setPosition(ccp(24, CCDirector::get()->getWinSize().height - 23));
+    backMenu->setPosition(ccp(24, getContentSize().height - 23));
     
     backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
@@ -218,8 +218,8 @@ AndroidUI::~AndroidUI()
 
 void AndroidUI::runAnimation(MenuAnimation anim)
 {
-    auto winSize = CCDirector::get()->getWinSize();
-    auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, CCDirector::get()->getWinSize() / 2), 0.8f), nullptr));
+    auto winSize = getContentSize();
+    auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, getContentSize() / 2), 0.8f), nullptr));
     auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
     auto fadeInVersion = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
     auto fadeInVersion2 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
@@ -360,4 +360,23 @@ void AndroidUI::visit()
     rt->setPosition(getContentSize() / 2);
     rt->getSprite()->setOpacity(drawOpacity->getOpacity());
     rt->visit();
+}
+
+void AndroidUI::switchTabTemp(std::string tab)
+{
+    if (!allow)
+    {
+        // allow = true;
+        return;
+    }
+
+    auto old = selectedCategory;
+
+    selectedCategory = tab;
+    updateTabs();
+
+    if (tab == "Search")
+        categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(true);
+
+    selectedCategory = old;
 }

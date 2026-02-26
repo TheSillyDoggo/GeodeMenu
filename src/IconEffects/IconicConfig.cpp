@@ -413,6 +413,8 @@ cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
             return gm->colorForIdx(gm->m_playerGlowColor.value());
 
         case IconicEffectType::Trail:
+            secondary = !secondary;
+
             return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
 
         case IconicEffectType::Ghost:

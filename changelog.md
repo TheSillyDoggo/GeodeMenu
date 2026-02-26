@@ -1,3 +1,17 @@
+# 2.7.3
+
+- Added UI Scale
+- Added Autoclicker
+- Fixed brown square in bottom left of startpos switcher keybind popup
+- Fixed trail using wrong colour
+- Fixed trail always showing
+- Fixed clicking search tab not working sometimes
+- Fixed opacity not working on image labels
+- Fixed hitbox opacity not working
+- Localisation:
+-- Added Korean
+-- Added Basque
+
 # 2.7.1
 
 - Added scrollbar to languages tab

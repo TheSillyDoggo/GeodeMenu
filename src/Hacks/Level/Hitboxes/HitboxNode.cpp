@@ -10,6 +10,8 @@ bool HitboxNode::init()
     if (!CCDrawNode::init())
         return false;    
 
+    setBlendFunc(ccBlendFunc({ GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA }));
+
     if (!HitboxTrailNoLimit::get()->getRealEnabled())
         trailStates.reserve(HitboxTrailMaxPositions::get()->getStringInt());
 
@@ -157,6 +159,8 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
     auto col = colourForType(getObjectColour(obj));
     auto col2 = ccc4f(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, 1);
 
+    float v = shouldFillHitboxes() ? HitboxFillOpacity::get()->getValue() : 0;
+
     if (obj->m_objectRadius != 0)
     {
         drawCircle(ccp(obj->m_positionX, obj->m_positionY), obj->m_objectRadius * std::max<float>(obj->m_scaleX, obj->m_scaleY), ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, 69);
@@ -208,7 +212,7 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
                 break;
         }
 
-        drawPolygon(vertices, 3, ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, BorderAlignment::Inside);
+        drawPolygon(vertices, 3, ccc4f(col2.r, col2.g, col2.b, v), getHitboxThickness(), col2, BorderAlignment::Inside);
 
         if (obj->m_slopeIsHazard)
         {
@@ -232,12 +236,7 @@ void HitboxNode::drawObjectHitbox(GameObject* obj)
         vertices[3] = obj->m_orientedBox->m_corners[3];
     }
 
-    float v = 0;
-
-    if (shouldFillHitboxes())
-        v = HitboxFillOpacity::get()->getValue();
-
-    drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col2, BorderAlignment::Inside);
+    drawPolygon(vertices, 4, ccc4f(col2.r, col2.g, col2.b, v), getHitboxThickness(), col2, BorderAlignment::Inside);
 }
 
 bool HitboxNode::shouldRenderState(PlayerHitboxState* state)
@@ -281,6 +280,8 @@ void HitboxNode::drawPlayerTrails()
     auto mini = ccc4FFromccc3B(colourForType(HitboxColourType::Solid));
     auto max = HitboxTrailMaxPositions::get()->getStringInt();
     auto size = trailStates.size();
+
+    float v = shouldFillHitboxes() ? HitboxFillOpacity::get()->getValue() : 0;
 
     float decrement = (1.0f / (float)max) * 0.75f;
 
@@ -338,7 +339,7 @@ void HitboxNode::drawPlayerTrails()
             col.b = std::clamp<float>(col.b - v, 0, 1);
         }
 
-        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col, BorderAlignment::Inside);
+        drawPolygon(vertices, 4, ccc4f(col.r, col.g, col.b, v), getHitboxThickness(), col, BorderAlignment::Inside);
         i++;
     }
     
@@ -369,7 +370,7 @@ void HitboxNode::drawPlayerTrails()
             col.b = std::clamp<float>(col.b - v, 0, 1);
         }
 
-        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), col, BorderAlignment::Inside);
+        drawPolygon(vertices, 4, ccc4f(col.r, col.g, col.b, v), getHitboxThickness(), col, BorderAlignment::Inside);
         i++;
     }
 }
@@ -380,6 +381,8 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
     auto rot = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerRot));
     auto mini = ccc4FFromccc3B(colourForType(HitboxColourType::Solid));
 
+    float v = shouldFillHitboxes() ? HitboxFillOpacity::get()->getValue() : 0;
+
     CCPoint vertices[4];
 
     if (auto ob = plr->m_orientedBox)
@@ -389,7 +392,7 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
         vertices[2] = ob->m_corners[2];
         vertices[3] = ob->m_corners[3];
 
-        drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), rot, BorderAlignment::Inside);
+        drawPolygon(vertices, 4, ccc4f(rot.r, rot.g, rot.b, v), getHitboxThickness(), rot, BorderAlignment::Inside);
     }
 
     auto rect = plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize);
@@ -398,7 +401,7 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
     vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
     vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
 
-    drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), reg, BorderAlignment::Inside);
+    drawPolygon(vertices, 4, ccc4f(reg.r, reg.g, reg.b, v), getHitboxThickness(), reg, BorderAlignment::Inside);
 
     rect = plr->getObjectRect(0.25f, 0.25f);
     vertices[0] = ccp(rect.getMinX(), rect.getMinY());
@@ -406,7 +409,7 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
     vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
     vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
 
-    drawPolygon(vertices, 4, ccc4f(0, 0, 0, 0), getHitboxThickness(), mini, BorderAlignment::Inside);
+    drawPolygon(vertices, 4, ccc4f(mini.r, mini.g, mini.b, v), getHitboxThickness(), mini, BorderAlignment::Inside);
 }
 
 void HitboxNode::storePlayerTrail(PlayerObject* plr)

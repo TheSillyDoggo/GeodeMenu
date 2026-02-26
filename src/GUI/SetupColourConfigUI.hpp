@@ -9,6 +9,7 @@
 #include "BetterSlider.hpp"
 #include "PopupBase.hpp"
 #include "BetterInputNode.hpp"
+#include <Nodes/CCNodeWithShader.hpp>
 
 using namespace geode::prelude;
 
@@ -45,6 +46,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         BetterInputNode* gInput = nullptr;
         BetterInputNode* bInput = nullptr;
         BetterInputNode* hexInput = nullptr;
+        CCNodeWithShader* shader = nullptr;
 
         virtual void textChanged(CCTextInputNode* node);
 

@@ -56,10 +56,13 @@ bool SetupColourConfigUI::setup()
     // if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
         // GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
 
+    shader = CCNodeWithShader::create();
+
     picker = CCControlColourPicker::colourPicker();
     picker->setDelegate(this);
     picker->setAnchorPoint(ccp(0, 0));
     picker->setScale(0.8f);
+    shader->addChild(picker);
 
     // GameManager::sharedState()->m_levelEditorLayer = prev;
 
@@ -167,7 +170,7 @@ bool SetupColourConfigUI::setup()
 
     updateUI();
 
-    m_mainLayer->addChildAtPosition(picker, Anchor::Center, ccp(0, 0));
+    m_mainLayer->addChildAtPosition(shader, Anchor::Center, ccp(0, 0));
     m_mainLayer->addChildAtPosition(endColour, Anchor::TopLeft, ccp(30, -30));
     m_mainLayer->addChildAtPosition(startColour, Anchor::TopLeft, ccp(30, -30 - (15 * 1.5f)));
     m_mainLayer->addChildAtPosition(typeMenu, Anchor::BottomRight, ccp(-80, 0));
@@ -540,7 +543,17 @@ void SetupColourConfigUI::onSpeedSliderChanged(CCObject* sender)
 
 void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
 {
+    static bool ig = false;
+
+    if (ig)
+        return;
+
+    ig = true;
+
     this->currentConfig.customColour = colour;
+    updateInputs(nullptr);
+
+    ig = false;
 }
 
 void SetupColourConfigUI::textChanged(CCTextInputNode* node)

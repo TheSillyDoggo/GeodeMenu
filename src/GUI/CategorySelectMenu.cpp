@@ -142,7 +142,7 @@ void CategorySelectMenu::setSelectedCategory(std::string id)
 
 void CategorySelectMenu::setCallback(std::function<void(std::string)> callback)
 {
-    this->callback = callback;
+    this->callback = std::move(callback);
 }
 
 CCMenuItemSpriteExtra* CategorySelectMenu::getButton(std::string id)
@@ -159,10 +159,16 @@ CCMenuItemSpriteExtra* CategorySelectMenu::getButton(std::string id)
 bool CategorySelectMenu::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
     if (bottomBtns->ccTouchBegan(touch, event))
+    {
+        standardBtns->ccTouchBegan(touch, event);
         return true;
+    }
 
     if (standardBtns->ccTouchBegan(touch, event))
+    {
+        bottomBtns->ccTouchBegan(touch, event);
         return true;
+    }
 
     return false;
 }

@@ -44,6 +44,7 @@ class AndroidUI : public PopupBase
         static inline std::string selectedCategory = "Level";
         VersionInfoNode* bottomLeft = nullptr;
         VersionInfoNode* bottomRight = nullptr;
+        bool allow = false;
 
         std::vector<std::string> categoryOrders =
         {
@@ -75,6 +76,8 @@ class AndroidUI : public PopupBase
         void populateModules();
         void populateTabs();
         void updateTabs();
+
+        void switchTabTemp(std::string tab);
 
         void runAnimation(MenuAnimation anim);
 

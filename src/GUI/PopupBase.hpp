@@ -15,6 +15,8 @@ class PopupBase : public cocos2d::CCLayerColor
         virtual void registerWithTouchDispatcher(void);
         ~PopupBase();
 
+        float calcPopupScale();
+
     public:
         cocos2d::CCLayer* m_mainLayer = nullptr;
 

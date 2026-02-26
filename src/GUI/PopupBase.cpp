@@ -2,6 +2,7 @@
 #include <BlurAPI.hpp>
 #include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
+#include "Modules/PopupUIScale.hpp"
 
 using namespace geode::prelude;
 
@@ -10,9 +11,17 @@ bool PopupBase::init(float width, float height)
     if (!CCLayerColor::init())
         return false;
 
+    // short for calculator btw
+    float uiScale = calcPopupScale();
+
+    this->setScale(uiScale);
+    this->setContentSize(getContentSize() / uiScale);
+    this->setPosition((CCDirector::get()->getWinSize() - getContentSize()) / 2);
+
     if (BlurMenuBG::get()->getRealEnabled())
     {
         blurLayer = CCLayerColor::create(ccc4(0, 0, 0, 0));
+        blurLayer->setContentSize(getContentSize());
         BlurAPI::addBlur(blurLayer);
 
         this->addChild(blurLayer, -69);
@@ -25,6 +34,7 @@ bool PopupBase::init(float width, float height)
 
     m_size = ccp(width, height);
     m_bgSprite = CCScale9Sprite::create("GJ_square01.png");
+    m_bgSprite->setVisible(false);
     m_buttonMenu = CCMenu::create();
 
     m_mainLayer = CCLayer::create();
@@ -38,6 +48,11 @@ bool PopupBase::init(float width, float height)
     this->addChild(m_buttonMenu);
     this->addChild(m_bgSprite);
     return true;
+}
+
+float PopupBase::calcPopupScale()
+{
+    return std::clamp<float>(PopupUIScale::get()->getValue(), 0.6f, 1);
 }
 
 bool PopupBase::initAnchored(float width, float height)

@@ -111,7 +111,7 @@ void SetupLabelConfigUI::createPage1()
     createAnchorNodes();
 
     auto anchorBG = CCScale9Sprite::create("square02b_small.png");
-    anchorBG->setContentSize(ccp((18 * 1.3f * 3) + 15, this->getContentHeight() - 155) / 0.5f);
+    anchorBG->setContentSize(ccp((18 * 1.3f * 3) + 15, this->getScaledContentHeight() - 155) / 0.5f);
     anchorBG->setScale(0.5f);
     anchorBG->setAnchorPoint(ccp(1, 0.5f));
     anchorBG->setColor(ccc3(0, 0, 0));
@@ -159,7 +159,7 @@ void SetupLabelConfigUI::createPage1()
 
 
     auto generalBG = CCScale9Sprite::create("square02b_small.png");
-    generalBG->setContentSize(ccp(110, this->getContentHeight() - 155) / 0.5f);
+    generalBG->setContentSize(ccp(110, this->getScaledContentHeight() - 155) / 0.5f);
     generalBG->setScale(0.5f);
     generalBG->setAnchorPoint(ccp(0.5f, 0.5f));
     generalBG->setColor(ccc3(0, 0, 0));
@@ -167,7 +167,7 @@ void SetupLabelConfigUI::createPage1()
 
 
     auto infoBG = CCScale9Sprite::create("square02b_small.png");
-    infoBG->setContentSize(ccp(110, this->getContentHeight() - 155) / 0.5f);
+    infoBG->setContentSize(ccp(110, this->getScaledContentHeight() - 155) / 0.5f);
     infoBG->setScale(0.5f);
     infoBG->setAnchorPoint(ccp(0, 0.5f));
     infoBG->setColor(ccc3(0, 0, 0));
@@ -314,14 +314,14 @@ void SetupLabelConfigUI::createPage3()
     pages[2]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
 
     auto rightBG = CCScale9Sprite::create("square02b_small.png");
-    rightBG->setContentSize(ccp(75, this->getContentHeight() - 170) / 0.5f);
+    rightBG->setContentSize(ccp(75, this->getScaledContentHeight() - 170) / 0.5f);
     rightBG->setScale(0.55f);
     rightBG->setAnchorPoint(ccp(1, 0.5f));
     rightBG->setColor(ccc3(0, 0, 0));
     rightBG->setOpacity(100);
 
     auto leftBG = CCScale9Sprite::create("square02b_small.png");
-    leftBG->setContentSize(ccp(210, this->getContentHeight() - 170) / 0.5f);
+    leftBG->setContentSize(ccp(210, this->getScaledContentHeight() - 170) / 0.5f);
     leftBG->setScale(0.55f);
     leftBG->setAnchorPoint(ccp(0, 0.5f));
     leftBG->setColor(ccc3(0, 0, 0));

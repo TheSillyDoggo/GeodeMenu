@@ -3,6 +3,8 @@
 #include <Geode/modify/CCIMEDispatcher.hpp>
 #include <BetterInputNode.hpp>
 #include "Casts.hpp"
+#include <AndroidUI.hpp>
+#include <Modules/SearchBox.hpp>
 
 using namespace geode::prelude;
 
@@ -11,6 +13,14 @@ $execute
     KeyboardInputEvent()
     .listen(+[](const geode::KeyboardInputData& event)
     {
+        if (auto ui = AndroidUI::get())
+        {
+            if (SearchOnKeyPress::get()->getRealEnabled() && event.action == KeyboardInputData::Action::Press)
+            {
+                ui->switchTabTemp("Search");
+            }
+        }
+
         if (CCIMEDispatcher::sharedDispatcher()->hasDelegate())
         {
             if (auto inp = BetterInputNode::getSelected())
@@ -35,4 +45,20 @@ $execute
 
         return ListenerResult::Propagate;
     }).leak();
+
+    listenForKeybindSettingPresses("open-menu-keybind", [](Keybind const& keybind, bool down, bool repeat, double timestamp)
+    {
+        if (down && !repeat)
+        {
+            if (AndroidUI::get())
+            {
+                // close one menu so that option displays are gone before the main popup
+                CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false, 0);
+            }            
+            else
+            {
+                AndroidUI::addToScene();
+            }
+        }
+    });
 }
