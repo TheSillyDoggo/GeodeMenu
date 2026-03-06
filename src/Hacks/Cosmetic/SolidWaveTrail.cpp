@@ -19,7 +19,11 @@ SUBMIT_HACK(SolidWaveTrail);
 
 class $modify (CCDrawNode)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
     bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
+    #else
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+    #endif
     {
         ccColor4F fill = fillColor;
 
@@ -32,6 +36,10 @@ class $modify (CCDrawNode)
             }
         }
 
+        #if GEODE_COMP_GD_VERSION >= 22081
         return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor, alignment);
+        #else
+        return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor);
+        #endif
     }
 };

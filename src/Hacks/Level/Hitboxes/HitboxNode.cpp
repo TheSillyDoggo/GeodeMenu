@@ -517,3 +517,12 @@ void HitboxNode::setOnlyObject(GameObject* go)
 {
     this->onlyObject = go;
 }
+
+bool HitboxNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
+{
+    #if GEODE_COMP_GD_VERSION < 22081
+    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+    #else
+    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor, alignment);
+    #endif
+}
