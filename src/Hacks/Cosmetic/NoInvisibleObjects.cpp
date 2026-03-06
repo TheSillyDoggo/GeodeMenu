@@ -13,7 +13,7 @@ class NoInvisibleObjects : public Module
             setSafeModeTrigger(SafeModeTrigger::Attempt);
 
             #if GEODE_COMP_GD_VERSION <= 22074
-            setDisabledMessage("Unsupported in GD 2.2074")
+            setDisabledMessage("Unsupported in GD 2.2074");
             setDisabled(true);
             #endif
         }
@@ -21,7 +21,7 @@ class NoInvisibleObjects : public Module
 
 SUBMIT_HACK(NoInvisibleObjects);
 
-#if GEODE_COMP_GD_VERSION <= 22074
+#if GEODE_COMP_GD_VERSION >= 22081
 
 class $modify (PlayLayer)
 {
