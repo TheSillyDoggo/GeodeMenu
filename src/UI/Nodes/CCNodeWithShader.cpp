@@ -8,7 +8,7 @@ bool CCNodeWithShader::init()
         return false;
 
     rt = CCRenderTexture::create(offset.width, offset.height, kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
-    #if GEODE_COMP_GD_VERSION < 22081
+    #if GEODE_COMP_GD_VERSION >= 22081
     rt->getSprite()->getTexture()->setAntiAliasTexParameters();
     #endif
 
