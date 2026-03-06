@@ -160,7 +160,11 @@ class $modify (StartposPlayLayer, PlayLayer)
 
 class $modify (StartposUILayer, UILayer)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
     void handleKeypress(cocos2d::enumKeyCodes key, bool down, double timestamp)
+    #else
+    void handleKeypress(cocos2d::enumKeyCodes key, bool down)
+    #endif
     {
         if (down && StartposSwitcher::get()->getRealEnabled())
         {
@@ -177,6 +181,10 @@ class $modify (StartposUILayer, UILayer)
             }
         }
 
+        #if GEODE_COMP_GD_VERSION >= 22081
         UILayer::handleKeypress(key, down, timestamp);
+        #else
+        UILayer::handleKeypress(key, down);
+        #endif
     }
 };
