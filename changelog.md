@@ -1,3 +1,7 @@
+# 2.7.5
+
+- Fixed update not being available due to my stupidity
+
 # 2.7.4
 
 - Added Pitch Shifter high quality
