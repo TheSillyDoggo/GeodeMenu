@@ -160,7 +160,13 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
     #endif
     {
         if (!Autoclicker::get()->getRealEnabled())
+        {
+            #if GEODE_COMP_GD_VERSION >= 22081
             return GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
+            #else
+            return GJBaseGameLayer::processCommands(dt);
+            #endif
+        }
 
         auto fields = m_fields.self();
         float p1Interval = AutoclickerP1Interval::get()->getInterval();
