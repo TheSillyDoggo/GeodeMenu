@@ -12,18 +12,21 @@ class SolidWaveTrail : public Module
             setID("solid-wave");
             setCategory("Cosmetic");
             setDescription("Makes the wave trail a solid colour");
+
+            #if GEODE_COMP_GD_VERSION <= 22074
+            setDisabledMessage("Unsupported in GD 2.2074");
+            setDisabled(true);
+            #endif
         }
 };
 
 SUBMIT_HACK(SolidWaveTrail);
 
+#if GEODE_COMP_GD_VERSION >= 22081
+
 class $modify (CCDrawNode)
 {
-    #if GEODE_COMP_GD_VERSION >= 22081
     bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
-    #else
-    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
-    #endif
     {
         ccColor4F fill = fillColor;
 
@@ -36,10 +39,8 @@ class $modify (CCDrawNode)
             }
         }
 
-        #if GEODE_COMP_GD_VERSION >= 22081
         return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor, alignment);
-        #else
-        return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor);
-        #endif
     }
 };
+
+#endif
