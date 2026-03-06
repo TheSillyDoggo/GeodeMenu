@@ -1,4 +1,4 @@
-name: Build Geode Mod
+name: Build Geode Mod (2.2074)
 
 on:
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           bindings: 'geode-sdk/bindings'
-          bindings-ref: '48d8fae'
+          bindings-ref: '23d6ae03307e612430623a7ea693819d6fa963fa'
           #build-config: 'RelWithDebInfo'
           build-config: 'Release'
           export-pdb: true
