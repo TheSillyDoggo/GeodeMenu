@@ -5,7 +5,7 @@
 using namespace geode::prelude;
 
 #if GEODE_COMP_GD_VERSION < 22081
-using NineSlice = cocos2d::CCScale9Sprite;
+using NineSlice = CCScale9Sprite;
 #endif
 
 class EasyBG : public CCNode
