@@ -38,14 +38,13 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
-          sdk: "v4.10.2"
+          sdk: "v4.10.0"
+          configure-args: '-DSKIP_BUILDING_CODEGEN=OFF -DQOLMOD_22074=ON'
           bindings: 'geode-sdk/bindings'
           bindings-ref: '23d6ae03307e612430623a7ea693819d6fa963fa'
-          #build-config: 'RelWithDebInfo'
           build-config: 'Release'
           export-pdb: true
           combine: true
-          configure-args: '-DQOLMOD_22074=1 -DSKIP_BUILDING_CODEGEN=OFF'
           target: ${{ matrix.config.target }}
       
   package:
