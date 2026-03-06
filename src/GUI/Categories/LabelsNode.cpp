@@ -132,7 +132,11 @@ void LabelsNode::onImportFromFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     async::spawn(file::pickMany(options), [this](file::PickManyResult path)
+    #else
+    file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
+    #endif
     {
         if (path.isOk())
         {

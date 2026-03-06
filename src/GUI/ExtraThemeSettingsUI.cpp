@@ -97,7 +97,11 @@ void ExtraThemeSettingsUI::onSelectImage(CCObject* sender)
     filter.files = { "*.png" };
     options.filters.push_back(filter);
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<std::filesystem::path>> result)
+    #else
+    file::pick(file::PickMode::OpenFile, options).listen([this](Result<std::optional<std::filesystem::path>> path)
+    #endif
     {
         if (result.isOk())
         {
