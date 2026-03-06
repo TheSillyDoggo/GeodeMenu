@@ -115,5 +115,9 @@ void PopupBase::keyDown(cocos2d::enumKeyCodes code)
 
 void PopupBase::keyDown(cocos2d::enumKeyCodes code, double timestamp)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
     CCLayerColor::keyDown(code, timestamp);
+    #else
+    CCLayerColor::keyDown(code);
+    #endif
 }
