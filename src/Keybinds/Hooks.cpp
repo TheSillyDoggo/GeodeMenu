@@ -1,12 +1,50 @@
 #include "Hooks.hpp"
 #include <Geode/utils/Keyboard.hpp>
 #include <Geode/modify/CCIMEDispatcher.hpp>
+#include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <BetterInputNode.hpp>
 #include "Casts.hpp"
 #include <AndroidUI.hpp>
 #include <Modules/SearchBox.hpp>
 
 using namespace geode::prelude;
+
+#if GEODE_COMP_GD_VERSION < 22081
+class $modify (CCKeyboardDispatcher)
+{
+    bool dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat)
+    {
+        KeyState struc;
+        struc.shiftHeld = getShiftKeyPressed();
+        struc.ctrlHeld = getControlKeyPressed();
+        struc.cmdHeld = getCommandKeyPressed();
+        struc.altHeld = getAltKeyPressed();
+        struc.code = key;
+        struc.isDown = isKeyDown;
+        struc.isRepeat = isKeyRepeat;
+
+        if (key == enumKeyCodes::KEY_Tab && isKeyDown && !isKeyRepeat)
+        {
+            if (AndroidUI::get())
+            {
+                // close one menu so that option displays are gone before the main popup
+                CCKeyboardDispatcher::get()->dispatchKeyboardMSG(enumKeyCodes::KEY_Escape, true, false, 0);
+            }            
+            else
+            {
+                AndroidUI::addToScene();
+            }
+
+            return false;
+        }
+
+        if (KeybindManager::get()->processMSG(struc))
+            return false;
+
+        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, isKeyDown, isKeyRepeat);
+    }
+};
+#else
 
 $execute
 {
@@ -62,3 +100,5 @@ $execute
         }
     });
 }
+
+#endif

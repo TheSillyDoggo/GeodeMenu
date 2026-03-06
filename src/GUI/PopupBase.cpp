@@ -107,3 +107,8 @@ void PopupBase::registerWithTouchDispatcher()
 {
     CCTouchDispatcher::get()->addTargetedDelegate(this, -500, true);
 }
+
+void PopupBase::keyDown(cocos2d::enumKeyCodes code)
+{
+    this->keyDown(code, 0);
+}

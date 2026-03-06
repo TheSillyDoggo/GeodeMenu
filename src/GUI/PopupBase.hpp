@@ -11,6 +11,9 @@ class PopupBase : public cocos2d::CCLayerColor
         cocos2d::CCMenu* m_buttonMenu = nullptr;
         cocos2d::CCLayerColor* blurLayer = nullptr;
 
+        // pre 2.2081 compatibility
+        virtual void keyDown(cocos2d::enumKeyCodes code);
+
         virtual void keyBackClicked();
         virtual void registerWithTouchDispatcher(void);
         ~PopupBase();
