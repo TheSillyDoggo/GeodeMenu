@@ -153,7 +153,11 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
         }
     }
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     void processCommands(float dt, bool isHalfTick, bool isLastTick)
+    #else
+    void processCommands(float dt)
+    #endif
     {
         if (!Autoclicker::get()->getRealEnabled())
             return GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
@@ -186,7 +190,11 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
             }
         }
 
+        #if GEODE_COMP_GD_VERSION >= 22081
         GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
+        #else
+        GJBaseGameLayer::processCommands(dt);
+        #endif
     }
 
     void resetLevelVariables()
