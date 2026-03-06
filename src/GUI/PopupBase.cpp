@@ -112,3 +112,8 @@ void PopupBase::keyDown(cocos2d::enumKeyCodes code)
 {
     this->keyDown(code, 0);
 }
+
+void PopupBase::keyDown(cocos2d::enumKeyCodes code, double timestamp)
+{
+    CCLayerColor::keyDown(code, timestamp);
+}

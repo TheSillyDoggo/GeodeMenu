@@ -13,6 +13,7 @@ class PopupBase : public cocos2d::CCLayerColor
 
         // pre 2.2081 compatibility
         virtual void keyDown(cocos2d::enumKeyCodes code);
+        virtual void keyDown(cocos2d::enumKeyCodes code, double timestamp);
 
         virtual void keyBackClicked();
         virtual void registerWithTouchDispatcher(void);
