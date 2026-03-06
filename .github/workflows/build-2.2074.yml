@@ -45,7 +45,7 @@ jobs:
           build-config: 'Release'
           export-pdb: true
           combine: true
-          build-args: '-DQOLMOD_22074'
+          configure-args: '-DQOLMOD_22074'
           target: ${{ matrix.config.target }}
       
   package:
