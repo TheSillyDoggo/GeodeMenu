@@ -604,6 +604,8 @@ void SetupLabelConfigUI::setStartConfig(LabelConfig conf)
 
 void SetupLabelConfigUI::onExportToFile(CCObject* sender)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
+
     auto object = currentConfig.save();
 
     auto dump = object.dump();
@@ -616,11 +618,7 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
-    #if GEODE_COMP_GD_VERSION >= 22081
     async::spawn(file::pick(file::PickMode::OpenFile, options), [this, dump](Result<std::optional<std::filesystem::path>> result)
-    #else
-    file::pick(file::PickMode::OpenFile, options).listen([this, dump](Result<std::optional<std::filesystem::path>> path)
-    #endif
     {
         if (result.isOk())
         {
@@ -640,10 +638,14 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
             }
         }
     });
+
+    #endif
 }
 
 void SetupLabelConfigUI::onSelectImage(CCObject* sender)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
+
     if (sender->getTag() == 2)
     {
         currentConfig.imageLocation = "";
@@ -659,11 +661,7 @@ void SetupLabelConfigUI::onSelectImage(CCObject* sender)
         filter.files = { "*.png" };
         options.filters.push_back(filter);
 
-        #if GEODE_COMP_GD_VERSION >= 22081
         async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<std::filesystem::path>> result)
-        #else
-        file::pick(file::PickMode::OpenFile, options).listen([this](Result<std::optional<std::filesystem::path>> path)
-        #endif
         {
             if (result.isOk())
             {
@@ -677,6 +675,8 @@ void SetupLabelConfigUI::onSelectImage(CCObject* sender)
             }
         });
     }
+
+    #endif
 }
 
 void SetupLabelConfigUI::updateImagePreview()
