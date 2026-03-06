@@ -52,7 +52,7 @@ class HitboxNode : public cocos2d::CCDrawNode
         void forEachObject(GJBaseGameLayer* game, const std::function<void(GameObject*)>& callback);
         void drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, cocos2d::ccColor4F colour, float thickness, cocos2d::CCPoint towards);
         bool shouldRenderState(PlayerHitboxState* state);
-        bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment = BorderAlignment::Outside);
+        bool drawPolygon(cocos2d::CCPoint *verts, unsigned int count, const cocos2d::ccColor4F &fillColor, float borderWidth, const cocos2d::ccColor4F &borderColor, cocos2d::BorderAlignment alignment = cocos2d::BorderAlignment::Outside);
 
     public:
         CREATE_FUNC(HitboxNode);
