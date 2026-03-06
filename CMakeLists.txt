@@ -11,9 +11,9 @@ endif()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-message(STATUS "QOLMOD_22074 = ${QOLMOD_22074}")
+option(QOLMOD_22074 "2.2074 build help text" OFF)
 
-if (DEFINED QOLMOD_22074)
+if (QOLMOD_22074)
     file(COPY_FILE "${CMAKE_CURRENT_SOURCE_DIR}/mod-2.2074.json" "${CMAKE_CURRENT_SOURCE_DIR}/mod.json")
 endif()
 
