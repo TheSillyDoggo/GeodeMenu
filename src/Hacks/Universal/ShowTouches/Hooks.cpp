@@ -23,6 +23,10 @@ SUBMIT_OPTION(ShowTouches, CircleScale)
 SUBMIT_OPTION(ShowTouches, TrailEnabled)
 SUBMIT_OPTION(ShowTouches, ShowTouchDuration)
 
+#if GEODE_COMP_GD_VERSION < 22081
+using OverlayManager = CCScene;
+#endif
+
 class $modify (CCTouchDispatcher)
 {
     void touches(CCSet* touches, CCEvent* event, unsigned int type)
