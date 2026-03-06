@@ -38,6 +38,7 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
+          sdk: "v4.10.2"
           bindings: 'geode-sdk/bindings'
           bindings-ref: '23d6ae03307e612430623a7ea693819d6fa963fa'
           #build-config: 'RelWithDebInfo'
