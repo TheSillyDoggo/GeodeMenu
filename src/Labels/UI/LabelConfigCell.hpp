@@ -5,6 +5,10 @@
 
 using namespace geode::prelude;
 
+#if GEODE_COMP_GD_VERSION < 22081
+using geode::NineSlice = cocos2d::CCScale9Sprite;
+#endif
+
 class LabelConfigCell : public CCNode
 {
     protected:

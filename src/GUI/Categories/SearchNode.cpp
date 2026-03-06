@@ -154,7 +154,9 @@ void SearchNode::addModule(Module* module)
     if (module->getParent())
     {
         auto bg = NineSlice::create("square02b_small.png");
+        #if GEODE_COMP_GD_VERSION >= 22081
         bg->setScaleMultiplier(0.5f);
+        #endif
         bg->setOpacity(50);
         bg->setColor(SearchOptionsColour::get()->getColour());
         bg->setScale(0.9f);

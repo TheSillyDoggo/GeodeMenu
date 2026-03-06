@@ -18,6 +18,10 @@ LabelConfigCell* LabelConfigCell::create(CCSize size, LabelConfig config, int in
     return nullptr;
 }
 
+#if GEODE_COMP_GD_VERSION < 22081
+using geode::NineSlice = cocos2d::CCScale9Sprite;
+#endif
+
 bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
 {
     if (!CCNode::init())
