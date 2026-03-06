@@ -125,7 +125,7 @@ void LabelsNode::onEditSafeZones(CCObject* sender)
 void LabelsNode::onImportFromFile(CCObject* sender)
 {
     #if GEODE_COMP_GD_VERSION >= 22081
-    
+
     file::FilePickOptions options;
 
     file::FilePickOptions::Filter filter;
@@ -147,7 +147,7 @@ void LabelsNode::onImportFromFile(CCObject* sender)
         }
     });
 
-    #else
+    #endif
 }
 
 void LabelsNode::onAddLabel(CCObject* sender)
