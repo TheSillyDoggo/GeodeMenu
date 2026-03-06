@@ -66,14 +66,16 @@ bool CategorySelectMenu::init()
     bottomBtns->setAnchorPoint(ccp(0, 0));
     bottomBtns->ignoreAnchorPointForPosition(false);
     bottomBtns->setPosition(ccp(0, 0));
-    bottomBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true)->ignoreInvisibleChildren(true));
+    bottomBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true));
+    static_cast<AxisLayout*>(bottomBtns->getLayout())->ignoreInvisibleChildren(true);
     bottomBtns->setTouchEnabled(false);
 
     standardBtns = CCMenu::create();
     standardBtns->setAnchorPoint(ccp(0, 0));
     standardBtns->ignoreAnchorPointForPosition(false);
     standardBtns->setPosition(ccp(0, 0));
-    standardBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true)->ignoreInvisibleChildren(true));
+    standardBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true));
+    static_cast<AxisLayout*>(standardBtns->getLayout())->ignoreInvisibleChildren(true);
     standardBtns->setTouchEnabled(false);
 
     this->addChild(scroll);
