@@ -407,6 +407,7 @@ void BetterInputNode::updateCursorPos(bool isTouchUpdate, CCPoint touchPos)
     }
 }
 
+#if GEODE_COMP_GD_VERSION >= 22081
 void BetterInputNode::handleKeypress(cocos2d::enumKeyCodes key, KeyboardInputData::Action action)
 {
     if (action != KeyboardInputData::Action::Release)
@@ -480,6 +481,7 @@ void BetterInputNode::handleKeypress(cocos2d::enumKeyCodes key, KeyboardInputDat
         }
     }
 }
+#endif
 
 BetterInputNode::~BetterInputNode()
 {

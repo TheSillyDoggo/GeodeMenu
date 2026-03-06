@@ -78,7 +78,9 @@ class BetterInputNode : public CCMenu
 
         void setNumHoldValues(bool enabled, float step = 1.0f, float interval = 1.0f, float def = 1.0f);
 
+        #if GEODE_COMP_GD_VERSION >= 22081
         void handleKeypress(cocos2d::enumKeyCodes key, KeyboardInputData::Action action);
+        #endif
 
         void visit();
         bool init(float width, std::string placeholder, std::string font = "bigFont.fnt");
