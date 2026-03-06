@@ -11,6 +11,10 @@ endif()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+if (DEFINED QOLMOD_22074)
+    file(COPY_FILE "mod-2.2074.json" "mod.json")
+endif()
+
 project(CheatClient VERSION 1.0.0)
 
 file(GLOB SOURCES

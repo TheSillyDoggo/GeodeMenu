@@ -15,6 +15,7 @@ class CategoryNode : public CCMenu
 
     protected:
         static inline std::map<std::string, std::function<CategoryNode*()>> advCategories = {};
+        static inline std::unordered_map<std::string, CCPoint> categoryScrolls = {};
         std::unordered_map<Module*, ModuleNode*> modules = {};
         ScrollLayer* scroll = nullptr;
         BetterScrollbar* scrollbar = nullptr;
@@ -34,6 +35,8 @@ class CategoryNode : public CCMenu
         
         virtual void updateUI();
         bool shouldScrollbarShow();
+
+        void setID(std::string id);
 
         virtual void scrollWheel(float y, float x);
         virtual void setContentSize(const CCSize& contentSize);

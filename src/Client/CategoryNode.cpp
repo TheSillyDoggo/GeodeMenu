@@ -32,6 +32,13 @@ CategoryNode* CategoryNode::getNode(std::string category)
 
 void CategoryNode::addModule(Module* module)
 {
+    if (!module)
+    {
+        modules.emplace(module, nullptr);
+        updateUI();
+        return;
+    }
+
     auto node = module->getNode();
     node->setTag(modules.size());
 
@@ -57,7 +64,8 @@ void CategoryNode::removeAll()
 {
     for (auto node : modules)
     {
-        node.second->removeFromParent();
+        if (node.second)
+            node.second->removeFromParent();
     }
 
     modules.clear();
@@ -70,13 +78,19 @@ void CategoryNode::updateUI()
     float height2 = height - (28 / 2) - 3;
     float height3 = (modules.size() == 0 ? 0 : 6);
 
+    auto heightOld = scroll->m_contentLayer->getContentHeight();
     scroll->m_contentLayer->setContentHeight(height + height3);
+
+    bool resetScroll = heightOld != scroll->m_contentLayer->getContentHeight();
 
     bool showScrollbar = shouldScrollbarShow();
 
     for (auto node : modules)
     {
         auto n = node.second;
+
+        if (!n)
+            continue;
 
         bool right = (n->getTag() % 2 != 0);
         float usWidth = showScrollbar ? getContentWidth() - scrollbar->getScaledContentWidth() + 2.5f : getContentWidth();
@@ -88,7 +102,12 @@ void CategoryNode::updateUI()
         n->setPosition(ccp(right ? usWidth - 2.5f : 2.5f, height2 - (y * 28) + 6));
     }
 
-    scroll->moveToTop();
+    if (resetScroll)
+    {
+        scroll->moveToTop();
+        setID(getID());
+    }
+
     scroll->setTouchEnabled(height + height3 != (scroll->getContentHeight() + height3));
     scrollbar->setVisible(showScrollbar);
     scrollbar->setDisabled(!scroll->isTouchEnabled());
@@ -163,9 +182,17 @@ void CategoryNode::setContentSize(const CCSize& contentSize)
     updateLayout();
 }
 
+void CategoryNode::setID(std::string id)
+{
+    CCNode::setID(id);
+
+    if (categoryScrolls.contains(id) && scroll)
+        scroll->m_contentLayer->setPosition(categoryScrolls[id]);
+}
+
 CategoryNode::~CategoryNode()
 {
     // this is terrible
-
+    categoryScrolls[getID()] = scroll->m_contentLayer->getPosition();
     MouseDispatcher::betterMouseDispatcherDelegates.erase(std::remove(MouseDispatcher::betterMouseDispatcherDelegates.begin(), MouseDispatcher::betterMouseDispatcherDelegates.end(), this), MouseDispatcher::betterMouseDispatcherDelegates.end());
 }

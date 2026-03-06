@@ -18,7 +18,7 @@ void ImageNode::labelConfigUpdated()
     if (!sprite)
         return;
 
-    sprite->setOpacity(config.opacity);
+    sprite->setOpacity(config.opacity * 255);
     sprite->setAnchorPoint(ccp(0, 0));
     this->addChild(sprite);
 }

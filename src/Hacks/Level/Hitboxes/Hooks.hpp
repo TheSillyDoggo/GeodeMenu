@@ -40,5 +40,7 @@ class $modify (HitboxEditorLayer, LevelEditorLayer)
 
 class $modify (HitboxEditorUI, EditorUI)
 {
+    void transformObjectCall(EditCommand command);
+
     virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 };

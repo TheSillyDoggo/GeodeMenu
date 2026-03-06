@@ -486,3 +486,13 @@ BetterInputNode::~BetterInputNode()
     if (selectedInput == this)
         selectedInput = nullptr;
 }
+
+void BetterInputNode::onPasteClipboard(CCObject* sender)
+{
+    setString(clipboard::read());
+}
+
+void BetterInputNode::onCopyClipboard(CCObject* sender)
+{
+    clipboard::write(getString());
+}

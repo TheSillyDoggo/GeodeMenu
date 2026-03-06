@@ -147,6 +147,8 @@ class Module
         int getSortPriority();
         bool isDisabled();
 
+        float getSearchWeight(std::string query);
+
         virtual ModuleNode* getNode();
         virtual void DLL onToggle();
         virtual void onKeybindActivated(KeyState state);

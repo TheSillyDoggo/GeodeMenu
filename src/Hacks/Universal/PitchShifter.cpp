@@ -1,5 +1,5 @@
 #include "../../Client/InputModule.hpp"
-#include <Geode/modify/CCTransitionFade.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 #include "../Speedhack/Speedhack.hpp"
 
 using namespace geode::prelude;
@@ -60,6 +60,21 @@ class PitchShifterMusicOnly : public Module
         }
 };
 
+class PitchShifterHighQuality : public Module
+{
+    public:
+        MODULE_SETUP(PitchShifterHighQuality)
+        {
+            setID("pitch-shifter/high-quality");
+            setPriority(3);
+        }
+
+        virtual void onToggle()
+        {
+            PitchShifter::get()->onToggle();
+        }
+};
+
 void PitchShifter::onToggle()
 {
     auto masterGroup = Speedhack::get()->getMasterChannel();
@@ -83,13 +98,21 @@ void PitchShifter::onToggle()
         masterGroup->addDSP(0, pitchDSP);
 
     pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_PITCH, PitchShifterOctaves::get()->getStringFloat() / 12.0f);
+
+    if (PitchShifterHighQuality::get()->getRealEnabled())
+        pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_FFTSIZE, 4096 * 8);
 }
 
 SUBMIT_HACK(PitchShifter);
 SUBMIT_OPTION(PitchShifter, PitchShifterOctaves);
 SUBMIT_OPTION(PitchShifter, PitchShifterMusicOnly);
 
-$on_mod (Loaded)
+class $modify (MenuLayer)
 {
-    PitchShifter::get()->onToggle();
-}
+    virtual bool init()
+    {
+        PitchShifter::get()->onToggle();
+
+        return MenuLayer::init();
+    }
+};

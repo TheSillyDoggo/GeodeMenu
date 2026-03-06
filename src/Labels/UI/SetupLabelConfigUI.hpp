@@ -45,6 +45,7 @@ class SetupLabelConfigUI : public PopupBase
         void onChangePage(CCObject* sender);
         void onExportToFile(CCObject* sender);
         void onSelectImage(CCObject* sender);
+        void onPaste(CCObject* sender);
 
         void createPages();
         void createAnchorNodes();

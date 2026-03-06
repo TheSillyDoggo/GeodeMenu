@@ -12,6 +12,7 @@ FavouritesNode* FavouritesNode::get()
 
 bool FavouritesNode::init()
 {
+    setID("FavouritesNode");
     if (!CategoryNode::init())
         return false;
 

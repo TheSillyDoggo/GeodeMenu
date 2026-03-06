@@ -59,6 +59,9 @@ class BetterInputNode : public CCMenu
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");
         static BetterInputNode* getSelected();
 
+        void onPasteClipboard(CCObject* sender);
+        void onCopyClipboard(CCObject* sender);
+
         void selectInput(bool selected);
 
         void setString(std::string str);

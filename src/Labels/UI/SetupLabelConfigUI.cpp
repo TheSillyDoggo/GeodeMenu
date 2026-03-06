@@ -275,7 +275,10 @@ void SetupLabelConfigUI::createPage2()
             currentConfig.formatString = str;
         });
 
+        auto formatBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_pasteBtn_001.png"), this, menu_selector(SetupLabelConfigUI::onPaste));
+
         pages[1]->addChildAtPosition(formatInp, Anchor::Center);
+        pages[1]->addChildAtPosition(formatBtn, Anchor::Center, ccp(0, -50));
     }
 
     if (type == LabelType::Image)
@@ -689,4 +692,9 @@ void SetupLabelConfigUI::updateImagePreview()
     imagePreview->setScale(std::min<float>(75.0f / imagePreview->getContentHeight(), 1));
     imagePreview->setVisible(type == LabelType::Image);
     pages[1]->addChildAtPosition(imagePreview, Anchor::Center, ccp(0, 30));
+}
+
+void SetupLabelConfigUI::onPaste(CCObject* sender)
+{
+    formatInp->setString(clipboard::read());
 }

@@ -77,6 +77,7 @@ bool LanguageNodeUI::init()
         }
     }
 
+    setID("LanguageNodeUI");
     this->addChildAtPosition(clip, Anchor::TopLeft, ccp(2.5f, 0));
     this->addChildAtPosition(missingMenu, Anchor::Top, ccp(0, -10));
     return true;
@@ -95,4 +96,9 @@ void LanguageNodeUI::updateUI()
 void LanguageNodeUI::onContribute(CCObject* sender)
 {
     geode::utils::web::openLinkInBrowser("https://github.com/TheSillyDoggo/QOLMod-Translations/");
+}
+
+LanguageNodeUI::~LanguageNodeUI()
+{
+    categoryScrolls[getID()] = scroll->m_contentLayer->getPosition();
 }

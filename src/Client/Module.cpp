@@ -422,3 +422,16 @@ std::string Module::getNotificationString()
 
     return utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName());
 }
+
+#include <rapidfuzz/fuzz.hpp>
+
+float Module::getSearchWeight(std::string query)
+{
+    float w = 0;
+
+    w += (rapidfuzz::fuzz::ratio(query, getName()) / 100.0f) * 8;
+    w += (rapidfuzz::fuzz::ratio(query, getID()) / 100.0f) * 3;
+    w += (rapidfuzz::fuzz::ratio(query, getDescription()) / 100.0f) * 3;
+
+    return w;
+}

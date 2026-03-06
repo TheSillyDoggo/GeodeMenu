@@ -4,6 +4,9 @@
 
 class LanguageNodeUI : public CategoryNode
 {
+    protected:
+        ~LanguageNodeUI();
+
     public:
         CREATE_FUNC(LanguageNodeUI)
 

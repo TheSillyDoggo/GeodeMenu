@@ -78,6 +78,7 @@ bool SearchNode::init()
 
     scroll->setContentHeight(scroll->getContentHeight() - 30);
     updateUI();
+    scroll->moveToTop();
 
     textChanged(nullptr);
 
@@ -105,34 +106,26 @@ void SearchNode::textChanged(CCTextInputNode* input)
     if (textInput->getString().empty())
         return;
 
-    auto str = utils::string::replace(utils::string::toLower(textInput->getString()), " ", "");
+    auto query = utils::string::replace(utils::string::toLower(textInput->getString()), " ", "");
+    std::vector<Module*> mods = Module::getAll();
 
-    for (auto module : Module::getAll())
+    std::sort(mods.begin(), mods.end(), [query](Module* a, Module* b)
     {
-        auto name = utils::string::replace(utils::string::toLower(module->getName()), " ", "");
-        auto id = utils::string::replace(utils::string::toLower(module->getID()), " ", "");
-        auto desc = utils::string::replace(utils::string::toLower(module->getDescription()), " ", "");
+        auto aP = a->getSearchWeight(query);
+        auto bP = b->getSearchWeight(query);
 
+        return aP > bP;
+    });
+
+    for (auto module : mods)
+    {
         if (!SearchShowOptions::get()->getRealEnabled() && module->getParent())
             continue;
 
-        if (name.find(str) != std::string::npos)
-        {
-            addModule(module);
+        if (module->getSearchWeight(query) < 4.5f)
             continue;
-        }
 
-        if (id.find(str) != std::string::npos)
-        {
-            addModule(module);
-            continue;
-        }
-
-        if (desc.find(str) != std::string::npos)
-        {
-            addModule(module);
-            continue;
-        }
+        addModule(module);
     }
 
     errorMenu->setVisible(modules.size() == 0);
@@ -153,21 +146,31 @@ void SearchNode::addModule(Module* module)
 
     scroll->m_contentLayer->addChild(node);
     updateUI();
+    scroll->moveToTop();
 
-    return;
+    // return;
     // i cant get it to look good no matter the colour
     
     if (module->getParent())
     {
-        auto bg = CCScale9Sprite::create("square02b_small.png");
+        auto bg = NineSlice::create("square02b_small.png");
+        bg->setScaleMultiplier(0.5f);
         bg->setOpacity(50);
-        bg->setColor(ccc3(0, 255, 157));
+        bg->setColor(SearchOptionsColour::get()->getColour());
         bg->setScale(0.9f);
-        bg->setContentSize(node->getContentSize() * (1.0f / 0.9f) - ccp(11, 2));
+        bg->setContentSize(node->getContentSize() * (1.0f / 0.9f) - ccp(2, 2));
         bg->setZOrder(-80085);
         bg->setID("mod-option-search-result-bg");
         bg->setAnchorPoint(ccp(0, 0));
-        bg->setPosition(ccp(2, 1));
+        bg->setPosition(ccp(1, 1));
+        bg->schedule(schedule_selector(SearchNode::updateColour));
         node->addChild(bg);
     }
+}
+
+void SearchNode::updateColour(float dt)
+{
+    auto ns = reinterpret_cast<geode::NineSlice*>(this);
+
+    ns->setColor(SearchOptionsColour::get()->getColour());
 }

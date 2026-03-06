@@ -87,6 +87,7 @@ bool OptionsUI::setup()
     node->setAnchorPoint(ccp(0.5f, 0.5f));
     node->setContentHeight(170);
     node->updateLayout();
+    node->setID(fmt::format("{}_options", module->getID()));
 
     Module::sortAlphabetically(&module->getOptions());
 

@@ -134,3 +134,18 @@ void HitboxEditorUI::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* eve
 
     base_cast<HitboxBaseGameLayer*>(m_editorLayer)->onTick(false);
 }
+
+void HitboxEditorUI::transformObjectCall(EditCommand command)
+{
+    EditorUI::transformObjectCall(command);
+
+    if (auto obj = m_selectedObject)
+    {
+        moveObject(obj, ccp(0, 0));
+    }
+
+    for (auto obj : CCArrayExt<GameObject*>(m_selectedObjects))
+    {
+        moveObject(obj, ccp(0, 0));
+    }
+}
