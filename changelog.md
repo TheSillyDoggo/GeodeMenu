@@ -3,7 +3,7 @@
 - Added Pitch Shifter high quality
 - Added Paste button to labels format page
 - Added a background behind options in the search page
-- Made category scrolls to save between popup opens
+- Made category scrolls save between popup opens
 - Improved search tab by using fuzzy search
 - Fixed show hitboxes not updating when rotating a slope in the editor
 - Fixed image labels being invisible

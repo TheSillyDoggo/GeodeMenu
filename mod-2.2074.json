@@ -1,6 +1,6 @@
 {
 	"geode": "4.10.0",
-	"version": "v2.7.4",
+	"version": "v2.7.4-beta.1",
 	"gd": {
 		"win": "2.2074",
 		"android": "2.2074",
@@ -51,14 +51,6 @@
 			]
 		}
     },
-	"settings": {
-		"open-menu-keybind": {
-			"type": "keybind",
-			"name": "Open Menu Bind",
-			"default": "Tab",
-			"priority": 8008135
-		}
-	},
 	"tags": [
 		"cheat",
 		"gameplay",

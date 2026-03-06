@@ -9,6 +9,7 @@
 using namespace geode::prelude;
 
 #if GEODE_COMP_GD_VERSION < 22081
+#ifndef GEODE_IS_IOS
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat)
@@ -43,6 +44,7 @@ class $modify (CCKeyboardDispatcher)
         return CCKeyboardDispatcher::dispatchKeyboardMSG(key, isKeyDown, isKeyRepeat);
     }
 };
+#endif
 #else
 #include <Geode/utils/Keyboard.hpp>
 
