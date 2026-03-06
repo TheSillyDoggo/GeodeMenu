@@ -21,7 +21,7 @@ SUBMIT_HACK(AutoCollectCoins);
 
 class $modify (PlayLayer)
 {
-    virtual void resetLevel()
+    void resetLevel()
     {
         PlayLayer::resetLevel();
 

@@ -8,7 +8,7 @@ class $modify (LabelPlayLayer, PlayLayer)
 {
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
 
-    virtual void resetLevel();
+    void resetLevel();
 };
 
 class $modify (LabelBaseGameLayer, GJBaseGameLayer)

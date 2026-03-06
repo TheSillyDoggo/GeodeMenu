@@ -225,7 +225,7 @@ void AdvLabelBMFont::updateLabel()
             }
 
             visibleLabels.push_back(lbl);
-            lbl->setUserFlag("no-colour", col == ccWHITE);
+            lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
 
             lbl->setVisible(true);
 
@@ -258,7 +258,7 @@ void AdvLabelBMFont::updateLabel()
             }
 
             visibleLabels.push_back(lbl);
-            lbl->setUserFlag("no-colour", col == ccWHITE);
+            lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
 
             lbl->setVisible(true);
 
@@ -328,7 +328,7 @@ void AdvLabelBMFont::updateLabelQuick()
 {
     for (auto label : visibleLabels)
     {
-        if (label->getUserFlag("no-colour"))
+        if (label->getUserObject("no-colour"))
             label->setColor(colour);
     }
 }

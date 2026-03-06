@@ -52,7 +52,7 @@ bool isNodeUnpausable(CCNode* node)
     if (!node)
         return false;
 
-    if (node->getUserFlag("unpausable"_spr))
+    if (node->getUserObject("unpausable"_spr))
         return true;
 
     if (node->getParent())

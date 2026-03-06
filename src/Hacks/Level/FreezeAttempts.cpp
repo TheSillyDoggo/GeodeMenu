@@ -34,7 +34,7 @@ class $modify (GameStatsManager)
 
 class $modify (PlayLayer)
 {
-    virtual void resetLevel()
+    void resetLevel()
     {
         auto atts = m_level->m_attempts;
 

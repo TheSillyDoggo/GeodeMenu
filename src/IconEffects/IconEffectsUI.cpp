@@ -275,7 +275,7 @@ CCMenuItemSpriteExtra* IconEffectsUI::createPreviewButton(IconicGamemodeType gam
 
     auto btn = CCMenuItemSpriteExtra::create(n, this, menu_selector(IconEffectsUI::onSelectType));
     btn->setTag((int)gamemode);
-    btn->setUserFlag("player2", player2);
+    btn->setUserObject("player2", player2 ? CCNode::create() : nullptr);
     btn->setContentSize(ccp(30, 30));
 
     if (gamemode == IconicGamemodeType::Dart)
@@ -361,7 +361,7 @@ void IconEffectsUI::addCircleToNode(CCNode* node, float scale)
     auto circle = CCCircleWave::create(0, 25 * scale, 0.2f, true);
     circle->setPosition(node->getContentSize() / 2);
     circle->m_circleMode = CircleMode::Outline;
-    circle->setUserFlag("allow-circle"_spr, true);
+    circle->setUserObject("allow-circle"_spr, CCNode::create());
 
     node->addChild(circle);
 }
@@ -375,7 +375,7 @@ void IconEffectsUI::onSelectType(CCObject* sender)
 {
     auto n = static_cast<CCNode*>(sender);
     selectedType.first = (IconicGamemodeType)n->getTag();
-    selectedType.second = n->getUserFlag("player2");
+    selectedType.second = n->getUserObject("player2");
 
     addCircleToNode(n);
 

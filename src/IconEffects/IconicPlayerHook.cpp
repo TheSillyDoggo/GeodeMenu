@@ -38,7 +38,7 @@ bool IconicPlayerHook::init()
 
     saveDefault();
     setEnabled(true);
-    setUserFlag("unpausable"_spr);
+    setUserObject("unpausable"_spr, CCNode::create());
 
     config = IconicManager::get()->getConfig(IconicGamemodeType::Cube, false);
 
