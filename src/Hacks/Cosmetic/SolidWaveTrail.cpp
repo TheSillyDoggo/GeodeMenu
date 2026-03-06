@@ -1,5 +1,4 @@
 #include "../../Client/Module.hpp"
-#include <Geode/modify/CCDrawNode.hpp>
 
 using namespace geode::prelude;
 
@@ -23,6 +22,8 @@ class SolidWaveTrail : public Module
 SUBMIT_HACK(SolidWaveTrail);
 
 #if GEODE_COMP_GD_VERSION >= 22081
+
+#include <Geode/modify/CCDrawNode.hpp>
 
 class $modify (CCDrawNode)
 {
