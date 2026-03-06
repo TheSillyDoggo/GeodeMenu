@@ -134,14 +134,18 @@ void LabelsNode::onImportFromFile(CCObject* sender)
 
     #if GEODE_COMP_GD_VERSION >= 22081
     async::spawn(file::pickMany(options), [this](file::PickManyResult path)
-    #else
-    file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
-    #endif
     {
         if (path.isOk())
         {
             auto paths = path.unwrap();
 
+    #else
+    file::pickMany(options).listen([this](Result<std::vector<std::filesystem::path>>* path)
+    {
+        if (path->isOk())
+        {
+            auto paths = path->unwrap();
+    #endif
             for (auto path : paths)
             {
                 LabelManager::get()->addFromFile(path);
