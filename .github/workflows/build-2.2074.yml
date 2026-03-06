@@ -45,7 +45,7 @@ jobs:
           build-config: 'Release'
           export-pdb: true
           combine: true
-          configure-args: '-DQOLMOD_22074=1'
+          configure-args: '-DQOLMOD_22074=1 -DSKIP_BUILDING_CODEGEN=OFF'
           target: ${{ matrix.config.target }}
       
   package:
