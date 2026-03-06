@@ -12,17 +12,17 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - name: Windows
+        - name: Windows (2.2074)
           os: windows-latest
-        - name: Android32
+        - name: Android32 (2.2074)
           os: ubuntu-latest
           target: Android32
-        - name: Android64
+        - name: Android64 (2.2074)
           os: ubuntu-latest
           target: Android64
-        - name: macOS
+        - name: macOS (2.2074)
           os: macos-latest
-        - name: iOS
+        - name: iOS (2.2074)
           os: macos-latest
           target: iOS        
 
@@ -38,7 +38,7 @@ jobs:
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
-          bindings: 'TheSillyDoggo/bindings'
+          bindings: 'geode-sdk/bindings'
           bindings-ref: '48d8fae'
           #build-config: 'RelWithDebInfo'
           build-config: 'Release'
@@ -58,5 +58,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Build Output
+          name: Build Output (2.2074)
           path: ${{ steps.build.outputs.build-output }}
