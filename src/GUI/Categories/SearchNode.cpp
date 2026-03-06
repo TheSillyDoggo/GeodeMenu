@@ -172,7 +172,7 @@ void SearchNode::addModule(Module* module)
 
 void SearchNode::updateColour(float dt)
 {
-    auto ns = reinterpret_cast<geode::NineSlice*>(this);
+    auto ns = reinterpret_cast<NineSlice*>(this);
 
     ns->setColor(SearchOptionsColour::get()->getColour());
 }
