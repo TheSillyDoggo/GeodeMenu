@@ -1,5 +1,4 @@
 #include "Hooks.hpp"
-#include <Geode/utils/Keyboard.hpp>
 #include <Geode/modify/CCIMEDispatcher.hpp>
 #include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <BetterInputNode.hpp>
@@ -45,6 +44,7 @@ class $modify (CCKeyboardDispatcher)
     }
 };
 #else
+#include <Geode/utils/Keyboard.hpp>
 
 $execute
 {
