@@ -66,3 +66,36 @@ void IconicManager::setDualMode(IconicDualMode mode)
 
     Mod::get()->setSavedValue<matjson::Value>("iconic-config", parent);
 }
+
+bool IconicManager::areIncompatibleModsLoaded()
+{
+    return getIncompatibleMods().size() > 0;
+}
+
+std::vector<geode::Mod*> IconicManager::getIncompatibleMods()
+{
+    return incompatibleMods;
+}
+
+void IconicManager::handleIncompatibility(std::string id)
+{
+    if (auto mod = Loader::get()->getLoadedMod(id))
+        incompatibleMods.push_back(mod);
+}
+
+$on_game(Loaded)
+{
+    auto icm = IconicManager::get();
+
+    icm->handleIncompatibility("rooot.custom-gamemode-colors");
+    icm->handleIncompatibility("gdemerald.custom_icon_colors");
+    icm->handleIncompatibility("capeling.coloured-wave-trail");
+    icm->handleIncompatibility("weebify.separate_dual_icons");
+    icm->handleIncompatibility("naxrin.progress_bar_color");
+    icm->handleIncompatibility("naxrin.rgb_icons");
+    icm->handleIncompatibility("asaki_zuki.same_dual_color");
+    icm->handleIncompatibility("saumondeluxe.rainbow_icon");
+    icm->handleIncompatibility("terma.ambienticons");
+    icm->handleIncompatibility("acaruso.pride");
+    icm->handleIncompatibility("the_bearodactyl.gay-wave-trail");
+}

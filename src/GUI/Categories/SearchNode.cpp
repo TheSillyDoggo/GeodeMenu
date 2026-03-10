@@ -117,13 +117,20 @@ void SearchNode::textChanged(CCTextInputNode* input)
         return aP > bP;
     });
 
+    int count = 40;
+    int c = 0;
+
     for (auto module : mods)
     {
         if (!SearchShowOptions::get()->getRealEnabled() && module->getParent())
             continue;
 
-        if (module->getSearchWeight(query) < 4.5f)
+        if (module->getSearchWeight(query) == 0)
             continue;
+        
+        c++;
+        if (c > count)
+            break;
 
         addModule(module);
     }

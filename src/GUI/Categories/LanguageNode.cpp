@@ -3,6 +3,7 @@
 #include "../../Localisation/LocalisationManager.hpp"
 #include "../../Localisation/UI/LanguageNode.hpp"
 #include "../BetterButtonSprite.hpp"
+#include <UI/LanguageOptionsUI.hpp>
 
 bool LanguageNodeUI::init()
 {
@@ -38,6 +39,13 @@ bool LanguageNodeUI::init()
     missingMenu->setAnchorPoint(ccp(0.5f, 0));
     missingMenu->addChild(missingLabel);
     missingMenu->addChild(missingBtn);
+
+    auto optionsMenu = CCMenu::create();
+    auto optionsSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
+    optionsSpr->setScaleY(0.6f); // increases hitbox
+    auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(LanguageNodeUI::onSettings));
+    optionsSpr->setScale(0.4f);
+    optionsMenu->addChild(optionsBtn);
 
     auto langs = LocalisationManager::get()->getAllLanguageFiles();
     float height = std::ceil(langs.size() / 2.0f) * (60 + 2.5f);
@@ -80,6 +88,7 @@ bool LanguageNodeUI::init()
     setID("LanguageNodeUI");
     this->addChildAtPosition(clip, Anchor::TopLeft, ccp(2.5f, 0));
     this->addChildAtPosition(missingMenu, Anchor::Top, ccp(0, -10));
+    this->addChildAtPosition(optionsMenu, Anchor::TopRight, ccp(-10 - 2.5f, -10));
     return true;
 }
 
@@ -87,7 +96,9 @@ void LanguageNodeUI::updateUI()
 {
     scroll->setContentHeight(getContentHeight() - 20 - 2.5f);
 
-    scroll->moveToTop();
+    if (!categoryScrolls.contains(getID()))
+        scroll->moveToTop();
+    
     scroll->setTouchEnabled(true);
     scrollbar->setVisible(true);
     scrollbar->setDisabled(false);
@@ -95,7 +106,12 @@ void LanguageNodeUI::updateUI()
 
 void LanguageNodeUI::onContribute(CCObject* sender)
 {
-    geode::utils::web::openLinkInBrowser("https://github.com/TheSillyDoggo/QOLMod-Translations/");
+    utils::web::openLinkInBrowser("https://github.com/TheSillyDoggo/QOLMod-Translations/");
+}
+
+void LanguageNodeUI::onSettings(CCObject* sender)
+{
+    LanguageOptionsUI::create()->show();
 }
 
 LanguageNodeUI::~LanguageNodeUI()

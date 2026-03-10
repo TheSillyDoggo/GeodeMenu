@@ -2,6 +2,7 @@
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "LocalisationManager.hpp"
 #include <TTFCache.hpp>
+#include <Modules/LanguagePreloadFont.hpp>
 
 $on_mod (Loaded)
 {
@@ -26,27 +27,30 @@ class $modify (LoadingLayer)
         {
             if (m_fields->loadCount == 1)
             {
-                if (!CCTextureCache::get()->textureForKey(utils::string::replace(font, ".fnt", ".png").c_str()))
+                if (LanguagePreloadFont::get()->getRealEnabled())
                 {
-                    if (auto lbl = typeinfo_cast<CCLabelBMFont*>(getChildByID("geode-small-label")))
-                        lbl->setString("QOLMod: Loading language font");
+                    if (!CCTextureCache::get()->textureForKey(utils::string::replace(font, ".fnt", ".png").c_str()))
+                    {
+                        if (auto lbl = typeinfo_cast<CCLabelBMFont*>(getChildByID("geode-small-label")))
+                            lbl->setString("QOLMod: Loading language font");
 
-                    if (lang->getTrueTypeFallback())
-                    {
-                        Loader::get()->queueInMainThread([this]
+                        if (lang->getTrueTypeFallback())
                         {
-                            TTFCache::get()->preloadTextures();
-                        });
-                    }
-                    else
-                    {
-                        Loader::get()->queueInMainThread([this, font]
+                            Loader::get()->queueInMainThread([this]
+                            {
+                                TTFCache::get()->preloadTextures();
+                            });
+                        }
+                        else
                         {
-                            auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
-                            lbl->setScale(0);
-                            lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
-                            CCScene::get()->addChild(lbl);
-                        });
+                            Loader::get()->queueInMainThread([this, font]
+                            {
+                                auto lbl = AdvLabelBMFont::createWithString("boobs", font.c_str());
+                                lbl->setScale(0);
+                                lbl->setID("THIS_IS_REQUIRED_FOR_LANGUAGE_PRELOADING"_spr);
+                                CCScene::get()->addChild(lbl);
+                            });
+                        }
                     }
                 }
             }

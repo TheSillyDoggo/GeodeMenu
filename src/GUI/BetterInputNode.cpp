@@ -101,7 +101,8 @@ void BetterInputNode::selectInput(bool selected)
     }
     else
     {
-        textInput->defocus();
+        // textInput->defocus();
+        textInput->getInputNode()->onClickTrackNode(false);
         selectedInput = nullptr;
         bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 100)));
     }

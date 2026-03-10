@@ -433,5 +433,15 @@ float Module::getSearchWeight(std::string query)
     w += (rapidfuzz::fuzz::ratio(query, getID()) / 100.0f) * 3;
     w += (rapidfuzz::fuzz::ratio(query, getDescription()) / 100.0f) * 3;
 
+    /*if (w < 4.5f)
+    {
+        w = 0;
+    }
+    else
+    {*/
+        if (!getParent())
+            w += 0.5f;
+    //}
+
     return w;
 }

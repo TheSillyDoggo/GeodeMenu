@@ -47,6 +47,9 @@ bool IconicPlayerHook::init()
 
 void IconicPlayerHook::update(float dt)
 {
+    if (IconicManager::get()->areIncompatibleModsLoaded())
+        return;
+
     if (config)
     {
         if (simple)

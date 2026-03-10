@@ -1,3 +1,23 @@
+# 2.7.6
+
+- Added All Modes Platformer
+- Added Zoom Pause Menu
+- Added Solid Wave Trail Preserve Center
+- Added button to temporarily load a language from a file
+- Fixed Pitch Shifter not applying when launching the game
+- Fixed category buttons disappearing for one frame when changing language
+- Made Icon Effects disable if incompatible mods are installed
+- Fixed bad rendering hook that should probably crash on mobile but surprisingly doesn't
+- Improved searching a bit
+- Localisation:
+-- Added Kazakh
+-- Added Portuguese
+-- Added European Portuguese
+-- Added Filipino
+-- More complete Ukrainian
+-- More complete Russian
+-- More complete Polish
+
 # 2.7.5
 
 - Fixed update not being available due to my stupidity

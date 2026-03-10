@@ -21,6 +21,7 @@ bool LabelsNode::init()
     bg->setContentSize(ccp((getContentWidth() - PRESETS_SIZE - 5), bg->getContentHeight() - ((TOPBAR_SIZE + 5))));
 
     labelsScroll = ScrollLayer::create(bg->getContentSize());
+    labelsScroll->setUserFlag("MouseDispatcherExt"_spr, true);
     labelsScroll->m_peekLimitTop = 15;
     labelsScroll->m_peekLimitBottom = 15;
     labelsScroll->setTouchEnabled(false);

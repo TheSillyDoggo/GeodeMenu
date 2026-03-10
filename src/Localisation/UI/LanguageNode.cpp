@@ -69,7 +69,7 @@ bool LanguageNode::init(std::string lang)
     creditsMenu->addChild(creditsBtn);
 
     enName = CCLabelBMFont::create(language->getEnglishName().c_str(), "bigFont.fnt");
-    enName->setScale(0.5f);
+    enName->limitLabelWidth(115, 0.5f, 0);
     enName->setAnchorPoint(ccp(0, 1));
 
     this->addChild(bg);

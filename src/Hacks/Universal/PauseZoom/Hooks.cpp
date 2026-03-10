@@ -14,8 +14,8 @@ class $modify (ZoomBlockLayer, CCBlockLayer)
         if (HidePauseMenu::get()->getRealEnabled())
             return true;
 
-        // if (m_fields->node->zoom != 0)
-            // return true;
+        if (m_fields->node->isZooming())
+            return true;
 
         return false;
     }
@@ -31,9 +31,9 @@ class $modify (ZoomBlockLayer, CCBlockLayer)
 
         if (typeinfo_cast<PauseLayer*>(this))
         {
-            // m_fields->node = ZoomInterceptNode::create();
+            m_fields->node = ZoomInterceptNode::create(PlayLayer::get());
 
-            // this->addChild(m_fields->node);
+            this->addChild(m_fields->node);
             this->schedule(schedule_selector(ZoomBlockLayer::updateVisibility));
             updateVisibility(0);
         }

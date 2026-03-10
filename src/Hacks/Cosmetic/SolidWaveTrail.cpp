@@ -19,7 +19,17 @@ class SolidWaveTrail : public Module
         }
 };
 
+class SolidWaveTrailPreserveCenter : public Module
+{
+    public:
+        MODULE_SETUP(SolidWaveTrailPreserveCenter)
+        {
+            setID("solid-wave/preserve-center");
+        }
+};
+
 SUBMIT_HACK(SolidWaveTrail);
+SUBMIT_OPTION(SolidWaveTrail, SolidWaveTrailPreserveCenter);
 
 #if GEODE_COMP_GD_VERSION >= 22081
 
@@ -35,7 +45,11 @@ class $modify (CCDrawNode)
         {
             if (typeinfo_cast<HardStreak*>(this))
             {
-                fill = ccc4f(getColor().r / 255.0f, getColor().g / 255.0f, getColor().b / 255.0f, getOpacity() / 255.0f);
+                if (!SolidWaveTrailPreserveCenter::get()->getRealEnabled())
+                    fill = ccc4f(getColor().r / 255.0f, getColor().g / 255.0f, getColor().b / 255.0f, getOpacity() / 255.0f);
+                else
+                    fill.a = getOpacity() / 255.0f;
+                
                 setBlendFunc({GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA});
             }
         }

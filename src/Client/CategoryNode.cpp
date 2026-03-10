@@ -127,12 +127,12 @@ bool CategoryNode::init()
     this->setAnchorPoint(ccp(1, 0.5f));
     this->setContentSize(ccp(340, 280 - 10 * 2));
     this->ignoreAnchorPointForPosition(false);
-    MouseDispatcher::betterMouseDispatcherDelegates.push_back(this);
 
     bg = EasyBG::create();
     bg->setContentSize(getContentSize());
 
     scroll = geode::ScrollLayer::create(this->getContentSize());
+    scroll->setUserFlag("MouseDispatcherExt"_spr, true);
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(false);
@@ -194,5 +194,4 @@ CategoryNode::~CategoryNode()
 {
     // this is terrible
     categoryScrolls[getID()] = scroll->m_contentLayer->getPosition();
-    MouseDispatcher::betterMouseDispatcherDelegates.erase(std::remove(MouseDispatcher::betterMouseDispatcherDelegates.begin(), MouseDispatcher::betterMouseDispatcherDelegates.end(), this), MouseDispatcher::betterMouseDispatcherDelegates.end());
 }

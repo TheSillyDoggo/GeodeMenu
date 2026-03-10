@@ -212,3 +212,23 @@ std::string LocalisationManager::reshapeArabicString(std::string str)
     
     return ShapingEngine::render(ws, true);
 }
+
+void LocalisationManager::switchTempPath(std::filesystem::path path)
+{
+    if (languages.contains(path))
+        CC_SAFE_DELETE(languages[path]);
+
+    auto data = file::readJson(path);
+
+    if (data.isOk())
+    {
+        auto lang = CLanguage::createWithJSON(data.unwrap());
+
+        if (languages.contains(path))
+            languages[path] = lang;
+        else
+            languages.emplace(path, lang);
+    }
+
+    switchLocalisationWithUIPath(path);
+}

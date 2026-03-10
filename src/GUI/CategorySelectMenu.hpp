@@ -24,6 +24,8 @@ class CategorySelectMenu : public CCMenu
         std::vector<CCMenuItemSpriteExtra*> buttons = {};
         std::string selectedTab = "";
         std::function<void(std::string)> callback = nullptr;
+        float touchInitialScrollY = 0;
+        bool touchCancelled = false;
 
         void onSelect(CCObject* sender);
 
@@ -49,5 +51,6 @@ class CategorySelectMenu : public CCMenu
         void setCallback(std::function<void(std::string)> callback);
 
         virtual bool init();
+        virtual void update();
         virtual void visit();
 };

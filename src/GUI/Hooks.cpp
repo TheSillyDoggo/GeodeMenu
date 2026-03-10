@@ -57,3 +57,10 @@ void BallTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int
 
     CCTouchDispatcher::touches(pTouches, pEvent, uIndex);
 }
+
+void BallTouchDispatcher::onModify(auto& self)
+{
+    #ifdef GEODE_IS_MOBILE
+    (void)self.setHookPriorityPre("cocos2d::CCTouchDispatcher::touches", -8008135);
+    #endif
+}

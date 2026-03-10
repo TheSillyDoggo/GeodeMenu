@@ -341,6 +341,7 @@ void SetupLabelConfigUI::createPage3()
     eventsNone->setScale(0.45f);
 
     eventScroll = ScrollLayer::create(leftBG->getScaledContentSize());
+    eventScroll->setUserFlag("MouseDispatcherExt"_spr, true);
     eventScroll->m_peekLimitTop = 15;
     eventScroll->m_peekLimitBottom = 15;
     eventScroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());

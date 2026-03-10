@@ -67,6 +67,7 @@ class PitchShifterHighQuality : public Module
         {
             setID("pitch-shifter/high-quality");
             setPriority(3);
+            setDefaultEnabled(true);
         }
 
         virtual void onToggle()
@@ -74,6 +75,11 @@ class PitchShifterHighQuality : public Module
             PitchShifter::get()->onToggle();
         }
 };
+
+SUBMIT_HACK(PitchShifter);
+SUBMIT_OPTION(PitchShifter, PitchShifterOctaves);
+SUBMIT_OPTION(PitchShifter, PitchShifterMusicOnly);
+SUBMIT_OPTION(PitchShifter, PitchShifterHighQuality);
 
 void PitchShifter::onToggle()
 {
@@ -103,16 +109,7 @@ void PitchShifter::onToggle()
         pitchDSP->setParameterFloat(FMOD_DSP_PITCHSHIFT_FFTSIZE, 4096 * 8);
 }
 
-SUBMIT_HACK(PitchShifter);
-SUBMIT_OPTION(PitchShifter, PitchShifterOctaves);
-SUBMIT_OPTION(PitchShifter, PitchShifterMusicOnly);
-
-class $modify (MenuLayer)
+$on_game(Loaded)
 {
-    virtual bool init()
-    {
-        PitchShifter::get()->onToggle();
-
-        return MenuLayer::init();
-    }
-};
+    PitchShifter::get()->onToggle();
+}

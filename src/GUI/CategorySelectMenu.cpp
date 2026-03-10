@@ -36,6 +36,8 @@ void CategorySelectMenu::addCategory(std::string title, std::string sprite, std:
 
     if (buttons.size() == 1)
         setSelectedCategory(id);
+
+    update();
 }
 
 void CategorySelectMenu::onSelect(CCObject* sender)
@@ -56,6 +58,8 @@ bool CategorySelectMenu::init()
     setContentSize(ccp(0, 0));
 
     scroll = ScrollLayer::create(ccp(100, 100));
+    scroll->setID("category-select-menu-scroll");
+    scroll->setUserFlag("MouseDispatcherExt"_spr, true);
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
 
@@ -92,23 +96,30 @@ bool CategorySelectMenu::shouldScrollbarShow()
 
 void CategorySelectMenu::visit()
 {
+    update();
+
+    CCMenu::visit();
+}
+
+void CategorySelectMenu::update()
+{
     auto sc = shouldScrollbarShow();
 
     scrollbar->setPosition(getContentSize());
     scrollbar->setVisible(sc);
-    scroll->setContentSize(ccp(getContentWidth() - (sc ? scrollbar->getContentWidth() : 0), getContentHeight() - bottomBtns->getContentHeight() - inset));
+    scroll->setContentSize(ccp(getContentWidth() - (sc ? scrollbar->getContentWidth() : 0) + 20, getContentHeight() - bottomBtns->getContentHeight() - inset));
+    scroll->setPositionX(-20 / 2);
     scroll->setPositionY(bottomBtns->getContentHeight() + inset);
     scroll->m_contentLayer->setContentSize(ccp(scroll->getContentWidth(), standardBtns->getContentHeight()));
 
+    scroll->m_contentLayer->setPositionX(20 / 2);
     if (!sc)
         scroll->m_contentLayer->setPositionY(scroll->getContentHeight() - scroll->m_contentLayer->getContentHeight());
 
     scroll->setTouchEnabled(sc);
-    scroll->setMouseEnabled(false);
+    scroll->setMouseEnabled(sc);
 
     updateButtonSizes();
-
-    CCMenu::visit();
 }
 
 void CategorySelectMenu::updateButtonSizes()
@@ -162,12 +173,18 @@ bool CategorySelectMenu::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
     if (bottomBtns->ccTouchBegan(touch, event))
     {
+        touchInitialScrollY = scroll->m_contentLayer->getPositionY();
+        touchCancelled = false;
+
         standardBtns->ccTouchBegan(touch, event);
         return true;
     }
 
     if (standardBtns->ccTouchBegan(touch, event))
     {
+        touchInitialScrollY = scroll->m_contentLayer->getPositionY();
+        touchCancelled = false;
+
         bottomBtns->ccTouchBegan(touch, event);
         return true;
     }
@@ -177,12 +194,35 @@ bool CategorySelectMenu::ccTouchBegan(CCTouch* touch, CCEvent* event)
 
 void CategorySelectMenu::ccTouchMoved(CCTouch* touch, CCEvent* event)
 {
+    if (std::abs<float>(scroll->m_contentLayer->getPositionY() - touchInitialScrollY) > 5)
+    {
+        if (bottomBtns->m_pSelectedItem)
+            bottomBtns->m_pSelectedItem->unselected();
+
+        if (standardBtns->m_pSelectedItem)
+            standardBtns->m_pSelectedItem->unselected();
+
+        bottomBtns->m_eState = kCCMenuStateWaiting;
+        standardBtns->m_eState = kCCMenuStateWaiting;
+
+        bottomBtns->m_pSelectedItem = nullptr;
+        standardBtns->m_pSelectedItem = nullptr;
+
+        touchCancelled = true;
+    }
+
+    if (touchCancelled == true)
+        return;
+
     bottomBtns->ccTouchMoved(touch, event);
     standardBtns->ccTouchMoved(touch, event);
 }
 
 void CategorySelectMenu::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
+    if (touchCancelled == true)
+        return;
+
     bottomBtns->ccTouchEnded(touch, event);
     standardBtns->ccTouchEnded(touch, event);
 }

@@ -265,12 +265,14 @@ bool SelectFontUI::setup()
     scrollbar2->setDisabled(true);
 
     scroll1 = ScrollLayer::create(ccp(280 - 15, 160));
+    scroll1->setUserFlag("MouseDispatcherExt"_spr, true);
     scroll1->m_contentLayer->setContentHeight(height);
     scroll1->m_peekLimitTop = 15;
     scroll1->m_peekLimitBottom = 15;
     scroll1->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     scroll2 = ScrollLayer::create(ccp(280 - 15, 160));
+    scroll2->setUserFlag("MouseDispatcherExt"_spr, true);
     scroll2->m_peekLimitTop = 15;
     scroll2->m_peekLimitBottom = 15;
     scroll2->setMouseEnabled(false);

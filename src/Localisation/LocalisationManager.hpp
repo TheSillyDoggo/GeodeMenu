@@ -19,6 +19,7 @@ class LocalisationManager
     public:
         static LocalisationManager* get();
 
+        void switchTempPath(std::filesystem::path path);
         void switchLocalisationWithUIPath(std::filesystem::path path);
         void switchLocalisationWithUI(std::string file);
 

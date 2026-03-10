@@ -16,6 +16,8 @@ class $modify (BallGameManager, GameManager)
 
 class $modify (BallTouchDispatcher, CCTouchDispatcher)
 {
+    static void onModify(auto& self);
+
     void touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex);
 };
 

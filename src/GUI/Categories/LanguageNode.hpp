@@ -10,9 +10,11 @@ class LanguageNodeUI : public CategoryNode
     public:
         CREATE_FUNC(LanguageNodeUI)
 
+        void onContribute(CCObject* sender);
+        void onSettings(CCObject* sender);
+
         virtual void updateUI();
 
-        void onContribute(CCObject* sender);
         bool init();
 };
 
