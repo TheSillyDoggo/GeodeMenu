@@ -59,7 +59,7 @@ bool CategorySelectMenu::init()
 
     scroll = ScrollLayer::create(ccp(100, 100));
     scroll->setID("category-select-menu-scroll");
-    scroll->setUserFlag("MouseDispatcherExt"_spr, true);
+    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
 

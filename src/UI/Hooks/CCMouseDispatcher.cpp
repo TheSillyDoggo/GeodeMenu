@@ -18,7 +18,7 @@ bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
 
         if (enabled)
         {
-            if (node->getUserFlag("MouseDispatcherExt"_spr))
+            if (node->getUserObject("MouseDispatcherExt"_spr))
             {
                 if (getWorldSpaceBoundingBox(node).containsPoint(getMousePos()))
                 {

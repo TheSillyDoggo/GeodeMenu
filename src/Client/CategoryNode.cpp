@@ -132,7 +132,7 @@ bool CategoryNode::init()
     bg->setContentSize(getContentSize());
 
     scroll = geode::ScrollLayer::create(this->getContentSize());
-    scroll->setUserFlag("MouseDispatcherExt"_spr, true);
+    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(false);
