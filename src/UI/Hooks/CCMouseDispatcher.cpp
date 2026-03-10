@@ -45,15 +45,15 @@ bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
 
 bool MouseDispatcherExt::dispatchScrollMSG(float y, float x)
 {
+    #if GEODE_COMP_GD_VERSION >= 22081
+
     if (handleForNodeRecursive(OverlayManager::get(), y, x))
         return true;
 
-    #if GEODE_COMP_GD_VERSION >= 22081
+    #endif
 
     if (handleForNodeRecursive(CCScene::get(), y, x))
         return true;
-
-    #endif
 
     return CCMouseDispatcher::dispatchScrollMSG(y, x);
 }
