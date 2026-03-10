@@ -1,3 +1,8 @@
+# 2.7.7
+
+- Fixed buttons not rendering on iOS
+- Fixed Pause button and Startpos switcher not being usable after pausing
+
 # 2.7.6
 
 - Added All Modes Platformer

@@ -9,7 +9,7 @@
 
 using namespace geode::prelude;
 
-#ifdef GEODE_IS_MOBILE
+#ifdef GEODE_IS_ANDROID
 
 class $modify (QOLModRenderingHook, CCDirector)
 {

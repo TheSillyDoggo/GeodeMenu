@@ -27,7 +27,7 @@ bool ZoomInterceptNode::init()
         return false;
 
     instance = this;
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
+    // CCTouchDispatcher::get()->registerForcePrio(this, 2);
 
     this->setTouchEnabled(true);
     this->setMouseEnabled(true);
@@ -67,7 +67,8 @@ ZoomInterceptNode::~ZoomInterceptNode()
     if (instance == this)
         instance = nullptr;
     
-    CCTouchDispatcher::get()->unregisterForcePrio(this);
+    // CCTouchDispatcher::get()->unregisterForcePrio(this);
+    CCTouchDispatcher::get()->removeDelegate(this);
 }
 
 void ZoomInterceptNode::scrollWheel(float y, float x)
