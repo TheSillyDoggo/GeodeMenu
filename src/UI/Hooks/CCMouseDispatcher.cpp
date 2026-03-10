@@ -31,7 +31,7 @@ bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
         }
     }
 
-    std::vector<CCNode*> children = CCArrayExt<CCNode*>(node->getChildren()).toVector();
+    std::vector<CCNode*> children = std::vector<CCNode*>(node->getChildrenExt().begin(), node->getChildrenExt().end());
     std::reverse(children.begin(), children.end());
 
     for (auto child : children)
@@ -48,8 +48,12 @@ bool MouseDispatcherExt::dispatchScrollMSG(float y, float x)
     if (handleForNodeRecursive(OverlayManager::get(), y, x))
         return true;
 
+    #if GEODE_COMP_GD_VERSION >= 22081
+
     if (handleForNodeRecursive(CCScene::get(), y, x))
         return true;
+
+    #endif
 
     return CCMouseDispatcher::dispatchScrollMSG(y, x);
 }
