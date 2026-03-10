@@ -1,6 +1,8 @@
 #include <MouseDispatcherExt.hpp>
 #include <Num.hpp>
 
+#ifndef GEODE_IS_IOS
+
 bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
 {
     if (!node || !node->isVisible())
@@ -56,3 +58,5 @@ void MouseDispatcherExt::onModify(auto& self)
 {
     // (void)self.setHookPriorityPost("cocos2d::CCMouseDispatcher::dispatchScrollMSG", Priority::Replace);
 }
+
+#endif

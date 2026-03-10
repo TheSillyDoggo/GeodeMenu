@@ -5,6 +5,8 @@
 
 using namespace geode::prelude;
 
+#ifndef GEODE_IS_IOS
+
 class $modify (MouseDispatcherExt, CCMouseDispatcher)
 {
     static void onModify(auto& self);
@@ -14,3 +16,5 @@ class $modify (MouseDispatcherExt, CCMouseDispatcher)
     // hooks
     bool dispatchScrollMSG(float y, float x);
 };
+
+#endif
