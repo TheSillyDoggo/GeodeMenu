@@ -15,6 +15,7 @@ class ZoomInterceptNode : public CCLayer
         CCTouch* touch1 = nullptr;
         CCTouch* touch2 = nullptr;
         float lastPinchDis = 0;
+        qolmod::ZoomControl* control = nullptr;
         static inline ZoomInterceptNode* instance = nullptr;
 
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
@@ -23,6 +24,7 @@ class ZoomInterceptNode : public CCLayer
 
         virtual void scrollWheel(float y, float x);
         virtual void registerWithTouchDispatcher();
+        virtual void onExit();
         ~ZoomInterceptNode();
 
     public:

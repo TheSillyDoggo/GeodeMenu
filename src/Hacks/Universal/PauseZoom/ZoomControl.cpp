@@ -72,7 +72,7 @@ void ZoomControl::update(float dt)
 
     if (!intercept)
     {
-        this->removeFromParentAndCleanup(true);
+        this->removeFromParent();
         return;
     }
 

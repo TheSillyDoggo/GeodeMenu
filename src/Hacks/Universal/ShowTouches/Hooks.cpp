@@ -52,4 +52,9 @@ class $modify (CCTouchDispatcher)
             }
         }
     }
+
+    static void onModify(auto& self)
+    {
+        (void)self.setHookPriorityPre("cocos2d::CCTouchDispatcher::touches", -8008135);
+    }
 };

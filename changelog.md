@@ -1,3 +1,9 @@
+# 2.7.8
+
+- Fixed Pause Menu appearing black with better touch priority installed
+- Fixed game crashing when unpausing / restarting / entering practice mode
+- Fixed Show Touches not working with Better Touch Priority enabled
+
 # 2.7.7
 
 - Fixed buttons not rendering on iOS

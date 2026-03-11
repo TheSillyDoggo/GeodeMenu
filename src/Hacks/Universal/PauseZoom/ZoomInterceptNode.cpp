@@ -5,13 +5,11 @@ ZoomInterceptNode* ZoomInterceptNode::create(CCLayer* layer)
 {
     auto pRet = new ZoomInterceptNode();
     pRet->layer = layer;
-
     if (pRet && pRet->init())
     {
         pRet->autorelease();
         return pRet;
     }
-
     CC_SAFE_DELETE(pRet);
     return nullptr;
 }
@@ -27,15 +25,16 @@ bool ZoomInterceptNode::init()
         return false;
 
     instance = this;
-    // CCTouchDispatcher::get()->registerForcePrio(this, 2);
 
     this->setTouchEnabled(true);
     this->setMouseEnabled(true);
     this->scheduleUpdate();
-    this->registerWithTouchDispatcher();
 
-    auto control = qolmod::ZoomControl::create();
-    CCScene::get()->addChild(control, CCScene::get()->getHighestChildZ() + 1);
+    Loader::get()->queueInMainThread([this]
+    {
+        control = qolmod::ZoomControl::create();
+        CCScene::get()->addChild(control, CCScene::get()->getHighestChildZ() + 1);
+    });
 
     setPreviewPos(getContentSize() / 2);
     return true;
@@ -66,8 +65,11 @@ ZoomInterceptNode::~ZoomInterceptNode()
 
     if (instance == this)
         instance = nullptr;
-    
-    // CCTouchDispatcher::get()->unregisterForcePrio(this);
+}
+
+void ZoomInterceptNode::onExit()
+{
+    CCLayer::onExit();
     CCTouchDispatcher::get()->removeDelegate(this);
 }
 
@@ -88,6 +90,9 @@ void ZoomInterceptNode::scrollWheel(float y, float x)
 
     CCPoint mouse = getMousePos();
     CCPoint oldPos = zoomedPos;
+
+    if (oldScale == 0)
+        return;
 
     float scaleRatio = newScale / oldScale;
 
@@ -115,8 +120,11 @@ bool ZoomInterceptNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 
         touch1 = pTouch;
     }
-    else
+    else if (!touch2)
     {
+        if (pTouch == touch1)
+            return false;
+
         touch2 = pTouch;
 
         lastPinchDis = ccpDistance(touch1->getLocation(), touch2->getLocation());
@@ -134,6 +142,12 @@ void ZoomInterceptNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
         float newDistance = ccpDistance(p1, p2);
         float delta = newDistance - lastPinchDis;
+
+        if (lastPinchDis == 0)
+        {
+            lastPinchDis = newDistance;
+            return;
+        }
 
         float ratio = newDistance / lastPinchDis;
 
@@ -153,6 +167,9 @@ void ZoomInterceptNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 
         CCPoint center = ccpMidpoint(p1, p2);
         CCPoint oldPos = zoomedPos;
+
+        if (oldScale == 0)
+            return;
 
         float scaleRatio = newScale / oldScale;
 

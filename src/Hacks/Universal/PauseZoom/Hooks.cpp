@@ -1,8 +1,8 @@
 #include "HidePause.hpp"
 #include "ZoomInterceptNode.hpp"
-#include <Geode/modify/CCBlockLayer.hpp>
+#include <Geode/modify/PauseLayer.hpp>
 
-class $modify (ZoomBlockLayer, CCBlockLayer)
+class $modify (ZoomPauseLayer, PauseLayer)
 {
     struct Fields
     {
@@ -25,17 +25,14 @@ class $modify (ZoomBlockLayer, CCBlockLayer)
         this->setVisible(!shouldHidePause());
     }
 
-    virtual void registerWithTouchDispatcher()
+    virtual void customSetup()
     {
-        CCBlockLayer::registerWithTouchDispatcher();
+        PauseLayer::customSetup();
 
-        if (typeinfo_cast<PauseLayer*>(this))
-        {
-            m_fields->node = ZoomInterceptNode::create(PlayLayer::get());
+        m_fields->node = ZoomInterceptNode::create(PlayLayer::get());
 
-            this->addChild(m_fields->node);
-            this->schedule(schedule_selector(ZoomBlockLayer::updateVisibility));
-            updateVisibility(0);
-        }
+        this->addChild(m_fields->node);
+        this->schedule(schedule_selector(ZoomPauseLayer::updateVisibility));
+        updateVisibility(0);
     }
 };
