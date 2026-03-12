@@ -88,7 +88,8 @@ void PopupBase::keyBackClicked()
 void PopupBase::show()
 {
     auto scene = CCScene::get();
-    scene->addChild(this, scene->getHighestChildZ() + 1);
+    if (addToScene)
+        scene->addChild(this, scene->getHighestChildZ() + 1);
 
     if (!m_noElasticity)
     {
@@ -120,4 +121,10 @@ void PopupBase::keyDown(cocos2d::enumKeyCodes code, double timestamp)
     #else
     CCLayerColor::keyDown(code);
     #endif
+}
+
+void PopupBase::visit()
+{
+    if (shouldVisit)
+        CCLayerColor::visit();
 }

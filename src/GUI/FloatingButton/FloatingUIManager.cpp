@@ -1,6 +1,7 @@
 #include "FloatingUIManager.hpp"
 #include "../AndroidUI.hpp"
 #include "../Modules/DisableShortcuts.hpp"
+#include "../../Hacks/Universal/Paint/PaintControl.hpp"
 
 using namespace geode::prelude;
 
@@ -70,12 +71,20 @@ int FloatingUIManager::getHighestButtonZ()
 
 void FloatingUIManager::visit()
 {
+    qolmod::PaintControl::get()->preVisit();
+
     if (DisableShortcuts::get()->getRealEnabled())
+    {
+        qolmod::PaintControl::get()->visit();
         return;
+    }
 
     #ifdef GEODE_IS_MOBILE
     if (Loader::get()->getLoadedMod("geode.texture-loader"))
+    {
+        qolmod::PaintControl::get()->visit();
         return;
+    }
     #endif
 
     sortButtons();

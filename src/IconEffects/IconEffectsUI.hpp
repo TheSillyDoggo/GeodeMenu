@@ -38,7 +38,6 @@ class IconEffectsUI : public CategoryNode
         EasyBG* effectsBG = nullptr;
         CCMenuItemToggler* seperateToggle = nullptr;
 
-        void addCircleToNode(CCNode* node, float scale = 1.0f);
         void updateFineOutline();
 
     public:

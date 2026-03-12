@@ -1,4 +1,4 @@
-#include <Module.hpp>
+/*#include <Module.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 
 using namespace geode::prelude;
@@ -29,4 +29,4 @@ class $modify (PlayerObject)
 
         PlayerObject::updateRotation(dt);
     }
-};
+};*/

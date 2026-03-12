@@ -1,8 +1,13 @@
+# 2.7.9
+
+- Added **Paint**
+- Fixed All Modes Platformer not working on Android
+- Removed High FPS Rotation as no one actually understood what it does
+
 # 2.7.8
 
 - Fixed Pause Menu appearing black with better touch priority installed
 - Fixed game crashing when unpausing / restarting / entering practice mode
-- Fixed Show Touches not working with Better Touch Priority enabled
 
 # 2.7.7
 

@@ -37,6 +37,8 @@ class FloatingUIButton : public cocos2d::CCNode
 
         void animate(bool release);
 
+        virtual void setupChildren();
+
     public:
         static FloatingUIButton* create(std::function<void()> onClick);
 
@@ -53,7 +55,7 @@ class FloatingUIButton : public cocos2d::CCNode
 
         virtual void updatePosition(cocos2d::CCPoint point);
 
-        bool ccTouchBegan(cocos2d::CCTouch* touch);
-        void ccTouchMoved(cocos2d::CCTouch* touch);
-        void ccTouchEnded(cocos2d::CCTouch* touch);
+        virtual bool ccTouchBegan(cocos2d::CCTouch* touch);
+        virtual void ccTouchMoved(cocos2d::CCTouch* touch);
+        virtual void ccTouchEnded(cocos2d::CCTouch* touch);
 };

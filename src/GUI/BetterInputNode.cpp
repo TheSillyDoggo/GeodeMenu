@@ -1,6 +1,7 @@
 #include "BetterInputNode.hpp"
 #include "../Utils/Num.hpp"
 #include "../Utils/RealtimeAction.hpp"
+#include <FloatingButton/FloatingUIManager.hpp>
 
 BetterInputNode* BetterInputNode::create(float width, std::string placeholder, std::string font)
 {
@@ -236,10 +237,16 @@ void BetterInputNode::setNumHoldValues(bool enabled, float step, float interval,
 
 bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
-    if (auto n = getTopLevelNonSceneNode(this))
+    if (getParent())
     {
-        if (CCScene::get()->getChildByIndex(-1) != n)
-            return false;
+        if (auto n = getTopLevelNonSceneNode(this))
+        {
+            if (!typeinfo_cast<FloatingUIManager*>(n))
+            {
+                if (CCScene::get()->getChildByIndex(-1) != n)
+                    return false;
+            }
+        }
     }
 
     if (getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && nodeIsVisible(this))

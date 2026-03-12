@@ -50,3 +50,13 @@ std::string qolmod::utils::toUTF8String(std::wstring ws)
 
     return str;
 }
+
+void qolmod::utils::addCircleToNode(CCNode* node, float scale)
+{
+    auto circle = CCCircleWave::create(0, 25 * scale, 0.2f, true);
+    circle->setPosition(node->getContentSize() / 2);
+    circle->m_circleMode = CircleMode::Outline;
+    circle->setUserObject("allow-circle"_spr, CCNode::create());
+
+    node->addChild(circle, 9999);
+}

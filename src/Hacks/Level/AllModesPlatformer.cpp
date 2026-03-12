@@ -27,7 +27,7 @@ class $modify (GJBaseGameLayer)
 
         if (p0 && p1)
         {
-            for (auto obj : std::vector<GameObject*>(*p1))
+            for (auto obj : *p1)
             {
                 if (!obj)
                     continue;

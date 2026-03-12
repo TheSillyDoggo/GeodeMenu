@@ -43,7 +43,8 @@
 			"resources/sprites/icons/categories/*.png",
 			"resources/sprites/icons/animations/*.png",
 			"resources/sprites/icons/anchors/*.png",
-			"resources/sprites/icons/shortcuts/*.png"
+			"resources/sprites/icons/shortcuts/*.png",
+			"resources/sprites/icons/paint/*.png"
 		],
 		"spritesheets": {
 			"qolmod-ui-sheet": [

@@ -7,8 +7,15 @@
 
 using namespace geode::prelude;
 
+namespace qolmod
+{
+    class PaintControl;
+};
+
 class BetterInputNode : public CCMenu
 {
+    friend class qolmod::PaintControl;
+
     protected:
         std::string placeholder;
         std::string font;

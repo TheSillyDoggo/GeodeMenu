@@ -6,8 +6,10 @@
 #include "../../GUI/FloatingButton/FloatingUIManager.hpp"
 #include "../../GUI/AndroidUI.hpp"
 #include "../../GUI/AndroidBall.hpp"
+#include "../../Hacks/Universal/Paint/PaintNode.hpp"
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 #ifdef GEODE_IS_ANDROID
 

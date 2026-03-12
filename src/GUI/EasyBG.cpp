@@ -14,9 +14,6 @@ bool EasyBG::init()
     bg->setOpacity(100);
     bg->setScale(0.5f);
 
-    // if (BlurMenuBG::get()->getRealEnabled())
-        // BlurAPI::addBlur(bg);
-
     this->addChild(bg);
     return true;
 }

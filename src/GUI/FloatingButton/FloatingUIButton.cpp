@@ -99,6 +99,7 @@ void FloatingUIButton::updateSprites()
             bg->setPosition(getContentSize() / 2);
             bg->setScale(BUTTON_RADIUS / std::max<float>(bg->getContentWidth(), bg->getContentHeight()));
             bg->setScale(scale * bg->getScale());
+            bg->setUserObject("flag"_spr, CCNode::create());
             this->addChild(bg);
         }
     }
@@ -117,9 +118,12 @@ void FloatingUIButton::updateSprites()
             ov->setPosition(getContentSize() / 2);
             ov->setScale((ICON_SIZE / std::max<float>(ov->getContentWidth(), ov->getContentHeight())) * scale);
             overlaySpr = ov;
+            overlaySpr->setUserObject("flag"_spr, CCNode::create());
             this->addChild(ov);
         }
     }
+
+    setupChildren();
 }
 
 void FloatingUIButton::update(float dt)
@@ -146,9 +150,13 @@ void FloatingUIButton::update(float dt)
 
     _opacity = std::lerp<double>(_opacity, isSelected ? 1.0f : opacity, t);
 
-    for (auto child : CCArrayExt<CCSprite*>(getChildren()))
+    for (auto child : CCArrayExt<CCNode*>(getChildren()))
     {
-        child->setOpacity(255 * _opacity);
+        if (!child->getUserObject("flag"_spr))
+            continue;
+
+        if (auto spr = typeinfo_cast<CCSprite*>(child))
+            spr->setOpacity(255 * _opacity);
     }
 }
 
@@ -289,4 +297,9 @@ void FloatingUIButton::ccTouchEnded(CCTouch* touch)
 
     animate(true);
     isSelected = false;
+}
+
+void FloatingUIButton::setupChildren()
+{
+
 }

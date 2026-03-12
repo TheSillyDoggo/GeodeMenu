@@ -22,12 +22,15 @@ class PopupBase : public cocos2d::CCLayerColor
         float calcPopupScale();
 
     public:
+        bool addToScene = true;
+        bool shouldVisit = true;
         cocos2d::CCLayer* m_mainLayer = nullptr;
 
         virtual bool init(float width, float height);
         virtual bool initAnchored(float width, float height);
         virtual bool setup();
         virtual void show();
+        virtual void visit();
 
         void onClose(CCObject* sender);
         void onBtn1(CCObject* sender);

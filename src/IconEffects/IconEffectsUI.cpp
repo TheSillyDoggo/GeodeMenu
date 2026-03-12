@@ -7,6 +7,7 @@
 #include <BetterButtonSprite.hpp>
 #include <BetterAlertLayer.hpp>
 #include <ColourUtils.hpp>
+#include <Utils.hpp>
 
 bool IconEffectsUI::init()
 {
@@ -356,16 +357,6 @@ void IconEffectsUI::updateOverride()
     }
 }
 
-void IconEffectsUI::addCircleToNode(CCNode* node, float scale)
-{
-    auto circle = CCCircleWave::create(0, 25 * scale, 0.2f, true);
-    circle->setPosition(node->getContentSize() / 2);
-    circle->m_circleMode = CircleMode::Outline;
-    circle->setUserObject("allow-circle"_spr, CCNode::create());
-
-    node->addChild(circle);
-}
-
 void IconEffectsUI::onProfiles(CCObject* sender)
 {
     BetterAlertLayer::createWithLocalisation("iconic/profiles-title", "ui/coming-soon", "ui/ok-button")->show();
@@ -377,7 +368,7 @@ void IconEffectsUI::onSelectType(CCObject* sender)
     selectedType.first = (IconicGamemodeType)n->getTag();
     selectedType.second = n->getUserObject("player2");
 
-    addCircleToNode(n);
+    qolmod::utils::addCircleToNode(n);
 
     updateSelection();
 }
@@ -399,7 +390,7 @@ void IconEffectsUI::onToggleOverride(CCObject* sender)
 
     auto config = IconicManager::get()->getConfig(getSelected().first, getSelected().second);
 
-    addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
+    qolmod::utils::addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
 
     config->setUseOverride((IconicEffectType)sender->getTag(), !config->getUseOverride((IconicEffectType)sender->getTag()));
 
@@ -417,7 +408,7 @@ void IconEffectsUI::onDualMode(CCObject* sender)
 {
     IconicManager::get()->setDualMode((IconicDualMode)sender->getTag());
 
-    addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
+    qolmod::utils::addCircleToNode(static_cast<CCNode*>(sender), 0.65f);
 
     updateSelection();
     updateDualMode();
