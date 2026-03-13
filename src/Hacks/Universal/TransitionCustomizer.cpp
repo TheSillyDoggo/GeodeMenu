@@ -1,5 +1,6 @@
 #include "../../Client/Module.hpp"
 #include <Geode/modify/CCTransitionFade.hpp>
+#include <Utils.hpp>
 
 using namespace geode::prelude;
 
@@ -17,10 +18,13 @@ class NoTransition : public Module
 
 SUBMIT_HACK(NoTransition);
 
-class $modify (CCTransitionFade)
+class $modify (ReplacedTransitionFade, CCTransitionFade)
 {
-    static CCTransitionFade* create(float duration, CCScene* scene)
+    static CCTransitionFade* create(float duration,CCScene* scene)
     {
-        return CCTransitionFade::create(NoTransition::get()->getRealEnabled() ? 0 : duration, scene);
+        if (NoTransition::get()->getRealEnabled())
+            duration = 0;
+
+        return static_cast<CCTransitionFade*>(qolmod::utils::createTransitionForEnum(kCCTransitionCrossFade, duration, scene));
     }
 };
