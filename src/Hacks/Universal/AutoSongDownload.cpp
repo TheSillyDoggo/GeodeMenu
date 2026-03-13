@@ -22,7 +22,7 @@ class $modify (LevelInfoLayer)
         if (!LevelInfoLayer::init(p0, p1))
             return false;
 
-        if (GameManager::get()->getGameVariable(GameVar::ShownNewgroundsDisclaimer) && AutoSongDownload::get()->getRealEnabled())
+        if (GameManager::get()->getGameVariable(GameVar::ShownMusicTOS) && AutoSongDownload::get()->getRealEnabled())
         {
             Loader::get()->queueInMainThread([this] {
                 if(m_songWidget && m_songWidget->m_downloadBtn && m_songWidget->m_downloadBtn->isVisible())
