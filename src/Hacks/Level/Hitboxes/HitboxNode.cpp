@@ -67,6 +67,7 @@ HitboxColourType HitboxNode::getObjectColour(GameObject* obj)
             GameObjectType::SpiderOrb,
             GameObjectType::SpiderPad,
             GameObjectType::TeleportOrb,
+            GameObjectType::Modifier, // speed portal
         }))
         return HitboxColourType::Interactable;
 
@@ -110,7 +111,7 @@ bool HitboxNode::shouldObjectDraw(GameObject* obj)
     if (obj->m_isDecoration || obj->m_isDecoration2)
         return false;
 
-    if (objTypeMatchesAny(obj, { GameObjectType::EnterEffectObject, GameObjectType::Modifier }))
+    if (objTypeMatchesAny(obj, { GameObjectType::EnterEffectObject }))
         return false;
 
     if (obj->m_unk3ee)
@@ -525,4 +526,87 @@ bool HitboxNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F
     #else
     return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor, alignment);
     #endif
+}
+
+bool HitboxNode::drawCircle(cocos2d::CCPoint const& center, float radius, cocos2d::_ccColor4F const& fillColor, float borderWidth, cocos2d::_ccColor4F const& borderColor, unsigned int segments)
+{
+    segments = 120;
+
+    return CCDrawNode::drawCircle(center, radius, fillColor, borderWidth, borderColor, segments);
+
+    if (m_bUseArea && !is_circle_on_screen(m_rDrawArea, center, radius))
+        return false;
+    
+    auto vertices = new CCPoint[segments];
+
+    unsigned int u = 0;
+    for (unsigned int i = 0; i < segments; i++)
+    {
+        float rads = i * (2.0f * M_PI / segments);
+        auto point = ccp(radius * cosf(rads) + center.x, radius * sinf(rads) + center.y);
+
+        /*if (!isPointOnScreen(point))
+        {
+            if (u >= 2)
+            {
+                drawPolygon(vertices, u - 1, fillColor, borderWidth, borderColor);
+                vertices[0] = vertices[u - 1];
+                u = 1;
+            }
+            else
+            {
+                vertices[0] = point;
+                u = 1;
+            }
+            continue;
+        }*/
+
+        if (!isPointOnScreen(point))
+        {
+            u++;
+            continue;
+        }
+
+        vertices[u].x = point.x;
+        vertices[u].y = point.y;
+        u++;
+    }
+
+    if (u >= 2)
+        drawPolygon(vertices, u, fillColor, borderWidth, borderColor);
+    
+    delete[] vertices;
+    return true;
+}
+
+bool HitboxNode::isPointOnScreen(cocos2d::CCPoint point)
+{
+    if (auto gjbgl = GJBaseGameLayer::get())
+    {
+        if (auto editor = typeinfo_cast<LevelEditorLayer*>(gjbgl))
+        {
+            if (editor->m_playbackMode != PlaybackMode::Playing)
+                return true;
+        }
+
+        auto size = CCDirector::get()->getWinSize() / gjbgl->m_gameState.m_cameraZoom;
+        size.height = std::max<float>(size.width, size.height);
+        size.width = size.height;
+
+        float outer = size.width * 0.4f; 
+
+        if (point.x > gjbgl->m_gameState.m_cameraPosition.x + size.width + outer)
+            return false;
+
+        if (point.x < gjbgl->m_gameState.m_cameraPosition.x - outer)
+            return false;
+
+        if (point.y > gjbgl->m_gameState.m_cameraPosition.y + size.height + outer)
+            return false;
+
+        if (point.y < gjbgl->m_gameState.m_cameraPosition.y - outer)
+            return false;
+    }
+
+    return true;
 }

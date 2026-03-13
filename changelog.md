@@ -1,7 +1,9 @@
 # 2.7.9
 
 - Added **Paint**
+- Added Accurate Hitboxes
 - Fixed All Modes Platformer not working on Android
+- Fixed missing hitboxes for speed portals
 - Removed High FPS Rotation as no one actually understood what it does
 
 # 2.7.8
