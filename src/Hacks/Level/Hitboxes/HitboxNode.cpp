@@ -533,50 +533,6 @@ bool HitboxNode::drawCircle(cocos2d::CCPoint const& center, float radius, cocos2
     segments = 120;
 
     return CCDrawNode::drawCircle(center, radius, fillColor, borderWidth, borderColor, segments);
-
-    if (m_bUseArea && !is_circle_on_screen(m_rDrawArea, center, radius))
-        return false;
-    
-    auto vertices = new CCPoint[segments];
-
-    unsigned int u = 0;
-    for (unsigned int i = 0; i < segments; i++)
-    {
-        float rads = i * (2.0f * M_PI / segments);
-        auto point = ccp(radius * cosf(rads) + center.x, radius * sinf(rads) + center.y);
-
-        /*if (!isPointOnScreen(point))
-        {
-            if (u >= 2)
-            {
-                drawPolygon(vertices, u - 1, fillColor, borderWidth, borderColor);
-                vertices[0] = vertices[u - 1];
-                u = 1;
-            }
-            else
-            {
-                vertices[0] = point;
-                u = 1;
-            }
-            continue;
-        }*/
-
-        if (!isPointOnScreen(point))
-        {
-            u++;
-            continue;
-        }
-
-        vertices[u].x = point.x;
-        vertices[u].y = point.y;
-        u++;
-    }
-
-    if (u >= 2)
-        drawPolygon(vertices, u, fillColor, borderWidth, borderColor);
-    
-    delete[] vertices;
-    return true;
 }
 
 bool HitboxNode::isPointOnScreen(cocos2d::CCPoint point)

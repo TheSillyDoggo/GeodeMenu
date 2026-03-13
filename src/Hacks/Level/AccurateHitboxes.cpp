@@ -84,7 +84,10 @@ class $modify (BetterOBB2D, OBB2D)
         auto ret = OBB2D::getBoundingRect();
 
         if (m_fields->isBetter) // pyrocynical
-            ret.inflateRect(100);
+        {
+            ret.origin -= CCSizeMake(100, 100) / 2;
+            ret.size += CCSizeMake(100, 100);
+        }
 
         return ret;
     }
@@ -108,6 +111,7 @@ class $modify (AccurateGameObject, GameObject)
         SIZE_CHK(6, 12);
         SIZE_CHK(6, 5.6f);
         SIZE_CHK(4, 7.6f);
+        SIZE_CHK(6, 6.4f);
         
         if (m_objectID == 392 || m_objectID == 458 || m_objectID == 459)
             return true;

@@ -60,3 +60,64 @@ void qolmod::utils::addCircleToNode(CCNode* node, float scale)
 
     node->addChild(circle, 9999);
 }
+
+cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, float time, cocos2d::CCScene* scene)
+{
+    switch (trans)
+    {
+        default:
+            return CCTransitionFade::create(time, scene);
+        case kCCTransitionFade:
+            return CCTransitionFade::create(time, scene);
+        case kCCTransitionCrossFade:
+            return CCTransitionCrossFade::create(time, scene);
+        case kCCTransitionFadeBL:
+            return CCTransitionFadeBL::create(time, scene);
+        case kCCTransitionFadeTR:
+            return CCTransitionFadeTR::create(time, scene);
+        case kCCTransitionFadeUp:
+            return CCTransitionFadeUp::create(time, scene);
+        case kCCTransitionFadeDown:
+            return CCTransitionFadeDown::create(time, scene);
+        case kCCTransitionFlipAngular:
+            return CCTransitionFlipAngular::create(time, scene);
+        case kCCTransitionFlipX:
+            return CCTransitionFlipX::create(time, scene);
+        case kCCTransitionFlipY:
+            return CCTransitionFlipY::create(time, scene);
+        case kCCTransitionZoomFlipAngular:
+            return CCTransitionZoomFlipAngular::create(time, scene);
+        case kCCTransitionZoomFlipX:
+            return CCTransitionZoomFlipX::create(time, scene);
+        case kCCTransitionZoomFlipY:
+            return CCTransitionZoomFlipY::create(time, scene);
+        case kCCTransitionJumpZoom:
+            return CCTransitionJumpZoom::create(time, scene);
+        case kCCTransitionMoveInT:
+            return CCTransitionMoveInT::create(time, scene);
+        case kCCTransitionMoveInB:
+            return CCTransitionMoveInB::create(time, scene);
+        case kCCTransitionMoveInL:
+            return CCTransitionMoveInL::create(time, scene);
+        case kCCTransitionMoveInR:
+            return CCTransitionMoveInR::create(time, scene);
+        case kCCTransitionRotoZoom:
+            return CCTransitionRotoZoom::create(time, scene);
+        case kCCTransitionShrinkGrow:
+            return CCTransitionShrinkGrow::create(time, scene);
+        case kCCTransitionSlideInT:
+            return CCTransitionSlideInT::create(time, scene);
+        case kCCTransitionSlideInB:
+            return CCTransitionSlideInB::create(time, scene);
+        case kCCTransitionSlideInL:
+            return CCTransitionSlideInL::create(time, scene);
+        case kCCTransitionSlideInR:
+            return CCTransitionSlideInR::create(time, scene);
+        case kCCTransitionSplitRows:
+            return CCTransitionSplitRows::create(time, scene);
+        case kCCTransitionSplitCols:
+            return CCTransitionSplitCols::create(time, scene);
+        case kCCTransitionTurnOffTiles:
+            return CCTransitionTurnOffTiles::create(time, scene);
+    };
+}
