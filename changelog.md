@@ -2,6 +2,7 @@
 
 - Added **Paint**
 - Added Accurate Hitboxes
+- Added Transition Customiser
 - Fixed All Modes Platformer not working on Android
 - Fixed missing hitboxes for speed portals
 - Removed High FPS Rotation as no one actually understood what it does

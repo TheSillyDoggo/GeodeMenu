@@ -53,7 +53,8 @@ include_directories(include src/Client src/Hacks/Speedhack src/Utils src/Notific
 CPMAddPackage("gh:EclipseMenu/RIFT#v1")
 CPMAddPackage("gh:rapidfuzz/rapidfuzz-cpp#main")
 CPMAddPackage("gh:maxnut/GDReplayFormat#72078e5")
+CPMAddPackage("gh:ZXShady/enchantum#116de86")
 
-target_link_libraries(${PROJECT_NAME} rift rapidfuzz::rapidfuzz libGDR)
+target_link_libraries(${PROJECT_NAME} rift rapidfuzz::rapidfuzz libGDR enchantum::enchantum)
 
 setup_geode_mod(${PROJECT_NAME})

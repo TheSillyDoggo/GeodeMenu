@@ -119,5 +119,19 @@ cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, fl
             return CCTransitionSplitCols::create(time, scene);
         case kCCTransitionTurnOffTiles:
             return CCTransitionTurnOffTiles::create(time, scene);
+        case kCCTransitionProgressRadialCW:
+            return CCTransitionProgressRadialCW::create(time, scene);
+        case kCCTransitionProgressRadialCCW:
+            return CCTransitionProgressRadialCCW::create(time, scene);
+        case kCCTransitionProgressHorizontal:
+            return CCTransitionProgressHorizontal::create(time, scene);
+        case kCCTransitionProgressVertical:
+            return CCTransitionProgressVertical::create(time, scene);
+        case kCCTransitionProgressInOut:
+            return CCTransitionProgressInOut::create(time, scene);
+        case kCCTransitionProgressOutIn:
+            return CCTransitionProgressOutIn::create(time, scene);
+        case kCCTransitionPageTurn:
+            return CCTransitionPageTurn::create(time, scene, false);
     };
 }

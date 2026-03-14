@@ -30,6 +30,13 @@ enum kCCTransition
     kCCTransitionSplitRows,
     kCCTransitionSplitCols,
     kCCTransitionTurnOffTiles,
+    kCCTransitionProgressRadialCW,
+    kCCTransitionProgressRadialCCW,
+    kCCTransitionProgressHorizontal,
+    kCCTransitionProgressVertical,
+    kCCTransitionProgressInOut,
+    kCCTransitionProgressOutIn,
+    kCCTransitionPageTurn,
 };
 
 namespace qolmod::utils
