@@ -1,6 +1,7 @@
 # 2.7.10
 
 - Fixed physics being broken on iOS and Windows
+- Readded High FPS Rotation, But renamed to "Bugged Ship Rotation"
 
 # 2.7.9
 
