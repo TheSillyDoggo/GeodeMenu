@@ -16,5 +16,9 @@ $on_game(Loaded)
     render->addChild(FloatingUIManager::get());
     render->addChild(qolmod::PaintNode::get());
 
+    #if GEODE_COMP_GD_VERSION == 22081
+    geode::SceneManager::get()->keepAcrossScenes(render);
+    #else
     geode::OverlayManager::get()->addChild(render);
+    #endif
 };
