@@ -2,7 +2,7 @@
 #include "FloatingUIManager.hpp"
 #include "../AndroidUI.hpp"
 
-$on_game(TexturesLoaded)
+$on_game(Loaded)
 {
     FloatingUIManager::get()->updateSprites();
 }

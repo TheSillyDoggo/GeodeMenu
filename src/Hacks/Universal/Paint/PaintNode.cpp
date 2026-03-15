@@ -196,7 +196,7 @@ void PaintNode::visit()
     #endif
 }
 
-$on_game(TexturesLoaded)
+$on_game(Loaded)
 {
     PaintNode::get()->init();
 }
