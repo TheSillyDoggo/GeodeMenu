@@ -13,6 +13,13 @@ class NoTransition : public Module
         {
             setID("no-trans");
             setCategory("Universal");
+
+            #if GEODE_COMP_GD_VERSION == 22074
+            #ifdef __APPLE__
+            setDisabled(true);
+            setDisabledMessage("Unsupported on 2.2074");
+            #endif
+            #endif
         }
 };
 

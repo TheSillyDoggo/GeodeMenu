@@ -67,8 +67,8 @@ cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, fl
     {
         default:
             return CCTransitionFade::create(time, scene);
-        case kCCTransitionFade:
-            return CCTransitionFade::create(time, scene);
+        #if GEODE_COMP_GD_VERSION == 22074
+        #ifndef __APPLE__
         case kCCTransitionCrossFade:
             return CCTransitionCrossFade::create(time, scene);
         case kCCTransitionFadeBL:
@@ -133,5 +133,7 @@ cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, fl
             return CCTransitionProgressOutIn::create(time, scene);
         case kCCTransitionPageTurn:
             return CCTransitionPageTurn::create(time, scene, false);
+        #endif
+        #endif
     };
 }
