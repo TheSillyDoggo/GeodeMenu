@@ -89,7 +89,7 @@ class $modify (GJBaseGameLayer)
     }
 };
 
-$execute
+/*$execute
 {
     // 140237a95 f3 0f 5f c8     MAXSS      XMM1,XMM0
     // fVar29 = (float)roundf((float)(((local_168 * 60.0) / (double)fVar37) * 4.0));
@@ -120,4 +120,4 @@ $execute
     }
 
     #endif
-};
+};*/

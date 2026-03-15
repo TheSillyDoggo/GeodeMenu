@@ -1,9 +1,14 @@
+# 2.7.10
+
+- Fixed physics being broken on iOS and Windows
+
 # 2.7.9
 
 - Added **Paint**
 - Added Accurate Hitboxes
 - Added Transition Customiser
 - Added No Editor Zoom Limit
+- Added High Quality Circles
 - Readd TPS Bypass on Android 32
 - Fixed Shortcuts not working with textureldr enabled
 - Fixed All Modes Platformer not working on Android
