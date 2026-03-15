@@ -11,6 +11,7 @@ class PaintEnabled : public Module
         {
             setID("paint");
             setCategory("Universal");
+            setPriority(5);
         }
 };
 

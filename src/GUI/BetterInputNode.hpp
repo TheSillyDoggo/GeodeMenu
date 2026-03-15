@@ -49,6 +49,8 @@ class BetterInputNode : public CCMenu
         bool useTTFView = false;
         CCNode* labelContainer = nullptr;
 
+        bool useCheckOnClick = true;
+
         virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);

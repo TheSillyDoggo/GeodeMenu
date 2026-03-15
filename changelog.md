@@ -3,8 +3,12 @@
 - Added **Paint**
 - Added Accurate Hitboxes
 - Added Transition Customiser
+- Added No Editor Zoom Limit
+- Readd TPS Bypass on Android 32
+- Fixed Shortcuts not working with textureldr enabled
 - Fixed All Modes Platformer not working on Android
 - Fixed missing hitboxes for speed portals
+- Fixed Solid Wave Trail not working with Wave Trail Draw Fix
 - Removed High FPS Rotation as no one actually understood what it does
 
 # 2.7.8

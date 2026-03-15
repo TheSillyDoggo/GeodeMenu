@@ -67,6 +67,9 @@ namespace qolmod
             void setToolSize(PaintTool tool, int size);
             int getSelectedSize();
 
+            bool getExpanded();
+            bool isActive();
+
             virtual void preVisit();
             virtual void visit();
     };

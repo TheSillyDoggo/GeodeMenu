@@ -237,7 +237,7 @@ void BetterInputNode::setNumHoldValues(bool enabled, float step, float interval,
 
 bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
-    if (getParent())
+    if (getParent() && useCheckOnClick)
     {
         if (auto n = getTopLevelNonSceneNode(this))
         {

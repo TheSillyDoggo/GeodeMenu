@@ -23,6 +23,7 @@ class TransititionCustomiser : public Module
         {
             setID("transition-customiser");
             setCategory("Universal");
+            setPriority(6);
         }
 };
 

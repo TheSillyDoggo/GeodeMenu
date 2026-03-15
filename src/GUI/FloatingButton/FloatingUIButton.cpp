@@ -77,13 +77,11 @@ void FloatingUIButton::updateSprites(std::string background, std::string overlay
 
 void FloatingUIButton::updateSprites()
 {
+    if (!CCEGLView::get())
+        return;
+
     this->removeAllChildren();
     overlaySpr = nullptr;
-
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
-    #endif
 
     if (!background.empty())
     {
@@ -128,11 +126,6 @@ void FloatingUIButton::updateSprites()
 
 void FloatingUIButton::update(float dt)
 {
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
-    #endif
-
     auto v = visibilityConf.shouldShow();
 
     this->setVisible(v);

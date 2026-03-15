@@ -1,4 +1,5 @@
 #include "../../Client/Module.hpp"
+#include <Geode/modify/HardStreak.hpp>
 
 using namespace geode::prelude;
 
@@ -55,6 +56,19 @@ class $modify (CCDrawNode)
         }
 
         return CCDrawNode::drawPolygon(verts, count, fill, borderWidth, borderColor, alignment);
+    }
+};
+
+class $modify (HardStreak)
+{
+    void updateStroke(float dt)
+    {
+        if (SolidWaveTrail::get()->getRealEnabled())
+        {
+            setBlendFunc({GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA});
+        }
+
+        HardStreak::updateStroke(dt);
     }
 };
 

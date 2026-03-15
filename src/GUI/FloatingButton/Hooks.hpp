@@ -7,11 +7,6 @@
 
 using namespace geode::prelude;
 
-class $modify (FloatingMenuLayer, MenuLayer)
-{
-    bool init();
-};
-
 class $modify (FloatingTouchDispatcher, CCTouchDispatcher)
 {
     static void onModify(auto& self);

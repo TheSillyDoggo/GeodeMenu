@@ -36,14 +36,21 @@ void EnumModuleNode::setup()
 void EnumModuleNode::updateNode()
 {
     auto mod = static_cast<EnumModule*>(module);
+    auto names = mod->getDisplayNames();
 
     label->setString(LocalisationManager::get()->getLocalisedString(
-        fmt::format("enums/{}", mod->getDisplayNames()[mod->getValue()])
+        fmt::format("enums/{}", names[mod->getValue()])
     ).c_str());
     label->limitLabelWidth(100, 0.5f, 0);
 
-    leftBtn->setVisible(mod->getValue() != mod->getDisplayNames().begin()->first);
-    rightBtn->setVisible(mod->getValue() != mod->getDisplayNames().end()->first);
+    updateButtonEnabled(leftBtn, (mod->getValue() != names.begin()->first));
+    updateButtonEnabled(rightBtn, (mod->getValue() != std::prev/*ter*/(names.end())->first));
+}
+
+void EnumModuleNode::updateButtonEnabled(CCMenuItemSpriteExtra* btn, bool enabled)
+{
+    btn->setEnabled(enabled);
+    btn->setColor(enabled ? ccWHITE : ccc3(150, 150, 150));
 }
 
 void EnumModuleNode::onLeft(CCObject* sender)

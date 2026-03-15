@@ -20,10 +20,15 @@ PaintNode* PaintNode::get()
 
 bool PaintNode::init()
 {
+    cursorPreviews.clear();
+    if (rTex)
+        rTex->removeFromParent();
+
     auto win = CCDirector::get()->getWinSize();
 
     rTex = CCRenderTexture::create(win.width, win.height, kCCTexture2DPixelFormat_RGBA8888);
     rTex->getSprite()->setAnchorPoint(ccp(0, 1));
+    rTex->getSprite()->setBlendFunc({GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA});
 
     this->addChild(rTex);
     return true;
@@ -40,8 +45,6 @@ void PaintNode::drawPixel(int x, int y, ccColor4F col)
 
     float mult = 1.0f / CCDirector::get()->getWinSize().width * rTex->m_nWidth;
 
-    rTex->begin();
-
     glEnable(GL_SCISSOR_TEST);
 
     glScissor(x * mult, y * mult, mult, mult);
@@ -50,8 +53,6 @@ void PaintNode::drawPixel(int x, int y, ccColor4F col)
     glDisable(GL_SCISSOR_TEST);
 
     ccDrawSolidPoly(points, 4, col);
-
-    rTex->end();
 }
 
 void PaintNode::paintPos(CCPoint position, ccColor3B colour)
@@ -87,6 +88,8 @@ static const std::vector<std::pair<int,int>>& getBrush(int size)
 
 void PaintNode::paintBrush(cocos2d::CCPoint position, cocos2d::ccColor3B colour, int size, bool erase)
 {
+    rTex->begin();
+
     std::vector<std::pair<int,int>> points = getBrush(size);
 
     for (auto point : points)
@@ -95,6 +98,18 @@ void PaintNode::paintBrush(cocos2d::CCPoint position, cocos2d::ccColor3B colour,
             erasePos(position + ccp(point.first, point.second));
         else
             paintPos(position + ccp(point.first, point.second), colour);
+    }
+
+    rTex->end();
+}
+
+void PaintNode::paintBrushLine(cocos2d::CCPoint position, cocos2d::CCPoint position2, cocos2d::ccColor3B colour, int size, bool erase)
+{
+    int quality = 30;
+
+    for (size_t i = 0; i < quality; i++)
+    {
+        paintBrush(ccpLerp(position, position2, (float)i / (float)quality), colour, size, erase);
     }
 }
 
@@ -126,7 +141,7 @@ CCDrawNode* PaintNode::getPreview(int size)
                 ccp(x + 1, y),
             };
 
-            n->drawPolygon(points, 4, ccc4f(1, 1, 1, 0.3f), 0, ccc4f(1, 1, 1, 0.5f));
+            n->drawPolygon(points, 4, ccc4f(1, 1, 1, 0.3f), 0, ccc4f(1, 1, 1, 1));
         }
 
         /*for (auto point : brush)
@@ -143,18 +158,45 @@ CCDrawNode* PaintNode::getPreview(int size)
     return cursorPreviews[size];
 }
 
+bool PaintNode::ccTouchBegan(cocos2d::CCTouch* touch)
+{
+    ccTouchMoved(touch);
+    return true;
+}
+
+void PaintNode::ccTouchMoved(cocos2d::CCTouch* touch)
+{
+    auto size = qolmod::PaintControl::get()->getSelectedSize();
+    auto brush = qolmod::PaintControl::get()->getTool();
+
+    if (touch->getPreviousLocation() != ccp(0, CCDirector::get()->getWinSize().height))
+        paintBrushLine(touch->getLocation(), touch->getPreviousLocation(), PaintControl::get()->getColour(), size, brush == PaintTool::Rubber);
+    else
+        paintBrush(touch->getLocation(), PaintControl::get()->getColour(), size, brush == PaintTool::Rubber);
+}
+
+void PaintNode::ccTouchEnded(cocos2d::CCTouch* touch)
+{
+
+}
+
 void PaintNode::visit()
 {
+    if (!qolmod::PaintControl::get()->getExpanded())
+        return CCNode::visit();
+
     auto size = PaintControl::get()->getSelectedSize();
-
-    if (CCKeyboardDispatcher::get()->getShiftKeyPressed())
-        paintBrush(getMousePos(), PaintControl::get()->getColour(), size);
-
-    if (CCKeyboardDispatcher::get()->getAltKeyPressed())
-        paintBrush(getMousePos(), ccWHITE, size, true);
 
     CCNode::visit();
 
+    #ifdef GEODE_IS_DESKTOP
     getPreview(size)->setPosition(ccp((int)getMousePos().x, (int)getMousePos().y));
     getPreview(size)->visit();
+
+    #endif
+}
+
+$on_game(TexturesLoaded)
+{
+    PaintNode::get()->init();
 }

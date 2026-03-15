@@ -11,12 +11,7 @@ class TPSBypassEnabled : public Module
             setID("tps-bypass");
             setCategory("Universal");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
-            setPriority(5);
-
-            #ifdef GEODE_IS_ANDROID32
-            setDisabled(true);
-            setDisabledMessage("TPS Bypass is disabled on android32 due to breaking gameplay");
-            #endif
+            setPriority(7);
         }
 };
 
@@ -48,8 +43,6 @@ class TPSBypassValue : public InputModule
 
 SUBMIT_HACK(TPSBypassEnabled)
 SUBMIT_OPTION(TPSBypassEnabled, TPSBypassValue)
-
-#ifndef GEODE_IS_ANDROID32
 
 class $modify (GJBaseGameLayer)
 {
@@ -98,10 +91,33 @@ class $modify (GJBaseGameLayer)
 
 $execute
 {
-    // MOV R11D 0x1
-    // https://defuse.ca/online-x86-assembler.htm
-    // Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x2322d2), { 0x41, 0xbb, 0x01, 0x00, 0x00, 0x00 });
-    // Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + 0x2322ca), { 0x90, 0x90, 0x90, 0x90 });
-};
+    // 140237a95 f3 0f 5f c8     MAXSS      XMM1,XMM0
+    // fVar29 = (float)roundf((float)(((local_168 * 60.0) / (double)fVar37) * 4.0));
+    // fVar37 = 1.0;
+    // if (1.0 <= fVar29) {
+    //   fVar37 = fVar29; // !!! disable this
+    // }
 
-#endif
+    #if defined(GEODE_IS_WINDOWS) && GEODE_COMP_GD_VERSION == 22081
+    #define TPSBYPASS_MIN_STEPS_PATCH_ADDR 0x237a95
+
+    #elif defined(GEODE_IS_IOS) && GEODE_COMP_GD_VERSION == 22081
+    #define TPSBYPASS_MIN_STEPS_PATCH_ADDR 0x1fe748
+
+    #elif defined(GEODE_IS_IOS) && GEODE_COMP_GD_VERSION == 22074
+    #define TPSBYPASS_MIN_STEPS_PATCH_ADDR 0x200c40
+    #endif
+
+    #ifdef TPSBYPASS_MIN_STEPS_PATCH_ADDR
+
+    if (Loader::get()->isPatchless())
+    {
+        GEODE_MOD_STATIC_PATCH(TPSBYPASS_MIN_STEPS_PATCH_ADDR, {0x90, 0x90, 0x90, 0x90});
+    }
+    else
+    {
+        (void)Mod::get()->patch(reinterpret_cast<void*>(geode::base::get() + TPSBYPASS_MIN_STEPS_PATCH_ADDR), {0x90, 0x90, 0x90, 0x90});
+    }
+
+    #endif
+};

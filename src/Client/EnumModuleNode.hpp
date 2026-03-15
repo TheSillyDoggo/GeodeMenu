@@ -17,6 +17,8 @@ class EnumModuleNode : public ModuleNode
         void onLeft(CCObject* sender);
         void onRight(CCObject* sender);
 
+        void updateButtonEnabled(CCMenuItemSpriteExtra* btn, bool enabled);
+
         virtual void setup();
         virtual void updateNode();
 };

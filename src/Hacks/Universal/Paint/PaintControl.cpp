@@ -44,12 +44,14 @@ bool PaintControl::init()
     bg->setAnchorPoint(ccp(0, 0.5f));
     bg->setPosition(getContentSize() / 2);
     bg->setContentSize(ccp(130, 26));
+    bg->setScaleX(0);
     BlurAPI::addBlur(bg);
 
     menu = CCMenu::create();
     menu->ignoreAnchorPointForPosition(false);
     menu->setAnchorPoint(ccp(0, 0));
     menu->setPosition(getContentSize() / 2);
+    menu->setScaleX(0);
 
     addToolButton(PaintTool::Brush);
     addToolButton(PaintTool::Rubber);
@@ -69,6 +71,7 @@ bool PaintControl::init()
     input->setNumHoldValues(true, 1, 20, 0);
     input->setAlignment(kCCTextAlignmentCenter);
     input->setDelegate(this);
+    input->useCheckOnClick = false;
     menu->addChild(input);
 
     colour.fromJson(Mod::get()->getSavedValue<matjson::Value>("paintcontrol_colour", colour.toJson()));
@@ -87,6 +90,13 @@ void PaintControl::setupChildren()
 
     this->addChild(bg, -7);
     this->addChild(menu, -6);
+
+    colourSpr->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_colorBtn_001.png"));
+    
+    for (auto tool : toolSprs)
+    {
+        tool.second.sprite->setTexture(CCTextureCache::get()->addImage(tool.second.sprite->getID().c_str(), false));
+    }
 }
 
 void PaintControl::update(float dt)
@@ -111,19 +121,6 @@ void PaintControl::updateOrientation(bool horizontal)
         return;
 
     float orientation = 0;
-
-    /*if (PaintVerticalControl::get()->getRealEnabled())
-    {
-        orientation = 90;
-
-        /*if ((position + ccp(0, -bg->getContentHeight())).y < 0)
-            orientation = -90;* /
-    }
-    else
-    {
-        /*if ((position + bg->getContentSize()).x > CCDirector::get()->getWinSize().width)
-            orientation = 180;* /
-    }*/
 
     bg->setRotation(orientation);
     menu->setRotation(orientation);
@@ -192,9 +189,12 @@ void PaintControl::addToolButton(PaintTool tool)
     }
 
     data.sprite = CCSprite::create(str.c_str());
+    data.sprite->setID(str);
     data.button = CCMenuItemSpriteExtra::create(data.sprite, this, menu_selector(PaintControl::onChangeTool));
     data.button->setTag((int)tool);
     data.button->setPosition(ccp(30 + 25 * (int)tool, 0));
+
+    setToolSize(tool, Mod::get()->getSavedValue<int>(fmt::format("paintcontrol_{}_size", (int)tool), 5));
 
     menu->addChild(data.button);
     toolSprs[tool] = data;
@@ -221,6 +221,8 @@ PaintTool PaintControl::getTool()
 void PaintControl::setToolSize(PaintTool tool, int size)
 {
     toolSizes[tool] = size;
+
+    Mod::get()->setSavedValue<int>(fmt::format("paintcontrol_{}_size", (int)tool), size);
 }
 
 int PaintControl::getSelectedSize()
@@ -236,21 +238,31 @@ bool PaintControl::ccTouchBegan(cocos2d::CCTouch* touch)
     if (ui)
         return false;
 
+    if (!isActive())
+        return false;
+
     auto ret = FloatingUIButton::ccTouchBegan(touch);
     isMenuSelected = 0;
 
     if (ret)
         return true;
 
-    if (menu->ccTouchBegan(touch, nullptr))
-    {
-        isMenuSelected = 1;
-        return true;
-    }
+    if (isExpanded)
+    {        
+        if (menu->ccTouchBegan(touch, nullptr))
+        {
+            isMenuSelected = 1;
+            return true;
+        }
 
-    if (input->ccTouchBegan(touch, nullptr))
-    {
-        isMenuSelected = 2;
+        if (input->ccTouchBegan(touch, nullptr))
+        {
+            isMenuSelected = 2;
+            return true;
+        }
+
+        isMenuSelected = 3;
+        qolmod::PaintNode::get()->ccTouchBegan(touch);
         return true;
     }
 
@@ -265,6 +277,9 @@ void PaintControl::ccTouchMoved(cocos2d::CCTouch* touch)
     if (isMenuSelected == 2)
         return input->ccTouchMoved(touch, nullptr);
 
+    if (isMenuSelected == 3)
+        return qolmod::PaintNode::get()->ccTouchMoved(touch);
+
     FloatingUIButton::ccTouchMoved(touch);
 }
 
@@ -275,6 +290,9 @@ void PaintControl::ccTouchEnded(cocos2d::CCTouch* touch)
 
     if (isMenuSelected == 2)
         return input->ccTouchEnded(touch, nullptr);
+
+    if (isMenuSelected == 3)
+        return qolmod::PaintNode::get()->ccTouchEnded(touch);
 
     FloatingUIButton::ccTouchEnded(touch);
 }
@@ -301,6 +319,9 @@ void PaintControl::preVisit()
 
 void PaintControl::visit()
 {
+    if (!isActive())
+        return;
+
     FloatingUIButton::visit();
 
     if (ui)
@@ -312,6 +333,16 @@ void PaintControl::visit()
         ui->visit();
         ui->shouldVisit = false;
     }
+}
+
+bool PaintControl::getExpanded()
+{
+    return isExpanded;
+}
+
+bool PaintControl::isActive()
+{
+    return PaintEnabled::get()->getRealEnabled();
 }
 
 $on_game(Loaded)

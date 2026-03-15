@@ -21,11 +21,6 @@ void FloatingUIManager::addButton(FloatingUIButton* btn)
 {
     buttons.push_back(btn);
 
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
-    #endif
-
     this->addChild(btn);
 }
 
@@ -36,21 +31,11 @@ void FloatingUIManager::removeButton(FloatingUIButton* btn)
 
     buttons.erase(std::remove(buttons.begin(), buttons.end(), btn), buttons.end());
 
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
-    #endif
-
     this->removeChild(btn);
 }
 
 void FloatingUIManager::updateSprites()
 {
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return;
-    #endif
-
     for (auto btn : buttons)
     {
         btn->updateSprites();
@@ -79,14 +64,6 @@ void FloatingUIManager::visit()
         return;
     }
 
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-    {
-        qolmod::PaintControl::get()->visit();
-        return;
-    }
-    #endif
-
     sortButtons();
 
     return CCNode::visit();
@@ -94,19 +71,11 @@ void FloatingUIManager::visit()
 
 bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
 {
-    if (DisableShortcuts::get()->getRealEnabled())
-        return false;
-
     if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
 
     if (AndroidUI::get())
         return false;
-
-    #ifdef GEODE_IS_MOBILE
-    if (Loader::get()->getLoadedMod("geode.texture-loader"))
-        return false;
-    #endif
 
     sortButtons();
     std::reverse(buttons.begin(), buttons.end());
@@ -116,6 +85,10 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
         case CCTOUCHBEGAN:
             for (auto button : buttons)
             {
+                if (DisableShortcuts::get()->getRealEnabled())
+                    if (!typeinfo_cast<qolmod::PaintControl*>(button))
+                        continue;
+
                 for (auto item : *pTouches->m_pSet)
                 {
                     if (auto touch = typeinfo_cast<CCTouch*>(item))
