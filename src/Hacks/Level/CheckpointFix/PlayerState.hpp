@@ -19,7 +19,11 @@ namespace qolmod
             DashRingObject* m_dashRing;
             double m_slopeStartTime;
             bool m_justPlacedStreak;
+            #if GEODE_COMP_GD_VERSION == 22074
+            cocos2d::CCNode* m_maybeLastGroundObject;
+            #else
             GameObject* m_maybeLastGroundObject;
+            #endif
             int m_lastCollisionBottom;
             int m_lastCollisionTop;
             int m_lastCollisionLeft;
