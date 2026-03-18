@@ -13,6 +13,7 @@ namespace qolmod
     {
         Brush = 0,
         Rubber = 1,
+        Clear = 2,
     };
 
     class PaintControl : public FloatingUIButton, public TextInputDelegate

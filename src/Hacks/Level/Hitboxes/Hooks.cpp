@@ -12,6 +12,7 @@ bool HitboxBaseGameLayer::init()
         return false;
 
     m_fields->nodeContainer = CCNode::create();
+    m_fields->nodeContainer->setID("draw-container"_spr);
     m_fields->nodeContainer->setZOrder(10);
 
     m_fields->node = HitboxNode::create();
@@ -26,17 +27,22 @@ void HitboxBaseGameLayer::onTick(bool updateTrail)
     auto fields = m_fields.self();
     fields->node->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
 
+    auto copy = m_debugDrawNode->getParent();
+    fields->nodeContainer->setPosition(CCDirector::get()->getWinSize() / 2);
+
+    for (auto child : fields->nodeContainer->getChildrenExt<CCNode*>())
+    {
+        child->setPosition(copy->getPosition() - fields->nodeContainer->getPosition());
+        child->setScaleX(copy->getScaleX());
+        child->setScaleY(copy->getScaleY());
+    }
+
+    fields->nodeContainer->setRotation(m_gameState.m_cameraAngle);
+
     if (fields->node->isVisible())
     {
         auto dd = m_isDebugDrawEnabled;
         m_debugDrawNode->setVisible(m_isEditor);
-
-        auto copy = m_debugDrawNode->getParent();
-        fields->nodeContainer->setPosition(CCDirector::get()->getWinSize() / 2);
-        fields->node->setPosition(copy->getPosition() - fields->nodeContainer->getPosition());
-        fields->node->setScaleX(copy->getScaleX());
-        fields->node->setScaleY(copy->getScaleY());
-        fields->nodeContainer->setRotation(m_gameState.m_cameraAngle);
 
         if (ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled() && (m_player1->m_isDead || (m_player2 && m_player2->m_isDead)))
         {

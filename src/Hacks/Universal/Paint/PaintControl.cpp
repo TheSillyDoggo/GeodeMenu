@@ -43,7 +43,7 @@ bool PaintControl::init()
     bg = EasyBG::create();
     bg->setAnchorPoint(ccp(0, 0.5f));
     bg->setPosition(getContentSize() / 2);
-    bg->setContentSize(ccp(130, 26));
+    bg->setContentSize(ccp(150, 26));
     bg->setScaleX(0);
     BlurAPI::addBlur(bg);
 
@@ -55,6 +55,7 @@ bool PaintControl::init()
 
     addToolButton(PaintTool::Brush);
     addToolButton(PaintTool::Rubber);
+    addToolButton(PaintTool::Clear);
 
     colourSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     colourSpr->setScale(0.55f);
@@ -165,7 +166,12 @@ void PaintControl::onChangeColour(CCObject* sender)
 
 void PaintControl::onChangeTool(CCObject* sender)
 {
-    setTool((PaintTool)sender->getTag());
+    auto tool = (PaintTool)sender->getTag();
+
+    if (tool == PaintTool::Clear)
+        PaintNode::get()->init();
+    else
+        setTool(tool);
 
     utils::addCircleToNode(static_cast<CCNode*>(sender), 0.75f);
 }
@@ -185,6 +191,10 @@ void PaintControl::addToolButton(PaintTool tool)
 
         case PaintTool::Rubber:
             str = "paint-rubber-tool.png"_spr;
+            break;
+
+        case PaintTool::Clear:
+            str = "paint-clear-tool.png"_spr;
             break;
     }
 
@@ -314,6 +324,9 @@ void PaintControl::textChanged(CCTextInputNode* node)
 
 void PaintControl::preVisit()
 {
+    if (!isActive())
+        return;
+
     PaintNode::get()->visit();
 }
 

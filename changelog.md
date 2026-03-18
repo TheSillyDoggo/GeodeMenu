@@ -1,3 +1,10 @@
+# 2.7.8
+
+- Added Clear Button to Paint
+- Added Fixed Checkpoints
+- Fixed Speedhack Gameplay not saving
+- Fixed Paint showing when it is disabled
+
 # 2.7.10
 
 - Fixed physics being broken on iOS and Windows

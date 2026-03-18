@@ -19,7 +19,6 @@ Speedhack* Speedhack::get()
 
 void Speedhack::setup()
 {
-    setGameplayEnabled(Mod::get()->getSavedValue<bool>("speedhack-gameplay_enabled", false));
     setText(Mod::get()->getSavedValue<std::string>("speedhack-top_value", "1.0")); // defaults
     loadPresets();
 }
