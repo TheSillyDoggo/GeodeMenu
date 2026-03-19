@@ -250,7 +250,13 @@ namespace qolmod
             bool m_ignoreDamage;
             bool m_enable22Changes;
         };
-        PlayerObjectMembers plMembers = {};
+        PlayerObjectMembers plMembers;
+        cocos2d::CCPoint position;
+        float rotation;
+        float rotationX;
+        float rotationY;
+        float scaleX;
+        float scaleY;
 
         void saveState(PlayerObject* player);
         void loadState(PlayerObject* player);

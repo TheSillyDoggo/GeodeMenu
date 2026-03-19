@@ -2,6 +2,7 @@
 
 #include "../../../Client/Module.hpp"
 #include "../../../Client/InputModule.hpp"
+#include "../../../Client/FloatSliderModule.hpp"
 #include <ColourModule.hpp>
 
 using namespace geode::prelude;
@@ -173,5 +174,18 @@ class HitboxTrailMidClickCol : public ColourModule
             setID("hitbox-trail/hold-click-colour");
             setDefaultConfig({ ccc3(0, 210, 0) });
             setPriority(9);
+        }
+};
+
+class HitboxTrailOpacity : public FloatSliderModule
+{
+    public:
+        MODULE_SETUP(HitboxTrailOpacity)
+        {
+            setName("Opacity:");
+            setID("hitbox-trail/opacity");
+            setDefaultValue(1.0f);
+            setRange(0, 1.0f);
+            setPriority(10);
         }
 };

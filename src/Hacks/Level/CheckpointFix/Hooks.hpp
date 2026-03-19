@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/PlayerCheckpoint.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 #include "PlayerState.hpp"
 
 class $modify (FixedPlayerCheckpoint, PlayerCheckpoint)

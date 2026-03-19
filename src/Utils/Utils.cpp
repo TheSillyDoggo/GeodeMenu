@@ -67,8 +67,7 @@ cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, fl
     {
         default:
             return CCTransitionFade::create(time, scene);
-        #if GEODE_COMP_GD_VERSION == 22074
-        #ifndef __APPLE__
+        #if not(GEODE_COMP_GD_VERSION == 22074 && __APPLE__)
         case kCCTransitionCrossFade:
             return CCTransitionCrossFade::create(time, scene);
         case kCCTransitionFadeBL:
@@ -134,6 +133,20 @@ cocos2d::CCScene* qolmod::utils::createTransitionForEnum(kCCTransition trans, fl
         case kCCTransitionPageTurn:
             return CCTransitionPageTurn::create(time, scene, false);
         #endif
-        #endif
     };
+}
+
+
+std::string qolmod::utils::sizeToPretty(unsigned int size)
+{
+    double size2 = (double)size;
+
+    const char* suffixes[] = {"B", "KB", "MB", "GB", "TB"};
+    int i = 0;
+    if (size2 > 0)
+    {
+        i = std::min(static_cast<int>(std::log(size2) / std::log(1024)), 4);
+        size2 /= std::pow(1024, i);
+    }
+    return fmt::format("{:.2f} {}", size2, suffixes[i]);
 }

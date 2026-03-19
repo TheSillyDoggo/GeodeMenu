@@ -27,6 +27,7 @@ SUBMIT_OPTION(HitboxTrail, HitboxTrailStartClickCol);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailEndClickCol);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailHoldClickColours);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailMidClickCol);
+SUBMIT_OPTION(HitboxTrail, HitboxTrailOpacity);
 
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathDeathObjOnly);
 SUBMIT_OPTION(ShowHitboxesOnDeath, ShowHitboxesOnDeathTrail);
@@ -35,6 +36,6 @@ void ShowHitboxes::onToggle()
 {
     if (auto gjbgl = GJBaseGameLayer::get())
     {
-        base_cast<HitboxBaseGameLayer*>(gjbgl)->onTick(false);
+        // base_cast<HitboxBaseGameLayer*>(gjbgl)->onTick(false);
     }
 }

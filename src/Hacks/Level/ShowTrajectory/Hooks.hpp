@@ -3,25 +3,25 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
+#include <Geode/modify/PlayerObject.hpp>
+#include <Geode/modify/EffectGameObject.hpp>
+#include <Geode/modify/GameObject.hpp>
+#include <Geode/modify/HardStreak.hpp>
 
 class $modify (TrajectoryBGL, GJBaseGameLayer)
 {
+    virtual bool init();
+};
 
+class $modify (TrajectoryEditor, LevelEditorLayer)
+{
+    bool init(GJGameLevel* level, bool noUI);
 };
 
 class $modify (TrajectoryPlayLayer, PlayLayer)
 {
-    struct Fields
-    {
-        cocos2d::CCDrawNode* trajectoryDrawNode = nullptr;
-        PlayerObject* simulationPlayer = nullptr;
-    };
-
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
     void createObjectsFromSetupFinished();
-    virtual void postUpdate(float dt);
+    
     virtual void destroyPlayer(PlayerObject* player, GameObject* object);
-
-    void updateSimulation();
-    void simulatePlayer(PlayerObject* player);
 };

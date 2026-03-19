@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include <deque>
+#include <BaseDrawNode.hpp>
 
 enum class HitboxColourType
 {
@@ -33,7 +34,7 @@ namespace cocos2d
 };
 #endif
 
-class HitboxNode : public cocos2d::CCDrawNode
+class HitboxNode : public qolmod::BaseDrawNode
 {
     protected:
         std::vector<PlayerHitboxState> trailStates = {};
@@ -56,6 +57,9 @@ class HitboxNode : public cocos2d::CCDrawNode
         bool drawPolygon(cocos2d::CCPoint *verts, unsigned int count, const cocos2d::ccColor4F &fillColor, float borderWidth, const cocos2d::ccColor4F &borderColor, cocos2d::BorderAlignment alignment = cocos2d::BorderAlignment::Outside);
         bool drawCircle(cocos2d::CCPoint const& center, float radius, cocos2d::_ccColor4F const& fillColor, float borderWidth, cocos2d::_ccColor4F const& borderColor, unsigned int segments);
         bool isPointOnScreen(cocos2d::CCPoint point);
+
+        virtual void redraw();
+        virtual void onTickEnd();
 
     public:
         CREATE_FUNC(HitboxNode);

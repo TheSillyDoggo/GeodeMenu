@@ -10,6 +10,13 @@ plMembers.$member = player->$member;
 
 void PlayerState::saveState(PlayerObject* player)
 {
+    position = player->getPosition();
+    rotation = player->getRotation();
+    rotationX = player->getRotationX();
+    rotationY = player->getRotationY();
+    scaleX = player->getScaleX();
+    scaleY = player->getScaleY();
+
     SAVE_PL_MEMBER(m_wasTeleported);
     SAVE_PL_MEMBER(m_fixGravityBug);
     SAVE_PL_MEMBER(m_reverseSync);
@@ -251,6 +258,13 @@ void PlayerState::saveState(PlayerObject* player)
 
 void PlayerState::loadState(PlayerObject* player)
 {
+    player->setPosition(position);
+    player->setRotation(rotation);
+    player->setRotationX(rotationX);
+    player->setRotationY(rotationY);
+    player->setScaleX(scaleX);
+    player->setScaleY(scaleY);
+
     LOAD_PL_MEMBER(m_wasTeleported);
     LOAD_PL_MEMBER(m_fixGravityBug);
     LOAD_PL_MEMBER(m_reverseSync);

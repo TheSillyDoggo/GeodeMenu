@@ -1,9 +1,12 @@
-# 2.7.8
+# 2.8.0
 
 - Added Clear Button to Paint
 - Added Fixed Checkpoints
+- Added Crash the game shortcut
+- Added Hitbox Trail opacity
 - Fixed Speedhack Gameplay not saving
 - Fixed Paint showing when it is disabled
+- Fixed Transition Customiser not working
 
 # 2.7.10
 

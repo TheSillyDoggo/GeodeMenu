@@ -46,4 +46,5 @@ namespace qolmod::utils
     std::string toUTF8String(std::wstring ws);
     void addCircleToNode(cocos2d::CCNode* node , float scale = 1.0f);
     cocos2d::CCScene* createTransitionForEnum(kCCTransition trans, float time, cocos2d::CCScene* scene);
+    std::string sizeToPretty(unsigned int size);
 };

@@ -2,12 +2,13 @@
 #include "HitboxColours.hpp"
 #include "ShowHitboxes.hpp"
 #include "../Noclip/Hooks.hpp"
+#include "../HitboxUtils.hpp"
 
 using namespace geode::prelude;
 
 bool HitboxNode::init()
 {
-    if (!CCDrawNode::init())
+    if (!qolmod::BaseDrawNode::init())
         return false;    
 
     setBlendFunc(ccBlendFunc({ GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA }));
@@ -283,6 +284,7 @@ void HitboxNode::drawPlayerTrails()
     auto size = trailStates.size();
 
     float v = shouldFillHitboxes() ? HitboxFillOpacity::get()->getValue() : 0;
+    v *= HitboxTrailOpacity::get()->getValue();
 
     float decrement = (1.0f / (float)max) * 0.75f;
 
@@ -331,6 +333,8 @@ void HitboxNode::drawPlayerTrails()
             }
         }
 
+        col.a = HitboxTrailOpacity::get()->getValue();
+
         if (HitboxTrailDarkenByAge::get()->getRealEnabled())
         {
             float v = (float)(size - i) * decrement;
@@ -370,6 +374,8 @@ void HitboxNode::drawPlayerTrails()
             col.g = std::clamp<float>(col.g - v, 0, 1);
             col.b = std::clamp<float>(col.b - v, 0, 1);
         }
+
+        col.a = HitboxTrailOpacity::get()->getValue();
 
         drawPolygon(vertices, 4, ccc4f(col.r, col.g, col.b, v), getHitboxThickness(), col, BorderAlignment::Inside);
         i++;
@@ -565,4 +571,45 @@ bool HitboxNode::isPointOnScreen(cocos2d::CCPoint point)
     }
 
     return true;
+}
+
+void HitboxNode::redraw()
+{
+    auto gjbgl = GJBaseGameLayer::get();
+    auto dd = gjbgl->m_isDebugDrawEnabled;
+    gjbgl->m_debugDrawNode->setVisible(gjbgl->m_isEditor);
+
+    setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? gjbgl->m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
+
+    if (ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled() && (gjbgl->m_player1->m_isDead || (gjbgl->m_player2 && gjbgl->m_player2->m_isDead)))
+    {
+        if (ShowHitboxes::get()->getRealEnabled() || (gjbgl->m_isDebugDrawEnabled && gjbgl->m_isPracticeMode))
+            setOnlyObject(nullptr);
+        else
+            setOnlyObject(base_cast<NoclipBaseGameLayer*>(gjbgl)->getDeathObject());
+    }
+    else
+        setOnlyObject(nullptr);
+
+    updateNode();
+}
+
+void HitboxNode::onTickEnd()
+{
+    if (HitboxTrail::get()->getRealEnabled() && (isVisible() ? true : ShowHitboxesOnDeathTrail::get()->getRealEnabled()))
+    {
+        auto gjbgl = GJBaseGameLayer::get();
+
+        if (!gjbgl->m_levelEndAnimationStarted)
+        {
+            if (!gjbgl->m_player1->m_isDead)
+                storePlayerTrail(gjbgl->m_player1);
+
+            if (gjbgl->m_player2 && gjbgl->m_player2->isRunning())
+            {
+                if (!gjbgl->m_player2->m_isDead)
+                    storePlayerTrail(gjbgl->m_player2);
+            }
+        }
+    }
 }

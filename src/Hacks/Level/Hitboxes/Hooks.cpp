@@ -11,69 +11,10 @@ bool HitboxBaseGameLayer::init()
     if (!GJBaseGameLayer::init())
         return false;
 
-    m_fields->nodeContainer = CCNode::create();
-    m_fields->nodeContainer->setID("draw-container"_spr);
-    m_fields->nodeContainer->setZOrder(10);
-
     m_fields->node = HitboxNode::create();
-    m_fields->nodeContainer->addChild(m_fields->node);
 
-    this->addChild(m_fields->nodeContainer);
+    this->addChild(m_fields->node, 10);
     return true;
-}
-
-void HitboxBaseGameLayer::onTick(bool updateTrail)
-{
-    auto fields = m_fields.self();
-    fields->node->setVisible(HitboxUtils::shouldHitboxesBeVisible() || (ShowHitboxesOnDeath::get()->getRealEnabled() ? m_player1->m_isDead : false) || ShowHitboxes::get()->getRealEnabled());
-
-    auto copy = m_debugDrawNode->getParent();
-    fields->nodeContainer->setPosition(CCDirector::get()->getWinSize() / 2);
-
-    for (auto child : fields->nodeContainer->getChildrenExt<CCNode*>())
-    {
-        child->setPosition(copy->getPosition() - fields->nodeContainer->getPosition());
-        child->setScaleX(copy->getScaleX());
-        child->setScaleY(copy->getScaleY());
-    }
-
-    fields->nodeContainer->setRotation(m_gameState.m_cameraAngle);
-
-    if (fields->node->isVisible())
-    {
-        auto dd = m_isDebugDrawEnabled;
-        m_debugDrawNode->setVisible(m_isEditor);
-
-        if (ShowHitboxesOnDeathDeathObjOnly::get()->getRealEnabled() && (m_player1->m_isDead || (m_player2 && m_player2->m_isDead)))
-        {
-            if (ShowHitboxes::get()->getRealEnabled() || (m_isDebugDrawEnabled && m_isPracticeMode))
-                fields->node->setOnlyObject(nullptr);
-            else
-                fields->node->setOnlyObject(base_cast<NoclipBaseGameLayer*>(this)->getDeathObject());
-        }
-        else
-            fields->node->setOnlyObject(nullptr);
-
-        fields->node->updateNode();
-    }
-
-    if (updateTrail)
-    {
-        if (HitboxTrail::get()->getRealEnabled() && (fields->node->isVisible() ? true : ShowHitboxesOnDeathTrail::get()->getRealEnabled()))
-        {
-            if (!m_levelEndAnimationStarted)
-            {
-                if (!m_player1->m_isDead)
-                    fields->node->storePlayerTrail(m_player1);
-
-                if (m_player2 && m_player2->isRunning())
-                {
-                    if (!m_player2->m_isDead)
-                        fields->node->storePlayerTrail(m_player2);
-                }
-            }
-        }
-    }
 }
 
 void HitboxBaseGameLayer::resetLevelVariables()
@@ -99,46 +40,10 @@ void HitboxEditorLayer::onPlaytest()
     }
 }
 
-void HitboxEditorLayer::updateVisibility(float dt)
-{
-    LevelEditorLayer::updateVisibility(dt);
-
-    base_cast<HitboxBaseGameLayer*>(this)->onTick(false);
-}
-
-void HitboxPlayLayer::postUpdate(float dt)
-{
-    PlayLayer::postUpdate(dt);
-
-    if (!m_started)
-        base_cast<HitboxBaseGameLayer*>(this)->onTick(false);
-}
-
-bool isEndTickCameraUpdate = false;
-
-void HitboxBaseGameLayer::checkRepellPlayer()
-{
-    GJBaseGameLayer::checkRepellPlayer();
-
-    isEndTickCameraUpdate = true;
-}
-
-void HitboxBaseGameLayer::updateCamera(float dt)
-{
-    GJBaseGameLayer::updateCamera(dt);
-
-    if (isEndTickCameraUpdate)
-    {
-        onTick(true);
-    }
-    isEndTickCameraUpdate = false;
-}
 
 void HitboxEditorUI::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event)
 {
     EditorUI::ccTouchMoved(touch, event);
-
-    base_cast<HitboxBaseGameLayer*>(m_editorLayer)->onTick(false);
 }
 
 void HitboxEditorUI::transformObjectCall(EditCommand command)
