@@ -5,20 +5,16 @@
 #include <Geode/Geode.hpp>
 
 using namespace geode::prelude;
-using namespace QOLMod;
+using namespace qolmod;
 
 class ExtensionManager
 {
     protected:
-        std::vector<CategoryExt> categories = {};
-        std::vector<Module*> modules = {};
+        std::vector<ext::CategoryData> categories = {};
 
     public:
         static ExtensionManager* get();
 
-        void addCategory(CategoryExt cat);
-        std::vector<CategoryExt> getCategories();
-
-        void addModule(Module* module);
-        std::vector<Module*> getModules();
+        void addCategory(ext::CategoryData cat);
+        std::vector<ext::CategoryData>& getCategories();
 };

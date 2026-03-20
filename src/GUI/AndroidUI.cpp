@@ -9,7 +9,7 @@
 #include "../Utils/RealtimeAction.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterInputNode.hpp"
-
+#include "Categories/ExtensionCategory.hpp"
 #include "FloatingButton/FloatingUIManager.hpp"
 #include "EasyBG.hpp"
 #include <BlurAPI.hpp>
@@ -153,6 +153,25 @@ void AndroidUI::populateTabs()
         }
 
         catMenu->addCategory(LocalisationManager::get()->getLocalisedString(fmt::format("categories/{}", utils::string::toLower(category))), fmt::format("{}{}.png", ""_spr, utils::string::toLower(category)), category, bottom ? CategoryType::Bottom : CategoryType::Standard);
+    }
+
+    for (qolmod::ext::CategoryData& cat : ExtensionManager::get()->getCategories())
+    {
+        if (!categories.contains(cat.categoryID))
+        {
+            auto cat2 = ExtensionCategory::create(&cat);
+            cat2->setID(cat.categoryID);
+
+            categories.emplace(cat.categoryID, cat2);
+            categoryMenu->addChildAtPosition(cat2, Anchor::Right, ccp(-10, 0));
+        }
+
+        catMenu->addCategory(
+            cat.displayName,
+            cat.iconSpr,
+            cat.categoryID,
+            CategoryType::Extension
+        );
     }
 
     catMenu->setSelectedCategory(selectedCategory);

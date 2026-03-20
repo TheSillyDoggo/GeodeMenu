@@ -1,35 +1,25 @@
 #pragma once
 
-#include <Geode/Geode.hpp>
+#include <Geode/loader/Event.hpp>
+#include <Geode/loader/Dispatch.hpp>
+#include <Geode/cocos/menu_nodes/CCMenu.h>
+#include <ccTypes.h>
 
-namespace QOLMod
+#define MY_MOD_ID "thesillydoggo.qolmod"
+
+using CategoryCreateFunc = std::function<void(cocos2d::CCMenu*)>;
+
+namespace qolmod::ext
 {
-    struct CategoryExt
+    struct CategoryData
     {
-        public:
-            std::string name = "";
-            std::string modID = "";
-            // should preferably be a 64x64 white icon with black outline
-            std::string sprite = "";
-            int priority = 0;
-
-            void submit();
+        unsigned int apiVersion = 1;
+        std::string displayName = "";
+        std::string iconSpr = "";
+        std::string categoryID = "";
+        CategoryCreateFunc customFunc = nullptr;
     };
 
-    /*class AddCategoryEvent : public geode::Event
-    {
-        public:
-            CategoryExt category;
-
-            AddCategoryEvent(CategoryExt category)
-            {
-                this->category = category;
-            }
-    };
-
-    inline void CategoryExt::submit()
-    {
-        auto e = AddCategoryEvent(*this);
-        e.post();
-    }*/
+    inline void addCustomCategory(CategoryData data)
+    GEODE_EVENT_EXPORT_NORES(&addCustomCategory, (data));
 };

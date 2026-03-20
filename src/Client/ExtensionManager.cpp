@@ -10,22 +10,12 @@ ExtensionManager* ExtensionManager::get()
     return instance;
 }
 
-void ExtensionManager::addCategory(CategoryExt cat)
+void ExtensionManager::addCategory(ext::CategoryData cat)
 {
     categories.push_back(cat);
 }
 
-std::vector<CategoryExt> ExtensionManager::getCategories()
+std::vector<ext::CategoryData>& ExtensionManager::getCategories()
 {
     return categories;
-}
-
-void ExtensionManager::addModule(Module* module)
-{
-    modules.push_back(module);
-}
-
-std::vector<Module*> ExtensionManager::getModules()
-{
-    return modules;
 }

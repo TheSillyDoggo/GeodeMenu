@@ -1,17 +1,10 @@
+#define GEODE_DEFINE_EVENT_EXPORTS
 #include "../CategoryExt.hpp"
 #include "../../src/Client/ExtensionManager.hpp"
 
 using namespace geode::prelude;
-using namespace QOLMod;
 
-/*$execute
+void qolmod::ext::addCustomCategory(CategoryData data)
 {
-    new EventListener<EventFilter<AddCategoryEvent>>(+[](AddCategoryEvent* ev)
-    {
-        auto cat = ev->category;
-
-        ExtensionManager::get()->addCategory(cat);
-
-        return ListenerResult::Stop;
-    });
-}*/
+    ExtensionManager::get()->addCategory(data);
+}
