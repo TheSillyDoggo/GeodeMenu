@@ -151,16 +151,29 @@ std::string qolmod::utils::sizeToPretty(unsigned int size)
     return fmt::format("{:.2f} {}", size2, suffixes[i]);
 }
 
+#ifdef GEODE_IS_ANDROID
+std::string exec(const char* cmd)
+{
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result; 
+}
+#endif
+
 bool qolmod::utils::isChromebook()
 {
     #ifdef GEODE_IS_ANDROID
     #include <sys/system_properties.h>
 
     static bool chromebook = ([]{
-        char device[PROP_VALUE_MAX] = {0};
-        __system_property_get("ro.product.device", device);
-
-        std::string s(device);
+        std::string s = exec("getprop ro.product.device");
 
         return s.find("_cheets") != std::string::npos ||
             s.find("cheets_") != std::string::npos;
