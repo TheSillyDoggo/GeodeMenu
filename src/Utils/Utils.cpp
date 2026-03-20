@@ -170,8 +170,6 @@ std::string exec(const char* cmd)
 bool qolmod::utils::isChromebook()
 {
     #ifdef GEODE_IS_ANDROID
-    #include <sys/system_properties.h>
-
     static bool chromebook = ([]{
         std::string s = exec("getprop ro.product.device");
 
