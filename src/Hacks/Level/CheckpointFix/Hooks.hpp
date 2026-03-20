@@ -10,7 +10,7 @@ class $modify (FixedPlayerCheckpoint, PlayerCheckpoint)
 {
     struct Fields
     {
-        qolmod::PlayerState state = {};
+        qolmod::PlayerState state;
     };
 };
 

@@ -9,6 +9,7 @@
 - Fixed Speedhack Gameplay not saving
 - Fixed Paint showing when it is disabled
 - Fixed Transition Customiser not working
+- Fixed Auto Downloads Songs not working
 
 # 2.7.10
 
