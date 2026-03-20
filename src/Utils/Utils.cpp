@@ -156,7 +156,7 @@ bool qolmod::utils::isChromebook()
     #ifdef GEODE_IS_ANDROID
     #include <sys/system_properties.h>
 
-    static bool chromebook = []{
+    static bool chromebook = ([]{
         char device[PROP_VALUE_MAX] = {0};
         __system_property_get("ro.product.device", device);
 
@@ -164,7 +164,7 @@ bool qolmod::utils::isChromebook()
 
         return s.find("_cheets") != std::string::npos ||
             s.find("cheets_") != std::string::npos;
-    };
+    })();
 
     return chromebook;
     #else
