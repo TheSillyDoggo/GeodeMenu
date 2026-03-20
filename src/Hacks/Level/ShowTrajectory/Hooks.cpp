@@ -53,58 +53,142 @@ class $modify(PlayLayer)
 
 };
 
-class $modify(GJBaseGameLayer) {
+class $modify(GJBaseGameLayer)
+{
+    void customCollisionCheck(PlayerObject* player, GameObject* obj)
+    {
+        bool intersects = false;
 
-    /*void collisionCheckObjects(PlayerObject * p0, gd::vector<GameObject*>*objects, int p2, float p3) {
-        if (TrajectoryNode::get()->isSimulating()) {
-            std::vector<GameObject*> disabledObjects;
+        if (obj->m_orientedBox)
+            intersects = obj->m_orientedBox->overlaps(player->m_orientedBox);
+        else
+            intersects = player->getObjectRect().intersectsRect(obj->getObjectRect());
 
-            for (const auto& obj : *objects) {
-                if (!obj) continue;
+        if (intersects)
+        {
+            switch (obj->m_objectType)
+            {
+                case GameObjectType::CubePortal:
+                    player->toggleFlyMode(false, false);
+                    player->toggleRollMode(false, false);
+                    player->toggleBirdMode(false, false);
+                    player->toggleDartMode(false, false);
+                    player->toggleRobotMode(false, false);
+                    player->toggleSpiderMode(false, false);
+                    player->toggleSwingMode(false, false);
+                    break;
+                case GameObjectType::ShipPortal:
+                    player->toggleFlyMode(true, true);
+                    break;
+                case GameObjectType::BallPortal:
+                    player->toggleRollMode(true, true);
+                    break;
+                case GameObjectType::UfoPortal:
+                    player->toggleBirdMode(true, true);
+                    break;
+                case GameObjectType::WavePortal:
+                    player->toggleDartMode(true, true);
+                    break;
+                case GameObjectType::RobotPortal:
+                    player->toggleRobotMode(true, true);
+                    break;
+                case GameObjectType::SpiderPortal:
+                    player->toggleSpiderMode(true, true);
+                    break;
+                case GameObjectType::SwingPortal:
+                    player->toggleSwingMode(true, true);
+                    break;
+                
+                case GameObjectType::NormalGravityPortal:
+                    this->flipGravity(player, false, true);
+                    break;
+                case GameObjectType::InverseGravityPortal:
+                    this->flipGravity(player, true, true);
+                    break;
+                case GameObjectType::GravityTogglePortal:
+                    this->flipGravity(player, !player->m_isUpsideDown, true);
+                    break;
 
-                if ((!objectTypes.contains(static_cast<int>(obj->m_objectType)) && !portalIDs.contains(obj->m_objectID)) || collectibleIDs.contains(obj->m_objectID)) {
-                    if (obj->m_isDisabled || obj->m_isDisabled2) continue;  
+                // TODO: this causes orb circles to break
+                case GameObjectType::YellowJumpPad:
+                case GameObjectType::PinkJumpPad:
+                case GameObjectType::RedJumpPad:
+                case GameObjectType::SpiderPad:
+                    if (static_cast<EffectGameObject*>(obj)->m_isReverse)
+                        player->reversePlayer(static_cast<EffectGameObject*>(obj));
 
-                    disabledObjects.push_back(obj);
-                    obj->m_isDisabled = true;
-                    obj->m_isDisabled2 = true;
+                    player->bumpPlayer(getBumpMod(player, (int)obj->m_objectType), (int)obj->m_objectType, true, nullptr);
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+    {
+        if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating())
+        {
+            gd::vector<GameObject*> p1old = *p1;
+
+            auto new_end = std::remove_if(p1->begin(), p1->end(), [this, p0](GameObject* obj)
+            {
+                bool del = true;
+                
+                if (typeinfo_cast<GameObject*>(obj))
+                {
+                    if (obj->m_objectType == GameObjectType::Solid)
+                        del = false;
+
+                    if (obj->m_objectType == GameObjectType::Hazard)
+                        del = false;
+
+                    if (obj->m_objectType == GameObjectType::AnimatedHazard)
+                        del = false;
+
+                    if (obj->m_objectType == GameObjectType::Slope)
+                        del = false;
                 }
-            }
 
-            GJBaseGameLayer::collisionCheckObjects(p0, objects, p2, p3);
+                if (del)
+                    customCollisionCheck(p0, obj);
+                
+                return del;
+            });
 
-            for (const auto& obj : disabledObjects) {
-                if (!obj) continue;
+            p1->erase(new_end, p1->end());
+            p2 = p1->size();
 
-                obj->m_isDisabled = false;
-                obj->m_isDisabled2 = false;
-            }
+            GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 
-            disabledObjects.clear();
+            *p1 = p1old;
 
             return;
         }
 
-        GJBaseGameLayer::collisionCheckObjects(p0, objects, p2, p3);
-    }*/
+        GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
+    }
 
-    bool canBeActivatedByPlayer(PlayerObject * p0, EffectGameObject * p1) {
-        if (TrajectoryNode::get()->isSimulating()) {
-
-            // ShowTrajectory::handlePortal(p0, p1->m_objectID);
-
+    bool canBeActivatedByPlayer(PlayerObject * p0, EffectGameObject * p1)
+    {
+        if (TrajectoryNode::get()->isSimulating())
+        {
             return false;
         }
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
     }
 
-    void playerTouchedRing(PlayerObject * p0, RingObject * p1) {
+    void playerTouchedRing(PlayerObject * p0, RingObject * p1)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::playerTouchedRing(p0, p1);
     }
 
-    void playerTouchedTrigger(PlayerObject * p0, EffectGameObject * p1) {
+    void playerTouchedTrigger(PlayerObject * p0, EffectGameObject * p1)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::playerTouchedTrigger(p0, p1);
         // else

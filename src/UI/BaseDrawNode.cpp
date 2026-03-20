@@ -118,7 +118,11 @@ void BaseDrawNode::transform(void)
         world1->setPosition(win / 2);
         world1->setRotation(gjbgl->m_gameState.m_cameraAngle);
 
-        world2->setPosition(-gjbgl->m_gameState.m_cameraPosition * gjbgl->m_gameState.m_cameraZoom - world1->getPosition());
+        if (gjbgl->m_isEditor && static_cast<LevelEditorLayer*>(gjbgl)->m_playbackMode != PlaybackMode::Playing)
+            world2->setPosition(gjbgl->m_objectLayer->getPosition() - world1->getPosition());
+        else
+            world2->setPosition(-gjbgl->m_gameState.m_cameraPosition * gjbgl->m_gameState.m_cameraZoom - world1->getPosition());
+
         world2->setScaleX(copy->getScaleX());
         world2->setScaleY(copy->getScaleY());
     }
