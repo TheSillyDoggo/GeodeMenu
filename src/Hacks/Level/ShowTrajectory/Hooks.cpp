@@ -43,84 +43,15 @@ void TrajectoryPlayLayer::destroyPlayer(PlayerObject* player, GameObject* object
 }
 
 
-class $modify(PlayLayer) {
-
-    /*void postUpdate(float dt) {
-        PlayLayer::postUpdate(dt);
-
-        if (!t.trajectoryNode() || TrajectoryNode::get()->isSimulating()) return;
-
-        if (Global::get().showTrajectory) {
-            ShowTrajectory::updateTrajectory(this);
-        }
-
-    }
-
-    void setupHasCompleted() {
-        PlayLayer::setupHasCompleted();
-
-        t.fakePlayer1 = nullptr;
-        t.fakePlayer2 = nullptr;
-        t.cancelTrajectory = false;
-        TrajectoryNode::get()->isSimulating() = false;
-
-        t.fakePlayer1 = PlayerObject::create(1, 1, this, this, true);
-        t.fakePlayer1->retain();
-        t.fakePlayer1->setPosition({ 0, 105 });
-        t.fakePlayer1->setVisible(false);
-        m_objectLayer->addChild(t.fakePlayer1);
-
-        t.fakePlayer2 = PlayerObject::create(1, 1, this, this, true);
-        t.fakePlayer2->retain();
-        t.fakePlayer2->setPosition({ 0, 105 });
-        t.fakePlayer2->setVisible(false);
-        m_objectLayer->addChild(t.fakePlayer2);
-
-        m_objectLayer->addChild(t.trajectoryNode(), 500);
-    }*/
-
-    /*void destroyPlayer(PlayerObject * player, GameObject * gameObject) {
-        if (TrajectoryNode::get()->isSimulating() || (player == t.fakePlayer1 || player == t.fakePlayer2)) {
-            t.deathRotation = player->getRotation();
-            t.cancelTrajectory = true;
-            return;
-        }
-
-        PlayLayer::destroyPlayer(player, gameObject);
-    }*/
-
-    /*void onQuit() {
-        if (t.trajectoryNode())
-            t.trajectoryNode()->clear();
-
-        t.fakePlayer1 = nullptr;
-        t.fakePlayer2 = nullptr;
-        t.cancelTrajectory = false;
-        TrajectoryNode::get()->isSimulating() = false;
-
-        PlayLayer::onQuit();
-    }*/
-
-    void playEndAnimationToPos(cocos2d::CCPoint p0) {
+class $modify(PlayLayer)
+{
+    void playEndAnimationToPos(cocos2d::CCPoint p0)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             PlayLayer::playEndAnimationToPos(p0);
     }
 
 };
-
-/*class $modify(PauseLayer) {
-    void goEdit() {
-        if (t.trajectoryNode())
-            t.trajectoryNode()->clear();
-
-        t.fakePlayer1 = nullptr;
-        t.fakePlayer2 = nullptr;
-        t.cancelTrajectory = false;
-        TrajectoryNode::get()->isSimulating() = false;
-
-        PauseLayer::goEdit();
-    }
-};*/
 
 class $modify(GJBaseGameLayer) {
 
@@ -202,12 +133,8 @@ class $modify(GJBaseGameLayer) {
 
 };
 
-class $modify(PlayerObject) {
-
-    void update(float dt) {
-        PlayerObject::update(dt);
-        // t.delta = dt;
-    }
+class $modify(PlayerObject)
+{
 
     void playSpiderDashEffect(cocos2d::CCPoint p0, cocos2d::CCPoint p1) {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
