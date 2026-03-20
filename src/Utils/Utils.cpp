@@ -150,3 +150,24 @@ std::string qolmod::utils::sizeToPretty(unsigned int size)
     }
     return fmt::format("{:.2f} {}", size2, suffixes[i]);
 }
+
+bool qolmod::utils::isChromebook()
+{
+    #ifdef GEODE_IS_ANDROID
+    #include <sys/system_properties.h>
+
+    static bool chromebook = []{
+        char device[PROP_VALUE_MAX] = {0};
+        __system_property_get("ro.product.device", device);
+
+        std::string s(device);
+
+        return s.find("_cheets") != std::string::npos ||
+            s.find("cheets_") != std::string::npos;
+    };
+
+    return chromebook;
+    #else
+    return false;
+    #endif
+}

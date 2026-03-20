@@ -224,6 +224,19 @@ class $modify(PlayerObject) {
             PlayerObject::ringJump(p0, p1);
     }
 
+    void stopDashing()
+    {
+        PlayerObject::stopDashing();
+
+        if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating())
+        {
+            if (m_dashFireSprite)
+            {
+                m_dashFireSprite->setScale(0);
+            }
+        }
+    }
+
 };
 
 class $modify(HardStreak) {

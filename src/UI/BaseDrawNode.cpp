@@ -208,9 +208,16 @@ class $modify (GJBaseGameLayer)
         }
     }
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     void processCommands(float dt, bool isHalfTick, bool isLastTick)
     {
         GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
+    #else
+    void processCommands(float dt)
+    {
+        GJBaseGameLayer::processCommands(dt);
+    #endif
+    
         __didTickThisFrame = true;
 
         for (auto node : baseDrawNodes)

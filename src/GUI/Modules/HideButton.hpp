@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Client/Module.hpp"
+#include <Utils.hpp>
 
 using namespace geode::prelude;
 
@@ -16,9 +17,12 @@ class HideButton : public Module
             setDefaultEnabled(true);
 
             #ifdef GEODE_IS_MOBILE
-            setDefaultEnabled(false);
-            setDisabled(true);
-            setDisabledMessage("You can't hide the button on mobile, silly :P");
+            if (!qolmod::utils::isChromebook())
+            {
+                setDefaultEnabled(false);
+                setDisabled(true);
+                setDisabledMessage("You can't hide the button on mobile, silly :P");
+            }
             #endif
         }
 };

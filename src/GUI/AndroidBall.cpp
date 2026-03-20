@@ -118,6 +118,12 @@ bool AndroidBall::shouldFunction()
     
     #endif
 
+    if (qolmod::utils::isChromebook())
+    {
+        if (HideButton::get()->getUserEnabled())
+            return false;
+    }
+
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
 

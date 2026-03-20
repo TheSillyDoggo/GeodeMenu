@@ -4,6 +4,8 @@
 - Added Fixed Checkpoints
 - Added Crash the game shortcut
 - Added Hitbox Trail opacity
+- Added Extension API for mod developers to add their own custom categories to qolmod
+- Fixed Hide Button being unavailable on chromebooks (hopefully)
 - Fixed Speedhack Gameplay not saving
 - Fixed Paint showing when it is disabled
 - Fixed Transition Customiser not working
