@@ -459,6 +459,9 @@ void HitboxNode::updateNode()
 {
     this->clear();
 
+    if (!isVisible())
+        return;
+
     if (auto gjbgl = GJBaseGameLayer::get())
     {
         forEachObject(gjbgl, [this](GameObject* obj)

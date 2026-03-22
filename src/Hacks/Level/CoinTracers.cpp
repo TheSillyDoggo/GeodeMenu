@@ -1,6 +1,7 @@
 #include "../../Client/Module.hpp"
 #include "../../Client/ColourModule.hpp"
 #include <Geode/modify/PlayLayer.hpp>
+#include <BaseDrawNode.hpp>
 #include "../Utils/PlayLayer.hpp"
 
 using namespace geode::prelude;
@@ -32,22 +33,41 @@ class CoinTracersColour : public ColourModule
 SUBMIT_HACK(CoinTracers);
 SUBMIT_OPTION(CoinTracers, CoinTracersColour);
 
+namespace qolmod
+{
+    class CoinTracerNode : public qolmod::BaseDrawNode
+    {
+        public:
+            CREATE_FUNC(CoinTracerNode);
+
+            virtual void redraw()
+            {
+                clear();
+
+                if (CoinTracers::get()->getRealEnabled())
+                {
+                    auto utils = PlayLayerUtils::getUtils()->m_fields.self();
+                    auto col = CoinTracersColour::get()->getColour();
+
+                    for (auto coin : utils->coins)
+                    {
+                        if (!coin->hasBeenActivated())
+                            drawSegment(gjbgl->m_player1->getPosition(), coin->getPosition(), 1, ccc4f(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, 1));
+                    }
+                }
+            }
+    };
+}
+
 class $modify (PlayLayer)
 {
-    virtual void postUpdate(float p0)
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
     {
-        PlayLayer::postUpdate(p0);
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+            return false;
 
-        if (CoinTracers::get()->getRealEnabled())
-        {
-            auto utils = PlayLayerUtils::getUtils()->m_fields.self();
-            auto col = CoinTracersColour::get()->getColour();
+        this->addChild(qolmod::CoinTracerNode::create(), 10);
 
-            for (auto coin : utils->coins)
-            {
-                if (!coin->hasBeenActivated())
-                    utils->drawNode->drawSegment(m_player1->getPosition(), coin->getPosition(), 1, ccc4f(col.r / 255.0f, col.g / 255.0f, col.b / 255.0f, 1));
-            }
-        }
+        return true;
     }
 };

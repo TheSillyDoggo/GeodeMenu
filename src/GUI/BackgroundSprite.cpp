@@ -130,6 +130,8 @@ void BackgroundSprite::updateCustomSprite()
 {
     if (customImg)
         customImg->removeFromParent();
+    
+    customImg = nullptr;
 
     auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
 

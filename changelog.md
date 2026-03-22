@@ -1,5 +1,6 @@
 # 2.8.0
 
+- Added ***Show Trajectory**
 - Added Clear Button to Paint
 - Added Option for vertical buttons in paint
 - Added Fixed Checkpoints
@@ -8,12 +9,25 @@
 - Added Extension API for mod developers to add their own custom categories to qolmod
 - Made selected menu animation apply to subpopups (like mod settings)
 - Fixed Hide Button being unavailable on chromebooks (hopefully)
+- Fixed Text Inputs not working on 2.2074 (hopefully)
 - Fixed Speedhack Gameplay not saving
 - Fixed Paint showing when it is disabled
 - Fixed Transition Customiser not working
-- Fixed Auto Downloads Songs not working
+- Fixed Auto Download Songs not working
+- Fixed Crash opening the game on macOS
+- Fixed Black screen on android
 - Localisation:
 -- Added Gold Font support
+-- Added Latin American Spanish
+-- Added Austrian German
+-- Updated Vietnamese
+-- Updated Russian
+-- Updated Indonesian
+-- Updated Kazakh
+-- Updated Polish
+-- Updated Korean
+-- Updated French
+-- Updated German
 
 # 2.7.10
 

@@ -1,5 +1,6 @@
 #include "TrajectoryNode.hpp"
 #include "../CheckpointFix/PlayerState.hpp"
+#include "ShowTrajectory.hpp"
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -60,6 +61,9 @@ void TrajectoryNode::redraw()
 {
     clear();
 
+    if (!ShowTrajectory::get()->getRealEnabled())
+        return;
+
     simulate(gjbgl->m_player1, false);
     simulate(gjbgl->m_player1, true);
     
@@ -83,16 +87,21 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
 
     CCPoint prevPoint = plr->getPosition();
 
-    if (held && state.plMembers.m_dashRing)
-    {
-        // should keep same
-    }
+    if (
+        (held && state.plMembers.m_dashRing) ||
+        (held && state.plMembers.m_isRobot && state.plMembers.m_holdingButtons[(int)PlayerButton::Jump])
+    ) {}
     else
     {
         player->releaseButton(PlayerButton::Jump);
         if (held)
             player->pushButton(PlayerButton::Jump);
     }
+
+    bool useHoldCol = held == plr->m_holdingButtons[(int)PlayerButton::Jump];
+    auto col = ccc4FFromccc3B(useHoldCol ?
+        ShowTrajectoryHold::get()->getColour() :
+        ShowTrajectoryRelease::get()->getColour());
 
     for (size_t i = 0; i < getIterCount(); i++)
     {
@@ -107,7 +116,7 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         player->updateRotation(deltaIter);
         player->updatePlayerScale();
 
-        drawSegment(prevPoint, player->getPosition(), 1, ccc4f(0, 1, 0, 1));
+        drawSegment(prevPoint, player->getPosition(), 1, col);
         prevPoint = player->getPosition();
 
         if (player->m_isDead)

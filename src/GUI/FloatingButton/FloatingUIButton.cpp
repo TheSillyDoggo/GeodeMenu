@@ -77,7 +77,7 @@ void FloatingUIButton::updateSprites(std::string background, std::string overlay
 
 void FloatingUIButton::updateSprites()
 {
-    if (!CCEGLView::get())
+    if (!CCDirector::get()->m_pobOpenGLView)
         return;
 
     this->removeAllChildren();

@@ -66,6 +66,11 @@ class $modify(GJBaseGameLayer)
 
         if (intersects)
         {
+            if (obj->m_objectID == 1829) // s block
+            {
+                player->stopDashing();
+            }
+
             switch (obj->m_objectType)
             {
                 case GameObjectType::CubePortal:

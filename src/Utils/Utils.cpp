@@ -158,7 +158,7 @@ extern "C" int __system_property_get(const char* __name, char* __value);
 bool qolmod::utils::isChromebook()
 {
     #ifdef GEODE_IS_ANDROID
-    #include <sys/system_properties.h>
+    #define PROP_VALUE_MAX 92
 
     static bool chromebook = ([]{
         char device[PROP_VALUE_MAX] = {0};
