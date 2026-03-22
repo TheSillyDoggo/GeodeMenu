@@ -64,13 +64,19 @@ void TrajectoryNode::redraw()
     if (!ShowTrajectory::get()->getRealEnabled())
         return;
 
-    simulate(gjbgl->m_player1, false);
-    simulate(gjbgl->m_player1, true);
-    
-    if (gjbgl->m_player2 && gjbgl->m_gameState.m_isDualMode)
+    if (ShowTrajectoryP1::get()->getRealEnabled())
     {
-        simulate(gjbgl->m_player2, false);
-        simulate(gjbgl->m_player2, true);
+        simulate(gjbgl->m_player1, false);
+        simulate(gjbgl->m_player1, true);
+    }
+    
+    if (ShowTrajectoryP2::get()->getRealEnabled())
+    {
+        if (gjbgl->m_player2 && gjbgl->m_gameState.m_isDualMode)
+        {
+            simulate(gjbgl->m_player2, false);
+            simulate(gjbgl->m_player2, true);
+        }
     }
 }
 
@@ -99,9 +105,20 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
     }
 
     bool useHoldCol = held == plr->m_holdingButtons[(int)PlayerButton::Jump];
-    auto col = ccc4FFromccc3B(useHoldCol ?
-        ShowTrajectoryHold::get()->getColour() :
-        ShowTrajectoryRelease::get()->getColour());
+    ccColor4F col;
+    
+    if (plr == gjbgl->m_player1)
+    {
+        col = ccc4FFromccc3B(useHoldCol ?
+            ShowTrajectoryP1Hold::get()->getColour() :
+            ShowTrajectoryP1Release::get()->getColour());
+    }
+    else
+    {
+        col = ccc4FFromccc3B(useHoldCol ?
+            ShowTrajectoryP2Hold::get()->getColour() :
+            ShowTrajectoryP2Release::get()->getColour());
+    }
 
     for (size_t i = 0; i < getIterCount(); i++)
     {

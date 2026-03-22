@@ -19,30 +19,76 @@ class ShowTrajectory : public Module
         }
 };
 
-class ShowTrajectoryHold : public ColourModule
+class ShowTrajectoryP1 : public Module
 {
     public:
-        MODULE_SETUP(ShowTrajectoryHold)
+        MODULE_SETUP(ShowTrajectoryP1)
         {
-            setName("Hold Colour:");
-            setID("show-trajectory/hold-colour");
+            setID("show-trajectory/player1");
+            setPriority(1);
+            setDefaultEnabled(true);
+        }
+};
+
+class ShowTrajectoryP2 : public Module
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP2)
+        {
+            setID("show-trajectory/player2");
+            setPriority(2);
+            setDefaultEnabled(true);
+        }
+};
+
+class ShowTrajectoryP1Hold : public ColourModule
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP1Hold)
+        {
+            setID("show-trajectory/player1/hold-colour");
+            setDefaultConfig({ ccc3(0, 115, 0)} );
+            setPriority(1);
+        }
+};
+
+class ShowTrajectoryP1Release : public ColourModule
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP1Release)
+        {
+            setID("show-trajectory/player1/release-colour");
+            setDefaultConfig({ ccc3(0, 115, 0)} );
+            setPriority(2);
+        }
+};
+
+class ShowTrajectoryP2Hold : public ColourModule
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP2Hold)
+        {
+            setID("show-trajectory/player2/hold-colour");
             setDefaultConfig({ ccc3(0, 255, 0)} );
             setPriority(1);
         }
 };
 
-class ShowTrajectoryRelease : public ColourModule
+class ShowTrajectoryP2Release : public ColourModule
 {
     public:
-        MODULE_SETUP(ShowTrajectoryRelease)
+        MODULE_SETUP(ShowTrajectoryP2Release)
         {
-            setName("Release Colour:");
-            setID("show-trajectory/release-colour");
+            setID("show-trajectory/player2/release-colour");
             setDefaultConfig({ ccc3(0, 115, 0)} );
             setPriority(2);
         }
 };
 
 SUBMIT_HACK(ShowTrajectory)
-SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryHold)
-SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryRelease)
+SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryP1)
+SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryP2)
+SUBMIT_OPTION(ShowTrajectoryP1, ShowTrajectoryP1Hold)
+SUBMIT_OPTION(ShowTrajectoryP2, ShowTrajectoryP2Hold)
+SUBMIT_OPTION(ShowTrajectoryP1, ShowTrajectoryP1Release)
+SUBMIT_OPTION(ShowTrajectoryP2, ShowTrajectoryP2Release)
