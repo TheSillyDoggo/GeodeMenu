@@ -59,7 +59,7 @@ class $modify(GJBaseGameLayer)
     {
         bool intersects = false;
 
-        if (obj->m_orientedBox)
+        if (obj->m_orientedBox && obj->m_shouldUseOuterOb)
             intersects = obj->m_orientedBox->overlaps(player->m_orientedBox);
         else
             intersects = player->getObjectRect().intersectsRect(obj->getObjectRect());
