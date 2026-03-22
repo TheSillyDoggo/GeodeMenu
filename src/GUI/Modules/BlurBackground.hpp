@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Client/Module.hpp"
+#include <PopupBase.hpp>
 
 using namespace geode::prelude;
 
@@ -12,6 +13,11 @@ class BlurMenuBG : public Module
             setName("Blur Background");
             setID("blur-background");
             setDescription("Blurs the background behind the mod menu");
+        }
+
+        virtual void onToggle()
+        {
+            PopupBase::updateAllBlur();
         }
 };
 

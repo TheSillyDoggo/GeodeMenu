@@ -64,6 +64,8 @@ class BetterInputNode : public CCMenu
         std::string filterString(std::string ss);
         ~BetterInputNode();
 
+        bool containsPoint(cocos2d::CCPoint point);
+
     public:
         static BetterInputNode* create(float width, std::string placeholder, std::string font = "bigFont.fnt");
         static BetterInputNode* getSelected();

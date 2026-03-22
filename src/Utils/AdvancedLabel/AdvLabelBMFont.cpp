@@ -214,6 +214,7 @@ void AdvLabelBMFont::updateLabel()
             else
             {
                 lbl = FallbackLabel::create(part.label.c_str(), fon.c_str());
+                
                 if (LocalisationManager::get()->getCurrentLang()->getTrueTypeFallback())
                 {
                     lbl->setTTFFallback(true);
@@ -226,6 +227,7 @@ void AdvLabelBMFont::updateLabel()
 
             visibleLabels.push_back(lbl);
             lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
+            lbl->setUserObject("use-gold", (useTTF && font == "goldFont.fnt") ? CCNode::create() : nullptr);
 
             lbl->setVisible(true);
 
@@ -259,6 +261,7 @@ void AdvLabelBMFont::updateLabel()
 
             visibleLabels.push_back(lbl);
             lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
+            lbl->setUserObject("use-gold", (useTTF && font == "goldFont.fnt") ? CCNode::create() : nullptr);
 
             lbl->setVisible(true);
 
@@ -329,7 +332,23 @@ void AdvLabelBMFont::updateLabelQuick()
     for (auto label : visibleLabels)
     {
         if (label->getUserObject("no-colour"))
+        {
             label->setColor(colour);
+
+            if (label->getUserObject("use-gold"))
+            {
+                auto c = ccc4FFromccc3B(colour);
+
+                for (auto spr : label->getChildrenExt<CCSprite*>())
+                {
+                    spr->m_sQuad.tl.colors = ccc4(253 * c.r, 161 * c.g, 12 * c.b, 255);
+                    spr->m_sQuad.tr.colors = ccc4(253 * c.r, 161 * c.g, 12 * c.b, 255);
+
+                    spr->m_sQuad.bl.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
+                    spr->m_sQuad.br.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
+                }
+            }
+        }
     }
 }
 

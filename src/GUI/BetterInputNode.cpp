@@ -2,8 +2,9 @@
 #include "../Utils/Num.hpp"
 #include "../Utils/RealtimeAction.hpp"
 #include <FloatingButton/FloatingUIManager.hpp>
+#include <Utils.hpp>
 
-BetterInputNode* BetterInputNode::create(float width, std::string placeholder, std::string font)
+BetterInputNode *BetterInputNode::create(float width, std::string placeholder, std::string font)
 {
     auto pRet = new BetterInputNode();
 
@@ -17,7 +18,7 @@ BetterInputNode* BetterInputNode::create(float width, std::string placeholder, s
     return nullptr;
 }
 
-BetterInputNode* BetterInputNode::getSelected()
+BetterInputNode *BetterInputNode::getSelected()
 {
     return selectedInput;
 }
@@ -37,8 +38,8 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
     textInput = geode::TextInput::create(69, "");
     textInput->setVisible(false);
     textInput->getInputNode()->setTouchEnabled(false);
-    textInput->setCallback([this](const std::string& str)
-    {
+    textInput->setCallback([this](const std::string &str)
+                           {
         if (cursorPos != -1)
         {
             auto diff = str.size() - this->getString().size();
@@ -49,8 +50,7 @@ bool BetterInputNode::init(float width, std::string placeholder, std::string fon
         setString(str);
 
         if (delegate)
-            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
-    });
+            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this)); });
     textInput->getInputNode()->setUserObject("force-char-bypass"_spr, CCNode::create());
     textInput->getInputNode()->setUserObject("force-filter-bypass"_spr, CCNode::create());
 
@@ -125,20 +125,20 @@ void BetterInputNode::visit()
 
     switch (alignment)
     {
-        case kCCTextAlignmentLeft:
-            labelContainer->setPositionX(5);
-            labelContainer->setAnchorPoint(ccp(0, 0.5f));
-            break;
+    case kCCTextAlignmentLeft:
+        labelContainer->setPositionX(5);
+        labelContainer->setAnchorPoint(ccp(0, 0.5f));
+        break;
 
-        case kCCTextAlignmentCenter:
-            labelContainer->setPositionX(getContentWidth() / 2);
-            labelContainer->setAnchorPoint(ccp(0.5f, 0.5f));
-            break;
+    case kCCTextAlignmentCenter:
+        labelContainer->setPositionX(getContentWidth() / 2);
+        labelContainer->setAnchorPoint(ccp(0.5f, 0.5f));
+        break;
 
-        case kCCTextAlignmentRight:
-            labelContainer->setPositionX(getContentWidth() - 5);
-            labelContainer->setAnchorPoint(ccp(1, 0.5f));
-            break;
+    case kCCTextAlignmentRight:
+        labelContainer->setPositionX(getContentWidth() - 5);
+        labelContainer->setAnchorPoint(ccp(1, 0.5f));
+        break;
     }
 
     cursorCarot->setVisible(isSelected);
@@ -178,7 +178,7 @@ std::string BetterInputNode::filterString(std::string ss)
         s = ss.substr(0, maxChars);
     else
         s = ss;
-    
+
     if (!charFilter.empty())
     {
         for (auto ch : s)
@@ -191,7 +191,6 @@ std::string BetterInputNode::filterString(std::string ss)
                     break;
                 }
             }
-            
         }
     }
     else
@@ -241,7 +240,7 @@ bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
     {
         if (auto n = getTopLevelNonSceneNode(this))
         {
-            if (!typeinfo_cast<FloatingUIManager*>(n))
+            if (!typeinfo_cast<FloatingUIManager *>(n))
             {
                 if (CCScene::get()->getChildByIndex(-1) != n)
                     return false;
@@ -249,7 +248,7 @@ bool BetterInputNode::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
         }
     }
 
-    if (getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && nodeIsVisible(this))
+    if (containsPoint(pTouch->getLocation()) && nodeIsVisible(this))
     {
         bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
 
@@ -290,15 +289,15 @@ void BetterInputNode::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
         setString(ss);
 
         if (delegate)
-            delegate->textChanged(reinterpret_cast<CCTextInputNode*>(this));
+            delegate->textChanged(reinterpret_cast<CCTextInputNode *>(this));
     }
 }
 
 void BetterInputNode::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
     updateCursorPos(true, pTouch->getLocation());
-    
-    selectInput(getWorldSpaceBoundingBox(this).containsPoint(pTouch->getLocation()) && !isNumHoldActive);
+
+    selectInput(containsPoint(pTouch->getLocation()) && !isNumHoldActive);
 
     isNumHoldActive = false;
 }
@@ -308,12 +307,12 @@ void BetterInputNode::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
     ccTouchEnded(pTouch, pEvent);
 }
 
-void BetterInputNode::setDelegate(TextInputDelegate* delegate)
+void BetterInputNode::setDelegate(TextInputDelegate *delegate)
 {
     this->delegate = delegate;
 }
 
-TextInputDelegate* BetterInputNode::getDelegate()
+TextInputDelegate *BetterInputNode::getDelegate()
 {
     return delegate;
 }
@@ -328,11 +327,11 @@ int BetterInputNode::getRealCursorPos()
 
 void BetterInputNode::moveCursor(int by)
 {
-    #if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
+#if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_IOS)
     updateCursorPos(false, CCPointZero);
     cursorPos = -1;
     return;
-    #endif
+#endif
 
     if (cursorPos == -1)
     {
@@ -497,12 +496,21 @@ BetterInputNode::~BetterInputNode()
         selectedInput = nullptr;
 }
 
-void BetterInputNode::onPasteClipboard(CCObject* sender)
+void BetterInputNode::onPasteClipboard(CCObject *sender)
 {
     setString(clipboard::read());
 }
 
-void BetterInputNode::onCopyClipboard(CCObject* sender)
+void BetterInputNode::onCopyClipboard(CCObject *sender)
 {
     clipboard::write(getString());
+}
+
+bool BetterInputNode::containsPoint(cocos2d::CCPoint point)
+{
+    auto local = this->convertToNodeSpace(getMousePos());
+    auto r = qolmod::utils::getBasicRect(this);
+    r.origin = CCPointZero;
+
+    return r.containsPoint(local);
 }

@@ -14,6 +14,7 @@ namespace qolmod
             cocos2d::ccColor3B whiteColour = cocos2d::ccc3(255, 255, 255);
             GLubyte opacity = 255;
             cocos2d::CCBMFontConfiguration* config = nullptr;
+            bool useGoldLetters = true;
             struct LabelSettings
             {
                 bool useColourTags = true;
@@ -26,7 +27,6 @@ namespace qolmod
             bool init(const char* str, const char* fnt);
 
             cocos2d::ccColor3B handleTag(std::wstring tag);
-
             cocos2d::CCSprite* getCharSprite(unsigned int index);
             void ensureCount(unsigned int count);
 

@@ -13,17 +13,6 @@
 
 using namespace geode::prelude;
 
-enum class MenuAnimation
-{
-    None,
-    FromTop,
-    FromBottom,
-    FromLeft,
-    FromRight,
-    Scale,
-    FadeIn
-};
-
 class AndroidUI : public PopupBase
 {
     protected:
@@ -37,8 +26,6 @@ class AndroidUI : public PopupBase
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
         CCNode* bottomTabsContainer = nullptr;
-        Ref<CCRenderTexture> rt = nullptr;
-        CCLayerColor* drawOpacity = nullptr;
         std::map<std::string, CategoryNode*> categories = {};
         // static to keep between reopens
         static inline std::string selectedCategory = "Level";
@@ -78,8 +65,6 @@ class AndroidUI : public PopupBase
         void updateTabs();
 
         void switchTabTemp(std::string tab);
-
-        void runAnimation(MenuAnimation anim);
 
         void close();
         virtual bool setup();

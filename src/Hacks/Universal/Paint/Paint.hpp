@@ -15,7 +15,7 @@ class PaintEnabled : public Module
         }
 };
 
-/*class PaintVerticalControl : public Module
+class PaintVerticalControl : public Module
 {
     public:
         MODULE_SETUP(PaintVerticalControl)
@@ -25,7 +25,7 @@ class PaintEnabled : public Module
         }
 
         virtual void onToggle();
-};*/
+};
 
 SUBMIT_HACK(PaintEnabled)
-// SUBMIT_OPTION(PaintEnabled, PaintVerticalControl)
+SUBMIT_OPTION(PaintEnabled, PaintVerticalControl)

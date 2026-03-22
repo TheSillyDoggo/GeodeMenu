@@ -49,6 +49,11 @@ float FloatSliderModule::getDefaultValue()
     return defaultValue;
 }
 
+void FloatSliderModule::onSliderEnded()
+{
+
+}
+
 ModuleNode* FloatSliderModule::getNode()
 {
     return FloatSliderModuleNode::create(this);

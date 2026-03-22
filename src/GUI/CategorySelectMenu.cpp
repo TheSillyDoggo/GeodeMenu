@@ -65,6 +65,7 @@ bool CategorySelectMenu::init()
 
     scrollbar = BetterScrollbar::create(scroll);
     scrollbar->setAnchorPoint(ccp(1, 1));
+    scrollbar->setUseDynamicHandle(true);
 
     bottomBtns = CCMenu::create();
     bottomBtns->setAnchorPoint(ccp(0, 0));

@@ -123,6 +123,22 @@ void PaintControl::updateOrientation(bool horizontal)
 
     float orientation = 0;
 
+    if (PaintVerticalControl::get()->getRealEnabled())
+        orientation = 90;
+
+    /*if (PaintVerticalControl::get()->getRealEnabled())
+    {
+        orientation = 90;
+
+        if (position.y - bg->getContentWidth() < 0)
+            orientation = -90;
+    }
+    else
+    {
+        if (position.x + bg->getContentWidth() > CCDirector::get()->getWinSize().width)
+            orientation = -180;
+    }*/
+
     bg->setRotation(orientation);
     menu->setRotation(orientation);
 
@@ -313,6 +329,8 @@ void PaintControl::updatePosition(cocos2d::CCPoint point)
 
     Mod::get()->setSavedValue<float>("paintcontrol_position.x", position.x);
     Mod::get()->setSavedValue<float>("paintcontrol_position.y", position.y);
+
+    // updateOrientation();
 }
 
 void PaintControl::textChanged(CCTextInputNode* node)

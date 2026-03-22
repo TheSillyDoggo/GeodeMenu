@@ -32,6 +32,7 @@ void FloatSliderModuleNode::setup()
     slider->setScale(0.8f);
     slider->getThumb()->setScale(0.75f);
     slider->setBypassAllowed(false);
+    slider->setEndCallback(this, menu_selector(FloatSliderModuleNode::onSliderEnded));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(slider, Anchor::Right, ccp(-9, -1.5f));
@@ -42,6 +43,7 @@ void FloatSliderModuleNode::onSliderMoved(CCObject* sender)
     auto mod = static_cast<FloatSliderModule*>(module);
 
     mod->setValue(slider->getValueRanged());
+    mod->onToggle();
 }
 
 void FloatSliderModuleNode::updateNode()
@@ -49,4 +51,10 @@ void FloatSliderModuleNode::updateNode()
     auto mod = static_cast<FloatSliderModule*>(module);
 
     slider->setValueRanged(mod->getValue());
+}
+
+void FloatSliderModuleNode::onSliderEnded(CCObject* sender)
+{
+    auto mod = static_cast<FloatSliderModule*>(module);
+    mod->onSliderEnded();
 }

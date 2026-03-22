@@ -100,6 +100,7 @@ void LabelBMFont::updateLabel()
         }
         spr->setColor(colour);
         spr->setPosition(ccp(nextCharX, nextCharY) + CC_POINT_PIXELS_TO_POINTS(ccp(element->fontDef.xOffset, element->fontDef.yOffset)));
+        spr->setTexture(CCTextureCache::get()->addImage(config->getAtlasName(), false));
         nextCharX += CC_POINT_PIXELS_TO_POINTS(ccp(element->fontDef.xAdvance, 0)).x;
 
         this->setContentSize(ccp(nextCharX, spr->getContentHeight()));
@@ -180,9 +181,8 @@ const char* LabelBMFont::getFntFile()
     return fntFile.c_str();
 }
 
-
-
 /*#include <Geode/modify/MenuLayer.hpp>
+#include <AdvancedLabel/AdvLabelBMFont.hpp>
 
 class $modify (MenuLayer)
 {
@@ -194,6 +194,10 @@ class $modify (MenuLayer)
         // auto l = LabelBMFont::create("hello :cat: meow", "bigFont.fnt");
         l->setPosition(getContentSize() / 2);
         this->addChild(l, 67);
+
+        auto old = AdvLabelBMFont::createWithString("<cc>me</c>ow <cy>私</c>の<cp>日本語</c>は<cc>下手</c>だ", "kosugimaru.fnt"_spr);
+        old->setPosition(getContentSize() / 2 + ccp(0, -40));
+        this->addChild(old, 67);
 
         return true;
     }

@@ -118,6 +118,7 @@ void BetterSlider::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 void BetterSlider::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
     selected = false;
+    runCallback(1);
 }
 
 void BetterSlider::setSnapValues(std::vector<float> snapValues)
@@ -227,10 +228,25 @@ void BetterSlider::setBypassAllowed(bool bypass)
     this->bypassAllowed = bypass;
 }
 
-void BetterSlider::runCallback()
+void BetterSlider::runCallback(unsigned int type)
 {
-    if (target && handler)
+    auto t = target;
+    auto h = handler;
+
+    if (type == 1)
     {
-        (target->*handler)(this);
+        t = targetEnd;
+        h = handlerEnd;
     }
+
+    if (t && h)
+    {
+        (t->*h)(this);
+    }
+}
+
+void BetterSlider::setEndCallback(CCNode* target, SEL_MenuHandler handler)
+{
+    this->targetEnd = target;
+    this->handlerEnd = handler;
 }

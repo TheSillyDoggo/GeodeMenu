@@ -1,15 +1,19 @@
 # 2.8.0
 
 - Added Clear Button to Paint
+- Added Option for vertical buttons in paint
 - Added Fixed Checkpoints
 - Added Crash the game shortcut
 - Added Hitbox Trail opacity
 - Added Extension API for mod developers to add their own custom categories to qolmod
+- Made selected menu animation apply to subpopups (like mod settings)
 - Fixed Hide Button being unavailable on chromebooks (hopefully)
 - Fixed Speedhack Gameplay not saving
 - Fixed Paint showing when it is disabled
 - Fixed Transition Customiser not working
 - Fixed Auto Downloads Songs not working
+- Localisation:
+-- Added Gold Font support
 
 # 2.7.10
 

@@ -26,5 +26,7 @@ class FloatSliderModule : public Module
 
         float getDefaultValue();
 
+        virtual void onSliderEnded();
+
         virtual ModuleNode* getNode();
 };

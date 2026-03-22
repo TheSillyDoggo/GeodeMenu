@@ -261,7 +261,7 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
         BetterAlertLayer::createWithLocalisation("animation/preview-error-none/title", "animation/preview-error-none/text", "ui/ok-button")->show();
 
     if (AndroidUI::get())
-        AndroidUI::get()->runAnimation(anim);
+        AndroidUI::get()->playAnimation(anim);
 }
 
 void ThemeNode::onChangeThemeOptions(CCObject* sender)

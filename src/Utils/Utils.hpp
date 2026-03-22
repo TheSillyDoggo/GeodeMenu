@@ -48,4 +48,5 @@ namespace qolmod::utils
     cocos2d::CCScene* createTransitionForEnum(kCCTransition trans, float time, cocos2d::CCScene* scene);
     std::string sizeToPretty(unsigned int size);
     bool isChromebook();
+    cocos2d::CCRect getBasicRect(cocos2d::CCNode* node);
 };

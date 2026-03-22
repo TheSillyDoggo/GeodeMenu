@@ -18,30 +18,17 @@ bool AndroidUI::setup()
 {
     instance = this;
 
-    rt = CCRenderTexture::create(getContentWidth(), getContentHeight(), kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
-    rt->getSprite()->setBlendFunc(this->getBlendFunc());
-    #if GEODE_COMP_GD_VERSION >= 22081
-    rt->getSprite()->getTexture()->setAntiAliasTexParameters();
-    #endif
-
-    drawOpacity = CCLayerColor::create();
-    drawOpacity->setOpacity(255);
-    drawOpacity->setVisible(false);
-    this->addChild(drawOpacity);
-
     bottomLeft = VersionInfoNode::create(VersionInfoType::GeodeAndGD);
     bottomLeft->setAnchorPoint(ccp(0, 0));
-    bottomLeft->setPosition(ccp(5, 2.5f));
     bottomLeft->setColor(ccc3(100, 100, 100));
     bottomLeft->setScale(0.5f);
-    this->addChild(bottomLeft);
+    this->addChildAtPosition(bottomLeft, Anchor::BottomLeft, ccp(5, 2.5f));
 
     bottomRight = VersionInfoNode::create(VersionInfoType::QOLMod);
     bottomRight->setAnchorPoint(ccp(1, 0));
-    bottomRight->setPosition(ccp(getContentSize().width - 5, 2.5f));
     bottomRight->setColor(ccc3(100, 100, 100));
     bottomRight->setScale(0.5f);
-    this->addChild(bottomRight);
+    this->addChildAtPosition(bottomRight, Anchor::BottomRight, ccp(-5, 2.5f));
     
 
     bg = BackgroundSprite::create();
@@ -53,7 +40,6 @@ bool AndroidUI::setup()
     m_buttonMenu->setVisible(false);
 
     auto backMenu = CCMenu::create();
-    backMenu->setPosition(ccp(24, getContentSize().height - 23));
     
     backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
@@ -68,12 +54,12 @@ bool AndroidUI::setup()
     m_mainLayer->addChildAtPosition(catMenu, Anchor::Left, ccp(10 + 2.5f, 0));
     m_mainLayer->addChild(bg, -1);
     m_mainLayer->setZOrder(80085);
-    this->addChild(backMenu);
+    this->addChildAtPosition(backMenu, Anchor::TopLeft, ccp(24, -23));
 
     // auto e = QOLModUIOpenEvent(this);
     // e.post();
 
-    this->runAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
+    this->playAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
 
     return true;
 }
@@ -237,110 +223,6 @@ AndroidUI::~AndroidUI()
         instance = nullptr;
 }
 
-void AndroidUI::runAnimation(MenuAnimation anim)
-{
-    auto winSize = getContentSize();
-    auto moveToMid = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCEaseElasticOut::create(CCMoveTo::create(1, getContentSize() / 2), 0.8f), nullptr));
-    auto fadeIn = RealtimeAction::create(CCSequence::create(CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 255), nullptr));
-    auto fadeInVersion = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
-    auto fadeInVersion2 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
-    auto fadeInVersion3 = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.25f, 150), nullptr));
-    auto fadeInBG = RealtimeAction::create(CCSequence::create(CCFadeTo::create(0, 0), CCDelayTime::create(0.1f), CCFadeTo::create(0.14f, 150), nullptr));
-
-    this->stopAllActions();
-    backBtn->stopAllActions();
-    drawOpacity->stopAllActions();
-    m_mainLayer->stopAllActions();
-    bottomLeft->stopAllActions();
-    bottomRight->stopAllActions();
-    m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height / 2));
-    m_mainLayer->setScale(1.0f);
-    drawOpacity->setOpacity(255);
-    backBtn->setOpacity(255);
-    bottomLeft->setOpacity(150);
-    bottomRight->setOpacity(150);
-    this->setOpacity(150);
-
-    if (BlurAPI::isBlurAPIEnabled() && BlurMenuBG::get()->getRealEnabled() && anim == MenuAnimation::FadeIn)
-        anim = MenuAnimation::None;
-
-    switch (anim)
-    {
-        case MenuAnimation::None:
-            return;
-
-        case MenuAnimation::FromTop:
-            backBtn->setOpacity(0);
-            backBtn->runAction(fadeIn);
-
-            m_mainLayer->setPosition(ccp(winSize.width / 2, winSize.height + m_size.height / 2));
-
-            m_mainLayer->runAction(moveToMid);
-            bottomLeft->runAction(fadeInVersion);
-            bottomRight->runAction(fadeInVersion2);
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
-            return;
-
-        case MenuAnimation::FromBottom:
-            backBtn->setOpacity(0);
-            backBtn->runAction(fadeIn);
-
-            m_mainLayer->setPosition(ccp(winSize.width / 2, -m_size.height / 2));
-
-            m_mainLayer->runAction(moveToMid);
-            bottomLeft->runAction(fadeInVersion);
-            bottomRight->runAction(fadeInVersion2);
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
-            return;
-
-        case MenuAnimation::FromLeft:
-            backBtn->setOpacity(0);
-            backBtn->runAction(fadeIn);
-
-            m_mainLayer->setPosition(ccp(-m_size.width / 2, winSize.height / 2));
-
-            m_mainLayer->runAction(moveToMid);
-            bottomLeft->runAction(fadeInVersion);
-            bottomRight->runAction(fadeInVersion2);
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
-            return;
-
-        case MenuAnimation::FromRight:
-            backBtn->setOpacity(0);
-            backBtn->runAction(fadeIn);
-
-            m_mainLayer->setPosition(ccp(winSize.width + m_size.width / 2, winSize.height / 2));
-
-            m_mainLayer->runAction(moveToMid);
-            bottomLeft->runAction(fadeInVersion);
-            bottomRight->runAction(fadeInVersion2);
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
-            return;
-
-        case MenuAnimation::Scale:
-            backBtn->setOpacity(0);
-            backBtn->runAction(fadeIn);
-
-            m_mainLayer->setScale(0);
-
-            m_mainLayer->runAction(RealtimeAction::create(CCEaseElasticOut::create(CCScaleTo::create(0.5f, 1), 0.6f)));
-            bottomLeft->runAction(fadeInVersion);
-            bottomRight->runAction(fadeInVersion2);
-            this->setOpacity(0);
-            this->runAction(fadeInBG);
-            return;
-
-        case MenuAnimation::FadeIn:
-            drawOpacity->setOpacity(0);
-            drawOpacity->runAction(RealtimeAction::create(CCEaseOut::create(CCFadeTo::create(0.25f, 255), 2)));
-            return;
-    }
-}
-
 void AndroidUI::close()
 {
     if (PlayLayer::get() && !PlayLayer::get()->m_isPaused && !PlayLayer::get()->m_levelEndAnimationStarted && !GameManager::sharedState()->getGameVariable("0024"))
@@ -364,23 +246,7 @@ void AndroidUI::visit()
     FloatingUIManager::get()->visit();
     AndroidBall::get()->visit();    
 
-    // for an animation i was making, but i couldnt get clipping to work right
-
-    if (drawOpacity->getOpacity() == 255)
-        return PopupBase::visit();
-
-    auto op = getOpacity();
-    this->setOpacity(0);
-
-    rt->beginWithClear(0, 0, 0, op / 255.0f);
     PopupBase::visit();
-    rt->end();
-
-    this->setOpacity(op);
-
-    rt->setPosition(getContentSize() / 2);
-    rt->getSprite()->setOpacity(drawOpacity->getOpacity());
-    rt->visit();
 }
 
 void AndroidUI::switchTabTemp(std::string tab)

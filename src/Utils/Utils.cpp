@@ -175,3 +175,10 @@ bool qolmod::utils::isChromebook()
     return false;
     #endif
 }
+
+cocos2d::CCRect qolmod::utils::getBasicRect(cocos2d::CCNode* node)
+{
+    return CCRectMake(node->m_obPosition.x - node->m_obContentSize.width * node->m_obAnchorPoint.x,
+        node->m_obPosition.y - node->m_obContentSize.height * node->m_obAnchorPoint.y,
+        node->m_obContentSize.width, node->m_obContentSize.height);
+}

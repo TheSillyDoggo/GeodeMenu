@@ -1,5 +1,6 @@
 #include <MouseDispatcherExt.hpp>
 #include <Num.hpp>
+#include <Utils.hpp>
 
 #ifndef GEODE_IS_IOS
 
@@ -22,7 +23,11 @@ bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
         {
             if (node->getUserObject("MouseDispatcherExt"_spr))
             {
-                if (getWorldSpaceBoundingBox(node).containsPoint(getMousePos()))
+                auto local = node->convertToNodeSpace(getMousePos());
+                auto r = qolmod::utils::getBasicRect(node);
+                r.origin = CCPointZero;
+
+                if (r.containsPoint(local))
                 {
                     delegate->scrollWheel(y, x);
                     return true;

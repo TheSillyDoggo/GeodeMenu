@@ -132,9 +132,13 @@ void BackgroundSprite::updateCustomSprite()
         customImg->removeFromParent();
 
     auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
-    customImg = CCSprite::create(path.c_str());
 
-    if (!customImg || path.empty())
+    if (!path.empty())
+    {
+        customImg = CCSprite::create(path.c_str());
+    }
+
+    if (!customImg)
         customImg = CCSprite::create("sog.png"_spr);
 
     clippingCustom->addChild(customImg);

@@ -13,6 +13,7 @@ class FloatSliderModuleNode : public ModuleNode
         static FloatSliderModuleNode* create(FloatSliderModule* module);
 
         void onSliderMoved(CCObject* sender);
+        void onSliderEnded(CCObject* sender);
 
         virtual void setup();
         virtual void updateNode();

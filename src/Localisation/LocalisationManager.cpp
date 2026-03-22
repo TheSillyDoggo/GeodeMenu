@@ -66,7 +66,7 @@ void LocalisationManager::switchFinished()
     if (AndroidUI::get())
     {
         AndroidUI::get()->close();
-        AndroidUI::addToScene()->runAnimation(MenuAnimation::None);
+        AndroidUI::addToScene()->playAnimation(MenuAnimation::None);
     }
 }
 

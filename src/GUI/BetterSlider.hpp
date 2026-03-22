@@ -10,6 +10,9 @@ class BetterSlider : public CCMenu
         CCNode* target = nullptr;
         SEL_MenuHandler handler = nullptr;
 
+        CCNode* targetEnd = nullptr;
+        SEL_MenuHandler handlerEnd = nullptr;
+
         CCScale9Sprite* groove = nullptr;
         CCSprite* fill = nullptr;
         CCNode* thumbContainer = nullptr;
@@ -33,7 +36,7 @@ class BetterSlider : public CCMenu
 
         float value01ToXPos(float value, float inset = 5);
         void updateSnapSprites();
-        void runCallback();
+        void runCallback(unsigned int type = 0);
 
     public:
         CREATE_FUNC(BetterSlider)
@@ -51,6 +54,8 @@ class BetterSlider : public CCMenu
         void setUseAltSnapSprite(bool alt);
 
         void setBypassAllowed(bool bypass);
+
+        void setEndCallback(CCNode* target, SEL_MenuHandler handler);
 
         CCNode* getThumb();
         CCSprite* getFill();
