@@ -16,6 +16,7 @@ class ShowTrajectory : public Module
             setID("show-trajectory");
             setCategory("Level");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
+            setPriority(13);
         }
 };
 
