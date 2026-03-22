@@ -47,7 +47,7 @@ class ShowTrajectoryP1Hold : public ColourModule
         MODULE_SETUP(ShowTrajectoryP1Hold)
         {
             setID("show-trajectory/player1/hold-colour");
-            setDefaultConfig({ ccc3(0, 115, 0)} );
+            setDefaultConfig({ ccc3(0, 255, 0)} );
             setPriority(1);
         }
 };
