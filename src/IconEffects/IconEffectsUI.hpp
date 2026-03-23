@@ -4,6 +4,7 @@
 #include "IconicCommon.hpp"
 #include "IconicPlayerHook.hpp"
 #include <Nodes/CCNodeWithShader.hpp>
+#include <BetterScrollbar.hpp>
 
 class IconEffectsUI : public CategoryNode
 {
@@ -37,6 +38,8 @@ class IconEffectsUI : public CategoryNode
         EasyBG* dualBG = nullptr;
         EasyBG* effectsBG = nullptr;
         CCMenuItemToggler* seperateToggle = nullptr;
+        geode::ScrollLayer* scroll = nullptr;
+        BetterScrollbar* scrollbar = nullptr;
 
         void updateFineOutline();
 

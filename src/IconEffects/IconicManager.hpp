@@ -15,6 +15,7 @@ class IconicManager
         bool seperate = true;
         IconicDualMode dualMode = IconicDualMode::Invert;
         std::vector<geode::Mod*> incompatibleMods = {};
+        geode::Mod* fineOutline = nullptr;
 
         void setup();
 
@@ -29,6 +30,9 @@ class IconicManager
         bool areIncompatibleModsLoaded();
         std::vector<geode::Mod*> getIncompatibleMods();
         void handleIncompatibility(std::string id);
+
+        bool isFineOutlineLoaded();
+        cocos2d::ccColor3B getFineOutineColour();
 
         IconicDualMode getDualMode();
         void setDualMode(IconicDualMode mode);

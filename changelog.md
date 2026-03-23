@@ -1,3 +1,9 @@
+# 2.8.1
+
+- Added Dash Fire and Spider Teleport to Icon Effects
+- Fixed Icon Effects not applying to robot and spider
+- Made Icon Effects Fine Outline integration apply in the icon effects menu
+
 # 2.8.0
 
 - Added ***Show Trajectory**

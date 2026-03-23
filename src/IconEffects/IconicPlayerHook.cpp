@@ -1,10 +1,12 @@
 #include "IconicPlayerHook.hpp"
 #include <ColourUtils.hpp>
+#include <FineOutline.hpp>
 
 IconicPlayerHook* IconicPlayerHook::create(PlayerObject* player)
 {
     auto pRet = new IconicPlayerHook();
     pRet->player = player;
+    player->setUserObject("iconic-hook"_spr, pRet);
 
     if (pRet && pRet->init())
     {
@@ -36,7 +38,6 @@ bool IconicPlayerHook::init()
     if (!CCNode::init())
         return false;
 
-    saveDefault();
     setEnabled(true);
     setUserObject("unpausable"_spr, CCNode::create());
 
@@ -57,6 +58,8 @@ void IconicPlayerHook::update(float dt)
             simple->setColor(config->getPrimary());
             simple->setSecondColor(config->getSecondary());
             simple->setGlowOutline(config->getGlow());
+            
+            alpha::fine_outline::setOutlineColor(simple, config->getFineOutline());
         }
 
         if (player)
@@ -105,6 +108,18 @@ void IconicPlayerHook::update(float dt)
                 player->setColor(config->getPrimary());
                 player->setSecondColor(config->getSecondary());
                 player->m_iconGlow->setColor(config->getGlow());
+
+                if (player->m_robotSprite)
+                {
+                    for (auto child : player->m_robotSprite->m_glowSprite->getChildrenExt<CCSprite*>())
+                        child->setColor(config->getGlow());
+                }
+
+                if (player->m_spiderSprite)
+                {
+                    for (auto child : player->m_spiderSprite->m_glowSprite->getChildrenExt<CCSprite*>())
+                        child->setColor(config->getGlow());
+                }
             }
 
             if (player->m_regularTrail)
@@ -121,9 +136,21 @@ void IconicPlayerHook::update(float dt)
                     player->m_waveTrail->updateStroke(1);
             }
 
-            if (auto fine = typeinfo_cast<CCSprite*>(player->getChildByIDRecursive("alphalaneous.fine_outline/black_outline")))
+            if (IconicManager::get()->isFineOutlineLoaded())
             {
-                fine->setColor(config->getFineOutline());
+                alpha::fine_outline::setOutlineColor(player, config->getFineOutline());
+            }
+
+            for (auto fire : fireDashes)
+            {
+                if (fire.valid())
+                    fire.lock()->setColor(config->getDashFire());
+            }
+
+            for (auto spider : spiderTeleports)
+            {
+                if (spider.valid())
+                    spider.lock()->setColor(config->getSpiderTeleport());
             }
         }
     }
@@ -144,7 +171,6 @@ void IconicPlayerHook::setEnabled(bool enabled)
     else
     {
         unscheduleUpdate();
-        restoreDefault();
     }
 }
 
@@ -159,27 +185,12 @@ void IconicPlayerHook::setGamemode(IconicGamemodeType gamemode, bool player2)
     config = IconicManager::get()->getConfig(gamemode, player2);
 }
 
-void IconicPlayerHook::saveDefault()
+void IconicPlayerHook::onBeginDash(CCSprite* sprite)
 {
-    if (simple)
-    {
-        values.primary = simple->m_firstLayer->getColor();
-        values.secondary = simple->m_secondLayer->getColor();
-        values.glow = simple->m_glowColor;
-    }
-
-    if (player)
-    {
-        
-    }
+    fireDashes.push_back(sprite);
 }
 
-void IconicPlayerHook::restoreDefault()
+void IconicPlayerHook::onSpiderTeleport(CCSprite* sprite)
 {
-    if (simple)
-    {
-        simple->setColor(values.primary);
-        simple->setSecondColor(values.secondary);
-        simple->setGlowOutline(values.glow);
-    }
+    spiderTeleports.push_back(sprite);
 }

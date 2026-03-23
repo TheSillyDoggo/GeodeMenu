@@ -50,6 +50,20 @@ void IconicManager::setup()
     
     seperate = parent["use-seperate-colours"].asBool().unwrapOr(seperate);
     dualMode = (IconicDualMode)parent["dual-mode"].asInt().unwrapOr(Mod::get()->setSavedValue<bool>("same-dual", false) ? (int)IconicDualMode::Same : (int)IconicDualMode::Seperate);
+    
+    fineOutline = Loader::get()->getInstalledMod("alphalaneous.fine_outline");
+
+    handleIncompatibility("rooot.custom-gamemode-colors");
+    handleIncompatibility("gdemerald.custom_icon_colors");
+    handleIncompatibility("capeling.coloured-wave-trail");
+    handleIncompatibility("weebify.separate_dual_icons");
+    handleIncompatibility("naxrin.progress_bar_color");
+    handleIncompatibility("naxrin.rgb_icons");
+    handleIncompatibility("asaki_zuki.same_dual_color");
+    handleIncompatibility("saumondeluxe.rainbow_icon");
+    handleIncompatibility("terma.ambienticons");
+    handleIncompatibility("acaruso.pride");
+    handleIncompatibility("the_bearodactyl.gay-wave-trail");
 }
 
 IconicDualMode IconicManager::getDualMode()
@@ -83,19 +97,20 @@ void IconicManager::handleIncompatibility(std::string id)
         incompatibleMods.push_back(mod);
 }
 
+bool IconicManager::isFineOutlineLoaded()
+{
+    if (fineOutline)
+        return fineOutline->isLoaded();
+
+    return false;
+}
+
+cocos2d::ccColor3B IconicManager::getFineOutineColour()
+{
+    return ccWHITE;
+}
+
 $on_game(Loaded)
 {
     auto icm = IconicManager::get();
-
-    icm->handleIncompatibility("rooot.custom-gamemode-colors");
-    icm->handleIncompatibility("gdemerald.custom_icon_colors");
-    icm->handleIncompatibility("capeling.coloured-wave-trail");
-    icm->handleIncompatibility("weebify.separate_dual_icons");
-    icm->handleIncompatibility("naxrin.progress_bar_color");
-    icm->handleIncompatibility("naxrin.rgb_icons");
-    icm->handleIncompatibility("asaki_zuki.same_dual_color");
-    icm->handleIncompatibility("saumondeluxe.rainbow_icon");
-    icm->handleIncompatibility("terma.ambienticons");
-    icm->handleIncompatibility("acaruso.pride");
-    icm->handleIncompatibility("the_bearodactyl.gay-wave-trail");
 }

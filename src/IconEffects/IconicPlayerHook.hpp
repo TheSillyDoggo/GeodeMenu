@@ -13,20 +13,8 @@ class IconicPlayerHook : public cocos2d::CCNode
         bool enabled = false;
         bool player2 = false;
         IconicConfig* config = nullptr;
-
-        struct DefaultValues
-        {
-            cocos2d::ccColor3B primary;
-            cocos2d::ccColor3B secondary;
-            cocos2d::ccColor3B glow;
-            cocos2d::ccColor3B ghost;
-            cocos2d::ccColor3B trail;
-            cocos2d::ccColor3B wave;
-        };
-        DefaultValues values;
-
-        void saveDefault();
-        void restoreDefault();
+        std::vector<geode::WeakRef<cocos2d::CCSprite>> fireDashes = {};
+        std::vector<geode::WeakRef<cocos2d::CCSprite>> spiderTeleports = {};
 
     public:
         static IconicPlayerHook* create(PlayerObject* player);
@@ -36,6 +24,9 @@ class IconicPlayerHook : public cocos2d::CCNode
         bool isEnabled();
 
         void setGamemode(IconicGamemodeType gamemode, bool player2);
+
+        void onBeginDash(cocos2d::CCSprite* sprite);
+        void onSpiderTeleport(cocos2d::CCSprite* sprite);
 
         virtual void update(float dt);
         virtual bool init();

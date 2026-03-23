@@ -17,6 +17,8 @@ class IconicConfig
         ColourConfig trail = {};
         ColourConfig ghost = {};
         ColourConfig waveTrail = {};
+        ColourConfig dashFire = {};
+        ColourConfig spiderTeleport = {};
         ColourConfig fineOutline = {};
         bool primaryEnabled = false;
         bool secondaryEnabled = false;
@@ -24,6 +26,8 @@ class IconicConfig
         bool trailEnabled = false;
         bool ghostEnabled = false;
         bool waveTrailEnabled = false;
+        bool dashFireEnabled = false;
+        bool spiderTeleportEnabled = false;
         bool fineOutlineEnabled = false;
 
     public:
@@ -37,6 +41,8 @@ class IconicConfig
         cocos2d::ccColor3B getTrail();
         cocos2d::ccColor3B getGhost();
         cocos2d::ccColor3B getWaveTrail();
+        cocos2d::ccColor3B getDashFire();
+        cocos2d::ccColor3B getSpiderTeleport();
         cocos2d::ccColor3B getFineOutline();
 
         ColourConfig getPrimaryConfig();
@@ -45,6 +51,8 @@ class IconicConfig
         ColourConfig getTrailConfig();
         ColourConfig getGhostConfig();
         ColourConfig getWaveTrailConfig();
+        ColourConfig getDashFireConfig();
+        ColourConfig getSpiderTeleportConfig();
         ColourConfig getFineOutlineConfig();
 
         void setPrimaryConfig(ColourConfig config);
@@ -53,6 +61,8 @@ class IconicConfig
         void setTrailConfig(ColourConfig config);
         void setGhostConfig(ColourConfig config);
         void setWaveTrailConfig(ColourConfig config);
+        void setDashFireConfig(ColourConfig config);
+        void setSpiderTeleportConfig(ColourConfig config);
         void setFineOutlineConfig(ColourConfig config);
 
         bool getUseOverride(IconicEffectType type);

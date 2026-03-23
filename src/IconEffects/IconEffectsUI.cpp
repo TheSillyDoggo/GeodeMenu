@@ -54,13 +54,37 @@ bool IconEffectsUI::init()
     n->setScale(0.85f);
 
     auto menu = CCMenu::create();
-    menu->setContentSize(ccp(0, 0));
+    menu->setContentSize(ccp(67, 30 * ((int)IconicEffectType::SpiderTeleport - 1)));
+    menu->setPosition(ccp(15, 15));
     menu->setScale(0.85f);
+    menu->setAnchorPoint(ccp(0, 0));
+    menu->ignoreAnchorPointForPosition(true);
 
-    for (size_t i = 1; i < (int)IconicEffectType::FineOutline + 1; i++)
-    {
-        createEffectNodes((IconicEffectType)i, i - 1, menu);
-    }
+    scroll = geode::ScrollLayer::create(effectsBG->getContentSize() + ccp(-8, 0));
+    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
+    scroll->m_peekLimitTop = 15;
+    scroll->m_peekLimitBottom = 15;
+    scroll->setTouchEnabled(true);
+    scroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
+    scroll->m_contentLayer->setContentHeight(menu->getScaledContentHeight() + 30);
+    scroll->m_contentLayer->addChild(menu);
+    scroll->moveToTop();
+
+    scrollbar = BetterScrollbar::create(scroll);
+    scrollbar->setUseDynamicHandle(true);
+    scrollbar->setAnchorPoint(ccp(1, 0));
+
+    int y = 0;
+
+    createEffectNodes(IconicEffectType::Primary, y++, menu);
+    createEffectNodes(IconicEffectType::Secondary, y++, menu);
+    createEffectNodes(IconicEffectType::Glow, y++, menu);
+    createEffectNodes(IconicEffectType::Trail, y++, menu);
+    createEffectNodes(IconicEffectType::Ghost, y++, menu);
+    createEffectNodes(IconicEffectType::WaveTrail, y++, menu);
+    createEffectNodes(IconicEffectType::DashFire, y++, menu);
+    createEffectNodes(IconicEffectType::SpiderTeleport, y++, menu);
+    createEffectNodes(IconicEffectType::FineOutline, y++, menu);
 
     updateSelection();
 
@@ -98,8 +122,9 @@ bool IconEffectsUI::init()
     this->addChild(n);
     this->addChildAtPosition(dualBG, Anchor::BottomLeft);
     this->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
-    this->addChildAtPosition(menu, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, effectsBG->getContentHeight()) + ccp(15.0f, -15.0f));
     this->addChildAtPosition(dualMenu, Anchor::BottomLeft);
+    this->addChildAtPosition(scroll, Anchor::BottomLeft, ccp(115, 0));
+    this->addChildAtPosition(scrollbar, Anchor::BottomRight, ccp(0, 0));
     return true;
 }
 
@@ -153,7 +178,7 @@ void IconEffectsUI::updateDualMode()
 
 void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* menu)
 {
-    float y = _y * -30;
+    float y = menu->getContentHeight() + (_y * -30);
     EffectEditData data;
 
     data.toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onToggleOverride), 0.65f);
@@ -188,6 +213,14 @@ void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* men
             formatStr = "iconic/override-wave-trail-label";
             break;
 
+        case IconicEffectType::DashFire:
+            formatStr = "iconic/override-dash-fire-label";
+            break;
+
+        case IconicEffectType::SpiderTeleport:
+            formatStr = "iconic/override-spider-teleport-label";
+            break;
+
         case IconicEffectType::FineOutline:
             formatStr = "iconic/override-fine-outline-label";
             break;
@@ -203,7 +236,7 @@ void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* men
 
     data.colourBtn = CCMenuItemSpriteExtra::create(data.sprite, this, menu_selector(IconEffectsUI::onEditColour));
     data.colourBtn->setTag((int)type);
-    data.colourBtn->setPosition(ccp(228, y));
+    data.colourBtn->setPosition(ccp(220, y));
     // data.colourBtn->setPosition(ccp(data.label->getScaledContentWidth() + 35, y));
 
     menu->addChild(data.label);
@@ -333,6 +366,8 @@ void IconEffectsUI::updateSelection()
     editNodes[IconicEffectType::Trail].toggler->toggle(config->getUseOverride(IconicEffectType::Trail));
     editNodes[IconicEffectType::Ghost].toggler->toggle(config->getUseOverride(IconicEffectType::Ghost));
     editNodes[IconicEffectType::WaveTrail].toggler->toggle(config->getUseOverride(IconicEffectType::WaveTrail));
+    editNodes[IconicEffectType::DashFire].toggler->toggle(config->getUseOverride(IconicEffectType::DashFire));
+    editNodes[IconicEffectType::SpiderTeleport].toggler->toggle(config->getUseOverride(IconicEffectType::SpiderTeleport));
     editNodes[IconicEffectType::FineOutline].toggler->toggle(config->getUseOverride(IconicEffectType::FineOutline));
 
     updateOverride();
@@ -349,9 +384,11 @@ void IconEffectsUI::updateOverride()
     editNodes[IconicEffectType::Trail].label->setColor(config->getUseOverride(IconicEffectType::Trail) ? ccWHITE : disabled);
     editNodes[IconicEffectType::Ghost].label->setColor(config->getUseOverride(IconicEffectType::Ghost) ? ccWHITE : disabled);
     editNodes[IconicEffectType::WaveTrail].label->setColor(config->getUseOverride(IconicEffectType::WaveTrail) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::DashFire].label->setColor(config->getUseOverride(IconicEffectType::DashFire) ? ccWHITE : disabled);
+    editNodes[IconicEffectType::SpiderTeleport].label->setColor(config->getUseOverride(IconicEffectType::SpiderTeleport) ? ccWHITE : disabled);
     editNodes[IconicEffectType::FineOutline].label->setColor(config->getUseOverride(IconicEffectType::FineOutline) ? ccWHITE : disabled);
 
-    if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+    if (!IconicManager::get()->isFineOutlineLoaded())
     {
         editNodes[IconicEffectType::FineOutline].toggler->m_offButton->setColor(ccc3(150, 150, 150));
     }
@@ -377,7 +414,7 @@ void IconEffectsUI::onToggleOverride(CCObject* sender)
 {
     if ((IconicEffectType)sender->getTag() == IconicEffectType::FineOutline)
     {
-        if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+        if (!IconicManager::get()->isFineOutlineLoaded())
         {
             auto toggler = editNodes[IconicEffectType::FineOutline].toggler;
             toggler->toggle(!false);
@@ -452,6 +489,14 @@ void IconEffectsUI::onEditColour(CCObject* sender)
                 conf->setWaveTrailConfig(con);
                 break;
 
+            case IconicEffectType::DashFire:
+                conf->setDashFireConfig(con);
+                break;
+
+            case IconicEffectType::SpiderTeleport:
+                conf->setSpiderTeleportConfig(con);
+                break;
+
             case IconicEffectType::FineOutline:
                 conf->setFineOutlineConfig(con);
                 break;
@@ -484,6 +529,14 @@ void IconEffectsUI::onEditColour(CCObject* sender)
             ui->setStartConfig(conf->getWaveTrailConfig());
             break;
 
+        case IconicEffectType::DashFire:
+            ui->setStartConfig(conf->getDashFireConfig());
+            break;
+
+        case IconicEffectType::SpiderTeleport:
+            ui->setStartConfig(conf->getSpiderTeleportConfig());
+            break;
+
         case IconicEffectType::FineOutline:
             ui->setStartConfig(conf->getFineOutlineConfig());
             break;
@@ -511,6 +564,8 @@ void IconEffectsUI::update(float dt)
     editNodes[IconicEffectType::Trail].sprite->setColor(config->getTrail());
     editNodes[IconicEffectType::Ghost].sprite->setColor(config->getGhost());
     editNodes[IconicEffectType::WaveTrail].sprite->setColor(config->getWaveTrail());
+    editNodes[IconicEffectType::DashFire].sprite->setColor(config->getDashFire());
+    editNodes[IconicEffectType::SpiderTeleport].sprite->setColor(config->getSpiderTeleport());
     editNodes[IconicEffectType::FineOutline].sprite->setColor(config->getFineOutline());
 
     DISABLED_CHECK(Primary);
@@ -519,6 +574,8 @@ void IconEffectsUI::update(float dt)
     DISABLED_CHECK(Trail);
     DISABLED_CHECK(Ghost);
     DISABLED_CHECK(WaveTrail);
+    DISABLED_CHECK(DashFire);
+    DISABLED_CHECK(SpiderTeleport);
     DISABLED_CHECK(FineOutline);
 }
 

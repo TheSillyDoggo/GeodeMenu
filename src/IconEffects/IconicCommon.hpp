@@ -27,6 +27,8 @@ enum class IconicEffectType
     Ghost = 5,
     WaveTrail = 6,
     FineOutline = 7,
+    DashFire = 8,
+    SpiderTeleport = 9,
 };
 
 enum class IconicDualMode

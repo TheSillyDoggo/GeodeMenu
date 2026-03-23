@@ -1,6 +1,7 @@
 #include "IconicConfig.hpp"
 #include <Geode/Geode.hpp>
 #include "IconicManager.hpp"
+#include <FineOutline.hpp>
 
 using namespace geode::prelude;
 
@@ -58,6 +59,8 @@ void IconicConfig::save()
     value["trail"] = trail.toJson();
     value["ghost"] = ghost.toJson();
     value["wave-trail"] = waveTrail.toJson();
+    value["dash-fire"] = dashFire.toJson();
+    value["spider-teleport"] = spiderTeleport.toJson();
     value["fine-outline"] = fineOutline.toJson();
 
     value["modes"]["primary"] = primaryEnabled;
@@ -66,6 +69,8 @@ void IconicConfig::save()
     value["modes"]["trail"] = trailEnabled;
     value["modes"]["ghost"] = ghostEnabled;
     value["modes"]["wave-trail"] = waveTrailEnabled;
+    value["modes"]["dash-fire"] = dashFireEnabled;
+    value["modes"]["spider-teleport"] = spiderTeleportEnabled;
     value["modes"]["fine-outline"] = fineOutlineEnabled;
 
     auto parent = Mod::get()->getSavedValue<matjson::Value>("iconic-config");
@@ -216,6 +221,26 @@ cocos2d::ccColor3B IconicConfig::getWaveTrail()
     return waveTrail.colourForConfig(fmt::format("{}_wave", saveStr));
 }
 
+cocos2d::ccColor3B IconicConfig::getDashFire()
+{
+    PRE_CHECK(Cube, getDashFire)
+
+    if (!dashFireEnabled)
+        return getDefault(IconicEffectType::DashFire);
+
+    return dashFire.colourForConfig(fmt::format("{}_dashfire", saveStr));
+}
+
+cocos2d::ccColor3B IconicConfig::getSpiderTeleport()
+{
+    PRE_CHECK(Cube, getSpiderTeleport)
+
+    if (!spiderTeleportEnabled)
+        return getDefault(IconicEffectType::SpiderTeleport);
+
+    return spiderTeleport.colourForConfig(fmt::format("{}_spiderteleport", saveStr));
+}
+
 cocos2d::ccColor3B IconicConfig::getFineOutline()
 {
     PRE_CHECK(Cube, getFineOutline)
@@ -254,6 +279,16 @@ ColourConfig IconicConfig::getGhostConfig()
 ColourConfig IconicConfig::getWaveTrailConfig()
 {
     return waveTrail;
+}
+
+ColourConfig IconicConfig::getDashFireConfig()
+{
+    return dashFire;
+}
+
+ColourConfig IconicConfig::getSpiderTeleportConfig()
+{
+    return spiderTeleport;
 }
 
 ColourConfig IconicConfig::getFineOutlineConfig()
@@ -303,6 +338,20 @@ void IconicConfig::setWaveTrailConfig(ColourConfig config)
     save();
 }
 
+void IconicConfig::setDashFireConfig(ColourConfig config)
+{
+    this->dashFire = config;
+
+    save();
+}
+
+void IconicConfig::setSpiderTeleportConfig(ColourConfig config)
+{
+    this->spiderTeleport = config;
+
+    save();
+}
+
 void IconicConfig::setFineOutlineConfig(ColourConfig config)
 {
     fineOutline = config;
@@ -329,6 +378,12 @@ bool IconicConfig::getUseOverride(IconicEffectType type)
         case IconicEffectType::Ghost:
             return ghostEnabled;
 
+        case IconicEffectType::DashFire:
+            return dashFireEnabled;
+
+        case IconicEffectType::SpiderTeleport:
+            return spiderTeleportEnabled;
+
         case IconicEffectType::WaveTrail:
             if (gamemode != IconicGamemodeType::Dart)
                 return IconicManager::get()->getConfig(IconicGamemodeType::Dart, player2)->getUseOverride(IconicEffectType::WaveTrail);
@@ -338,7 +393,7 @@ bool IconicConfig::getUseOverride(IconicEffectType type)
         case IconicEffectType::FineOutline:
             if (fineOutlineEnabled)
             {
-                if (!Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+                if (!IconicManager::get()->isFineOutlineLoaded())
                 {
                     fineOutlineEnabled = false;
 
@@ -378,6 +433,14 @@ void IconicConfig::setUseOverride(IconicEffectType type, bool v)
             ghostEnabled = v;
             break;
 
+        case IconicEffectType::DashFire:
+            dashFireEnabled = v;
+            break;
+
+        case IconicEffectType::SpiderTeleport:
+            spiderTeleportEnabled = v;
+            break;
+
         case IconicEffectType::WaveTrail:
             if (gamemode != IconicGamemodeType::Dart)
             {
@@ -415,7 +478,7 @@ cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
         case IconicEffectType::Trail:
             secondary = !secondary;
 
-            return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
+            return gm->colorForIdx(secondary ? gm->m_playerColor.value() : gm->m_playerColor2.value());
 
         case IconicEffectType::Ghost:
             return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
@@ -426,22 +489,31 @@ cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
 
             return gm->colorForIdx(secondary ? gm->m_playerColor2.value() : gm->m_playerColor.value());
 
+        case IconicEffectType::DashFire:
+            if (gm->getGameVariable(GameVar::SwitchDashFireCol))
+                secondary = !secondary;
+
+            return gm->colorForIdx(secondary ? gm->m_playerColor.value() : gm->m_playerColor2.value());
+
+        case IconicEffectType::SpiderTeleport:
+            if (gm->getGameVariable(GameVar::SwitchSpiderDashCol))
+                secondary = !secondary;
+
+            return gm->colorForIdx(secondary ? gm->m_playerColor.value() : gm->m_playerColor2.value());
+
         case IconicEffectType::FineOutline:
-            if (auto fine = Loader::get()->getLoadedMod("alphalaneous.fine_outline"))
+            if (IconicManager::get()->isFineOutlineLoaded())
             {
-                if (fine->getSavedValue<bool>("override-color"))
-                {
-                    return fine->getSavedValue<ccColor3B>(player2 ? "p2-color" : "p1-color");
-                }
-                else
-                {
-                    return GameManager::get()->colorForIdx(fine->getSavedValue<int64_t>(player2 ? "outline-color-p2" : "outline-color-p1"));
-                }
+                auto col = alpha::fine_outline::getColor(player2 ?
+                    alpha::fine_outline::PlayerIcon::ONE : 
+                    alpha::fine_outline::PlayerIcon::TWO);
+
+                return col;
             }
 
             return ccBLACK;
 
         default:
-            return ccc3(255, 0, 220);
+            return ccMAGENTA;
     }
 }
