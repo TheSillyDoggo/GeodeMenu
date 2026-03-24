@@ -1,7 +1,9 @@
 # 2.8.1
 
 - Added Dash Fire and Spider Teleport to Icon Effects
+- Added Back Button shortcut
 - Fixed Icon Effects not applying to robot and spider
+- Fixed buttons being clickable when they are not on screen in a scroll layer
 - Made Icon Effects Fine Outline integration apply in the icon effects menu
 
 # 2.8.0

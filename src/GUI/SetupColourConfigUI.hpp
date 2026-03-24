@@ -47,6 +47,8 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         BetterInputNode* bInput = nullptr;
         BetterInputNode* hexInput = nullptr;
         CCNodeWithShader* shader = nullptr;
+        CCMenuItemToggler* invertToggle = nullptr;
+        CCMenuItemToggler* loopGradientToggle = nullptr;
 
         virtual void textChanged(CCTextInputNode* node);
 

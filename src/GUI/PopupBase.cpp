@@ -209,6 +209,12 @@ void PopupBase::visit()
     rt->visit();
 }
 
+void PopupBase::draw()
+{
+    if (!blurLayer)
+        CCLayerColor::draw();
+}
+
 void PopupBase::updateTweenAction(float value, const char* key)
 {
     if (std::string(key) == "drawOpacity")

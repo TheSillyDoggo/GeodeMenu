@@ -93,22 +93,22 @@ ccColor3B ColourConfig::colourForConfig(std::string channel)
             return customColour;
 
         case Player1:
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value());
+            return ColourUtils::invertColour(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()), inverted);
 
         case Player2:
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value());
+            return ColourUtils::invertColour(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()), inverted);
 
         case PlayerGlow:
-            return GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value());
+            return ColourUtils::invertColour(GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value()), inverted);
 
         case Chroma:
-            return ColourUtils::get()->getChroma(channel);
+            return ColourUtils::invertColour(ColourUtils::get()->getChroma(channel), inverted);
 
         case Pastel:
-            return ColourUtils::get()->getPastel(channel);
+            return ColourUtils::invertColour(ColourUtils::get()->getPastel(channel), inverted);
 
         case Gradient:
-            return colourForGradient(ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(channel)));
+            return ColourUtils::invertColour(colourForGradient(ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(channel), loopGradient)), inverted);
         
         default:
             return ccWHITE;
@@ -174,6 +174,8 @@ matjson::Value ColourConfig::toJson()
     value["chromaSpeed"] = chromaSpeed;
     value["type"] = (int)type;
     value["smooth-gradient"] = smoothGradient;
+    value["invert"] = inverted;
+    value["loop-gradient"] = loopGradient;
 
     auto arr = matjson::Value::array();
 
@@ -202,6 +204,8 @@ void ColourConfig::fromJson(matjson::Value value)
     chromaSpeed = value["chromaSpeed"].asDouble().unwrapOr(chromaSpeed);
     type = (ColourConfigType)value["type"].asInt().unwrapOr((int)type);
     smoothGradient = value["smooth-gradient"].asBool().unwrapOr(smoothGradient);
+    inverted = value["invert"].asBool().unwrapOr(inverted);
+    loopGradient = value["loop-gradient"].asBool().unwrapOr(loopGradient);
 
     if (value.contains("gradient-values") && value["gradient-values"].isArray())
     {
@@ -222,8 +226,11 @@ void ColourConfig::fromJson(matjson::Value value)
     }
 }
 
-float ColourUtils::getLoopedValue(float value)
+float ColourUtils::getLoopedValue(float value, bool backAndForth)
 {
+    if (!backAndForth)
+        return value - std::floor<int>(value);
+
     return (sinf(value) + 1) / 2;
 }
 
@@ -269,4 +276,12 @@ ccColor3B ColourUtils::lerpColour(const ccColor3B& color1, const ccColor3B& colo
         static_cast<uint8_t>(color1.g + (color2.g - color1.g) * t),
         static_cast<uint8_t>(color1.b + (color2.b - color1.b) * t)
     );
+}
+
+ccColor3B ColourUtils::invertColour(const ccColor3B& colour, bool invert)
+{
+    if (!invert)
+        return colour;
+    
+    return ccc3(255 - colour.r, 255 - colour.g, 255 - colour.b);
 }

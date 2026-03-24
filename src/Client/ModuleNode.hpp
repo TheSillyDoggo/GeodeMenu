@@ -3,10 +3,11 @@
 #include <Geode/Geode.hpp>
 #include "Module.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include <CCMenuExt.hpp>
 
 using namespace geode::prelude;
 
-class ModuleNode : public CCMenu
+class ModuleNode : public qolmod::CCMenuExt
 {
     protected:
         static inline std::vector<ModuleNode*> nodes = {};

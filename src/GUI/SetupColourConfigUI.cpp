@@ -51,11 +51,6 @@ bool SetupColourConfigUI::setup()
     endColour = CCLayerColor::create(ccc4(0, 0, 0, 255), 30, 30);
     endColour->ignoreAnchorPointForPosition(false);
 
-    // auto prev = GameManager::sharedState()->m_levelEditorLayer;
-
-    // if (Loader::get()->getLoadedMod("flow.betterpicker") && !prev) // im sorry
-        // GameManager::sharedState()->m_levelEditorLayer = reinterpret_cast<LevelEditorLayer*>(0xB00B5);
-
     shader = CCNodeWithShader::create();
 
     picker = CCControlColourPicker::colourPicker();
@@ -63,8 +58,6 @@ bool SetupColourConfigUI::setup()
     picker->setAnchorPoint(ccp(0, 0));
     picker->setScale(0.8f);
     shader->addChild(picker);
-
-    // GameManager::sharedState()->m_levelEditorLayer = prev;
 
     typeMenu = CCMenu::create();
     typeMenu->setContentSize(ccp(0, 0));
@@ -293,7 +286,7 @@ void SetupColourConfigUI::updateGradientPreview()
     }
 
     gradientLineColour->setColor(currentConfig.gradientLocations[selectedGradientLine].colour);
-    gradientTimePreview->setPositionX(gradientPreviewContainer->getContentWidth() * (ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(fmt::format("{}_preview", previewChannel)))));
+    gradientTimePreview->setPositionX(gradientPreviewContainer->getContentWidth() * (ColourUtils::get()->getLoopedValue(ColourUtils::get()->getChannelValue(fmt::format("{}_preview", previewChannel)), currentConfig.loopGradient)));
 }
 
 void SetupColourConfigUI::updateGradientLines()

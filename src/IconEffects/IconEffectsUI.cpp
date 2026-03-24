@@ -8,6 +8,7 @@
 #include <BetterAlertLayer.hpp>
 #include <ColourUtils.hpp>
 #include <Utils.hpp>
+#include <CCMenuExt.hpp>
 
 bool IconEffectsUI::init()
 {
@@ -32,7 +33,7 @@ bool IconEffectsUI::init()
     effectsBG->setZOrder(-69);
 
     int x = 0;
-    auto n = CCMenu::create();
+    auto n = qolmod::CCMenuExt::create();
 
     for (size_t i = 1; i < (int)IconicGamemodeType::Swing + 1; i++)
     {
@@ -53,7 +54,7 @@ bool IconEffectsUI::init()
     n->setAnchorPoint(ccp(0, 0));
     n->setScale(0.85f);
 
-    auto menu = CCMenu::create();
+    auto menu = qolmod::CCMenuExt::create();
     menu->setContentSize(ccp(67, 30 * ((int)IconicEffectType::SpiderTeleport - 1)));
     menu->setPosition(ccp(15, 15));
     menu->setScale(0.85f);
@@ -69,6 +70,7 @@ bool IconEffectsUI::init()
     scroll->m_contentLayer->setContentHeight(menu->getScaledContentHeight() + 30);
     scroll->m_contentLayer->addChild(menu);
     scroll->moveToTop();
+    menu->setLinkedRect(scroll);
 
     scrollbar = BetterScrollbar::create(scroll);
     scrollbar->setUseDynamicHandle(true);
@@ -88,7 +90,7 @@ bool IconEffectsUI::init()
 
     updateSelection();
 
-    auto dualMenu = CCMenu::create();
+    auto dualMenu = qolmod::CCMenuExt::create();
     dualMenu->setAnchorPoint(ccp(0, 0));
     dualMenu->ignoreAnchorPointForPosition(false);
     dualMenu->setContentSize(dualBG->getContentSize());

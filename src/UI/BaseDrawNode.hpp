@@ -19,6 +19,7 @@ namespace qolmod
 
             void ensureCapacity(unsigned int count);
             void updateDebug();
+            
             virtual bool init();
             virtual void draw();
             virtual void transform();

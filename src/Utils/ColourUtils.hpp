@@ -26,9 +26,10 @@ class ColourUtils
 
         ccColor3B hsvToRgb(const ccHSVValue& hsv);
         ccColor3B lerpColour(const ccColor3B& color1, const ccColor3B& color2, float t);
+        static ccColor3B invertColour(const ccColor3B& colour, bool inv = true);
 
         void setChannelSpeed(Channel channel, float speed);
-        float getLoopedValue(float value);
+        float getLoopedValue(float value, bool backAndForth);
 
         ccColor3B getChroma(Channel channel);
         ccColor3B getPastel(Channel channel);

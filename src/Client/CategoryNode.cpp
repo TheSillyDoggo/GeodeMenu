@@ -40,6 +40,7 @@ void CategoryNode::addModule(Module* module)
     }
 
     auto node = module->getNode();
+    node->setLinkedRect(scroll);
     node->setTag(modules.size());
 
     modules.emplace(module, node);
@@ -109,6 +110,7 @@ void CategoryNode::updateUI()
     }
 
     scroll->setTouchEnabled(height + height3 != (scroll->getContentHeight() + height3));
+    scroll->setMouseEnabled(scroll->isTouchEnabled());
     scrollbar->setVisible(showScrollbar);
     scrollbar->setDisabled(!scroll->isTouchEnabled());
 }
