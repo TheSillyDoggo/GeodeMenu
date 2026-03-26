@@ -280,8 +280,6 @@ void PlayerState::saveState(PlayerObject* player)
     SAVE_GO_MEMBER(m_blackChildOpacity);
     SAVE_GO_MEMBER(m_blackChildOpacityLocked);
     SAVE_GO_MEMBER(m_editorEnabled);
-    SAVE_GO_MEMBER(m_isGroupDisabled);
-    SAVE_GO_MEMBER(m_isGroupDisabledTemp);
     SAVE_GO_MEMBER(m_unk28c);
     SAVE_GO_MEMBER(m_activeMainColorID);
     SAVE_GO_MEMBER(m_activeDetailColorID);
@@ -736,8 +734,6 @@ void PlayerState::loadState(PlayerObject* player)
     LOAD_GO_MEMBER(m_blackChildOpacity);
     LOAD_GO_MEMBER(m_blackChildOpacityLocked);
     LOAD_GO_MEMBER(m_editorEnabled);
-    LOAD_GO_MEMBER(m_isGroupDisabled);
-    LOAD_GO_MEMBER(m_isGroupDisabledTemp);
     LOAD_GO_MEMBER(m_unk28c);
     LOAD_GO_MEMBER(m_activeMainColorID);
     LOAD_GO_MEMBER(m_activeDetailColorID);

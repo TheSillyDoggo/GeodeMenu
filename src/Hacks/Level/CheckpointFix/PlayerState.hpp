@@ -270,8 +270,6 @@ namespace qolmod
             float m_blackChildOpacity;
             bool m_blackChildOpacityLocked;
             bool m_editorEnabled;
-            bool m_isGroupDisabled;
-            bool m_isGroupDisabledTemp;
             bool m_unk28c;
             int m_activeMainColorID;
             int m_activeDetailColorID;
