@@ -51,7 +51,7 @@ void IconicManager::setup()
     seperate = parent["use-seperate-colours"].asBool().unwrapOr(seperate);
     dualMode = (IconicDualMode)parent["dual-mode"].asInt().unwrapOr(Mod::get()->setSavedValue<bool>("same-dual", false) ? (int)IconicDualMode::Same : (int)IconicDualMode::Seperate);
     
-    fineOutline = Loader::get()->getInstalledMod("alphalaneous.fine_outline");
+    fineOutline = Loader::get()->getLoadedMod("alphalaneous.fine_outline");
 
     handleIncompatibility("rooot.custom-gamemode-colors");
     handleIncompatibility("gdemerald.custom_icon_colors");
@@ -99,10 +99,7 @@ void IconicManager::handleIncompatibility(std::string id)
 
 bool IconicManager::isFineOutlineLoaded()
 {
-    if (fineOutline)
-        return fineOutline->isLoaded();
-
-    return false;
+    return fineOutline;
 }
 
 cocos2d::ccColor3B IconicManager::getFineOutineColour()
