@@ -1,5 +1,7 @@
 #include "CategorySelectMenu.hpp"
 
+using namespace qolmod;
+
 void CategorySelectMenu::setInset(float inset)
 {
     this->inset = inset;
@@ -67,21 +69,22 @@ bool CategorySelectMenu::init()
     scrollbar->setAnchorPoint(ccp(1, 1));
     scrollbar->setUseDynamicHandle(true);
 
-    bottomBtns = CCMenu::create();
+    bottomBtns = CCMenuExt::create();
     bottomBtns->setAnchorPoint(ccp(0, 0));
     bottomBtns->ignoreAnchorPointForPosition(false);
     bottomBtns->setPosition(ccp(0, 0));
     bottomBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::Start)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true));
     static_cast<AxisLayout*>(bottomBtns->getLayout())->ignoreInvisibleChildren(true);
-    bottomBtns->setTouchEnabled(false);
+    bottomBtns->setTouchEnabled(true);
 
-    standardBtns = CCMenu::create();
+    standardBtns = CCMenuExt::create();
     standardBtns->setAnchorPoint(ccp(0, 0));
     standardBtns->ignoreAnchorPointForPosition(false);
     standardBtns->setPosition(ccp(0, 0));
     standardBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true));
     static_cast<AxisLayout*>(standardBtns->getLayout())->ignoreInvisibleChildren(true);
-    standardBtns->setTouchEnabled(false);
+    standardBtns->setTouchEnabled(true);
+    standardBtns->setLinkedRect(scroll);
 
     this->addChild(scroll);
     this->addChild(scrollbar);
@@ -172,11 +175,13 @@ CCMenuItemSpriteExtra* CategorySelectMenu::getButton(std::string id)
 
 bool CategorySelectMenu::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
+    return false;
     if (bottomBtns->ccTouchBegan(touch, event))
     {
         touchInitialScrollY = scroll->m_contentLayer->getPositionY();
         touchCancelled = false;
 
+        bottomBtns->ccTouchMoved(touch, event);
         standardBtns->ccTouchBegan(touch, event);
         return true;
     }

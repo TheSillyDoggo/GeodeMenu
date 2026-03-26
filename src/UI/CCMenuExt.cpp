@@ -1,5 +1,5 @@
 #include "CCMenuExt.hpp"
-#include <Num.hpp>
+#include <Utils.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -27,7 +27,10 @@ bool CCMenuExt::ccTouchBegan(CCTouch* touch, CCEvent* event)
     {
         if (linkedRect)
         {
-            if (!getWorldSpaceBoundingBox(linkedRect).containsPoint(touch->getLocation()))
+            auto rect = qolmod::utils::getBasicRect(linkedRect);
+            rect.origin = CCPointZero;
+
+            if (!rect.containsPoint(linkedRect->convertToNodeSpace(touch->getLocation())))
                 return false;
         }
         else

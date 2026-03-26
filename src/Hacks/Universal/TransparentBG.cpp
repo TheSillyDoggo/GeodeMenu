@@ -53,14 +53,17 @@ SUBMIT_OPTION(TransparentBG, TransparentBGOnlyBlue);
 
 CCSprite* TransparentBG::getBG(CCScene* scene)
 {
+    if (!scene)
+        return nullptr;
+
     if (scene->getChildrenCount() > 0)
     {
         if (auto l = scene->getChildByType<CCLayer>(0))
         {
-            if (scene->getChildByType<LevelEditorLayer>(0))
+            if (typeinfo_cast<LevelEditorLayer*>(l))
                 return nullptr;
 
-            if (scene->getChildByType<LoadingLayer>(0))
+            if (typeinfo_cast<LoadingLayer*>(l))
                 return nullptr;
 
             if (!l->getChildren())
@@ -68,7 +71,7 @@ CCSprite* TransparentBG::getBG(CCScene* scene)
 
             l->sortAllChildren();
 
-            if (auto b = typeinfo_cast<CCSprite*>(l->getChildren()->objectAtIndex(0)))
+            if (auto b = l->getChildByType<CCSprite>(0))
             {
                 if (!b->getUserObject("default-colour_r"_spr))
                 {

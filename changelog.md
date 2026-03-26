@@ -2,9 +2,15 @@
 
 - Added Dash Fire and Spider Teleport to Icon Effects
 - Added Back Button shortcut
+- Made Icon Effects Fine Outline integration apply in the icon effects menu
+- Fixed Show Hitboxes and Show Trajectory breaking on some platforms
+- Fixed Mini Player not working correctly in Show Trajectory
+- Fixed Crash changing textures with Transparent BG enabled
 - Fixed Icon Effects not applying to robot and spider
 - Fixed buttons being clickable when they are not on screen in a scroll layer
-- Made Icon Effects Fine Outline integration apply in the icon effects menu
+- Fixed Noclip Accuracy being extremely inaccurate
+- Fixed Text Inputs not working on Android
+- Fixed Gold Fonts disappearing when changing colour (in other languages)
 
 # 2.8.0
 

@@ -339,6 +339,7 @@ void AdvLabelBMFont::updateLabelQuick()
             {
                 auto c = ccc4FFromccc3B(colour);
 
+                int i = 0;
                 for (auto spr : label->getChildrenExt<CCSprite*>())
                 {
                     spr->m_sQuad.tl.colors = ccc4(253 * c.r, 161 * c.g, 12 * c.b, 255);
@@ -346,6 +347,14 @@ void AdvLabelBMFont::updateLabelQuick()
 
                     spr->m_sQuad.bl.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
                     spr->m_sQuad.br.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
+
+                    spr->setBatchNode(label);
+                    spr->setAtlasIndex(i);
+                    i++;
+
+                    spr->setDirty(true);
+
+                    spr->updateTransform();
                 }
             }
         }

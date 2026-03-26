@@ -2,6 +2,7 @@
 #include "../../../Labels/Nodes/LabelContainerLayer.hpp"
 #include <Geode/modify/PlayerObject.hpp>
 #include "Noclip.hpp"
+#include "../ShowTrajectory/TrajectoryNode.hpp"
 
 #define NOCLIP_BASE() base_cast<NoclipBaseGameLayer*>(this)
 
@@ -117,11 +118,11 @@ void NoclipBaseGameLayer::onPostUpdate()
     if (auto pl = typeinfo_cast<PlayLayer*>(this))
     {
         if (!pl->m_levelEndAnimationStarted)
-            fields->timeInLevel = m_gameState.m_currentProgress;
+            fields->timeInLevel = m_gameState.m_currentProgress / 2;
     }
     else
     {
-        fields->timeInLevel = m_gameState.m_currentProgress;
+        fields->timeInLevel = m_gameState.m_currentProgress / 2;
     }
 }
 
@@ -199,6 +200,9 @@ class $modify (PlayerObject)
 
 bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* go)
 {
+    if (qolmod::TrajectoryNode::get() && qolmod::TrajectoryNode::get()->isSimulating())
+        return true;
+
     if (go == m_anticheatSpike)
         return true;
 

@@ -109,20 +109,22 @@ void BaseDrawNode::transform(void)
     if (worldSpace)
     {
         auto win = CCDirector::get()->getWinSize();
-        auto gjbgl = GJBaseGameLayer::get();
-
-        if (!gjbgl)
-            return;
 
         auto copy = gjbgl->m_debugDrawNode->getParent();
+
+        if (!copy)
+            return;
+        
         world1->setPosition(win / 2);
         world1->setRotation(gjbgl->m_gameState.m_cameraAngle);
 
-        if (gjbgl->m_isEditor && static_cast<LevelEditorLayer*>(gjbgl)->m_playbackMode != PlaybackMode::Playing)
-            world2->setPosition(gjbgl->m_objectLayer->getPosition() - world1->getPosition());
+        // ghidra says theres another check here but im too stupid to figure it out
+        // see GJBaseGameLayer::updateVisibility
+        if (gjbgl->m_gameState.m_cameraAngle == 0)
+            world2->setPosition(copy->getPosition() - world1->getPosition());
         else
-            world2->setPosition(-gjbgl->m_gameState.m_cameraPosition * gjbgl->m_gameState.m_cameraZoom - world1->getPosition());
-
+            world2->setPosition(copy->getPosition());
+        
         world2->setScaleX(copy->getScaleX());
         world2->setScaleY(copy->getScaleY());
     }

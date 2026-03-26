@@ -96,7 +96,7 @@ void BetterInputNode::selectInput(bool selected)
 
     if (selected)
     {
-        textInput->focus();
+        textInput->getInputNode()->onClickTrackNode(true);
         selectedInput = this;
         bg->getBG()->runAction(RealtimeAction::create(CCFadeTo::create(0.1f, 125)));
     }
@@ -508,7 +508,7 @@ void BetterInputNode::onCopyClipboard(CCObject *sender)
 
 bool BetterInputNode::containsPoint(cocos2d::CCPoint point)
 {
-    auto local = this->convertToNodeSpace(getMousePos());
+    auto local = this->convertToNodeSpace(point);
     auto r = qolmod::utils::getBasicRect(this);
     r.origin = CCPointZero;
 

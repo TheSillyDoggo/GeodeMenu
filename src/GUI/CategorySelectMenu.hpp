@@ -3,6 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "BetterScrollbar.hpp"
 #include "CategoryTabSprite.hpp"
+#include <CCMenuExt.hpp>
 
 using namespace geode::prelude;
 
@@ -19,8 +20,8 @@ class CategorySelectMenu : public CCMenu
         float inset = 2.5f;
         ScrollLayer* scroll = nullptr;
         BetterScrollbar* scrollbar = nullptr;
-        CCMenu* bottomBtns = nullptr;
-        CCMenu* standardBtns = nullptr;
+        qolmod::CCMenuExt* bottomBtns = nullptr;
+        qolmod::CCMenuExt* standardBtns = nullptr;
         std::vector<CCMenuItemSpriteExtra*> buttons = {};
         std::string selectedTab = "";
         std::function<void(std::string)> callback = nullptr;

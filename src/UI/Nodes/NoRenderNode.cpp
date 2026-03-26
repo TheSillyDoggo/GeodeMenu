@@ -18,7 +18,5 @@ $on_game(Loaded)
 
     #if GEODE_COMP_GD_VERSION == 22081
     geode::OverlayManager::get()->addChild(render);
-    #else
-    geode::SceneManager::get()->keepAcrossScenes(render);
     #endif
 };
