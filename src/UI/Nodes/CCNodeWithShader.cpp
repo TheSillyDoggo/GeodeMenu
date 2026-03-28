@@ -64,5 +64,8 @@ void CCNodeWithShader::listenBackToForeground(CCObject* sender)
 
 CCNodeWithShader::~CCNodeWithShader()
 {
-    CCNotificationCenter::sharedNotificationCenter()->removeAllObservers(this);
+    #ifdef GEODE_IS_ANDROID
+    if (listened)
+        CCNotificationCenter::sharedNotificationCenter()->removeAllObservers(this);
+    #endif
 }

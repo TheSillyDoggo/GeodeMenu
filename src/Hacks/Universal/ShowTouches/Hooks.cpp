@@ -36,29 +36,37 @@ for (size_t i = 0; i < num; i++) \
     )); \
 }
 
+#if GEODE_COMP_GD_VERSION >= 22081
+#define TOUCH_PARAMS int num, int ids[], float xs[], float ys[], double timestamp
+#define TOUCH_PARAMS2 num, ids, xs, ys, timestamp
+#else
+#define TOUCH_PARAMS int num, int ids[], float xs[], float ys[]
+#define TOUCH_PARAMS2 num, ids, xs, ys
+#endif
+
 class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
 {
-    virtual void handleTouchesBegin(int num, int ids[], float xs[], float ys[], double timestamp)
+    virtual void handleTouchesBegin(TOUCH_PARAMS)
     {
-        CCEGLViewProtocol::handleTouchesBegin(num, ids, xs, ys, timestamp);
+        CCEGLViewProtocol::handleTouchesBegin(TOUCH_PARAMS2);
         TOUCHED_MACRO(touchBegan);
     }
 
-    virtual void handleTouchesMove(int num, int ids[], float xs[], float ys[], double timestamp)
+    virtual void handleTouchesMove(TOUCH_PARAMS)
     {
-        CCEGLViewProtocol::handleTouchesMove(num, ids, xs, ys, timestamp);
+        CCEGLViewProtocol::handleTouchesMove(TOUCH_PARAMS2);
         TOUCHED_MACRO(touchMoved);
     }
     
-    virtual void handleTouchesEnd(int num, int ids[], float xs[], float ys[], double timestamp)
+    virtual void handleTouchesEnd(TOUCH_PARAMS)
     {
-        CCEGLViewProtocol::handleTouchesEnd(num, ids, xs, ys, timestamp);
+        CCEGLViewProtocol::handleTouchesEnd(TOUCH_PARAMS2);
         TOUCHED_MACRO(touchEnded);
     }
 
-    virtual void handleTouchesCancel(int num, int ids[], float xs[], float ys[], double timestamp)
+    virtual void handleTouchesCancel(TOUCH_PARAMS)
     {
-        CCEGLViewProtocol::handleTouchesCancel(num, ids, xs, ys, timestamp);
+        CCEGLViewProtocol::handleTouchesCancel(TOUCH_PARAMS2);
         TOUCHED_MACRO(touchCancelled);
     }
 };
