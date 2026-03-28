@@ -46,7 +46,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         BetterInputNode* gInput = nullptr;
         BetterInputNode* bInput = nullptr;
         BetterInputNode* hexInput = nullptr;
-        CCNodeWithShader* shader = nullptr;
+        qolmod::CCNodeWithShader* shader = nullptr;
         CCMenuItemToggler* invertToggle = nullptr;
         CCMenuItemToggler* loopGradientToggle = nullptr;
 

@@ -7,6 +7,7 @@
 #include "../../GUI/AndroidUI.hpp"
 #include "../../GUI/AndroidBall.hpp"
 #include "../../Hacks/Universal/Paint/PaintNode.hpp"
+#include "../../Hacks/Universal/ShowTouches/ShowTouchLayer.hpp"
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -30,6 +31,8 @@ class $modify (QOLModRenderingHook, CCDirector)
 
         if (NotificationsEnabled::get()->getRealEnabled())
             NotificationManager::get()->visit();
+
+        qolmod::ShowTouchLayer::get()->visit();
     }
 };
 
@@ -50,6 +53,8 @@ class $modify (QOLModRenderingHook, CCEGLView)
 
         if (NotificationsEnabled::get()->getRealEnabled())
             NotificationManager::get()->visit();
+
+        qolmod::ShowTouchLayer::get()->visit();
 
         CCEGLView::swapBuffers();
     }

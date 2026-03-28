@@ -3,6 +3,8 @@
 
 #include "BetterButtonSprite.hpp"
 
+using namespace qolmod;
+
 SetupColourConfigUI* SetupColourConfigUI::create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects)
 {
     auto pRet = new SetupColourConfigUI();

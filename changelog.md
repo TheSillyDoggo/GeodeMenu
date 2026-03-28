@@ -1,3 +1,9 @@
+# 2.8.2
+
+- Fixed Icon Effects UI Breaking after using app switcher (Android)
+- Fixed Show Touches not working with Better Touch Priority
+- Fixed Show Touches sometimes disabling in some parts of the UI (main levels)
+
 # 2.8.1
 
 - Added Dash Fire and Spider Teleport to Icon Effects

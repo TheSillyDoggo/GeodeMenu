@@ -10,6 +10,8 @@
 #include <Utils.hpp>
 #include <CCMenuExt.hpp>
 
+using namespace qolmod;
+
 bool IconEffectsUI::init()
 {
     if (!CategoryNode::init())

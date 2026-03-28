@@ -1,6 +1,7 @@
 #include "Colours.hpp"
 #include <Geode/modify/CCTouchDispatcher.hpp>
-#include "TouchTrail.hpp"
+#include <Geode/modify/CCEGLViewProtocol.hpp>
+#include "ShowTouchLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -23,38 +24,41 @@ SUBMIT_OPTION(ShowTouches, CircleScale)
 SUBMIT_OPTION(ShowTouches, TrailEnabled)
 SUBMIT_OPTION(ShowTouches, ShowTouchDuration)
 
-#if GEODE_COMP_GD_VERSION < 22081
-using OverlayManager = CCScene;
-#endif
+#define TOUCHED_MACRO($func) \
+for (size_t i = 0; i < num; i++) \
+{ \
+    int id = ids[i]; \
+    float x = xs[i]; \
+    float y = ys[i]; \
+    qolmod::ShowTouchLayer::get()->$func(id, ccp( \
+        (x - m_obViewPortRect.origin.x) / m_fScaleX, \
+        (m_obViewPortRect.size.height - y - m_obViewPortRect.origin.y) / m_fScaleY \
+    )); \
+}
 
-class $modify (CCTouchDispatcher)
+class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
 {
-    void touches(CCSet* touches, CCEvent* event, unsigned int type)
+    virtual void handleTouchesBegin(int num, int ids[], float xs[], float ys[], double timestamp)
     {
-        if (!CCScene::get())
-            return CCTouchDispatcher::touches(touches, event, type);
-
-        if (CCScene::get()->getChildByType<LoadingLayer>(0))
-            return CCTouchDispatcher::touches(touches, event, type);
-
-        CCTouchDispatcher::touches(touches, event, type);
-
-        if (auto touch = static_cast<CCTouch*>(touches->anyObject()))
-        {
-            if (type == CCTOUCHBEGAN && ShowTouches::get()->getRealEnabled())
-            {
-                OverlayManager::get()->addChild(CCTouchTrail::create(touch), 999999);
-            }
-
-            if (type >= CCTOUCHENDED)
-            {
-                CCTouchTrail::remove(touch);
-            }
-        }
+        CCEGLViewProtocol::handleTouchesBegin(num, ids, xs, ys, timestamp);
+        TOUCHED_MACRO(touchBegan);
     }
 
-    static void onModify(auto& self)
+    virtual void handleTouchesMove(int num, int ids[], float xs[], float ys[], double timestamp)
     {
-        (void)self.setHookPriorityPre("cocos2d::CCTouchDispatcher::touches", -8008135);
+        CCEGLViewProtocol::handleTouchesMove(num, ids, xs, ys, timestamp);
+        TOUCHED_MACRO(touchMoved);
+    }
+    
+    virtual void handleTouchesEnd(int num, int ids[], float xs[], float ys[], double timestamp)
+    {
+        CCEGLViewProtocol::handleTouchesEnd(num, ids, xs, ys, timestamp);
+        TOUCHED_MACRO(touchEnded);
+    }
+
+    virtual void handleTouchesCancel(int num, int ids[], float xs[], float ys[], double timestamp)
+    {
+        CCEGLViewProtocol::handleTouchesCancel(num, ids, xs, ys, timestamp);
+        TOUCHED_MACRO(touchCancelled);
     }
 };

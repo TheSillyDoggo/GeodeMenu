@@ -15,12 +15,12 @@ class HighQualityWave : public Module
 
 SUBMIT_HACK(HighQualityWave);
 
-void myDrawCircle(const cocos2d::CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter)
+void myDrawCircle(const cocos2d::CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY)
 {
     if (HighQualityWave::get()->getRealEnabled())
         segments *= 5;
     
-    cocos2d::ccDrawCircle(center, radius, angle, segments, drawLineToCenter);
+    cocos2d::ccDrawCircle(center, radius, angle, segments, drawLineToCenter, scaleX, scaleY);
 }
 
 $execute
@@ -30,11 +30,11 @@ $execute
         #ifdef GEODE_IS_IOS
 
         #if GEODE_COMP_GD_VERSION == 22081
-        #define IOS_CCDRAWCIRCLE_OFFSET 0x24c6fc
+        #define IOS_CCDRAWCIRCLE_OFFSET 0x24c56c
         #endif
 
         #if GEODE_COMP_GD_VERSION == 22074
-        #define IOS_CCDRAWCIRCLE_OFFSET 0x24b7f0
+        #define IOS_CCDRAWCIRCLE_OFFSET 0x24b660
         #endif
 
         (void)GEODE_MOD_STATIC_HOOK(IOS_CCDRAWCIRCLE_OFFSET, &myDrawCircle, "cocos2d::ccDrawCircle");
@@ -46,7 +46,7 @@ $execute
         (void)Mod::get()->hook(
             reinterpret_cast<void*>(
                 geode::addresser::getNonVirtual(
-                    geode::modifier::Resolve<const cocos2d::CCPoint&, float, float, unsigned int, bool>::func(&cocos2d::ccDrawCircle)
+                    geode::modifier::Resolve<const cocos2d::CCPoint&, float, float, unsigned int, bool, float, float>::func(&cocos2d::ccDrawCircle)
                 )
             ),
             &myDrawCircle,

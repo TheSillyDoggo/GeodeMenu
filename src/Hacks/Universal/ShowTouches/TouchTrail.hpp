@@ -2,22 +2,22 @@
 
 #include <Geode/Geode.hpp>
 
-using namespace geode::prelude;
-
-class CCTouchTrail : public CCNode
+namespace qolmod
 {
-    public:
-        static inline std::unordered_map<CCTouch*, CCTouchTrail*> touches = {};
-        CCTouch* touch;
-        CCMotionStreak* streak;
-        CCSprite* circle;
-        CCLabelBMFont* durationLabel = nullptr;
-        float duration = 0;
+    class TouchTrail : public cocos2d::CCNode
+    {
+        protected:
+            cocos2d::CCMotionStreak* streak;
+            cocos2d::CCSprite* circle;
+            cocos2d::CCLabelBMFont* durationLabel = nullptr;
+            cocos2d::CCPoint position = ccp(0, 0);
+            float duration = 0;
 
-        bool init(CCTouch* touch);
+        public:
+            CREATE_FUNC(TouchTrail)
 
-        virtual void update(float dt);
-
-        static CCTouchTrail* create(CCTouch* touch);
-        static void remove(CCTouch* touch);
-};
+            virtual void setPosition(const cocos2d::CCPoint &position);
+            virtual bool init();
+            virtual void update(float dt);
+    };
+}

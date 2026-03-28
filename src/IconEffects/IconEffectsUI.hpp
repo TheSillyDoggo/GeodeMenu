@@ -14,7 +14,7 @@ class IconEffectsUI : public CategoryNode
             IconicGamemodeType gamemode = IconicGamemodeType::Cube;
             bool player2 = false;
             CCMenuItemSpriteExtra* btn = nullptr;
-            CCNodeWithShader* shader = nullptr;
+            qolmod::CCNodeWithShader* shader = nullptr;
             SimplePlayer* simple = nullptr;
             IconicPlayerHook* hook = nullptr;
         };

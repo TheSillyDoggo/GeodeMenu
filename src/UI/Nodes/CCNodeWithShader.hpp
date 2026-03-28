@@ -2,15 +2,23 @@
 
 #include <Geode/Geode.hpp>
 
-class CCNodeWithShader : public cocos2d::CCNodeRGBA
+namespace qolmod
 {
-    protected:
-        geode::Ref<cocos2d::CCRenderTexture> rt = nullptr;
-        cocos2d::CCSize offset = cocos2d::CCSizeMake(250, 250);
+    class CCNodeWithShader : public cocos2d::CCNodeRGBA
+    {
+        protected:
+            geode::Ref<cocos2d::CCRenderTexture> rt = nullptr;
+            cocos2d::CCSize offset = cocos2d::CCSizeMake(250, 250);
+            bool listened = false;
 
-    public:
-        CREATE_FUNC(CCNodeWithShader);
+            ~CCNodeWithShader();
 
-        virtual bool init();
-        virtual void visit();
+        public:
+            CREATE_FUNC(CCNodeWithShader);
+
+            void listenBackToForeground(CCObject* sender);
+
+            virtual bool init();
+            virtual void visit();
+    };
 };

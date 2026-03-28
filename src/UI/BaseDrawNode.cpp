@@ -35,7 +35,7 @@ bool BaseDrawNode::init()
 
     gjbgl = GJBaseGameLayer::get();
 
-    setDebugEnabled(GJAccountManager::get()->m_accountID == 16778880);
+    setDebugEnabled(GJAccountManager::get()->m_accountID == 16778880 && CCKeyboardDispatcher::get()->getAltKeyPressed());
 
     world1 = CCNode::create();
     world2 = CCNode::create();

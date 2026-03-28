@@ -1,15 +1,31 @@
 #include "CCNodeWithShader.hpp"
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 bool CCNodeWithShader::init()
 {
     if (!CCNode::init())
         return false;
 
+    if (rt)
+        CC_SAFE_DELETE(rt);
+
     rt = CCRenderTexture::create(offset.width, offset.height, kCCTexture2DPixelFormat_RGBA8888, GL_DEPTH24_STENCIL8);
     #if GEODE_COMP_GD_VERSION >= 22081
     rt->getSprite()->getTexture()->setAntiAliasTexParameters();
+    #endif
+
+    #ifdef GEODE_IS_ANDROID
+    if (!listened)
+    {
+        listened = true;
+
+        CCNotificationCenter::sharedNotificationCenter()->addObserver(this,
+            callfuncO_selector(CCNodeWithShader::listenBackToForeground),
+            EVENT_COME_TO_FOREGROUND,
+            nullptr);
+    }
     #endif
 
     return true;
@@ -26,7 +42,6 @@ void CCNodeWithShader::visit()
     {
         child->visit();
     }
-    
 
     kmGLPopMatrix();
     rt->end();
@@ -40,4 +55,14 @@ void CCNodeWithShader::visit()
     rt->visit();
 
     kmGLPopMatrix();
+}
+
+void CCNodeWithShader::listenBackToForeground(CCObject* sender)
+{
+    init();
+}
+
+CCNodeWithShader::~CCNodeWithShader()
+{
+    CCNotificationCenter::sharedNotificationCenter()->removeAllObservers(this);
 }

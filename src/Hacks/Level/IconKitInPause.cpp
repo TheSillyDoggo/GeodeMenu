@@ -22,8 +22,6 @@ class IconKitInPause : public Module
 
 SUBMIT_HACK(IconKitInPause);
 
-// TODO: Fix colours not saving after a player dies :c
-
 class $modify (PauseLayer)
 {
     virtual void customSetup()
