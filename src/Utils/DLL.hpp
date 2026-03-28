@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Geode/Geode.hpp>
-
 #define QOLMOD_EXPORTING
 
 #ifdef GEODE_IS_WINDOWS

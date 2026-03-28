@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Geode/Geode.hpp>
 #include "HookMacro.hpp"
 #include "../Utils/DLL.hpp"
 #include "../Keybinds/KeyConfigStruct.hpp"

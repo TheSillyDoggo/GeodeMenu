@@ -19,8 +19,12 @@ void myDrawCircle(const cocos2d::CCPoint& center, float radius, float angle, uns
 {
     if (HighQualityWave::get()->getRealEnabled())
         segments *= 5;
-    
+
+    #if GEODE_COMP_GD_VERSION == 22074 && defined(GEODE_IS_IOS)
+    reinterpret_cast<void(__cdecl*)(const cocos2d::CCPoint&, float, float, unsigned int, bool, float, float)>(geode::base::getCocos() + 0x24b660)(center, radius, angle, segments, drawLineToCenter, scaleX, scaleY);
+    #else
     cocos2d::ccDrawCircle(center, radius, angle, segments, drawLineToCenter, scaleX, scaleY);
+    #endif
 }
 
 $execute
