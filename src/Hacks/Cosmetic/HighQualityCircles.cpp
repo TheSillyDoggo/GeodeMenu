@@ -49,9 +49,13 @@ $execute
     {
         (void)Mod::get()->hook(
             reinterpret_cast<void*>(
+                #if GEODE_COMP_GD_VERSION == 22074 && defined(GEODE_IS_IOS)
+                geode::base::get() + 0x24b660
+                #else
                 geode::addresser::getNonVirtual(
                     geode::modifier::Resolve<const cocos2d::CCPoint&, float, float, unsigned int, bool, float, float>::func(&cocos2d::ccDrawCircle)
                 )
+                #endif
             ),
             &myDrawCircle,
             "cocos2d::ccDrawCircle",
