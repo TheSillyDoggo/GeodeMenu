@@ -10,6 +10,7 @@
 #include "VersionInfoNode.hpp"
 #include "PopupBase.hpp"
 #include "CategorySelectMenu.hpp"
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -22,7 +23,7 @@ class AndroidUI : public PopupBase
         static inline AndroidUI* instance = nullptr;
 
         CategorySelectMenu* catMenu = nullptr;
-        CCMenuItemSpriteExtra* backBtn = nullptr;
+        qolmod::Button* backBtn = nullptr;
         BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
         CCNode* bottomTabsContainer = nullptr;

@@ -5,6 +5,7 @@
 #include <Utils.hpp>
 #include "Paint.hpp"
 #include "PaintNode.hpp"
+#include <RealtimeAction.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -60,7 +61,7 @@ bool PaintControl::init()
     colourSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     colourSpr->setScale(0.55f);
 
-    auto colourBtn = CCMenuItemSpriteExtra::create(colourSpr, this, menu_selector(PaintControl::onChangeColour));
+    auto colourBtn = Button::create(colourSpr, this, menu_selector(PaintControl::onChangeColour));
     colourBtn->setPosition(ccp(bg->getContentWidth() - bg->getContentHeight() / 2, 0));
     menu->addChild(colourBtn);
 
@@ -157,13 +158,13 @@ void PaintControl::toggleExpanded(bool value)
 
     if (value)
     {
-        menu->runAction(CCEaseBackOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1)));
-        bg->runAction(CCEaseBackOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1)));
+        menu->runAction(RealtimeAction::create(CCEaseBackOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1))));
+        bg->runAction(RealtimeAction::create(CCEaseBackOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1))));
     }
     else
     {
-        menu->runAction(CCEaseInOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1), 2));
-        bg->runAction(CCEaseInOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1), 2));
+        menu->runAction(RealtimeAction::create(CCEaseInOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1), 2)));
+        bg->runAction(RealtimeAction::create(CCEaseInOut::create(CCScaleTo::create(0.2f, value ? 1 : 0, 1), 2)));
     }
 }
 
@@ -216,7 +217,7 @@ void PaintControl::addToolButton(PaintTool tool)
 
     data.sprite = CCSprite::create(str.c_str());
     data.sprite->setID(str);
-    data.button = CCMenuItemSpriteExtra::create(data.sprite, this, menu_selector(PaintControl::onChangeTool));
+    data.button = Button::create(data.sprite, this, menu_selector(PaintControl::onChangeTool));
     data.button->setTag((int)tool);
     data.button->setPosition(ccp(30 + 25 * (int)tool, 0));
 

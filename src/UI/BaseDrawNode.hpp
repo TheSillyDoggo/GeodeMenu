@@ -2,6 +2,18 @@
 
 #include <Geode/Geode.hpp>
 
+#if GEODE_COMP_GD_VERSION < 22081
+namespace cocos2d
+{
+    enum class BorderAlignment
+    {
+        Outside = 0,
+        Center = 1,
+        Inside = 2
+    };
+};
+#endif
+
 namespace qolmod
 {
     class BaseDrawNode : public cocos2d::CCDrawNode
@@ -13,6 +25,9 @@ namespace qolmod
             cocos2d::CCNode* world1 = nullptr;
             cocos2d::CCNode* world2 = nullptr;
             GJBaseGameLayer* gjbgl = nullptr;
+            bool cullingEnabled = false;
+            bool outerCull = false;
+            cocos2d::CCRect cullArea = cocos2d::CCRectZero;
 
             BaseDrawNode();
             ~BaseDrawNode();
@@ -25,7 +40,11 @@ namespace qolmod
             virtual void transform();
             virtual void visit();
 
+            void enableCull(cocos2d::CCRect area, bool outer = false);
+            void disableCull();
+
             void drawSegment(const cocos2d::CCPoint& startPoint, const cocos2d::CCPoint& endPoint, float radius, const cocos2d::ccColor4F& color);
+            bool drawPolygon(cocos2d::CCPoint *verts, unsigned int count, const cocos2d::ccColor4F &fillColor, float borderWidth, const cocos2d::ccColor4F &borderColor, cocos2d::BorderAlignment alignment = cocos2d::BorderAlignment::Outside);
 
         public:
             /*

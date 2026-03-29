@@ -2,6 +2,8 @@
 #include "../GUI/SetupColourConfigUI.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
+using namespace qolmod;
+
 ColourModuleNode* ColourModuleNode::create(ColourModule* module)
 {
     auto pRet = new ColourModuleNode();
@@ -36,7 +38,7 @@ void ColourModuleNode::setup()
     colourSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     colourSpr->setScale(0.65f);
 
-    colourBtn = CCMenuItemSpriteExtra::create(colourSpr, this, menu_selector(ColourModuleNode::onChangeColour));
+    colourBtn = Button::create(colourSpr, this, menu_selector(ColourModuleNode::onChangeColour));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(colourBtn, Anchor::Left, ccp(label->getScaledContentWidth() + 25, 0));

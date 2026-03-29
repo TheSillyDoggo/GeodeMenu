@@ -4,6 +4,7 @@
 #include "../BetterSlider.hpp"
 #include "../BetterInputNode.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -14,12 +15,12 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         CCMenu* presetMenu = nullptr;
         CCMenu* presetKeybindMenu = nullptr;
         ButtonSprite* sprMode = nullptr;
-        std::unordered_map<CCMenuItemSpriteExtra*, float> presetBtns = {};
+        std::unordered_map<qolmod::Button*, float> presetBtns = {};
         AdvLabelBMFont* deletePresetHelp = nullptr;
         CCScale9Sprite* deletePresetBG = nullptr;
         bool presetDeleteMode = false;
 
-        CCMenuItemSpriteExtra* trashBtn = nullptr;
+        qolmod::Button* trashBtn = nullptr;
         BetterSlider* slider = nullptr;
         BetterInputNode* input = nullptr;
 

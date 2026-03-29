@@ -7,6 +7,9 @@
 #include "UI/CheatIndicator.hpp"
 #include "Modules/AutoSafeMode.hpp"
 #include "Modules/SafeMode.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
 {
@@ -160,7 +163,7 @@ void SafeEndLevelLayer::customSetup()
         infoMenu->setPosition((n ? n->getPosition() : CCPointMake(CCDirector::get()->getWinSize().width, CCDirector::get()->getWinSize().height) / 2) + ccp(0, -37.5f));
         infoMenu->setID("info-menu"_spr);
 
-        auto infoBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::create(ccp(180, 30), LocalisationManager::get()->getLocalisedString("ui/safe-mode-view-reason-button"), "bigFont.fnt", "GJ_button_04.png"), this, menu_selector(SafeEndLevelLayer::onViewReasons));
+        auto infoBtn = Button::create(BetterButtonSprite::create(ccp(180, 30), LocalisationManager::get()->getLocalisedString("ui/safe-mode-view-reason-button"), "bigFont.fnt", "GJ_button_04.png"), this, menu_selector(SafeEndLevelLayer::onViewReasons));
         infoBtn->m_scaleMultiplier = 1.1f;
         infoMenu->addChild(infoBtn);
 

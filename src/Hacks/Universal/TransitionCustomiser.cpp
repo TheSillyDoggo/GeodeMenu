@@ -2,6 +2,7 @@
 #include "../../Client/EnumModule.hpp"
 #include "../../Client/InputModule.hpp"
 #include <Geode/modify/CCTransitionFade.hpp>
+#include <Geode/modify/CCGridBase.hpp>
 #include <Utils.hpp>
 
 using namespace geode::prelude;

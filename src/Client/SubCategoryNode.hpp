@@ -2,14 +2,15 @@
 
 #include "CategoryNode.hpp"
 #include "../GUI/CategoryTabSprite.hpp"
+#include <Button.hpp>
 
 class SubCategoryNode : public CategoryNode
 {
     protected:
         CCMenu* selectSubMenu = nullptr;
         std::unordered_map<std::string, CategoryTabSprite*> normalSprs = {};
-        std::unordered_map<std::string, CCMenuItemSpriteExtra*> normalBtns = {};
-        std::unordered_map<CCMenuItemSpriteExtra*, bool> categoryBtnsSelCheck = {};
+        std::unordered_map<std::string, qolmod::Button*> normalBtns = {};
+        std::unordered_map<qolmod::Button*, bool> categoryBtnsSelCheck = {};
         std::unordered_map<std::string, CategoryNode*> categoryNodes = {};
         static inline std::unordered_map<std::string, std::string> selectedSub = {};
     

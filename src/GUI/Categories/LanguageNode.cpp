@@ -4,6 +4,9 @@
 #include "../../Localisation/UI/LanguageNode.hpp"
 #include "../BetterButtonSprite.hpp"
 #include <UI/LanguageOptionsUI.hpp>
+#include <Button.hpp>
+
+using namespace qolmod;
 
 bool LanguageNodeUI::init()
 {
@@ -30,7 +33,7 @@ bool LanguageNodeUI::init()
 
     auto missingSpr = BetterButtonSprite::createWithLocalisation(ccp(100, 30), "ui/language-contribute-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
     missingSpr->setScale(0.55f);
-    auto missingBtn = CCMenuItemSpriteExtra::create(missingSpr, this, menu_selector(LanguageNodeUI::onContribute));
+    auto missingBtn = Button::create(missingSpr, this, menu_selector(LanguageNodeUI::onContribute));
     missingBtn->setPositionX(missingLabel->getScaledContentWidth() + missingBtn->getContentWidth() / 2 + 6);
 
     auto missingMenu = CCMenu::create();
@@ -43,7 +46,7 @@ bool LanguageNodeUI::init()
     auto optionsMenu = CCMenu::create();
     auto optionsSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
     optionsSpr->setScaleY(0.6f); // increases hitbox
-    auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(LanguageNodeUI::onSettings));
+    auto optionsBtn = Button::create(optionsSpr, this, menu_selector(LanguageNodeUI::onSettings));
     optionsSpr->setScale(0.4f);
     optionsMenu->addChild(optionsBtn);
 

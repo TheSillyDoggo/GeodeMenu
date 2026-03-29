@@ -1,8 +1,10 @@
 #include "../../Client/Module.hpp"
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/OptionsLayer.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 class FullOptions : public Module
 {
@@ -39,7 +41,7 @@ class $modify (OptionsLayerExt, OptionsLayer)
         if (!PlayLayer::get())
             return;
 
-        auto btn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
+        auto btn = Button::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
         btn->setID("normal-settings-btn"_spr);
 
         if (auto m = m_mainLayer->getChildByType<CCMenu>(-2))

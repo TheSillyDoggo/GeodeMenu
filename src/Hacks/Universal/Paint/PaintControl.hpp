@@ -6,6 +6,7 @@
 #include <BetterInputNode.hpp>
 #include <FloatingButton/FloatingUIButton.hpp>
 #include <SetupColourConfigUI.hpp>
+#include <Button.hpp>
 
 namespace qolmod
 {
@@ -23,7 +24,7 @@ namespace qolmod
             {
                 PaintTool tool = PaintTool::Brush;
                 cocos2d::CCSprite* sprite = nullptr;
-                CCMenuItemSpriteExtra* button = nullptr;
+                qolmod::Button* button = nullptr;
             };
             std::unordered_map<PaintTool, PaintToolData> toolSprs = {};
             std::unordered_map<PaintTool, int> toolSizes = {};

@@ -1,5 +1,8 @@
 #include "StartposSwitcherUI.hpp"
 #include "../Hacks/Utils/PlayLayer.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 StartposSwitcherUI* StartposSwitcherUI::create()
 {
@@ -30,8 +33,8 @@ bool StartposSwitcherUI::init()
     leftSpr->setScale(0.65f);
     rightSpr->setScale(0.65f);
 
-    auto leftBtn = CCMenuItemSpriteExtra::create(leftSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
-    auto rightBtn = CCMenuItemSpriteExtra::create(rightSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
+    auto leftBtn = Button::create(leftSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
+    auto rightBtn = Button::create(rightSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
     
     leftBtn->setTag(-1);
     rightBtn->setTag(1);

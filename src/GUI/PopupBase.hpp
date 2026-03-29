@@ -30,6 +30,7 @@ class PopupBase : public cocos2d::CCLayerColor, public cocos2d::CCActionTweenDel
         virtual void keyDown(cocos2d::enumKeyCodes code, double timestamp);
         virtual void keyBackClicked();
         virtual void registerWithTouchDispatcher(void);
+        
         PopupBase();
         ~PopupBase();
 

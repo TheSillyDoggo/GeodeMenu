@@ -3,12 +3,13 @@
 #include "ModuleNode.hpp"
 #include "ColourModule.hpp"
 #include "../GUI/BetterSlider.hpp"
+#include <Button.hpp>
 
 class ColourModuleNode : public ModuleNode
 {
     protected:
         CCSprite* colourSpr;
-        CCMenuItemSpriteExtra* colourBtn;
+        qolmod::Button* colourBtn;
     
     public:
         static ColourModuleNode* create(ColourModule* module);

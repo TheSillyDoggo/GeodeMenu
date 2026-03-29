@@ -1,7 +1,9 @@
 #include "../../Client/Module.hpp"
 #include <Geode/modify/PauseLayer.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 class QuestsInPause : public Module
 {
@@ -33,7 +35,7 @@ class $modify (PauseLayer)
 
         auto questsSpr = CCSprite::create("questsBtn.png"_spr);
 
-        auto questsBtn = CCMenuItemSpriteExtra::create(questsSpr, this, menu_selector(CreatorLayer::onChallenge));
+        auto questsBtn = Button::create(questsSpr, this, menu_selector(CreatorLayer::onChallenge));
 
         menu->setPosition(ccp(CCDirector::get()->getWinSize().width - 50, 50));
 

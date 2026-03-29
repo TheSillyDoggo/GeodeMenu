@@ -40,7 +40,7 @@ bool SetupColourConfigUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupColourConfigUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(SetupColourConfigUI::onClose));
     menu->addChild(btn);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
@@ -71,11 +71,11 @@ bool SetupColourConfigUI::setup()
     topRightMenu->setAnchorPoint(ccp(0.5f, 1));
     topRightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setGap(10));
     topRightMenu->setScale(0.75f);
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onSetDefault)));
-    topRightMenu->addChild(CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onUndoChanged)));
+    topRightMenu->addChild(Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onSetDefault)));
+    topRightMenu->addChild(Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onUndoChanged)));
 
-    gradientAddStepBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/add-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onAddGradientStep));
-    gradientDelStepBtn = CCMenuItemSpriteExtra::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/remove-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onDeleteGradientStep));
+    gradientAddStepBtn = Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/add-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onAddGradientStep));
+    gradientDelStepBtn = Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "colour-setup/remove-step", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(SetupColourConfigUI::onDeleteGradientStep));
     topRightMenu->addChild(gradientAddStepBtn);
     topRightMenu->addChild(gradientDelStepBtn);
 
@@ -215,7 +215,7 @@ void SetupColourConfigUI::createGradientPreview()
     gradientLineColour = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     gradientLineColour->setScale(0.65f);
 
-    auto btn = CCMenuItemSpriteExtra::create(gradientLineColour, this, menu_selector(SetupColourConfigUI::onChangeGradientLineColour));
+    auto btn = Button::create(gradientLineColour, this, menu_selector(SetupColourConfigUI::onChangeGradientLineColour));
     btn->setPosition(ccp(30, -17));
     gradientLineConfigNode->addChild(btn);
 
@@ -265,7 +265,7 @@ CCNode* SetupColourConfigUI::createGradientLine(bool timePreview, ccColor3B col,
         spr->setScale(0.4f);
         spr->setOpacity(selected ? 255 : 175);
 
-        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupColourConfigUI::onSelectGradientLine));
+        auto btn = Button::create(spr, this, menu_selector(SetupColourConfigUI::onSelectGradientLine));
         btn->setTag(tag);
 
         menu->addChild(btn);

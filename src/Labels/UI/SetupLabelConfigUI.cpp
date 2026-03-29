@@ -5,6 +5,9 @@
 #include "../../GUI/BetterButtonSprite.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 #include "LabelEventCell.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> onFinish, LabelType type)
 {
@@ -37,7 +40,7 @@ bool SetupLabelConfigUI::setup()
 
     auto menu = CCMenu::create();
 
-    auto btn = CCMenuItemSpriteExtra::create(ButtonSprite::create("OK"), this, menu_selector(SetupLabelConfigUI::onClose));
+    auto btn = Button::create(ButtonSprite::create("OK"), this, menu_selector(SetupLabelConfigUI::onClose));
     menu->addChild(btn);
 
     pagesMenu = CCMenu::create();
@@ -174,11 +177,11 @@ void SetupLabelConfigUI::createPage1()
     infoBG->setOpacity(100);
 
     auto fontSpr = BetterButtonSprite::create(ccp(100, 25), LocalisationManager::get()->getLocalisedString("ui/change-font-button"), "bigFont.fnt", "GJ_button_05.png");
-    auto fontBtn = CCMenuItemSpriteExtra::create(fontSpr, this, menu_selector(SetupLabelConfigUI::onSetFont));
+    auto fontBtn = Button::create(fontSpr, this, menu_selector(SetupLabelConfigUI::onSetFont));
     fontBtn->m_scaleMultiplier = 1.1f;
 
     auto exportSpr = BetterButtonSprite::create(ccp(100, 25), LocalisationManager::get()->getLocalisedString("ui/export-to-file-button"), "bigFont.fnt", "GJ_button_05.png");
-    auto exportBtn = CCMenuItemSpriteExtra::create(exportSpr, this, menu_selector(SetupLabelConfigUI::onExportToFile));
+    auto exportBtn = Button::create(exportSpr, this, menu_selector(SetupLabelConfigUI::onExportToFile));
     exportBtn->m_scaleMultiplier = 1.1f;
 
     auto nameTitle = CCLabelBMFont::create("Display Name", "bigFont.fnt");
@@ -275,7 +278,7 @@ void SetupLabelConfigUI::createPage2()
             currentConfig.formatString = str;
         });
 
-        auto formatBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_pasteBtn_001.png"), this, menu_selector(SetupLabelConfigUI::onPaste));
+        auto formatBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_pasteBtn_001.png"), this, menu_selector(SetupLabelConfigUI::onPaste));
 
         pages[1]->addChildAtPosition(formatInp, Anchor::Center);
         pages[1]->addChildAtPosition(formatBtn, Anchor::Center, ccp(0, -50));
@@ -288,14 +291,14 @@ void SetupLabelConfigUI::createPage2()
 
         auto spr1 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/import-from-file-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
         spr1->setMaxTextScale(0.6f);
-        auto btn1 = CCMenuItemSpriteExtra::create(spr1, this, menu_selector(SetupLabelConfigUI::onSelectImage));
+        auto btn1 = Button::create(spr1, this, menu_selector(SetupLabelConfigUI::onSelectImage));
         btn1->setTag(1);
         btn1->setPosition(ccp(-120 / 2 - 2.5f, 70));
         btn1->m_scaleMultiplier = 1.1f;
 
         auto spr2 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/default-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
         spr2->setMaxTextScale(0.6f);
-        auto btn2 = CCMenuItemSpriteExtra::create(spr2, this, menu_selector(SetupLabelConfigUI::onSelectImage));
+        auto btn2 = Button::create(spr2, this, menu_selector(SetupLabelConfigUI::onSelectImage));
         btn2->setTag(2);
         btn2->setPosition(ccp(120 / 2 + 2.5f, 70));
         btn2->m_scaleMultiplier = 1.1f;
@@ -386,7 +389,7 @@ void SetupLabelConfigUI::createPage3()
 
         auto spr = ButtonSprite::create(lbl.c_str(), 90, 90, 0.8f, false, "goldFont.fnt", "GJ_button_04.png", 30);
         spr->setScale(0.7f);
-        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SetupLabelConfigUI::onAddEvent));
+        auto btn = Button::create(spr, this, menu_selector(SetupLabelConfigUI::onAddEvent));
         btn->m_scaleMultiplier = 1.1f;
         btn->setTag(i);
 

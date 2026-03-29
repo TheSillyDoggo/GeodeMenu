@@ -22,5 +22,7 @@ namespace qolmod
             void touchMoved(int id, cocos2d::CCPoint point);
             void touchEnded(int id, cocos2d::CCPoint point);
             void touchCancelled(int id, cocos2d::CCPoint point);
+
+            virtual void visit();
     };
 };

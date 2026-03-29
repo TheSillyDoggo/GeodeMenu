@@ -19,7 +19,7 @@ void CategorySelectMenu::addCategory(std::string title, std::string sprite, std:
     sprOff->updateSelection(CategorySelectionType::Deselected);
     sprSelected->updateSelection(CategorySelectionType::Hovered);
 
-    auto btn = CCMenuItemSpriteExtra::create(sprOff, sprSelected, this, menu_selector(CategorySelectMenu::onSelect));
+    auto btn = Button::create(sprOff, sprSelected, this, menu_selector(CategorySelectMenu::onSelect));
     btn->setID(id);
     btn->setLayout(CopySizeLayout::create()->add(sprOff)->add(sprSelected));
     btn->setContentSize(ccp(105, 20));
@@ -162,7 +162,7 @@ void CategorySelectMenu::setCallback(std::function<void(std::string)> callback)
     this->callback = std::move(callback);
 }
 
-CCMenuItemSpriteExtra* CategorySelectMenu::getButton(std::string id)
+Button* CategorySelectMenu::getButton(std::string id)
 {
     for (auto button : buttons)
     {

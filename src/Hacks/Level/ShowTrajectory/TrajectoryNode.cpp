@@ -20,14 +20,14 @@ bool TrajectoryNode::init()
     if (!BaseDrawNode::init())
         return false;
 
+    instance = this;
+
     player = PlayerObject::create(0, 0, gjbgl, gjbgl->m_objectLayer, false);
     player->setVisible(false);
     gjbgl->m_objectLayer->addChild(player);
 
     setDeltaIter(0.5f);
     setIterCount(240);
-
-    instance = this;
 
     return true;
 }

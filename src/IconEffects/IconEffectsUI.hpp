@@ -5,6 +5,7 @@
 #include "IconicPlayerHook.hpp"
 #include <Nodes/CCNodeWithShader.hpp>
 #include <BetterScrollbar.hpp>
+#include <Button.hpp>
 
 class IconEffectsUI : public CategoryNode
 {
@@ -13,7 +14,7 @@ class IconEffectsUI : public CategoryNode
         {
             IconicGamemodeType gamemode = IconicGamemodeType::Cube;
             bool player2 = false;
-            CCMenuItemSpriteExtra* btn = nullptr;
+            qolmod::Button* btn = nullptr;
             qolmod::CCNodeWithShader* shader = nullptr;
             SimplePlayer* simple = nullptr;
             IconicPlayerHook* hook = nullptr;
@@ -22,7 +23,7 @@ class IconEffectsUI : public CategoryNode
         {
             AdvLabelBMFont* label = nullptr;
             CCMenuItemToggler* toggler = nullptr;
-            CCMenuItemSpriteExtra* colourBtn = nullptr;
+            qolmod::Button* colourBtn = nullptr;
             CCSprite* sprite = nullptr;
         };
         struct DualModeData
@@ -60,7 +61,7 @@ class IconEffectsUI : public CategoryNode
 
         void createDualNodes(IconicDualMode mode, int y, CCMenu* menu);
         void createEffectNodes(IconicEffectType type, int y, CCMenu* menu);
-        CCMenuItemSpriteExtra* createPreviewButton(IconicGamemodeType gamemode, bool player2);
+        qolmod::Button* createPreviewButton(IconicGamemodeType gamemode, bool player2);
 
         virtual void update(float dt);
         bool init();

@@ -1,8 +1,11 @@
 # 2.8.2
 
+- Made most UI buttons not be affected by Speedhack
 - Fixed Icon Effects UI Breaking after using app switcher (Android)
 - Fixed Show Touches not working with Better Touch Priority
 - Fixed Show Touches sometimes disabling in some parts of the UI (main levels)
+- Fixed Click Between Frames toggle not working
+- Fixed Crash in editor with particle editor
 
 # 2.8.1
 

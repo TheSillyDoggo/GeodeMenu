@@ -6,6 +6,8 @@
 #include "../../Localisation/LocalisationManager.hpp"
 #include "../BetterAlertLayer.hpp"
 
+using namespace qolmod;
+
 bool ThemeNode::init()
 {
     if (!CategoryNode::init())
@@ -56,7 +58,7 @@ bool ThemeNode::init()
     colourMenu->addChild(addColourBtn(-7));
 
     btnSpr = BetterButtonSprite::create(ccp(96, 35), "", "goldFont.fnt", "GJ_button_04.png");
-    auto btnOptions = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(ThemeNode::onChangeThemeOptions));
+    auto btnOptions = Button::create(btnSpr, this, menu_selector(ThemeNode::onChangeThemeOptions));
     btnOptions->setContentSize(gradientBtn->getContentSize());
     btnOptions->getNormalImage()->setPosition(btnOptions->getContentSize() / 2);
 
@@ -81,7 +83,7 @@ bool ThemeNode::init()
     animPreviewMenu->setContentSize(ccp(0, 0));
     animPreviewMenu->setScale(1.25f);
 
-    auto animPreviewBtn = CCMenuItemSpriteExtra::create(CCSprite::create("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
+    auto animPreviewBtn = Button::create(CCSprite::create("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
     animPreviewBtn->setPosition(ccp(70, 10));
     animPreviewMenu->addChild(animPreviewBtn);
 
@@ -114,7 +116,7 @@ ThemeNode* ThemeNode::get()
     return instance;
 }
 
-CCMenuItemSpriteExtra* ThemeNode::addColourBtn(int colour)
+Button* ThemeNode::addColourBtn(int colour)
 {
     float width = ((colourBG->getScaledContentWidth() - (2.5f * 3)) / 2) / 0.695f;
 
@@ -131,7 +133,7 @@ CCMenuItemSpriteExtra* ThemeNode::addColourBtn(int colour)
     spr2->setScale(0.8f);
     spr2->updateLayout();
 
-    auto btn = CCMenuItemSpriteExtra::create(spr, spr2, this, menu_selector(ThemeNode::onChangeColour));
+    auto btn = Button::create(spr, spr2, this, menu_selector(ThemeNode::onChangeColour));
     btn->m_scaleMultiplier = 1;
     btn->setTag(colour);
     colourBtns.emplace(colour, btn);
@@ -151,7 +153,7 @@ void ThemeNode::updateCustomImageSprite()
     }
 }
 
-CCMenuItemSpriteExtra* ThemeNode::addAnimBtn(MenuAnimation anim)
+Button* ThemeNode::addAnimBtn(MenuAnimation anim)
 {
     auto size = ccp(200, 25);
 
@@ -160,7 +162,7 @@ CCMenuItemSpriteExtra* ThemeNode::addAnimBtn(MenuAnimation anim)
     static_cast<CCNodeRGBA*>(spr2->getChildByTag(0))->setColor(ccc3(200, 200, 200));
     static_cast<AdvLabelBMFont*>(spr2->getChildByTag(1))->setColor(ccc3(200, 200, 200));
 
-    auto btn = CCMenuItemSpriteExtra::create(spr, spr2, this, menu_selector(ThemeNode::onChangeAnim));
+    auto btn = Button::create(spr, spr2, this, menu_selector(ThemeNode::onChangeAnim));
     btn->m_scaleMultiplier = 1;
     btn->setTag((int)anim);
 

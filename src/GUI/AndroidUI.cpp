@@ -14,6 +14,8 @@
 #include "EasyBG.hpp"
 #include <BlurAPI.hpp>
 
+using namespace qolmod;
+
 bool AndroidUI::setup()
 {
     instance = this;
@@ -41,7 +43,7 @@ bool AndroidUI::setup()
 
     auto backMenu = CCMenu::create();
     
-    backBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
+    backBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
 
     catMenu = CategorySelectMenu::create();

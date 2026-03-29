@@ -1,4 +1,7 @@
 #include "CustomRewardSetupUI.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 CustomRewardSetupUI* CustomRewardSetupUI::create()
 {
@@ -53,10 +56,10 @@ bool CustomRewardSetupUI::setup()
     menu2->updateLayout();
 
     auto sprCreate = BetterButtonSprite::createWithLocalisation(ccp(65, 30), "create-custom-reward/create-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btnCreate = CCMenuItemSpriteExtra::create(sprCreate, this, menu_selector(CustomRewardSetupUI::onCreateReward));
+    auto btnCreate = Button::create(sprCreate, this, menu_selector(CustomRewardSetupUI::onCreateReward));
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/cancel-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(CustomRewardSetupUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(CustomRewardSetupUI::onClose));
     
     menu->addChild(btnCreate);
     menu->addChild(btn);

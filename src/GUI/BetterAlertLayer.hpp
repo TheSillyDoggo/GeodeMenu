@@ -14,7 +14,7 @@ class BetterAlertLayer : public PopupBase
         AdvLabelBMFont* content = nullptr;
 
         FLAlertLayerProtocol* delegate = nullptr;
-        char const* title;
+        std::string title;
         std::string desc;
         char const* btn1;
         char const* btn2;

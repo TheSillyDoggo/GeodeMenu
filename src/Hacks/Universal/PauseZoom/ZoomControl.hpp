@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include <GrabNodeLayer.hpp>
+#include <Button.hpp>
 
 namespace qolmod
 {
@@ -10,8 +11,8 @@ namespace qolmod
         protected:
             GrabNodeLayer* grab = nullptr;
             CCLabelBMFont* label = nullptr;
-            CCMenuItemSpriteExtra* zoomIn = nullptr;
-            CCMenuItemSpriteExtra* zoomOut = nullptr;
+            qolmod::Button* zoomIn = nullptr;
+            qolmod::Button* zoomOut = nullptr;
             CCMenu* menu = nullptr;
 
             ~ZoomControl();

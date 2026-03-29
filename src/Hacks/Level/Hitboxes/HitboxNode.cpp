@@ -293,6 +293,8 @@ void HitboxNode::drawPlayerTrails()
         decrement = (1.0f / (float)std::max<int>(max, 480)) * 0.75f;
     }
 
+    disableCull();
+
     int i = 0;
     for (auto& state : trailStates)
     {
@@ -346,7 +348,12 @@ void HitboxNode::drawPlayerTrails()
 
         drawPolygon(vertices, 4, ccc4f(col.r, col.g, col.b, v), getHitboxThickness(), col, BorderAlignment::Inside);
         i++;
+
+        if (true)
+            enableCull(state.rectReg, true);
     }
+
+    disableCull();
     
     i = 0;
     for (auto& state : trailStates)
@@ -379,7 +386,12 @@ void HitboxNode::drawPlayerTrails()
 
         drawPolygon(vertices, 4, ccc4f(col.r, col.g, col.b, v), getHitboxThickness(), col, BorderAlignment::Inside);
         i++;
+
+        if (true)
+            enableCull(state.rectBlue, true);
     }
+
+    disableCull();
 }
 
 void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
@@ -526,15 +538,6 @@ void HitboxNode::drawLine(cocos2d::CCPoint point1, cocos2d::CCPoint point2, coco
 void HitboxNode::setOnlyObject(GameObject* go)
 {
     this->onlyObject = go;
-}
-
-bool HitboxNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
-{
-    #if GEODE_COMP_GD_VERSION < 22081
-    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
-    #else
-    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor, alignment);
-    #endif
 }
 
 bool HitboxNode::drawCircle(cocos2d::CCPoint const& center, float radius, cocos2d::_ccColor4F const& fillColor, float borderWidth, cocos2d::_ccColor4F const& borderColor, unsigned int segments)

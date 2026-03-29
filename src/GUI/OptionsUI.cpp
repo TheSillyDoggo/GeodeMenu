@@ -4,6 +4,12 @@
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterAlertLayer.hpp"
+#include <ModuleInfoAlert.hpp>
+#include <SetupShortcutUI.hpp>
+#include <EditKeyConfigUI.hpp>
+#include <Button.hpp>
+
+using namespace qolmod;
 
 OptionsUI* OptionsUI::create(Module* mod)
 {
@@ -47,10 +53,10 @@ bool OptionsUI::setup()
     auto menu3 = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(OptionsUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(OptionsUI::onClose));
     menu->addChild(btn);
 
-    auto infoBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));
+    auto infoBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));
     infoBtn->getNormalImage()->setScale(0.75f);
     menu2->addChild(infoBtn);
 
@@ -70,12 +76,12 @@ bool OptionsUI::setup()
     favBtn->m_offButton->setColor(ccc3(150, 150, 150));
     favBtn->m_offButton->setOpacity(150);
 
-    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), this, menu_selector(ModuleNode::onChangeKeybind));
+    auto btnKeybind = Button::create(CCSprite::create("keybinds.png"_spr), this, menu_selector(OptionsUI::onChangeKeybind));
     btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
     btnKeybind->setPosition(ccp(m_size.width - 18 * 2, -m_size.height + 18 * 2));
 
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(ModuleNode::onChangeShortcut));
+    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(OptionsUI::onChangeShortcut));
     btnShortcut->setUserData(module);
     btnShortcut->setPosition(ccp(2, -m_size.height + 18 * 2));    
 
@@ -107,53 +113,7 @@ bool OptionsUI::setup()
 
 void OptionsUI::onInfo(CCObject* sender)
 {
-    auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", module->getID()).c_str(), fmt::format("descriptions/{}", module->getID()), "ui/ok-button");
-    alert->setUserData(module);
-    alert->setUserObject("fav-btn", favBtn);
-    alert->show();
-
-    auto menu = CCMenu::create();
-    // この二行は怖いだ
-    menu->setPosition(ccp(0, 25));
-
-    auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(OptionsUI::onInfoToggleFavourite));
-    btn->setPositionX(25);
-    btn->toggle(module->isFavourited());
-
-    btn->setContentSize(btn->getContentSize() * 3);
-
-    btn->m_offButton->setContentSize(btn->getContentSize());
-    btn->m_offButton->setPosition(btn->getContentSize() / 2);
-    btn->m_offButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
-    
-    btn->m_onButton->setContentSize(btn->getContentSize());
-    btn->m_onButton->setPosition(btn->getContentSize() / 2);
-    btn->m_onButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
-
-    btn->m_offButton->setColor(ccc3(150, 150, 150));
-    btn->m_offButton->setOpacity(150);
-
-    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
-    btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
-    btnKeybind->setPositionX(alert->m_mainLayer->getContentWidth() - 25);
-    btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
-
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), alert, menu_selector(ModuleNode::onChangeShortcut));
-    btnShortcut->setPositionX(alert->m_mainLayer->getContentWidth() - 25 - 25);
-
-    // btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
-    // btnShortcut->m_offButton->setOpacity(150);
-
-    menu->addChild(btn);
-    menu->addChild(btnKeybind);
-    menu->addChild(btnShortcut);
-    alert->m_mainLayer->addChild(menu, 8008569);
-
-    // title
-    if (auto label = alert->m_mainLayer->getChildByType<CCLabelBMFont>(0))
-    {
-        label->limitLabelWidth(270, 0.9f, 0);
-    }
+    ModuleInfoAlert::create(module)->show();
 }
 
 void OptionsUI::onToggleFavourite(CCObject* sender)
@@ -164,16 +124,26 @@ void OptionsUI::onToggleFavourite(CCObject* sender)
         FavouritesNode::get()->refresh();
 }
 
-void OptionsUI::onInfoToggleFavourite(CCObject* sender)
+void OptionsUI::onChangeShortcut(CCObject* sender)
 {
-    // 'this' is the alert in the context of this function
+    auto ui = SetupShortcutUI::create([this](bool enabled, ModuleShortcutConfig conf)
+    {
+        module->setShortcutConfig(enabled, conf);
+    });
 
-    auto mod = static_cast<Module*>(this->getUserData());
-    auto favBtn = static_cast<CCMenuItemToggler*>(this->getUserObject("fav-btn"));
+    ui->modID = module->getID();
+    ui->setStartConfig(module->isShortcutEnabled(), module->getShortcutConfig());
+    ui->show();
+}
 
-    favBtn->toggle(!mod->isFavourited());
-    mod->setFavourited(!mod->isFavourited());
+void OptionsUI::onChangeKeybind(CCObject* sender)
+{
+    auto ui = EditKeyConfigUI::create([this](KeyConfigStruct config)
+    {
+        module->setKeybind(config);
+    });
 
-    if (FavouritesNode::get())
-        FavouritesNode::get()->refresh();
+    ui->setDefaultConfig({ {}, Keycode::KEY_Unknown });
+    ui->setStartConfig(module->getKeybind());
+    ui->show();
 }

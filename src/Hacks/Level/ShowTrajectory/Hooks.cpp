@@ -134,7 +134,7 @@ class $modify(GJBaseGameLayer)
 
     void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
     {
-        if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating())
+        if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating() && p1)
         {
             gd::vector<GameObject*> p1old = *p1;
 

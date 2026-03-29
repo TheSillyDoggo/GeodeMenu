@@ -1,5 +1,7 @@
 #include "DropdownList.hpp"
 
+using namespace qolmod;
+
 /*
 auto test = DropdownList::create({DropdownItem({"questsBtn.png"_spr, "i send you on a quest to find yuri"}), DropdownItem({"heart.png"_spr, "yuri yuri yuri"}), DropdownItem({"keybinds.png"_spr, "use this keyboard to find yuri"}), DropdownItem({"discord.png"_spr, "send me yuri on this platform"})});
 test->setPosition(ccp(150, 150));
@@ -49,7 +51,7 @@ void DropdownList::addItem(DropdownItem item)
         container->addChildAtPosition(lbl, Anchor::Left, ccp(inset + (spr ? (spr->getScaledContentWidth() + inset) : 0), 0));
     }
 
-    auto btn = CCMenuItemSpriteExtra::create(container, this, nullptr);
+    auto btn = Button::create(container, this, nullptr);
     btn->setPosition(getContentSize() / 2 - ccp(0, getContentHeight() * (items.size() + 1)));
     this->addChild(btn);
 

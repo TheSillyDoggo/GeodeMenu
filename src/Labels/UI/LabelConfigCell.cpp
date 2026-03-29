@@ -3,6 +3,9 @@
 #include "../../GUI/GrabNodeLayer.hpp"
 #include "../../Hacks/Speedhack/Speedhack.hpp"
 #include "SetupLabelConfigUI.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 LabelConfigCell* LabelConfigCell::create(CCSize size, LabelConfig config, int index)
 {
@@ -66,12 +69,12 @@ bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
     
     auto optionsSpr = CCSprite::createWithSpriteFrameName("accountBtn_settings_001.png");
     optionsSpr->setScale(0.4f);
-    auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(LabelConfigCell::onOptions));
+    auto optionsBtn = Button::create(optionsSpr, this, menu_selector(LabelConfigCell::onOptions));
 
     auto deleteSpr = CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png");
     deleteSpr->setScale(0.55f);
 
-    auto deleteBtn = CCMenuItemSpriteExtra::create(deleteSpr, this, menu_selector(LabelConfigCell::onDelete));
+    auto deleteBtn = Button::create(deleteSpr, this, menu_selector(LabelConfigCell::onDelete));
     deleteBtn->setPositionX(-19.75f);
 
     auto grabSpr = CCSprite::create("draggable.png"_spr);

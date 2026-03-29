@@ -1,5 +1,8 @@
 #include "EndscreenStatLabel.hpp"
 #include "../Level/Noclip/Noclip.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 EndscreenStatLabel* EndscreenStatLabel::create(EndscreenStatType type)
 {
@@ -31,7 +34,7 @@ bool EndscreenStatLabel::init(EndscreenStatType type)
 
     if (isClickable())
     {
-        auto btn = CCMenuItemSpriteExtra::create(label, this, menu_selector(EndscreenStatLabel::onCallback));
+        auto btn = Button::create(label, this, menu_selector(EndscreenStatLabel::onCallback));
         btn->m_scaleMultiplier = 1.1f;
         btn->setPosition(label->getScaledContentSize() / 2);
 

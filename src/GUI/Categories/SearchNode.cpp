@@ -2,6 +2,9 @@
 #include "../CategoryTabSprite.hpp"
 #include "../SearchFiltersUI.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 SearchNode* SearchNode::get()
 {
@@ -35,7 +38,7 @@ bool SearchNode::init()
     auto filterMenu = CCMenu::create();
     auto filterSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
     filterSpr->setScale(1.15f);
-    auto filterBtn = CCMenuItemSpriteExtra::create(filterSpr, this, menu_selector(SearchNode::onFilter));
+    auto filterBtn = Button::create(filterSpr, this, menu_selector(SearchNode::onFilter));
 
     filterMenu->addChild(filterBtn);
 
@@ -66,7 +69,7 @@ bool SearchNode::init()
     joinSpr2->updateSelection(CategorySelectionType::Hovered);
     joinSpr2->label->setScale(0.45f);
 
-    auto joinBtn = CCMenuItemSpriteExtra::create(joinSpr, joinSpr2, this, menu_selector(SearchNode::onJoinDiscord));
+    auto joinBtn = Button::create(joinSpr, joinSpr2, this, menu_selector(SearchNode::onJoinDiscord));
     joinBtn->m_scaleMultiplier = 1;
     joinBtn->setPosition(ccp(100 / 2, 0));
     errorMenu->addChild(joinBtn);

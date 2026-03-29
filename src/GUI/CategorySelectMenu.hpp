@@ -4,6 +4,7 @@
 #include "BetterScrollbar.hpp"
 #include "CategoryTabSprite.hpp"
 #include <CCMenuExt.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -22,7 +23,7 @@ class CategorySelectMenu : public CCMenu
         BetterScrollbar* scrollbar = nullptr;
         qolmod::CCMenuExt* bottomBtns = nullptr;
         qolmod::CCMenuExt* standardBtns = nullptr;
-        std::vector<CCMenuItemSpriteExtra*> buttons = {};
+        std::vector<qolmod::Button*> buttons = {};
         std::string selectedTab = "";
         std::function<void(std::string)> callback = nullptr;
         float touchInitialScrollY = 0;
@@ -47,7 +48,7 @@ class CategorySelectMenu : public CCMenu
         bool shouldScrollbarShow();
         void updateButtonSizes();
 
-        CCMenuItemSpriteExtra* getButton(std::string id);
+        qolmod::Button* getButton(std::string id);
 
         void setCallback(std::function<void(std::string)> callback);
 

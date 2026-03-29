@@ -4,6 +4,9 @@
 #include "BetterButtonSprite.hpp"
 #include <Modules/LanguagePreloadFont.hpp>
 #include <Modules/TempLoadLanguage.hpp>
+#include <Button.hpp>
+
+using namespace qolmod;
 
 LanguageOptionsUI* LanguageOptionsUI::create()
 {
@@ -44,7 +47,7 @@ bool LanguageOptionsUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(LanguageOptionsUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(LanguageOptionsUI::onClose));
     menu->addChild(btn);
 
     node = CategoryNode::create();

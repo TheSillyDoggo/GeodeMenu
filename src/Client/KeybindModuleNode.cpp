@@ -2,6 +2,8 @@
 #include "../GUI/KeycodeListenerLayer.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 
+using namespace qolmod;
+
 KeybindModuleNode* KeybindModuleNode::create(KeybindModule* module)
 {
     auto pRet = new KeybindModuleNode();
@@ -26,7 +28,7 @@ void KeybindModuleNode::setup()
 
     keycodeNode = KeycodeNode::create(0);
 
-    auto bg = CCMenuItemSpriteExtra::create(keycodeNode, this, menu_selector(KeybindModuleNode::onChangeBind));
+    auto bg = Button::create(keycodeNode, this, menu_selector(KeybindModuleNode::onChangeBind));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(bg, Anchor::Right, ccp(-20, 0));

@@ -3,6 +3,7 @@
 #include "ModuleNode.hpp"
 #include "KeybindModule.hpp"
 #include "../GUI/KeycodeNode.hpp"
+#include <Button.hpp>
 
 class KeybindModuleNode : public ModuleNode
 {

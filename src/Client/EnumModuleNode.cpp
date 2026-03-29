@@ -2,6 +2,8 @@
 #include "EnumModule.hpp"
 #include <LocalisationManager.hpp>
 
+using namespace qolmod;
+
 EnumModuleNode* EnumModuleNode::create(EnumModule* module)
 {
     auto pRet = new EnumModuleNode();
@@ -20,8 +22,11 @@ void EnumModuleNode::setup()
 {
     label = AdvLabelBMFont::createWithString("", "bigFont.fnt");
 
-    leftBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onLeft));
-    rightBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onRight));
+    leftBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onLeft));
+    rightBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onRight));
+
+    leftBtn->setRepeatEnabled(true);
+    rightBtn->setRepeatEnabled(true);
 
     leftBtn->getNormalImage()->setScale(0.6f);
     rightBtn->getNormalImage()->setScaleX(-0.6f);
@@ -47,7 +52,7 @@ void EnumModuleNode::updateNode()
     updateButtonEnabled(rightBtn, (mod->getValue() != std::prev/*ter*/(names.end())->first));
 }
 
-void EnumModuleNode::updateButtonEnabled(CCMenuItemSpriteExtra* btn, bool enabled)
+void EnumModuleNode::updateButtonEnabled(Button* btn, bool enabled)
 {
     btn->setEnabled(enabled);
     btn->setColor(enabled ? ccWHITE : ccc3(150, 150, 150));

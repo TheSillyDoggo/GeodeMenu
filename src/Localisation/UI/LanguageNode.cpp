@@ -2,6 +2,9 @@
 #include "../LocalisationManager.hpp"
 #include "../../GUI/BetterButtonSprite.hpp"
 #include "LanguageContributorsUI.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 LanguageNode* LanguageNode::create(std::string lang)
 {
@@ -41,7 +44,7 @@ bool LanguageNode::init(std::string lang)
     percentLabel->setScale(0.4f);
     percentLabel->setOpacity(175);
 
-    auto percentBtn = CCMenuItemSpriteExtra::create(percentLabel, this, menu_selector(LanguageNode::onMissingTranslations));
+    auto percentBtn = Button::create(percentLabel, this, menu_selector(LanguageNode::onMissingTranslations));
     percentBtn->setPosition(percentBtn->getContentSize() * ccp(-0.5f, 0.5f));
     percentBtn->setEnabled(percent != 1.0f);
 
@@ -52,7 +55,7 @@ bool LanguageNode::init(std::string lang)
     useMenu->setAnchorPoint(ccp(0, 0));
     useMenu->setScale(0.75f);
 
-    auto useBtn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName(inUse ? "GJ_selectSongOnBtn_001.png" : "GJ_selectSongBtn_001.png"), this, menu_selector(LanguageNode::onSelectLanguage));
+    auto useBtn = Button::create(CCSprite::createWithSpriteFrameName(inUse ? "GJ_selectSongOnBtn_001.png" : "GJ_selectSongBtn_001.png"), this, menu_selector(LanguageNode::onSelectLanguage));
     useBtn->setEnabled(!inUse);
 
     useMenu->addChild(useBtn);
@@ -63,7 +66,7 @@ bool LanguageNode::init(std::string lang)
     auto creditsSpr = BetterButtonSprite::createWithLocalisation(ccp(120, 28), "ui/language-contributors-button", "bigFont.fnt", "GJ_button_04.png");
     creditsSpr->setScale(0.65f);
 
-    auto creditsBtn = CCMenuItemSpriteExtra::create(creditsSpr, this, menu_selector(LanguageNode::onViewCredits));
+    auto creditsBtn = Button::create(creditsSpr, this, menu_selector(LanguageNode::onViewCredits));
     creditsBtn->m_scaleMultiplier = 1.1f;
 
     creditsMenu->addChild(creditsBtn);
@@ -82,7 +85,7 @@ bool LanguageNode::init(std::string lang)
 
 void LanguageNode::onSelectLanguage(CCObject* sender)
 {
-    static_cast<CCMenuItemSpriteExtra*>(sender)->setEnabled(false);
+    static_cast<Button*>(sender)->setEnabled(false);
 
     LocalisationManager::get()->switchLocalisationWithUI(lang);
 }
@@ -108,7 +111,7 @@ void LanguageNode::onMissingTranslations(CCObject* sender)
 
     if (missingKeys.empty())
     {
-        static_cast<CCMenuItemSpriteExtra*>(sender)->setEnabled(false);
+        static_cast<Button*>(sender)->setEnabled(false);
         return;
     }
 

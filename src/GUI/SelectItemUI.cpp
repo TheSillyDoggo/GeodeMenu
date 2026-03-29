@@ -1,6 +1,7 @@
 #include "SelectItemUI.hpp"
 #include "BetterButtonSprite.hpp"
 
+using namespace qolmod;
 
 SelectItemUI* SelectItemUI::create(SelectItemType type, std::function<void(std::string)> onFinish)
 {
@@ -122,7 +123,7 @@ void SelectItemUI::updateUI()
             spr->addChild(spr2);
         }
 
-        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SelectItemUI::onSelectItem));
+        auto btn = Button::create(spr, this, menu_selector(SelectItemUI::onSelectItem));
         btn->setID(item);
 
         buttonsMenu->addChild(btn);
@@ -161,7 +162,7 @@ bool SelectItemUI::setup()
 
     auto menu = CCMenu::create();
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SelectItemUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(SelectItemUI::onClose));
     menu->addChild(btn);
 
     selectedOutline = CCSprite::createWithSpriteFrameName("GJ_select_001.png");

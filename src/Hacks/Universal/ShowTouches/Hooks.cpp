@@ -5,18 +5,6 @@
 
 using namespace geode::prelude;
 
-class ShowTouches : public Module
-{
-    public:
-        MODULE_SETUP(ShowTouches)
-        {
-            setName("Show Touches");
-            setID("show-touches");
-            setCategory("Universal");
-            setDescription("Shows a circle on the screen whenever you touch");
-        }
-};
-
 SUBMIT_HACK(ShowTouches)
 SUBMIT_OPTION(ShowTouches, CircleColour)
 SUBMIT_OPTION(ShowTouches, TrailColour)

@@ -4,6 +4,7 @@
 #include "BackgroundSprite.hpp"
 #include "BetterInputNode.hpp"
 #include "PopupBase.hpp"
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -21,7 +22,7 @@ class SelectItemUI : public PopupBase
         std::function<void(std::string)> onFinish = nullptr;
         CCMenu* buttonsMenu = nullptr;
         CCSprite* selectedOutline = nullptr;
-        std::unordered_map<std::string, CCMenuItemSpriteExtra*> buttons = {};
+        std::unordered_map<std::string, qolmod::Button*> buttons = {};
         std::string selectedItem;
 
     public:

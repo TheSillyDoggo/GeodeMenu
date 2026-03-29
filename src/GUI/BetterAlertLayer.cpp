@@ -2,6 +2,9 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterButtonSprite.hpp"
 #include "EasyBG.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
@@ -100,7 +103,7 @@ bool BetterAlertLayer::setup()
 
     auto spr = BetterButtonSprite::create(ccp(54.25f, 30), btn1, "goldFont.fnt", "GJ_button_01.png");
     spr->fixSize();
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(BetterAlertLayer::onButton));
+    auto btn = Button::create(spr, this, menu_selector(BetterAlertLayer::onButton));
     btn->setTag(1);
     menu->addChild(btn);
 
@@ -111,7 +114,7 @@ bool BetterAlertLayer::setup()
 
         float w = spr->getScaledContentWidth() / 2 + spr2->getScaledContentWidth() / 2 + 10;
 
-        auto btn2 = CCMenuItemSpriteExtra::create(spr2, this, menu_selector(BetterAlertLayer::onButton));
+        auto btn2 = Button::create(spr2, this, menu_selector(BetterAlertLayer::onButton));
         btn2->setTag(2);
         menu->addChild(btn2);
 

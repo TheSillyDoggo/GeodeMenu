@@ -4,6 +4,7 @@
 #include "Module.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include <CCMenuExt.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -13,7 +14,7 @@ class ModuleNode : public qolmod::CCMenuExt
         static inline std::vector<ModuleNode*> nodes = {};
         Module* module = nullptr;
         CCMenuItemToggler* btn = nullptr;
-        CCMenuItemSpriteExtra* infoBtn = nullptr;
+        qolmod::Button* infoBtn = nullptr;
         AdvLabelBMFont* label = nullptr;
         bool disabled = false;
 
@@ -28,11 +29,7 @@ class ModuleNode : public qolmod::CCMenuExt
         void onToggle(CCObject* sender);
         void onToggleError(CCObject* sender);
         void onInfo(CCObject* sender);
-        void onToggleFavourite(CCObject* sender);
-        void onInfoToggleFavourite(CCObject* sender);
         void onOptions(CCObject* sender);
-        void onChangeKeybind(CCObject* sender);
-        void onChangeShortcut(CCObject* sender);
 
         void onUpdateLabelColour(float dt);
         bool isDisabled();

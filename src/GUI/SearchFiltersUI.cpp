@@ -1,6 +1,9 @@
 #include "SearchFiltersUI.hpp"
 #include "Categories/SearchNode.hpp"
 #include "BetterButtonSprite.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 SearchFiltersUI* SearchFiltersUI::create()
 {
@@ -20,8 +23,6 @@ SearchFiltersUI* SearchFiltersUI::create()
 
 bool SearchFiltersUI::setup()
 {
-    
-
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
@@ -35,7 +36,7 @@ bool SearchFiltersUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(SearchFiltersUI::onClose));
+    auto btn = Button::create(spr, this, menu_selector(SearchFiltersUI::onClose));
     menu->addChild(btn);
 
     auto node = CategoryNode::create();

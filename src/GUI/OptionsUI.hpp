@@ -21,8 +21,9 @@ class OptionsUI : public PopupBase
         static OptionsUI* create(Module* mod);
 
         void onInfo(CCObject* sender);
-        void onInfoToggleFavourite(CCObject* sender);
         void onToggleFavourite(CCObject* sender);
+        void onChangeShortcut(CCObject* sender);
+        void onChangeKeybind(CCObject* sender);
 
         CCSize calculateSize();
         virtual bool setup();

@@ -24,8 +24,11 @@ void ModBoolModule::setUserEnabled(bool enabled)
 
 bool ModBoolModule::getUserEnabled()
 {
-    // if (mod && mod->isLoaded())
-    if (false)
+    #if GEODE_COMP_GD_VERSION == 22081
+    if (mod && mod->isLoaded())
+    #else
+    if (mod && mod->isEnabled())
+    #endif
     {
         if (invert)
             return !mod->getSettingValue<bool>(setting);

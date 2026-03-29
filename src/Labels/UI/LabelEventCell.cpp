@@ -1,5 +1,8 @@
 #include "LabelEventCell.hpp"
 #include "../../GUI/SetupColourConfigUI.hpp"
+#include <Button.hpp>
+
+using namespace qolmod;
 
 LabelEventCell* LabelEventCell::create(CCSize size, LabelEvent config, SetupLabelConfigUI* ui, int index)
 {
@@ -42,7 +45,7 @@ bool LabelEventCell::init(CCSize size, LabelEvent config, SetupLabelConfigUI* ui
     auto delSpr = CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png");
     delSpr->setScale(0.7f);
 
-    auto del = CCMenuItemSpriteExtra::create(delSpr, this, menu_selector(LabelEventCell::onDelete));
+    auto del = Button::create(delSpr, this, menu_selector(LabelEventCell::onDelete));
     del->setPosition(this->getContentSize() * ccp(1, 0.5f) + ccp(-15, -5));
     menu->addChild(del);
 
@@ -127,10 +130,10 @@ bool LabelEventCell::init(CCSize size, LabelEvent config, SetupLabelConfigUI* ui
     auto btnSpr = ButtonSprite::create("Inf", "bigFont.fnt", "GJ_button_05.png");
     btnSpr->setScale(0.25f);
 
-    auto holdInf = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
+    auto holdInf = Button::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
     holdInf->setTag(1);
 
-    auto fadeOutInf = CCMenuItemSpriteExtra::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
+    auto fadeOutInf = Button::create(btnSpr, this, menu_selector(LabelEventCell::onInf));
     fadeOutInf->setTag(2);
 
     fadeOutInf->setPositionY(-13);
@@ -176,7 +179,7 @@ bool LabelEventCell::init(CCSize size, LabelEvent config, SetupLabelConfigUI* ui
     setColourLbl->setScale(0.7f);
     setColourBG->addChildAtPosition(setColourLbl, Anchor::Center, ccp(-1, 1));
 
-    auto setColourBtn = CCMenuItemSpriteExtra::create(setColourBG, this, menu_selector(LabelEventCell::onSetColour));
+    auto setColourBtn = Button::create(setColourBG, this, menu_selector(LabelEventCell::onSetColour));
     setColourMenu->addChild(setColourBtn);
 
     this->addChildAtPosition(sliderFadeIn,  Anchor::Left, ccp(60, 12));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -13,7 +14,7 @@ struct DropdownItem
 class DropdownList : public CCMenu
 {
     protected:
-        std::unordered_map<CCMenuItemSpriteExtra*, DropdownItem> items = {};
+        std::unordered_map<qolmod::Button*, DropdownItem> items = {};
         int selectedIndex = 0;
         CCScale9Sprite* bg = nullptr;
 

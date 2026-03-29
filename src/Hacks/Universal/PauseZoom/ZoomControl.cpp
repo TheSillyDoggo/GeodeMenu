@@ -45,8 +45,8 @@ bool ZoomControl::init()
     menu->setAnchorPoint(ccp(0, 0));
     menu->setScale(0.5f);
 
-    zoomIn = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_zoomInBtn_001.png"), this, menu_selector(ZoomControl::onZoomIn));
-    zoomOut = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_zoomOutBtn_001.png"), this, menu_selector(ZoomControl::onZoomOut));
+    zoomIn = Button::create(CCSprite::createWithSpriteFrameName("GJ_zoomInBtn_001.png"), this, menu_selector(ZoomControl::onZoomIn));
+    zoomOut = Button::create(CCSprite::createWithSpriteFrameName("GJ_zoomOutBtn_001.png"), this, menu_selector(ZoomControl::onZoomOut));
     label = CCLabelBMFont::create("100%", "bigFont.fnt");
 
     zoomIn->setPositionY(40);

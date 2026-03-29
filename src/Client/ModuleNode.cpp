@@ -7,6 +7,9 @@
 #include "../GUI/BetterAlertLayer.hpp"
 #include "../GUI/SetupShortcutUI.hpp"
 #include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
+#include <ModuleInfoAlert.hpp>
+
+using namespace qolmod;
 
 ModuleNode* ModuleNode::create(Module* module)
 {
@@ -45,7 +48,7 @@ void ModuleNode::setup()
         auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
         infoSpr->setScale(0.55f + 0.35f);
 
-        infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
+        infoBtn = Button::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
 
         infoSpr->setScale(infoSpr->getScale() - 0.35f);
 
@@ -55,7 +58,7 @@ void ModuleNode::setup()
     if (hasOptions)
     {
         auto optionsSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
-        auto optionsBtn = CCMenuItemSpriteExtra::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
+        auto optionsBtn = Button::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
 
         this->addChildAtPosition(optionsBtn, Anchor::Left, ccp(label->getScaledContentWidth() + 43, 0));
     }
@@ -107,20 +110,6 @@ void ModuleNode::updateNode()
         infoBtn->setColor(c);
 
     onUpdateLabelColour(0);
-}
-
-void ModuleNode::onChangeKeybind(CCObject* sender)
-{
-    auto mod = static_cast<Module*>(this->getUserData());
-
-    auto ui = EditKeyConfigUI::create([this, mod](KeyConfigStruct config)
-    {
-        mod->setKeybind(config);
-    });
-
-    ui->setDefaultConfig({ {}, Keycode::KEY_Unknown });
-    ui->setStartConfig(mod->getKeybind());
-    ui->show();
 }
 
 void ModuleNode::onToggle(CCObject* sender)
@@ -181,92 +170,14 @@ void ModuleNode::onToggleError(CCObject* sender)
     BetterAlertLayer::create(module->getName().c_str(), disabledMsg, "OK")->show();
 }
 
-void ModuleNode::onToggleFavourite(CCObject* sender)
-{
-    module->setFavourited(!module->isFavourited());
-    updateAllNodes(this);
-
-    FavouritesNode::get()->refresh();
-}
-
-void ModuleNode::onInfoToggleFavourite(CCObject* sender)
-{
-    // 'this' is the alert in the context of this function
-
-    auto mod = static_cast<Module*>(this->getUserData());
-
-    mod->setFavourited(!mod->isFavourited());
-
-    if (FavouritesNode::get())
-        FavouritesNode::get()->refresh();
-}
-
 void ModuleNode::onOptions(CCObject* sender)
 {
     OptionsUI::create(module)->show();
 }
 
-void ModuleNode::onChangeShortcut(CCObject* sender)
-{
-    auto mod = static_cast<Module*>(this->getUserData());
-
-    auto ui = SetupShortcutUI::create([this, mod](bool enabled, ModuleShortcutConfig conf)
-    {
-        mod->setShortcutConfig(enabled, conf);
-    });
-    ui->modID = mod->getID();
-    ui->setStartConfig(mod->isShortcutEnabled(), mod->getShortcutConfig());
-    ui->show();
-}
-
 void ModuleNode::onInfo(CCObject* sender)
 {
-    auto alert = BetterAlertLayer::createWithLocalisation(fmt::format("names/{}", getID()).c_str(), fmt::format("descriptions/{}", getID()), "ui/ok-button");
-    alert->setUserData(module);
-    alert->show();
-
-    auto menu = CCMenu::create();
-    // この二行は怖いだ
-    menu->setPosition(ccp(0, 25));
-
-    auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), alert, menu_selector(ModuleNode::onInfoToggleFavourite));
-    btn->setPositionX(25);
-    btn->toggle(module->isFavourited());
-
-    btn->setContentSize(btn->getContentSize() * 3);
-
-    btn->m_offButton->setContentSize(btn->getContentSize());
-    btn->m_offButton->setPosition(btn->getContentSize() / 2);
-    btn->m_offButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
-    
-    btn->m_onButton->setContentSize(btn->getContentSize());
-    btn->m_onButton->setPosition(btn->getContentSize() / 2);
-    btn->m_onButton->getNormalImage()->setPosition(btn->getContentSize() / 2);
-
-    btn->m_offButton->setColor(ccc3(150, 150, 150));
-    btn->m_offButton->setOpacity(150);
-
-    auto btnKeybind = CCMenuItemSpriteExtra::create(CCSprite::create("keybinds.png"_spr), alert, menu_selector(ModuleNode::onChangeKeybind));
-    btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
-    btnKeybind->setPositionX(alert->m_mainLayer->getContentWidth() - 25);
-    btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
-
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), alert, menu_selector(ModuleNode::onChangeShortcut));
-    btnShortcut->setPositionX(alert->m_mainLayer->getContentWidth() - 25 - 25);
-
-    // btnShortcut->m_offButton->setColor(ccc3(150, 150, 150));
-    // btnShortcut->m_offButton->setOpacity(150);
-
-    menu->addChild(btn);
-    menu->addChild(btnKeybind);
-    menu->addChild(btnShortcut);
-    alert->m_mainLayer->addChild(menu, 8008569);
-
-    // title
-    if (auto label = alert->m_mainLayer->getChildByType<CCLabelBMFont>(0))
-    {
-        label->limitLabelWidth(270, 0.9f, 0);
-    }
+    ModuleInfoAlert::create(module)->show();
 }
 
 bool ModuleNode::init(Module* module)

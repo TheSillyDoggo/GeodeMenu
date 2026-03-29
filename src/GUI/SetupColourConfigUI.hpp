@@ -10,6 +10,7 @@
 #include "PopupBase.hpp"
 #include "BetterInputNode.hpp"
 #include <Nodes/CCNodeWithShader.hpp>
+#include <Button.hpp>
 
 using namespace geode::prelude;
 
@@ -37,8 +38,8 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         CCMenu* gradientLineConfigNode = nullptr;
         CCSprite* gradientLineColour = nullptr;
         BetterSlider* gradientLineLocation = nullptr;
-        CCMenuItemSpriteExtra* gradientAddStepBtn = nullptr;
-        CCMenuItemSpriteExtra* gradientDelStepBtn = nullptr;
+        qolmod::Button* gradientAddStepBtn = nullptr;
+        qolmod::Button* gradientDelStepBtn = nullptr;
         BetterSlider* speedSlider = nullptr;
         BetterInputNode* speedInput = nullptr;
         CCNode* colArea = nullptr;

@@ -90,20 +90,6 @@ void BaseDrawNode::ensureCapacity(unsigned int count)
 	}
 }
 
-void BaseDrawNode::drawSegment(const CCPoint& startPoint, const CCPoint& endPoint, float radius, const ccColor4F& color)
-{
-    CCPoint direction = ccpNormalize(ccpSub(endPoint, startPoint));
-    CCPoint perpendicular = ccp(-direction.y, direction.x);
-
-    CCPoint vertices[4];
-    vertices[0] = ccpAdd(startPoint, ccpMult(perpendicular, radius));
-    vertices[1] = ccpSub(startPoint, ccpMult(perpendicular, radius));
-    vertices[2] = ccpSub(endPoint, ccpMult(perpendicular, radius));
-    vertices[3] = ccpAdd(endPoint, ccpMult(perpendicular, radius));
-
-    drawPolygon(vertices, 4, color, 0, color);
-}
-
 void BaseDrawNode::transform(void)
 {
     if (worldSpace)
@@ -176,6 +162,74 @@ void BaseDrawNode::setWorldSpace(bool world)
 bool BaseDrawNode::useWorldSpace()
 {
     return worldSpace;
+}
+
+void BaseDrawNode::drawSegment(const CCPoint& startPoint, const CCPoint& endPoint, float radius, const ccColor4F& color)
+{
+    CCPoint direction = ccpNormalize(ccpSub(endPoint, startPoint));
+    CCPoint perpendicular = ccp(-direction.y, direction.x);
+
+    CCPoint vertices[4];
+    vertices[0] = ccpAdd(startPoint, ccpMult(perpendicular, radius));
+    vertices[1] = ccpSub(startPoint, ccpMult(perpendicular, radius));
+    vertices[2] = ccpSub(endPoint, ccpMult(perpendicular, radius));
+    vertices[3] = ccpAdd(endPoint, ccpMult(perpendicular, radius));
+
+    drawPolygon(vertices, 4, color, 0, color);
+}
+
+void BaseDrawNode::enableCull(cocos2d::CCRect area, bool outer)
+{
+    this->cullingEnabled = true;
+    this->outerCull = outer;
+    this->cullArea = area;
+}
+
+void BaseDrawNode::disableCull()
+{
+    this->cullingEnabled = false;
+}
+
+bool BaseDrawNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor, cocos2d::BorderAlignment alignment)
+{
+    /*if (cullingEnabled)
+    {
+        if (outerCull)
+        {
+            for (size_t i = 0; i < count; i++)
+            {
+                auto& vert = verts[i];
+
+                if (vert.y > cullArea.getMinY())
+                    vert.y = cullArea.getMinY();
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < count; i++)
+            {
+                auto& vert = verts[i];
+
+                if (vert.x < cullArea.getMinX())
+                    vert.x = cullArea.getMinX();
+
+                if (vert.x > cullArea.getMaxX())
+                    vert.x = cullArea.getMaxX();
+
+                if (vert.y < cullArea.getMinY())
+                    vert.y = cullArea.getMinY();
+
+                if (vert.y > cullArea.getMaxY())
+                    vert.y = cullArea.getMaxY();
+            }
+        }
+    }*/
+
+    #if GEODE_COMP_GD_VERSION >= 22081
+    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor, alignment);
+    #else
+    return CCDrawNode::drawPolygon(verts, count, fillColor, borderWidth, borderColor);
+    #endif
 }
 
 // Hooks
