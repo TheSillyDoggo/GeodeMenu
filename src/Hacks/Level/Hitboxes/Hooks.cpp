@@ -12,8 +12,9 @@ bool HitboxBaseGameLayer::init()
         return false;
 
     m_fields->node = HitboxNode::create();
+    m_fields->node->setZOrder(2);
 
-    this->addChild(m_fields->node, 10);
+    this->insertBefore(m_fields->node, m_uiLayer);
     return true;
 }
 

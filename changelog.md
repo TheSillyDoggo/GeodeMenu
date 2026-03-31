@@ -12,7 +12,7 @@
 - Fixed Crash entering editor with Show Trajectory enabled
 - Fixed Custom Background not saving after reopening the game on iOS
 - Fixed Best Run not getting set to 100% after completing the level
-- **This is likely the last update with 2.2074 support**
+- Fixed Hitboxes, Show Trajectory, Coin Tracers and Noclip Tint drawing above the UI
 
 # 2.8.1
 

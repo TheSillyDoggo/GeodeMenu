@@ -66,7 +66,7 @@ class $modify (PlayLayer)
         if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        this->addChild(qolmod::CoinTracerNode::create(), 10);
+        this->insertBefore(qolmod::CoinTracerNode::create(), m_uiLayer);
 
         return true;
     }

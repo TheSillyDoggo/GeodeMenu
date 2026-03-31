@@ -140,9 +140,9 @@ class $modify (PlayLayer)
 
         m_fields->tintOverlay = CCLayerColor::create(ccc4(0, 0, 0, 0));
         m_fields->tintOverlay->setID("noclip-tint-overlay"_spr);
-        m_fields->tintOverlay->setZOrder(9);
+        m_fields->tintOverlay->setZOrder(2);
         
-        this->addChild(m_fields->tintOverlay);
+        this->insertBefore(m_fields->tintOverlay, m_uiLayer);
         return true;
     }
 
