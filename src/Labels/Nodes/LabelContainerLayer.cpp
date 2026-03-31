@@ -115,14 +115,16 @@ void LabelContainerLayer::sortNodeChildren(CCNode* node)
 
         n->setPositionX(bb.size.width * modX);
 
+        float yInc = n->boundingBox().size.height;
+
         if (node->getAnchorPoint().y == 0)
-            n->setPositionY(y - (height * node->getAnchorPoint().y));
+            n->setPositionY(y - (height * node->getAnchorPoint().y) + yInc / 2);
         else if (node->getAnchorPoint().y == 0.5f)
-            n->setPositionY((height / 2) - y);
+            n->setPositionY((height / 2) - y - yInc / 2);
         else
-            n->setPositionY(-y);
+            n->setPositionY(-y - yInc / 2);
         
-        y += n->boundingBox().size.height;
+        y += yInc;
     }
 }
 

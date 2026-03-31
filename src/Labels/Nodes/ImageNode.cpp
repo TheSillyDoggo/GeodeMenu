@@ -10,6 +10,14 @@ void ImageNode::labelConfigUpdated()
 
     sprite = CCSprite::create(config.imageLocation.c_str());
 
+    #if GEODE_COMP_GD_VERSION >= 22081
+    if (sprite && sprite->isUsingFallback())
+        sprite = nullptr;
+    #endif
+
+    if (sprite && sprite->getUserObject("geode.texture-loader/fallback"))
+        sprite = nullptr;
+
     if (!sprite)
     {
         sprite = CCSprite::create("sog.png"_spr);

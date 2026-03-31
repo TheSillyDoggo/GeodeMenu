@@ -208,6 +208,13 @@ void SetupLabelConfigUI::createPage1()
     opacityLine->setRotation(90);
     opacityLine->setScaleY(0.9f);
 
+    auto rotationTitle = CCLabelBMFont::create("Rotation", "bigFont.fnt");
+    rotationTitle->setScale(0.5f);
+
+    auto rotationLine = CCSprite::createWithSpriteFrameName("edit_vLine_001.png");
+    rotationLine->setRotation(90);
+    rotationLine->setScaleY(0.9f);
+
     nameInp = TextInput::create(145, "Display Name", "bigFont.fnt");
     nameInp->setScale(0.7f);
     nameInp->setCommonFilter(CommonFilter::Any);
@@ -260,6 +267,8 @@ void SetupLabelConfigUI::createPage1()
     pages[0]->addChildAtPosition(scaleLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 18 - 13));
     pages[0]->addChildAtPosition(opacityTitle, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38));
     pages[0]->addChildAtPosition(opacityLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38 - 13));
+    pages[0]->addChildAtPosition(rotationTitle, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38 - 56));
+    pages[0]->addChildAtPosition(rotationLine, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -38 - 13 - 56));
 
     pages[0]->addChildAtPosition(generalBG, Anchor::Center, ccp(12.5f, 0));
     pages[0]->addChildAtPosition(fontBtn, Anchor::Center, ccp(12.5f, -65));
@@ -709,6 +718,9 @@ void SetupLabelConfigUI::updateImagePreview()
     if (imagePreview && imagePreview->isUsingFallback())
         imagePreview = nullptr;
     #endif
+
+    if (imagePreview && imagePreview->getUserObject("geode.texture-loader/fallback"))
+        imagePreview = nullptr;
 
     if (!imagePreview)
     {
