@@ -275,9 +275,9 @@ class $modify (GJBaseGameLayer)
     #endif
     {
         #if GEODE_COMP_GD_VERSION >= 22081
-        return GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+        GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
         #else
-        return GJBaseGameLayer::processQueuedButtons();
+        GJBaseGameLayer::processQueuedButtons();
         #endif
 
         if (PlayLayer::get() ? !PlayLayer::get()->m_isPaused : true)
