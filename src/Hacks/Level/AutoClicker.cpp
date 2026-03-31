@@ -13,6 +13,11 @@ class Autoclicker : public Module
             setID("autoclicker");
             setCategory("Level");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
+            
+            #if GEODE_COMP_GD_VERSION != 22081
+            setDisabled(true);
+            setDisabledMessage("Autoclicker is incompatible with 2.2074");
+            #endif
         }
 };
 
@@ -154,6 +159,8 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
     }
 
     #if GEODE_COMP_GD_VERSION >= 22081
+
+    #if GEODE_COMP_GD_VERSION >= 22081
     void processQueuedButtons(float dt, bool clearInputQueue)
     #else
     void processQueuedButtons()
@@ -212,4 +219,6 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
         m_fields->p1State = false;
         m_fields->p2State = false;
     }
+
+    #endif
 };
