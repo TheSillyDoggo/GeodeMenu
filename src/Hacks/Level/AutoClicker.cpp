@@ -153,11 +153,19 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
         }
     }
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     void processQueuedButtons(float dt, bool clearInputQueue)
+    #else
+    void processQueuedButtons()
+    #endif
     {
-        if (!Autoclicker::get()->getRealEnabled() || dt == 0.0f)
+        if (!Autoclicker::get()->getRealEnabled() || (PlayLayer::get() && PlayLayer::get()->m_isPaused))
         {
+            #if GEODE_COMP_GD_VERSION >= 22081
             return GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+            #else
+            return GJBaseGameLayer::processQueuedButtons();
+            #endif
         }
 
         auto fields = m_fields.self();
@@ -188,7 +196,11 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
             }
         }
 
-        GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+        #if GEODE_COMP_GD_VERSION >= 22081
+        return GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+        #else
+        return GJBaseGameLayer::processQueuedButtons();
+        #endif
     }
 
     void resetLevelVariables()

@@ -268,11 +268,19 @@ class $modify (GJBaseGameLayer)
         }
     }
 
+    #if GEODE_COMP_GD_VERSION >= 22081
     void processQueuedButtons(float dt, bool clearInputQueue)
+    #else
+    void processQueuedButtons()
+    #endif
     {
-        GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+        #if GEODE_COMP_GD_VERSION >= 22081
+        return GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
+        #else
+        return GJBaseGameLayer::processQueuedButtons();
+        #endif
 
-        if (dt != 0.0f)
+        if (PlayLayer::get() ? !PlayLayer::get()->m_isPaused : true)
         {
             __didTickThisFrame = true;
 

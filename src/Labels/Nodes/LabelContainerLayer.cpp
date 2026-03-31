@@ -108,17 +108,16 @@ void LabelContainerLayer::sortNodeChildren(CCNode* node)
         if (!n->isVisible())
             continue;
 
+        auto anchor = n->getParent()->getAnchorPoint();
         auto bb = n->boundingBox();
 
-        n->setPositionX(bb.size.width *
-        (
-            node->getParent()->getAnchorPoint().x == 0 ? 2 : 
-            (node->getParent()->getAnchorPoint().x == 0.5f ? 0 : -2)
-        ));
+        float modX = anchor.x == 0 ? 0.5f : (anchor.x == 1 ? -0.5f : 0);
 
-        if (node->getParent()->getAnchorPoint().y == 0)
-            n->setPositionY(y - (height * node->getParent()->getAnchorPoint().y));
-        else if (node->getParent()->getAnchorPoint().y == 0.5f)
+        n->setPositionX(bb.size.width * modX);
+
+        if (node->getAnchorPoint().y == 0)
+            n->setPositionY(y - (height * node->getAnchorPoint().y));
+        else if (node->getAnchorPoint().y == 0.5f)
             n->setPositionY((height / 2) - y);
         else
             n->setPositionY(-y);
