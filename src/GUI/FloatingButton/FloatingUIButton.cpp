@@ -255,7 +255,7 @@ bool FloatingUIButton::ccTouchBegan(CCTouch* touch)
 
 void FloatingUIButton::ccTouchMoved(CCTouch* touch)
 {
-    if (movable)
+    if (movable && !isMoving)
     {
         if (cocos2d::ccpDistance(touch->getStartLocation(), touch->getLocation()) > 5)
         {

@@ -42,6 +42,9 @@ LabelConfig LabelConfig::createFromObject(matjson::Value obj)
     if (obj.contains("label_type") && obj["label_type"].isNumber())
         conf.type = (LabelType)obj["label_type"].asInt().unwrap();
 
+    if (obj.contains("rotation") && obj["rotation"].isNumber())
+        conf.rotation = obj["rotation"].asDouble().unwrap();
+
     if (obj.contains("image_location") && obj["image_location"].isString())
         conf.imageLocation = obj["image_location"].asString().unwrap();
 
@@ -77,6 +80,7 @@ matjson::Value LabelConfig::save()
     obj["noclip_only"] = noclipOnly;
     obj["visible"] = visible;
     obj["label_type"] = (int)type;
+    obj["rotation"] = rotation;
     obj["image_location"] = imageLocation;
 
     matjson::Value eventsArr = obj.array();

@@ -268,28 +268,23 @@ class $modify (GJBaseGameLayer)
         }
     }
 
-    #if GEODE_COMP_GD_VERSION >= 22081
-    void processCommands(float dt, bool isHalfTick, bool isLastTick)
+    void processQueuedButtons(float dt, bool clearInputQueue)
     {
-        GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
-    #else
-    void processCommands(float dt)
-    {
-        GJBaseGameLayer::processCommands(dt);
-    #endif
-    
-        __didTickThisFrame = true;
+        GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
 
-        for (auto node : baseDrawNodes)
+        if (dt != 0.0f)
         {
-            node->onTickStart();
+            __didTickThisFrame = true;
+
+            for (auto node : baseDrawNodes)
+            {
+                node->onTickStart();
+            }
         }
     }
 
     virtual void update(float dt)
     {
-        auto tick = m_gameState.m_currentProgress;
-
         GJBaseGameLayer::update(dt);
 
         if (!m_started || __didTickThisFrame)

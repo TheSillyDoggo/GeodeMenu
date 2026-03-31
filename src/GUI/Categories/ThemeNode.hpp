@@ -11,7 +11,7 @@ class ThemeNode : public CategoryNode
 {
     protected:
         std::unordered_map<int, qolmod::Button*> colourBtns;
-        std::unordered_map<MenuAnimation, qolmod::Button*> animBtns;
+        std::unordered_map<qolmod::MenuAnimation, qolmod::Button*> animBtns;
         CCScale9Sprite* colourBG = nullptr;
         ModuleNode* blurBG = nullptr;
         ModuleNode* colonThree = nullptr;
@@ -33,8 +33,8 @@ class ThemeNode : public CategoryNode
         void updateColourSprite();
         void updateCustomImageSprite();
 
-        qolmod::Button* addAnimBtn(MenuAnimation anim);
-        CCNode* getAnimContainer(MenuAnimation anim);
+        qolmod::Button* addAnimBtn(qolmod::MenuAnimation anim);
+        CCNode* getAnimContainer(qolmod::MenuAnimation anim);
         void updateAnimSprite();
 
         bool init();

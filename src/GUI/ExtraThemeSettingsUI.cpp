@@ -110,7 +110,7 @@ void ExtraThemeSettingsUI::onSelectImage(CCObject* sender)
             {
                 auto filePath = result.unwrap().value_or("");
 
-                Mod::get()->setSavedValue<std::string>("custom-background-path", filePath.string());
+                ThemeManager::get()->setCustomSprite(filePath);
                 bg->updateCustomSprite();
                 imagePreview->updateCustomSprite();
 
@@ -132,7 +132,7 @@ void ExtraThemeSettingsUI::onSelectImage(CCObject* sender)
 
 void ExtraThemeSettingsUI::onResetDefault(CCObject* sender)
 {
-    Mod::get()->setSavedValue<std::string>("custom-background-path", "");
+    ThemeManager::get()->setCustomSprite("");
     bg->updateCustomSprite();
     imagePreview->updateCustomSprite();
 

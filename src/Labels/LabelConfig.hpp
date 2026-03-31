@@ -24,6 +24,7 @@ struct LabelConfig
     bool noclipOnly = false;
     bool visible = true;
     std::vector<LabelEvent> events = {};
+    float rotation = 0;
     // Image
     std::string imageLocation = "";
 

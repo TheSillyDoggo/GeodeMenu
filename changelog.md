@@ -1,11 +1,17 @@
 # 2.8.2
 
+- Added Label Rotation
 - Made most UI buttons not be affected by Speedhack
+- Made Search show the name of the option in the top-right
+- Fixed Hitboxes, Autoclicker, Show Trajectory, and Coin Tracers not working on macOS
 - Fixed Icon Effects UI Breaking after using app switcher (Android)
 - Fixed Show Touches not working with Better Touch Priority
 - Fixed Show Touches sometimes disabling in some parts of the UI (main levels)
 - Fixed Click Between Frames toggle not working
 - Fixed Crash in editor with particle editor
+- Fixed Crash entering editor with Show Trajectory enabled
+- Fixed Custom Background not saving after reopening the game on iOS
+- Fixed Best Run not getting set to 100% after completing the level
 
 # 2.8.1
 

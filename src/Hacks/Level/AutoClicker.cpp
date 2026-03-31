@@ -153,19 +153,11 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
         }
     }
 
-    #if GEODE_COMP_GD_VERSION >= 22081
-    void processCommands(float dt, bool isHalfTick, bool isLastTick)
-    #else
-    void processCommands(float dt)
-    #endif
+    void processQueuedButtons(float dt, bool clearInputQueue)
     {
-        if (!Autoclicker::get()->getRealEnabled())
+        if (!Autoclicker::get()->getRealEnabled() || dt == 0.0f)
         {
-            #if GEODE_COMP_GD_VERSION >= 22081
-            return GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
-            #else
-            return GJBaseGameLayer::processCommands(dt);
-            #endif
+            return GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
         }
 
         auto fields = m_fields.self();
@@ -196,11 +188,7 @@ class $modify (AutoclickerBaseGameLayer, GJBaseGameLayer)
             }
         }
 
-        #if GEODE_COMP_GD_VERSION >= 22081
-        GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
-        #else
-        GJBaseGameLayer::processCommands(dt);
-        #endif
+        GJBaseGameLayer::processQueuedButtons(dt, clearInputQueue);
     }
 
     void resetLevelVariables()

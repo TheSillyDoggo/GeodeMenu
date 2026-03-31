@@ -1,6 +1,9 @@
 #include "BackgroundSprite.hpp"
 #include "../Utils/Casts.hpp"
 #include "Modules/GradientBGColours.hpp"
+#include <ThemeManager.hpp>
+
+using namespace qolmod;
 
 bool BackgroundSprite::init()
 {
@@ -38,7 +41,7 @@ bool BackgroundSprite::init()
 
     clippingCustom->addChild(gradientDarken);
 
-    setTheme(Mod::get()->getSavedValue<int>("theme", -6));
+    setTheme((int)ThemeManager::get()->getBackground());
 
     this->addChildAtPosition(colouredBG, Anchor::Center);
     this->addChildAtPosition(clipping, Anchor::Center);
@@ -131,17 +134,7 @@ void BackgroundSprite::updateCustomSprite()
     if (customImg)
         customImg->removeFromParent();
     
-    customImg = nullptr;
-
-    auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
-
-    if (!path.empty())
-    {
-        customImg = CCSprite::create(path.c_str());
-    }
-
-    if (!customImg)
-        customImg = CCSprite::create("sog.png"_spr);
+    customImg = ThemeManager::get()->createCustomSprite();
 
     clippingCustom->addChild(customImg);
     customImg->setScaleX(getContentWidth() / customImg->getContentWidth());

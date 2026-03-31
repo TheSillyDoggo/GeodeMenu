@@ -1,6 +1,7 @@
 #include "LabelContainerLayer.hpp"
 #include "TextLabelNode.hpp"
 #include "../../Hacks/Speedhack/Speedhack.hpp"
+#include <Utils.hpp>
 
 LabelContainerLayer* LabelContainerLayer::get()
 {
@@ -70,7 +71,10 @@ void LabelContainerLayer::update(float dt)
 
     for (auto node : nodes)
     {
-        node->setPosition(node->getPosition() + node->getLabelConfig().offset);
+        node->setPosition(
+            node->getPosition() + 
+            node->getLabelConfig().offset
+        );
     }
 }
 
@@ -94,7 +98,7 @@ void LabelContainerLayer::sortNodeChildren(CCNode* node)
         if (!n->isVisible())
             continue;
 
-        height += n->getScaledContentHeight();
+        height += n->boundingBox().size.height;
     }
     
     for (size_t i = 0; i < node->getChildrenCount(); i++)
@@ -104,16 +108,22 @@ void LabelContainerLayer::sortNodeChildren(CCNode* node)
         if (!n->isVisible())
             continue;
 
-        n->setPositionX(0);
+        auto bb = n->boundingBox();
 
-        if (node->getAnchorPoint().y == 0)
-            n->setPositionY(y - (height * node->getAnchorPoint().y));
-        else if (node->getAnchorPoint().y == 0.5f)
+        n->setPositionX(bb.size.width *
+        (
+            node->getParent()->getAnchorPoint().x == 0 ? 2 : 
+            (node->getParent()->getAnchorPoint().x == 0.5f ? 0 : -2)
+        ));
+
+        if (node->getParent()->getAnchorPoint().y == 0)
+            n->setPositionY(y - (height * node->getParent()->getAnchorPoint().y));
+        else if (node->getParent()->getAnchorPoint().y == 0.5f)
             n->setPositionY((height / 2) - y);
         else
             n->setPositionY(-y);
         
-        y += n->getScaledContentHeight();
+        y += n->boundingBox().size.height;
     }
 }
 
@@ -145,7 +155,6 @@ void LabelContainerLayer::updateConfigs()
     {
         auto node = LabelNode::createForType(conf.type);
         node->setLabelConfig(conf);
-        node->setAnchorPoint(LabelManager::get()->anchorToPoint(conf.anchor));
 
         nodes.push_back(node);
         anchors[conf.anchor]->addChild(node);

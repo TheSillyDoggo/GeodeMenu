@@ -27,6 +27,23 @@ void BestPlayLayer::destroyPlayer(PlayerObject* p0, GameObject* p1)
     PlayLayer::destroyPlayer(p0, p1);
 }
 
+void BestPlayLayer::levelComplete()
+{
+    PlayLayer::levelComplete();
+
+    m_fields->lastPercent = getCurrentPercent();
+    m_fields->toPercent = getCurrentPercent();
+
+    auto length = m_fields->toPercent - m_fields->fromPercent;
+
+    if (length > m_fields->bestLength)
+    {
+        m_fields->bestLength = length;
+        m_fields->bestFrom = m_fields->fromPercent;
+        m_fields->bestTo = m_fields->toPercent;
+    }
+}
+
 std::string BestPlayLayer::getRoundedString(float f)
 {
     return "Not implemented";

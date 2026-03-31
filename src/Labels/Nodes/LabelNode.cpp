@@ -21,6 +21,8 @@ LabelNode* LabelNode::createForType(LabelType type)
 
 bool LabelNode::init()
 {
+    this->setAnchorPoint(ccp(0.5f, 0.5f));
+
     setup();
 
     return true;
@@ -30,6 +32,7 @@ void LabelNode::updateGeneral(float dt)
 {
     this->setVisible(isVisible());
     this->setScale(config.scale);
+    this->setRotation(config.rotation);
 
     if (isVisible())
         update(dt);

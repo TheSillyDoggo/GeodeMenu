@@ -23,6 +23,7 @@ class SetupLabelConfigUI : public PopupBase
         TextInput* nameInp;
         TextInput* scaleInp;
         TextInput* opacityInp;
+        TextInput* rotationInp;
         CCMenuItemToggler* cheatIndicatorToggler;
         CCMenuItemToggler* noclipOnlyToggler;
         TextInput* offsetXInp;

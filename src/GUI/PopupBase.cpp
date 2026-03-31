@@ -5,6 +5,7 @@
 #include "Modules/PopupUIScale.hpp"
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 bool PopupBase::init(float width, float height)
 {

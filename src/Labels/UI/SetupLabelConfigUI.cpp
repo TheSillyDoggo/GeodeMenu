@@ -17,6 +17,7 @@ SetupLabelConfigUI* SetupLabelConfigUI::create(std::function<void(LabelConfig)> 
     pRet->onFinish = onFinish;
     pRet->type = type;
 
+    pRet->setTag((int)type);
     if (pRet && pRet->initAnchored(size.width, size.height))
     {
         pRet->autorelease();
@@ -91,11 +92,13 @@ void SetupLabelConfigUI::updateUI()
         toggler->toggle(toggler->getTag() == selectedPage);
     }
 
-    formatInp->setString(currentConfig.formatString);
+    if (formatInp)
+        formatInp->setString(currentConfig.formatString);
 
     nameInp->setString(currentConfig.displayName);
     scaleInp->setString(utils::numToString<float>(currentConfig.scale, 2));
     opacityInp->setString(utils::numToString<float>(currentConfig.opacity, 2));
+    rotationInp->setString(utils::numToString<float>(currentConfig.rotation, 2));
 
     offsetXInp->setString(utils::numToString<float>(currentConfig.offset.x, 2));
     offsetYInp->setString(utils::numToString<float>(currentConfig.offset.y, 2));
@@ -229,6 +232,14 @@ void SetupLabelConfigUI::createPage1()
         currentConfig.opacity = utils::numFromString<float>(str).unwrapOr(currentConfig.opacity);
     });
 
+    rotationInp = TextInput::create(145, "Rotation", "bigFont.fnt");
+    rotationInp->setScale(0.7f);
+    rotationInp->setCommonFilter(CommonFilter::Float);
+    rotationInp->setCallback([this](const std::string& str)
+    {
+        currentConfig.rotation = utils::numFromString<float>(str).unwrapOr(currentConfig.rotation);
+    });
+
     cheatIndicatorToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
     noclipOnlyToggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
 
@@ -256,6 +267,7 @@ void SetupLabelConfigUI::createPage1()
     pages[0]->addChildAtPosition(nameInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, 42));
     pages[0]->addChildAtPosition(scaleInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -11));
     pages[0]->addChildAtPosition(opacityInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -67));
+    pages[0]->addChildAtPosition(rotationInp, Anchor::Left, ccp(20 + infoBG->getScaledContentWidth() / 2, -67 - 56));
     pages[0]->addChildAtPosition(cheatIndicatorToggler, Anchor::Center, ccp(-25, 65));
     pages[0]->addChildAtPosition(noclipOnlyToggler, Anchor::Center, ccp(-25, 30));
     pages[0]->addChildAtPosition(cheatIndicatorLbl, Anchor::Center, ccp(-10, 65));
@@ -692,6 +704,11 @@ void SetupLabelConfigUI::updateImagePreview()
     }
 
     imagePreview = CCSprite::create(currentConfig.imageLocation.c_str());
+
+    #if GEODE_COMP_GD_VERSION >= 22081
+    if (imagePreview && imagePreview->isUsingFallback())
+        imagePreview = nullptr;
+    #endif
 
     if (!imagePreview)
     {

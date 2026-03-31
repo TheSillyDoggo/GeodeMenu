@@ -1,17 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-
-enum class MenuAnimation
-{
-    None = 0,
-    FromTop = 1,
-    FromBottom = 2,
-    FromLeft = 3,
-    FromRight = 4,
-    Scale = 5,
-    FadeIn = 6
-};
+#include <ThemeManager.hpp>
 
 class PopupBase : public cocos2d::CCLayerColor, public cocos2d::CCActionTweenDelegate
 {
@@ -58,6 +48,6 @@ class PopupBase : public cocos2d::CCLayerColor, public cocos2d::CCActionTweenDel
         virtual void visit();
         virtual void draw();
 
-        void playAnimation(MenuAnimation anim);
+        void playAnimation(qolmod::MenuAnimation anim);
         void onClose(CCObject* sender);
 };

@@ -177,6 +177,24 @@ void SearchNode::addModule(Module* module)
         bg->setPosition(ccp(1, 1));
         bg->schedule(schedule_selector(SearchNode::updateColour));
         node->addChild(bg);
+
+        std::string hintStr = "";
+
+        Module* n = module;
+        while (n->getParent())
+        {
+            hintStr = fmt::format("{}{}{}", n->getParent()->getName(), hintStr.empty() ? "" : "/", hintStr);
+
+            n = n->getParent();
+        }
+
+        auto hint = AdvLabelBMFont::createWithString(hintStr, "bigFont.fnt");
+        hint->setOpacity(150);
+        hint->setScale(0.25f);
+        hint->setAnchorPoint(ccp(1, 1));
+        hint->setZOrder(696969);
+
+        node->addChildAtPosition(hint, Anchor::TopRight, ccp(-2.5f, 0));
     }
 }
 

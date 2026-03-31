@@ -238,7 +238,7 @@ CCNode* ThemeNode::getAnimContainer(MenuAnimation anim)
 
 void ThemeNode::onChangeColour(CCObject* sender)
 {
-    Mod::get()->setSavedValue<int>("theme", sender->getTag());
+    ThemeManager::get()->setBackground((BackgroundType)sender->getTag());
 
     if (AndroidUI::get())
     {
@@ -268,14 +268,14 @@ void ThemeNode::onPreviewAnim(CCObject* sender)
 
 void ThemeNode::onChangeThemeOptions(CCObject* sender)
 {
-    auto theme = Mod::get()->getSavedValue<int>("theme", -6);
+    auto theme = (int)ThemeManager::get()->getBackground();
 
     ExtraThemeSettingsUI::create(theme == -7)->show();
 }
 
 void ThemeNode::updateColourSprite()
 {
-    auto theme = Mod::get()->getSavedValue<int>("theme", -6);
+    auto theme = (int)ThemeManager::get()->getBackground();
 
     for (auto btn : colourBtns)
     {
