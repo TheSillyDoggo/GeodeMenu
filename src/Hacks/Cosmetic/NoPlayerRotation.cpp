@@ -1,5 +1,6 @@
 #include "../../Client/Module.hpp"
-#include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/PlayerObject.hpp>
+#include <VisitHook.hpp>
 
 using namespace geode::prelude;
 
@@ -125,62 +126,87 @@ SUBMIT_OPTION(NoPlayerRotation, NoRotRobot);
 SUBMIT_OPTION(NoPlayerRotation, NoRotSpider);
 SUBMIT_OPTION(NoPlayerRotation, NoRotSwing);
 
-class $modify (GJBaseGameLayer)
+namespace qolmod
 {
-    bool noRotateEnabled(PlayerObject* po)
+    class PlayerObjectVisitHook : public qolmod::VisitHook
     {
-        if (po->m_isShip)
-        {
-            if (po->m_isPlatformer)
-                return NoRotJetpack::get()->getRealEnabled();
-            else
-                return NoRotShip::get()->getRealEnabled();
-        }
-        else if (po->m_isBall)
-        {
-            return NoRotBall::get()->getRealEnabled();
-        }
-        else if (po->m_isBird)
-        {
-            return NoRotUfo::get()->getRealEnabled();
-        }
-        else if (po->m_isDart)
-        {
-            return NoRotWave::get()->getRealEnabled();
-        }
-        else if (po->m_isRobot)
-        {
-            return NoRotRobot::get()->getRealEnabled();
-        }
-        else if (po->m_isSpider)
-        {
-            return NoRotSpider::get()->getRealEnabled();
-        }
-        else if (po->m_isSwing)
-        {
-            return NoRotSwing::get()->getRealEnabled();
-        }
+        public:
+            CREATE_FUNC(PlayerObjectVisitHook)
+            PlayerObject* player = nullptr;
+            float rot = 0;
+            float rot2 = 0;
 
-        return NoRotCube::get()->getRealEnabled();
-    }
-
-    virtual void update(float dt)
-    {
-        GJBaseGameLayer::update(dt);
-
-        if (NoPlayerRotation::get()->getRealEnabled())
-        {
-            if (m_player1 && noRotateEnabled(m_player1))
+            bool noRotateEnabled(PlayerObject* po)
             {
-                m_player1->setRotation(0);
-                m_player1->m_iconSprite->setRotation(0);
+                if (!NoPlayerRotation::get()->getRealEnabled())
+                    return false;
+
+                if (po->m_isShip)
+                {
+                    if (po->m_isPlatformer)
+                        return NoRotJetpack::get()->getRealEnabled();
+                    else
+                        return NoRotShip::get()->getRealEnabled();
+                }
+                else if (po->m_isBall)
+                {
+                    return NoRotBall::get()->getRealEnabled();
+                }
+                else if (po->m_isBird)
+                {
+                    return NoRotUfo::get()->getRealEnabled();
+                }
+                else if (po->m_isDart)
+                {
+                    return NoRotWave::get()->getRealEnabled();
+                }
+                else if (po->m_isRobot)
+                {
+                    return NoRotRobot::get()->getRealEnabled();
+                }
+                else if (po->m_isSpider)
+                {
+                    return NoRotSpider::get()->getRealEnabled();
+                }
+                else if (po->m_isSwing)
+                {
+                    return NoRotSwing::get()->getRealEnabled();
+                }
+
+                return NoRotCube::get()->getRealEnabled();
             }
 
-            if (m_player2 && noRotateEnabled(m_player1))
+            virtual void preVisit()
             {
-                m_player2->setRotation(0);
-                m_player2->m_iconSprite->setRotation(0);
+                rot = player->getRotation();
+                rot2 = player->m_iconSprite->getRotation();
+
+                if (noRotateEnabled(player))
+                {
+                    player->setRotation(0);
+                    player->m_iconSprite->setRotation(0);
+                }
             }
-        }
+
+            virtual void postVisit(cocos2d::CCNode* node)
+            {
+                player->setRotation(rot);
+                player->m_iconSprite->setRotation(rot2);
+            }
+    };
+};
+
+class $modify (PlayerObject)
+{
+    bool init(int player, int ship, GJBaseGameLayer* gameLayer, cocos2d::CCLayer* layer, bool playLayer)
+    {
+        if (!PlayerObject::init(player, ship, gameLayer, layer, playLayer))
+            return false;
+
+        auto vh = qolmod::PlayerObjectVisitHook::create();
+        vh->player = this;
+
+        this->setGrid(vh);
+        return true;
     }
 };

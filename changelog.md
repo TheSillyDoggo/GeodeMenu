@@ -1,3 +1,9 @@
+# 2.8.3
+
+- Fixed No Rotation changing the players rotated hitbox
+- Fixed Show Trajectory having a trail
+- Fixed Hitboxes not updating when dead
+
 # 2.8.2
 
 - Added Label Rotation

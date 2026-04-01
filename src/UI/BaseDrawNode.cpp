@@ -295,7 +295,7 @@ class $modify (GJBaseGameLayer)
     {
         GJBaseGameLayer::update(dt);
 
-        if (!m_started || __didTickThisFrame)
+        if (!m_started || __didTickThisFrame || m_player1->m_isDead)
         {
             __didTickThisFrame = false;
             redrawAll();

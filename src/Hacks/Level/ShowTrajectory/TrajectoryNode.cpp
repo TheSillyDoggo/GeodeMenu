@@ -120,6 +120,9 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
             ShowTrajectoryP2Release::get()->getColour());
     }
 
+    if (player->m_regularTrail)
+        player->m_regularTrail->setVisible(false);
+
     for (size_t i = 0; i < getIterCount(); i++)
     {
         player->m_collisionLogTop->removeAllObjects();
