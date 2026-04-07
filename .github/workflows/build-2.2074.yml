@@ -41,7 +41,7 @@ jobs:
           sdk: "v4.10.0"
           configure-args: '-DSKIP_BUILDING_CODEGEN=OFF -DQOLMOD_22074=ON'
           bindings: 'thesillydoggo/bindings'
-          bindings-ref: 'df1d6254510bd5c9c48de79cf8fe0460bc5b96eb'
+          bindings-ref: '22074fix'
           build-config: 'Release'
           export-pdb: true
           combine: true
