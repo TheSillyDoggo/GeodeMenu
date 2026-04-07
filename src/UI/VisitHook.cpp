@@ -6,7 +6,6 @@ using namespace qolmod;
 
 bool VisitHook::init()
 {
-    initWithSize(CCSizeMake(100, 100));
     m_bActive = true;
     return true;
 }
