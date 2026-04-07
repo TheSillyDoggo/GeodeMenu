@@ -83,7 +83,7 @@ bool ThemeNode::init()
     animPreviewMenu->setContentSize(ccp(0, 0));
     animPreviewMenu->setScale(1.25f);
 
-    auto animPreviewBtn = Button::create(CCSprite::create("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
+    auto animPreviewBtn = Button::create(CCSprite::createWithSpriteFrameName("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
     animPreviewBtn->setPosition(ccp(70, 10));
     animPreviewMenu->addChild(animPreviewBtn);
 
@@ -184,40 +184,40 @@ CCNode* ThemeNode::getAnimContainer(MenuAnimation anim)
     switch (anim)
     {
         case MenuAnimation::None:
-            spr = CCSprite::create("none.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("none.png"_spr);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/none"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromTop:
-            spr = CCSprite::create("fromside.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("fromside.png"_spr);
             spr->setRotation(90);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-top"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromBottom:
-            spr = CCSprite::create("fromside.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("fromside.png"_spr);
             spr->setRotation(270);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-bottom"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromLeft:
-            spr = CCSprite::create("fromside.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("fromside.png"_spr);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-left"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FromRight:
-            spr = CCSprite::create("fromside.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("fromside.png"_spr);
             spr->setRotation(180);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/from-right"), "bigFont.fnt");
             break;
 
         case MenuAnimation::Scale:
-            spr = CCSprite::create("scale.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("scale.png"_spr);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/scale-in"), "bigFont.fnt");
             break;
 
         case MenuAnimation::FadeIn:
-            spr = CCSprite::create("fade.png"_spr);
+            spr = CCSprite::createWithSpriteFrameName("fade.png"_spr);
             label = AdvLabelBMFont::createWithString(LocalisationManager::get()->getLocalisedString("animation/fade-in"), "bigFont.fnt");
             break;
     }
@@ -250,14 +250,14 @@ void ThemeNode::onChangeColour(CCObject* sender)
 
 void ThemeNode::onChangeAnim(CCObject* sender)
 {
-    Mod::get()->setSavedValue<int>("menu-animation", sender->getTag());
+    ThemeManager::get()->setAnimation((MenuAnimation)sender->getTag());
 
     updateAnimSprite();
 }
 
 void ThemeNode::onPreviewAnim(CCObject* sender)
 {
-    auto anim = (MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale);
+    auto anim = ThemeManager::get()->getAnimation();
 
     if (anim == MenuAnimation::None)
         BetterAlertLayer::createWithLocalisation("animation/preview-error-none/title", "animation/preview-error-none/text", "ui/ok-button")->show();
@@ -291,9 +291,9 @@ void ThemeNode::updateAnimSprite()
 {
     for (auto btn : animBtns)
     {
-        auto col = (int)btn.first == Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale) ? ccc3(255, 255, 255) : ccc3(125, 125, 125);
+        auto col = btn.first == ThemeManager::get()->getAnimation() ? ccc3(255, 255, 255) : ccc3(125, 125, 125);
 
-        btn.second->setEnabled((int)btn.first != Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
+        btn.second->setEnabled(btn.first != ThemeManager::get()->getAnimation());
         static_cast<CCNodeRGBA*>(btn.second->getNormalImage()->getChildByTag(0))->setColor(col);
         static_cast<AdvLabelBMFont*>(btn.second->getNormalImage()->getChildByTag(1))->setColor(col);
     }

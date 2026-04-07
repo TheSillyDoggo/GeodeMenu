@@ -79,7 +79,7 @@ void ModuleShortcutButton::updateSprs()
         bgOnSpr : 
         bgOffSpr;
 
-    updateSprites(bg, overlaySprite, true, false);
+    updateSprites(bg, overlaySprite, true, true);
 }
 
 void ModuleShortcutButton::setOverlaySprite(std::string spr)

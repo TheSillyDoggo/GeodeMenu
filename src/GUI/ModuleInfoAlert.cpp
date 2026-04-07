@@ -38,7 +38,7 @@ bool ModuleInfoAlert::init(Module* module)
     auto menu = CCMenu::create();
     menu->setPosition(ccp(0, 25));
 
-    auto btn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(ModuleInfoAlert::onToggleFavourite));
+    auto btn = CCMenuItemToggler::create(CCSprite::createWithSpriteFrameName("favourites.png"_spr), CCSprite::createWithSpriteFrameName("favourites.png"_spr), this, menu_selector(ModuleInfoAlert::onToggleFavourite));
     btn->setPositionX(25);
     btn->toggle(module->isFavourited());
 
@@ -55,12 +55,12 @@ bool ModuleInfoAlert::init(Module* module)
     btn->m_offButton->setColor(ccc3(150, 150, 150));
     btn->m_offButton->setOpacity(150);
 
-    auto btnKeybind = Button::create(CCSprite::create("keybinds.png"_spr), this, menu_selector(ModuleInfoAlert::onChangeKeybind));
+    auto btnKeybind = Button::create(CCSprite::createWithSpriteFrameName("keybinds.png"_spr), this, menu_selector(ModuleInfoAlert::onChangeKeybind));
     btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
     btnKeybind->setPositionX(m_mainLayer->getContentWidth() - 25);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
 
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(ModuleInfoAlert::onChangeShortcut));
+    auto btnShortcut = CCMenuItemToggler::create(CCSprite::createWithSpriteFrameName("shortcuts.png"_spr), CCSprite::createWithSpriteFrameName("shortcuts.png"_spr), this, menu_selector(ModuleInfoAlert::onChangeShortcut));
     btnShortcut->setPositionX(m_mainLayer->getContentWidth() - 25 - 25);
 
     menu->addChild(btn);

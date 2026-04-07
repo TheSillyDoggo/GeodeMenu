@@ -22,7 +22,7 @@ bool ZoomControl::init()
     bg->setTargettingNode(this);
     bg->setAnchorPoint(ccp(0, 0));
 
-    auto grabSpr = CCSprite::create("draggable.png"_spr);
+    auto grabSpr = CCSprite::createWithSpriteFrameName("draggable.png"_spr);
     grabSpr->setPosition(ccp(getContentWidth() / 2, getContentWidth() / 2));
     grabSpr->setScale(0.6f);
 

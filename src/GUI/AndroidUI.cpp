@@ -165,6 +165,7 @@ void AndroidUI::populateTabs()
     catMenu->setSelectedCategory(selectedCategory);
     catMenu->setCallback([this](std::string tab)
     {
+        categoryHistory.push_back(tab);
         selectedCategory = tab;
         updateTabs();
     });
@@ -268,4 +269,28 @@ void AndroidUI::switchTabTemp(std::string tab)
         categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(true);
 
     selectedCategory = old;
+}
+
+bool AndroidUI::altClickBegan(int button, cocos2d::CCPoint point)
+{
+    switch (button)
+    {
+        case 4: // forward
+            if (!categoryHistory.empty())
+            {
+                selectedCategory = categoryHistory[0];
+                categoryHistory.erase(categoryHistory.begin());
+            }
+            return true;
+
+        case 3: // back
+            if (!categoryHistory.empty())
+            {
+                
+            }
+            return true;
+
+        default:
+            return false;
+    }
 }

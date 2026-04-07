@@ -19,8 +19,19 @@ bool IconEffectsUI::init()
 
     this->scheduleUpdate();
 
+    normalPage = CCNode::create();
+    normalPage->setContentSize(getContentSize());
+
+    profilesPage = CCNode::create();
+    profilesPage->setContentSize(getContentSize());
+
+    selectPage(isOnProfilesPage);
+
+    bg->setVisible(false);
+    auto bg = EasyBG::create();
+    normalPage->addChildAtPosition(bg, Anchor::Top);
     bg->setAnchorPoint(ccp(0.5f, 1));
-    static_cast<AnchorLayoutOptions*>(bg->getLayoutOptions())->setAnchor(Anchor::Top);
+    bg->setContentWidth(getContentWidth());
     bg->setContentHeight(70);
     updateLayout();
 
@@ -122,13 +133,17 @@ bool IconEffectsUI::init()
     auto profilesBtn = Button::create(profilesSpr, this, menu_selector(IconEffectsUI::onProfiles));
     profilesBtn->setPosition(ccp(dualMenu->getContentWidth() / 2, dualMenu->getContentHeight() - 30));
     dualMenu->addChild(profilesBtn);
+
+    createProfilesPage();
     
-    this->addChild(n);
-    this->addChildAtPosition(dualBG, Anchor::BottomLeft);
-    this->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
-    this->addChildAtPosition(dualMenu, Anchor::BottomLeft);
-    this->addChildAtPosition(scroll, Anchor::BottomLeft, ccp(115, 0));
-    this->addChildAtPosition(scrollbar, Anchor::BottomRight, ccp(0, 0));
+    normalPage->addChild(n);
+    normalPage->addChildAtPosition(dualBG, Anchor::BottomLeft);
+    normalPage->addChildAtPosition(effectsBG, Anchor::BottomLeft, ccp(dualBG->getContentWidth() + 2.5f * 2, 0));
+    normalPage->addChildAtPosition(dualMenu, Anchor::BottomLeft);
+    normalPage->addChildAtPosition(scroll, Anchor::BottomLeft, ccp(115, 0));
+    normalPage->addChildAtPosition(scrollbar, Anchor::BottomRight, ccp(0, 0));
+    this->addChild(normalPage);
+    this->addChild(profilesPage);
     return true;
 }
 
@@ -398,9 +413,16 @@ void IconEffectsUI::updateOverride()
     }
 }
 
+void IconEffectsUI::selectPage(bool profiles)
+{
+    isOnProfilesPage = profiles;
+    normalPage->setVisible(!profiles);
+    profilesPage->setVisible(profiles);
+}
+
 void IconEffectsUI::onProfiles(CCObject* sender)
 {
-    BetterAlertLayer::createWithLocalisation("iconic/profiles-title", "ui/coming-soon", "ui/ok-button")->show();
+    selectPage(!isOnProfilesPage);
 }
 
 void IconEffectsUI::onSelectType(CCObject* sender)
@@ -586,4 +608,13 @@ void IconEffectsUI::update(float dt)
 void IconEffectsUI::updateFineOutline()
 {
 
+}
+
+void IconEffectsUI::createProfilesPage()
+{
+    auto closeMenu = CCMenu::create();
+    auto closeBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(IconEffectsUI::onProfiles));
+    closeMenu->addChild(closeBtn);
+
+    profilesPage->addChildAtPosition(closeMenu, Anchor::TopLeft, ccp(30, -30));
 }

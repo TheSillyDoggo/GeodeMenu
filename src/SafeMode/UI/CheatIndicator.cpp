@@ -2,6 +2,7 @@
 #include "../SafeMode.hpp"
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 bool CheatIndicator::init()
 {

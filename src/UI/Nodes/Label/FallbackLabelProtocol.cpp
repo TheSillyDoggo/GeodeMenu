@@ -5,6 +5,9 @@ bool FallbackLabelProtocol::shouldUseFallback(std::string_view string, gd::set<u
     if (forceFallback)
         return true;
 
+    if (disableFallback)
+        return false;
+
     if (auto ttf = geode::cast::typeinfo_cast<TTFFallbackLabelProtocol*>(this))
     {
         if (ttf->getTTFFallback())
@@ -51,6 +54,16 @@ void FallbackLabelProtocol::setForceFallback(bool force)
 bool FallbackLabelProtocol::getForceFallback()
 {
     return forceFallback;
+}
+
+void FallbackLabelProtocol::setDisableFallback(bool disable)
+{
+    this->disableFallback = disable;
+}
+
+bool FallbackLabelProtocol::getDisableFallback()
+{
+    return disableFallback;
 }
 
 // TTFFallbackLabelProtocol

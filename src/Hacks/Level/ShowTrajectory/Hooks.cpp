@@ -175,7 +175,7 @@ class $modify(GJBaseGameLayer)
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
     }
 
-    bool canBeActivatedByPlayer(PlayerObject * p0, EffectGameObject * p1)
+    bool canBeActivatedByPlayer(PlayerObject* p0, EffectGameObject* p1)
     {
         if (TrajectoryNode::get()->isSimulating())
         {
@@ -191,30 +191,27 @@ class $modify(GJBaseGameLayer)
             GJBaseGameLayer::playerTouchedRing(p0, p1);
     }
 
-    void playerTouchedTrigger(PlayerObject * p0, EffectGameObject * p1)
+    void playerTouchedTrigger(PlayerObject* p0, EffectGameObject* p1)
     {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::playerTouchedTrigger(p0, p1);
-        // else
-            // ShowTrajectory::handlePortal(p0, p1->m_objectID);
     }
 
-    void activateSFXTrigger(SFXTriggerGameObject * p0) {
+    void activateSFXTrigger(SFXTriggerGameObject * p0)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::activateSFXTrigger(p0);
 
     }
-    void activateSongEditTrigger(SongTriggerGameObject * p0) {
+    void activateSongEditTrigger(SongTriggerGameObject * p0)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::activateSongEditTrigger(p0);
 
     }
-    // void activateSongTrigger(SongTriggerGameObject * p0) {
-    //     if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
-    //         GJBaseGameLayer::activateSongTrigger(p0);
-    // }
-
-    void gameEventTriggered(GJGameEvent p0, int p1, int p2) {
+    
+    void gameEventTriggered(GJGameEvent p0, int p1, int p2)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::gameEventTriggered(p0, p1, p2);
     }
@@ -223,18 +220,20 @@ class $modify(GJBaseGameLayer)
 
 class $modify(PlayerObject)
 {
-
-    void playSpiderDashEffect(cocos2d::CCPoint p0, cocos2d::CCPoint p1) {
+    void playSpiderDashEffect(cocos2d::CCPoint p0, cocos2d::CCPoint p1)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             PlayerObject::playSpiderDashEffect(p0, p1);
     }
 
-    void incrementJumps() {
+    void incrementJumps()
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             PlayerObject::incrementJumps();
     }
 
-    void ringJump(RingObject * p0, bool p1) {
+    void ringJump(RingObject * p0, bool p1)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             PlayerObject::ringJump(p0, p1);
     }
@@ -254,25 +253,31 @@ class $modify(PlayerObject)
 
 };
 
-class $modify(HardStreak) {
+class $modify(HardStreak)
+{
 
-    void addPoint(cocos2d::CCPoint p0) {
+    void addPoint(cocos2d::CCPoint p0)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             HardStreak::addPoint(p0);
     }
 };
 
-class $modify(GameObject) {
+class $modify(GameObject)
+{
 
-    void playShineEffect() {
+    void playShineEffect()
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GameObject::playShineEffect();
     }
 };
 
-class $modify(EffectGameObject) {
+class $modify(EffectGameObject)
+{
 
-    void triggerObject(GJBaseGameLayer * p0, int p1, const gd::vector<int>*p2) {
+    void triggerObject(GJBaseGameLayer* p0, int p1, const gd::vector<int>* p2)
+    {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             EffectGameObject::triggerObject(p0, p1, p2);
     }

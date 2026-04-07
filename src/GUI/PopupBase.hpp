@@ -14,6 +14,7 @@ class PopupBase : public cocos2d::CCLayerColor, public cocos2d::CCActionTweenDel
         float drawOpacity = 1;
         geode::Ref<cocos2d::CCRenderTexture> rt = nullptr;
         int baseOpacity = 150;
+        cocos2d::CCNode* customBG = nullptr;
 
         // pre 2.2081 compatibility
         virtual void keyDown(cocos2d::enumKeyCodes code);

@@ -14,8 +14,8 @@ float CategorySelectMenu::getInset()
 
 void CategorySelectMenu::addCategory(std::string title, std::string sprite, std::string id, CategoryType type)
 {
-    auto sprOff = CategoryTabSprite::create(CategoryTabType::Image, title, sprite);
-    auto sprSelected = CategoryTabSprite::create(CategoryTabType::Image, title, sprite);
+    auto sprOff = CategoryTabSprite::create(CategoryTabType::Image, title, sprite, type != CategoryType::Extension);
+    auto sprSelected = CategoryTabSprite::create(CategoryTabType::Image, title, sprite, type != CategoryType::Extension);
     sprOff->updateSelection(CategorySelectionType::Deselected);
     sprSelected->updateSelection(CategorySelectionType::Hovered);
 

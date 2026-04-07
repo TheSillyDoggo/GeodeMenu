@@ -91,6 +91,17 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
     state.saveState(plr);
     state.loadState(this->player);
 
+    if (gjbgl->m_playbackMode != PlaybackMode::Playing && gjbgl->m_isEditor)
+    {
+        player->m_isShip = gjbgl->m_levelSettings->m_startMode == 1;
+        player->m_isBall = gjbgl->m_levelSettings->m_startMode == 2;
+        player->m_isBird = gjbgl->m_levelSettings->m_startMode == 3;
+        player->m_isDart = gjbgl->m_levelSettings->m_startMode == 4;
+        player->m_isRobot = gjbgl->m_levelSettings->m_startMode == 5;
+        player->m_isSpider = gjbgl->m_levelSettings->m_startMode == 6;
+        player->m_isSwing = gjbgl->m_levelSettings->m_startMode == 7;
+    }
+
     CCPoint prevPoint = plr->getPosition();
 
     if (
@@ -139,7 +150,7 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         drawSegment(prevPoint, player->getPosition(), 1, col);
         prevPoint = player->getPosition();
 
-        if (player->m_isDead)
+        if (player->m_isDead || player->m_maybeIsColliding)
         {
             drawPlayerHitbox(player);
             break;

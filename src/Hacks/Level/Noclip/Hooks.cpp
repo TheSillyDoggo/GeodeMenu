@@ -203,7 +203,13 @@ bool NoclipBaseGameLayer::shouldPlayerRegularDie(PlayerObject* pl, GameObject* g
     if (qolmod::TrajectoryNode::get() && qolmod::TrajectoryNode::get()->isSimulating())
         return true;
 
-    if (go == m_anticheatSpike)
+    if (!m_isEditor)
+    {
+        if (go == m_anticheatSpike)
+            return true;
+    }
+
+    if (!pl)
         return true;
 
     if (m_levelEndAnimationStarted)
@@ -264,12 +270,23 @@ void NoclipEditorLayer::playerTookDamage(PlayerObject* player)
 {
     if (Noclip::get()->getRealEnabled())
     {
-        if (NoclipPlayer1::get()->getRealEnabled() && player == m_player1)
-            return;
-
-        if (NoclipPlayer2::get()->getRealEnabled() && player == m_player2)
+        if (!NOCLIP_BASE()->shouldPlayerRegularDie(player, nullptr))
             return;
     }
 
     LevelEditorLayer::playerTookDamage(player);
+}
+
+void NoclipEditorLayer::postUpdate(float dt)
+{
+    if (Noclip::get()->getRealEnabled())
+    {
+        if (!NOCLIP_BASE()->shouldPlayerRegularDie(m_player1, nullptr))
+            m_player1->m_maybeIsColliding = false;
+
+        if (!NOCLIP_BASE()->shouldPlayerRegularDie(m_player2, nullptr))
+            m_player2->m_maybeIsColliding = false;
+    }
+
+    LevelEditorLayer::postUpdate(dt);
 }

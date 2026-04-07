@@ -1,8 +1,13 @@
 # 2.8.3
 
+- Optimised UI
+- Added Documentation to label format
+- Added Editor Wave Trail
 - Fixed No Rotation changing the players rotated hitbox
 - Fixed Show Trajectory having a trail
 - Fixed Hitboxes not updating when dead
+- Fixed Noclip not working in Editor
+- Fixed Show Trajectory not showing deaths in the editor
 
 # 2.8.2
 

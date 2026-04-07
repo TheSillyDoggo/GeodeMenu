@@ -1,5 +1,5 @@
 {
-	"geode": "5.4.0",
+	"geode": "5.5.3",
 	"version": "v2.8.3",
 	"gd": {
 		"win": "2.2081",
@@ -26,29 +26,23 @@
 			"resources/fonts/lexend/*.png",
 			"resources/fonts/notosans/*.fnt",
 			"resources/fonts/notosans/*.png",
-			"resources/sounds/*.mp3",
-			"resources/*.png",
-			"resources/*.wav",
-			"resources/*.md",
-			"resources/*.ini",
-			"resources/shaders/*.fsh",
-			"resources/shaders/*.vsh",
-			"resources/shaders/*.glsl",
 			"resources/translations/*.json",
-			"resources/translations/langs/*.json"
+			"resources/translations/langs/*.json",
+			"resources/files/*.md"
         ],
 		"sprites": [
-			"resources/sprites/*.png",
 			"resources/sprites/slider/*.png",
-			"resources/sprites/icons/categories/*.png",
-			"resources/sprites/icons/animations/*.png",
 			"resources/sprites/icons/anchors/*.png",
-			"resources/sprites/icons/shortcuts/*.png",
-			"resources/sprites/icons/paint/*.png"
+			"resources/sprites/icons/paint/*.png",
+			"resources/sprites/free/*.png"
 		],
 		"spritesheets": {
 			"qolmod-ui-sheet": [
-				"resources/sprites/buttons/*.png"
+				"resources/sprites/buttons/*.png",
+				"resources/sprites/icons/animations/*.png",
+				"resources/sprites/icons/categories/*.png",
+				"resources/sprites/icons/shortcuts/*.png",
+				"resources/sprites/*.png"
 			]
 		}
     },

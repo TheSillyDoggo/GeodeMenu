@@ -7,6 +7,7 @@ class FallbackLabelProtocol
     protected:
         std::string fallbackFont = "";
         bool forceFallback = false;
+        bool disableFallback = false;
 
         virtual bool shouldUseFallback(std::string_view string, gd::set<unsigned int>* charSet);
 
@@ -16,6 +17,9 @@ class FallbackLabelProtocol
 
         virtual void setForceFallback(bool force);
         virtual bool getForceFallback();
+
+        virtual void setDisableFallback(bool disable);
+        virtual bool getDisableFallback();
 };
 
 class TTFFallbackLabelProtocol : public FallbackLabelProtocol

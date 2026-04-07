@@ -14,7 +14,7 @@ enum class VersionInfoType
 class VersionInfoNode : public cocos2d::CCNodeRGBA
 {
     protected:
-        AdvLabelBMFont* label = nullptr;
+        CCLabelBMFont* label = nullptr;
         LoadingCircleSprite* circle = nullptr;
         VersionInfoType type = VersionInfoType::GD;
         // geode::async::TaskHolder<geode::Mod::CheckUpdatesTask> updateListener;

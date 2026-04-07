@@ -60,7 +60,7 @@ bool OptionsUI::setup()
     infoBtn->getNormalImage()->setScale(0.75f);
     menu2->addChild(infoBtn);
 
-    favBtn = CCMenuItemToggler::create(CCSprite::create("favourites.png"_spr), CCSprite::create("favourites.png"_spr), this, menu_selector(OptionsUI::onToggleFavourite));
+    favBtn = CCMenuItemToggler::create(CCSprite::createWithSpriteFrameName("favourites.png"_spr), CCSprite::createWithSpriteFrameName("favourites.png"_spr), this, menu_selector(OptionsUI::onToggleFavourite));
     favBtn->toggle(module->isFavourited());
 
     favBtn->setContentSize(btn->getContentSize() * 1.3f);
@@ -76,12 +76,12 @@ bool OptionsUI::setup()
     favBtn->m_offButton->setColor(ccc3(150, 150, 150));
     favBtn->m_offButton->setOpacity(150);
 
-    auto btnKeybind = Button::create(CCSprite::create("keybinds.png"_spr), this, menu_selector(OptionsUI::onChangeKeybind));
+    auto btnKeybind = Button::create(CCSprite::createWithSpriteFrameName("keybinds.png"_spr), this, menu_selector(OptionsUI::onChangeKeybind));
     btnKeybind->setContentSize(btnKeybind->getContentSize() * 3);
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
     btnKeybind->setPosition(ccp(m_size.width - 18 * 2, -m_size.height + 18 * 2));
 
-    auto btnShortcut = CCMenuItemToggler::create(CCSprite::create("shortcuts.png"_spr), CCSprite::create("shortcuts.png"_spr), this, menu_selector(OptionsUI::onChangeShortcut));
+    auto btnShortcut = CCMenuItemToggler::create(CCSprite::createWithSpriteFrameName("shortcuts.png"_spr), CCSprite::createWithSpriteFrameName("shortcuts.png"_spr), this, menu_selector(OptionsUI::onChangeShortcut));
     btnShortcut->setUserData(module);
     btnShortcut->setPosition(ccp(2, -m_size.height + 18 * 2));    
 

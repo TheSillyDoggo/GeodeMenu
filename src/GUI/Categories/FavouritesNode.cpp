@@ -22,7 +22,7 @@ bool FavouritesNode::init()
     text->setAlignment(kCCTextAlignmentCenter);
     text->setScale(0.375f);
 
-    star = CCSprite::create("favourites.png"_spr);
+    star = CCSprite::createWithSpriteFrameName("favourites.png"_spr);
     star->setScale(0.625f);
 
     info = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");

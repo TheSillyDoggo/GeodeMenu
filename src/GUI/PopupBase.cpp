@@ -3,6 +3,7 @@
 #include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
 #include "Modules/PopupUIScale.hpp"
+#include <SwelvyBG.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -11,6 +12,11 @@ bool PopupBase::init(float width, float height)
 {
     if (!CCLayerColor::init())
         return false;
+
+    /*customBG = SwelvyBG::create();
+    static_cast<SwelvyBG*>(customBG)->setOpacity(0);
+    static_cast<SwelvyBG*>(customBG)->runAction(CCFadeTo::create(0.5f, 100));
+    this->addChild(customBG);*/
 
     this->ignoreAnchorPointForPosition(false);
     this->setAnchorPoint(ccp(0, 0));
@@ -68,6 +74,9 @@ void PopupBase::updateUIScale()
 
     if (blurLayer)
         blurLayer->setContentSize(getContentSize());
+
+    if (customBG)
+        customBG->setScale(1.0f / uiScale);
 
     m_mainLayer->setPosition(getContentSize() / 2);
     updateLayout();
@@ -129,7 +138,7 @@ void PopupBase::show()
 
     if (!m_noElasticity)
     {
-        this->playAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
+        this->playAnimation(ThemeManager::get()->getAnimation());
     }
 }
 

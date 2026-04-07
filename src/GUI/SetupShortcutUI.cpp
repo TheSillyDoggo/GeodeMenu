@@ -59,10 +59,9 @@ void SetupShortcutUI::updateSprs()
         overlaySpr->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_deleteIcon_001.png"));
     else
     {
-        auto tex = CCTextureCache::get()->addImage(conf.shortcutOverlay.c_str(), false);
+        auto tex = CCSpriteFrameCache::get()->spriteFrameByName(conf.shortcutOverlay.c_str());
 
-        overlaySpr->setTexture(tex);
-        overlaySpr->setTextureRect(CCRectMake(0, 0, tex->getContentSize().width, tex->getContentSize().height));
+        overlaySpr->setDisplayFrame(tex);
     }
 
     bgOffSpr->setScale((25 - 10) / std::max<float>(bgOffSpr->getContentHeight(), bgOffSpr->getContentWidth()));

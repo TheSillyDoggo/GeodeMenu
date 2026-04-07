@@ -33,7 +33,7 @@ class $modify (PauseLayer)
         menu->setScale(0.75f);
         menu->setAnchorPoint(ccp(0, 0));
 
-        auto questsSpr = CCSprite::create("questsBtn.png"_spr);
+        auto questsSpr = CCSprite::createWithSpriteFrameName("questsBtn.png"_spr);
 
         auto questsBtn = Button::create(questsSpr, this, menu_selector(CreatorLayer::onChallenge));
 

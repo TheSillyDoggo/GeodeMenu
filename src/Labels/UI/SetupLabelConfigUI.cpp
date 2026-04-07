@@ -287,7 +287,10 @@ void SetupLabelConfigUI::createPage2()
 {
     if (type == LabelType::Text)
     {
-        auto info = InfoAlertButton::create("Format Label", "Format label help text", 0.65f);
+        auto helpSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+        helpSpr->setScale(0.65f);
+
+        auto info = Button::create(helpSpr, this, menu_selector(SetupLabelConfigUI::onFormatHelp));
         pages[1]->addChildAtPosition(info, Anchor::TopRight, ccp(-16, -16));
 
         formatInp = TextInput::create(450, "Format", "bigFont.fnt");
@@ -738,4 +741,16 @@ void SetupLabelConfigUI::updateImagePreview()
 void SetupLabelConfigUI::onPaste(CCObject* sender)
 {
     formatInp->setString(clipboard::read());
+}
+
+void SetupLabelConfigUI::onFormatHelp(CCObject* sender)
+{
+    auto md = MDPopup::create(true, "Format help",
+        utils::string::replace(
+            utils::file::readString(Mod::get()->getResourcesDir() / "label-help.md").unwrapOr("Something really bad happened but I am too lazy to add actual handling"),
+            "\n",
+            "\n\n\n"
+        ),
+        "OK", nullptr, nullptr);
+    md->show();
 }

@@ -8,6 +8,7 @@
 #include "../GUI/SetupShortcutUI.hpp"
 #include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 #include <ModuleInfoAlert.hpp>
+#include <Utils.hpp>
 
 using namespace qolmod;
 
@@ -232,4 +233,18 @@ void ModuleNode::draw()
 
         ccDrawSolidRect(ccp(bb.getMinX(), bb.getMinY()), ccp(bb.getMaxX(), bb.getMaxY()), ccc4f(0, 0, 1, 1));
     }
+}
+
+bool ModuleNode::altClickBegan(int button, cocos2d::CCPoint point)
+{
+    auto r = qolmod::utils::getBasicRect(this);
+    r.origin = CCPointZero;
+
+    if (r.containsPoint(convertToNodeSpace(point)))
+    {
+        BetterAlertLayer::create(getID().c_str(), fmt::format("Mouse button {} was clicked!", button), "OK")->show();
+        return true;
+    }
+
+    return false;
 }

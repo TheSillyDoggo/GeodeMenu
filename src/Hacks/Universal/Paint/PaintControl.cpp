@@ -34,7 +34,7 @@ bool PaintControl::init()
     {
         toggleExpanded(!isExpanded);
     });
-    updateSprites("geode.loader/baseCircle_Medium_Gray.png", "icon effects.png"_spr, true, false);
+    updateSprites("geode.loader/baseCircle_Medium_Gray.png", "icon effects.png"_spr, true, true);
     this->updatePosition(ccp(
         Mod::get()->getSavedValue<float>("paintcontrol_position.x", 25),
         Mod::get()->getSavedValue<float>("paintcontrol_position.y", CCDirector::get()->getWinSize().height - 25)

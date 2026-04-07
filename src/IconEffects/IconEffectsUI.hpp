@@ -41,6 +41,9 @@ class IconEffectsUI : public CategoryNode
         CCMenuItemToggler* seperateToggle = nullptr;
         geode::ScrollLayer* scroll = nullptr;
         BetterScrollbar* scrollbar = nullptr;
+        CCNode* normalPage = nullptr;
+        CCNode* profilesPage = nullptr;
+        static inline bool isOnProfilesPage = false;
 
         void updateFineOutline();
 
@@ -59,9 +62,13 @@ class IconEffectsUI : public CategoryNode
         void onDualMode(CCObject* sender);
         void onProfiles(CCObject* sender);
 
+        void selectPage(bool profiles);
+
         void createDualNodes(IconicDualMode mode, int y, CCMenu* menu);
         void createEffectNodes(IconicEffectType type, int y, CCMenu* menu);
         qolmod::Button* createPreviewButton(IconicGamemodeType gamemode, bool player2);
+
+        void createProfilesPage();
 
         virtual void update(float dt);
         bool init();

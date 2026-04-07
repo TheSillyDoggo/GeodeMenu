@@ -8,6 +8,8 @@ bool CCNodeWithShader::init()
     if (!CCNode::init())
         return false;
 
+    return true;
+
     if (rt)
         CC_SAFE_DELETE(rt);
 
@@ -15,6 +17,7 @@ bool CCNodeWithShader::init()
     #if GEODE_COMP_GD_VERSION >= 22081
     rt->getSprite()->getTexture()->setAntiAliasTexParameters();
     #endif
+    rt->getSprite()->setBlendFunc({GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA});
 
     #ifdef GEODE_IS_ANDROID
     if (!listened)
@@ -33,6 +36,7 @@ bool CCNodeWithShader::init()
 
 void CCNodeWithShader::visit()
 {
+    return CCNode::visit();
     rt->beginWithClear(0, 0, 0, 0);
 
     kmGLPushMatrix();

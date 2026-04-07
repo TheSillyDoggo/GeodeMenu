@@ -2,11 +2,11 @@
 
 #define SPRITE_INSET 3.5f
 
-CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon)
+CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon, bool useFrame)
 {
     auto pRet = new CategoryTabSprite();
 
-    if (pRet && pRet->init(type, name, icon))
+    if (pRet && pRet->init(type, name, icon, useFrame))
     {
         pRet->autorelease();
         return pRet;
@@ -16,7 +16,7 @@ CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string n
     return nullptr;
 }
 
-bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string icon)
+bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string icon, bool useFrame)
 {
     if (!CCNode::init())
         return false;
@@ -35,7 +35,12 @@ bool CategoryTabSprite::init(CategoryTabType type, std::string name, std::string
 
     if (!icon.empty())
     {
-        if (sprite = CCSprite::create(icon.c_str()); sprite)
+        if (useFrame)
+            sprite = CCSprite::createWithSpriteFrameName(icon.c_str());
+        else
+            sprite = CCSprite::create(icon.c_str());
+
+        if (sprite)
         {
             sprite->setAnchorPoint(ccp(0, 0.5f));
             this->addChild(sprite, 4);

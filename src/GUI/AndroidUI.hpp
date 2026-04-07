@@ -11,10 +11,11 @@
 #include "PopupBase.hpp"
 #include "CategorySelectMenu.hpp"
 #include <Button.hpp>
+#include <AltMouseDelegate.hpp>
 
 using namespace geode::prelude;
 
-class AndroidUI : public PopupBase
+class AndroidUI : public PopupBase, public qolmod::AltMouseDelegate
 {
     protected:
         friend class ThemeNode;
@@ -30,6 +31,7 @@ class AndroidUI : public PopupBase
         std::map<std::string, CategoryNode*> categories = {};
         // static to keep between reopens
         static inline std::string selectedCategory = "Level";
+        std::vector<std::string> categoryHistory = {};
         VersionInfoNode* bottomLeft = nullptr;
         VersionInfoNode* bottomRight = nullptr;
         bool allow = false;
@@ -52,7 +54,8 @@ class AndroidUI : public PopupBase
             "Favourites",
         };
 
-        void keyDown(cocos2d::enumKeyCodes keym, double timestamp);
+        virtual void keyDown(cocos2d::enumKeyCodes keym, double timestamp);
+        virtual bool altClickBegan(int button, cocos2d::CCPoint point);
 
         ~AndroidUI();
 

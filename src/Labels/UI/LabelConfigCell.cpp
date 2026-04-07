@@ -77,7 +77,7 @@ bool LabelConfigCell::init(CCSize size, LabelConfig config, int index)
     auto deleteBtn = Button::create(deleteSpr, this, menu_selector(LabelConfigCell::onDelete));
     deleteBtn->setPositionX(-19.75f);
 
-    auto grabSpr = CCSprite::create("draggable.png"_spr);
+    auto grabSpr = CCSprite::createWithSpriteFrameName("draggable.png"_spr);
     grabSpr->setPositionX(-39.5f);
     grabSpr->setScale(0.6f);
 

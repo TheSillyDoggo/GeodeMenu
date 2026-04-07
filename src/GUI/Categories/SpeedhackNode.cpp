@@ -140,7 +140,7 @@ void SpeedhackNode::updatePresets()
     {
         auto oldBtn = presetMenu->getChildByIndex<Button*>(i);
 
-        auto spr = CCSprite::create("keybinds.png"_spr);
+        auto spr = CCSprite::createWithSpriteFrameName("keybinds.png"_spr);
         spr->setScale(2.2f);
         spr->setOpacity(presets[i].keyConfig.isValid() ? 255 : 150);
 

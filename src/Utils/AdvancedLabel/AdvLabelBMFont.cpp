@@ -220,6 +220,10 @@ void AdvLabelBMFont::updateLabel()
                     lbl->setTTFFallback(true);
                     lbl->setForceFallback(true);
                 }
+                else
+                {
+                    lbl->setDisableFallback(true);
+                }
                 labelsCached[fon].push_back(lbl);
 
                 this->addChild(lbl);
@@ -254,6 +258,7 @@ void AdvLabelBMFont::updateLabel()
             else
             {
                 lbl = FallbackLabel::create(part.label.c_str(), font.c_str());
+                lbl->setDisableFallback(true);
                 labelsCached[font].push_back(lbl);
 
                 this->addChild(lbl);
@@ -484,7 +489,6 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
 {
     if (!bmConfigs.contains(font))
     {
-        FastBMFontConfig::quickLoad(font.c_str());
         auto conf = FallbackLabel::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 
@@ -498,7 +502,6 @@ CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
 {
     if (!bmConfigs.contains(font))
     {
-        FastBMFontConfig::quickLoad(font.c_str());
         auto conf = FallbackLabel::create("", font.c_str());
         conf->m_uReference = 80085; // so we never lose the config
 

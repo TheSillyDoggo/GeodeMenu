@@ -72,6 +72,7 @@ void SelectItemUI::updateUI()
             break;
 
         case SelectItemType::ShortcutOverlay:
+            useSpriteFrame = true;
             items.push_back("");
             items.push_back("button.png"_spr);
             items.push_back("config.png"_spr);

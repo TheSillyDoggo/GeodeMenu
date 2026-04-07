@@ -26,9 +26,9 @@ class CategoryTabSprite : public CCNode
         AdvLabelBMFont* label = nullptr;
         CCSprite* sprite = nullptr;
 
-        static CategoryTabSprite* create(CategoryTabType type, std::string name = "", std::string icon = "");
+        static CategoryTabSprite* create(CategoryTabType type, std::string name = "", std::string icon = "", bool useFrame = true);
 
-        bool init(CategoryTabType type, std::string name, std::string icon);
+        bool init(CategoryTabType type, std::string name, std::string icon, bool useFrame);
 
         void updateSelection(CategorySelectionType type);
 
