@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include <Geode/ui/General.hpp>
 #include <Geode/utils/ColorProvider.hpp>
@@ -18,4 +18,4 @@ class SwelvyBG : public CCNodeRGBA {
 
     public:
         static SwelvyBG* create();
-};
+};*/

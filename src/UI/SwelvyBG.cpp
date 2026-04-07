@@ -1,4 +1,4 @@
-#include "SwelvyBG.hpp"
+/*#include "SwelvyBG.hpp"
 #include <Geode/loader/Mod.hpp>
 #include <Geode/utils/random.hpp>
 #include <RealtimeAction.hpp>
@@ -137,4 +137,4 @@ void SwelvyBG::animateInAll()
 
         left = !left;
     }
-}
+}*/
