@@ -5,6 +5,7 @@
 #include "CategoryTabSprite.hpp"
 #include <CCMenuExt.hpp>
 #include <Button.hpp>
+#include <ScrollLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -19,7 +20,7 @@ class CategorySelectMenu : public CCMenu
 {
     protected:
         float inset = 2.5f;
-        ScrollLayer* scroll = nullptr;
+        qolmod::ScrollLayer* scroll = nullptr;
         BetterScrollbar* scrollbar = nullptr;
         qolmod::CCMenuExt* bottomBtns = nullptr;
         qolmod::CCMenuExt* standardBtns = nullptr;

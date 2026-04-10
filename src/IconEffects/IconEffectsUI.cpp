@@ -75,11 +75,9 @@ bool IconEffectsUI::init()
     menu->ignoreAnchorPointForPosition(true);
 
     scroll = geode::ScrollLayer::create(effectsBG->getContentSize() + ccp(-8, 0));
-    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(true);
-    scroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
     scroll->m_contentLayer->setContentHeight(menu->getScaledContentHeight() + 30);
     scroll->m_contentLayer->addChild(menu);
     scroll->moveToTop();

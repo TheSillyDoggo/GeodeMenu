@@ -6,6 +6,7 @@
 #include "../../Localisation/LocalisationManager.hpp"
 #include "LabelEventCell.hpp"
 #include <Button.hpp>
+#include <ScrollLayer.hpp>
 
 using namespace qolmod;
 
@@ -367,11 +368,9 @@ void SetupLabelConfigUI::createPage3()
     eventsNone = CCLabelBMFont::create("No events added yet", "bigFont.fnt");
     eventsNone->setScale(0.45f);
 
-    eventScroll = ScrollLayer::create(leftBG->getScaledContentSize());
-    eventScroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
+    eventScroll = qolmod::ScrollLayer::create(leftBG->getScaledContentSize());
     eventScroll->m_peekLimitTop = 15;
     eventScroll->m_peekLimitBottom = 15;
-    eventScroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     pages[2]->addChildAtPosition(leftBG, Anchor::Left, ccp(20, 5));
     pages[2]->addChildAtPosition(eventScroll, Anchor::Left, ccp(20, 5 - eventScroll->getContentHeight() / 2));

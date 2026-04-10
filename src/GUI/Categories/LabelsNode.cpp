@@ -5,6 +5,7 @@
 #include "../../Utils/Num.hpp"
 #include "../BetterButtonSprite.hpp"
 #include <Button.hpp>
+#include <ScrollLayer.hpp>
 
 using namespace qolmod;
 
@@ -23,12 +24,10 @@ bool LabelsNode::init()
     bg->setAnchorPoint(ccp(0, 0));
     bg->setContentSize(ccp((getContentWidth() - PRESETS_SIZE - 5), bg->getContentHeight() - ((TOPBAR_SIZE + 5))));
 
-    labelsScroll = ScrollLayer::create(bg->getContentSize());
-    labelsScroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
+    labelsScroll = qolmod::ScrollLayer::create(bg->getContentSize());
     labelsScroll->m_peekLimitTop = 15;
     labelsScroll->m_peekLimitBottom = 15;
     labelsScroll->setTouchEnabled(false);
-    labelsScroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     auto bgTopbar = CCScale9Sprite::create("square02b_small.png");
     bgTopbar->setContentSize(ccp(this->getContentWidth(), TOPBAR_SIZE) / 0.5f);

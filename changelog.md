@@ -1,3 +1,16 @@
+# 2.8.4
+
+- Added Gravity Arrow
+- Added Show button in Editor
+- Added Show button in Endscreen
+- Added Show button in Level
+- Made mod data save when closing the menu
+- Changed Button to only appear after the end screen has appeared
+- Fixed crashing using cross fade transition on Android
+- Fixed cross fade transition not updating every frame
+- Fixed crash entering editor with show trajectory enabled
+- Fixed menus being clipped wrong with fade animation
+
 # 2.8.3
 
 - Optimised UI

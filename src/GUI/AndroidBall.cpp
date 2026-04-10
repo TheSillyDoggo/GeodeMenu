@@ -109,6 +109,8 @@ void AndroidBall::reloadTextures()
     setColonThreeSecret(colonThreeEnabled);
 }
 
+#include "Modules/ButtonVisibility.hpp"
+
 bool AndroidBall::shouldFunction()
 {
     #ifdef GEODE_IS_DESKTOP
@@ -127,8 +129,23 @@ bool AndroidBall::shouldFunction()
     if (CCScene::get() && CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
 
-    if (PlayLayer::get() && (!PlayLayer::get()->m_levelEndAnimationStarted && !PlayLayer::get()->m_isPaused))
-        return false;
+    if (!ShowButtonInEditor::get()->getRealEnabled())
+    {
+        if (LevelEditorLayer::get() && !LevelEditorLayer::get()->getChildByType<EditorPauseLayer>(0))
+            return false;
+    }
+
+    if (auto pl = PlayLayer::get())
+    {
+        if (ShowButtonInEndScreen::get()->getRealEnabled() && pl->getChildByType<EndLevelLayer>(0))
+            return true;
+
+        if (pl->m_isPaused)
+            return true;
+
+        if (!ShowButtonInGame::get()->getRealEnabled())
+            return false;
+    }
 
     return true;
 }

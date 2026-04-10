@@ -224,6 +224,8 @@ AndroidUI::~AndroidUI()
 {
     if (instance == this)
         instance = nullptr;
+
+    (void)Mod::get()->saveData();
 }
 
 void AndroidUI::close()

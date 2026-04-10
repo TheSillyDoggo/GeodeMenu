@@ -59,7 +59,7 @@ bool CategorySelectMenu::init()
     setAnchorPoint(ccp(0.5f, 0.5f));
     setContentSize(ccp(0, 0));
 
-    scroll = ScrollLayer::create(ccp(100, 100));
+    scroll = qolmod::ScrollLayer::create(ccp(100, 100));
     scroll->setID("category-select-menu-scroll");
     scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
     scroll->m_peekLimitTop = 15;

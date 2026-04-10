@@ -2,6 +2,7 @@
 #include "../Utils/Casts.hpp"
 #include "../GUI/BetterMouseDispatcher.hpp"
 #include "../Utils/Num.hpp"
+#include <ScrollLayer.hpp>
 
 CategoryNode* CategoryNode::create()
 {
@@ -133,12 +134,10 @@ bool CategoryNode::init()
     bg = EasyBG::create();
     bg->setContentSize(getContentSize());
 
-    scroll = geode::ScrollLayer::create(this->getContentSize());
-    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
+    scroll = qolmod::ScrollLayer::create(this->getContentSize());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(false);
-    scroll->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCNode::create());
 
     scrollbar = BetterScrollbar::create(scroll);
     // updates size

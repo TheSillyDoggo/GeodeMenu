@@ -135,9 +135,9 @@ class $modify(GJBaseGameLayer)
     {
         if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating() && p1)
         {
-            gd::vector<GameObject*> p1old = *p1;
+            gd::vector<GameObject*> gobjs = gd::vector<GameObject*>({});
 
-            auto new_end = std::remove_if(p1->begin(), p1->end(), [this, p0](GameObject* obj)
+            for (auto obj : *p1)
             {
                 bool del = true;
                 
@@ -158,16 +158,13 @@ class $modify(GJBaseGameLayer)
 
                 if (del)
                     customCollisionCheck(p0, obj);
-                
-                return del;
-            });
+                else
+                    gobjs.push_back(obj);
+            }
 
-            p1->erase(new_end, p1->end());
-            p2 = p1->size();
+            p2 = gobjs.size();
 
-            GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
-
-            *p1 = p1old;
+            GJBaseGameLayer::collisionCheckObjects(p0, &gobjs, p2, p3);
 
             return;
         }

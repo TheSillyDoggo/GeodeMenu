@@ -8,8 +8,6 @@ bool CCNodeWithShader::init()
     if (!CCNode::init())
         return false;
 
-    return true;
-
     if (rt)
         CC_SAFE_DELETE(rt);
 
@@ -36,7 +34,6 @@ bool CCNodeWithShader::init()
 
 void CCNodeWithShader::visit()
 {
-    return CCNode::visit();
     rt->beginWithClear(0, 0, 0, 0);
 
     kmGLPushMatrix();

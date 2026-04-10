@@ -25,8 +25,8 @@ bool VersionInfoNode::init(VersionInfoType type)
     if (type == VersionInfoType::QOLMod)
         checkForUpdate();
 
-    label = CCLabelBMFont::create("", "lexend.fnt"_spr);
-    // label->setTTFUsage(AdvLabelTTFUsage::None);
+    label = AdvLabelBMFont::createWithString("", "lexend.fnt"_spr);
+    label->setTTFUsage(AdvLabelTTFUsage::None);
     label->setAnchorPoint(ccp(0, 0));
     circle = LoadingCircleSprite::create(1);
     circle->setScale(0.22f);
