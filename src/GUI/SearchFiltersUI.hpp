@@ -12,7 +12,7 @@ using namespace geode::prelude;
 class SearchFiltersUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
 
     public:
         static SearchFiltersUI* create();

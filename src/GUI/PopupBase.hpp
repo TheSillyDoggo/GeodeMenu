@@ -50,5 +50,5 @@ class PopupBase : public cocos2d::CCLayerColor, public cocos2d::CCActionTweenDel
         virtual void draw();
 
         void playAnimation(qolmod::MenuAnimation anim);
-        void onClose(CCObject* sender);
+        virtual void onClose(CCObject* sender);
 };

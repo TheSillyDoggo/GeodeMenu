@@ -17,7 +17,7 @@ enum class SelectItemType
 class SelectItemUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         SelectItemType type;
         std::function<void(std::string)> onFinish = nullptr;
         CCMenu* buttonsMenu = nullptr;

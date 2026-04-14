@@ -295,7 +295,36 @@ void Module::removeKeybind()
 
 void Module::onKeybindActivated(KeyState state)
 {
-    this->setUserEnabled(!getUserEnabled());
+    bool en = getUserEnabled();
+
+    switch (keyConfig.type)
+    {
+        case KeybindType::Toggle:
+            en = !getUserEnabled();
+
+            if (!state.isDown && !state.isRepeat)
+                return;
+            break;
+
+        case KeybindType::Hold:
+            en = state.isDown;
+
+            if (state.isRepeat)
+                return;
+            break;
+
+        case KeybindType::HoldInverted:
+            en = !state.isDown;
+
+            if (state.isRepeat)
+                return;
+            break;
+    }
+
+    if (getUserEnabled() == en)
+        return;
+
+    this->setUserEnabled(en);
 
     onToggle();
     ModuleNode::updateAllNodes(nullptr);
@@ -346,6 +375,7 @@ void Module::saveShortcutConfig()
     conf["colour_opacity"] = shortcutConf.colour.opacity;
     conf["colour_chromaspeed"] = shortcutConf.colour.chromaSpeed;
     conf["colour_type"] = (int)shortcutConf.colour.type;
+    conf["animation"] = (int)shortcutConf.animation;
 
     Mod::get()->setSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", getID()), conf);
 }
@@ -375,6 +405,7 @@ void Module::loadShortcutConfig()
     conf.colour.opacity = json["colour_opacity"].asDouble().unwrapOr(1);
     conf.colour.chromaSpeed = json["colour_chromaspeed"].asDouble().unwrapOr(1);
     conf.colour.type = (ColourConfigType)json["colour_type"].asInt().unwrapOr(0);
+    conf.animation = (FloatingButtonAnimationType)json["animation"].asInt().unwrapOr(0);
 
     setShortcutConfig(Mod::get()->getSavedValue<bool>(fmt::format("{}_shortcutenabled", getID()), false), conf);
 }
@@ -399,6 +430,7 @@ void Module::setShortcutConfig(bool enabled, ModuleShortcutConfig conf)
         btn->setMovable(shortcutConf.isMovable);
         btn->setBaseScale(shortcutConf.scale);
         btn->setBaseOpacity(shortcutConf.opacity);
+        btn->setAnimation(shortcutConf.animation);
 
         shortcutNode = btn;
     }

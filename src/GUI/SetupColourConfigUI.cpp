@@ -601,3 +601,8 @@ void SetupColourConfigUI::updateInputs(BetterInputNode* except)
 
     picker->setColorValue(currentConfig.customColour);
 }
+
+void SetupColourConfigUI::onVanillaColours(CCObject* sender)
+{
+
+}

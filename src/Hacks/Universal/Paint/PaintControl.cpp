@@ -53,6 +53,7 @@ bool PaintControl::init()
     menu->setAnchorPoint(ccp(0, 0));
     menu->setPosition(getContentSize() / 2);
     menu->setScaleX(0);
+    menu->setTouchEnabled(false);
 
     addToolButton(PaintTool::Brush);
     addToolButton(PaintTool::Rubber);
@@ -260,7 +261,7 @@ int PaintControl::getSelectedSize()
     return toolSizes[selectedTool];
 }
 
-bool PaintControl::ccTouchBegan(cocos2d::CCTouch* touch)
+bool PaintControl::ccTouchBegan(qolmod::Touch* touch)
 {
     if (ui)
         return false;
@@ -276,50 +277,50 @@ bool PaintControl::ccTouchBegan(cocos2d::CCTouch* touch)
 
     if (isExpanded)
     {        
-        if (menu->ccTouchBegan(touch, nullptr))
+        if (menu->ccTouchBegan(touch->fakeTouch, nullptr))
         {
             isMenuSelected = 1;
             return true;
         }
 
-        if (input->ccTouchBegan(touch, nullptr))
+        if (input->ccTouchBegan(touch->fakeTouch, nullptr))
         {
             isMenuSelected = 2;
             return true;
         }
 
         isMenuSelected = 3;
-        qolmod::PaintNode::get()->ccTouchBegan(touch);
+        qolmod::PaintNode::get()->ccTouchBegan(touch->fakeTouch);
         return true;
     }
 
     return false;
 }
 
-void PaintControl::ccTouchMoved(cocos2d::CCTouch* touch)
+void PaintControl::ccTouchMoved(qolmod::Touch* touch)
 {
     if (isMenuSelected == 1)
-        return menu->ccTouchMoved(touch, nullptr);
+        return menu->ccTouchMoved(touch->fakeTouch, nullptr);
 
     if (isMenuSelected == 2)
-        return input->ccTouchMoved(touch, nullptr);
+        return input->ccTouchMoved(touch->fakeTouch, nullptr);
 
     if (isMenuSelected == 3)
-        return qolmod::PaintNode::get()->ccTouchMoved(touch);
+        return qolmod::PaintNode::get()->ccTouchMoved(touch->fakeTouch);
 
     FloatingUIButton::ccTouchMoved(touch);
 }
 
-void PaintControl::ccTouchEnded(cocos2d::CCTouch* touch)
+void PaintControl::ccTouchEnded(qolmod::Touch* touch)
 {
     if (isMenuSelected == 1)
-        return menu->ccTouchEnded(touch, nullptr);
+        return menu->ccTouchEnded(touch->fakeTouch, nullptr);
 
     if (isMenuSelected == 2)
-        return input->ccTouchEnded(touch, nullptr);
+        return input->ccTouchEnded(touch->fakeTouch, nullptr);
 
     if (isMenuSelected == 3)
-        return qolmod::PaintNode::get()->ccTouchEnded(touch);
+        return qolmod::PaintNode::get()->ccTouchEnded(touch->fakeTouch);
 
     FloatingUIButton::ccTouchEnded(touch);
 }

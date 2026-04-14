@@ -70,12 +70,8 @@ bool KeyConfigStruct::isActivated(KeyState state)
         }
     }
     
-
-    if (state.isDown)
-    {
-        if (state.code == (int)code)
-            return true;
-    }
+    if (state.code == (int)code)
+        return true;
 
     return false;
 }
@@ -101,6 +97,7 @@ matjson::Value KeyConfigStruct::save()
 
     obj["modifiers"] = modsArr;
     obj["code"] = (int)code;
+    obj["type"] = (int)type;
 
     return obj;
 }
@@ -108,6 +105,7 @@ matjson::Value KeyConfigStruct::save()
 void KeyConfigStruct::load(matjson::Value value)
 {
     code = (Keycode)value["code"].asInt().unwrapOr(-1);
+    type = (KeybindType)value["type"].asInt().unwrapOr(0);
 
     if (value.contains("modifiers") && value["modifiers"].isArray())
     {

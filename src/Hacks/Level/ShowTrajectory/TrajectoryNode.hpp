@@ -15,6 +15,8 @@ namespace qolmod
             int iterCount = 240;
 
             ~TrajectoryNode();
+            
+            virtual bool shouldDrawTrail();
 
         public:
             CREATE_FUNC(TrajectoryNode);

@@ -14,4 +14,5 @@ struct ModuleShortcutConfig
     float opacity = 0.8f;
     bool isMovable = true;
     ColourConfig colour = { cocos2d::ccc3(255, 255, 255) };
+    FloatingButtonAnimationType animation = FloatingButtonAnimationType::Shrink;
 };

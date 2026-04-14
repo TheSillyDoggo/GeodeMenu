@@ -26,8 +26,13 @@ bool MouseDispatcherExt::handleForNodeRecursive(CCNode* node, float y, float x)
                 auto local = node->convertToNodeSpace(getMousePos());
                 auto r = qolmod::utils::getBasicRect(node);
                 r.origin = CCPointZero;
+                bool contains = r.containsPoint(local);
 
-                if (r.containsPoint(local))
+                #ifdef GEODE_IS_MOBILE
+                contains = true;
+                #endif
+
+                if (contains)
                 {
                     delegate->scrollWheel(y, x);
                     return true;

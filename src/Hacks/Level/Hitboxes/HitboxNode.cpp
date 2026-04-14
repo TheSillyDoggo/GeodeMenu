@@ -275,7 +275,7 @@ bool HitboxNode::shouldRenderState(PlayerHitboxState* state)
 
 void HitboxNode::drawPlayerTrails()
 {
-    if (!HitboxTrail::get()->getRealEnabled())
+    if (!shouldDrawTrail())
         return;
 
     auto reg = ccc4FFromccc3B(colourForType(HitboxColourType::PlayerReg));
@@ -618,4 +618,9 @@ void HitboxNode::onTickEnd()
             }
         }
     }
+}
+
+bool HitboxNode::shouldDrawTrail()
+{
+    return HitboxTrail::get()->getRealEnabled();
 }

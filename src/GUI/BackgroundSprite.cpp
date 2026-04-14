@@ -51,35 +51,35 @@ bool BackgroundSprite::init()
     return true;
 }
 
-void BackgroundSprite::setTheme(int theme)
+void BackgroundSprite::setTheme(int theme2)
 {
-    this->theme = theme;
+    this->theme = (qolmod::BackgroundType)theme2;
 
-    auto bgStr = fmt::format("GJ_square0{}.png", theme < 0 ? 6 : theme);
+    auto bgStr = fmt::format("GJ_square0{}.png", theme2 < 0 ? 6 : theme2);
 
-    if (theme == -4)
+    if (theme == BackgroundType::Geode01)
         bgStr = "geode.loader/GE_square01.png";
 
-    if (theme == -5)
+    if (theme == BackgroundType::Geode02)
         bgStr = "geode.loader/GE_square02.png";
 
-    if (theme == -6)
+    if (theme == BackgroundType::Geode03)
         bgStr = "geode.loader/GE_square03.png";
 
     colouredBG->_scale9Image->setTexture(CCSprite::create(bgStr.c_str())->getTexture());
 
-    colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : ccc3(255, 255, 255));
-    colouredBG->setOpacity(theme == -2 ? 175 : 255);
+    colouredBG->setColor(theme == BackgroundType::Darken ? ccc3(0, 0, 0) : ccc3(255, 255, 255));
+    colouredBG->setOpacity(theme == BackgroundType::Darken ? 175 : 255);
 
-    colouredBG->setVisible(theme != -1);
-    outlineSpr->setVisible(theme == -2);
+    colouredBG->setVisible(theme != BackgroundType::Gradient);
+    outlineSpr->setVisible(theme == BackgroundType::Darken);
 
-    clipping->setVisible(theme == -1);
-    clipping->getStencil()->setVisible(theme == -1);
-    gradientOutline->setVisible(theme == -1 || theme == -7);
-    gradientDarken->setVisible((theme == -1 || theme == -7) && gradientDarkenVisible);
+    clipping->setVisible(theme == BackgroundType::Gradient);
+    clipping->getStencil()->setVisible(theme == BackgroundType::Gradient);
+    gradientOutline->setVisible(theme == BackgroundType::Gradient || theme == BackgroundType::Custom);
+    gradientDarken->setVisible((theme == BackgroundType::Gradient || theme == BackgroundType::Custom) && gradientDarkenVisible);
 
-    clippingCustom->setVisible(theme == -7);
+    clippingCustom->setVisible(theme == BackgroundType::Custom);
     updateCustomSprite();
 }
 
@@ -87,7 +87,7 @@ void BackgroundSprite::setGradientDarkenVisible(bool visible)
 {
     gradientDarkenVisible = visible;
 
-    gradientDarken->setVisible((theme == -1 || theme == -7) && gradientDarkenVisible);
+    gradientDarken->setVisible((theme == BackgroundType::Gradient || theme == BackgroundType::Custom) && gradientDarkenVisible);
 }
 
 void BackgroundSprite::setContentSize(const CCSize& contentSize)
@@ -115,7 +115,7 @@ void BackgroundSprite::update(float dt)
 
 void BackgroundSprite::setOpacity(float opacity)
 {
-    colouredBG->setOpacity((theme == -2 ? 175.0f : 255.0f) * (opacity / 255.0f));
+    colouredBG->setOpacity((theme == BackgroundType::Darken ? 175.0f : 255.0f) * (opacity / 255.0f));
     outlineSpr->setOpacity(opacity);
     gradientBG->setOpacity(opacity);
     gradientOutline->setOpacity(opacity);
@@ -124,7 +124,7 @@ void BackgroundSprite::setOpacity(float opacity)
 
 void BackgroundSprite::setColour(ccColor3B colour)
 {
-    colouredBG->setColor(theme == -2 ? ccc3(0, 0, 0) : colour);
+    colouredBG->setColor(theme == BackgroundType::Darken ? ccc3(0, 0, 0) : colour);
     outlineSpr->setColor(colour);
     gradientOutline->setColor(colour);
 }

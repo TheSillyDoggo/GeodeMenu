@@ -7,7 +7,8 @@
 enum class KeybindType
 {
     Toggle,
-    Hold
+    Hold,
+    HoldInverted,
 };
 
 enum class KeyModifier
@@ -24,6 +25,7 @@ struct KeyConfigStruct
 {
     std::vector<KeyModifier> modifiers = {};
     Keycode code = Keycode::KEY_Unknown;
+    KeybindType type = KeybindType::Toggle;
 
     std::string configToString();
 

@@ -13,7 +13,7 @@ SetupShortcutUI* SetupShortcutUI::create(std::function<void(bool, ModuleShortcut
 {
     auto pRet = new SetupShortcutUI();
 
-    CCSize size = ccp(300, 240);
+    CCSize size = ccp(360, 250);
     pRet->onFinish = onFinish;
 
     if (pRet && pRet->initAnchored(size.width, size.height))
@@ -314,4 +314,40 @@ bool SetupShortcutUI::setup()
 void SetupShortcutUI::update(float dt)
 {
     colSpr->setColor(conf.colour.colourForConfig(fmt::format("{}_shortcut", modID)));
+}
+
+void SetupShortcutUI::addAnimButton(FloatingButtonAnimationType type, int y, CCMenu* menu)
+{
+    /*DualModeData data;
+    data.mode = mode;
+
+    data.toggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(IconEffectsUI::onDualMode), 0.65f);
+    data.toggler->setPosition(ccp(16, 118 - 27 * y));
+    data.toggler->setTag((int)mode);
+
+    std::string key;
+
+    switch (mode)
+    {
+        case IconicDualMode::Invert:
+            key = "iconic/dual-mode-invert";
+            break;
+
+        case IconicDualMode::Same:
+            key = "iconic/dual-mode-same";
+            break;
+            
+        case IconicDualMode::Seperate:
+            key = "iconic/dual-mode-seperate";
+            break;
+    }
+
+    data.label = AdvLabelBMFont::createWithLocalisation(key, "goldFont.fnt");
+    data.label->setAnchorPoint(ccp(0, 0.5f));
+    data.label->setPosition(ccp(32, data.toggler->getPositionY()));
+    data.label->limitLabelWidth(70, 0.55f, 0);
+
+    menu->addChild(data.toggler);
+    menu->addChild(data.label);
+    dualNodes.push_back(data);*/
 }

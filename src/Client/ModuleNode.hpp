@@ -20,6 +20,7 @@ class ModuleNode : public qolmod::CCMenuExt, public qolmod::AltMouseDelegate
         bool disabled = false;
 
         virtual bool altClickBegan(int button, cocos2d::CCPoint point);
+        virtual void draw();
 
         ~ModuleNode();
     
@@ -37,7 +38,9 @@ class ModuleNode : public qolmod::CCMenuExt, public qolmod::AltMouseDelegate
         void onUpdateLabelColour(float dt);
         bool isDisabled();
 
+        virtual bool shouldAppearCheat();
+        virtual bool shouldAppearDisabled();
+
         virtual void updateNode();
-        virtual void draw();
         bool init(Module* module);
 };

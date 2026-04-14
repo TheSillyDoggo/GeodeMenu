@@ -10,8 +10,8 @@ using namespace geode::prelude;
 class ExtraThemeSettingsUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
-        BackgroundSprite* imagePreview;
+        qolmod::BackgroundSprite* bg;
+        qolmod::BackgroundSprite* imagePreview;
         bool image = false;
 
     public:

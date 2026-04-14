@@ -69,7 +69,7 @@ void FloatingUIManager::visit()
     return CCNode::visit();
 }
 
-bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
+bool FloatingUIManager::touchBegan(qolmod::Touch* touch)
 {
     if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
         return false;
@@ -79,6 +79,60 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
 
     sortButtons();
     std::reverse(buttons.begin(), buttons.end());
+
+    for (auto button : buttons)
+    {
+        if (DisableShortcuts::get()->getRealEnabled())
+            if (!typeinfo_cast<qolmod::PaintControl*>(button))
+                continue;
+
+        if (button->ccTouchBegan(touch))
+        {
+            trackingTouches.emplace(touch->id, button);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool FloatingUIManager::touchMoved(qolmod::Touch* touch)
+{
+    if (trackingTouches.contains(touch->id))
+    {
+        trackingTouches[touch->id]->ccTouchMoved(touch);
+        return true;
+    }
+
+    return false;
+}
+
+bool FloatingUIManager::touchEnded(qolmod::Touch* touch)
+{
+    if (trackingTouches.contains(touch->id))
+    {
+        trackingTouches[touch->id]->ccTouchEnded(touch);
+        trackingTouches.erase(touch->id);
+        return true;
+    }
+
+    return false;
+}
+
+bool FloatingUIManager::touchCancelled(qolmod::Touch* touch)
+{
+    return touchEnded(touch);
+}
+
+/*bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int uIndex)
+{
+    if (!CCScene::get() || CCScene::get()->getChildByType<LoadingLayer>(0))
+        return false;
+
+    if (AndroidUI::get())
+        return false;
+
+    
 
     switch (uIndex)
     {
@@ -129,7 +183,7 @@ bool FloatingUIManager::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
     }
 
     return false;
-}
+}*/
 
 void FloatingUIManager::sortButtons()
 {

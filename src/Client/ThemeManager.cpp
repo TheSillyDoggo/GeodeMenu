@@ -86,7 +86,11 @@ void ThemeManager::setCustomSprite(std::filesystem::path path)
 
 CCSprite* ThemeManager::createCustomSprite(bool returnDefault)
 {
-    auto spr = CCSprite::create(geode::utils::string::pathToString(Mod::get()->getConfigDir() / "ui-background.png").c_str());
+    auto path = geode::utils::string::pathToString(Mod::get()->getConfigDir() / "ui-background.png");
+    CCSprite* spr = nullptr;
+
+    if (CCFileUtils::get()->isFileExist(path.c_str()))
+        spr = CCSprite::create(path.c_str());
 
     if (spr)
     {

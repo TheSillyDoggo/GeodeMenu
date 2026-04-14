@@ -36,6 +36,11 @@ CCSize OptionsUI::calculateSize()
 
 bool OptionsUI::setup()
 {
+    if (!instance)
+        instance = this;
+    else
+        m_noElasticity = true;
+
     m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
@@ -146,4 +151,10 @@ void OptionsUI::onChangeKeybind(CCObject* sender)
     ui->setDefaultConfig({ {}, Keycode::KEY_Unknown });
     ui->setStartConfig(module->getKeybind());
     ui->show();
+}
+
+OptionsUI::~OptionsUI()
+{
+    if (instance == this)
+        instance = nullptr;
 }

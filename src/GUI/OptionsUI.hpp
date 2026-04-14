@@ -12,10 +12,13 @@ using namespace geode::prelude;
 class OptionsUI : public PopupBase
 {
     protected:
+        static inline OptionsUI* instance = nullptr;
         Module* module = nullptr;
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         CategoryNode* node;
         CCMenuItemToggler* favBtn = nullptr;
+
+        ~OptionsUI();
 
     public:
         static OptionsUI* create(Module* mod);

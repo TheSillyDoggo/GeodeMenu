@@ -11,7 +11,7 @@ using namespace geode::prelude;
 class SelectFontUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         std::string defaultFont = "bigFont.fnt";
         std::string startFont = "";
         std::string currentFont = "";

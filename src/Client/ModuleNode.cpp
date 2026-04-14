@@ -69,7 +69,7 @@ void ModuleNode::setup()
 
 void ModuleNode::onUpdateLabelColour(float dt)
 {
-    auto col = SeperateColourCheatNames::get()->getRealEnabled() && (module->getSafeModeTrigger() != SafeModeTrigger::None) ? CheatNameColour::get()->getColour() : ccWHITE;
+    auto col = SeperateColourCheatNames::get()->getRealEnabled() && shouldAppearCheat() ? CheatNameColour::get()->getColour() : ccWHITE;
 
     if (isDisabled())
     {
@@ -246,5 +246,21 @@ bool ModuleNode::altClickBegan(int button, cocos2d::CCPoint point)
         return true;
     }
 
+    return false;
+}
+
+bool ModuleNode::shouldAppearCheat()
+{
+    if (module->getID() == "safe-mode")
+        return true;
+
+    if (module->getID() == "speedhack/enabled")
+        return true;
+
+    return (module->getSafeModeTrigger() != SafeModeTrigger::None);
+}
+
+bool ModuleNode::shouldAppearDisabled()
+{
     return false;
 }

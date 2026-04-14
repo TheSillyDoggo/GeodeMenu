@@ -117,22 +117,27 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
 
     bool useHoldCol = held == plr->m_holdingButtons[(int)PlayerButton::Jump];
     ccColor4F col;
+    bool useTrail = false;
     
     if (plr == gjbgl->m_player1)
     {
         col = ccc4FFromccc3B(useHoldCol ?
             ShowTrajectoryP1Hold::get()->getColour() :
             ShowTrajectoryP1Release::get()->getColour());
+        useTrail = ShowTrajectoryP1Trail::get()->getRealEnabled();
     }
     else
     {
         col = ccc4FFromccc3B(useHoldCol ?
             ShowTrajectoryP2Hold::get()->getColour() :
             ShowTrajectoryP2Release::get()->getColour());
+        useTrail = ShowTrajectoryP2Trail::get()->getRealEnabled();
     }
 
     if (player->m_regularTrail)
         player->m_regularTrail->setVisible(false);
+
+    trailStates.clear();
 
     for (size_t i = 0; i < getIterCount(); i++)
     {
@@ -152,10 +157,24 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
 
         if (player->m_isDead || player->m_maybeIsColliding)
         {
+            drawPlayerTrails();
             drawPlayerHitbox(player);
             break;
+        }
+        if (useTrail)
+        {
+            trailStates.push_back(PlayerHitboxState{
+                player->getObjectRect(player->m_vehicleSize, player->m_vehicleSize),
+                player->getObjectRect(0.25f, 0.25f),
+                0
+            });
         }
     }
 
     simulating = false;
+}
+
+bool TrajectoryNode::shouldDrawTrail()
+{
+    return true;
 }

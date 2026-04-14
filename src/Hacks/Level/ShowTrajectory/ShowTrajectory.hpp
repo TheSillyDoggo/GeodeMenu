@@ -86,6 +86,26 @@ class ShowTrajectoryP2Release : public ColourModule
         }
 };
 
+class ShowTrajectoryP1Trail : public Module
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP1Trail)
+        {
+            setID("show-trajectory/player1/hitbox-trail");
+            setPriority(3);
+        }
+};
+
+class ShowTrajectoryP2Trail : public Module
+{
+    public:
+        MODULE_SETUP(ShowTrajectoryP2Trail)
+        {
+            setID("show-trajectory/player2/hitbox-trail");
+            setPriority(3);
+        }
+};
+
 SUBMIT_HACK(ShowTrajectory)
 SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryP1)
 SUBMIT_OPTION(ShowTrajectory, ShowTrajectoryP2)
@@ -93,3 +113,5 @@ SUBMIT_OPTION(ShowTrajectoryP1, ShowTrajectoryP1Hold)
 SUBMIT_OPTION(ShowTrajectoryP2, ShowTrajectoryP2Hold)
 SUBMIT_OPTION(ShowTrajectoryP1, ShowTrajectoryP1Release)
 SUBMIT_OPTION(ShowTrajectoryP2, ShowTrajectoryP2Release)
+SUBMIT_OPTION(ShowTrajectoryP1, ShowTrajectoryP1Trail)
+SUBMIT_OPTION(ShowTrajectoryP2, ShowTrajectoryP2Trail)

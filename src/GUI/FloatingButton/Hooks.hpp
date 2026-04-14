@@ -7,9 +7,3 @@
 
 using namespace geode::prelude;
 
-class $modify (FloatingTouchDispatcher, CCTouchDispatcher)
-{
-    static void onModify(auto& self);
-
-    void touches(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent, unsigned int uIndex);
-};

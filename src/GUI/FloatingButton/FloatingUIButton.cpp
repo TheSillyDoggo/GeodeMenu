@@ -153,18 +153,26 @@ void FloatingUIButton::update(float dt)
     }
 }
 
-void FloatingUIButton::animate(bool release)
+void FloatingUIButton::animate(bool release, bool clicked)
 {
     this->stopAllActions();
 
-    bool useGDAnim = false;
+    bool useGDAnim = animation == FloatingButtonAnimationType::GD;
 
     if (useGDAnim)
     {
         if (!release)
             this->runAction(RealtimeAction::create(CCEaseBounceOut::create(CCScaleTo::create(0.3f, 1.26f))));
         else
-            this->runAction(RealtimeAction::create(CCEaseBounceOut::create(CCScaleTo::create(0.3f, 1.0f))));
+        {
+            if (clicked)
+            {
+                this->stopAllActions();
+                this->setScale(1.0f);
+            }
+            else
+                this->runAction(RealtimeAction::create(CCEaseBounceOut::create(CCScaleTo::create(0.4f, 1.0f))));
+        }
     }
     else
     {
@@ -220,6 +228,11 @@ void FloatingUIButton::setBaseOpacity(float opacity)
     this->opacity = opacity;
 }
 
+void FloatingUIButton::setAnimation(FloatingButtonAnimationType anim)
+{
+    this->animation = anim;
+}
+
 void FloatingUIButton::updatePosition(cocos2d::CCPoint point)
 {
     auto safe = utils::getSafeAreaRect();
@@ -234,12 +247,12 @@ void FloatingUIButton::updatePosition(cocos2d::CCPoint point)
         setPosition(position);
 }
 
-bool FloatingUIButton::ccTouchBegan(CCTouch* touch)
+bool FloatingUIButton::ccTouchBegan(qolmod::Touch* touch)
 {
     if (!visibilityConf.shouldShow())
         return false;
 
-    if (cocos2d::ccpDistance(position, touch->getLocation()) < (BUTTON_RADIUS / 2) * scale)
+    if (cocos2d::ccpDistance(position, touch->location) < (BUTTON_RADIUS / 2) * scale)
     {
         setZOrder(FloatingUIManager::get()->getHighestButtonZ() + 1);
 
@@ -253,11 +266,11 @@ bool FloatingUIButton::ccTouchBegan(CCTouch* touch)
     return false;
 }
 
-void FloatingUIButton::ccTouchMoved(CCTouch* touch)
+void FloatingUIButton::ccTouchMoved(qolmod::Touch* touch)
 {
     if (movable && !isMoving)
     {
-        if (cocos2d::ccpDistance(touch->getStartLocation(), touch->getLocation()) > 5)
+        if (cocos2d::ccpDistance(touch->startLocation, touch->location) > 5)
         {
             isMoving = true;
         }
@@ -265,30 +278,36 @@ void FloatingUIButton::ccTouchMoved(CCTouch* touch)
 
     if (isMoving)
     {
-        updatePosition(touch->getLocation());
+        updatePosition(touch->location);
     }
 }
 
-void FloatingUIButton::ccTouchEnded(CCTouch* touch)
+void FloatingUIButton::ccTouchEnded(qolmod::Touch* touch)
 {
+    bool clicked = false;
+
     if (movable)
     {
         if (!isMoving)
         {
             if (onClick)
                 onClick();
+
+            clicked = true;
         }
     }
     else
     {
-        if (cocos2d::ccpDistance(position, touch->getLocation()) < (BUTTON_RADIUS / 2) * scale)
+        if (cocos2d::ccpDistance(position, touch->location) < (BUTTON_RADIUS / 2) * scale)
         {
             if (onClick)
                 onClick();
+
+            clicked = true;
         }
     }
 
-    animate(true);
+    animate(true, clicked);
     isSelected = false;
 }
 

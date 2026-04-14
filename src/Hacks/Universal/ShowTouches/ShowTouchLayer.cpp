@@ -18,37 +18,37 @@ ShowTouchLayer* ShowTouchLayer::get()
     return instance;
 }
 
-void ShowTouchLayer::touchBegan(int id, CCPoint point)
+void ShowTouchLayer::touchBegan(qolmod::Touch* touch)
 {
-    if (trails.contains(id))
-        touchEnded(id, point);
+    if (trails.contains(touch->id))
+        touchEnded(touch);
     
-    trails[id] = TouchTrail::create();
-    this->addChild(trails[id]);
+    trails[touch->id] = TouchTrail::create();
+    this->addChild(trails[touch->id]);
 
-    trails[id]->setPosition(point);
+    trails[touch->id]->setPosition(touch->location);
 }
 
-void ShowTouchLayer::touchMoved(int id, CCPoint point)
+void ShowTouchLayer::touchMoved(qolmod::Touch* touch)
 {
-    if (!trails.contains(id))
+    if (!trails.contains(touch->id))
         return;
 
-    trails[id]->setPosition(point);
+    trails[touch->id]->setPosition(touch->location);
 }
 
-void ShowTouchLayer::touchEnded(int id, CCPoint point)
+void ShowTouchLayer::touchEnded(qolmod::Touch* touch)
 {
-    if (!trails.contains(id))
+    if (!trails.contains(touch->id))
         return;
 
-    this->removeChild(trails[id]);
-    trails.erase(id);
+    this->removeChild(trails[touch->id]);
+    trails.erase(touch->id);
 }
 
-void ShowTouchLayer::touchCancelled(int id, CCPoint point)
+void ShowTouchLayer::touchCancelled(qolmod::Touch* touch)
 {
-    touchEnded(id, point);
+    touchEnded(touch);
 }
 
 void ShowTouchLayer::visit()

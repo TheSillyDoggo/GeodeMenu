@@ -32,7 +32,7 @@ void TrajectoryPlayLayer::createObjectsFromSetupFinished()
 
 void TrajectoryPlayLayer::destroyPlayer(PlayerObject* player, GameObject* object)
 {
-    if (TrajectoryNode::get()->isSimulating())
+    if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating() && player)
     {
         player->m_isDead = true;
         return;

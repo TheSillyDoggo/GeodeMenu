@@ -3,20 +3,29 @@
 
 using namespace geode::prelude;
 
-class DecemberSnow : public Module
+class MenuSnow : public Module
 {
     public:
-        MODULE_SETUP(DecemberSnow)
+        MODULE_SETUP(MenuSnow)
         {
-            setName("December Snow");
-            setID("december-snow");
+            setID("menu-snow");
             setCategory("Universal");
-            setDescription("Adds snow to the main menu during <cc>december</c>.");
+            setDescription("Adds snow to the main menu");
             setDefaultEnabled(true);
         }
 };
 
-SUBMIT_HACK(DecemberSnow);
+class DecemberOnly : public Module
+{
+    public:
+        MODULE_SETUP(DecemberOnly)
+        {
+            setID("december-snow");
+            setDefaultEnabled(true);
+        }
+};
+
+SUBMIT_OPTION(MenuSnow, DecemberOnly);
 
 class $modify (MenuLayer)
 {
@@ -25,32 +34,32 @@ class $modify (MenuLayer)
         if (!MenuLayer::init())
             return false;
 
-        if (!DecemberSnow::get()->getRealEnabled())
+        if (!MenuSnow::get()->getRealEnabled())
             return true;
 
         std::time_t currentTime = std::time(nullptr);
         std::tm* localTime = std::localtime(&currentTime);
         auto mon = localTime->tm_mon + 1;
 
-        if (mon == 12 || mon == 1)
+        if (DecemberOnly::get()->getRealEnabled())
+            if (!(mon == 12 || mon == 1))
+                return true;
+
+        auto snow = CCParticleSnow::create();
+        snow->setID("snow"_spr);
+
+        static bool first = false;
+
+        if (!first)
         {
-            auto snow = CCParticleSnow::create();
-            snow->setID("snow"_spr);
-
-            static bool first = false;
-
-            if (!first)
-            {
-                first = true;
-            }
-            else
-            {
-                snow->update(15);
-            }
-
-            this->addChild(snow, 420);
+            first = true;
+        }
+        else
+        {
+            snow->update(15);
         }
 
+        this->addChild(snow, 420);
         return true;
     }
 };

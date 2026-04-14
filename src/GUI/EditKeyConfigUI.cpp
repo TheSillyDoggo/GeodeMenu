@@ -1,8 +1,8 @@
 #include "EditKeyConfigUI.hpp"
-
 #include "BetterButtonSprite.hpp"
 #include "../Localisation/LocalisationManager.hpp"
 #include <Button.hpp>
+#include <BetterAlertLayer.hpp>
 
 using namespace qolmod;
 
@@ -10,7 +10,7 @@ EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> on
 {
     auto pRet = new EditKeyConfigUI();
 
-    CCSize size = ccp(280, 200);
+    CCSize size = ccp(300, 220);
     pRet->onFinish = onFinish;
 
     if (pRet && pRet->initAnchored(size.width, size.height))
@@ -25,9 +25,6 @@ EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> on
 
 bool EditKeyConfigUI::setup()
 {
-    
-
-    m_bgSprite->setVisible(false);
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
 
@@ -44,7 +41,6 @@ bool EditKeyConfigUI::setup()
 
     this->scheduleUpdate();
 
-    
 
     infoLbl = AdvLabelBMFont::createWithString("", "bigFont.fnt");
     infoLbl->setScale(0.65f);
@@ -58,10 +54,17 @@ bool EditKeyConfigUI::setup()
     topRightMenu->addChild(Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onUndoChanged)));
     topRightMenu->updateLayout();
 
+    auto modeMenu = CCMenu::create();
+
+    createModeButton(KeybindType::Toggle, 2, modeMenu);
+    createModeButton(KeybindType::Hold, 1, modeMenu);
+    createModeButton(KeybindType::HoldInverted, 0, modeMenu);
+
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
     m_mainLayer->addChildAtPosition(topRightMenu, Anchor::TopRight, ccp(-38, -12));
     m_mainLayer->addChildAtPosition(infoLbl, Anchor::Center, ccp(0, 0));
+    m_mainLayer->addChildAtPosition(modeMenu, Anchor::BottomLeft, ccp(20, 20));
     return true;
 }
 
@@ -82,11 +85,74 @@ void EditKeyConfigUI::update(float dt)
 void EditKeyConfigUI::onSetDefault(CCObject* sender)
 {
     this->currentConfig = defaultConfig;
+    updateMode(nullptr);
 }
 
 void EditKeyConfigUI::onUndoChanged(CCObject* sender)
 {
     this->currentConfig = startConfig;
+    updateMode(nullptr);
+}
+
+void EditKeyConfigUI::onSetKeyMode(CCObject* sender)
+{
+    currentConfig.type = (KeybindType)sender->getTag();
+    
+    updateMode(nullptr);
+}
+
+void EditKeyConfigUI::createModeButton(KeybindType type, int y, CCMenu* menu)
+{
+    auto toggle = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(EditKeyConfigUI::onSetKeyMode), 0.65f);
+    toggle->setTag((int)type);
+    toggle->setPosition(ccp(0, 27 * y));
+
+    std::string key = "";
+
+    switch (type)
+    {
+        case KeybindType::Toggle:
+            key = "edit-keybind-ui/toggle-mode-title";
+            break;
+
+        case KeybindType::Hold:
+            key = "edit-keybind-ui/hold-mode-title";
+            break;
+
+        case KeybindType::HoldInverted:
+            key = "edit-keybind-ui/hold-inverted-mode-title";
+            break;
+    }
+
+    auto label = AdvLabelBMFont::createWithLocalisation(key, "goldFont.fnt");
+    label->setAnchorPoint(ccp(0, 0.5f));
+    label->setPosition(ccp(16, toggle->getPositionY()));
+    label->limitLabelWidth(60, 0.55f, 0);
+
+    auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+    infoSpr->setScale(0.4f + 0.55f);
+
+    auto infoBtn = Button::create(infoSpr, this, menu_selector(EditKeyConfigUI::onModeInfo));
+    infoBtn->setTag((int)type);
+    infoSpr->setScale(infoSpr->getScale() - 0.55f);
+    infoBtn->setPosition(label->getPosition() + ccp(label->getScaledContentWidth(), 0) + ccp(4.5f, 5));
+
+    menu->addChild(toggle);
+    menu->addChild(label, 2);
+    menu->addChild(infoBtn, 3);
+    modeBtns.emplace(type, std::make_pair(toggle, label));
+}
+
+void EditKeyConfigUI::updateMode(CCMenuItemToggler* except)
+{
+    for (auto& modeData : modeBtns)
+    {
+        modeData.second.first->setEnabled(modeData.first != currentConfig.type);
+        modeData.second.second->setColor(modeData.first == currentConfig.type ? ccWHITE : ccc3(150, 150, 150));
+
+        if (modeData.second.first != except)
+            modeData.second.first->toggle(modeData.first == currentConfig.type);
+    }
 }
 
 void EditKeyConfigUI::onClose(CCObject* sender)
@@ -95,6 +161,32 @@ void EditKeyConfigUI::onClose(CCObject* sender)
         onFinish(currentConfig);
 
     PopupBase::onClose(sender);
+}
+
+void EditKeyConfigUI::onModeInfo(CCObject* sender)
+{
+    std::string key = "";
+    std::string key2 = "";
+
+    switch ((KeybindType)sender->getTag())
+    {
+        case KeybindType::Toggle:
+            key = "edit-keybind-ui/toggle-mode-title";
+            key2 = "edit-keybind-ui/toggle-mode-info";
+            break;
+
+        case KeybindType::Hold:
+            key = "edit-keybind-ui/hold-mode-title";
+            key2 = "edit-keybind-ui/hold-mode-info";
+            break;
+
+        case KeybindType::HoldInverted:
+            key = "edit-keybind-ui/hold-inverted-mode-title";
+            key2 = "edit-keybind-ui/hold-inverted-mode-info";
+            break;
+    }
+
+    BetterAlertLayer::createWithLocalisation(key.c_str(), key2.c_str(), "ui/ok-button")->show();
 }
 
 void EditKeyConfigUI::setDefaultConfig(KeyConfigStruct config)
@@ -106,6 +198,8 @@ void EditKeyConfigUI::setStartConfig(KeyConfigStruct config)
 {
     this->startConfig = config;
     this->currentConfig = startConfig;
+
+    updateMode(nullptr);
 }
 
 void EditKeyConfigUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)

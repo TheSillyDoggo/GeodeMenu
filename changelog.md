@@ -1,3 +1,17 @@
+# 2.8.5
+
+- Added Show Trajectory hitbox trail
+- Added menu snow, december snow is now togglable so you can have snowy menus all of the year
+- Added customizable shortcut animations
+- Added Keybind Hold mode
+- Removed unused language font to save on storage
+- Fixed mouse scrolling not working on mobile
+- Fixed rare crash with show trajectory
+- Fixed Run Info From in Percentage option not working
+- Fixed Speedhack and Safe Mode not appearing as red in the mod menu
+- Fixed Shortcut configs resetting when pressing escape instead of the OK button
+- Fixed Shortcuts not working during scene transitions
+
 # 2.8.4
 
 - Added Gravity Arrow

@@ -40,9 +40,9 @@ namespace qolmod
 
             virtual void textChanged(CCTextInputNode* node);
 
-            virtual bool ccTouchBegan(cocos2d::CCTouch* touch);
-            virtual void ccTouchMoved(cocos2d::CCTouch* touch);
-            virtual void ccTouchEnded(cocos2d::CCTouch* touch);
+            virtual bool ccTouchBegan(qolmod::Touch* touch);
+            virtual void ccTouchMoved(qolmod::Touch* touch);
+            virtual void ccTouchEnded(qolmod::Touch* touch);
 
             virtual bool init();
             virtual void update(float dt);

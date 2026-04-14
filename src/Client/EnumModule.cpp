@@ -42,3 +42,13 @@ ModuleNode* EnumModule::getNode()
 {
     return EnumModuleNode::create(this);
 }
+
+void EnumModule::setNext()
+{
+    setValue(std::next(listedValues.find(value))->first);
+}
+
+void EnumModule::setPrev()
+{
+    setValue(std::prev(listedValues.find(value))->first);
+}

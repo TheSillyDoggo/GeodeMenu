@@ -20,12 +20,12 @@ bool CCNodeWithShader::init()
     #ifdef GEODE_IS_ANDROID
     if (!listened)
     {
-        listened = true;
+        /*listened = true;
 
         CCNotificationCenter::sharedNotificationCenter()->addObserver(this,
             callfuncO_selector(CCNodeWithShader::listenBackToForeground),
             EVENT_COME_TO_FOREGROUND,
-            nullptr);
+            nullptr);*/
     }
     #endif
 

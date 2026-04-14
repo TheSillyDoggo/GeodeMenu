@@ -1,9 +1,10 @@
 #pragma once
 
+#include <Touch.hpp>
+
 namespace cocos2d
 {
     class CCNode;
-    class CCPoint;
 };
 
 namespace qolmod
@@ -18,10 +19,10 @@ namespace qolmod
         public:
             static ShowTouchLayer* get();
 
-            void touchBegan(int id, cocos2d::CCPoint point);
-            void touchMoved(int id, cocos2d::CCPoint point);
-            void touchEnded(int id, cocos2d::CCPoint point);
-            void touchCancelled(int id, cocos2d::CCPoint point);
+            void touchBegan(qolmod::Touch* touch);
+            void touchMoved(qolmod::Touch* touch);
+            void touchEnded(qolmod::Touch* touch);
+            void touchCancelled(qolmod::Touch* touch);
 
             virtual void visit();
     };

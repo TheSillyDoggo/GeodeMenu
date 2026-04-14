@@ -62,7 +62,7 @@ void EnumModuleNode::onLeft(CCObject* sender)
 {
     auto mod = static_cast<EnumModule*>(module);
     
-    mod->setValue(mod->getValue() - 1);
+    mod->setPrev();
     updateNode();
 }
 
@@ -70,6 +70,6 @@ void EnumModuleNode::onRight(CCObject* sender)
 {
     auto mod = static_cast<EnumModule*>(module);
 
-    mod->setValue(mod->getValue() + 1);
+    mod->setNext();
     updateNode();
 }

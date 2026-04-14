@@ -2,6 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "FloatingUIButton.hpp"
+#include <Touch.hpp>
 
 class FloatingUIManager : public cocos2d::CCNode
 {
@@ -9,7 +10,7 @@ class FloatingUIManager : public cocos2d::CCNode
 
     protected:
         std::vector<FloatingUIButton*> buttons = {};
-        std::unordered_map<cocos2d::CCTouch*, FloatingUIButton*> trackingTouches = {};
+        std::unordered_map<int, FloatingUIButton*> trackingTouches = {};
 
         void sortButtons();
 
@@ -24,5 +25,9 @@ class FloatingUIManager : public cocos2d::CCNode
         void updateSprites();
 
         virtual void visit();
-        bool touches(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent, unsigned int uIndex);
+
+        bool touchBegan(qolmod::Touch* touch);
+        bool touchMoved(qolmod::Touch* touch);
+        bool touchEnded(qolmod::Touch* touch);
+        bool touchCancelled(qolmod::Touch* touch);
 };

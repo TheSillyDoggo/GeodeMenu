@@ -25,7 +25,7 @@ class AndroidUI : public PopupBase, public qolmod::AltMouseDelegate
 
         CategorySelectMenu* catMenu = nullptr;
         qolmod::Button* backBtn = nullptr;
-        BackgroundSprite* bg = nullptr;
+        qolmod::BackgroundSprite* bg = nullptr;
         CCNode* categoryMenu;
         CCNode* bottomTabsContainer = nullptr;
         std::map<std::string, CategoryNode*> categories = {};

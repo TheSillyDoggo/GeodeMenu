@@ -12,7 +12,7 @@ using namespace geode::prelude;
 class SetupRotationUI : public PopupBase, public TextInputDelegate, public GJRotationControlDelegate
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         float rot = 0;
         float startRot = 0;
         float defaultRot = 0;

@@ -12,7 +12,7 @@ class SetupLabelConfigUI : public PopupBase
     friend class LabelEventCell;
 
     protected:
-        BackgroundSprite* bg = nullptr;
+        qolmod::BackgroundSprite* bg = nullptr;
         std::function<void(LabelConfig)> onFinish = nullptr;
         LabelConfig startConfig;
         LabelConfig currentConfig;

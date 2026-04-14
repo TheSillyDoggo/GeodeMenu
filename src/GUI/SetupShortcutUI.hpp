@@ -5,13 +5,14 @@
 #include "../Client/ModuleShortcutConfig.hpp"
 #include "BetterInputNode.hpp"
 #include "PopupBase.hpp"
+#include <FloatingButton/FloatingUIButton.hpp>
 
 using namespace geode::prelude;
 
 class SetupShortcutUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         std::function<void(bool, ModuleShortcutConfig)> onFinish = nullptr;
         bool shortcutEnabled = false;
         ModuleShortcutConfig conf = {};
@@ -27,6 +28,7 @@ class SetupShortcutUI : public PopupBase
         CCMenuItemToggler* visInEditorPause = nullptr;
         BetterInputNode* scaleInput = nullptr;
         BetterInputNode* opacityInput = nullptr;
+        std::unordered_map<FloatingButtonAnimationType, std::pair<CCMenuItemToggler*, AdvLabelBMFont*>> animBtns = {};
         CCSprite* colSpr = nullptr;
 
     public:
@@ -41,6 +43,8 @@ class SetupShortcutUI : public PopupBase
         void setStartConfig(bool enabled, ModuleShortcutConfig conf);
         void updateUI();
         void updateSprs();
+
+        void addAnimButton(FloatingButtonAnimationType type, int y, CCMenu* menu);
 
         virtual bool setup();
         virtual void update(float dt);

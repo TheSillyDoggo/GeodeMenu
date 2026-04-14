@@ -31,6 +31,7 @@ class HitboxNode : public qolmod::BaseDrawNode
 
         cocos2d::CCRect getObjectRect(GameObject* obj);
 
+        virtual bool shouldDrawTrail();
         bool shouldFillHitboxes();
         float getHitboxThickness();
         bool shouldObjectDraw(GameObject* obj);

@@ -18,7 +18,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
 {
     protected:
         bool allowEffects = false;
-        BackgroundSprite* bg = nullptr;
+        qolmod::BackgroundSprite* bg = nullptr;
         ColourConfig defaultConfig;
         ColourConfig startConfig;
         ColourConfig currentConfig;
@@ -66,6 +66,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         void onAddGradientStep(CCObject* sender);
         void onDeleteGradientStep(CCObject* sender);
         void onSpeedSliderChanged(CCObject* sender);
+        void onVanillaColours(CCObject* sender);
 
         void setStartConfig(ColourConfig config);
         void setDefaultConfig(ColourConfig config);

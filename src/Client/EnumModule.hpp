@@ -38,5 +38,8 @@ class EnumModule : public Module
 
         std::map<int, std::string> getDisplayNames();
 
+        void setNext();
+        void setPrev();
+
         virtual ModuleNode* getNode();
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include <Touch.hpp>
 
 struct FloatingUIButtonVisibility
 {
@@ -11,6 +12,12 @@ struct FloatingUIButtonVisibility
     bool showInEditorPauseMenu = true;
 
     bool shouldShow();
+};
+
+enum class FloatingButtonAnimationType
+{
+    Shrink = 0,
+    GD = 1,
 };
 
 class FloatingUIButton : public cocos2d::CCNode
@@ -31,11 +38,12 @@ class FloatingUIButton : public cocos2d::CCNode
         float _opacity = 0.8f;
         cocos2d::CCPoint position = cocos2d::CCPointZero;
         bool isSelected = false;
+        FloatingButtonAnimationType animation = FloatingButtonAnimationType::Shrink;
 
         virtual void update(float dt);
         ~FloatingUIButton();
 
-        void animate(bool release);
+        void animate(bool release, bool clicked = false);
 
         virtual void setupChildren();
 
@@ -49,13 +57,14 @@ class FloatingUIButton : public cocos2d::CCNode
         void setMovable(bool movable);
         void setBaseScale(float scale);
         void setBaseOpacity(float opacity);
+        void setAnimation(FloatingButtonAnimationType anim);
 
         void updateSprites(std::string background, std::string overlay, bool backgroundSpriteSheet, bool overlaySpriteSheet);
         void updateSprites();
 
         virtual void updatePosition(cocos2d::CCPoint point);
 
-        virtual bool ccTouchBegan(cocos2d::CCTouch* touch);
-        virtual void ccTouchMoved(cocos2d::CCTouch* touch);
-        virtual void ccTouchEnded(cocos2d::CCTouch* touch);
+        virtual bool ccTouchBegan(qolmod::Touch* touch);
+        virtual void ccTouchMoved(qolmod::Touch* touch);
+        virtual void ccTouchEnded(qolmod::Touch* touch);
 };

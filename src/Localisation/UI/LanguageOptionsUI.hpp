@@ -12,7 +12,7 @@ using namespace geode::prelude;
 class LanguageOptionsUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         CategoryNode* node;
         static inline LanguageOptionsUI* instance = nullptr;
 

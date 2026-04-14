@@ -11,7 +11,7 @@ using namespace geode::prelude;
 class CustomRewardSetupUI : public PopupBase
 {
     protected:
-        BackgroundSprite* bg;
+        qolmod::BackgroundSprite* bg;
         std::unordered_map<std::string, TextInput*> textInputs = {};
 
     public:
