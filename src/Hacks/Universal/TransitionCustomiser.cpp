@@ -15,12 +15,15 @@ class NoTransition : public Module
             setID("no-trans");
             setCategory("Universal");
 
-            #if GEODE_COMP_GD_VERSION == 22074
+            setDisabled(true);
+            setDisabledMessage("Transition customizer has been temporarily disabled due to crashing when getting achievements");
+
+            /*#if GEODE_COMP_GD_VERSION == 22074
             #ifdef __APPLE__
             setDisabled(true);
             setDisabledMessage("Unsupported on 2.2074");
             #endif
-            #endif
+            #endif*/
         }
 };
 
@@ -68,6 +71,7 @@ SUBMIT_HACK(TransititionCustomiser);
 SUBMIT_OPTION(TransititionCustomiser, TransitionCustomiserTransition);
 SUBMIT_OPTION(TransititionCustomiser, TransitionDuration);
 
+/*
 class $modify (ReplacedTransitionFade, CCTransitionFade)
 {
     static CCTransitionFade* create(float duration, CCScene* scene)
@@ -83,6 +87,11 @@ class $modify (ReplacedTransitionFade, CCTransitionFade)
             duration = TransitionDuration::get()->getStringFloat();
         }
 
-        return static_cast<CCTransitionFade*>(qolmod::utils::createTransitionForEnum(type, duration, scene));
+        auto ret = static_cast<CCTransitionFade*>(qolmod::utils::createTransitionForEnum(type, duration, scene));
+
+        if (!(typeinfo_cast<CCTransitionFade*>(ret) || typeinfo_cast<CCTransitionCrossFade*>(ret) || typeinfo_cast<CCTransitionMoveInL*>(ret)))
+            CCDirector::get()->willSwitchToScene(ret->m_pOutScene);
+
+        return ret;
     }
-};
+};*/

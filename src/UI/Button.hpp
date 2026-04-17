@@ -13,6 +13,9 @@ namespace qolmod
             float d = 0;
 
             bool init(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite, CCObject* target, cocos2d::SEL_MenuHandler selector);
+            
+            virtual void draw();
+            virtual void update(float dt);
 
         public:
             float m_scaleMultiplier = 1.26f;
@@ -27,6 +30,5 @@ namespace qolmod
             virtual void selected();
             virtual void unselected();
             virtual void activate();
-            virtual void update(float dt);
     };
 };

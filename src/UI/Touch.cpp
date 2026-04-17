@@ -26,12 +26,6 @@ void qolmod::Touch::updateFakeTouch()
 }
     
 
-#define TOUCHED_MACRO($func) \
-for (size_t i = 0; i < num; i++) \
-{ \
-    qolmod::ShowTouchLayer::get()->$func(touches[ids[i]]); \
-}
-
 #if GEODE_COMP_GD_VERSION >= 22081
 #define TOUCH_PARAMS int num, int ids[], float xs[], float ys[], double timestamp
 #define TOUCH_PARAMS2 num, ids, xs, ys, timestamp
@@ -48,7 +42,10 @@ std::vector<float> xs2 = {}; \
 std::vector<float> ys2 = {}; \
 for (size_t i = 0; i < num; i++) \
 { \
-    $code \
+    if (touches.contains(ids[i])) \
+    { \
+        $code \
+    } \
     ids2.push_back(ids[i]); \
     xs2.push_back(xs[i]); \
     ys2.push_back(ys[i]); \
@@ -71,9 +68,9 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
             touches[ids[i]] = new qolmod::Touch(ids[i], screenToCocos(xs[i], ys[i]));
         }
 
-        TOUCHED_MACRO(touchBegan);
-
         LOOP_MACRO(
+            qolmod::ShowTouchLayer::get()->touchBegan(touches[ids[i]]);
+
             if (FloatingUIManager::get()->touchBegan(touches[ids[i]]))
                 continue;
         );
@@ -85,13 +82,16 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
     {
         for (size_t i = 0; i < num; i++)
         {
+            if (!touches.contains(ids[i]))
+                continue;
+
             touches[ids[i]]->location = screenToCocos(xs[i], ys[i]);
             touches[ids[i]]->updateFakeTouch();
         }
 
-        TOUCHED_MACRO(touchMoved);
-
         LOOP_MACRO(
+            qolmod::ShowTouchLayer::get()->touchMoved(touches[ids[i]]);
+
             if (FloatingUIManager::get()->touchMoved(touches[ids[i]]))
                 continue;
         );
@@ -103,13 +103,16 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
     {
         for (size_t i = 0; i < num; i++)
         {
+            if (!touches.contains(ids[i]))
+                continue;
+
             touches[ids[i]]->location = screenToCocos(xs[i], ys[i]);
             touches[ids[i]]->updateFakeTouch();
         }
 
-        TOUCHED_MACRO(touchEnded);
-
         LOOP_MACRO(
+            qolmod::ShowTouchLayer::get()->touchEnded(touches[ids[i]]);
+
             if (FloatingUIManager::get()->touchEnded(touches[ids[i]]))
                 continue;
         );
@@ -120,13 +123,16 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
     {
         for (size_t i = 0; i < num; i++)
         {
+            if (!touches.contains(ids[i]))
+                continue;
+
             touches[ids[i]]->location = screenToCocos(xs[i], ys[i]);
             touches[ids[i]]->updateFakeTouch();
         }
 
-        TOUCHED_MACRO(touchCancelled);
-
         LOOP_MACRO(
+            qolmod::ShowTouchLayer::get()->touchCancelled(touches[ids[i]]);
+
             if (FloatingUIManager::get()->touchCancelled(touches[ids[i]]))
                 continue;
         );

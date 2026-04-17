@@ -116,3 +116,13 @@ class HitboxFillOpacity : public FloatSliderModule
             setDefaultValue(1.0f);
         }
 };
+
+class HitboxPlayerCircle : public Module
+{
+    public:
+        MODULE_SETUP(HitboxPlayerCircle)
+        {
+            setID("show-hitboxes/circle-player-hitbox");
+            setPriority(11);
+        }
+};

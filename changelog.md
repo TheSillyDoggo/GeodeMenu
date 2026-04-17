@@ -2,15 +2,27 @@
 
 - Added Show Trajectory hitbox trail
 - Added menu snow, december snow is now togglable so you can have snowy menus all of the year
-- Added customizable shortcut animations
 - Added Keybind Hold mode
+- Added Circle Hitbox option for show hitboxes
 - Removed unused language font to save on storage
-- Fixed mouse scrolling not working on mobile
+- Temporarily disabled transition customizer due to a crash when getting an achievement
+- Fixed Passable hitbox colours not working
+- Fixed Mouse scrolling not working on mobile
 - Fixed rare crash with show trajectory
 - Fixed Run Info From in Percentage option not working
 - Fixed Speedhack and Safe Mode not appearing as red in the mod menu
 - Fixed Shortcut configs resetting when pressing escape instead of the OK button
 - Fixed Shortcuts not working during scene transitions
+- Fixed Dash Fire, Spider Teleport and Fine Outline icon effects not saving
+- Localisation:
+-- Added Swedish
+-- Updated Kazakh
+-- Updated Latin American Spanish
+-- Updated German
+-- Updated Russian
+-- Updated Filipino
+-- Updated Arabic
+-- Updated Indonesian
 
 # 2.8.4
 

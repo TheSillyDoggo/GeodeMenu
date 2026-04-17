@@ -102,6 +102,15 @@ void IconicConfig::load()
     if (comp.contains("wave-trail"))
         waveTrail.fromJson(comp["wave-trail"]);
 
+    if (comp.contains("dash-fire"))
+        dashFire.fromJson(comp["dash-fire"]);
+
+    if (comp.contains("spider-teleport"))
+        spiderTeleport.fromJson(comp["spider-teleport"]);
+
+    if (comp.contains("fine-outline"))
+        fineOutline.fromJson(comp["fine-outline"]);
+
     if (comp.contains("modes"))
     {
         auto modes = comp["modes"];
@@ -112,6 +121,9 @@ void IconicConfig::load()
         trailEnabled = modes["trail"].asBool().unwrapOr(false);
         ghostEnabled = modes["ghost"].asBool().unwrapOr(false);
         waveTrailEnabled = modes["wave-trail"].asBool().unwrapOr(false);
+        dashFireEnabled = modes["dash-fire"].asBool().unwrapOr(false);
+        spiderTeleportEnabled = modes["spider-teleport"].asBool().unwrapOr(false);
+        fineOutlineEnabled = modes["fine-outline"].asBool().unwrapOr(false);
     }
 
     save();

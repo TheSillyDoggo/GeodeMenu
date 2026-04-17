@@ -17,6 +17,7 @@ SUBMIT_OPTION(ShowHitboxes, HitboxPlayerRot);
 SUBMIT_OPTION(ShowHitboxes, HitboxThickOutline);
 SUBMIT_OPTION(ShowHitboxes, HitboxFill);
 SUBMIT_OPTION(ShowHitboxes, HitboxFillOpacity);
+SUBMIT_OPTION(ShowHitboxes, HitboxPlayerCircle);
 
 SUBMIT_OPTION(HitboxTrail, HitboxTrailMaxPositions);
 SUBMIT_OPTION(HitboxTrail, HitboxTrailNoLimit);

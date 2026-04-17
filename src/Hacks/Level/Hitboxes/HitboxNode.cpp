@@ -24,11 +24,11 @@ HitboxColourType HitboxNode::getObjectColour(GameObject* obj)
     if (objTypeMatchesAny(obj, { GameObjectType::Hazard, GameObjectType::AnimatedHazard }))
         return HitboxColourType::Hazard;
 
-    if (objTypeMatchesAny(obj, { GameObjectType::Solid, GameObjectType::Slope }))
-        return HitboxColourType::Solid;
-
     if (objTypeMatchesAny(obj, { GameObjectType::Breakable }) || obj->m_isPassable)
         return HitboxColourType::Passable;
+
+    if (objTypeMatchesAny(obj, { GameObjectType::Solid, GameObjectType::Slope }))
+        return HitboxColourType::Solid;
 
     if (objTypeMatchesAny(obj, { GameObjectType::UserCoin, GameObjectType::Collectible, GameObjectType::SecretCoin }))
         return HitboxColourType::Interactable;
@@ -414,21 +414,26 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
         drawPolygon(vertices, 4, ccc4f(rot.r, rot.g, rot.b, v), getHitboxThickness(), rot, BorderAlignment::Inside);
     }
 
-    auto rect = plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize);
-    vertices[0] = ccp(rect.getMinX(), rect.getMinY());
-    vertices[1] = ccp(rect.getMaxX(), rect.getMinY());
-    vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
-    vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
+    auto rectReg = plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize);
+    vertices[0] = ccp(rectReg.getMinX(), rectReg.getMinY());
+    vertices[1] = ccp(rectReg.getMaxX(), rectReg.getMinY());
+    vertices[2] = ccp(rectReg.getMaxX(), rectReg.getMaxY());
+    vertices[3] = ccp(rectReg.getMinX(), rectReg.getMaxY());
 
     drawPolygon(vertices, 4, ccc4f(reg.r, reg.g, reg.b, v), getHitboxThickness(), reg, BorderAlignment::Inside);
 
-    rect = plr->getObjectRect(0.25f, 0.25f);
+    auto rect = plr->getObjectRect(0.25f, 0.25f);
     vertices[0] = ccp(rect.getMinX(), rect.getMinY());
     vertices[1] = ccp(rect.getMaxX(), rect.getMinY());
     vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
     vertices[3] = ccp(rect.getMinX(), rect.getMaxY());
 
     drawPolygon(vertices, 4, ccc4f(mini.r, mini.g, mini.b, v), getHitboxThickness(), mini, BorderAlignment::Inside);
+
+    if (HitboxPlayerCircle::get()->getRealEnabled())
+    {
+        drawCircle(ccp(rectReg.getMidX(), rectReg.getMidY()), rectReg.size.width / 2 - getHitboxThickness(), ccc4f(reg.r, reg.g, reg.b, v), getHitboxThickness(), reg, 0);
+    }
 }
 
 void HitboxNode::storePlayerTrail(PlayerObject* plr)

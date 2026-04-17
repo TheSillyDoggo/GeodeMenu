@@ -130,11 +130,11 @@ void EditKeyConfigUI::createModeButton(KeybindType type, int y, CCMenu* menu)
     label->limitLabelWidth(60, 0.55f, 0);
 
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
-    infoSpr->setScale(0.4f + 0.55f);
+    infoSpr->setScale(0.4f + 0.85f);
 
     auto infoBtn = Button::create(infoSpr, this, menu_selector(EditKeyConfigUI::onModeInfo));
     infoBtn->setTag((int)type);
-    infoSpr->setScale(infoSpr->getScale() - 0.55f);
+    infoSpr->setScale(infoSpr->getScale() - 0.85f);
     infoBtn->setPosition(label->getPosition() + ccp(label->getScaledContentWidth(), 0) + ccp(4.5f, 5));
 
     menu->addChild(toggle);

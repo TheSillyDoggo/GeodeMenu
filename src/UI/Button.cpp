@@ -132,3 +132,12 @@ void Button::activate()
     this->setScale(1);
     CCMenuItemSprite::activate();
 }
+
+void Button::draw()
+{
+    return;
+
+    ccDrawColor4F(1, 1, 0, 1);
+    glLineWidth(3);
+    ccDrawRect(ccp(0, 0), getContentSize());
+}
