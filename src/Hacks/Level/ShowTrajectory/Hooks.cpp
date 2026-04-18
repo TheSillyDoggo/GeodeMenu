@@ -123,6 +123,19 @@ class $modify(GJBaseGameLayer)
 
                     player->bumpPlayer(getBumpMod(player, (int)obj->m_objectType), (int)obj->m_objectType, true, nullptr);
                     break;
+
+                case GameObjectType::YellowJumpRing:
+                case GameObjectType::PinkJumpRing:
+                case GameObjectType::GravityRing:
+                case GameObjectType::GreenRing:
+                case GameObjectType::DropRing:
+                case GameObjectType::RedJumpRing:
+                case GameObjectType::CustomRing:
+                case GameObjectType::DashRing:
+                case GameObjectType::GravityDashRing:
+                case GameObjectType::SpiderOrb:
+                    playerTouchedRing(player, static_cast<RingObject*>(obj));
+                    break;
                 
                 default:
                     break;
@@ -184,8 +197,12 @@ class $modify(GJBaseGameLayer)
 
     void playerTouchedRing(PlayerObject * p0, RingObject * p1)
     {
-        if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
+        if (TrajectoryNode::get() ? !TrajectoryNode::get()->isSimulating() : true)
             GJBaseGameLayer::playerTouchedRing(p0, p1);
+        else if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating())
+        {
+            TrajectoryNode::get()->simulateFromRing(p0, p1);
+        }
     }
 
     void playerTouchedTrigger(PlayerObject* p0, EffectGameObject* p1)

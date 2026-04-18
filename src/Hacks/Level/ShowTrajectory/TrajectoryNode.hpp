@@ -13,6 +13,7 @@ namespace qolmod
             bool simulating = false;
             float deltaIter = 0.5f;
             int iterCount = 240;
+            bool ringSimulated = false;
 
             ~TrajectoryNode();
             
@@ -24,6 +25,8 @@ namespace qolmod
 
             bool isSimulating();
             void simulate(PlayerObject* plr, bool held);
+            void simulateFromRing(PlayerObject* player, RingObject* ring);
+            void performSimulation(cocos2d::ccColor4F colour, bool useTrail);
 
             float getDeltaIter();
             int getIterCount();

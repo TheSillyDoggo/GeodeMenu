@@ -3,6 +3,7 @@
 - Fixed Speedhack Keybinds not working correctly
 - Fixed Keybinds activating on release
 - Fixed Keybinds activating in the Edit Keybind UI
+- Fixed Show Trajectory Hitbox Trail not drawing if the player doesn't die
 
 # 2.8.5
 

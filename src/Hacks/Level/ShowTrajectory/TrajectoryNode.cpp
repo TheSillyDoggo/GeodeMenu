@@ -86,6 +86,7 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         return;
 
     simulating = true;
+    ringSimulated = !held;
 
     PlayerState state;
     state.saveState(plr);
@@ -101,8 +102,6 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         player->m_isSpider = gjbgl->m_levelSettings->m_startMode == 6;
         player->m_isSwing = gjbgl->m_levelSettings->m_startMode == 7;
     }
-
-    CCPoint prevPoint = plr->getPosition();
 
     if (
         (held && state.plMembers.m_dashRing) ||
@@ -137,7 +136,35 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
     if (player->m_regularTrail)
         player->m_regularTrail->setVisible(false);
 
-    trailStates.clear();
+    performSimulation(col, useTrail);
+
+    simulating = false;
+}
+
+void TrajectoryNode::simulateFromRing(PlayerObject* player2, RingObject* ring)
+{
+    return;
+
+    if (ringSimulated)
+        return;
+
+    ringSimulated = true;
+
+    PlayerState state;
+    state.saveState(player);
+
+    player->ringJump(ring, false);
+
+    performSimulation(ccc4f(1, 1, 0, 1), false);
+
+    state.loadState(this->player);
+}
+
+void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail)
+{
+    CCPoint prevPoint = player->getPosition();
+    auto oldTrails = trailStates;
+    bool drewTrails = false;
 
     for (size_t i = 0; i < getIterCount(); i++)
     {
@@ -152,11 +179,12 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         player->updateRotation(deltaIter);
         player->updatePlayerScale();
 
-        drawSegment(prevPoint, player->getPosition(), 1, col);
+        drawSegment(prevPoint, player->getPosition(), 1, colour);
         prevPoint = player->getPosition();
 
         if (player->m_isDead || player->m_maybeIsColliding)
         {
+            drewTrails = true;
             drawPlayerTrails();
             drawPlayerHitbox(player);
             break;
@@ -171,7 +199,10 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
         }
     }
 
-    simulating = false;
+    if (!drewTrails)
+        drawPlayerTrails();
+
+    trailStates = oldTrails;
 }
 
 bool TrajectoryNode::shouldDrawTrail()
