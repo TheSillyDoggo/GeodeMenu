@@ -1,3 +1,9 @@
+# 2.8.6
+
+- Fixed Speedhack Keybinds not working correctly
+- Fixed Keybinds activating on release
+- Fixed Keybinds activating in the Edit Keybind UI
+
 # 2.8.5
 
 - Added Show Trajectory hitbox trail

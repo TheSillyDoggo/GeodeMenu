@@ -45,7 +45,7 @@ bool BaseDrawNode::init()
 
     world1->addChild(world2);
 
-    debugLabel = CCLabelBMFont::create("", "chatFont.fnt");
+    debugLabel = CCLabelBMFont::create("", "bigFont.fnt");
     debugLabel->setAnchorPoint(ccp(0, 1));
     debugLabel->setPosition(ccp(
         10,

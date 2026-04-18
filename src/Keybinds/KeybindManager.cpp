@@ -7,6 +7,7 @@
 #include "../Utils/Num.hpp"
 #include <NotificationManager.hpp>
 #include <LocalisationManager.hpp>
+#include <EditKeyConfigUI.hpp>
 
 KeybindManager* KeybindManager::get()
 {
@@ -36,6 +37,9 @@ KeybindStruct* KeybindManager::getStruct(std::string id)
 
 bool KeybindManager::processMSG(KeyState state)
 {
+    if (EditKeyConfigUI::get())
+        return false;
+
     bool capture = false;
 
     for (auto mod : Module::getAll())
@@ -55,8 +59,39 @@ bool KeybindManager::processMSG(KeyState state)
 
             auto prev = Speedhack::get()->getText();
 
+            bool enabled = Speedhack::get()->getEnabled();
+
+            switch (preset.keyConfig.type)
+            {
+                case KeybindType::Toggle:
+                    if (!(state.isDown || state.isRepeat))
+                        continue;
+                    
+                    enabled = prev == str ? !Speedhack::get()->getEnabled() : true;
+                    break;
+
+                case KeybindType::Hold:
+                    if (state.isDown)
+                        enabled = true;
+
+                    if (!state.isDown && !state.isRepeat)
+                        enabled = false;
+                    break;
+
+                case KeybindType::HoldInverted:
+                    if (state.isDown)
+                        enabled = false;
+
+                    if (!state.isDown && !state.isRepeat)
+                        enabled = true;
+                    break;
+            }
+
+            if (enabled == Speedhack::get()->getEnabled() && str == prev)
+                continue;
+
             Speedhack::get()->setText(str);
-            Speedhack::get()->setEnabled(prev == str ? !Speedhack::get()->getEnabled() : true);
+            Speedhack::get()->setEnabled(enabled);
 
             if (SpeedhackNode::get())
                 SpeedhackNode::get()->updateUI();

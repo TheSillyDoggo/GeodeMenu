@@ -23,8 +23,21 @@ EditKeyConfigUI* EditKeyConfigUI::create(std::function<void(KeyConfigStruct)> on
     return nullptr;
 }
 
+EditKeyConfigUI* EditKeyConfigUI::get()
+{
+    return instance;
+}
+
+EditKeyConfigUI::~EditKeyConfigUI()
+{
+    if (instance == this)
+        instance = nullptr;
+}
+
 bool EditKeyConfigUI::setup()
 {
+    instance = this;
+
     bg = BackgroundSprite::create();
     bg->setContentSize(this->m_size);
 

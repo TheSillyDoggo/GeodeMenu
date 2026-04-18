@@ -17,13 +17,6 @@ class NoTransition : public Module
 
             setDisabled(true);
             setDisabledMessage("Transition customizer has been temporarily disabled due to crashing when getting achievements");
-
-            /*#if GEODE_COMP_GD_VERSION == 22074
-            #ifdef __APPLE__
-            setDisabled(true);
-            setDisabledMessage("Unsupported on 2.2074");
-            #endif
-            #endif*/
         }
 };
 
@@ -35,6 +28,18 @@ class TransititionCustomiser : public Module
             setID("transition-customiser");
             setCategory("Universal");
             setPriority(6);
+
+            setDisabled(true);
+            setDisabledMessage("Transition customizer has been temporarily disabled due to crashing when getting achievements");
+
+            /*
+            #if GEODE_COMP_GD_VERSION == 22074
+            #ifdef __APPLE__
+            setDisabled(true);
+            setDisabledMessage("Unsupported on 2.2074");
+            #endif
+            #endif
+            */
         }
 };
 

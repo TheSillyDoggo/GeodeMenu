@@ -302,8 +302,9 @@ void Module::onKeybindActivated(KeyState state)
         case KeybindType::Toggle:
             en = !getUserEnabled();
 
-            if (!state.isDown && !state.isRepeat)
+            if (!(state.isDown || state.isRepeat))
                 return;
+            
             break;
 
         case KeybindType::Hold:

@@ -21,9 +21,13 @@ class EditKeyConfigUI : public PopupBase
         AdvLabelBMFont* infoLbl = nullptr;
         std::function<void(KeyConfigStruct)> onFinish = nullptr;
         std::unordered_map<KeybindType, std::pair<CCMenuItemToggler*, AdvLabelBMFont*>> modeBtns = {};
+        static inline EditKeyConfigUI* instance = nullptr;
+
+        ~EditKeyConfigUI();
 
     public:
         static EditKeyConfigUI* create(std::function<void(KeyConfigStruct)> onFinish);
+        static EditKeyConfigUI* get();
 
         void setDefaultConfig(KeyConfigStruct config);
         void setStartConfig(KeyConfigStruct config);
