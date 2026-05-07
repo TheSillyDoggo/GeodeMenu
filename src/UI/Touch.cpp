@@ -3,8 +3,10 @@
 #include <Geode/modify/CCEGLViewProtocol.hpp>
 #include <../Hacks/Universal/ShowTouches/ShowTouchLayer.hpp>
 #include <FloatingButton/FloatingUIManager.hpp>
+#include <Gestures/GestureManager.hpp>
 
 using namespace geode::prelude;
+using namespace qolmod;
 
 qolmod::Touch::Touch(int id, cocos2d::CCPoint point)
 {
@@ -71,6 +73,9 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
         LOOP_MACRO(
             qolmod::ShowTouchLayer::get()->touchBegan(touches[ids[i]]);
 
+            if (GestureManager::get()->touchBegan(touches[ids[i]]))
+                continue;
+
             if (FloatingUIManager::get()->touchBegan(touches[ids[i]]))
                 continue;
         );
@@ -91,6 +96,9 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
 
         LOOP_MACRO(
             qolmod::ShowTouchLayer::get()->touchMoved(touches[ids[i]]);
+
+            if (GestureManager::get()->touchMoved(touches[ids[i]]))
+                continue;
 
             if (FloatingUIManager::get()->touchMoved(touches[ids[i]]))
                 continue;
@@ -113,6 +121,9 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
         LOOP_MACRO(
             qolmod::ShowTouchLayer::get()->touchEnded(touches[ids[i]]);
 
+            if (GestureManager::get()->touchEnded(touches[ids[i]]))
+                continue;
+
             if (FloatingUIManager::get()->touchEnded(touches[ids[i]]))
                 continue;
         );
@@ -132,6 +143,9 @@ class $modify (TouchedEGLViewProtocol, CCEGLViewProtocol)
 
         LOOP_MACRO(
             qolmod::ShowTouchLayer::get()->touchCancelled(touches[ids[i]]);
+
+            if (GestureManager::get()->touchCancelled(touches[ids[i]]))
+                continue;
 
             if (FloatingUIManager::get()->touchCancelled(touches[ids[i]]))
                 continue;

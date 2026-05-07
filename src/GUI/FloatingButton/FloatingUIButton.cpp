@@ -6,8 +6,8 @@
 
 using namespace geode::prelude;
 
-#define BUTTON_RADIUS 40
-#define ICON_SIZE 22.5f
+#define BUTTON_RADIUS 40.0f
+#define ICON_SIZE 22.0f
 
 FloatingUIButton* FloatingUIButton::create(std::function<void()> onClick)
 {

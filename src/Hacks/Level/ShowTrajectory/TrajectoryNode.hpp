@@ -14,6 +14,9 @@ namespace qolmod
             float deltaIter = 0.5f;
             int iterCount = 240;
             bool ringSimulated = false;
+            std::vector<GameObject*> simulatedRings = {};
+            bool existingSimulationCancelled = false;
+            geode::Ref<cocos2d::CCNode> trueCheck = nullptr;
 
             ~TrajectoryNode();
             
@@ -26,7 +29,7 @@ namespace qolmod
             bool isSimulating();
             void simulate(PlayerObject* plr, bool held);
             void simulateFromRing(PlayerObject* player, RingObject* ring);
-            void performSimulation(cocos2d::ccColor4F colour, bool useTrail);
+            void performSimulation(cocos2d::ccColor4F colour, bool useTrail, bool isOrb);
 
             float getDeltaIter();
             int getIterCount();

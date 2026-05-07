@@ -25,6 +25,7 @@ bool TrajectoryNode::init()
     player = PlayerObject::create(0, 0, gjbgl, gjbgl->m_objectLayer, false);
     player->setVisible(false);
     gjbgl->m_objectLayer->addChild(player);
+    trueCheck = CCNode::create();
 
     setDeltaIter(0.5f);
     setIterCount(240);
@@ -85,6 +86,7 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
     if (plr->m_isDead)
         return;
 
+    simulatedRings.clear();
     simulating = true;
     ringSimulated = !held;
 
@@ -136,7 +138,7 @@ void TrajectoryNode::simulate(PlayerObject* plr, bool held)
     if (player->m_regularTrail)
         player->m_regularTrail->setVisible(false);
 
-    performSimulation(col, useTrail);
+    performSimulation(col, useTrail, false);
 
     simulating = false;
 }
@@ -148,23 +150,55 @@ void TrajectoryNode::simulateFromRing(PlayerObject* player2, RingObject* ring)
     if (ringSimulated)
         return;
 
-    ringSimulated = true;
+    if (std::find(simulatedRings.begin(), simulatedRings.end(), ring) != simulatedRings.end())
+        return;
+
+    simulatedRings.push_back(ring);
 
     PlayerState state;
     state.saveState(player);
 
-    player->ringJump(ring, false);
+    player->setUserObject("ring-touched", nullptr);
 
-    performSimulation(ccc4f(1, 1, 0, 1), false);
+    float yellow = 11.18f;
+
+    switch (ring->m_objectType)
+    {
+        default:
+            return;
+
+        case GameObjectType::YellowJumpRing:
+            if (player->m_isShip)
+                player->m_yVelocity = 8;
+            else if (player->m_isBall)
+                player->m_yVelocity = yellow * 0.7f;
+            else if (player->m_isBird)
+                player->m_yVelocity = 8;
+            else if (player->m_isDart)
+                return;
+            else if (player->m_isRobot)
+                player->m_yVelocity = yellow * 0.9f;
+            else if (player->m_isSpider)
+                player->m_yVelocity = yellow * 0.7f;
+            else if (player->m_isSwing)
+                player->m_yVelocity = yellow * 0.6f;
+            else
+                player->m_yVelocity = yellow;
+
+            break;
+    }
+
+    performSimulation(ccc4f(1, 1, 0, 1), false, true);
 
     state.loadState(this->player);
 }
 
-void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail)
+void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail, bool isOrb)
 {
     CCPoint prevPoint = player->getPosition();
     auto oldTrails = trailStates;
     bool drewTrails = false;
+    existingSimulationCancelled = false;
 
     for (size_t i = 0; i < getIterCount(); i++)
     {
@@ -197,12 +231,16 @@ void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail)
                 0
             });
         }
+
+        if (existingSimulationCancelled)
+            break;
     }
 
     if (!drewTrails)
         drawPlayerTrails();
 
     trailStates = oldTrails;
+    existingSimulationCancelled = false;
 }
 
 bool TrajectoryNode::shouldDrawTrail()

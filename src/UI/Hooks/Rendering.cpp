@@ -6,6 +6,7 @@
 #include "../../GUI/FloatingButton/FloatingUIManager.hpp"
 #include "../../GUI/AndroidUI.hpp"
 #include "../../GUI/AndroidBall.hpp"
+#include <Gestures/GestureManager.hpp>
 #include "../../Hacks/Universal/Paint/PaintNode.hpp"
 #include "../../Hacks/Universal/ShowTouches/ShowTouchLayer.hpp"
 
@@ -27,6 +28,7 @@ class $modify (QOLModRenderingHook, CCDirector)
         {
             FloatingUIManager::get()->visit();
             AndroidBall::get()->visit();
+            GestureManager::get()->visit();
         }
 
         if (NotificationsEnabled::get()->getRealEnabled())
@@ -49,6 +51,7 @@ class $modify (QOLModRenderingHook, CCEGLView)
         {
             FloatingUIManager::get()->visit();
             AndroidBall::get()->visit();
+            GestureManager::get()->visit();
         }
 
         if (NotificationsEnabled::get()->getRealEnabled())

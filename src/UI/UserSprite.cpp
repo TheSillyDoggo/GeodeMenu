@@ -44,6 +44,8 @@ void UserSprite::updateSprite(std::string str)
             return;
 
         s->setAnchorPoint(ccp(0, 0));
+        s->setColor(getColor());
+        s->setOpacity(getOpacity());
 
         this->setContentSize(s->getScaledContentSize());
         this->addChild(s);
@@ -55,6 +57,8 @@ void UserSprite::updateSprite(std::string str)
         auto l = CCLabelBMFont::create(str.c_str(), "bigFont.fnt");
         l->setScale(0.5f);
         l->setAnchorPoint(ccp(0, 0));
+        l->setColor(getColor());
+        l->setOpacity(getOpacity());
 
         this->setContentSize(l->getScaledContentSize());
         this->addChild(l);
@@ -67,6 +71,8 @@ void UserSprite::updateSprite(std::string str)
             return;
 
         s->setAnchorPoint(ccp(0, 0));
+        s->setColor(getColor());
+        s->setOpacity(getOpacity());
 
         this->setContentSize(s->getScaledContentSize());
         this->addChild(s);
@@ -77,6 +83,21 @@ void UserSprite::refresh()
 {
     updateSprite(str);
 }
+
+void UserSprite::setOpacity(GLubyte opacity)
+{
+    CCNodeRGBA::setOpacity(opacity);
+
+    refresh();
+}
+
+void UserSprite::setColor(const ccColor3B& color)
+{
+    CCNodeRGBA::setColor(color);
+
+    refresh();
+}
+
 
 UserSprite::~UserSprite()
 {

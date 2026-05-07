@@ -13,6 +13,7 @@
 #include "FloatingButton/FloatingUIManager.hpp"
 #include "EasyBG.hpp"
 #include <BlurAPI.hpp>
+#include <Gestures/GestureManager.hpp>
 
 using namespace qolmod;
 
@@ -249,7 +250,8 @@ void AndroidUI::keyDown(cocos2d::enumKeyCodes key, double timestamp)
 void AndroidUI::visit()
 {
     FloatingUIManager::get()->visit();
-    AndroidBall::get()->visit();    
+    AndroidBall::get()->visit();
+    GestureManager::get()->visit();
 
     PopupBase::visit();
 }

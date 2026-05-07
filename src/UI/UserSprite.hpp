@@ -4,7 +4,7 @@
 
 namespace qolmod
 {
-    class UserSprite : public cocos2d::CCNode
+    class UserSprite : public cocos2d::CCNodeRGBA
     {
         protected:
             std::string str;
@@ -16,6 +16,9 @@ namespace qolmod
             CREATE_FUNC(UserSprite);
             static UserSprite* create(std::string str);
             static void refreshAll();
+
+            virtual void setOpacity(GLubyte opacity);
+            virtual void setColor(const cocos2d::ccColor3B& color);
 
             void updateSprite(std::string str);
             void refresh();
