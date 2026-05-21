@@ -5,6 +5,7 @@
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 #include "../BetterAlertLayer.hpp"
+#include <RealtimeAction.hpp>
 
 using namespace qolmod;
 
@@ -158,17 +159,32 @@ Button* ThemeNode::addAnimBtn(MenuAnimation anim)
     auto size = ccp(200, 25);
 
     auto spr = getAnimContainer(anim);
-    auto spr2 = getAnimContainer(anim);
-    static_cast<CCNodeRGBA*>(spr2->getChildByTag(0))->setColor(ccc3(200, 200, 200));
-    static_cast<AdvLabelBMFont*>(spr2->getChildByTag(1))->setColor(ccc3(200, 200, 200));
 
-    auto btn = Button::create(spr, spr2, this, menu_selector(ThemeNode::onChangeAnim));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(ThemeNode::onChangeAnim));
     btn->m_scaleMultiplier = 1;
     btn->setTag((int)anim);
 
+    btn->setCallbacks([spr, btn]{
+        for (auto child : spr->getChildrenExt<CCNode*>())
+        {
+            child->stopAllActions();
+            child->runAction(RealtimeAction::create(
+                CCTintTo::create(0.15f, 200, 200, 200)
+            ));
+        }
+    },
+    [spr, btn]{        
+        for (auto& child : spr->getChildrenExt<CCNode*>())
+        {
+            child->stopAllActions();
+            child->runAction(RealtimeAction::create(
+                CCTintTo::create(0.15f, 125, 125, 125)
+            ));
+        }
+    }, nullptr);
+
     btn->setContentSize(size);
     spr->setPosition(ccp(13, size.y / 2));
-    spr2->setPosition(ccp(13, size.y / 2));
 
     animBtns.emplace(anim, btn);
 
@@ -294,6 +310,8 @@ void ThemeNode::updateAnimSprite()
         auto col = btn.first == ThemeManager::get()->getAnimation() ? ccc3(255, 255, 255) : ccc3(125, 125, 125);
 
         btn.second->setEnabled(btn.first != ThemeManager::get()->getAnimation());
+        btn.second->getNormalImage()->getChildByTag(0)->stopAllActions();
+        btn.second->getNormalImage()->getChildByTag(1)->stopAllActions();
         static_cast<CCNodeRGBA*>(btn.second->getNormalImage()->getChildByTag(0))->setColor(col);
         static_cast<AdvLabelBMFont*>(btn.second->getNormalImage()->getChildByTag(1))->setColor(col);
     }

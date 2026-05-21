@@ -49,6 +49,7 @@ class Module
 {
     protected:
         friend class AndroidUI;
+        friend class OptionsUI;
 
         static inline std::vector<Module*> moduleMap = {};
 
@@ -68,6 +69,7 @@ class Module
         std::string onEnableWarning = "";
         int sortPriority = 8008135;
         KeyConfigStruct keyConfig = {};
+        bool showSeperateOptionsInfo = false;
 
         bool shortcutEnabled = false;
         cocos2d::CCNode* shortcutNode = nullptr;

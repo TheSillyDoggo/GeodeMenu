@@ -4,6 +4,7 @@
 #include "../Utils/RealtimeAction.hpp"
 #include "Modules/PopupUIScale.hpp"
 #include <SwelvyBG.hpp>
+#include <enchantum/enchantum.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -247,6 +248,13 @@ void PopupBase::playAnimation(MenuAnimation anim)
 
     this->setOpacity(0);
     this->runAction(fadeInBG);
+
+    std::string_view a = enchantum::to_string(anim);
+    std::string_view b = enchantum::to_string(ThemeManager::get()->getAnimation());
+    std::string a2(a.begin(), a.end());
+    std::string b2(b.begin(), b.end());
+
+    log::debug("{}: playing anim {}, selected: {}", cocos::getObjectName(this), a2, b2);
 
     switch (anim)
     {

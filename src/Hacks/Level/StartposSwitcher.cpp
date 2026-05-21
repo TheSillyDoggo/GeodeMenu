@@ -1,4 +1,5 @@
 #include "../../Client/KeybindModule.hpp"
+#include "../../Client/LayoutModule.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../../GUI/StartposSwitcherUI.hpp"
@@ -72,11 +73,26 @@ class StartposSwitcherPercentage : public Module
         }
 };
 
+class StartposSwitcherLayout : public LayoutModule
+{
+    public:
+        MODULE_SETUP(StartposSwitcherLayout)
+        {
+            setID("startpos-switcher/layout");
+            setPriority(5);
+
+            setPreviewNode([]{
+                return StartposSwitcherUI::create(false);
+            });
+        }
+};
+
 SUBMIT_HACK(StartposSwitcher);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPrev);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherNext);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherHide);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPercentage);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherLayout);
 
 class $modify (StartposPlayLayer, PlayLayer)
 {

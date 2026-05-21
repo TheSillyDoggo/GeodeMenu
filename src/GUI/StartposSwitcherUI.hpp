@@ -16,12 +16,13 @@ class StartposSwitcherUI : public CCMenu
         KeycodeNode* leftKey = nullptr;
         KeycodeNode* rightKey = nullptr;
         int currentStartpos = 0;
+        bool updatingEnabled = true;
     
     public:
         bool usePercentage = false;
         std::function<void(int)> onSwitchFunc = nullptr;
 
-        static StartposSwitcherUI* create();
+        static StartposSwitcherUI* create(bool updatingEnabled = true);
 
         void updateUI();
         void onSwitchBtn(CCObject* sender);

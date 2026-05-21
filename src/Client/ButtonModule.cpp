@@ -10,8 +10,11 @@ ModuleNode* ButtonModule::getNode()
 
 void ButtonModule::onKeybindActivated(KeyState state)
 {
-    onClick();
-    NotificationManager::get()->notifyToast(getNotificationString());
+    if (state.isDown && !state.isRepeat)
+    {
+        onClick();
+        NotificationManager::get()->notifyToast(getNotificationString());
+    }
 }
 
 std::string ButtonModule::getNotificationString()

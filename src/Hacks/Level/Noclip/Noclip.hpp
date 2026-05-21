@@ -26,6 +26,7 @@ class Noclip : public Module
 
                 return false;
             });
+            showSeperateOptionsInfo = true;
             setPriority(1);
         }
 };

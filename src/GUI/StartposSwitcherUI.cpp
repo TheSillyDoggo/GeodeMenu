@@ -4,9 +4,10 @@
 
 using namespace qolmod;
 
-StartposSwitcherUI* StartposSwitcherUI::create()
+StartposSwitcherUI* StartposSwitcherUI::create(bool updatingEnabled)
 {
     auto pRet = new StartposSwitcherUI();
+    pRet->updatingEnabled = updatingEnabled;
 
     if (pRet && pRet->init())
     {
@@ -22,6 +23,9 @@ bool StartposSwitcherUI::init()
 {
     if (!CCMenu::init())
         return false;
+
+    this->ignoreAnchorPointForPosition(false);
+    this->setAnchorPoint(ccp(0.5f, 0.5f));
 
     label = CCLabelBMFont::create("6 / 9", "bigFont.fnt");
     label->setScale(0.65f);
@@ -45,32 +49,30 @@ bool StartposSwitcherUI::init()
     leftKey->setScale(0.75f);
     rightKey->setScale(0.75f);
 
-    leftBtn->setPositionX(-65);
-    rightBtn->setPositionX(65);
-
     leftKey->setPositionX(-56);
     rightKey->setPositionX(56);
 
     leftPercent = CCLabelBMFont::create("", "bigFont.fnt");
     leftPercent->setScale(0.45f);
     leftPercent->setAnchorPoint(ccp(1, 0.5f));
-    leftPercent->setPositionX(-90);
 
     rightPercent = CCLabelBMFont::create("", "bigFont.fnt");
     rightPercent->setScale(0.45f);
     rightPercent->setAnchorPoint(ccp(0, 0.5f));
-    rightPercent->setPositionX(90);
 
+    this->setContentSize(ccp((65 + leftSpr->getScaledContentWidth() / 2) * 2, leftSpr->getScaledContentHeight()));
+
+    updateKeybindsVisualizer(false, 0, 0);
     updateUI();
 
     this->updateDisplayedOpacity(150);
-    this->addChild(label);
-    this->addChild(leftBtn);
-    this->addChild(rightBtn);
-    this->addChild(leftKey);
-    this->addChild(rightKey);
-    this->addChild(leftPercent);
-    this->addChild(rightPercent);
+    this->addChildAtPosition(label, Anchor::Center);
+    this->addChildAtPosition(leftBtn, Anchor::Left, ccp(leftSpr->getScaledContentWidth() / 2, 0));
+    this->addChildAtPosition(rightBtn, Anchor::Right, ccp(-rightSpr->getScaledContentWidth() / 2, 0));
+    this->addChildAtPosition(leftKey, Anchor::Left, ccp(-9 + leftSpr->getScaledContentWidth() / 2, 0));
+    this->addChildAtPosition(rightKey, Anchor::Right, ccp(9 - rightSpr->getScaledContentWidth() / 2, 0));
+    this->addChildAtPosition(leftPercent, Anchor::Left, ccp(-25 + leftSpr->getScaledContentWidth() / 2, 0));
+    this->addChildAtPosition(rightPercent, Anchor::Right, ccp(25 - rightSpr->getScaledContentWidth() / 2, 0));
     return true;
 }
 
@@ -91,6 +93,8 @@ void StartposSwitcherUI::updateDisplayedOpacity(GLubyte parentOpacity)
 
 void StartposSwitcherUI::updateKeybindsVisualizer(bool visible, int leftCode, int rightCode)
 {
+    visible = false;
+
     leftKey->setKeycode(leftCode);
     rightKey->setKeycode(rightCode);
 
@@ -113,6 +117,14 @@ float StartposSwitcherUI::getPercentForObject(GameObject* go)
 
 void StartposSwitcherUI::updateUI()
 {
+    if (!updatingEnabled)
+    {
+        leftPercent->setString("");
+        rightPercent->setString("");
+        label->setString("6 / 9");
+        return;
+    }
+
     if (!PlayLayerUtils::getUtils())
         return;
 

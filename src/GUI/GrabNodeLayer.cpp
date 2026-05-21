@@ -1,4 +1,5 @@
 #include "GrabNodeLayer.hpp"
+#include <Utils.hpp>
 
 bool GrabNodeLayer::init()
 {
@@ -50,6 +51,16 @@ CCNode* GrabNodeLayer::getNodeToGrab()
     return nodeToGrab;
 }
 
+void GrabNodeLayer::setNodeContainerThing(CCNode* node)
+{
+    this->nodeContainerThing = node;
+}
+
+CCNode* GrabNodeLayer::getNodeContainerThing()
+{
+    return nodeContainerThing;
+}
+
 void GrabNodeLayer::setOnStartDrag(std::function<void()> callback)
 {
     this->onStartDrag = callback;
@@ -74,9 +85,10 @@ bool GrabNodeLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (nodeToGrab && cocos::nodeIsVisible(this))
     {
-        auto bbox = CCRect(convertToWorldSpace(CCPointZero), convertToWorldSpace(getScaledContentSize()) - convertToWorldSpace(CCPointZero));
+        auto r = qolmod::utils::getBasicRect(this);
+        r.origin = CCPointZero;
 
-        if (pTouch->getLocation() > bbox.origin && pTouch->getLocation() < bbox.origin + bbox.size)
+        if (r.containsPoint(convertToNodeSpace(pTouch->getLocation())))
         {
             isDragging = true;
             startPos = nodeToGrab->getPosition();
@@ -95,7 +107,10 @@ void GrabNodeLayer::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 {
     if (isDragging)
     {
-        nodeToGrab->setPosition(startPos + (pTouch->getLocation() - pTouch->getStartLocation()) * getAxisForLocked(axis));
+        if (nodeContainerThing)
+            nodeToGrab->setPosition((nodeContainerThing->convertToNodeSpace(pTouch->getLocation()) / CCDirector::get()->getWinSize() * nodeContainerThing->getContentSize()) * getAxisForLocked(axis));
+        else
+            nodeToGrab->setPosition(startPos + (pTouch->getLocation() - pTouch->getStartLocation()) * getAxisForLocked(axis));
 
         if (onMoveDrag)
             onMoveDrag();
@@ -113,4 +128,9 @@ void GrabNodeLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 void GrabNodeLayer::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 {
     ccTouchEnded(pTouch, pEvent);
+}
+
+bool GrabNodeLayer::getDragging()
+{
+    return isDragging;
 }

@@ -13,6 +13,7 @@ class Autoclicker : public Module
             setID("autoclicker");
             setCategory("Level");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
+            showSeperateOptionsInfo = true;
             
             #if GEODE_COMP_GD_VERSION != 22081
             setDisabled(true);

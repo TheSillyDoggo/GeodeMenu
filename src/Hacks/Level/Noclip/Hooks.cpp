@@ -3,6 +3,7 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include "Noclip.hpp"
 #include "../ShowTrajectory/TrajectoryNode.hpp"
+#include <LayerColor.hpp>
 
 #define NOCLIP_BASE() base_cast<NoclipBaseGameLayer*>(this)
 
@@ -138,8 +139,9 @@ class $modify (PlayLayer)
         if (!PlayLayer::init(level, useReplay, dontCreateObjects))
             return false;
 
-        m_fields->tintOverlay = CCLayerColor::create(ccc4(0, 0, 0, 0));
+        m_fields->tintOverlay = qolmod::LayerColor::create(ccc4(0, 0, 0, 0));
         m_fields->tintOverlay->setID("noclip-tint-overlay"_spr);
+        // m_fields->tintOverlay->setBlendFunc({GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_DST_ALPHA});
         m_fields->tintOverlay->setZOrder(2);
         
         this->insertBefore(m_fields->tintOverlay, m_uiLayer);

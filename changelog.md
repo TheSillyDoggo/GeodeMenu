@@ -1,3 +1,7 @@
+# 2.8.7
+
+- Added info button for mods that have per player options
+
 # 2.8.6
 
 - Fixed Speedhack Keybinds not working correctly

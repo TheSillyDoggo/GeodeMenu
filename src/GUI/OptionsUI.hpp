@@ -9,7 +9,7 @@
 
 using namespace geode::prelude;
 
-class OptionsUI : public PopupBase
+class OptionsUI : public PopupBase, public CCCircleWaveDelegate
 {
     protected:
         static inline OptionsUI* instance = nullptr;
@@ -17,12 +17,14 @@ class OptionsUI : public PopupBase
         qolmod::BackgroundSprite* bg;
         CategoryNode* node;
         CCMenuItemToggler* favBtn = nullptr;
+        CCNode* pulsingCircle = nullptr;
 
         ~OptionsUI();
 
     public:
         static OptionsUI* create(Module* mod);
 
+        void onSeperateOptionsInfo(CCObject* sender);
         void onInfo(CCObject* sender);
         void onToggleFavourite(CCObject* sender);
         void onChangeShortcut(CCObject* sender);

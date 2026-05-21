@@ -17,6 +17,7 @@ class ShowTrajectory : public Module
             setCategory("Level");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
             setPriority(13);
+            showSeperateOptionsInfo = true;
         }
 };
 

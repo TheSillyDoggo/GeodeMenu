@@ -8,6 +8,7 @@
 #include <SetupShortcutUI.hpp>
 #include <EditKeyConfigUI.hpp>
 #include <Button.hpp>
+#include <PulsingCircle.hpp>
 
 using namespace qolmod;
 
@@ -107,6 +108,29 @@ bool OptionsUI::setup()
         node->addModule(option);
     }
 
+    if (module->showSeperateOptionsInfo)
+    {
+        auto menu = CCMenu::create();
+        menu->setZOrder(80085);
+
+        auto infoBtn2 = Button::create(CCSpriteGrayscale::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onSeperateOptionsInfo));
+        infoBtn2->getNormalImage()->setScale(0.75f);
+
+        menu->addChild(infoBtn2, 67);
+
+        if (!Mod::get()->getSavedValue<bool>("has-shown-seperate-info"))
+        {
+            pulsingCircle = []{
+                auto circle = PulsingCircle::create(2.5f, 18, 1.0f, false, false);
+                circle->color = ccWHITE;
+                return circle;
+            }();
+            menu->addChild(pulsingCircle);
+        }
+
+        m_mainLayer->addChildAtPosition(menu, Anchor::TopRight, ccp(-39, -18));
+    }
+
     m_mainLayer->addChildAtPosition(node, Anchor::Center, ccp(0, 5));
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
@@ -119,6 +143,19 @@ bool OptionsUI::setup()
 void OptionsUI::onInfo(CCObject* sender)
 {
     ModuleInfoAlert::create(module)->show();
+}
+
+void OptionsUI::onSeperateOptionsInfo(CCObject* sender)
+{
+    Mod::get()->setSavedValue<bool>("has-shown-seperate-info", true);
+
+    if (pulsingCircle)
+    {
+        pulsingCircle->removeFromParentAndCleanup(true);
+        pulsingCircle = nullptr;
+    }
+
+    BetterAlertLayer::createWithLocalisation("options-ui/seperate-alert/title", "options-ui/seperate-alert/text", "ui/ok-button")->show();
 }
 
 void OptionsUI::onToggleFavourite(CCObject* sender)

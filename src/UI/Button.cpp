@@ -111,6 +111,9 @@ void Button::selected()
         )
     );
 
+    if (selectedCallback)
+        selectedCallback();
+
     CCMenuItemSprite::selected();
 }
 
@@ -123,6 +126,9 @@ void Button::unselected()
         )
     );
 
+    if (unselectedCallback)
+        unselectedCallback();
+
     CCMenuItemSprite::unselected();
 }
 
@@ -130,6 +136,10 @@ void Button::activate()
 {
     this->stopAllActions();
     this->setScale(1);
+
+    if (activateCallback)
+        activateCallback();
+
     CCMenuItemSprite::activate();
 }
 
@@ -140,4 +150,11 @@ void Button::draw()
     ccDrawColor4F(1, 1, 0, 1);
     glLineWidth(3);
     ccDrawRect(ccp(0, 0), getContentSize());
+}
+
+void Button::setCallbacks(std::function<void()> selectedCallback, std::function<void()> unselectedCallback, std::function<void()> activateCallback)
+{
+    this->selectedCallback = selectedCallback;
+    this->unselectedCallback = unselectedCallback;
+    this->activateCallback = activateCallback;
 }

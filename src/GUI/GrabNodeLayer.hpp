@@ -16,6 +16,7 @@ class GrabNodeLayer : public CCLayer
     private:
         bool isDragging = false;
         CCNode* nodeToGrab = nullptr;
+        CCNode* nodeContainerThing = nullptr;
         CCPoint startPos = CCPointZero;
         std::function<void()> onStartDrag = nullptr;
         std::function<void()> onMoveDrag = nullptr;
@@ -37,8 +38,13 @@ class GrabNodeLayer : public CCLayer
         void setNodeToGrab(CCNode* node);
         CCNode* getNodeToGrab();
 
+        void setNodeContainerThing(CCNode* node);
+        CCNode* getNodeContainerThing();
+
         void setLockedAxis(LockedAxis axis);
         LockedAxis getLockedAxis();
+
+        bool getDragging();
 
         void setOnStartDrag(std::function<void()> callback);
         void setOnMoveDrag(std::function<void()> callback);
