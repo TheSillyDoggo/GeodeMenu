@@ -22,7 +22,14 @@ bool TrajectoryNode::init()
 
     instance = this;
 
+    if (!gjbgl || !gjbgl->m_objectLayer)
+        return false;
+
     player = PlayerObject::create(0, 0, gjbgl, gjbgl->m_objectLayer, false);
+
+    if (!player)
+        return false;
+
     player->setVisible(false);
     gjbgl->m_objectLayer->addChild(player);
     trueCheck = CCNode::create();
@@ -62,7 +69,14 @@ void TrajectoryNode::redraw()
 {
     clear();
 
-    if (!ShowTrajectory::get()->getRealEnabled())
+    if (!gjbgl || !player)
+        return;
+
+    if (!gjbgl->m_player1 || !gjbgl->m_objectLayer)
+        return;
+
+    auto showTrajectory = ShowTrajectory::get();
+    if (!showTrajectory || !showTrajectory->getRealEnabled())
         return;
 
     if (ShowTrajectoryP1::get()->getRealEnabled())
@@ -81,8 +95,11 @@ void TrajectoryNode::redraw()
     }
 }
 
-void TrajectoryNode::simulate(PlayerObject* plr, bool held)
+void TrajectoryNode::simulate(PlayerObject *plr, bool held)
 {
+    if (!gjbgl || !player || !plr)
+        return;
+
     if (plr->m_isDead)
         return;
 
@@ -195,6 +212,9 @@ void TrajectoryNode::simulateFromRing(PlayerObject* player2, RingObject* ring)
 
 void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail, bool isOrb)
 {
+    if (!gjbgl || !player)
+        return;
+
     CCPoint prevPoint = player->getPosition();
     auto oldTrails = trailStates;
     bool drewTrails = false;
@@ -202,10 +222,14 @@ void TrajectoryNode::performSimulation(cocos2d::ccColor4F colour, bool useTrail,
 
     for (size_t i = 0; i < getIterCount(); i++)
     {
-        player->m_collisionLogTop->removeAllObjects();
-        player->m_collisionLogBottom->removeAllObjects();
-        player->m_collisionLogLeft->removeAllObjects();
-        player->m_collisionLogRight->removeAllObjects();
+        if (player->m_collisionLogTop)
+            player->m_collisionLogTop->removeAllObjects();
+        if (player->m_collisionLogBottom)
+            player->m_collisionLogBottom->removeAllObjects();
+        if (player->m_collisionLogLeft)
+            player->m_collisionLogLeft->removeAllObjects();
+        if (player->m_collisionLogRight)
+            player->m_collisionLogRight->removeAllObjects();
 
         player->update(deltaIter);
         gjbgl->checkCollisions(player, deltaIter, false);

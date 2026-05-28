@@ -56,12 +56,27 @@ class $modify(GJBaseGameLayer)
 {
     void customCollisionCheck(PlayerObject* player, GameObject* obj)
     {
+        if (!player || !obj)
+            return;
+
         bool intersects = false;
 
-        if (obj->m_orientedBox && obj->m_shouldUseOuterOb)
-            intersects = obj->m_orientedBox->overlaps(player->m_orientedBox);
-        else
+        auto trajectory = TrajectoryNode::get();
+
+        if (trajectory && trajectory->isSimulating())
+        {
             intersects = player->getObjectRect().intersectsRect(obj->getObjectRect());
+        }
+        else
+        {
+            auto playerBox = player->m_orientedBox;
+            auto objectBox = obj->m_orientedBox;
+
+            if (objectBox && playerBox && obj->m_shouldUseOuterOb)
+                intersects = objectBox->overlaps(playerBox);
+            else
+                intersects = player->getObjectRect().intersectsRect(obj->getObjectRect());
+        }
 
         if (intersects)
         {
