@@ -1,6 +1,10 @@
 # 2.8.7
 
 - Added info button for mods that have per player options
+- Added movable startpos switcher button
+- Fixed Button Module keybinds repeating
+- Fixed blue hitbox being the wrong size
+- Improved small part of UI
 
 # 2.8.6
 

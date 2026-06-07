@@ -422,7 +422,7 @@ void HitboxNode::drawPlayerHitbox(PlayerObject* plr)
 
     drawPolygon(vertices, 4, ccc4f(reg.r, reg.g, reg.b, v), getHitboxThickness(), reg, BorderAlignment::Inside);
 
-    auto rect = plr->getObjectRect(0.25f, 0.25f);
+    auto rect = plr->getObjectRect(0.3f, 0.3f);
     vertices[0] = ccp(rect.getMinX(), rect.getMinY());
     vertices[1] = ccp(rect.getMaxX(), rect.getMinY());
     vertices[2] = ccp(rect.getMaxX(), rect.getMaxY());
@@ -457,7 +457,7 @@ void HitboxNode::storePlayerTrail(PlayerObject* plr)
     
     playerClicks[plr] = jump;
 
-    trailStates.push_back({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.25f, 0.25f), clickState });
+    trailStates.push_back({ plr->getObjectRect(plr->m_vehicleSize, plr->m_vehicleSize), plr->getObjectRect(0.3f, 0.3f), clickState });
     
     if (!HitboxTrailNoLimit::get()->getRealEnabled())
     {

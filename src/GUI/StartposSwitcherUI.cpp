@@ -27,7 +27,7 @@ bool StartposSwitcherUI::init()
     this->ignoreAnchorPointForPosition(false);
     this->setAnchorPoint(ccp(0.5f, 0.5f));
 
-    label = CCLabelBMFont::create("6 / 9", "bigFont.fnt");
+    label = CCLabelBMFont::create("6 / 7", "bigFont.fnt");
     label->setScale(0.65f);
 
     leftSpr = CCSprite::createWithSpriteFrameName("GJ_arrow_02_001.png");
@@ -121,7 +121,7 @@ void StartposSwitcherUI::updateUI()
     {
         leftPercent->setString("");
         rightPercent->setString("");
-        label->setString("6 / 9");
+        label->setString("6 / 7");
         return;
     }
 

@@ -62,8 +62,6 @@ bool AndroidUI::setup()
     // auto e = QOLModUIOpenEvent(this);
     // e.post();
 
-    this->playAnimation((MenuAnimation)Mod::get()->getSavedValue<int>("menu-animation", (int)MenuAnimation::Scale));
-
     return true;
 }
 
@@ -192,7 +190,6 @@ AndroidUI* AndroidUI::create()
     if (pRet && pRet->initAnchored(475.f, 280.f))
     {
         PlatformToolbox::showCursor();
-        pRet->m_noElasticity = true;
 
         pRet->autorelease();
         return pRet;

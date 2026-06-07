@@ -80,6 +80,7 @@ class StartposSwitcherLayout : public LayoutModule
         {
             setID("startpos-switcher/layout");
             setPriority(5);
+            setDefaults(Anchor::Bottom, ccp(0, 35));
 
             setPreviewNode([]{
                 return StartposSwitcherUI::create(false);
@@ -107,7 +108,7 @@ class $modify (StartposPlayLayer, PlayLayer)
         PlayLayer::createObjectsFromSetupFinished();
 
         m_fields->ui = StartposSwitcherUI::create();
-        m_fields->ui->setPosition(ccp(CCDirector::get()->getWinSize().width / 2, 35));
+        StartposSwitcherLayout::get()->applyToNode(m_fields->ui);
 
         m_fields->ui->onSwitchFunc = [this](int switchBy)
         {

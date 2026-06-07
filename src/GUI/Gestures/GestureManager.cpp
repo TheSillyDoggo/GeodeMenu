@@ -79,7 +79,7 @@ bool GestureManager::touchCancelled(qolmod::Touch* touch)
 
 std::vector<GestureNode*> GestureManager::getNodes()
 {
-    auto vec = CCArrayExt<GestureNode*, false>(getChildren());
+    auto vec = CCArrayExt<GestureNode*>(getChildren());
 
     return std::vector<GestureNode*>(vec.begin(), vec.end());
 }
