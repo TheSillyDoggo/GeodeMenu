@@ -24,12 +24,16 @@ namespace qolmod
             float anchorShowDis = 60;
             bool snapEnabled = true;
 
-            CCNode* createBackground(bool acu = true);
+            cocos2d::CCNode* createBackground(bool acu = true);
 
             void updateOutline();
             void updateAnchorPoints();
             void fixToAnchorPoints();
             void fixToScreenBounds();
+
+            void onSliderChanged(CCObject* sender);
+
+            cocos2d::CCMenu* createOptions();
 
         public:
             static EditLayoutUI* create(LayoutModule* module);

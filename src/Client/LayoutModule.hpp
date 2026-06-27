@@ -9,6 +9,7 @@ namespace qolmod
 
 class LayoutModule : public ButtonModule
 {
+    friend class qolmod::EditLayoutUI;
     protected:
         std::function<cocos2d::CCNode*()> previewNode = nullptr;
         geode::Anchor anchor = geode::Anchor::Center;
@@ -16,6 +17,15 @@ class LayoutModule : public ButtonModule
 
         geode::Anchor defaultAnchor = geode::Anchor::Center;
         cocos2d::CCPoint defaultOffset = ccp(0, 0);
+        struct FloatOption
+        {
+            std::string display = "";
+            float defaultV = 1.0f;
+            float min = 0.0f;
+            float max = 1.0f;
+            float value = 0.0f;
+        };
+        std::unordered_map<std::string, FloatOption> floatOptions = {};
 
         virtual void save();
         virtual void load();
@@ -24,6 +34,8 @@ class LayoutModule : public ButtonModule
 
         void setPreviewNode(std::function<cocos2d::CCNode*()> preview);
         void setDefaults(geode::Anchor an, cocos2d::CCPoint off);
+
+        void addOption(std::string key, std::string displayKey, float defaultV, float min, float max);
 
         void nodeUpdate(float);
 
@@ -34,6 +46,9 @@ class LayoutModule : public ButtonModule
 
         void setPosition(cocos2d::CCPoint point);
         cocos2d::CCPoint getPosition();
+
+        void setOption(std::string key, float value);
+        float getOption(std::string key);
 
         virtual ModuleNode* getNode();
 };

@@ -81,6 +81,9 @@ class StartposSwitcherLayout : public LayoutModule
             setID("startpos-switcher/layout");
             setPriority(5);
             setDefaults(Anchor::Bottom, ccp(0, 35));
+            
+            addOption("scale", "scale", 1.0f, 0.0f, 1.0f);
+            addOption("opacity", "opacity", 0.8f, 0.0f, 1.0f);
 
             setPreviewNode([]{
                 return StartposSwitcherUI::create(false);

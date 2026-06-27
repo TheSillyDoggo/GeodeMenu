@@ -5,6 +5,8 @@
 #include <Button.hpp>
 #include <LayoutModule.hpp>
 #include <RealtimeAction.hpp>
+#include <BetterSlider.hpp>
+#include <../IconEffects/IconicPlayerHook.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -110,6 +112,8 @@ bool EditLayoutUI::setup()
     node->addChild(previewNodeParent, 6);
     node->addChild(previewOutline, 7);
     node->addChild(grab, 7);
+
+    node->addChild(createOptions(), 2);
 
     m_mainLayer->addChildAtPosition(clip, Anchor::Center);
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, -5.0f));
@@ -244,6 +248,38 @@ void EditLayoutUI::updateAnchorPoints()
     }
 }
 
+void EditLayoutUI::onSliderChanged(CCObject* sender)
+{
+
+}
+
+CCMenu* EditLayoutUI::createOptions()
+{
+    return CCMenu::create();
+
+    auto menu = CCMenu::create();
+
+    float y = 0;
+    for (auto& option : module->floatOptions)
+    {
+        auto label = AdvLabelBMFont::createWithString(option.second.display, "bigFont.fnt");
+        auto slider = BetterSlider::create(this, menu_selector(EditLayoutUI::onSliderChanged));
+        slider->setRange(option.second.min, option.second.max);
+        slider->setValueRanged(option.second.value);
+        slider->setID(option.first);
+
+        label->setPosition(ccp(0, y));
+        slider->setPosition(ccp(0, y));
+
+        menu->addChild(label);
+        menu->addChild(slider);
+
+        y -= 30;
+    }
+
+    return menu;
+}
+
 CCNode* EditLayoutUI::createBackground(bool acu)
 {
     auto imageNode = CCNode::create();
@@ -276,6 +312,10 @@ CCNode* EditLayoutUI::createBackground(bool acu)
 
     player->setColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor.value()));
     player->setSecondColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerColor2.value()));
+
+    auto hook = IconicPlayerHook::create(player);
+    hook->setGamemode(IconicGamemodeType::Cube, false);
+    this->addChild(hook);
 
     if (GameManager::get()->m_playerGlow)
     {

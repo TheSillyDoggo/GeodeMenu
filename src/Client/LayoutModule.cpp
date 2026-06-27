@@ -117,3 +117,25 @@ void LayoutModule::nodeUpdate(float dt)
 
     self->setPosition(mod->getPosition());
 }
+
+void LayoutModule::addOption(std::string key, std::string displayKey, float defaultV, float min, float max)
+{
+    floatOptions.emplace(key, FloatOption{
+        .display = displayKey,
+        .defaultV = defaultV,
+        .min = min,
+        .max = max,
+        .value = defaultV
+    });
+}
+
+void LayoutModule::setOption(std::string key, float value)
+{
+    floatOptions[key].value = value;
+    save();
+}
+
+float LayoutModule::getOption(std::string key)
+{
+    return floatOptions[key].value;
+}
