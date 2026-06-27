@@ -44,6 +44,17 @@ bool Module::getRealEnabled()
             return false;
     }
 
+    if (auto pl = PlayLayer::get(); pl && pl->m_started)
+    {
+        bool inRange;
+        auto ret = enableRanges.getEnable(pl->getCurrentPercent(), userEnabled, &inRange);
+
+        if (inRange && ret != userEnabled)
+            SafeMode::get()->onModuleToggled(this);
+
+        return ret;
+    }
+
     return userEnabled;
 }
 
@@ -70,6 +81,16 @@ void Module::setDisabledMessage(std::string str)
 std::string Module::getDisabledMessage()
 {
     return disabledMessage;
+}
+
+void Module::genericLoad()
+{
+    enableRanges.load(Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_enableranges", getID()), {}));
+}
+
+void Module::genericSave()
+{
+    Mod::get()->setSavedValue<matjson::Value>(fmt::format("{}_enableranges", getID()), enableRanges.save());
 }
 
 bool Module::shouldSave()
@@ -454,6 +475,11 @@ std::string Module::getNotificationString()
     auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
 
     return utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName());
+}
+
+qolmod::Ranges* Module::getRanges()
+{
+    return &enableRanges;
 }
 
 #include <rapidfuzz/fuzz.hpp>

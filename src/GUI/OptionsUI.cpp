@@ -145,8 +145,15 @@ void OptionsUI::onInfo(CCObject* sender)
     ModuleInfoAlert::create(module)->show();
 }
 
+#include <SetupRangeUI.hpp>
+
 void OptionsUI::onSeperateOptionsInfo(CCObject* sender)
 {
+    // DO NOT UPLOAD THIS IS FOR TESTING
+    SetupRangeUI::create(module)->show();
+
+    return;
+
     Mod::get()->setSavedValue<bool>("has-shown-seperate-info", true);
 
     if (pulsingCircle)

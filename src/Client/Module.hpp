@@ -5,6 +5,7 @@
 #include "../Keybinds/KeyConfigStruct.hpp"
 #include "../Keybinds/KeyState.hpp"
 #include "ModuleShortcutConfig.hpp"
+#include <Ranges.hpp>
 
 #define SUBMIT_HACK(func) \
 $on_mod(Loaded) \
@@ -26,6 +27,7 @@ static func* get() \
     { \
         instance = new func(); \
         instance->load(); \
+        instance->genericLoad(); \
         Module::moduleMap.push_back(instance); \
     } \
     return instance; \
@@ -70,6 +72,7 @@ class Module
         int sortPriority = 8008135;
         KeyConfigStruct keyConfig = {};
         bool showSeperateOptionsInfo = false;
+        qolmod::Ranges enableRanges = {};
 
         bool shortcutEnabled = false;
         cocos2d::CCNode* shortcutNode = nullptr;
@@ -121,6 +124,9 @@ class Module
 
         bool getRealEnabled();
 
+        void genericLoad();
+        void genericSave();
+
         void addOption(Module* option);
         std::vector<Module*>& getOptions();
 
@@ -128,6 +134,7 @@ class Module
         void removeKeybind();
 
         KeyConfigStruct getKeybind();
+        qolmod::Ranges* getRanges();
 
         void setShortcutConfig(bool enabled, ModuleShortcutConfig conf);
         bool isShortcutEnabled();

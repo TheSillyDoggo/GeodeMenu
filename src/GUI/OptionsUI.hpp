@@ -9,7 +9,7 @@
 
 using namespace geode::prelude;
 
-class OptionsUI : public PopupBase, public CCCircleWaveDelegate
+class OptionsUI : public PopupBase
 {
     protected:
         static inline OptionsUI* instance = nullptr;
