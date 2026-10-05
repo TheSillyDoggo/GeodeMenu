@@ -180,6 +180,11 @@ void TextLabelNode::updateVariables()
 
         script->setVariable("normal_best", rift::Value::integer(GJBaseGameLayer::get()->m_level->m_normalPercent.value()));
         script->setVariable("practice_best", rift::Value::integer(GJBaseGameLayer::get()->m_level->m_practicePercent));
+
+        script->setVariable("player1_pos_x", rift::Value::floating(noclipBGL->m_player1->getPosition().x));
+        script->setVariable("player1_pos_y", rift::Value::floating(noclipBGL->m_player1->getPosition().y));
+        script->setVariable("camera_pos_x", rift::Value::floating(noclipBGL->m_gameState.m_cameraPosition.x));
+        script->setVariable("camera_pos_y", rift::Value::floating(noclipBGL->m_gameState.m_cameraPosition.y));
     }
 
     if (PlayLayer::get())

@@ -175,7 +175,6 @@ void PlayerState::saveState(PlayerObject* player)
     SAVE_PL_MEMBER(m_maybeReverseAcceleration);
     SAVE_PL_MEMBER(m_xVelocityRelated2);
     SAVE_PL_MEMBER(m_isDashing);
-    SAVE_PL_MEMBER(m_unk9e8);
     SAVE_PL_MEMBER(m_groundObjectMaterial);
     SAVE_PL_MEMBER(m_vehicleSize);
     SAVE_PL_MEMBER(m_playerSpeed);
@@ -463,7 +462,6 @@ void PlayerState::saveState(PlayerObject* player)
     SAVE_GO_MEMBER(m_areaOpacityValue);
     SAVE_GO_MEMBER(m_areaOpacityIndex);
     SAVE_GO_MEMBER(m_unk52C);
-    SAVE_GO_MEMBER(m_unk530);
     SAVE_GO_MEMBER(m_isUIObject);
     SAVE_GO_MEMBER(m_greenDebugDraw);
 }
@@ -629,7 +627,6 @@ void PlayerState::loadState(PlayerObject* player)
     LOAD_PL_MEMBER(m_maybeReverseAcceleration);
     LOAD_PL_MEMBER(m_xVelocityRelated2);
     LOAD_PL_MEMBER(m_isDashing);
-    LOAD_PL_MEMBER(m_unk9e8);
     LOAD_PL_MEMBER(m_groundObjectMaterial);
     LOAD_PL_MEMBER(m_vehicleSize);
     LOAD_PL_MEMBER(m_playerSpeed);
@@ -917,7 +914,6 @@ void PlayerState::loadState(PlayerObject* player)
     LOAD_GO_MEMBER(m_areaOpacityValue);
     LOAD_GO_MEMBER(m_areaOpacityIndex);
     LOAD_GO_MEMBER(m_unk52C);
-    LOAD_GO_MEMBER(m_unk530);
     LOAD_GO_MEMBER(m_isUIObject);
     LOAD_GO_MEMBER(m_greenDebugDraw);
 }

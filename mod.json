@@ -41,7 +41,10 @@
 				"resources/sprites/icons/categories/*.png",
 				"resources/sprites/icons/shortcuts/*.png",
 				"resources/sprites/*.png"
-			]
+			],
+            "qolmod-shortcut-sheet": [
+                "resources/sprites/shortcuts/out/*.png"
+            ]
 		}
     },
 	"settings": {

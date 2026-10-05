@@ -43,7 +43,6 @@
 **/build
 **/vs/
 **/.vs/
-**/out/
 
 # Workspace files are user-specific
 *.sublime-workspace
