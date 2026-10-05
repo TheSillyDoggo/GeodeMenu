@@ -56,4 +56,21 @@ class $modify (EndLevelLayer)
                 pl->m_progressFill->runAction(CCFadeTo::create(0.5f, 255));
         }
     }
+
+    void onRestartCheckpoint(cocos2d::CCObject* sender)
+    {
+        EndLevelLayer::onRestartCheckpoint(sender);
+
+        if (auto pl = PlayLayer::get())
+        {
+            if (pl->m_percentageLabel)
+                pl->m_percentageLabel->runAction(CCFadeTo::create(0.5f, 255));
+
+            if (pl->m_progressBar)
+                pl->m_progressBar->runAction(CCFadeTo::create(0.5f, 255));
+
+            if (pl->m_progressFill)
+                pl->m_progressFill->runAction(CCFadeTo::create(0.5f, 255));
+        }
+    }
 };
