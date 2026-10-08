@@ -5,7 +5,7 @@
 #include "../Client/ModuleShortcutConfig.hpp"
 #include "BetterInputNode.hpp"
 #include "PopupBase.hpp"
-#include <FloatingButton/FloatingUIButton.hpp>
+#include <FloatingButton/FloatingButtonBase.hpp>
 
 using namespace geode::prelude;
 
@@ -28,7 +28,8 @@ class SetupShortcutUI : public PopupBase
         CCMenuItemToggler* visInEditorPause = nullptr;
         BetterInputNode* scaleInput = nullptr;
         BetterInputNode* opacityInput = nullptr;
-        std::unordered_map<FloatingButtonAnimationType, std::pair<CCMenuItemToggler*, AdvLabelBMFont*>> animBtns = {};
+        BetterInputNode* groupInput = nullptr;
+        std::unordered_map<FloatingButtonBase::AnimationType, std::pair<CCMenuItemToggler*, AdvLabelBMFont*>> animBtns = {};
         CCSprite* colSpr = nullptr;
 
     public:
@@ -44,7 +45,7 @@ class SetupShortcutUI : public PopupBase
         void updateUI();
         void updateSprs();
 
-        void addAnimButton(FloatingButtonAnimationType type, int y, CCMenu* menu);
+        void addAnimButton(FloatingButtonBase::AnimationType type, int y, CCMenu* menu);
 
         virtual bool setup();
         virtual void update(float dt);

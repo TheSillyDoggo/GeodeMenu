@@ -1,8 +1,19 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include "../GUI/FloatingButton/FloatingUIButton.hpp"
+#include "../GUI/FloatingButton/FloatingButtonBase.hpp"
 #include "../Utils/ColourConfig.hpp"
+
+struct FloatingUIButtonVisibility
+{
+    bool showInMenu = true;
+    bool showInGame = true;
+    bool showInPauseMenu = true;
+    bool showInEditor = true;
+    bool showInEditorPauseMenu = true;
+
+    bool shouldShow();
+};
 
 struct ModuleShortcutConfig
 {
@@ -14,5 +25,6 @@ struct ModuleShortcutConfig
     float opacity = 0.8f;
     bool isMovable = true;
     ColourConfig colour = { cocos2d::ccc3(255, 255, 255) };
-    FloatingButtonAnimationType animation = FloatingButtonAnimationType::Shrink;
+    FloatingButtonBase::AnimationType animation = FloatingButtonBase::AnimationType::Shrink;
+    int group = 0;
 };

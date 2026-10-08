@@ -76,10 +76,6 @@ class Module
         qolmod::Ranges enableRanges = {};
         bool lastRetRange = false;
 
-        bool shortcutEnabled = false;
-        cocos2d::CCNode* shortcutNode = nullptr;
-        ModuleShortcutConfig shortcutConf = {};
-
         void DLL setName(std::string str);
         void DLL setID(std::string str);
         void DLL setCategory(std::string str);
@@ -101,9 +97,6 @@ class Module
 
         void saveKeyConfig();
         void loadKeyConfig();
-
-        void saveShortcutConfig();
-        void loadShortcutConfig();
 
     private:
         bool userEnabled = false;
@@ -137,10 +130,6 @@ class Module
 
         KeyConfigStruct getKeybind();
         qolmod::Ranges* getRanges();
-
-        void setShortcutConfig(bool enabled, ModuleShortcutConfig conf);
-        bool isShortcutEnabled();
-        ModuleShortcutConfig getShortcutConfig();
 
         Module* getParent();
         std::string getName();

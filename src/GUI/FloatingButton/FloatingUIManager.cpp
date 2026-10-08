@@ -17,14 +17,14 @@ FloatingUIManager* FloatingUIManager::get()
     return instance;
 }
 
-void FloatingUIManager::addButton(FloatingUIButton* btn)
+void FloatingUIManager::addButton(FloatingButtonBase* btn)
 {
     buttons.push_back(btn);
 
     this->addChild(btn);
 }
 
-void FloatingUIManager::removeButton(FloatingUIButton* btn)
+void FloatingUIManager::removeButton(FloatingButtonBase* btn)
 {
     if (std::find(buttons.begin(), buttons.end(), btn) == buttons.end())
         return;
@@ -32,14 +32,6 @@ void FloatingUIManager::removeButton(FloatingUIButton* btn)
     buttons.erase(std::remove(buttons.begin(), buttons.end(), btn), buttons.end());
 
     this->removeChild(btn);
-}
-
-void FloatingUIManager::updateSprites()
-{
-    for (auto btn : buttons)
-    {
-        btn->updateSprites();
-    }
 }
 
 int FloatingUIManager::getHighestButtonZ()
@@ -187,7 +179,7 @@ bool FloatingUIManager::touchCancelled(qolmod::Touch* touch)
 
 void FloatingUIManager::sortButtons()
 {
-    std::sort(buttons.begin(), buttons.end(), [](FloatingUIButton* a, FloatingUIButton* b)
+    std::sort(buttons.begin(), buttons.end(), [](FloatingButtonBase* a, FloatingButtonBase* b)
     {
         return a->getZOrder() < b->getZOrder();
     });

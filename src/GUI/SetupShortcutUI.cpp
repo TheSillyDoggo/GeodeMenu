@@ -81,6 +81,7 @@ void SetupShortcutUI::onClose(CCObject* sender)
 
     conf.scale = utils::numFromString<float>(scaleInput->getString()).unwrapOr(conf.scale);
     conf.opacity = utils::numFromString<float>(opacityInput->getString()).unwrapOr(conf.opacity);
+    conf.group = utils::numFromString<int>(groupInput->getString()).unwrapOr(conf.group);
 
     if (onFinish)
         onFinish(shortcutEnabled, conf);
@@ -297,6 +298,11 @@ bool SetupShortcutUI::setup()
     visMenu->addChild(lblInEditor);
     visMenu->addChild(lblInEditorPause);
 
+
+    groupInput = BetterInputNode::create(70, "Opacity");
+    groupInput->setCharFilter("1234567890");
+    groupInput->setAnchorPoint(ccp(1, 0.5f));
+
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
     m_mainLayer->addChildAtPosition(enabledMenu, Anchor::Center, ccp(0, 60));
@@ -308,6 +314,7 @@ bool SetupShortcutUI::setup()
     m_mainLayer->addChildAtPosition(opacityInput, Anchor::Right, ccp(-15, -60));
     m_mainLayer->addChildAtPosition(scaleTitle, Anchor::Right, ccp(-15 - 5 - 70, -60) + ccp(-70 / 2, 27));
     m_mainLayer->addChildAtPosition(opacityTitle, Anchor::Right, ccp(-15, -60) + ccp(-70 / 2, 27));
+    m_mainLayer->addChildAtPosition(groupInput, Anchor::TopLeft, ccp(-30, 30));
     return true;
 }
 
@@ -316,7 +323,7 @@ void SetupShortcutUI::update(float dt)
     colSpr->setColor(conf.colour.colourForConfig(fmt::format("{}_shortcut", modID)));
 }
 
-void SetupShortcutUI::addAnimButton(FloatingButtonAnimationType type, int y, CCMenu* menu)
+void SetupShortcutUI::addAnimButton(FloatingButtonBase::AnimationType type, int y, CCMenu* menu)
 {
     /*DualModeData data;
     data.mode = mode;

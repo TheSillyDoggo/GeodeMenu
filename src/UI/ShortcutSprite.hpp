@@ -4,7 +4,7 @@
 
 namespace qolmod
 {
-    enum class ShortcutShape
+    enum class ShortcutShape : uint8_t
     {
         Circle = 0,
         Square = 1,
@@ -12,7 +12,7 @@ namespace qolmod
         Octagon = 3,
     };
 
-    enum class ShortcutColour
+    enum class ShortcutColour : uint8_t
     {
         Green = 0,
         Pink = 1,
@@ -26,8 +26,11 @@ namespace qolmod
         Trans = 101,
         Gay = 102,
         Pride = 103,
-        BiSexual = 104,
-        PanSexual = 105,
+        Bisexual = 104,
+        Pansexual = 105,
+        Enby = 106,
+        Aromantic = 107,
+        Asexual = 108,
     };
 
     class ShortcutSprite : public cocos2d::CCSprite
@@ -38,14 +41,24 @@ namespace qolmod
             cocos2d::CCSprite* outline = nullptr;
             cocos2d::CCSprite* fill = nullptr;
 
+            virtual void visit();
+
             static std::string shapeToString(ShortcutShape shape);
             static std::string colourToString(ShortcutColour colour);
 
         public:
+            static ShortcutSprite* create();
             static ShortcutSprite* create(ShortcutShape shape, ShortcutColour colour);
 
             virtual void setOpacity(GLubyte opacity);
 
             bool init(ShortcutShape shape, ShortcutColour colour);
+
+            void setShape(ShortcutShape shape);
+            void setColour(ShortcutColour colour);
+            void setBoth(ShortcutShape shape, ShortcutColour colour);
+
+            ShortcutShape getShape();
+            ShortcutColour getColour();
     };
 };

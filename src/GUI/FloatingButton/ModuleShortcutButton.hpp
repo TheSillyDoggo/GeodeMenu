@@ -1,25 +1,29 @@
 #pragma once
 
-#include "FloatingUIButton.hpp"
-#include "../../Client/Module.hpp"
+#include "FloatingButtonBase.hpp"
 
-class ModuleShortcutButton : public FloatingUIButton
+class Module;
+namespace qolmod
+{
+    class ShortcutSprite;
+};
+
+class ModuleShortcutButton : public FloatingButtonBase
 {
     protected:
         Module* mod = nullptr;
         bool lastUpdated = false;
-        std::string overlaySprite = "";
-        std::string bgOffSpr = "geode.loader/baseCircle_Medium_Gray.png";
-        std::string bgOnSpr = "geode.loader/baseCircle_Medium_Green.png";
+        qolmod::ShortcutSprite* offSprite = nullptr;
+        qolmod::ShortcutSprite* onSprite = nullptr;
+
+        virtual void updateVisuals(float opacity);
+        virtual void onClick();
 
     public:
         static ModuleShortcutButton* create(Module* module);
 
-        void setup();
-        void updateSprs();
-        void setOverlaySprite(std::string spr);
-        void setBackgroundSprites(std::string bgOff, std::string bgOn);
+        void updateSettings();
 
-        virtual void updatePosition(cocos2d::CCPoint point);
+        void setup();
         virtual void update(float dt);
 };

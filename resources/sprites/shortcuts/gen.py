@@ -48,6 +48,9 @@ flags = {
     "Pride": [ {"colour": "#e50000", "val": (1/6)*1}, {"colour": "#ff8d00", "val": (1/6)*2}, {"colour": "#ffee00", "val": (1/6)*3}, {"colour": "#028121", "val": (1/6)*4}, {"colour": "#004cff", "val": (1/6)*5}, {"colour": "#770088", "val": (1/6)*6} ],
     "Bisexual": [ {"colour": "#D60270", "val": 0.4}, {"colour": "#9b4f96", "val": 0.6}, {"colour": "#0038a8", "val": 1.0} ],
     "Pansexual": [ {"colour": "#FF218C", "val": (1/3)*1}, {"colour": "#FFD800", "val": (1/3)*2}, {"colour": "#21B1FF", "val": 1.0} ],
+    "Enby": [ {"colour": "#fff433", "val": 0.25}, {"colour": "#ffffff", "val": 0.5}, {"colour": "#9b59d0", "val": 0.75}, {"colour": "#000000", "val": 1.0} ],
+    "Aromantic": [ {"colour": "#3BA740", "val": 0.2}, {"colour": "#A8D47A", "val": 0.4}, {"colour": "#FFFFFF", "val": 0.6}, {"colour": "#ABABAB", "val": 0.8}, {"colour": "#000000", "val": 1.0} ],
+    "Asexual": [ {"colour": "#000000", "val": 0.25}, {"colour": "#a4a4a4", "val": 0.5}, {"colour": "#ffffff", "val": 0.75}, {"colour": "#810081", "val": 1.0} ],
 }
 
 for outline in outlines:

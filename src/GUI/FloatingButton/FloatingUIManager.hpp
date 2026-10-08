@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include "FloatingUIButton.hpp"
+#include "FloatingButtonBase.hpp"
 #include <Touch.hpp>
 
 class FloatingUIManager : public cocos2d::CCNode
@@ -9,20 +9,18 @@ class FloatingUIManager : public cocos2d::CCNode
     friend struct FloatingMenuLayer;
 
     protected:
-        std::vector<FloatingUIButton*> buttons = {};
-        std::unordered_map<int, FloatingUIButton*> trackingTouches = {};
+        std::vector<FloatingButtonBase*> buttons = {};
+        std::unordered_map<int, FloatingButtonBase*> trackingTouches = {};
 
         void sortButtons();
 
     public:
         static FloatingUIManager* get();
 
-        void addButton(FloatingUIButton* btn);
-        void removeButton(FloatingUIButton* btn);
+        void addButton(FloatingButtonBase* btn);
+        void removeButton(FloatingButtonBase* btn);
 
         int getHighestButtonZ();
-
-        void updateSprites();
 
         virtual void visit();
 

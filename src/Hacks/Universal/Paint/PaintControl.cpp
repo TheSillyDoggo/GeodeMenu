@@ -24,22 +24,22 @@ PaintControl* PaintControl::get()
 
 bool PaintControl::init()
 {
-    if (!FloatingUIButton::init())
+    if (!FloatingButtonBase::init())
         return false;
 
     setMovable(true);
     setBaseScale(0.8f);
     setBaseOpacity(1);
-    setOnClick([this]
+    /*setOnClick([this]
     {
         toggleExpanded(!isExpanded);
     });
-    updateSprites("geode.loader/baseCircle_Medium_Gray.png", "icon effects.png"_spr, true, true);
+    updateSprites("geode.loader/baseCircle_Medium_Gray.png", "icon effects.png"_spr, true, true);*/
     this->updatePosition(ccp(
         Mod::get()->getSavedValue<float>("paintcontrol_position.x", 25),
         Mod::get()->getSavedValue<float>("paintcontrol_position.y", CCDirector::get()->getWinSize().height - 25)
     ));
-    this->setPosition(position);
+    // this->setPosition(position);
 
     bg = EasyBG::create();
     bg->setAnchorPoint(ccp(0, 0.5f));
@@ -104,13 +104,13 @@ void PaintControl::setupChildren()
 
 void PaintControl::update(float dt)
 {
-    FloatingUIButton::update(dt);
+    FloatingButtonBase::update(dt);
 
     if (colourSpr)
         colourSpr->setColor(getColour());
 
-    if (overlaySpr)
-        overlaySpr->setColor(ColourUtils::get()->getPastel("paint-icon"));
+    // if (overlaySpr)
+        //overlaySpr->setColor(ColourUtils::get()->getPastel("paint-icon"));
 }
 
 cocos2d::ccColor3B PaintControl::getColour()
@@ -269,7 +269,7 @@ bool PaintControl::ccTouchBegan(qolmod::Touch* touch)
     if (!isActive())
         return false;
 
-    auto ret = FloatingUIButton::ccTouchBegan(touch);
+    auto ret = FloatingButtonBase::ccTouchBegan(touch);
     isMenuSelected = 0;
 
     if (ret)
@@ -308,7 +308,7 @@ void PaintControl::ccTouchMoved(qolmod::Touch* touch)
     if (isMenuSelected == 3)
         return qolmod::PaintNode::get()->ccTouchMoved(touch->fakeTouch);
 
-    FloatingUIButton::ccTouchMoved(touch);
+    FloatingButtonBase::ccTouchMoved(touch);
 }
 
 void PaintControl::ccTouchEnded(qolmod::Touch* touch)
@@ -322,15 +322,15 @@ void PaintControl::ccTouchEnded(qolmod::Touch* touch)
     if (isMenuSelected == 3)
         return qolmod::PaintNode::get()->ccTouchEnded(touch->fakeTouch);
 
-    FloatingUIButton::ccTouchEnded(touch);
+    FloatingButtonBase::ccTouchEnded(touch);
 }
 
 void PaintControl::updatePosition(cocos2d::CCPoint point)
 {
-    FloatingUIButton::updatePosition(point);
+    // FloatingUIButton::updatePosition(point);
 
-    Mod::get()->setSavedValue<float>("paintcontrol_position.x", position.x);
-    Mod::get()->setSavedValue<float>("paintcontrol_position.y", position.y);
+    // Mod::get()->setSavedValue<float>("paintcontrol_position.x", position.x);
+    // Mod::get()->setSavedValue<float>("paintcontrol_position.y", position.y);
 
     // updateOrientation();
 }
@@ -355,7 +355,7 @@ void PaintControl::visit()
     if (!isActive())
         return;
 
-    FloatingUIButton::visit();
+    FloatingButtonBase::visit();
 
     if (ui)
     {

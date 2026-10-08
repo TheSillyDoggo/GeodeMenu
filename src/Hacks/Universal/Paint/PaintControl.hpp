@@ -4,7 +4,7 @@
 #include <ColourConfig.hpp>
 #include <EasyBG.hpp>
 #include <BetterInputNode.hpp>
-#include <FloatingButton/FloatingUIButton.hpp>
+#include <FloatingButton/FloatingButtonBase.hpp>
 #include <SetupColourConfigUI.hpp>
 #include <Button.hpp>
 
@@ -17,7 +17,7 @@ namespace qolmod
         Clear = 2,
     };
 
-    class PaintControl : public FloatingUIButton, public TextInputDelegate
+    class PaintControl : public FloatingButtonBase, public TextInputDelegate
     {
         protected:
             struct PaintToolData

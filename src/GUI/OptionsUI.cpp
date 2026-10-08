@@ -178,11 +178,11 @@ void OptionsUI::onChangeShortcut(CCObject* sender)
 {
     auto ui = SetupShortcutUI::create([this](bool enabled, ModuleShortcutConfig conf)
     {
-        module->setShortcutConfig(enabled, conf);
+        // module->setShortcutConfig(enabled, conf);
     });
 
     ui->modID = module->getID();
-    ui->setStartConfig(module->isShortcutEnabled(), module->getShortcutConfig());
+    // ui->setStartConfig(module->isShortcutEnabled(), module->getShortcutConfig());
     ui->show();
 }
 
