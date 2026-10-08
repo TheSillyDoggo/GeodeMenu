@@ -9,6 +9,8 @@
 
 using namespace qolmod;
 
+#define ICON_SIZE 22.0f
+
 ModuleShortcutButton* ModuleShortcutButton::create(Module* module)
 {
     auto pRet = new ModuleShortcutButton();
@@ -27,6 +29,8 @@ ModuleShortcutButton* ModuleShortcutButton::create(Module* module)
 
 void ModuleShortcutButton::setup()
 {
+    conf = ShortcutManager::get()->getConfig(mod);
+
     auto def = ccp(
         CCDirector::get()->getWinSize().width - 30,
         CCDirector::get()->getWinSize().height / 2
@@ -46,13 +50,26 @@ void ModuleShortcutButton::setup()
     onSprite->setScale(offSprite->getScale());
     onSprite->setPosition(offSprite->getPosition());
 
-    this->addChild(offSprite, -3);
-    this->addChild(onSprite, -3);
+    overlayLabel = CCLabelBMFont::create("", "bigFont.fnt");
+    overlayLabel->setPosition(getContentSize() / 2);
+
+    overlayBuiltIn = CCSprite::create();
+    overlayBuiltIn->setPosition(getContentSize() / 2);
+    overlayCustom = CCSprite::create();
+    overlayCustom->setPosition(getContentSize() / 2);
+
+    this->addChild(offSprite, -4);
+    this->addChild(onSprite, -4);
+    this->addChild(overlayLabel, -3);
+    this->addChild(overlayBuiltIn, -2);
+    this->addChild(overlayCustom, -2);
     updateSettings();
 }
 
 void ModuleShortcutButton::updateVisuals(float opacity)
 {
+    this->setVisible(conf->shouldShow());
+
     offSprite->setOpacity(opacity * 255);
     onSprite->setOpacity(opacity * 255);
 
@@ -90,25 +107,28 @@ void ModuleShortcutButton::update(float dt)
 
 void ModuleShortcutButton::updateSettings()
 {
-    auto conf = ShortcutManager::get()->getConfig(mod);
-
     setBaseScale(conf->getScale());
     setBaseOpacity(conf->getOpacity());
     setMovable(conf->isMovable());
+    setAnimation(conf->getAnimation());
 
     offSprite->m_bDontDraw = !conf->hasOffBG();
     onSprite->m_bDontDraw = !conf->hasOnBG();
 
     offSprite->setBoth(conf->getOffBG().first, conf->getOffBG().second);
     onSprite->setBoth(conf->getOnBG().first, conf->getOnBG().second);
-}
 
-/*
-/*btn->setBackgroundSprites(shortcutConf.bgOffSprite, shortcutConf.bgOnSprite);
-btn->setOverlaySprite(shortcutConf.shortcutOverlay);
-btn->setButtonVisibilityConfig(shortcutConf.visibility);
-btn->setMovable(shortcutConf.isMovable);
-btn->setBaseScale(shortcutConf.scale);
-btn->setBaseOpacity(shortcutConf.opacity);
-btn->setAnimation(shortcutConf.animation);* /
-*/
+    overlayBuiltIn->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::BuiltIn);
+    overlayLabel->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::Text);
+    overlayCustom->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::Image);
+
+    if (!conf->getOverlayBuiltIn().empty())
+    {
+        overlayBuiltIn->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(conf->getOverlayBuiltIn().c_str()));
+        overlayBuiltIn->setScale((ICON_SIZE / std::max<float>(overlayBuiltIn->getContentWidth(), overlayBuiltIn->getContentHeight())));
+    }
+
+    overlayLabel->setString(conf->getOverlayText().c_str());
+    auto font = CCFileUtils::sharedFileUtils()->isFileExist(CCFileUtils::sharedFileUtils()->fullPathForFilename(conf->getOverlayFont().c_str(), false)) ? conf->getOverlayFont() : "bigFont.fnt";
+    overlayLabel->setFntFile(font.c_str());
+}

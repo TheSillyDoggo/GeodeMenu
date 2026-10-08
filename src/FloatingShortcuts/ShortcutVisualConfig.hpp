@@ -53,4 +53,11 @@ class ShortcutVisualConfig
         bool hasOnBG();
         SpritePair getOffBG();
         SpritePair getOnBG();
+
+        std::string getOverlayText();
+        std::string getOverlayFont();
+        std::string getOverlayBuiltIn();
+
+        FloatingButtonBase::AnimationType getAnimation();
+        OverlayType getOverlayType();
 };

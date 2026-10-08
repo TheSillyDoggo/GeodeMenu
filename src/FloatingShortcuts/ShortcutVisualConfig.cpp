@@ -221,6 +221,27 @@ ShortcutVisualConfig::SpritePair ShortcutVisualConfig::getOnBG() {
 float ShortcutVisualConfig::getScale() {
     return scale;
 }
+
 float ShortcutVisualConfig::getOpacity() {
     return opacity;
+}
+
+std::string ShortcutVisualConfig::getOverlayText() {
+    return overlayText;
+}
+
+std::string ShortcutVisualConfig::getOverlayFont() {
+    return overlayFont;
+}
+
+FloatingButtonBase::AnimationType ShortcutVisualConfig::getAnimation() {
+    return animation;
+}
+
+ShortcutVisualConfig::OverlayType ShortcutVisualConfig::getOverlayType() {
+    return overlayType;
+}
+
+std::string ShortcutVisualConfig::getOverlayBuiltIn() {
+    return overlayBuiltinSprite;
 }

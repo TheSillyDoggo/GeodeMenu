@@ -7,7 +7,6 @@
 using namespace geode::prelude;
 
 #define BUTTON_RADIUS 40.0f
-#define ICON_SIZE 22.0f
 
 FloatingButtonBase* FloatingButtonBase::create()
 {
