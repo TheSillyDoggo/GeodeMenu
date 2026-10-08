@@ -4,7 +4,6 @@
 #include "../Utils/DLL.hpp"
 #include "../Keybinds/KeyConfigStruct.hpp"
 #include "../Keybinds/KeyState.hpp"
-#include "ModuleShortcutConfig.hpp"
 #include <Ranges.hpp>
 
 #define SUBMIT_HACK(func) \

@@ -6,7 +6,7 @@ using namespace geode::prelude;
 using namespace qolmod;
 
 constexpr static std::array<uint8_t, 8> FILE_MAGIC = { 'Q','O','L','M','O','D','S','H' };
-#define SHORTCUT_FILE_VERSION 1
+#define SHORTCUT_FILE_VERSION 2
 
 void ShortcutVisualConfig::loadV1(matjson::Value value, bool enabled, std::string moduleID)
 {
@@ -99,6 +99,13 @@ void ShortcutVisualConfig::loadV2(std::filesystem::path path)
     (void)br.readBytes(colourData.data(), colourData.size());
     overlayColour.loadBytes(colourData);
 
+    if (version >= 2)
+    {
+        colourData.assign(br.readU32().unwrap(), 0);
+        (void)br.readBytes(colourData.data(), colourData.size());
+        outlineColour.loadBytes(colourData);
+    }
+
     uint64_t customSize = br.readU64().unwrap();
     customOverlayData.resize(customSize);
 
@@ -136,6 +143,10 @@ void ShortcutVisualConfig::saveV2(std::filesystem::path path)
     wr.writeStringU16(overlayFont);
 
     auto cData = overlayColour.saveBytes();
+    wr.writeU32(cData.size());
+    wr.writeBytes(cData);
+
+    cData = outlineColour.saveBytes();
     wr.writeU32(cData.size());
     wr.writeBytes(cData);
 
@@ -244,4 +255,12 @@ ShortcutVisualConfig::OverlayType ShortcutVisualConfig::getOverlayType() {
 
 std::string ShortcutVisualConfig::getOverlayBuiltIn() {
     return overlayBuiltinSprite;
+}
+
+cocos2d::ccColor3B ShortcutVisualConfig::getOutlineColour() {
+    return overlayColour.colourForConfig(moduleID);
+}
+
+cocos2d::ccColor3B ShortcutVisualConfig::getOverlayColour() {
+    return overlayColour.colourForConfig(moduleID);
 }

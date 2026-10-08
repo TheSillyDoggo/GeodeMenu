@@ -31,6 +31,7 @@ class FloatingButtonBase : public cocos2d::CCNode
         bool isMovable = true;
         HitboxType hitboxType = HitboxType::Circle;
         AnimationType animation = AnimationType::Shrink;
+        cocos2d::CCNode* childNode = nullptr;
 
         virtual void update(float dt);
         ~FloatingButtonBase();

@@ -32,6 +32,12 @@ bool FloatingButtonBase::init()
     this->scheduleUpdate();
     this->onEnter();
 
+    childNode = CCNode::create();
+    childNode->setAnchorPoint(ccp(0.5f, 0.5f));
+    childNode->setContentSize(getContentSize());
+    childNode->setPosition(getContentSize() / 2);
+
+    this->addChild(childNode);
     return true;
 }
 
@@ -87,10 +93,8 @@ void FloatingButtonBase::setMovable(bool movable)
 void FloatingButtonBase::setBaseScale(float scale)
 {
     this->scale = clampf(scale, 0.1f, 1.0f);
-    
-    // funny cocos feature people dont use :3
-    this->m_sAdditionalTransform.tx = scale;
-    this->m_sAdditionalTransform.ty = scale;
+
+    childNode->setScale(scale);
 }
 
 void FloatingButtonBase::setBaseOpacity(float opacity)

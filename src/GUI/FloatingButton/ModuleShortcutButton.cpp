@@ -58,11 +58,11 @@ void ModuleShortcutButton::setup()
     overlayCustom = CCSprite::create();
     overlayCustom->setPosition(getContentSize() / 2);
 
-    this->addChild(offSprite, -4);
-    this->addChild(onSprite, -4);
-    this->addChild(overlayLabel, -3);
-    this->addChild(overlayBuiltIn, -2);
-    this->addChild(overlayCustom, -2);
+    childNode->addChild(offSprite, -4);
+    childNode->addChild(onSprite, -4);
+    childNode->addChild(overlayLabel, -3);
+    childNode->addChild(overlayBuiltIn, -2);
+    childNode->addChild(overlayCustom, -2);
     updateSettings();
 }
 
@@ -82,6 +82,19 @@ void ModuleShortcutButton::updateVisuals(float opacity)
     onSprite->setVisible(vis);
 
     hitboxType = (vis ? onSprite->getShape() : offSprite->getShape()) == ShortcutShape::Square ? HitboxType::Square : HitboxType::Circle;
+
+    auto newCol = conf->getOverlayColour();
+    if (lastColour != newCol)
+    {
+        lastColour = newCol;
+
+        overlayBuiltIn->setColor(newCol);
+        overlayLabel->setColor(newCol);
+        overlayCustom->setColor(newCol);
+    }
+
+    newCol = conf->getOutlineColour();
+    (vis ? onSprite : offSprite)->getOutlineSprite()->setColor(newCol);
 }
 
 void ModuleShortcutButton::onClick()
@@ -98,14 +111,6 @@ void ModuleShortcutButton::onClick()
     ModuleNode::updateAllNodes(nullptr);
 
     NotificationManager::get()->notifyToast(mod->getNotificationString());
-}
-
-void ModuleShortcutButton::update(float dt)
-{    
-    FloatingButtonBase::update(dt);
-
-    // if (overlaySpr)
-        // overlaySpr->setColor(mod->getShortcutConfig().colour.colourForConfig(fmt::format("{}_shortcut", mod->getID())));
 }
 
 void ModuleShortcutButton::updateSettings()

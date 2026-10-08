@@ -58,6 +58,9 @@ namespace qolmod
             void setColour(ShortcutColour colour);
             void setBoth(ShortcutShape shape, ShortcutColour colour);
 
+            cocos2d::CCSprite* getOutlineSprite();
+            cocos2d::CCSprite* getFillSprite();
+
             ShortcutShape getShape();
             ShortcutColour getColour();
     };

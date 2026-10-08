@@ -150,12 +150,18 @@ void ShortcutSprite::setBoth(ShortcutShape shape, ShortcutColour colour)
 }
 
 // getters
-ShortcutShape ShortcutSprite::getShape()
-{
+ShortcutShape ShortcutSprite::getShape() {
     return shape;
 }
 
-ShortcutColour ShortcutSprite::getColour()
-{
+ShortcutColour ShortcutSprite::getColour() {
     return colour;
+}
+
+CCSprite* ShortcutSprite::getOutlineSprite() {
+    return outline;
+}
+
+CCSprite* ShortcutSprite::getFillSprite() {
+    return fill;
 }

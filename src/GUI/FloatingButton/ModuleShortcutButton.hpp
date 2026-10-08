@@ -20,6 +20,7 @@ class ModuleShortcutButton : public FloatingButtonBase
         cocos2d::CCLabelBMFont* overlayLabel = nullptr;
         cocos2d::CCSprite* overlayBuiltIn = nullptr;
         cocos2d::CCSprite* overlayCustom = nullptr;
+        cocos2d::ccColor3B lastColour = cocos2d::ccWHITE;
 
         virtual void updateVisuals(float opacity);
         virtual void onClick();
@@ -30,5 +31,4 @@ class ModuleShortcutButton : public FloatingButtonBase
         void updateSettings();
 
         void setup();
-        virtual void update(float dt);
 };

@@ -28,6 +28,7 @@ class ShortcutVisualConfig
         float scale = 0.8f;
         float opacity = 0.8f;
         uint8_t group = 0;
+        ColourConfig outlineColour = { cocos2d::ccc3(255, 255, 255) };
         ColourConfig overlayColour = { cocos2d::ccc3(255, 255, 255) };
         OverlayType overlayType;
         std::string overlayBuiltinSprite;
@@ -60,4 +61,7 @@ class ShortcutVisualConfig
 
         FloatingButtonBase::AnimationType getAnimation();
         OverlayType getOverlayType();
+
+        cocos2d::ccColor3B getOutlineColour();
+        cocos2d::ccColor3B getOverlayColour();
 };
