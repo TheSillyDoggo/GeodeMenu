@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <Geode/modify/CCEGLView.hpp>
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/modify/CCTouchDispatcher.hpp>

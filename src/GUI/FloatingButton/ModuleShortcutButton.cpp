@@ -72,6 +72,9 @@ void ModuleShortcutButton::updateVisuals(float opacity)
 
     offSprite->setOpacity(opacity * 255);
     onSprite->setOpacity(opacity * 255);
+    overlayBuiltIn->setOpacity(opacity * 255);
+    overlayLabel->setOpacity(opacity * 255);
+    overlayCustom->setOpacity(opacity * 255);
 
     auto vis = mod->shouldShortcutShowActivated();
 
