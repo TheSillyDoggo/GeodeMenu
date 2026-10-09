@@ -6,7 +6,7 @@ using namespace geode::prelude;
 using namespace qolmod;
 
 constexpr static std::array<uint8_t, 8> FILE_MAGIC = { 'Q','O','L','M','O','D','S','H' };
-#define SHORTCUT_FILE_VERSION 2
+#define SHORTCUT_FILE_VERSION 1
 
 void ShortcutVisualConfig::loadV1(matjson::Value value, bool enabled, std::string moduleID)
 {
@@ -51,15 +51,9 @@ void ShortcutVisualConfig::loadV1(matjson::Value value, bool enabled, std::strin
     overlayColour.type = (ColourConfigType)value["colour_type"].asInt().unwrapOr(0);
 }
 
-void ShortcutVisualConfig::loadV2(std::filesystem::path path)
+void ShortcutVisualConfig::loadV2(std::span<uint8_t> data)
 {
-    auto res = file::readBinary(path);
-
-    if (!res.isOk())
-        return;
-
-    flags.set();
-    dbuf::ByteReader br{res.unwrap()};
+    dbuf::ByteReader br{data};
 
     std::array<uint8_t, 8> magic;
     if (!br.readBytes(magic.data(), 8).isOk() || magic != FILE_MAGIC)
@@ -99,12 +93,9 @@ void ShortcutVisualConfig::loadV2(std::filesystem::path path)
     (void)br.readBytes(colourData.data(), colourData.size());
     overlayColour.loadBytes(colourData);
 
-    if (version >= 2)
-    {
-        colourData.assign(br.readU32().unwrap(), 0);
-        (void)br.readBytes(colourData.data(), colourData.size());
-        outlineColour.loadBytes(colourData);
-    }
+    colourData.assign(br.readU32().unwrap(), 0);
+    (void)br.readBytes(colourData.data(), colourData.size());
+    outlineColour.loadBytes(colourData);
 
     uint64_t customSize = br.readU64().unwrap();
     customOverlayData.resize(customSize);
@@ -117,7 +108,7 @@ void ShortcutVisualConfig::loadV2(std::filesystem::path path)
     log::debug("Loaded shortcut for '{}'", moduleID);
 }
 
-void ShortcutVisualConfig::saveV2(std::filesystem::path path)
+std::vector<uint8_t> ShortcutVisualConfig::saveV2()
 {
     dbuf::ByteWriter wr;
     wr.writeBytes(FILE_MAGIC.data(), FILE_MAGIC.size());
@@ -153,8 +144,23 @@ void ShortcutVisualConfig::saveV2(std::filesystem::path path)
     wr.writeU64(customOverlayData.size());
     wr.writeBytes(customOverlayData);
 
-    auto written = wr.written();
-    auto res = file::writeBinarySafe(path, written);
+    return wr.writtenVec();
+}
+
+void ShortcutVisualConfig::loadV2(std::filesystem::path path)
+{
+    auto res = file::readBinary(path);
+
+    if (!res.isOk())
+        return;
+
+    flags.set();
+    loadV2(res.unwrap());
+}
+
+void ShortcutVisualConfig::saveV2(std::filesystem::path path)
+{
+    auto res = file::writeBinarySafe(path, saveV2());
     
     if (res.isErr())
         log::error("Failed to write ShortcutVisualConfig! {}, path: {}", res.err(), path);
@@ -263,4 +269,8 @@ cocos2d::ccColor3B ShortcutVisualConfig::getOutlineColour() {
 
 cocos2d::ccColor3B ShortcutVisualConfig::getOverlayColour() {
     return overlayColour.colourForConfig(moduleID);
+}
+
+std::string ShortcutVisualConfig::getModuleID() {
+    return moduleID;
 }

@@ -20,11 +20,10 @@ namespace qolmod
         public:
             static ShortcutManager* get();
 
+            void saveAll();
             void loadAll();
 
             ShortcutVisualConfig* getConfig(Module* module);
-            void loadConfig(Module* module);
-            void saveConfig(Module* module);
 
             void updateGroup(Module* module);
             void updateConfig(Module* module);

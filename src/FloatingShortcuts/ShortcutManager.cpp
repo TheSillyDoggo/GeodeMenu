@@ -3,6 +3,7 @@
 #include "Module.hpp"
 #include <FloatingButton/ModuleShortcutButton.hpp>
 #include <FloatingButton/FloatingUIManager.hpp>
+#include "ShortcutPack.hpp"
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -20,50 +21,64 @@ ShortcutManager* ShortcutManager::get()
 
 void ShortcutManager::loadAll()
 {
+    auto path = Mod::get()->getSaveDir() / "shortcuts.shpak";
+
+    if (std::filesystem::exists(path))
+    {
+        ShortcutPack pack;
+        pack.load(path, [this](std::vector<uint8_t> data){
+            ShortcutVisualConfig conf;
+            conf.loadV2(data);
+
+            auto mod = Module::getByID(conf.getModuleID());
+            if (mod)
+                configs[mod] = conf;
+        });
+    }
+
+    bool needsSave = false;
     for (auto& mod : Module::getAll())
     {
-        loadConfig(mod);
+        if (!configs.contains(mod))
+        {
+            if (Mod::get()->hasSavedValue(fmt::format("{}_shortcutconf", mod->getID())))
+            {
+                configs[mod].loadV1(
+                    Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", mod->getID()), {}),
+                    Mod::get()->getSavedValue<bool>(fmt::format("{}_shortcutenabled", mod->getID()), false),
+                    mod->getID()
+                );
+
+                needsSave = true;
+            }
+        }
+    }
+
+    if (needsSave)
+        saveAll();
+    
+    for (auto& conf : configs)
+    {
+        if (conf.second.isEnabled())
+        {
+            if (nodes.contains(conf.first))
+                nodes[conf.first]->updateSettings();
+            else
+                nodes[conf.first] = ModuleShortcutButton::create(conf.first);
+        }
     }
 }
 
-void ShortcutManager::loadConfig(Module* module)
+void ShortcutManager::saveAll()
 {
-    auto dir = Mod::get()->getSaveDir() / "shortcuts";
-    auto path = dir / fmt::format("{}.qolmodsh", utils::string::replace(module->getID(), "/", "=="));
+    ShortcutPack pack;
 
-    if (!std::filesystem::exists(dir))
-        std::filesystem::create_directory(dir);
-
-    if (!std::filesystem::exists(path))
+    for (auto& conf : configs)
     {
-        configs[module].loadV1(
-            Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_shortcutconf", module->getID()), {}),
-            Mod::get()->getSavedValue<bool>(fmt::format("{}_shortcutenabled", module->getID()), false),
-            module->getID()
-        );
-        configs[module].saveV2(path);
+        pack.addConfig(&conf.second);
     }
-    else
-        configs[module].loadV2(path);
 
-    if (configs[module].isEnabled())
-    {
-        if (nodes.contains(module))
-            nodes[module]->updateSettings();
-        else
-            nodes[module] = ModuleShortcutButton::create(module);
-    }
-}
-
-void ShortcutManager::saveConfig(Module* module)
-{
-    auto dir = Mod::get()->getSaveDir() / "shortcuts";
-    auto path = dir / fmt::format("{}.qolmodsh", utils::string::replace(module->getID(), "/", "=="));
-
-    if (!std::filesystem::exists(dir))
-        std::filesystem::create_directory(dir);
-
-    configs[module].saveV2(path);
+    pack.save(Mod::get()->getSaveDir() / "shortcuts.shpak");
 }
 
 ShortcutVisualConfig* ShortcutManager::getConfig(Module* module)
@@ -73,7 +88,7 @@ ShortcutVisualConfig* ShortcutManager::getConfig(Module* module)
 
 void ShortcutManager::updateConfig(Module* module)
 {
-    saveConfig(module);
+    saveAll();
 
     if (nodes.contains(module))
         nodes[module]->updateSettings();

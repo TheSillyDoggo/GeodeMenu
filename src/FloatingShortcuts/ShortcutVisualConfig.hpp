@@ -40,8 +40,12 @@ class ShortcutVisualConfig
 
     public:
         void loadV1(matjson::Value value, bool enabled, std::string moduleID);
+        void loadV2(std::span<uint8_t> data);
+        std::vector<uint8_t> saveV2();
         void loadV2(std::filesystem::path path);
         void saveV2(std::filesystem::path path);
+
+        std::string getModuleID();
 
         bool shouldShow();
         bool isMovable();
