@@ -24,7 +24,7 @@ void ShortcutPack::save(std::filesystem::path path)
         wr.writeBytes(data.data(), data.size());
     }
     
-    auto res = file::writeBinarySafe(path, wr.written());
+    auto res = file::writeBinarySafe(path, wr.writtenVec());
     
     if (res.isErr())
         log::error("Failed to write ShortcutPack! {}, path: {}", res.err(), path);
