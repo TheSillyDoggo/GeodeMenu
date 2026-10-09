@@ -1,6 +1,4 @@
 #include "Hooks.hpp"
-#include <Geode/modify/CCIMEDispatcher.hpp>
-#include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <BetterInputNode.hpp>
 #include "Casts.hpp"
 #include <AndroidUI.hpp>
@@ -10,6 +8,7 @@ using namespace geode::prelude;
 
 #if GEODE_COMP_GD_VERSION < 22081
 #ifndef GEODE_IS_IOS
+#include <Geode/modify/CCKeyboardDispatcher.hpp>
 class $modify (CCKeyboardDispatcher)
 {
     bool dispatchKeyboardMSG(enumKeyCodes key, bool isKeyDown, bool isKeyRepeat)
