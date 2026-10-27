@@ -71,7 +71,7 @@ bool SetupRotationUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(SetupRotationUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(SetupRotationUI::onClose));
     menu->addChild(btn);
 
     input = BetterInputNode::create(100, "setup-rotation/input-placeholder");

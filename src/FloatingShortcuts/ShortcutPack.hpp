@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <filesystem>
 #include <functional>
+#include <asp/fs.hpp>
 
 class ShortcutVisualConfig;
 
@@ -12,8 +12,8 @@ class ShortcutPack
         std::vector<ShortcutVisualConfig*> configs = {};
 
     public:
-        void save(std::filesystem::path path);
-        void load(std::filesystem::path path, std::function<void(std::vector<uint8_t>)> readCallback);
+        void save(asp::fs::PathView path);
+        void load(asp::fs::PathView path, std::function<void(std::vector<uint8_t>)> readCallback);
 
         void addConfig(ShortcutVisualConfig* conf);
 };

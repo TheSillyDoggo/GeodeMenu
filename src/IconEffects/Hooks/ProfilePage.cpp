@@ -1,4 +1,4 @@
-/*#include <Geode/Geode.hpp>
+#include <Geode/Geode.hpp>
 #include <Geode/modify/ProfilePage.hpp>
 #include <Geode/modify/SimplePlayer.hpp>
 #include "../IconicPlayerHook.hpp"
@@ -80,14 +80,4 @@ class $modify (IconicProfilePage, ProfilePage)
         iconic->setGamemode(static_cast<SimplePlayerExt*>(simple)->getType(), false);
         simple->addChild(iconic);
     }
-
-    void toggleShip(cocos2d::CCObject* sender)
-    {
-        ProfilePage::toggleShip(sender);
-
-        if (auto hk = static_cast<CCNode*>(sender)->getChildByType<SimplePlayer>(0)->getChildByType<IconicPlayerHook>(0))
-        {
-            hk->setGamemode(static_cast<SimplePlayerExt*>(static_cast<CCNode*>(sender)->getChildByType<SimplePlayer>(0))->getType(), false);
-        }
-    }
-};*/
+};

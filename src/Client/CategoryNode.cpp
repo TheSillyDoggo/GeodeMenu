@@ -153,7 +153,7 @@ bool CategoryNode::init()
     return true;
 }
 
-void CategoryNode::scrollWheel(float y, float x)
+/*void CategoryNode::scrollWheel(float y, float x)
 {
     if (nodeIsVisible(scroll) && scroll->isTouchEnabled())
     {
@@ -165,7 +165,7 @@ void CategoryNode::scrollWheel(float y, float x)
 
         scroll->scrollLayer(y);
     }
-}
+}*/
 
 void CategoryNode::setContentSize(const CCSize& contentSize)
 {

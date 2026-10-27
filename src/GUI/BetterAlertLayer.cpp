@@ -4,9 +4,10 @@
 #include "EasyBG.hpp"
 #include <Button.hpp>
 
+
 using namespace qolmod;
 
-BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
+BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, std::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
     auto pRet = new BetterAlertLayer();
 
@@ -30,22 +31,22 @@ BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char 
     return nullptr;
 }
 
-BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width)
+BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, std::string desc, char const* btn1, char const* btn2, float width)
 {
     return BetterAlertLayer::create(delegate, title, desc, btn1, btn2, width, false, 0.0f, 1.0f);
 }
 
-BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2)
+BetterAlertLayer* BetterAlertLayer::create(FLAlertLayerProtocol* delegate, char const* title, std::string desc, char const* btn1, char const* btn2)
 {
     return BetterAlertLayer::create(delegate, title, desc, btn1, btn2, 300.0);
 }
 
-BetterAlertLayer* BetterAlertLayer::create(char const* title, const gd::string& desc, char const* btn)
+BetterAlertLayer* BetterAlertLayer::create(char const* title, const std::string& desc, char const* btn)
 {
     return BetterAlertLayer::create(nullptr, title, desc, btn, nullptr, 300.0);
 }
 
-BetterAlertLayer* BetterAlertLayer::createWithLocalisation(FLAlertLayerProtocol* delegate, char const* title, gd::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
+BetterAlertLayer* BetterAlertLayer::createWithLocalisation(FLAlertLayerProtocol* delegate, char const* title, std::string desc, char const* btn1, char const* btn2, float width, bool scroll, float height, float textScale)
 {
     auto lm = LocalisationManager::get();
 
@@ -63,7 +64,7 @@ BetterAlertLayer* BetterAlertLayer::createWithLocalisation(FLAlertLayerProtocol*
     return create(delegate, titlel.c_str(), desc, btn1l.c_str(), btn2, width, scroll, height, textScale);
 }
 
-BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, const gd::string& desc, char const* btn)
+BetterAlertLayer* BetterAlertLayer::createWithLocalisation(char const* title, const std::string& desc, char const* btn)
 {
     auto lm = LocalisationManager::get();
 
@@ -103,7 +104,7 @@ bool BetterAlertLayer::setup()
 
     auto spr = BetterButtonSprite::create(ccp(54.25f, 30), btn1, "goldFont.fnt", "GJ_button_01.png");
     spr->fixSize();
-    auto btn = Button::create(spr, this, menu_selector(BetterAlertLayer::onButton));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(BetterAlertLayer::onButton));
     btn->setTag(1);
     menu->addChild(btn);
 
@@ -114,7 +115,7 @@ bool BetterAlertLayer::setup()
 
         float w = spr->getScaledContentWidth() / 2 + spr2->getScaledContentWidth() / 2 + 10;
 
-        auto btn2 = Button::create(spr2, this, menu_selector(BetterAlertLayer::onButton));
+        auto btn2 = qolmod::Button::create(spr2, this, menu_selector(BetterAlertLayer::onButton));
         btn2->setTag(2);
         menu->addChild(btn2);
 

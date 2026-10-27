@@ -144,11 +144,11 @@ class $modify(GJBaseGameLayer)
     }
 
 
-    void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+    void collisionCheckObjects(PlayerObject* p0, std::vector<GameObject*>* p1, int p2, float p3)
     {
         if (TrajectoryNode::get() && TrajectoryNode::get()->isSimulating() && p1)
         {
-            gd::vector<GameObject*> gobjs = gd::vector<GameObject*>({});
+            std::vector<GameObject*> gobjs = std::vector<GameObject*>({});
 
             for (auto obj : *p1)
             {
@@ -205,11 +205,11 @@ class $modify(GJBaseGameLayer)
         }
     }
 
-    void playerTouchedTrigger(PlayerObject* p0, EffectGameObject* p1)
+    /*void playerTouchedTrigger(PlayerObject* p0, EffectGameObject* p1)
     {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::playerTouchedTrigger(p0, p1);
-    }
+    }*/
 
     void activateSFXTrigger(SFXTriggerGameObject * p0)
     {
@@ -224,14 +224,15 @@ class $modify(GJBaseGameLayer)
 
     }
     
-    void gameEventTriggered(GJGameEvent p0, int p1, int p2)
+    /*void gameEventTriggered(GJGameEvent p0, int p1, int p2)
     {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             GJBaseGameLayer::gameEventTriggered(p0, p1, p2);
-    }
+    }*/
 
 };
 
+/*
 class $modify(PlayerObject)
 {
     void playSpiderDashEffect(cocos2d::CCPoint p0, cocos2d::CCPoint p1)
@@ -265,7 +266,7 @@ class $modify(PlayerObject)
         }
     }
 
-};
+};*/
 
 class $modify(HardStreak)
 {
@@ -290,7 +291,7 @@ class $modify(GameObject)
 class $modify(EffectGameObject)
 {
 
-    void triggerObject(GJBaseGameLayer* p0, int p1, const gd::vector<int>* p2)
+    void triggerObject(GJBaseGameLayer* p0, int p1, const std::vector<int>* p2)
     {
         if (TrajectoryNode::get() && !TrajectoryNode::get()->isSimulating())
             EffectGameObject::triggerObject(p0, p1, p2);

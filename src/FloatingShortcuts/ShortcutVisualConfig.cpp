@@ -91,21 +91,23 @@ void ShortcutVisualConfig::loadV2(std::span<uint8_t> data)
 
     std::vector<uint8_t> colourData(br.readU32().unwrap(), 0);
     (void)br.readBytes(colourData.data(), colourData.size());
-    overlayColour.loadBytes(colourData);
+    auto colR = overlayColour.loadBytes(colourData);
+
+    if (colR.isErr())
+        log::error("ShortcutVisualConfig::loadV2: '{}': {}", moduleID, colR.unwrapErr());
 
     colourData.assign(br.readU32().unwrap(), 0);
     (void)br.readBytes(colourData.data(), colourData.size());
     outlineColour.loadBytes(colourData);
 
-    uint64_t customSize = br.readU64().unwrap();
-    customOverlayData.resize(customSize);
-
-    if (!br.readBytes(customOverlayData.data(), customSize))
+    uint32_t customSize = br.readU32().unwrap();
+    if (customSize <= MAX_CUSTOM_TEXTURE_SIZE)
     {
-        // not enough data
-    }
+        customOverlayData.resize(customSize);
 
-    log::debug("Loaded shortcut for '{}'", moduleID);
+        if (br.readBytes(customOverlayData.data(), customSize))
+            customImgDirty = true;
+    }
 }
 
 std::vector<uint8_t> ShortcutVisualConfig::saveV2()
@@ -141,13 +143,14 @@ std::vector<uint8_t> ShortcutVisualConfig::saveV2()
     wr.writeU32(cData.size());
     wr.writeBytes(cData);
 
-    wr.writeU64(customOverlayData.size());
+    wr.writeU32(customOverlayData.size());
     wr.writeBytes(customOverlayData);
+    customImgDirty = true;
 
     return wr.writtenVec();
 }
 
-void ShortcutVisualConfig::loadV2(std::filesystem::path path)
+void ShortcutVisualConfig::loadV2(asp::fs::PathView path)
 {
     auto res = file::readBinary(path);
 
@@ -158,7 +161,7 @@ void ShortcutVisualConfig::loadV2(std::filesystem::path path)
     loadV2(res.unwrap());
 }
 
-void ShortcutVisualConfig::saveV2(std::filesystem::path path)
+void ShortcutVisualConfig::saveV2(asp::fs::PathView path)
 {
     auto res = file::writeBinarySafe(path, saveV2());
     
@@ -191,7 +194,13 @@ bool ShortcutVisualConfig::shouldShow()
             return true;
 
         if (!CCScene::get()->getChildByType<PauseLayer>(0) && flags[0])
-            return true;
+        {
+            if (!pl->m_isPracticeMode && showInNormal())
+                return true;
+
+            if (pl->m_isPracticeMode && showInPractice())
+                return true;
+        }
     }
     else if (auto ed = LevelEditorLayer::get())
     {
@@ -210,6 +219,68 @@ bool ShortcutVisualConfig::shouldShow()
     return false;
 }
 
+void ShortcutVisualConfig::setCustomOverlay(asp::fs::PathView path)
+{
+    auto res = file::readBinary(path);
+    if (!res.isOk()) return;
+
+    customOverlayData = std::move(res.unwrap());
+    customImgDirty = true;
+}
+
+void ShortcutVisualConfig::updateTexture()
+{
+    customImgDirty = false;
+    
+    if (customOverlayTexture)
+        CC_SAFE_DELETE(customOverlayTexture);
+
+    if (customOverlayData.empty())
+        return;
+    
+    CCImage* img = new CCImage();
+    if (Loader::get()->getLoadedMod("prevter.imageplus"))
+    {
+        if (!img->initWithImageData(customOverlayData.data(), customOverlayData.size()))
+        {
+            CC_SAFE_DELETE(img);
+        }
+    }
+    else
+    {
+        auto fmt = CCImage::kFmtPng;
+
+        if (!img->initWithImageData(customOverlayData.data(), customOverlayData.size(), fmt))
+        {
+            CC_SAFE_DELETE(img);
+        }
+    }
+
+    if (!img)
+        return;
+
+    customOverlayTexture = new CCTexture2D();
+
+    if (!customOverlayTexture->initWithImage(img))
+        CC_SAFE_DELETE(customOverlayTexture);
+
+    CC_SAFE_DELETE(img);
+
+    if (customOverlayTexture)
+        customOverlayTexture->setAntiAliasTexParameters();
+}
+
+CCTexture2D* ShortcutVisualConfig::getCustomTexture()
+{
+    if (customImgDirty)
+        updateTexture();
+
+    if (customOverlayTexture)
+        return customOverlayTexture;
+    else
+        return CCTextureCache::get()->addImage("sog.png"_spr, false);
+}
+
 // getters
 bool ShortcutVisualConfig::isMovable() {
     return flags[5];
@@ -225,6 +296,13 @@ bool ShortcutVisualConfig::hasOffBG() {
 
 bool ShortcutVisualConfig::hasOnBG() {
     return !flags[7];
+}
+
+bool ShortcutVisualConfig::showInNormal() {
+    return flags[9];
+}
+bool ShortcutVisualConfig::showInPractice() {
+    return flags[10];
 }
 
 ShortcutVisualConfig::SpritePair ShortcutVisualConfig::getOffBG() {

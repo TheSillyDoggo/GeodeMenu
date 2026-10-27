@@ -20,6 +20,7 @@ class FullOptions : public Module
 
 SUBMIT_HACK(FullOptions)
 
+/*
 class $modify (OptionsLayerExt, OptionsLayer)
 {
     void onPauseOptions(CCObject* sender)
@@ -41,7 +42,7 @@ class $modify (OptionsLayerExt, OptionsLayer)
         if (!PlayLayer::get())
             return;
 
-        auto btn = Button::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
+        auto btn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_optionsBtn02_001.png"), this, menu_selector(OptionsLayerExt::onPauseOptions));
         btn->setID("normal-settings-btn"_spr);
 
         if (auto m = m_mainLayer->getChildByType<CCMenu>(-2))
@@ -74,5 +75,5 @@ class $modify (PauseLayer)
             PauseLayer::onSettings(sender);
     }
 };
-
+*/
 // full-options

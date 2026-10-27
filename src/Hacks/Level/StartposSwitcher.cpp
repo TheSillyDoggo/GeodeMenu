@@ -98,6 +98,7 @@ SUBMIT_OPTION(StartposSwitcher, StartposSwitcherHide);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPercentage);
 SUBMIT_OPTION(StartposSwitcher, StartposSwitcherLayout);
 
+/*
 class $modify (StartposPlayLayer, PlayLayer)
 {
     struct Fields
@@ -207,4 +208,5 @@ class $modify (StartposUILayer, UILayer)
         UILayer::handleKeypress(key, down);
         #endif
     }
-};
+/*
+};*/

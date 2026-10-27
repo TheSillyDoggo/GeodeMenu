@@ -7,15 +7,14 @@ using namespace geode::prelude;
 constexpr static std::array<uint8_t, 2> FILE_MAGIC = { 'Q','C' };
 #define COLCONF_FILE_VERSION 1
 
-void ColourConfig::loadBytes(std::vector<uint8_t> data)
+geode::Result<> ColourConfig::loadBytes(std::vector<uint8_t> data)
 {
     dbuf::ByteReader br{data};
 
     std::array<uint8_t, 2> magic;
     if (!br.readBytes(magic.data(), 2).isOk() || magic != FILE_MAGIC)
     {
-        log::error("ColourConfig magic doesn't match! incorrect file");
-        return;
+        return Err(fmt::format("ColourConfig magic doesn't match! '0x{:02x}{:02x}'", magic[0], magic[1]));
     }
 
     auto version = br.readU16().unwrap();
@@ -23,7 +22,7 @@ void ColourConfig::loadBytes(std::vector<uint8_t> data)
     if (version > COLCONF_FILE_VERSION)
     {
         log::error("ColourConfig version is unsupported: {}>{}", version, COLCONF_FILE_VERSION);
-        return;
+        return Err("VERSION");
     }
 
     type = (ColourConfigType)br.readU8().unwrap();
@@ -58,6 +57,8 @@ void ColourConfig::loadBytes(std::vector<uint8_t> data)
     {
         log::error("Position != size ({} != {})", br.position(), data.size());
     }
+
+    return Ok();
 }
 
 std::vector<uint8_t> ColourConfig::saveBytes()

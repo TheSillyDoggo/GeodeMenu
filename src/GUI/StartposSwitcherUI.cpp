@@ -37,8 +37,8 @@ bool StartposSwitcherUI::init()
     leftSpr->setScale(0.65f);
     rightSpr->setScale(0.65f);
 
-    auto leftBtn = Button::create(leftSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
-    auto rightBtn = Button::create(rightSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
+    auto leftBtn = qolmod::Button::create(leftSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
+    auto rightBtn = qolmod::Button::create(rightSpr, this, menu_selector(StartposSwitcherUI::onSwitchBtn));
     
     leftBtn->setTag(-1);
     rightBtn->setTag(1);

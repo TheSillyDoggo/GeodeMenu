@@ -49,7 +49,7 @@ bool EditKeyConfigUI::setup()
 
     auto menu = CCMenu::create();
 
-    auto btn = Button::create(BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(EditKeyConfigUI::onClose));
+    auto btn = qolmod::Button::create(BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(EditKeyConfigUI::onClose));
     menu->addChild(btn);
 
     this->scheduleUpdate();
@@ -63,8 +63,8 @@ bool EditKeyConfigUI::setup()
     topRightMenu->setAnchorPoint(ccp(0.5f, 1));
     topRightMenu->setLayout(AxisLayout::create(Axis::Column)->setAutoScale(false)->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setGap(10));
     topRightMenu->setScale(0.75f);
-    topRightMenu->addChild(Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onSetDefault)));
-    topRightMenu->addChild(Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onUndoChanged)));
+    topRightMenu->addChild(qolmod::Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/default-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onSetDefault)));
+    topRightMenu->addChild(qolmod::Button::create(BetterButtonSprite::createWithLocalisation(ccp(72, 30), "ui/undo-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(EditKeyConfigUI::onUndoChanged)));
     topRightMenu->updateLayout();
 
     auto modeMenu = CCMenu::create();
@@ -145,7 +145,7 @@ void EditKeyConfigUI::createModeButton(KeybindType type, int y, CCMenu* menu)
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     infoSpr->setScale(0.4f + 0.85f);
 
-    auto infoBtn = Button::create(infoSpr, this, menu_selector(EditKeyConfigUI::onModeInfo));
+    auto infoBtn = qolmod::Button::create(infoSpr, this, menu_selector(EditKeyConfigUI::onModeInfo));
     infoBtn->setTag((int)type);
     infoSpr->setScale(infoSpr->getScale() - 0.85f);
     infoBtn->setPosition(label->getPosition() + ccp(label->getScaledContentWidth(), 0) + ccp(4.5f, 5));

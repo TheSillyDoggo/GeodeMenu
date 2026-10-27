@@ -29,7 +29,7 @@ class LabelManager
         cocos2d::CCRect getSafeZone();
         void setSafeZone(cocos2d::CCRect rect);
 
-        bool addFromFile(std::filesystem::path path);
+        bool addFromFile(asp::fs::PathView path);
 
         cocos2d::CCPoint anchorToPoint(LabelAnchor anchor);
 

@@ -41,13 +41,14 @@ class $modify (HardStreak)
 
 class $modify (PlayerObject)
 {
-    void placeStreakPoint()
+    // FIX
+    /*void placeStreakPoint()
     {
         if (LevelEditorLayer::get() && m_isDart)
             m_waveTrail->addPoint(this->getPosition());
         else
             PlayerObject::placeStreakPoint();
-    }
+    }*/
 
     virtual void update(float dt)
     {

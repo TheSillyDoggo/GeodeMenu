@@ -7,9 +7,9 @@ PlayLayerUtils* PlayLayerUtils::getUtils()
     return static_cast<PlayLayerUtils*>(get());
 }
 
-bool PlayLayerUtils::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+bool PlayLayerUtils::init(GJGameLevel* level, bool dontCreateObjects)
 {
-    if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+    if (!PlayLayer::init(level, dontCreateObjects))
         return false;
 
     m_fields->drawNode = CCDrawNode::create();

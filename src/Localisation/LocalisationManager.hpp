@@ -8,19 +8,19 @@
 class LocalisationManager
 {
     protected:
-        std::unordered_map<std::filesystem::path, CLanguage*> languages = {};
+        std::unordered_map<asp::fs::PathView, CLanguage*> languages = {};
         CLanguage* currentLang = nullptr;
         CLanguage* placeholder = nullptr;
-        std::filesystem::path currentPath;
+        asp::fs::Path currentPath;
 
-        void loadLocalisationFile(std::filesystem::path path);
+        void loadLocalisationFile(asp::fs::PathView path);
         void setup();
 
     public:
         static LocalisationManager* get();
 
-        void switchTempPath(std::filesystem::path path);
-        void switchLocalisationWithUIPath(std::filesystem::path path);
+        void switchTempPath(asp::fs::PathView path);
+        void switchLocalisationWithUIPath(asp::fs::PathView path);
         void switchLocalisationWithUI(std::string file);
 
         void switchFinished();
@@ -28,13 +28,13 @@ class LocalisationManager
         AdvLabelTTFUsage getDefaultTTFUsage();
 
         std::vector<std::string> getAllLanguageFiles();
-        std::vector<std::filesystem::path> getAllLanguageFilesPath();
+        std::vector<asp::fs::Path> getAllLanguageFilesPath();
 
-        std::filesystem::path getCurrentLoadedFile();
+        asp::fs::PathView getCurrentLoadedFile();
         std::string getAltFont();
         std::string getLocalisedString(std::string id);
         std::string reshapeArabicString(std::string str);
 
-        CLanguage* languageForPath(std::filesystem::path path);
+        CLanguage* languageForPath(asp::fs::PathView path);
         CLanguage* getCurrentLang();
 };

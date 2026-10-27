@@ -60,10 +60,10 @@ bool OptionsUI::setup()
     auto menu3 = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(OptionsUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(OptionsUI::onClose));
     menu->addChild(btn);
 
-    auto infoBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));
+    auto infoBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onInfo));
     infoBtn->getNormalImage()->setScale(0.75f);
     menu2->addChild(infoBtn);
 
@@ -83,12 +83,12 @@ bool OptionsUI::setup()
     favBtn->m_offButton->setColor(ccc3(150, 150, 150));
     favBtn->m_offButton->setOpacity(150);
 
-    auto btnKeybind = Button::create(CCSprite::createWithSpriteFrameName("keybinds.png"_spr), this, menu_selector(OptionsUI::onChangeKeybind));
+    auto btnKeybind = qolmod::Button::create(CCSprite::createWithSpriteFrameName("keybinds.png"_spr), this, menu_selector(OptionsUI::onChangeKeybind));
     btnKeybind->setContentSize(btnKeybind->getContentSize() * ccp(1, 2));
     btnKeybind->getNormalImage()->setPosition(btnKeybind->getContentSize() / 2);
     btnKeybind->setPosition(ccp(m_size.width - 18 * 2, -m_size.height + 18 * 2));
 
-    auto btnRanges = Button::create(CCSprite::createWithSpriteFrameName("ranges.png"_spr), this, menu_selector(OptionsUI::onChangeRanges));
+    auto btnRanges = qolmod::Button::create(CCSprite::createWithSpriteFrameName("ranges.png"_spr), this, menu_selector(OptionsUI::onChangeRanges));
     btnRanges->setContentSize(btnRanges->getContentSize() * ccp(1, 2));
     btnRanges->setPositionX(btnKeybind->getPositionX() - 25);
     btnRanges->setPositionY(btnKeybind->getPositionY());
@@ -121,7 +121,7 @@ bool OptionsUI::setup()
         auto menu = CCMenu::create();
         menu->setZOrder(80085);
 
-        auto infoBtn2 = Button::create(CCSpriteGrayscale::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onSeperateOptionsInfo));
+        auto infoBtn2 = qolmod::Button::create(CCSpriteGrayscale::createWithSpriteFrameName("GJ_infoIcon_001.png"), this, menu_selector(OptionsUI::onSeperateOptionsInfo));
         infoBtn2->getNormalImage()->setScale(0.75f);
 
         menu->addChild(infoBtn2, 67);
@@ -174,8 +174,40 @@ void OptionsUI::onToggleFavourite(CCObject* sender)
         FavouritesNode::get()->refresh();
 }
 
+#include "../FloatingShortcuts/ShortcutManager.hpp"
+
 void OptionsUI::onChangeShortcut(CCObject* sender)
 {
+    file::FilePickOptions options;
+    options.defaultPath = Mod::get()->getConfigDir();
+
+    file::FilePickOptions::Filter filter;
+    filter.description = "Image File";
+    filter.files = { "*.png" };
+    options.filters.push_back(filter);
+
+    async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<asp::fs::PathView>> result)
+    {
+        log::info("1");
+
+        if (result.isOk())
+        {
+            log::info("2");
+
+            if (result.unwrap().has_value())
+            {
+                log::info("3");
+                asp::fs::PathView filePath = result.unwrap().value();
+                log::info("4: {}", filePath);
+
+                ShortcutManager::get()->getConfig(module)->setCustomOverlay(filePath);
+                ShortcutManager::get()->updateConfig(module);
+            }
+        }
+    });
+
+    return;
+
     auto ui = SetupShortcutUI::create([this](bool enabled, ModuleShortcutConfig conf)
     {
         // module->setShortcutConfig(enabled, conf);

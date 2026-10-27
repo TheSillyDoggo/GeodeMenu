@@ -4,6 +4,7 @@
 #include <FloatingButton/ModuleShortcutButton.hpp>
 #include <FloatingButton/FloatingUIManager.hpp>
 #include "ShortcutPack.hpp"
+#include <asp/time.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -23,7 +24,9 @@ void ShortcutManager::loadAll()
 {
     auto path = Mod::get()->getSaveDir() / "shortcuts.shpak";
 
-    if (std::filesystem::exists(path))
+    auto t1 = asp::time::Instant::now();
+
+    if (path.exists())
     {
         ShortcutPack pack;
         pack.load(path, [this](std::vector<uint8_t> data){
@@ -35,6 +38,8 @@ void ShortcutManager::loadAll()
                 configs[mod] = conf;
         });
     }
+
+    auto t2 = asp::time::Instant::now();
 
     bool needsSave = false;
     for (auto& mod : Module::getAll())
@@ -54,8 +59,12 @@ void ShortcutManager::loadAll()
         }
     }
 
+    auto t3 = asp::time::Instant::now();
+
     if (needsSave)
         saveAll();
+
+    auto t4 = asp::time::Instant::now();
     
     for (auto& conf : configs)
     {
@@ -67,10 +76,14 @@ void ShortcutManager::loadAll()
                 nodes[conf.first] = ModuleShortcutButton::create(conf.first);
         }
     }
+
+    log::debug("ShortcutManager::loadAll() - pack: {}, legacy: {}, resave: {}, create: {}", t1.absDiff(t2).toHumanString(), t2.absDiff(t3).toHumanString(), t3.absDiff(t4).toHumanString(), t4.absDiff(asp::time::Instant::now()).toHumanString());
 }
 
 void ShortcutManager::saveAll()
 {
+    auto t1 = asp::time::Instant::now();
+
     ShortcutPack pack;
 
     for (auto& conf : configs)
@@ -78,7 +91,9 @@ void ShortcutManager::saveAll()
         pack.addConfig(&conf.second);
     }
 
+    auto t2 = asp::time::Instant::now();
     pack.save(Mod::get()->getSaveDir() / "shortcuts.shpak");
+    log::debug("ShortcutManager::saveAll() - gen: {} - write: {}", t1.absDiff(t2).toHumanString(), t2.absDiff(asp::time::Instant::now()).toHumanString());
 }
 
 ShortcutVisualConfig* ShortcutManager::getConfig(Module* module)
@@ -100,9 +115,4 @@ void ShortcutManager::updateGroup(Module* module)
     {
         std::erase(group.second, nodes[module]);
     }
-    
-    // auto id = configs[module].group;
-    // groups[id].push_back(nodes[module]);
-
-    // FloatingUIManager::removeButton(nodes[module]);
 }

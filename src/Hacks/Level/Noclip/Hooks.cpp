@@ -134,9 +134,9 @@ class $modify (PlayLayer)
         CCLayerColor* tintOverlay;
     };
 
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+    bool init(GJGameLevel* level, bool dontCreateObjects)
     {
-        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+        if (!PlayLayer::init(level, dontCreateObjects))
             return false;
 
         m_fields->tintOverlay = qolmod::LayerColor::create(ccc4(0, 0, 0, 0));

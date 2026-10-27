@@ -9,7 +9,7 @@ using namespace geode::prelude;
 
 class $modify (SafePlayLayer, PlayLayer)
 {
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
+    bool init(GJGameLevel* level, bool dontCreateObjects);
 
     void showNewBest(bool newReward, int orbs, int diamonds, bool demonKey, bool noRetry, bool noTitle);
     void levelComplete();

@@ -11,9 +11,9 @@
 
 using namespace qolmod;
 
-bool SafePlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+bool SafePlayLayer::init(GJGameLevel* level, bool dontCreateObjects)
 {
-    if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+    if (!PlayLayer::init(level, dontCreateObjects))
         return false;
 
     SafeMode::get()->onLevelLoad();
@@ -163,7 +163,7 @@ void SafeEndLevelLayer::customSetup()
         infoMenu->setPosition((n ? n->getPosition() : CCPointMake(CCDirector::get()->getWinSize().width, CCDirector::get()->getWinSize().height) / 2) + ccp(0, -37.5f));
         infoMenu->setID("info-menu"_spr);
 
-        auto infoBtn = Button::create(BetterButtonSprite::create(ccp(180, 30), LocalisationManager::get()->getLocalisedString("ui/safe-mode-view-reason-button"), "bigFont.fnt", "GJ_button_04.png"), this, menu_selector(SafeEndLevelLayer::onViewReasons));
+        auto infoBtn = qolmod::Button::create(BetterButtonSprite::create(ccp(180, 30), LocalisationManager::get()->getLocalisedString("ui/safe-mode-view-reason-button"), "bigFont.fnt", "GJ_button_04.png"), this, menu_selector(SafeEndLevelLayer::onViewReasons));
         infoBtn->m_scaleMultiplier = 1.1f;
         infoMenu->addChild(infoBtn);
 

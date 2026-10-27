@@ -106,7 +106,7 @@ class $modify (NoParticleSystem, CCParticleSystemQuad)
 
 class $modify (GJBaseGameLayer)
 {
-    virtual cocos2d::CCParticleSystemQuad* createCustomParticle(gd::string const& key, cocos2d::ParticleStruct const& particleStruct, int minimum, bool dontAdd)
+    virtual cocos2d::CCParticleSystemQuad* createCustomParticle(std::string const& key, cocos2d::ParticleStruct const& particleStruct, int minimum, bool dontAdd)
     {
         auto pRet = GJBaseGameLayer::createCustomParticle(key, particleStruct, minimum, dontAdd);
 

@@ -138,7 +138,7 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("JA", "bigFont.fnt");
         l->setOpacity(150);
 
-        auto btn = Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        auto btn = qolmod::Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
         btn->setID("japanese-supported");
 
         menu->addChild(btn);
@@ -149,7 +149,7 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("RU", "bigFont.fnt");
         l->setOpacity(150);
 
-        auto btn = Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        auto btn = qolmod::Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
         btn->setID("russian-supported");
 
         menu->addChild(btn);
@@ -160,7 +160,7 @@ CCMenu* SelectFontUI::getHints(CCBMFontConfiguration* config)
         auto l = AdvLabelBMFont::createWithString("KO", "bigFont.fnt");
         l->setOpacity(150);
 
-        auto btn = Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
+        auto btn = qolmod::Button::create(l, this, menu_selector(SelectFontUI::onFontHint));
         btn->setID("korean-supported");
 
         menu->addChild(btn);
@@ -254,7 +254,7 @@ bool SelectFontUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(SelectFontUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(SelectFontUI::onClose));
     menu->addChild(btn);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
@@ -328,9 +328,9 @@ bool SelectFontUI::setup()
     pageMenu->setAnchorPoint(ccp(0, 0));
     pageMenu->setScale(0.7f);
 
-    auto btnRight = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(SelectFontUI::onChangePage));
+    auto btnRight = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(SelectFontUI::onChangePage));
     btnRight->getNormalImage()->setScaleX(-1);
-    auto btnLeft = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(SelectFontUI::onChangePage));
+    auto btnLeft = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(SelectFontUI::onChangePage));
 
     btnLeft->setPosition(ccp(-155 / pageMenu->getScale(), 0));
     btnRight->setPosition(ccp(155 / pageMenu->getScale(), 0));

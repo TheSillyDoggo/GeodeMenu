@@ -21,15 +21,14 @@ $on_mod(Loaded) \
 #define MODULE_GETTER(func) \
 static func* get() \
 { \
-    static func* instance = nullptr; \
-    if (!instance) \
-    { \
-        instance = new func(); \
-        instance->load(); \
-        instance->genericLoad(); \
-        Module::moduleMap.push_back(instance); \
-    } \
-    return instance; \
+    static func instance = []{ \
+        func ret; \
+        ret.load(); \
+        ret.genericLoad(); \
+        Module::moduleMap.push_back(&instance); \
+        return ret; \
+    }(); \
+    return &instance; \
 }
 
 #define MODULE_SETUP(func) \

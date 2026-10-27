@@ -40,7 +40,7 @@ bool ExtraThemeSettingsUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(ExtraThemeSettingsUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(ExtraThemeSettingsUI::onClose));
     menu->addChild(btn);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
@@ -56,13 +56,13 @@ bool ExtraThemeSettingsUI::setup()
 
         auto spr1 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/import-from-file-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
         spr1->setMaxTextScale(0.6f);
-        auto btn1 = Button::create(spr1, this, menu_selector(ExtraThemeSettingsUI::onSelectImage));
+        auto btn1 = qolmod::Button::create(spr1, this, menu_selector(ExtraThemeSettingsUI::onSelectImage));
         btn1->setPosition(ccp(-120 / 2 - 2.5f, 37.5f));
         btn1->m_scaleMultiplier = 1.1f;
 
         auto spr2 = BetterButtonSprite::createWithLocalisation(ccp(120, 30), "ui/default-button", "bigFont.fnt", "geode.loader/GE_button_01.png");
         spr2->setMaxTextScale(0.6f);
-        auto btn2 = Button::create(spr2, this, menu_selector(ExtraThemeSettingsUI::onResetDefault));
+        auto btn2 = qolmod::Button::create(spr2, this, menu_selector(ExtraThemeSettingsUI::onResetDefault));
         btn2->setPosition(ccp(120 / 2 + 2.5f, 37.5f));
         btn2->m_scaleMultiplier = 1.1f;
         
@@ -102,7 +102,7 @@ void ExtraThemeSettingsUI::onSelectImage(CCObject* sender)
     filter.files = { "*.png" };
     options.filters.push_back(filter);
 
-    async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<std::filesystem::path>> result)
+    async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<asp::fs::PathView>> result)
     {
         if (result.isOk())
         {

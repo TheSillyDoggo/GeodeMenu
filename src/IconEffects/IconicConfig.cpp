@@ -516,11 +516,12 @@ cocos2d::ccColor3B IconicConfig::getDefault(IconicEffectType type)
         case IconicEffectType::FineOutline:
             if (IconicManager::get()->isFineOutlineLoaded())
             {
-                auto col = alpha::fine_outline::getColor(player2 ?
+                /*auto col = alpha::fine_outline::getColor(player2 ?
                     alpha::fine_outline::PlayerIcon::ONE : 
-                    alpha::fine_outline::PlayerIcon::TWO);
+                    alpha::fine_outline::PlayerIcon::TWO);*/
 
-                return col;
+                return ccMAGENTA;
+                // return col;
             }
 
             return ccBLACK;

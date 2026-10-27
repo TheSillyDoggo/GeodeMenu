@@ -35,7 +35,7 @@ bool PopupBase::init(float width, float height)
     rt->getSprite()->getTexture()->setAntiAliasTexParameters();
     #endif
 
-    CCTouchDispatcher::get()->registerForcePrio(this, 2);
+    CCTouchDispatcher::get()->registerForcePrio(this, 2, 1); // TODO: WHAT IS THE THIRD PARAM
     this->setKeypadEnabled(true);
     this->setTouchEnabled(true);
     this->setKeyboardEnabled(true);

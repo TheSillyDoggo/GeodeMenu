@@ -38,8 +38,6 @@ namespace qolmod
         protected:
             MenuAnimation anim = MenuAnimation::Scale;
             BackgroundType background = BackgroundType::Geode03;
-            std::error_code moveErrorCode;
-            std::error_code setErrorCode;
 
             void save();
             void load();
@@ -53,7 +51,7 @@ namespace qolmod
             BackgroundType getBackground();
             void setBackground(BackgroundType background);
 
-            void setCustomSprite(std::filesystem::path path);
+            void setCustomSprite(asp::fs::PathView path);
             cocos2d::CCSprite* createCustomSprite(bool returnDefault = true);
     };
 };

@@ -9,7 +9,7 @@ using namespace geode::prelude;
 constexpr static std::array<uint8_t, 5> FILE_MAGIC = { 'S','H','P','A','K' };
 #define SHPAK_FILE_VERSION 1
 
-void ShortcutPack::save(std::filesystem::path path)
+void ShortcutPack::save(asp::fs::PathView path)
 {
     dbuf::ByteWriter wr;
     wr.writeBytes(FILE_MAGIC.data(), FILE_MAGIC.size());
@@ -30,7 +30,7 @@ void ShortcutPack::save(std::filesystem::path path)
         log::error("Failed to write ShortcutPack! {}, path: {}", res.err(), path);
 }
 
-void ShortcutPack::load(std::filesystem::path path, std::function<void(std::vector<uint8_t>)> readCallback)
+void ShortcutPack::load(asp::fs::PathView path, std::function<void(std::vector<uint8_t>)> readCallback)
 {
     auto res = file::readBinary(path);
 
@@ -59,9 +59,14 @@ void ShortcutPack::load(std::filesystem::path path, std::function<void(std::vect
     for (size_t i = 0; i < count; i++)
     {
         std::vector<uint8_t> data(br.readU32().unwrap(), 0);
-        (void)br.readBytes(data.data(), data.size());
-        
-        readCallback(data);
+        if (br.readBytes(data.data(), data.size()))
+        {
+            readCallback(data);
+        }
+        else
+        {
+            log::error("Leaving prematurely: {} - {}", i, count);
+        }
     }
     
     log::debug("Loaded shortcut pack with {} shortcuts", count);

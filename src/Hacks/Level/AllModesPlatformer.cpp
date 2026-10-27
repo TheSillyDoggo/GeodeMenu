@@ -18,7 +18,7 @@ SUBMIT_HACK(AllModesPlatformer);
 
 class $modify (GJBaseGameLayer)
 {
-    void collisionCheckObjects(PlayerObject* p0, gd::vector<GameObject*>* p1, int p2, float p3)
+    void collisionCheckObjects(PlayerObject* p0, std::vector<GameObject*>* p1, int p2, float p3)
     {
         GJBaseGameLayer::collisionCheckObjects(p0, p1, p2, p3);
 

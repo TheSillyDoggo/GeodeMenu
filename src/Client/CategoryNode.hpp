@@ -38,7 +38,7 @@ class CategoryNode : public CCMenu
 
         void setID(std::string id);
 
-        virtual void scrollWheel(float y, float x);
+        // virtual void scrollWheel(float y, float x);
         virtual void setContentSize(const CCSize& contentSize);
 
         bool init();

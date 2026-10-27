@@ -48,7 +48,8 @@ class $modify (NoZoomLimitEditorUI, EditorUI)
         EditorUI::zoomOut(sender);
     }
 
-    virtual void scrollWheel(float y, float x)
+    // TODO: FIX FIX FIX FIX FOX FIX
+    /*virtual bool scrollWheel(float y, float x)
     {
         auto scale = m_editorLayer->m_groundLayer->getScale();
 
@@ -66,7 +67,7 @@ class $modify (NoZoomLimitEditorUI, EditorUI)
                     zoomNoLimit(false);
             }
         }
-    }
+    }*/
     #else
     void zoomGameLayer(bool zoomingIn)
     {

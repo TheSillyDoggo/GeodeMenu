@@ -70,7 +70,7 @@ void BetterRotationControl::ccTouchMoved(CCTouch* touch, CCEvent* event)
     if ((int)angle != lastAngle)
     {
         if (delegate)
-            delegate->angleChanged((int)angle);
+            delegate->angleChanged((int)angle, false);
 
         lastAngle = (int)angle;
     }

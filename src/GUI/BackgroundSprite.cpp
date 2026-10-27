@@ -3,6 +3,7 @@
 #include "Modules/GradientBGColours.hpp"
 #include <ThemeManager.hpp>
 
+
 using namespace qolmod;
 
 bool BackgroundSprite::init()

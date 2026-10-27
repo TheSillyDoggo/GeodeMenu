@@ -33,7 +33,7 @@ void RotationModuleNode::setup()
     auto overlay = CCSprite::createWithSpriteFrameName("edit_enableRotateBtn_001.png");
     bg->addChildAtPosition(overlay, Anchor::Center);
     
-    auto btn = Button::create(bg, this, menu_selector(RotationModuleNode::onChangeRotation));
+    auto btn = qolmod::Button::create(bg, this, menu_selector(RotationModuleNode::onChangeRotation));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(btn, Anchor::Left, ccp(label->getScaledContentWidth() + 25, 0));

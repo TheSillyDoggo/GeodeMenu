@@ -59,7 +59,7 @@ void IconicPlayerHook::update(float dt)
             simple->setSecondColor(config->getSecondary());
             simple->setGlowOutline(config->getGlow());
             
-            alpha::fine_outline::setOutlineColor(simple, config->getFineOutline());
+            // alpha::fine_outline::setOutlineColor(simple, config->getFineOutline());
         }
 
         if (player)
@@ -138,7 +138,7 @@ void IconicPlayerHook::update(float dt)
 
             if (IconicManager::get()->isFineOutlineLoaded())
             {
-                alpha::fine_outline::setOutlineColor(player, config->getFineOutline());
+                // alpha::fine_outline::setOutlineColor(player, config->getFineOutline());
             }
 
             for (auto fire : fireDashes)

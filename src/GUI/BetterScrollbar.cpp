@@ -1,5 +1,6 @@
 #include "BetterScrollbar.hpp"
 
+
 BetterScrollbar* BetterScrollbar::create(CCScrollLayerExt* layer)
 {
     auto pRet = create();

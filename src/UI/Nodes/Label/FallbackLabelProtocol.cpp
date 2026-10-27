@@ -1,6 +1,6 @@
 #include "FallbackLabelProtocol.hpp"
 
-bool FallbackLabelProtocol::shouldUseFallback(std::string_view string, gd::set<unsigned int>* charSet)
+bool FallbackLabelProtocol::shouldUseFallback(std::string_view string, std::set<unsigned int>* charSet)
 {
     if (forceFallback)
         return true;

@@ -369,7 +369,7 @@ void AdvLabelBMFont::updateLabelQuick()
 bool AdvLabelBMFont::useTTFFont()
 {
     CCBMFontConfiguration* conf;
-    gd::set<unsigned int>* charSet;
+    std::set<unsigned int>* charSet;
     bool ttf;
 
     if (str.forceTTF)

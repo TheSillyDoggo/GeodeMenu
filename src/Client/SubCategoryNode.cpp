@@ -76,7 +76,7 @@ void SubCategoryNode::addSubCategory(std::string name)
     sprNormal->setAnchorPoint(ccp(0.5f, 0.5f));
     sprHeld->setContentSize(ccp(80, 20));
 
-    auto btn = Button::create(sprNormal, this, menu_selector(SubCategoryNode::onSelectSub));
+    auto btn = qolmod::Button::create(sprNormal, this, menu_selector(SubCategoryNode::onSelectSub));
     btn->setID(name);
     btn->setSelectedImage(sprHeld);
     btn->m_scaleMultiplier = 1;

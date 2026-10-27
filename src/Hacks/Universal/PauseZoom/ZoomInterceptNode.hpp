@@ -22,7 +22,7 @@ class ZoomInterceptNode : public CCLayer
         virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
         virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
 
-        virtual void scrollWheel(float y, float x);
+        virtual bool scrollWheel(float y, float x);
         virtual void registerWithTouchDispatcher();
         virtual void onExit();
         ~ZoomInterceptNode();

@@ -34,7 +34,7 @@ bool EndscreenStatLabel::init(EndscreenStatType type)
 
     if (isClickable())
     {
-        auto btn = Button::create(label, this, menu_selector(EndscreenStatLabel::onCallback));
+        auto btn = qolmod::Button::create(label, this, menu_selector(EndscreenStatLabel::onCallback));
         btn->m_scaleMultiplier = 1.1f;
         btn->setPosition(label->getScaledContentSize() / 2);
 

@@ -49,7 +49,7 @@ void ModuleNode::setup()
         auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
         infoSpr->setScale(0.55f + 0.35f);
 
-        infoBtn = Button::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
+        infoBtn = qolmod::Button::create(infoSpr, this, menu_selector(ModuleNode::onInfo));
 
         infoSpr->setScale(infoSpr->getScale() - 0.35f);
 
@@ -59,7 +59,7 @@ void ModuleNode::setup()
     if (hasOptions)
     {
         auto optionsSpr = CCSprite::createWithSpriteFrameName("GJ_plus3Btn_001.png");
-        auto optionsBtn = Button::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
+        auto optionsBtn = qolmod::Button::create(optionsSpr, this, menu_selector(ModuleNode::onOptions));
 
         this->addChildAtPosition(optionsBtn, Anchor::Left, ccp(label->getScaledContentWidth() + 43, 0));
     }

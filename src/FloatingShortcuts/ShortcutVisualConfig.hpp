@@ -6,6 +6,9 @@
 #include <FloatingButton/FloatingButtonBase.hpp>
 #include <ColourConfig.hpp>
 
+// 15 megabytes, should be plenty
+#define MAX_CUSTOM_TEXTURE_SIZE (15 * 1024 * 1024)
+
 class ShortcutVisualConfig
 {
     public:
@@ -33,23 +36,32 @@ class ShortcutVisualConfig
         OverlayType overlayType;
         std::string overlayBuiltinSprite;
         std::string overlayText;
-        std::string overlayFont;
+        std::string overlayFont = "bigFont.fnt";
         std::vector<uint8_t> customOverlayData;
+        cocos2d::CCTexture2D* customOverlayTexture = nullptr;
+        bool customImgDirty = false;
 
         static SpritePair stringToPair(std::string old);
+
+        void updateTexture();
 
     public:
         void loadV1(matjson::Value value, bool enabled, std::string moduleID);
         void loadV2(std::span<uint8_t> data);
         std::vector<uint8_t> saveV2();
-        void loadV2(std::filesystem::path path);
-        void saveV2(std::filesystem::path path);
+        void loadV2(asp::fs::PathView path);
+        void saveV2(asp::fs::PathView path);
+
+        void setCustomOverlay(asp::fs::PathView path);
 
         std::string getModuleID();
 
         bool shouldShow();
         bool isMovable();
         bool isEnabled();
+
+        bool showInNormal();
+        bool showInPractice();
 
         float getScale();
         float getOpacity();
@@ -68,4 +80,6 @@ class ShortcutVisualConfig
 
         cocos2d::ccColor3B getOutlineColour();
         cocos2d::ccColor3B getOverlayColour();
+
+        cocos2d::CCTexture2D* getCustomTexture();
 };

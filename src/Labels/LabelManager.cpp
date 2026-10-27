@@ -56,14 +56,14 @@ void LabelManager::setSafeZone(CCRect rect)
         LabelsNode::get()->updateUI();
 }
 
-bool LabelManager::addFromFile(std::filesystem::path path)
+bool LabelManager::addFromFile(asp::fs::PathView path)
 {
     auto res = file::readJson(path);
 
     if (res.isOk())
     {
         auto conf = LabelConfig::createFromObject(res.unwrap());
-        conf.displayName = fmt::format("{} ({})", conf.displayName, path.filename().string());
+        conf.displayName = fmt::format("{} ({})", conf.displayName, path.filename().value_or("ERORR"));
 
         auto confs = getConfigs();
         confs.push_back(conf);

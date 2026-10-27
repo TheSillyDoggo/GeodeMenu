@@ -5,19 +5,19 @@
 using namespace geode::prelude;
 using namespace qolmod;
 
-Button* Button::create(CCNode* normalSprite, CCObject* target, SEL_MenuHandler selector)
+qolmod::Button* qolmod::Button::create(CCNode* normalSprite, CCObject* target, SEL_MenuHandler selector)
 {
     return create(normalSprite, nullptr, nullptr, target, selector);
 }
 
-Button* Button::create(CCNode* normalSprite, CCNode* selectedSprite, CCObject* target, SEL_MenuHandler selector)
+qolmod::Button* qolmod::Button::create(CCNode* normalSprite, CCNode* selectedSprite, CCObject* target, SEL_MenuHandler selector)
 {
     return create(normalSprite, selectedSprite, nullptr, target, selector);
 }
 
-Button* Button::create(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite, CCObject* target, SEL_MenuHandler selector)
+qolmod::Button* qolmod::Button::create(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite, CCObject* target, SEL_MenuHandler selector)
 {
-    auto pRet = new Button();
+    auto pRet = new qolmod::Button();
 
     if (pRet && pRet->init(normalSprite, selectedSprite, disabledSprite, target, selector))
     {
@@ -29,7 +29,7 @@ Button* Button::create(CCNode* normalSprite, CCNode* selectedSprite, CCNode* dis
     return nullptr;
 }
 
-bool Button::init(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite, CCObject* target, SEL_MenuHandler selector)
+bool qolmod::Button::init(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite, CCObject* target, SEL_MenuHandler selector)
 {
     if (!CCMenuItemSprite::initWithNormalSprite(normalSprite, selectedSprite, disabledSprite, target, selector))
         return false;
@@ -46,7 +46,7 @@ bool Button::init(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabled
     return true;
 }
 
-void Button::update(float dt)
+void qolmod::Button::update(float dt)
 {
     dt = Speedhack::get()->getRealDeltaTime();
 
@@ -95,17 +95,17 @@ void Button::update(float dt)
     }
 }
 
-void Button::setRepeatEnabled(bool en)
+void qolmod::Button::setRepeatEnabled(bool en)
 {
     this->repeatEnabled = en;
 }
 
-bool Button::isRepeatEnabled()
+bool qolmod::Button::isRepeatEnabled()
 {
     return repeatEnabled;
 }
 
-void Button::selected()
+void qolmod::Button::selected()
 {
     this->stopAllActions();
     this->runAction(
@@ -120,7 +120,7 @@ void Button::selected()
     CCMenuItemSprite::selected();
 }
 
-void Button::unselected()
+void qolmod::Button::unselected()
 {
     this->stopAllActions();
     this->runAction(
@@ -135,7 +135,7 @@ void Button::unselected()
     CCMenuItemSprite::unselected();
 }
 
-void Button::activate()
+void qolmod::Button::activate()
 {
     this->stopAllActions();
     this->setScale(1);
@@ -146,7 +146,7 @@ void Button::activate()
     CCMenuItemSprite::activate();
 }
 
-void Button::draw()
+void qolmod::Button::draw()
 {
     return;
 
@@ -155,7 +155,7 @@ void Button::draw()
     ccDrawRect(ccp(0, 0), getContentSize());
 }
 
-void Button::setCallbacks(std::function<void()> selectedCallback, std::function<void()> unselectedCallback, std::function<void()> activateCallback)
+void qolmod::Button::setCallbacks(std::function<void()> selectedCallback, std::function<void()> unselectedCallback, std::function<void()> activateCallback)
 {
     this->selectedCallback = selectedCallback;
     this->unselectedCallback = unselectedCallback;

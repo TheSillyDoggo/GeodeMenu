@@ -9,7 +9,7 @@ class FastBMFontConfig : public cocos2d::CCBMFontConfiguration
         static FastBMFontConfig* create(const char* fntFile);
         static void quickLoad(const char* fntFile);
 
-        gd::set<unsigned int>* parseConfigFile(const char* fntFile);
+        std::set<unsigned int>* parseConfigFile(const char* fntFile);
 
         bool init(const char* fntFile);
 };

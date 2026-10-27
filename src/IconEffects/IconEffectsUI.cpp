@@ -128,7 +128,7 @@ bool IconEffectsUI::init()
     auto profilesSpr = CCSprite::createWithSpriteFrameName("GJ_profileButton_001.png");
     profilesSpr->setScale(0.65f);
 
-    auto profilesBtn = Button::create(profilesSpr, this, menu_selector(IconEffectsUI::onProfiles));
+    auto profilesBtn = qolmod::Button::create(profilesSpr, this, menu_selector(IconEffectsUI::onProfiles));
     profilesBtn->setPosition(ccp(dualMenu->getContentWidth() / 2, dualMenu->getContentHeight() - 30));
     dualMenu->addChild(profilesBtn);
 
@@ -251,7 +251,7 @@ void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* men
     data.sprite = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     data.sprite->setScale(0.65f);
 
-    data.colourBtn = Button::create(data.sprite, this, menu_selector(IconEffectsUI::onEditColour));
+    data.colourBtn = qolmod::Button::create(data.sprite, this, menu_selector(IconEffectsUI::onEditColour));
     data.colourBtn->setTag((int)type);
     data.colourBtn->setPosition(ccp(220, y));
     // data.colourBtn->setPosition(ccp(data.label->getScaledContentWidth() + 35, y));
@@ -263,7 +263,7 @@ void IconEffectsUI::createEffectNodes(IconicEffectType type, int _y, CCMenu* men
     editNodes.emplace(type, data);
 }
 
-Button* IconEffectsUI::createPreviewButton(IconicGamemodeType gamemode, bool player2)
+qolmod::Button* IconEffectsUI::createPreviewButton(IconicGamemodeType gamemode, bool player2)
 {
     PreviewNodeData data;
     data.gamemode = gamemode;
@@ -324,7 +324,7 @@ Button* IconEffectsUI::createPreviewButton(IconicGamemodeType gamemode, bool pla
     auto n = CCNodeWithShader::create();
     n->addChild(plr);
 
-    auto btn = Button::create(n, this, menu_selector(IconEffectsUI::onSelectType));
+    auto btn = qolmod::Button::create(n, this, menu_selector(IconEffectsUI::onSelectType));
     btn->setTag((int)gamemode);
     btn->setUserObject("player2", player2 ? CCNode::create() : nullptr);
     btn->setContentSize(ccp(30, 30));
@@ -611,7 +611,7 @@ void IconEffectsUI::updateFineOutline()
 void IconEffectsUI::createProfilesPage()
 {
     auto closeMenu = CCMenu::create();
-    auto closeBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(IconEffectsUI::onProfiles));
+    auto closeBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(IconEffectsUI::onProfiles));
     closeMenu->addChild(closeBtn);
 
     profilesPage->addChildAtPosition(closeMenu, Anchor::TopLeft, ccp(30, -30));

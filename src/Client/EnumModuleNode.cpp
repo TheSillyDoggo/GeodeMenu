@@ -22,8 +22,8 @@ void EnumModuleNode::setup()
 {
     label = AdvLabelBMFont::createWithString("", "bigFont.fnt");
 
-    leftBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onLeft));
-    rightBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onRight));
+    leftBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onLeft));
+    rightBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(EnumModuleNode::onRight));
 
     leftBtn->setRepeatEnabled(true);
     rightBtn->setRepeatEnabled(true);
@@ -52,7 +52,7 @@ void EnumModuleNode::updateNode()
     updateButtonEnabled(rightBtn, (mod->getValue() != std::prev/*ter*/(names.end())->first));
 }
 
-void EnumModuleNode::updateButtonEnabled(Button* btn, bool enabled)
+void EnumModuleNode::updateButtonEnabled(qolmod::Button* btn, bool enabled)
 {
     btn->setEnabled(enabled);
     btn->setColor(enabled ? ccWHITE : ccc3(150, 150, 150));

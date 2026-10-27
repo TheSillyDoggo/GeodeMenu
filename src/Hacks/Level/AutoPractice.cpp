@@ -33,9 +33,9 @@ SUBMIT_OPTION(AutoPracticeMode, AutoPracticeDemonsOnly);
 
 class $modify (PlayLayer)
 {
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+    bool init(GJGameLevel* level, bool dontCreateObjects)
     {
-        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+        if (!PlayLayer::init(level, dontCreateObjects))
             return false;
 
         if (AutoPracticeMode::get()->getRealEnabled() ? (AutoPracticeDemonsOnly::get()->getRealEnabled() ? (m_level->m_difficulty >= GJDifficulty::Demon) : true) : false)

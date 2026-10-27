@@ -35,7 +35,7 @@ class $modify (PauseLayer)
 
         auto questsSpr = CCSprite::createWithSpriteFrameName("questsBtn.png"_spr);
 
-        auto questsBtn = Button::create(questsSpr, this, menu_selector(CreatorLayer::onChallenge));
+        auto questsBtn = qolmod::Button::create(questsSpr, this, menu_selector(CreatorLayer::onChallenge));
 
         menu->setPosition(ccp(CCDirector::get()->getWinSize().width - 50, 50));
 

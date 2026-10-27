@@ -43,7 +43,7 @@ class $modify(CCSpriteGrayscale)
 
     #else
 
-    static CCSpriteGrayscale* createWithSpriteFrameName(gd::string const& spr)
+    static CCSpriteGrayscale* createWithSpriteFrameName(std::string const& spr)
     {
         auto res = CCSpriteGrayscale::createWithSpriteFrameName(spr);
 

@@ -17,6 +17,7 @@ class ToolboxButtonBypass : public Module
 
 SUBMIT_HACK(ToolboxButtonBypass);
 
+/*
 class $modify (EditorOptionsLayer)
 {
     void onButtonRows(cocos2d::CCObject* sender)
@@ -38,4 +39,4 @@ class $modify (EditorOptionsLayer)
         m_buttonsPerRow = std::max<int>(1, m_buttonsPerRow);
         m_buttonsPerRowLabel->setString(fmt::format("{}", m_buttonsPerRow).c_str());
     }
-};
+};*/

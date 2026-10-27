@@ -61,9 +61,9 @@ namespace qolmod
 
 class $modify (PlayLayer)
 {
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+    bool init(GJGameLevel* level, bool dontCreateObjects)
     {
-        if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+        if (!PlayLayer::init(level, dontCreateObjects))
             return false;
 
         this->insertBefore(qolmod::CoinTracerNode::create(), m_uiLayer);

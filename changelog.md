@@ -1,5 +1,9 @@
-# 2.8.7
+# 3.0.0
 
+- Improved **Floating Shortcuts**
+-- Better Performance
+-- Better Customization
+-- Option to be visible only in practice mode
 - Added **Auto Activate** in range
 - Added info button for mods that have per player options
 - Added movable startpos switcher button

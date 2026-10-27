@@ -157,7 +157,7 @@ bool SetupShortcutUI::setup()
 
     auto menu = CCMenu::create();
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(SetupShortcutUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(SetupShortcutUI::onClose));
     menu->addChild(btn);
 
     float size = 25;
@@ -173,7 +173,7 @@ bool SetupShortcutUI::setup()
 
     for (int i = -1; i < 2; i++)
     {
-        auto node = Button::create(CCNode::create(), nullptr, this, menu_selector(SetupShortcutUI::onSelectSprite));
+        auto node = qolmod::Button::create(CCNode::create(), nullptr, this, menu_selector(SetupShortcutUI::onSelectSprite));
         node->setContentSize(ccp(size, size));
         node->setAnchorPoint(ccp(0.5f, 0.5f));
         node->setPositionX((size + spacing) * i);
@@ -202,7 +202,7 @@ bool SetupShortcutUI::setup()
 
     colSpr = CCSprite::createWithSpriteFrameName("GJ_colorBtn_001.png");
     colSpr->setScale(0.6f);
-    auto colBtn = Button::create(colSpr, this, menu_selector(SetupShortcutUI::onSelectColour));
+    auto colBtn = qolmod::Button::create(colSpr, this, menu_selector(SetupShortcutUI::onSelectColour));
     colBtn->setPosition(ccp(60, 0));
     spritesMenu->addChild(colBtn);
     

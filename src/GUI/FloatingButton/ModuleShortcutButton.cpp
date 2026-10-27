@@ -55,14 +55,8 @@ void ModuleShortcutButton::setup()
 
     overlayBuiltIn = CCSprite::create();
     overlayBuiltIn->setPosition(getContentSize() / 2);
-    overlayCustom = CCSprite::create();
-    overlayCustom->setPosition(getContentSize() / 2);
 
-    childNode->addChild(offSprite, -4);
-    childNode->addChild(onSprite, -4);
-    childNode->addChild(overlayLabel, -3);
-    childNode->addChild(overlayBuiltIn, -2);
-    childNode->addChild(overlayCustom, -2);
+    childNode->addChildren(offSprite, onSprite, overlayLabel, overlayBuiltIn);
     updateSettings();
 }
 
@@ -119,6 +113,13 @@ void ModuleShortcutButton::updateSettings()
     setBaseOpacity(conf->getOpacity());
     setMovable(conf->isMovable());
     setAnimation(conf->getAnimation());
+
+    if (overlayCustom)
+        overlayCustom->removeFromParent();
+
+    overlayCustom = CCSprite::createWithTexture(conf->getCustomTexture());
+    overlayCustom->setPosition(getContentSize() / 2);
+    childNode->addChild(overlayCustom, 1);
 
     offSprite->m_bDontDraw = !conf->hasOffBG();
     onSprite->m_bDontDraw = !conf->hasOnBG();

@@ -15,6 +15,7 @@ class ResetPercentageOnSave : public Module
 
 SUBMIT_HACK(ResetPercentageOnSave);
 
+/*
 class $modify (EditorPauseLayer)
 {
     void saveLevel()
@@ -27,4 +28,4 @@ class $modify (EditorPauseLayer)
 
         EditorPauseLayer::saveLevel();
     }
-};
+};*/

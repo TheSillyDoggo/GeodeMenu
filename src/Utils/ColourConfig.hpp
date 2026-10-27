@@ -35,6 +35,6 @@ struct ColourConfig
 
     matjson::Value toJson();
     void fromJson(matjson::Value value);
-    void loadBytes(std::vector<uint8_t> data);
+    geode::Result<> loadBytes(std::vector<uint8_t> data);
     std::vector<uint8_t> saveBytes();
 };

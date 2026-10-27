@@ -16,6 +16,6 @@ class $modify (FixedPlayerCheckpoint, PlayerCheckpoint)
 
 class $modify (FixedPlayerObject, PlayerObject)
 {
-    void loadFromCheckpoint(PlayerCheckpoint* checkpoint);
-    void saveToCheckpoint(PlayerCheckpoint* checkpoint);
+    // void loadFromCheckpoint(PlayerCheckpoint* checkpoint);
+    // void saveToCheckpoint(PlayerCheckpoint* checkpoint);
 };

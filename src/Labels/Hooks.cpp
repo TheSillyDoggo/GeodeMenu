@@ -1,9 +1,9 @@
 #include "Hooks.hpp"
 #include "Nodes/LabelContainerLayer.hpp"
 
-bool LabelPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+bool LabelPlayLayer::init(GJGameLevel* level, bool dontCreateObjects)
 {
-    if (!PlayLayer::init(level, useReplay, dontCreateObjects))
+    if (!PlayLayer::init(level, dontCreateObjects))
         return false;
 
     m_uiLayer->addChild(LabelContainerLayer::create());

@@ -121,7 +121,7 @@ void TransparentBG::onUpdate(float)
     self->setColor(TransparentBGColour::get()->getColour());
 }
 
-#ifdef __APPLE__
+/*#ifdef __APPLE__
 class $modify (AchievementNotifier)
 #else
 class $modify (AppDelegate)
@@ -143,4 +143,4 @@ class $modify (AppDelegate)
             bg->schedule(schedule_selector(TransparentBG::onUpdate));
         }
     }
-};
+};*/

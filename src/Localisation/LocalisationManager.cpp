@@ -2,6 +2,8 @@
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../GUI/AndroidUI.hpp"
 #include <FastBMFontConfig.hpp>
+#include <asp/fs.hpp>
+#include <asp/iter.hpp>
 
 using namespace geode::prelude;
 
@@ -34,9 +36,9 @@ void LocalisationManager::setup()
         }
     }
 
-    auto path = Mod::get()->getResourcesDir() / Mod::get()->getSavedValue<std::string>("loaded-localisation-file", "en-AU.json");
+    asp::fs::Path path = Mod::get()->getResourcesDir() / Mod::get()->getSavedValue<std::string>("loaded-localisation-file", "en-AU.json");
 
-    if (std::filesystem::exists(path))
+    if (path.exists())
     {
         LocalisationManager::get()->loadLocalisationFile(path);
     }
@@ -46,7 +48,7 @@ void LocalisationManager::setup()
     }
 }
 
-void LocalisationManager::loadLocalisationFile(std::filesystem::path path)
+void LocalisationManager::loadLocalisationFile(asp::fs::PathView path)
 {
     currentLang = nullptr;
 
@@ -56,7 +58,7 @@ void LocalisationManager::loadLocalisationFile(std::filesystem::path path)
     currentPath = path;
 }
 
-std::filesystem::path LocalisationManager::getCurrentLoadedFile()
+asp::fs::PathView LocalisationManager::getCurrentLoadedFile()
 {
     return currentPath;
 }
@@ -70,7 +72,7 @@ void LocalisationManager::switchFinished()
     }
 }
 
-void LocalisationManager::switchLocalisationWithUIPath(std::filesystem::path path)
+void LocalisationManager::switchLocalisationWithUIPath(asp::fs::PathView path)
 {
     loadLocalisationFile(path);
     auto font = LocalisationManager::get()->getAltFont();
@@ -144,7 +146,7 @@ std::string LocalisationManager::getLocalisedString(std::string id)
     return errorStr;
 }
 
-CLanguage* LocalisationManager::languageForPath(std::filesystem::path path)
+CLanguage* LocalisationManager::languageForPath(asp::fs::PathView path)
 {
     if (languages.contains(path))
         return languages[path];
@@ -164,30 +166,38 @@ std::vector<std::string> LocalisationManager::getAllLanguageFiles()
 {
     std::vector<std::string> files = {};
 
-    for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
+    auto iter = asp::fs::iterDir(Mod::get()->getResourcesDir()).unwrap();
+    for (auto result : iter)
     {
-        auto p = file.path().filename();
+        auto entry = result.unwrap();
 
-        if (p.has_extension() && p.extension().string() == ".json")
+        if (!entry.isFile())
+            continue;
+
+        if (entry.path.extension().has_value() && entry.path.extension().value() == "json")
         {
-            files.push_back(file.path().filename().string());
+            files.push_back(entry.path.string());
         }
     }
 
     return files;
 }
 
-std::vector<std::filesystem::path> LocalisationManager::getAllLanguageFilesPath()
+std::vector<asp::fs::Path> LocalisationManager::getAllLanguageFilesPath()
 {
-    std::vector<std::filesystem::path> files = {};
+    std::vector<asp::fs::Path> files = {};
 
-    for (auto file : std::filesystem::directory_iterator(Mod::get()->getResourcesDir()))
+    auto iter = asp::fs::iterDir(Mod::get()->getResourcesDir()).unwrap();
+    for (auto result : iter)
     {
-        auto p = file.path().filename();
+        auto entry = result.unwrap();
 
-        if (p.has_extension() && p.extension().string() == ".json")
+        if (!entry.isFile())
+            continue;
+
+        if (entry.path.extension().has_value() && entry.path.extension().value() == "json")
         {
-            files.push_back(file);
+            files.push_back(entry.path);
         }
     }
 
@@ -213,7 +223,7 @@ std::string LocalisationManager::reshapeArabicString(std::string str)
     return ShapingEngine::render(ws, true);
 }
 
-void LocalisationManager::switchTempPath(std::filesystem::path path)
+void LocalisationManager::switchTempPath(asp::fs::PathView path)
 {
     if (languages.contains(path))
         CC_SAFE_DELETE(languages[path]);

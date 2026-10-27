@@ -7,6 +7,7 @@
 #include <Button.hpp>
 #include <ScrollLayer.hpp>
 
+
 using namespace qolmod;
 
 #define TOPBAR_SIZE 25
@@ -49,7 +50,7 @@ bool LabelsNode::init()
 
     //auto editSafezoneBtn = Button::create(BetterButtonSprite::create(ccp(90, 30), "Edit Safe Zones", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onEditSafeZones));
     //editSafezoneBtn->m_scaleMultiplier = 1.1f;
-    auto importBtn = Button::create(BetterButtonSprite::createWithLocalisation(ccp(90, 30), "ui/import-from-file-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
+    auto importBtn = qolmod::Button::create(BetterButtonSprite::createWithLocalisation(ccp(90, 30), "ui/import-from-file-button", "goldFont.fnt", "GJ_button_04.png"), this, menu_selector(LabelsNode::onImportFromFile));
     importBtn->m_scaleMultiplier = 1.1f;
 
     auto topBarMenu = CCMenu::create();
@@ -237,7 +238,7 @@ btn->m_label->setPositionX(BUTTON_WIDTH / 2); \
 btn->m_BGSprite->setPositionX(BUTTON_WIDTH / 2); \
 btn->m_BGSprite->setContentWidth(BUTTON_WIDTH); \
 btn->m_label->limitLabelWidth(80 / PRESETS_SCALE, 0.75f, 0); \
-button = Button::create(btn, this, menu_selector(LabelsNode::onAddLabel)); \
+button = qolmod::Button::create(btn, this, menu_selector(LabelsNode::onAddLabel)); \
 button->m_scaleMultiplier = 1.1f; \
 button->setTag(__id); \
 presetMenu->addChild(button)
@@ -245,7 +246,7 @@ presetMenu->addChild(button)
 void LabelsNode::addPresets()
 {
     ButtonSprite* btn = nullptr;
-    Button* button = nullptr;
+    qolmod::Button* button = nullptr;
 
     PRESET_BUTTON("Cheat Indicator", 1);
     PRESET_BUTTON("FPS Counter", 2);
@@ -271,7 +272,7 @@ LabelsNode* LabelsNode::get()
     return instance;
 }
 
-void LabelsNode::scrollWheel(float y, float x)
+/*void LabelsNode::scrollWheel(float y, float x)
 {
     if (nodeIsVisible(labelsScroll) && labelsScroll->isTouchEnabled())
     {
@@ -283,4 +284,4 @@ void LabelsNode::scrollWheel(float y, float x)
 
         labelsScroll->scrollLayer(y);
     }
-}
+}*/

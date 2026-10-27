@@ -1,33 +1,7 @@
 #include "ShortcutSprite.hpp"
-#include <Geode/modify/MenuLayer.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
-
-class $modify(MenuLayer)
-{
-    virtual bool init()
-    {
-        MenuLayer::init();
-
-        auto node = CCSpriteBatchNode::create("qolmod-shortcut-sheet.png"_spr, 4096);
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int x = 0; x < 17; x++)
-            {
-                auto spr = ShortcutSprite::create((ShortcutShape)(i), x <= 7 ? (ShortcutColour)x : (ShortcutColour)(x - 8 + 100));
-                spr->setPosition(ccp(50 * x, 50 * i));
-                // spr->setOpacity(204);
-                node->addChild(spr);
-            }
-        }
-        
-        node->setPosition(ccp(60, 60));
-        this->addChild(node, 676980085);
-        return true;
-    }
-};
 
 ShortcutSprite* ShortcutSprite::create()
 {

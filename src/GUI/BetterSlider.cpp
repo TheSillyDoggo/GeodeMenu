@@ -1,6 +1,7 @@
 #include "BetterSlider.hpp"
 #include "../Client/Module.hpp"
 
+
 BetterSlider* BetterSlider::create(CCNode* target, SEL_MenuHandler handler)
 {
     auto pRet = create();

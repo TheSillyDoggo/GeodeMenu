@@ -1,6 +1,7 @@
 #include "Hooks.hpp"
 #include "CheckpointFix.hpp"
 
+/*
 void FixedPlayerObject::loadFromCheckpoint(PlayerCheckpoint* checkpoint)
 {
     PlayerObject::loadFromCheckpoint(checkpoint);
@@ -14,4 +15,4 @@ void FixedPlayerObject::saveToCheckpoint(PlayerCheckpoint* checkpoint)
     PlayerObject::saveToCheckpoint(checkpoint);
 
     static_cast<FixedPlayerCheckpoint*>(checkpoint)->m_fields->state.saveState(this);
-}
+}*/

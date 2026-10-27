@@ -38,11 +38,11 @@ float faster_stof(std::string_view sv, size_t start, size_t count)
     #endif
 }
 
-gd::set<unsigned int>* FastBMFontConfig::parseConfigFile(const char* fntFile)
+std::set<unsigned int>* FastBMFontConfig::parseConfigFile(const char* fntFile)
 {
     auto ccfu = CCFileUtils::get();
 
-    gd::set<unsigned int>* charsSet = new gd::set<unsigned int>();
+    std::set<unsigned int>* charsSet = new std::set<unsigned int>();
     auto fullpath = ccfu->fullPathForFilename(fntFile, false);
 
     std::ifstream file(fullpath);

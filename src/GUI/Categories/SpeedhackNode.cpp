@@ -5,6 +5,7 @@
 #include "../BetterAlertLayer.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
 
+
 using namespace qolmod;
 
 bool SpeedhackNode::init()
@@ -40,7 +41,7 @@ bool SpeedhackNode::init()
     auto trashSpr = CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png");
     trashSpr->setScale(0.75f);
 
-    trashBtn = Button::create(trashSpr, this, menu_selector(SpeedhackNode::onTrash));
+    trashBtn = qolmod::Button::create(trashSpr, this, menu_selector(SpeedhackNode::onTrash));
     trashBtn->setPosition(input->getPosition() + ccp(75, 0));
 
     presetMenu = CCMenu::create();
@@ -60,11 +61,11 @@ bool SpeedhackNode::init()
     presetConfigMenu->setScale(0.41f);
     presetConfigMenu->setAnchorPoint(ccp(0, 0));
 
-    auto btnNew = Button::create(ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(SpeedhackNode::onAddNewPreset));
+    auto btnNew = qolmod::Button::create(ButtonSprite::create("+", "bigFont.fnt", "GJ_button_05.png"), this, menu_selector(SpeedhackNode::onAddNewPreset));
     btnNew->setPositionX(-30);
 
     sprMode = ButtonSprite::create("X", "bigFont.fnt", "GJ_button_06.png");
-    auto btnMode = Button::create(sprMode, this, menu_selector(SpeedhackNode::onChangePresetMode));
+    auto btnMode = qolmod::Button::create(sprMode, this, menu_selector(SpeedhackNode::onChangePresetMode));
     btnMode->setPositionX(-80);
 
     presetConfigMenu->addChild(btnNew);
@@ -121,7 +122,7 @@ void SpeedhackNode::updatePresets()
     for (auto preset : presets)
     {
         auto spr = ButtonSprite::create(floatToStringMin2DP(preset.value).c_str(), "bigFont.fnt", presetDeleteMode ? "GJ_button_06.png" : "GJ_button_05.png");
-        auto btn = Button::create(spr, this, presetDeleteMode ? menu_selector(SpeedhackNode::onRemovePreset) : menu_selector(SpeedhackNode::onApplyPreset));
+        auto btn = qolmod::Button::create(spr, this, presetDeleteMode ? menu_selector(SpeedhackNode::onRemovePreset) : menu_selector(SpeedhackNode::onApplyPreset));
         btn->m_scaleMultiplier = 1.1f;
         presetMenu->addChild(btn);
         presetBtns.emplace(btn, preset.value);
@@ -139,13 +140,13 @@ void SpeedhackNode::updatePresets()
 
     for (size_t i = 0; i < presetBtns.size(); i++)
     {
-        auto oldBtn = presetMenu->getChildByIndex<Button*>(i);
+        auto oldBtn = presetMenu->getChildByIndex<qolmod::Button*>(i);
 
         auto spr = CCSprite::createWithSpriteFrameName("keybinds.png"_spr);
         spr->setScale(2.2f);
         spr->setOpacity(presets[i].keyConfig.isValid() ? 255 : 150);
 
-        auto btn = Button::create(spr, this, menu_selector(SpeedhackNode::onSetPresetKeybind));
+        auto btn = qolmod::Button::create(spr, this, menu_selector(SpeedhackNode::onSetPresetKeybind));
         btn->setTag(i);
         btn->setPosition(oldBtn->getPosition());
 
@@ -182,7 +183,7 @@ void SpeedhackNode::updateUI()
 
 void SpeedhackNode::onApplyPreset(CCObject* sender)
 {
-    float val = presetBtns[static_cast<Button*>(sender)];
+    float val = presetBtns[static_cast<qolmod::Button*>(sender)];
     auto str = floatToStringMin2DP(val);
 
     Speedhack::get()->setText(str);
@@ -220,7 +221,7 @@ void SpeedhackNode::onRemovePreset(CCObject* sender)
 
     for (auto pre : sh->getPresets())
     {
-        if (pre.value == presetBtns[static_cast<Button*>(sender)])
+        if (pre.value == presetBtns[static_cast<qolmod::Button*>(sender)])
             continue;
 
         presets.push_back(pre);

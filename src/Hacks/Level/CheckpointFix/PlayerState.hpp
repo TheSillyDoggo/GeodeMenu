@@ -55,8 +55,8 @@ namespace qolmod
             int m_collidingWithSlopeId;
             bool m_slopeFlipGravityRelated;
             float m_slopeAngleRadians;
-            gd::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
-            gd::unordered_map<int, GameObject*> m_potentialSlopeMap;
+            std::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
+            std::unordered_map<int, GameObject*> m_potentialSlopeMap;
             float m_rotationSpeed;
             float m_rotateSpeed;
             bool m_isRotating;
@@ -93,7 +93,7 @@ namespace qolmod
             double m_accelerationOrSpeed;
             double m_snapDistance;
             bool m_ringJumpRelated;
-            gd::unordered_set<int> m_ringRelatedSet;
+            std::unordered_set<int> m_ringRelatedSet;
             GameObject* m_objectSnappedTo;
             int m_onFlyCheckpointTries;
             bool m_maybeSpriteRelated;
@@ -171,7 +171,7 @@ namespace qolmod
             bool m_isLocked;
             bool m_controlsDisabled;
             cocos2d::CCPoint m_lastGroundedPos;
-            gd::unordered_set<int> m_touchedRings;
+            std::unordered_set<int> m_touchedRings;
             GameObject* m_lastActivatedPortal;
             bool m_hasEverJumped;
             bool m_hasEverHitRing;
@@ -187,7 +187,7 @@ namespace qolmod
             bool m_swapColors;
             bool m_switchDashFireColor;
             int m_followRelated;
-            gd::vector<float> m_playerFollowFloats;
+            std::vector<float> m_playerFollowFloats;
             float m_unk838;
             int m_stateOnGround;
             unsigned char m_stateUnk;
@@ -230,11 +230,11 @@ namespace qolmod
             int m_stateForce;
             cocos2d::CCPoint m_stateForceVector;
             bool m_affectedByForces;
-            gd::map<int, bool> m_jumpPadRelated;
+            std::map<int, bool> m_jumpPadRelated;
             float m_somethingPlayerSpeedTime;
             float m_playerSpeedAC;
             bool m_fixRobotJump;
-            gd::map<int, bool> m_holdingButtons;
+            std::map<int, bool> m_holdingButtons;
             bool m_inputsLocked;
             bool m_gv0123;
             int m_iconRequestID;

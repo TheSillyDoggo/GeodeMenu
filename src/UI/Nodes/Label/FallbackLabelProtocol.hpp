@@ -9,7 +9,7 @@ class FallbackLabelProtocol
         bool forceFallback = false;
         bool disableFallback = false;
 
-        virtual bool shouldUseFallback(std::string_view string, gd::set<unsigned int>* charSet);
+        virtual bool shouldUseFallback(std::string_view string, std::set<unsigned int>* charSet);
 
     public:
         virtual void setFallbackFnt(const char* fntFile);

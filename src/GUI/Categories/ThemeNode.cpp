@@ -59,7 +59,7 @@ bool ThemeNode::init()
     colourMenu->addChild(addColourBtn(-7));
 
     btnSpr = BetterButtonSprite::create(ccp(96, 35), "", "goldFont.fnt", "GJ_button_04.png");
-    auto btnOptions = Button::create(btnSpr, this, menu_selector(ThemeNode::onChangeThemeOptions));
+    auto btnOptions = qolmod::Button::create(btnSpr, this, menu_selector(ThemeNode::onChangeThemeOptions));
     btnOptions->setContentSize(gradientBtn->getContentSize());
     btnOptions->getNormalImage()->setPosition(btnOptions->getContentSize() / 2);
 
@@ -84,7 +84,7 @@ bool ThemeNode::init()
     animPreviewMenu->setContentSize(ccp(0, 0));
     animPreviewMenu->setScale(1.25f);
 
-    auto animPreviewBtn = Button::create(CCSprite::createWithSpriteFrameName("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
+    auto animPreviewBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("preview.png"_spr), this, menu_selector(ThemeNode::onPreviewAnim));
     animPreviewBtn->setPosition(ccp(70, 10));
     animPreviewMenu->addChild(animPreviewBtn);
 
@@ -117,7 +117,7 @@ ThemeNode* ThemeNode::get()
     return instance;
 }
 
-Button* ThemeNode::addColourBtn(int colour)
+qolmod::Button* ThemeNode::addColourBtn(int colour)
 {
     float width = ((colourBG->getScaledContentWidth() - (2.5f * 3)) / 2) / 0.695f;
 
@@ -134,7 +134,7 @@ Button* ThemeNode::addColourBtn(int colour)
     spr2->setScale(0.8f);
     spr2->updateLayout();
 
-    auto btn = Button::create(spr, spr2, this, menu_selector(ThemeNode::onChangeColour));
+    auto btn = qolmod::Button::create(spr, spr2, this, menu_selector(ThemeNode::onChangeColour));
     btn->m_scaleMultiplier = 1;
     btn->setTag(colour);
     colourBtns.emplace(colour, btn);
@@ -154,7 +154,7 @@ void ThemeNode::updateCustomImageSprite()
     }
 }
 
-Button* ThemeNode::addAnimBtn(MenuAnimation anim)
+qolmod::Button* ThemeNode::addAnimBtn(MenuAnimation anim)
 {
     auto size = ccp(200, 25);
 

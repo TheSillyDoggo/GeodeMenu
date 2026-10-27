@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../../Client/CategoryNode.hpp"
+#include <../UI/ScrollLayer.hpp>
 
 class LabelsNode : public CategoryNode
 {
     protected:
         static inline LabelsNode* instance = nullptr;
         CCMenu* presetMenu = nullptr;
-        ScrollLayer* labelsScroll = nullptr;
+        qolmod::ScrollLayer* labelsScroll = nullptr;
         AdvLabelBMFont* hintNone = nullptr;
 
         ~LabelsNode();
@@ -23,7 +24,7 @@ class LabelsNode : public CategoryNode
         void addPresets();
         void updateUI();
 
-        virtual void scrollWheel(float y, float x);
+        // virtual void scrollWheel(float y, float x);
         bool init();
 };
 

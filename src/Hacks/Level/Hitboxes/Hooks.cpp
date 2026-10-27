@@ -47,7 +47,7 @@ void HitboxEditorUI::ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* eve
     EditorUI::ccTouchMoved(touch, event);
 }
 
-void HitboxEditorUI::transformObjectCall(EditCommand command)
+/*void HitboxEditorUI::transformObjectCall(EditCommand command)
 {
     EditorUI::transformObjectCall(command);
 
@@ -60,4 +60,4 @@ void HitboxEditorUI::transformObjectCall(EditCommand command)
     {
         moveObject(obj, ccp(0, 0));
     }
-}
+}*/

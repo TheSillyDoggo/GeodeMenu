@@ -44,7 +44,7 @@ bool AndroidUI::setup()
 
     auto backMenu = CCMenu::create();
     
-    backBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
+    backBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_arrow_03_001.png"), this, menu_selector(AndroidUI::onClose));
     backMenu->addChild(backBtn);
 
     catMenu = CategorySelectMenu::create();

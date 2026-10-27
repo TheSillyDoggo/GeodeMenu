@@ -101,7 +101,7 @@ bool LanguageContributorsUI::setup()
     auto menu = CCMenu::create();
 
     auto spr = BetterButtonSprite::createWithLocalisation(ccp(54.25f, 30), "ui/ok-button", "goldFont.fnt", "GJ_button_01.png");
-    auto btn = Button::create(spr, this, menu_selector(LanguageContributorsUI::onClose));
+    auto btn = qolmod::Button::create(spr, this, menu_selector(LanguageContributorsUI::onClose));
     menu->addChild(btn);
 
     auto stencil = CCScale9Sprite::create("GJ_square01.png");
@@ -115,7 +115,8 @@ bool LanguageContributorsUI::setup()
     node->setContentSize(ccp(m_size.width, m_size.height));
     node->setAnchorPoint(ccp(0.5f, 0.5f));
 
-    ground = GJGroundLayer::create(1, 0);
+    // TODO: MEGA FIX
+    ground = reinterpret_cast<GJGroundLayer*>(CCSprite::create());// GJGroundLayer::create(1, 0);
     ground->setAnchorPoint(ccp(0.5f, 0));
     ground->setScale(0.85f);
     ground->setPosition(ccp(m_size.width / 2, 69));
@@ -150,7 +151,7 @@ bool LanguageContributorsUI::setup()
         auto name = CCLabelBMFont::create(cont.username.c_str(), "goldFont.fnt");
         name->setScale(0.7f);
 
-        auto btn = Button::create(name, this, menu_selector(LanguageContributorsUI::onPlayerProfile));
+        auto btn = qolmod::Button::create(name, this, menu_selector(LanguageContributorsUI::onPlayerProfile));
         btn->setTag(cont.accountID);
         btn->setID(cont.username);
         btn->setPositionY(70);
@@ -165,7 +166,7 @@ bool LanguageContributorsUI::setup()
 
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     infoSpr->setScale(0.75f);
-    auto infoBtn = Button::create(infoSpr, this, menu_selector(LanguageContributorsUI::onInfo));
+    auto infoBtn = qolmod::Button::create(infoSpr, this, menu_selector(LanguageContributorsUI::onInfo));
     infoMenu->addChild(infoBtn);
 
     m_mainLayer->addChildAtPosition(clip, Anchor::Center);

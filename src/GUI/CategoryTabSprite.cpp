@@ -1,5 +1,6 @@
 #include "CategoryTabSprite.hpp"
 
+
 #define SPRITE_INSET 3.5f
 
 CategoryTabSprite* CategoryTabSprite::create(CategoryTabType type, std::string name, std::string icon, bool useFrame)

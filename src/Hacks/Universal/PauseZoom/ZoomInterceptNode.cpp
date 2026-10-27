@@ -73,10 +73,10 @@ void ZoomInterceptNode::onExit()
     CCTouchDispatcher::get()->removeDelegate(this);
 }
 
-void ZoomInterceptNode::scrollWheel(float y, float x)
+bool ZoomInterceptNode::scrollWheel(float y, float x)
 {
     if (!ZoomWithScroll::get()->getRealEnabled())
-        return;
+        return false;
 
     float oldZoom = zoom;
     float oldScale = 1.0f + oldZoom;
@@ -84,7 +84,7 @@ void ZoomInterceptNode::scrollWheel(float y, float x)
     setZoom(zoom + (y * -0.03f));
 
     if (zoom == oldZoom)
-        return;
+        return false;
 
     float newScale = 1.0f + zoom;
 
@@ -92,7 +92,7 @@ void ZoomInterceptNode::scrollWheel(float y, float x)
     CCPoint oldPos = zoomedPos;
 
     if (oldScale == 0)
-        return;
+        return false;
 
     float scaleRatio = newScale / oldScale;
 
@@ -101,6 +101,7 @@ void ZoomInterceptNode::scrollWheel(float y, float x)
     newPos.y = mouse.y - (mouse.y - oldPos.y) * scaleRatio;
 
     setPreviewPos(newPos);
+    return false; // todo: fix
 }
 
 void ZoomInterceptNode::registerWithTouchDispatcher()

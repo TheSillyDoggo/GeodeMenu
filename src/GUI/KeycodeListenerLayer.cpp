@@ -144,7 +144,7 @@ bool KeycodeListenerLayer::setup()
     auto menu = CCMenu::create();
     menu->setAnchorPoint(ccp(0, 0));
     menu->setScale(0.8f);
-    auto closeBtn = Button::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(KeycodeListenerLayer::onCloseBtn));
+    auto closeBtn = qolmod::Button::create(CCSprite::createWithSpriteFrameName("GJ_closeBtn_001.png"), this, menu_selector(KeycodeListenerLayer::onCloseBtn));
     menu->addChild(closeBtn);
 
     this->addChildAtPosition(background, Anchor::Center, ccp(0, 0));

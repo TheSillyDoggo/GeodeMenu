@@ -4,7 +4,7 @@
 
 using namespace geode::prelude;
 
-void qolmod::ext::addCustomCategory(CategoryData data)
+/*void qolmod::ext::addCustomCategory(CategoryData data)
 {
     ExtensionManager::get()->addCategory(data);
-}
+}*/

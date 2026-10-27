@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include <Geode/loader/Event.hpp>
 #include <Geode/loader/Dispatch.hpp>
@@ -116,4 +116,4 @@ namespace alpha::fine_outline {
     /// By default, it gets the selected icon's color if Separate dual icons is installed
     inline cocos2d::ccColor3B getColor(alpha::fine_outline::PlayerIcon player = alpha::fine_outline::PlayerIcon::SELECTED)
     GEODE_EVENT_EXPORT_NORES(&getColor, (player));
-}
+}*/

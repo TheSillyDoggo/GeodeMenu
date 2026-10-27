@@ -28,7 +28,7 @@ void KeybindModuleNode::setup()
 
     keycodeNode = KeycodeNode::create(0);
 
-    auto bg = Button::create(keycodeNode, this, menu_selector(KeybindModuleNode::onChangeBind));
+    auto bg = qolmod::Button::create(keycodeNode, this, menu_selector(KeybindModuleNode::onChangeBind));
 
     this->addChildAtPosition(label, Anchor::Left, ccp(4, 0));
     this->addChildAtPosition(bg, Anchor::Right, ccp(-20, 0));

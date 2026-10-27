@@ -1,5 +1,6 @@
 #include "ThemeManager.hpp"
 #include <Geode/Geode.hpp>
+#include <asp/fs.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -22,21 +23,16 @@ void ThemeManager::save()
 
 void ThemeManager::load()
 {
+    auto oldPath = Mod::get()->getConfigDir() / "ui-background.png";
     background = (BackgroundType)Mod::get()->getSavedValue<int>("theme", (int)background);
 
-    if (!std::filesystem::exists(Mod::get()->getConfigDir() / "ui-background.png"))
+    if (!oldPath.exists())
     {
         auto path = Mod::get()->getSavedValue<std::string>("custom-background-path", "");
 
         if (!path.empty())
         {
-            std::filesystem::copy_file(
-                Mod::get()->getSavedValue<std::string>("custom-background-path", ""),
-                Mod::get()->getConfigDir() / "ui-background.png",
-                std::filesystem::copy_options::overwrite_existing,
-                moveErrorCode
-            );
-
+            asp::fs::copy(path, oldPath);
             Mod::get()->setSavedValue<std::string>("custom-background-path", "");
         }
     }
@@ -64,29 +60,24 @@ void ThemeManager::setBackground(BackgroundType background)
     save();
 }
 
-void ThemeManager::setCustomSprite(std::filesystem::path path)
+void ThemeManager::setCustomSprite(asp::fs::PathView path)
 {
-    CCTextureCache::get()->removeTextureForKey(geode::utils::string::pathToString(Mod::get()->getConfigDir() / "ui-background.png").c_str());
-    if (path.empty() || !std::filesystem::exists(path))
+    auto oldPath = Mod::get()->getConfigDir() / "ui-background.png";
+
+    CCTextureCache::get()->removeTextureForKey(oldPath.c_str());
+    if (path.empty() || !path.exists())
     {
-        std::filesystem::remove(
-            Mod::get()->getConfigDir() / "ui-background.png",
-            setErrorCode
-        );
+        asp::fs::removeFile(oldPath);
+
         return;
     }
 
-    std::filesystem::copy_file(
-        path,
-        Mod::get()->getConfigDir() / "ui-background.png",
-        std::filesystem::copy_options::overwrite_existing,
-        setErrorCode
-    );
+    asp::fs::copy(path, oldPath);
 }
 
 CCSprite* ThemeManager::createCustomSprite(bool returnDefault)
 {
-    auto path = geode::utils::string::pathToString(Mod::get()->getConfigDir() / "ui-background.png");
+    auto path = Mod::get()->getConfigDir() / "ui-background.png";
     CCSprite* spr = nullptr;
 
     if (CCFileUtils::get()->isFileExist(path.c_str()))

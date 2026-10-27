@@ -31,7 +31,7 @@ class $modify (PlayLayerUtils, PlayLayer)
 
     // hooks
 
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
+    bool init(GJGameLevel* level, bool dontCreateObjects);
     void addObject(GameObject* obj);
     void createObjectsFromSetupFinished();
     virtual void postUpdate(float p0);

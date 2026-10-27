@@ -164,10 +164,10 @@ class $modify (AccurateGameObject, GameObject)
 
 class $modify (PlayLayer)
 {
-    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects)
+    bool init(GJGameLevel* level, bool dontCreateObjects)
     {
         __accurateHitboxesEnabledOnLoad = AccurateSpikeHitboxes::get()->getRealEnabled();
-        return PlayLayer::init(level, useReplay, dontCreateObjects);
+        return PlayLayer::init(level, dontCreateObjects);
     }
 
     void addObject(GameObject* go)
