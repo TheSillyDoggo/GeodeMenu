@@ -89,6 +89,9 @@ bool LanguageNodeUI::init()
         }
     }
 
+    layoutIsDirty = false;
+    scroll->setContentHeight(getContentHeight() - 20 - 2.5f);
+
     setID("LanguageNodeUI");
     this->addChildAtPosition(clip, Anchor::TopLeft, ccp(2.5f, 0));
     this->addChildAtPosition(missingMenu, Anchor::Top, ccp(0, -10));
@@ -98,8 +101,6 @@ bool LanguageNodeUI::init()
 
 void LanguageNodeUI::updateUI()
 {
-    scroll->setContentHeight(getContentHeight() - 20 - 2.5f);
-
     if (!categoryScrolls.contains(getID()))
         scroll->moveToTop();
     

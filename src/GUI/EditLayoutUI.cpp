@@ -321,8 +321,7 @@ CCNode* EditLayoutUI::createBackground(bool acu)
     if (GameManager::get()->m_playerGlow)
     {
         player->enableCustomGlowColor(GameManager::get()->colorForIdx(GameManager::get()->m_playerGlowColor.value()));
-        // player->updatePlayerGlow();
-        // TODO: FIX
+        player->updatePlayerGlow();
     }
 
     nodeBG->setScale(320.0f / nodeBG->getContentHeight());

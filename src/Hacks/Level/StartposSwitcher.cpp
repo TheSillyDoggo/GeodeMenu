@@ -1,5 +1,6 @@
 #include "../../Client/KeybindModule.hpp"
 #include "../../Client/LayoutModule.hpp"
+#include "../../Client/FloatSliderModule.hpp"
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/modify/UILayer.hpp>
 #include "../../GUI/StartposSwitcherUI.hpp"
@@ -12,64 +13,10 @@ class StartposSwitcher : public Module
     public:
         MODULE_SETUP(StartposSwitcher)
         {
-            setName("Startpos Switcher");
             setID("startpos-switcher");
             setDefaultEnabled(true);
             setCategory("Level");
-            setDescription("Switch between start positions in the level at any time");
             setPriority(5);
-        }
-};
-
-class StartposSwitcherPrev : public KeybindModule
-{
-    public:
-        MODULE_SETUP(StartposSwitcherPrev)
-        {
-            setName("Prev:");
-            setID("startpos-switcher/prev-bind");
-            setDescription("");
-            setPriority(1);
-
-            setDefaultKeyCode(81);
-        }
-};
-
-class StartposSwitcherNext : public KeybindModule
-{
-    public:
-        MODULE_SETUP(StartposSwitcherNext)
-        {
-            setName("Next:");
-            setID("startpos-switcher/next-bind");
-            setDescription("");
-            setPriority(2);
-
-            setDefaultKeyCode(69); // hehe
-        }
-};
-
-class StartposSwitcherHide : public Module
-{
-    public:
-        MODULE_SETUP(StartposSwitcherHide)
-        {
-            setName("Hide UI");
-            setID("startpos-switcher/hide-ui");
-            setDescription("Hides the UI and makes it non-interactable");
-            setPriority(3);
-        }
-};
-
-class StartposSwitcherPercentage : public Module
-{
-    public:
-        MODULE_SETUP(StartposSwitcherPercentage)
-        {
-            setName("Use Percentage");
-            setID("startpos-switcher/use-percentage");
-            setDescription("Shows the percentage that each start position is at");
-            setPriority(4);
         }
 };
 
@@ -79,90 +26,76 @@ class StartposSwitcherLayout : public LayoutModule
         MODULE_SETUP(StartposSwitcherLayout)
         {
             setID("startpos-switcher/layout");
-            setPriority(5);
+            setPriority(1);
             setDefaults(Anchor::Bottom, ccp(0, 35));
             
             addOption("scale", "scale", 1.0f, 0.0f, 1.0f);
             addOption("opacity", "opacity", 0.8f, 0.0f, 1.0f);
 
             setPreviewNode([]{
-                return StartposSwitcherUI::create(false);
+                auto node = StartposSwitcherUI::create(nullptr, false);
+                node->regularOpacity = 0.5f;
+                return node;
             });
         }
 };
 
-SUBMIT_HACK(StartposSwitcher);
-SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPrev);
-SUBMIT_OPTION(StartposSwitcher, StartposSwitcherNext);
-SUBMIT_OPTION(StartposSwitcher, StartposSwitcherHide);
-SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPercentage);
-SUBMIT_OPTION(StartposSwitcher, StartposSwitcherLayout);
+class StartposSwitcherPercentage : public Module
+{
+    public:
+        MODULE_SETUP(StartposSwitcherPercentage)
+        {
+            setID("startpos-switcher/use-percentage");
+            setPriority(2);
+        }
+};
 
-/*
+class StartposSwitcherShowName : public Module
+{
+    public:
+        MODULE_SETUP(StartposSwitcherShowName)
+        {
+            setID("startpos-switcher/show-name");
+            setDefaultEnabled(true);
+            setPriority(3);
+        }
+};
+
+class StartposSwitcherOpacity : public FloatSliderModule
+{
+    public:
+        MODULE_SETUP(StartposSwitcherOpacity)
+        {
+            setID("startpos-switcher/opacity");
+            setDefaultValue(0.2f);
+            setSnapValues({ 0.2f });
+            setRange(0, 1.0f);
+            setPriority(4);
+        }
+};
+
+SUBMIT_HACK(StartposSwitcher);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherLayout);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherPercentage);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherShowName);
+SUBMIT_OPTION(StartposSwitcher, StartposSwitcherOpacity);
+
 class $modify (StartposPlayLayer, PlayLayer)
 {
     struct Fields
     {
         StartposSwitcherUI* ui = nullptr;
-        int startPosIndex = 0;
     };
 
     void createObjectsFromSetupFinished()
     {
         PlayLayer::createObjectsFromSetupFinished();
 
-        m_fields->ui = StartposSwitcherUI::create();
+        m_fields->ui = StartposSwitcherUI::create(this);
         StartposSwitcherLayout::get()->applyToNode(m_fields->ui);
-
-        m_fields->ui->onSwitchFunc = [this](int switchBy)
-        {
-            this->switchStartPosByAmount(switchBy);
-        };
 
         if (m_uiLayer)
             m_uiLayer->addChild(m_fields->ui);
-
-        if (StartposSwitcher::get()->getRealEnabled())
-            setStartPos(0);
-    }
-
-    void switchStartPosByAmount(int amount)
-    {
-        setStartPos(m_fields->startPosIndex + amount);
-    }
-
-    void setStartPos(int index)
-    {
-        if (!PlayLayerUtils::getUtils())
-            return;
-
-        if (PlayLayerUtils::getUtils()->m_fields->startPositions.empty())
-            return;
-
-        if (index < 0)
-            index = PlayLayerUtils::getUtils()->m_fields->startPositions.size();
-
-        if (index > PlayLayerUtils::getUtils()->m_fields->startPositions.size())
-            index = 0;
-
-        m_fields->startPosIndex = index;
-
-        m_currentCheckpoint = nullptr;
-
-        auto spos = index == 0 ? nullptr : PlayLayerUtils::getUtils()->m_fields->startPositions[m_fields->startPosIndex - 1];
-
-        setStartPosObject(spos);
-
-        if (isRunning())
-        {
-            if (m_isPracticeMode)
-                resetLevelFromStart();
-
-            PlayLayer::resetLevel();
-            startMusic();
-        }
-
-        m_fields->ui->setStartposVisual(m_fields->startPosIndex);
     }
 
     void postUpdate(float p0)
@@ -171,42 +104,11 @@ class $modify (StartposPlayLayer, PlayLayer)
 
         if (m_fields->ui)
         {
-            m_fields->ui->setVisible(StartposSwitcher::get()->getRealEnabled() && !StartposSwitcherHide::get()->getRealEnabled());
-            m_fields->ui->updateKeybindsVisualizer(false, StartposSwitcherPrev::get()->getKeyCode(), StartposSwitcherNext::get()->getKeyCode());
+            m_fields->ui->setVisible(StartposSwitcher::get()->getRealEnabled());
             m_fields->ui->usePercentage = StartposSwitcherPercentage::get()->getRealEnabled();
+            m_fields->ui->showName = StartposSwitcherShowName::get()->getRealEnabled();
+            m_fields->ui->regularOpacity = StartposSwitcherOpacity::get()->getValue();
             m_fields->ui->updateUI();
         }
     }
 };
-
-class $modify (StartposUILayer, UILayer)
-{
-    #if GEODE_COMP_GD_VERSION >= 22081
-    void handleKeypress(cocos2d::enumKeyCodes key, bool down, double timestamp)
-    #else
-    void handleKeypress(cocos2d::enumKeyCodes key, bool down)
-    #endif
-    {
-        if (down && StartposSwitcher::get()->getRealEnabled())
-        {
-            if (auto pl = static_cast<StartposPlayLayer*>(PlayLayer::get()))
-            {
-                if (!pl->m_levelEndAnimationStarted)
-                {
-                    if (key == StartposSwitcherPrev::get()->getKeyCode())
-                        pl->switchStartPosByAmount(-1);
-
-                    if (key == StartposSwitcherNext::get()->getKeyCode())
-                        pl->switchStartPosByAmount(1);
-                }
-            }
-        }
-
-        #if GEODE_COMP_GD_VERSION >= 22081
-        UILayer::handleKeypress(key, down, timestamp);
-        #else
-        UILayer::handleKeypress(key, down);
-        #endif
-    }
-/*
-};*/

@@ -21,6 +21,7 @@ class CategoryNode : public CCMenu
         BetterScrollbar* scrollbar = nullptr;
         EasyBG* bg = nullptr;
         bool alwaysShowScrollbar = false;
+        cocos2d::CCSize scrollSizeAddition = cocos2d::CCSizeZero;
 
         float lastUpdatedHeight = -1;
         bool layoutIsDirty = true;

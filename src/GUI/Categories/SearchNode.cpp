@@ -31,7 +31,7 @@ bool SearchNode::init()
     textInput->setDelegate(this);
     textInput->setContentHeight(height);
 
-    scroll->setContentHeight(scroll->getContentHeight() - height - 5);
+    scrollSizeAddition = ccp(0, -height - 5);
 
     errorMenu = CCMenu::create();
     errorMenu->ignoreAnchorPointForPosition(false);
@@ -81,8 +81,6 @@ bool SearchNode::init()
 
     errorMenu->setVisible(false);
 
-    scroll->moveToTop();
-
     textChanged(nullptr);
 
     this->addChildAtPosition(textInput, Anchor::TopLeft, ccp(5, -5));
@@ -123,13 +121,17 @@ void SearchNode::textChanged(CCTextInputNode* input)
     int count = 40;
     int c = 0;
 
+    float lowest = 6767676;
+
     for (auto module : mods)
     {
         if (!SearchShowOptions::get()->getRealEnabled() && module->getParent())
             continue;
 
-        if (module->getSearchWeight(query) == 0)
+        if (module->getSearchWeight(query) <= 4.5f)
             continue;
+
+        // lowest = std::min<float>(module->getSearchWeight(query), lowest);
         
         c++;
         if (c > count)
@@ -137,6 +139,8 @@ void SearchNode::textChanged(CCTextInputNode* input)
 
         addModule(module);
     }
+
+    // log::info("lowest: {}", lowest);
 
     errorMenu->setVisible(modules.size() == 0);
 }
@@ -149,14 +153,11 @@ void SearchShowOptions::onToggle()
 
 void SearchNode::addModule(Module* module)
 {
-    auto node = module->getNode();
-    node->setTag(modules.size());
+    CategoryNode::addModule(module);
 
-    modules.emplace(module, node);
+    log::info("NAME: {}", module->getID());
 
-    scroll->m_contentLayer->addChild(node);
-    // updateUI();
-    scroll->moveToTop();
+    auto node = modules[module];
 
     // return;
     // i cant get it to look good no matter the colour
@@ -164,9 +165,7 @@ void SearchNode::addModule(Module* module)
     if (module->getParent())
     {
         auto bg = NineSlice::create("square02b_small.png");
-        #if GEODE_COMP_GD_VERSION >= 22081
         bg->setScaleMultiplier(0.5f);
-        #endif
         bg->setOpacity(50);
         bg->setColor(SearchOptionsColour::get()->getColour());
         bg->setScale(0.9f);

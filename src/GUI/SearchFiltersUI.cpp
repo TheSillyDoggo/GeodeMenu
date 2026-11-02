@@ -43,7 +43,7 @@ bool SearchFiltersUI::setup()
     node->setAnchorPoint(ccp(0.5f, 0.5f));
     node->setContentSize(ccp(275, 110));
     node->addModule(SearchShowOptions::get());
-    node->addModule(nullptr);
+    // node->addModule(nullptr);
     node->addModule(SearchOptionsColour::get());
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));

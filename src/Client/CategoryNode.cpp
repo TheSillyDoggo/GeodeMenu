@@ -34,7 +34,6 @@ CategoryNode* CategoryNode::getNode(std::string category)
 void CategoryNode::addModule(Module* module)
 {
     auto node = module->getNode();
-    node->setLinkedRect(scroll);
     node->setTag(modules.size());
 
     modules.emplace(module, node);
@@ -103,7 +102,7 @@ bool CategoryNode::init()
 void CategoryNode::updateUILayout()
 {
     bg->setContentSize(getContentSize());
-    scroll->setContentSize(getContentSize());
+    scroll->setContentSize(getContentSize() + scrollSizeAddition);
     updateLayout();
 
     constexpr float node_height = 28.0f;

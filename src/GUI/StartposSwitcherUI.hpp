@@ -5,30 +5,35 @@
 
 using namespace geode::prelude;
 
-class StartposSwitcherUI : public CCMenu
+class StartposSwitcherUI : public CCMenu, public cocos2d::CCActionTweenDelegate
 {
     protected:
         CCLabelBMFont* label = nullptr;
+        CCLabelBMFont* nameLabel = nullptr;
         CCLabelBMFont* leftPercent = nullptr;
         CCLabelBMFont* rightPercent = nullptr;
         CCSprite* leftSpr = nullptr;
         CCSprite* rightSpr = nullptr;
-        KeycodeNode* leftKey = nullptr;
-        KeycodeNode* rightKey = nullptr;
-        int currentStartpos = 0;
+
+        GJBaseGameLayer* gameLayer;
         bool updatingEnabled = true;
+
+        float opacityMode = 1.0f;
+
+        virtual void updateTweenAction(float value, const char* key);
     
     public:
         bool usePercentage = false;
-        std::function<void(int)> onSwitchFunc = nullptr;
+        bool showName = true;
+        float regularOpacity = 0.2f;
 
-        static StartposSwitcherUI* create(bool updatingEnabled = true);
+        static StartposSwitcherUI* create(GJBaseGameLayer* gameLayer, bool updatingEnabled = true);
 
         void updateUI();
         void onSwitchBtn(CCObject* sender);
-        void setStartposVisual(int index);
-        void updateKeybindsVisualizer(bool visible, int leftCode, int rightCode);
         float getPercentForObject(GameObject* go);
+
+        void runOpacityAction();
 
         virtual bool init();
         virtual void updateDisplayedOpacity(GLubyte parentOpacity);

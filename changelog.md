@@ -7,9 +7,12 @@
 - Added **Auto Activate** in range
 - Added info button for mods that have per player options
 - Added movable startpos switcher button
+- Added startpos name to startpos switcher ui
+- Made startpos switcher ui disappear after a few seconds
 - Fixed Button Module keybinds repeating
 - Fixed blue hitbox being the wrong size
 - Improved small part of UI
+- Removed Quests In Pause as it was officially added in 2.209
 - Localisation:
 -- Added Turkish
 -- Added Argentina Spanish
