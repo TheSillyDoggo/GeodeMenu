@@ -91,12 +91,10 @@ void ModuleNode::updateNode()
     }
     
     disabled = false;
-    if (SafeModeDisableCheats::get()->getRealEnabled())
+    if (module->getSafeModeTrigger() != SafeModeTrigger::None)
     {
-        if (module->getSafeModeTrigger() != SafeModeTrigger::None)
-        {
+        if (SafeModeDisableCheats::get()->getRealEnabled())
             disabled = true;
-        }
 
         if (qolmod::APIManager::get()->isAntiCheatEnabled())
             disabled = true;
@@ -171,6 +169,9 @@ void ModuleNode::onToggleError(CCObject* sender)
             disabledMsg = "Cheats are <cr>disabled</c> by safe mode option";
         }
     }
+
+    if (qolmod::APIManager::get()->isAntiCheatEnabled())
+        disabledMsg = "ANTICHEAT API POPUP HERE";
 
     BetterAlertLayer::create(module->getName().c_str(), disabledMsg, "OK")->show();
 }

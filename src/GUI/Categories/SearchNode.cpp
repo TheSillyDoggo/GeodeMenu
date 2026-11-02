@@ -24,12 +24,14 @@ bool SearchNode::init()
     if (!CategoryNode::init())
         return false;
 
-    float height = 25;
+    constexpr float height = 25;
 
     textInput = BetterInputNode::create((getContentWidth() - 5 * 2) - height - 5, LocalisationManager::get()->getLocalisedString("search-tab/placeholder"));
     textInput->setAnchorPoint(ccp(0, 1));
     textInput->setDelegate(this);
     textInput->setContentHeight(height);
+
+    scroll->setContentHeight(scroll->getContentHeight() - height - 5);
 
     errorMenu = CCMenu::create();
     errorMenu->ignoreAnchorPointForPosition(false);
@@ -79,8 +81,6 @@ bool SearchNode::init()
 
     errorMenu->setVisible(false);
 
-    scroll->setContentHeight(scroll->getContentHeight() - 30);
-    // updateUI();
     scroll->moveToTop();
 
     textChanged(nullptr);

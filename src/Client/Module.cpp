@@ -430,7 +430,7 @@ float Module::getSearchWeight(std::string query)
     else
     {*/
         if (!getParent())
-            w += 0.5f;
+            w += 2.5f;
     //}
 
     return w;
