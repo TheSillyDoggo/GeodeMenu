@@ -78,6 +78,7 @@ bool IconEffectsUI::init()
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
     scroll->setTouchEnabled(true);
+    scroll->setAnchorPoint(ccp(0, 0));
     scroll->m_contentLayer->setContentHeight(menu->getScaledContentHeight() + 30);
     scroll->m_contentLayer->addChild(menu);
     scroll->moveToTop();

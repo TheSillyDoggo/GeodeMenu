@@ -33,13 +33,6 @@ CategoryNode* CategoryNode::getNode(std::string category)
 
 void CategoryNode::addModule(Module* module)
 {
-    if (!module)
-    {
-        modules.emplace(module, nullptr);
-        updateUI();
-        return;
-    }
-
     auto node = module->getNode();
     node->setLinkedRect(scroll);
     node->setTag(modules.size());
@@ -47,7 +40,7 @@ void CategoryNode::addModule(Module* module)
     modules.emplace(module, node);
 
     scroll->m_contentLayer->addChild(node);
-    updateUI();
+    layoutIsDirty = true;
 }
 
 void CategoryNode::removeModule(Module* module)
@@ -59,7 +52,7 @@ void CategoryNode::removeModule(Module* module)
     node->removeFromParent();
     modules.erase(module);
 
-    updateUI();
+    layoutIsDirty = true;
 }
 
 void CategoryNode::removeAll()
@@ -71,55 +64,12 @@ void CategoryNode::removeAll()
     }
 
     modules.clear();
-    updateUI();
-}
-
-void CategoryNode::updateUI()
-{
-    float height = std::max<float>((std::floor((modules.size() / 2.0f) + (((modules.size() % 2) == 0) ? 0 : 1))) * 28.0f, scroll->getContentHeight());
-    float height2 = height - (28 / 2) - 3;
-    float height3 = (modules.size() == 0 ? 0 : 6);
-
-    auto heightOld = scroll->m_contentLayer->getContentHeight();
-    scroll->m_contentLayer->setContentHeight(height + height3);
-
-    bool resetScroll = heightOld != scroll->m_contentLayer->getContentHeight();
-
-    bool showScrollbar = shouldScrollbarShow();
-
-    for (auto node : modules)
-    {
-        auto n = node.second;
-
-        if (!n)
-            continue;
-
-        bool right = (n->getTag() % 2 != 0);
-        float usWidth = showScrollbar ? getContentWidth() - scrollbar->getScaledContentWidth() + 2.5f : getContentWidth();
-
-        float x = right ? 85 : (showScrollbar ? 252 : 260);
-        float y = floor(n->getTag() / 2);
-
-        n->setAnchorPoint(ccp(right ? 1 : 0, 0.5f));
-        n->setPosition(ccp(right ? usWidth - 2.5f : 2.5f, height2 - (y * 28) + 6));
-    }
-
-    if (resetScroll)
-    {
-        scroll->moveToTop();
-        setID(getID());
-    }
-
-    scroll->setTouchEnabled(height + height3 != (scroll->getContentHeight() + height3));
-    scroll->setMouseEnabled(scroll->isTouchEnabled());
-    scrollbar->setVisible(showScrollbar);
-    scrollbar->setDisabled(!scroll->isTouchEnabled());
+    layoutIsDirty = true;
 }
 
 bool CategoryNode::shouldScrollbarShow()
 {
-    //return false;
-    return alwaysShowScrollbar ? true : scroll->isTouchEnabled();
+    return alwaysShowScrollbar || (scroll->m_contentLayer->getContentHeight() > scroll->getContentHeight());
 }
 
 bool CategoryNode::init()
@@ -135,12 +85,9 @@ bool CategoryNode::init()
     bg->setContentSize(getContentSize());
 
     scroll = qolmod::ScrollLayer::create(this->getContentSize());
-    scroll->m_peekLimitTop = 15;
-    scroll->m_peekLimitBottom = 15;
-    scroll->setTouchEnabled(false);
+    scroll->setAnchorPoint(ccp(0.5f, 0));
 
     scrollbar = BetterScrollbar::create(scroll);
-    // updates size
     scrollbar->visit();
     scrollbar->setUseDynamicHandle(true);
     scrollbar->setVisible(shouldScrollbarShow());
@@ -148,51 +95,68 @@ bool CategoryNode::init()
     scrollbar->setDisabled(true);
     
     this->addChildAtPosition(bg, Anchor::Center);
-    this->addChild(scroll);
+    this->addChildAtPosition(scroll, Anchor::Bottom);
     this->addChildAtPosition(scrollbar, Anchor::BottomRight);
     return true;
 }
 
-/*void CategoryNode::scrollWheel(float y, float x)
+void CategoryNode::updateUILayout()
 {
-    if (nodeIsVisible(scroll) && scroll->isTouchEnabled())
-    {
-        if (auto n = getTopLevelNonSceneNode(this))
-        {
-            if (CCScene::get()->getChildByIndex(-1) != n)
-                return;
-        }
+    bg->setContentSize(getContentSize());
+    scroll->setContentSize(getContentSize());
+    updateLayout();
 
-        scroll->scrollLayer(y);
+    constexpr float node_height = 28.0f;
+    constexpr float scroll_padding = 3.0f;
+
+    float contentHeight = std::max<float>(
+        std::ceil(modules.size() / 2.0f) * node_height + scroll_padding * 2,
+        scroll->getContentHeight()
+    );
+
+    scroll->m_contentLayer->setContentHeight(contentHeight);
+    bool showScrollbar = shouldScrollbarShow();
+    bool canScroll = contentHeight > scroll->getContentHeight();
+    float usWidth = showScrollbar ? getContentWidth() - scrollbar->getScaledContentWidth() + 2.5f : getContentWidth();
+
+    for (auto& node : modules)
+    {
+        auto n = node.second;
+        int i = n->getTag();
+
+        if (!n)
+            continue;
+
+        bool left = (i % 2 == 0);
+        
+        n->setAnchorPoint(ccp((float)!left, 0.5f));
+        n->setPosition(ccp(
+            left ? 2.5f : usWidth - 2.5f,
+            contentHeight - (std::floor((float)i / 2.0f) + 0.5f) * node_height - scroll_padding
+        ));
     }
-}*/
+
+    scroll->moveToTop();
+
+    scroll->setTouchEnabled(canScroll);
+    scroll->setMouseEnabled(canScroll);
+    scrollbar->setVisible(showScrollbar);
+    scrollbar->setDisabled(!canScroll);
+}
+
+void CategoryNode::visit()
+{
+    if (layoutIsDirty)
+    {
+        updateUILayout();
+        layoutIsDirty = false;
+    }
+
+    CCNode::visit();
+}
 
 void CategoryNode::setContentSize(const CCSize& contentSize)
 {
     CCMenu::setContentSize(contentSize);
-
-    if (bg)
-        bg->setContentSize(contentSize);
-
-    if (scroll)
-    {
-        scroll->setContentSize(contentSize);
-        updateUI();
-    }
-
-    updateLayout();
-}
-
-void CategoryNode::setID(std::string id)
-{
-    CCNode::setID(id);
-
-    if (categoryScrolls.contains(id) && scroll)
-        scroll->m_contentLayer->setPosition(categoryScrolls[id]);
-}
-
-CategoryNode::~CategoryNode()
-{
-    // this is terrible
-    categoryScrolls[getID()] = scroll->m_contentLayer->getPosition();
+    layoutIsDirty = true;
 }

@@ -61,9 +61,9 @@ bool CategorySelectMenu::init()
 
     scroll = qolmod::ScrollLayer::create(ccp(100, 100));
     scroll->setID("category-select-menu-scroll");
-    scroll->setUserObject("MouseDispatcherExt"_spr, CCNode::create());
     scroll->m_peekLimitTop = 15;
     scroll->m_peekLimitBottom = 15;
+    scroll->setAnchorPoint(ccp(0, 0));
 
     scrollbar = BetterScrollbar::create(scroll);
     scrollbar->setAnchorPoint(ccp(1, 1));
@@ -84,7 +84,7 @@ bool CategorySelectMenu::init()
     standardBtns->setLayout(ColumnLayout::create()->setAxisReverse(true)->setAxisAlignment(AxisAlignment::End)->setCrossAxisOverflow(true)->setAutoScale(false)->setGap(2.5f)->setAutoGrowAxis(true));
     static_cast<AxisLayout*>(standardBtns->getLayout())->ignoreInvisibleChildren(true);
     standardBtns->setTouchEnabled(true);
-    standardBtns->setLinkedRect(scroll);
+    // standardBtns->setLinkedRect(scroll);
 
     this->addChild(scroll);
     this->addChild(scrollbar);

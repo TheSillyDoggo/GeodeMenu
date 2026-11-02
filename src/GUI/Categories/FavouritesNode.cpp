@@ -62,7 +62,7 @@ void FavouritesNode::refresh()
 
 void FavouritesNode::updateUI()
 {
-    CategoryNode::updateUI();
+    // CategoryNode::updateUI();
 
     text->setVisible(modules.size() == 0);
     star->setVisible(modules.size() == 0);

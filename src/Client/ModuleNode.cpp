@@ -9,6 +9,7 @@
 #include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 #include <ModuleInfoAlert.hpp>
 #include <Utils.hpp>
+#include <APIManager.hpp>
 
 using namespace qolmod;
 
@@ -96,6 +97,9 @@ void ModuleNode::updateNode()
         {
             disabled = true;
         }
+
+        if (qolmod::APIManager::get()->isAntiCheatEnabled())
+            disabled = true;
     }
 
     auto c = isDisabled() ? ccc3(150, 150, 150) : ccWHITE;

@@ -22,26 +22,25 @@ class CategoryNode : public CCMenu
         EasyBG* bg = nullptr;
         bool alwaysShowScrollbar = false;
 
-        ~CategoryNode();
+        float lastUpdatedHeight = -1;
+        bool layoutIsDirty = true;
+
+        virtual void visit();
+        virtual bool init();
+
+        bool shouldScrollbarShow();
+        void updateUILayout();
     
     public:
         static CategoryNode* create();
         static void addAdvanced(std::string name, std::function<CategoryNode*()> func);
         static CategoryNode* getNode(std::string category);
 
-        virtual void addModule(Module* module);
-        void removeModule(Module* module);
-        void removeAll();
-        
-        virtual void updateUI();
-        bool shouldScrollbarShow();
-
-        void setID(std::string id);
-
-        // virtual void scrollWheel(float y, float x);
         virtual void setContentSize(const CCSize& contentSize);
 
-        bool init();
+        virtual void addModule(Module* module);
+        void removeModule(Module* module);
+        void removeAll();        
 };
 
 #define SUBMIT_CATEGORY(name, func) \

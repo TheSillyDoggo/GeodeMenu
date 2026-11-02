@@ -68,7 +68,9 @@ void ModuleShortcutButton::updateVisuals(float opacity)
     onSprite->setOpacity(opacity * 255);
     overlayBuiltIn->setOpacity(opacity * 255);
     overlayLabel->setOpacity(opacity * 255);
-    overlayCustom->setOpacity(opacity * 255);
+
+    if (overlayCustom)
+        overlayCustom->setOpacity(opacity * 255);
 
     auto vis = mod->shouldShortcutShowActivated();
 
@@ -84,7 +86,9 @@ void ModuleShortcutButton::updateVisuals(float opacity)
 
         overlayBuiltIn->setColor(newCol);
         overlayLabel->setColor(newCol);
-        overlayCustom->setColor(newCol);
+        
+        if (overlayCustom)
+            overlayCustom->setColor(newCol);
     }
 
     newCol = conf->getOutlineColour();
@@ -116,10 +120,15 @@ void ModuleShortcutButton::updateSettings()
 
     if (overlayCustom)
         overlayCustom->removeFromParent();
+    
+    overlayCustom = nullptr;
 
-    overlayCustom = CCSprite::createWithTexture(conf->getCustomTexture());
-    overlayCustom->setPosition(getContentSize() / 2);
-    childNode->addChild(overlayCustom, 1);
+    if (conf->getOverlayType() == ShortcutVisualConfig::OverlayType::Image)
+    {
+        overlayCustom = CCSprite::createWithTexture(conf->getCustomTexture());
+        overlayCustom->setPosition(getContentSize() / 2);
+        childNode->addChild(overlayCustom, 1);
+    }
 
     offSprite->m_bDontDraw = !conf->hasOffBG();
     onSprite->m_bDontDraw = !conf->hasOnBG();
@@ -129,7 +138,6 @@ void ModuleShortcutButton::updateSettings()
 
     overlayBuiltIn->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::BuiltIn);
     overlayLabel->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::Text);
-    overlayCustom->setVisible(conf->getOverlayType() == ShortcutVisualConfig::OverlayType::Image);
 
     if (!conf->getOverlayBuiltIn().empty())
     {

@@ -7,6 +7,7 @@
 #include "../Notifications/NotificationManager.hpp"
 #include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 #include "../FloatingShortcuts/ShortcutManager.hpp"
+#include <APIManager.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -43,6 +44,9 @@ bool Module::getRealEnabled()
     if (getSafeModeTrigger() != SafeModeTrigger::None)
     {
         if (SafeModeDisableCheats::get()->getRealEnabled())
+            return false;
+
+        if (qolmod::APIManager::get()->isAntiCheatEnabled())
             return false;
     }
 

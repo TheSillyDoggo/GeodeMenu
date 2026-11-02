@@ -42,7 +42,7 @@ else()
 endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
-include_directories(include src/Client src/Hacks/Speedhack src/Utils src/Notifications src/Localisation src/GUI src/UI/Nodes/Label src/UI)
+include_directories(include src/Client src/Hacks/Speedhack src/Utils src/Notifications src/Localisation src/GUI src/UI/Nodes/Label src/UI src/API)
 
 # CPMAddPackage("gh:TheSillyDoggo/gd-imgui-cocos#2d33a3d") # should be geode
 

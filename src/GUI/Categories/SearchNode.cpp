@@ -80,7 +80,7 @@ bool SearchNode::init()
     errorMenu->setVisible(false);
 
     scroll->setContentHeight(scroll->getContentHeight() - 30);
-    updateUI();
+    // updateUI();
     scroll->moveToTop();
 
     textChanged(nullptr);
@@ -155,7 +155,7 @@ void SearchNode::addModule(Module* module)
     modules.emplace(module, node);
 
     scroll->m_contentLayer->addChild(node);
-    updateUI();
+    // updateUI();
     scroll->moveToTop();
 
     // return;
