@@ -113,7 +113,6 @@ void PlayerState::saveState(PlayerObject* player)
     SAVE_PL_MEMBER(m_accelerationOrSpeed);
     SAVE_PL_MEMBER(m_snapDistance);
     SAVE_PL_MEMBER(m_ringJumpRelated);
-    SAVE_PL_MEMBER(m_ringRelatedSet);
     SAVE_PL_MEMBER(m_objectSnappedTo);
     SAVE_PL_MEMBER(m_onFlyCheckpointTries);
     SAVE_PL_MEMBER(m_maybeSpriteRelated);
