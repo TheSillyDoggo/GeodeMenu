@@ -93,7 +93,6 @@ namespace qolmod
             double m_accelerationOrSpeed;
             double m_snapDistance;
             bool m_ringJumpRelated;
-            std::unordered_set<int> m_ringRelatedSet;
             GameObject* m_objectSnappedTo;
             int m_onFlyCheckpointTries;
             bool m_maybeSpriteRelated;
@@ -230,7 +229,6 @@ namespace qolmod
             int m_stateForce;
             cocos2d::CCPoint m_stateForceVector;
             bool m_affectedByForces;
-            std::map<int, bool> m_jumpPadRelated;
             float m_somethingPlayerSpeedTime;
             float m_playerSpeedAC;
             bool m_fixRobotJump;
@@ -411,7 +409,6 @@ namespace qolmod
             bool m_updateCustomContentSize;
             bool m_hasContentSize;
             bool m_isNoTouch;
-            cocos2d::CCSize m_lastSize;
             cocos2d::CCPoint m_lastPosition;
             int m_unk4C0;
             int m_unk4C4;
