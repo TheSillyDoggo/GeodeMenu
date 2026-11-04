@@ -4,10 +4,12 @@
 -- Better Performance
 -- Better Customization
 -- Option to be visible only in practice mode
+-- More Supported shapes and colours
 - Added **Auto Activate** in range
 - Added info button for mods that have per player options
 - Added movable startpos switcher button
 - Added startpos name to startpos switcher ui
+- Removed Accurate Hitboxes as the code was not very good, and there are other mods on geode that do the same thing
 - Made startpos switcher ui disappear after a few seconds
 - Fixed Button Module keybinds repeating
 - Fixed blue hitbox being the wrong size

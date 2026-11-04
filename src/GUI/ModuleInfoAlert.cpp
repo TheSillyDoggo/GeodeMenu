@@ -3,7 +3,7 @@
 #include <LocalisationManager.hpp>
 #include <Button.hpp>
 #include <Categories/FavouritesNode.hpp>
-#include <SetupShortcutUI.hpp>
+#include <EditShortcutConfigUI.hpp>
 #include <EditKeyConfigUI.hpp>
 #include <SetupRangeUI.hpp>
 
@@ -99,14 +99,7 @@ void ModuleInfoAlert::onChangeKeybind(CCObject* sender)
 
 void ModuleInfoAlert::onChangeShortcut(CCObject* sender)
 {
-    auto ui = SetupShortcutUI::create([this](bool enabled, ModuleShortcutConfig conf)
-    {
-        // mod->setShortcutConfig(enabled, conf);
-    });
-
-    ui->modID = mod->getID();
-    // ui->setStartConfig(mod->isShortcutEnabled(), mod->getShortcutConfig());
-    ui->show();
+    EditShortcutConfigUI::create(mod)->show();
 }
 
 void ModuleInfoAlert::onChangeRanges(CCObject* sender)

@@ -5,7 +5,7 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterAlertLayer.hpp"
 #include <ModuleInfoAlert.hpp>
-#include <SetupShortcutUI.hpp>
+#include <EditShortcutConfigUI.hpp>
 #include <EditKeyConfigUI.hpp>
 #include <Button.hpp>
 #include <PulsingCircle.hpp>
@@ -174,48 +174,9 @@ void OptionsUI::onToggleFavourite(CCObject* sender)
         FavouritesNode::get()->refresh();
 }
 
-#include "../FloatingShortcuts/ShortcutManager.hpp"
-
 void OptionsUI::onChangeShortcut(CCObject* sender)
 {
-    file::FilePickOptions options;
-    options.defaultPath = Mod::get()->getConfigDir();
-
-    file::FilePickOptions::Filter filter;
-    filter.description = "Image File";
-    filter.files = { "*.png" };
-    options.filters.push_back(filter);
-
-    async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<asp::fs::PathView>> result)
-    {
-        log::info("1");
-
-        if (result.isOk())
-        {
-            log::info("2");
-
-            if (result.unwrap().has_value())
-            {
-                log::info("3");
-                asp::fs::PathView filePath = result.unwrap().value();
-                log::info("4: {}", filePath);
-
-                ShortcutManager::get()->getConfig(module)->setCustomOverlay(filePath);
-                ShortcutManager::get()->updateConfig(module);
-            }
-        }
-    });
-
-    return;
-
-    auto ui = SetupShortcutUI::create([this](bool enabled, ModuleShortcutConfig conf)
-    {
-        // module->setShortcutConfig(enabled, conf);
-    });
-
-    ui->modID = module->getID();
-    // ui->setStartConfig(module->isShortcutEnabled(), module->getShortcutConfig());
-    ui->show();
+    EditShortcutConfigUI::create(module)->show();
 }
 
 void OptionsUI::onChangeKeybind(CCObject* sender)

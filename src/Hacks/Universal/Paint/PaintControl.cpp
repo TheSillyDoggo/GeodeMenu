@@ -22,6 +22,7 @@ PaintControl* PaintControl::get()
     return instance;
 }
 
+// TODO: FIX IFX IFIX FIX FIX FIX
 bool PaintControl::init()
 {
     if (!FloatingButtonBase::init())
