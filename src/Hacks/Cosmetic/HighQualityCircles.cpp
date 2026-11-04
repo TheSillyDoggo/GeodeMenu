@@ -20,11 +20,7 @@ void myDrawCircle(const cocos2d::CCPoint& center, float radius, float angle, uns
     if (HighQualityWave::get()->getRealEnabled())
         segments = std::max<unsigned int>(100, segments *= 5);
 
-    #if GEODE_COMP_GD_VERSION == 22074 && defined(GEODE_IS_IOS)
-    reinterpret_cast<void(__cdecl*)(const cocos2d::CCPoint&, float, float, unsigned int, bool, float, float)>(geode::base::get() + 0x24b660)(center, radius, angle, segments, drawLineToCenter, scaleX, scaleY);
-    #else
     cocos2d::ccDrawCircle(center, radius, angle, segments, drawLineToCenter, scaleX, scaleY);
-    #endif
 }
 
 $execute
@@ -32,6 +28,10 @@ $execute
     if (Loader::get()->isPatchless())
     {
         #ifdef GEODE_IS_IOS
+
+        #if GEODE_COMP_GD_VERSION == 22091
+        #define IOS_CCDRAWCIRCLE_OFFSET 0x2e97b0
+        #endif
 
         #if GEODE_COMP_GD_VERSION == 22081
         #define IOS_CCDRAWCIRCLE_OFFSET 0x24c56c
@@ -49,13 +49,9 @@ $execute
     {
         (void)Mod::get()->hook(
             reinterpret_cast<void*>(
-                #if GEODE_COMP_GD_VERSION == 22074 && defined(GEODE_IS_IOS)
-                geode::base::get() + 0x24b660
-                #else
                 geode::addresser::getNonVirtual(
                     geode::modifier::Resolve<const cocos2d::CCPoint&, float, float, unsigned int, bool, float, float>::func(&cocos2d::ccDrawCircle)
                 )
-                #endif
             ),
             &myDrawCircle,
             "cocos2d::ccDrawCircle",

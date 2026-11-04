@@ -31,7 +31,7 @@ class $modify (NoZoomLimitEditorUI, EditorUI)
         updateZoom(scale);
     }
 
-    #if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_IOS)
+    #if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_MACOS)
     void zoomIn(cocos2d::CCObject* sender)
     {
         if (NoEditorZoomLimit::get()->getRealEnabled())
@@ -49,13 +49,12 @@ class $modify (NoZoomLimitEditorUI, EditorUI)
     }
 
     // TODO: FIX FIX FIX FIX FOX FIX
-    /*virtual bool scrollWheel(float y, float x)
+    virtual bool scrollWheel(float y, float x)
     {
         auto scale = m_editorLayer->m_groundLayer->getScale();
+        auto ret = EditorUI::scrollWheel(y, x);
 
-        EditorUI::scrollWheel(y, x);
-
-        if (NoEditorZoomLimit::get()->getRealEnabled())
+        if (NoEditorZoomLimit::get()->getRealEnabled() && ret)
         {
             if (m_editorLayer->m_playbackMode != PlaybackMode::Playing && CCKeyboardDispatcher::get()->getControlKeyPressed())
             {
@@ -67,7 +66,9 @@ class $modify (NoZoomLimitEditorUI, EditorUI)
                     zoomNoLimit(false);
             }
         }
-    }*/
+
+        return ret;
+    }
     #else
     void zoomGameLayer(bool zoomingIn)
     {
