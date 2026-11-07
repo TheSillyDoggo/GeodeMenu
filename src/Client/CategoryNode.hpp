@@ -30,7 +30,7 @@ class CategoryNode : public CCMenu
         virtual bool init();
 
         bool shouldScrollbarShow();
-        void updateUILayout();
+        virtual void updateUILayout();
     
     public:
         static CategoryNode* create();

@@ -4,7 +4,7 @@
 #include "BackgroundSprite.hpp"
 #include "../Client/Module.hpp"
 #include "PopupBase.hpp"
-#include <BetterInputNode.hpp>
+#include <InputNode.hpp>
 #include <PulsingCircle.hpp>
 
 namespace qolmod
@@ -19,8 +19,8 @@ namespace qolmod
             PulsingCircle* pulsing = nullptr;
             CCMenuItemToggler* toggler = nullptr;
             cocos2d::CCMenu* deleteMenu = nullptr;
-            BetterInputNode* min = nullptr;
-            BetterInputNode* max = nullptr;
+            qolmod::InputNode* min = nullptr;
+            qolmod::InputNode* max = nullptr;
 
             CCMenu* createInfo();
             CCSprite* createProgress();

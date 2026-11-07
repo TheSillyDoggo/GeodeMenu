@@ -2,7 +2,7 @@
 
 #include <Geode/Geode.hpp>
 #include "BackgroundSprite.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include "PopupBase.hpp"
 #include <Button.hpp>
 

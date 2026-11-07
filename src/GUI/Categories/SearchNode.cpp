@@ -24,11 +24,16 @@ bool SearchNode::init()
     if (!CategoryNode::init())
         return false;
 
+    bg->setTargettingNode(nullptr);
+
     constexpr float height = 25;
 
-    textInput = BetterInputNode::create((getContentWidth() - 5 * 2) - height - 5, LocalisationManager::get()->getLocalisedString("search-tab/placeholder"));
+    textInput = qolmod::InputNode::create((getContentWidth() - 5 * 2) - height - 5, LocalisationManager::get()->getLocalisedString("search-tab/placeholder"));
+    textInput->setLanguageFonts();
     textInput->setAnchorPoint(ccp(0, 1));
-    textInput->setDelegate(this);
+    textInput->setCallback([&](auto){
+        updateSearchResults();
+    });
     textInput->setContentHeight(height);
 
     scrollSizeAddition = ccp(0, -height - 5);
@@ -81,7 +86,7 @@ bool SearchNode::init()
 
     errorMenu->setVisible(false);
 
-    textChanged(nullptr);
+    updateSearchResults();
 
     this->addChildAtPosition(textInput, Anchor::TopLeft, ccp(5, -5));
     this->addChildAtPosition(errorMenu, Anchor::Center, ccp(0, -30 / 2));
@@ -99,7 +104,7 @@ void SearchNode::onFilter(CCObject* sender)
     SearchFiltersUI::create()->show();
 }
 
-void SearchNode::textChanged(CCTextInputNode* input)
+void SearchNode::updateSearchResults()
 {
     removeAll();
     errorMenu->setVisible(false);
@@ -131,8 +136,6 @@ void SearchNode::textChanged(CCTextInputNode* input)
         if (module->getSearchWeight(query) <= 4.5f)
             continue;
 
-        // lowest = std::min<float>(module->getSearchWeight(query), lowest);
-        
         c++;
         if (c > count)
             break;
@@ -140,22 +143,18 @@ void SearchNode::textChanged(CCTextInputNode* input)
         addModule(module);
     }
 
-    // log::info("lowest: {}", lowest);
-
     errorMenu->setVisible(modules.size() == 0);
 }
 
 void SearchShowOptions::onToggle()
 {
     if (SearchNode::get())
-        SearchNode::get()->textChanged(nullptr);
+        SearchNode::get()->updateSearchResults();
 }
 
 void SearchNode::addModule(Module* module)
 {
     CategoryNode::addModule(module);
-
-    log::info("NAME: {}", module->getID());
 
     auto node = modules[module];
 

@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "BackgroundSprite.hpp"
 #include "../Client/ModuleShortcutConfig.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include "PopupBase.hpp"
 #include "../FloatingShortcuts/ShortcutManager.hpp"
 

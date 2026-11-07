@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <ColourConfig.hpp>
 #include <EasyBG.hpp>
-#include <BetterInputNode.hpp>
+#include <InputNode.hpp>
 #include <FloatingButton/FloatingButtonBase.hpp>
 #include <SetupColourConfigUI.hpp>
 #include <Button.hpp>
@@ -30,7 +30,7 @@ namespace qolmod
             std::unordered_map<PaintTool, int> toolSizes = {};
             PaintTool selectedTool = PaintTool::Brush;
             Ref<EasyBG> bg = nullptr;
-            geode::Ref<BetterInputNode> input = nullptr;
+            geode::Ref<qolmod::InputNode> input = nullptr;
             geode::Ref<CCMenu> menu = nullptr;
             cocos2d::CCSprite* colourSpr = nullptr;
             ColourConfig colour = { ccc3(255, 255, 255) };

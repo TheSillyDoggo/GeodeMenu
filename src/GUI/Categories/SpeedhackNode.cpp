@@ -18,13 +18,13 @@ bool SpeedhackNode::init()
     auto menu = CCMenu::create();
     menu->setPosition(ccp(0, 0));
 
-    input = BetterInputNode::create(100, "Value");
+    input = qolmod::InputNode::create(100, "Value");
     input->setString(Speedhack::get()->getText());
-    input->setDelegate(this);
-    input->setCharFilter("1234567890.");
+    // input->setDelegate(this);
+    input->setFilter("1234567890.");
     input->setPosition(getContentSize() / 2 + ccp(38, 75));
-    input->setNumHoldValues(true, 0.01f, 5.0f, 1.0f);
-    input->setAlignment(kCCTextAlignmentCenter);
+    // input->setNumHoldValues(true, 0.01f, 5.0f, 1.0f);
+    // input->setAlignment(kCCTextAlignmentCenter);
 
     auto speedLbl = AdvLabelBMFont::createWithLocalisation("speedhack/speed-label", "bigFont.fnt");
     speedLbl->setAnchorPoint(ccp(1, 0.5f));

@@ -2,7 +2,7 @@
 
 #include "../../Client/CategoryNode.hpp"
 #include "../BetterSlider.hpp"
-#include "../BetterInputNode.hpp"
+#include "../InputNode.hpp"
 #include "../../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include <Button.hpp>
 
@@ -22,7 +22,7 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
 
         qolmod::Button* trashBtn = nullptr;
         BetterSlider* slider = nullptr;
-        BetterInputNode* input = nullptr;
+        qolmod::InputNode* input = nullptr;
 
         ~SpeedhackNode();
 

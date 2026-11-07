@@ -8,7 +8,7 @@
 #include "Modules/BlurBackground.hpp"
 #include "../Utils/RealtimeAction.hpp"
 #include "../Localisation/LocalisationManager.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include "Categories/ExtensionCategory.hpp"
 #include "FloatingButton/FloatingUIManager.hpp"
 #include "EasyBG.hpp"
@@ -266,8 +266,9 @@ void AndroidUI::switchTabTemp(std::string tab)
     selectedCategory = tab;
     updateTabs();
 
-    if (tab == "Search")
-        categories["Search"]->getChildByType<BetterInputNode*>(0)->selectInput(true);
+    // TODO: update
+    // if (tab == "Search")
+        // categories["Search"]->getChildByType<qolmod::InputNode*>(0)->selectInput(true);
 
     selectedCategory = old;
 }

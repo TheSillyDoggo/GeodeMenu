@@ -3,16 +3,11 @@
 #include <FastBMFontConfig.hpp>
 #include <Utils.hpp>
 
-const std::string& AdvLabelStruct::getTotalString()
-{
-    return totalString;
-}
-
-AdvLabelBMFont* AdvLabelBMFont::createWithStruct(AdvLabelStruct lblStruct, std::string font)
+AdvLabelBMFont* AdvLabelBMFont::createWithString(std::string label, std::string font)
 {
     auto pRet = new AdvLabelBMFont();
 
-    if (pRet && pRet->initWithStruct(lblStruct, font))
+    if (pRet && pRet->initWithString(label, font))
     {
         pRet->autorelease();
         return pRet;
@@ -22,360 +17,54 @@ AdvLabelBMFont* AdvLabelBMFont::createWithStruct(AdvLabelStruct lblStruct, std::
     return nullptr;
 }
 
-AdvLabelBMFont* AdvLabelBMFont::createWithString(std::string label, std::string font)
-{
-    return createWithStruct(structFromString(label), font);
-}
-
 AdvLabelBMFont* AdvLabelBMFont::createWithLocalisation(std::string localisationKey, std::string font)
 {
     return createWithString(LocalisationManager::get()->getLocalisedString(localisationKey), font);
 }
 
-AdvLabelStruct AdvLabelBMFont::structFromString(std::string lbl, bool splitSpaces, bool showTags, bool splitChars)
-{
-    AdvLabelStruct str;
-    std::string c = "";
-    std::vector<std::string> segments = {};
-    str.splitSpaces = splitSpaces;
-    str.totalString = lbl;
-
-    if (lbl.starts_with("<bm>"))
-    {
-        lbl = lbl.substr(4);
-        str.forceBM = true;
-    }
-
-    if (lbl.starts_with("<ttf>"))
-    {
-        lbl = lbl.substr(5);
-        str.forceTTF = true;
-    }
-
-    if (splitChars)
-    {
-        for (auto ch : qolmod::utils::toWideString(lbl))
-        {
-            segments.push_back(qolmod::utils::toUTF8String(std::wstring(1, ch)));
-        }
-    }
-    else
-    {
-        for (auto ch : utils::string::split(lbl))
-        {
-            if (ch == '<')
-            {
-                if (!c.empty())
-                    segments.push_back(c);
-
-                c = "<";
-                continue;
-            }
-
-            if (ch == '>')
-            {
-                c += ">";
-                segments.push_back(c);
-                c = "";
-                continue;
-            }
-
-            if (ch == '\n')
-            {
-                if (!c.empty())
-                    segments.push_back(c);
-
-                segments.push_back("\n");
-                c = "";
-                continue;
-            }
-
-            if (splitSpaces)
-            {
-                if (ch == ' ')
-                {
-                    segments.push_back(c);
-                    c = "";
-                }
-            }
-
-            c += ch;
-        }
-
-        if (!c.empty())
-            segments.push_back(c);
-    }
-
-    ccColor3B col = ccWHITE;
-
-    #define COLCHECK(tag, hex) \
-    if (segment == tag) \
-    { \
-        col = cc3bFromHexString(hex).unwrap(); \
-        if (showTags) \
-            str.parts.push_back(AdvLabelStruct::AdvPart({ AdvLabelStruct::AdvPartType::Label, segment, col })); \
-        continue; \
-    }
-
-    for (auto segment : segments)
-    {
-        COLCHECK("<ca>", "#9632ff")
-        COLCHECK("<cb>", "#4a52e1")
-        COLCHECK("<cc>", "#ffff96")
-        COLCHECK("<cd>", "#ff96ff")
-        COLCHECK("<cf>", "#96ffff")
-        COLCHECK("<cg>", "#40e348")
-        COLCHECK("<cj>", "#32c8ff")
-        COLCHECK("<cl>", "#60abef")
-        COLCHECK("<co>", "#ffa54b")
-        COLCHECK("<cp>", "#ff00ff")
-        COLCHECK("<cr>", "#ff5a5a")
-        COLCHECK("<cs>", "#ffdc41")
-        COLCHECK("<cy>", "#ffff00")
-        COLCHECK("</c>", "#ffffff")
-
-        auto type = AdvLabelStruct::AdvPartType::Label;
-
-        if (segment == "\n")
-            type = AdvLabelStruct::AdvPartType::NewLine;
-
-        str.parts.push_back(AdvLabelStruct::AdvPart({ type, segment, col }));
-    }
-
-    return str;
-}
-
-void AdvLabelBMFont::setStruct(AdvLabelStruct str)
-{
-    this->str = str;
-
-    updateLabel();
-}
-
 void AdvLabelBMFont::updateLabel()
 {
-    bool useTTF = useTTFFont();
-    visibleLabels.clear();
+    forceFallback = false;
+    forceRegular = false;
 
-    this->usingTTFCurrently = useTTF;
+    auto str2 = str;
 
-    float x = 0;
-    float y = 0;
-    float height = 0;
-    float width = 0;
-    std::unordered_map<float, float> widthsForLine = {};
-    float lnHeight = font == "goldFont.fnt" ? 26 : (font == "chatFont.fnt" ? 16.5f : 32.5f);
-
-    for (auto lbl : labelsCached)
+    if (str2.starts_with("<bm>"))
     {
-        for (auto lbl2 : lbl.second)
-        {
-            lbl2->setVisible(false);
-        }
+        str2 = str2.substr(4);
+        forceRegular = true;
     }
 
-    int ttfsUsed = 0;
-    int lblsUsed = 0;
-
-    auto fon = LocalisationManager::get()->getAltFont();
-
-    for (auto part : str.parts)
+    if (str2.starts_with("<ttf>"))
     {
-        bool newLine = part.type == AdvLabelStruct::AdvPartType::NewLine;
-
-        if (newLine)
-        {
-            widthsForLine.emplace(y, x);
-            y += lnHeight + lineSpacing;
-            x = 0;
-
-            continue;
-        }
-
-        CCNode* node = nullptr;
-
-        ccColor3B col = part.colour;
-
-        if (!labelsCached.contains(fon))
-            labelsCached.emplace(fon, std::vector<FallbackLabel*>({}));
-
-        if (!labelsCached.contains(font))
-            labelsCached.emplace(font, std::vector<FallbackLabel*>({}));
-
-        if (useTTF)
-        {
-            FallbackLabel* lbl;
-
-            if (labelsCached[fon].size() > ttfsUsed)
-            {
-                lbl = labelsCached[fon][ttfsUsed];
-                lbl->setString(part.label.c_str());
-            }
-            else
-            {
-                lbl = FallbackLabel::create(part.label.c_str(), fon.c_str());
-                
-                if (LocalisationManager::get()->getCurrentLang()->getTrueTypeFallback())
-                {
-                    lbl->setTTFFallback(true);
-                    lbl->setForceFallback(true);
-                }
-                else
-                {
-                    lbl->setDisableFallback(true);
-                }
-                labelsCached[fon].push_back(lbl);
-
-                this->addChild(lbl);
-            }
-
-            visibleLabels.push_back(lbl);
-            lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
-            lbl->setUserObject("use-gold", (useTTF && font == "goldFont.fnt") ? CCNode::create() : nullptr);
-
-            lbl->setVisible(true);
-
-            ttfsUsed++;
-            lbl->setColor(col);
-            lbl->setOpacity(part.opacity * getOpacity());
-            
-            if (lbl->getContentHeight() == 0)
-                lbl->setScale(1.0f);
-            else
-                lbl->setScale(lnHeight / lbl->getContentHeight());
-
-            node = lbl;
-        }
-        else
-        {
-            FallbackLabel* lbl = nullptr;
-
-            if (labelsCached[font].size() > lblsUsed)
-            {
-                lbl = labelsCached[font][lblsUsed];
-                lbl->setString(part.label.c_str());
-            }
-            else
-            {
-                lbl = FallbackLabel::create(part.label.c_str(), font.c_str());
-                lbl->setDisableFallback(true);
-                labelsCached[font].push_back(lbl);
-
-                this->addChild(lbl);
-            }
-
-            visibleLabels.push_back(lbl);
-            lbl->setUserObject("no-colour", (col == ccWHITE) ? CCNode::create() : nullptr);
-            lbl->setUserObject("use-gold", (useTTF && font == "goldFont.fnt") ? CCNode::create() : nullptr);
-
-            lbl->setVisible(true);
-
-            lblsUsed++;
-            lbl->setColor(col);
-            lbl->setOpacity(part.opacity * getOpacity());
-            
-            if (lbl->getContentHeight() == 0)
-                lbl->setScale(1.0f);
-            else
-                lbl->setScale(lnHeight / lbl->getContentHeight());
-
-            node = lbl;
-        }
-
-        node->setAnchorPoint(ccp(0, 0));
-
-        if (maxWidth != 0)
-        {
-            if (x + node->getScaledContentWidth() > maxWidth)
-            {
-                widthsForLine.emplace(y, x);
-                y += lnHeight + lineSpacing;
-                x = 0;
-            }
-        }
-
-        height = std::max<float>(node->getScaledContentHeight() + y, height);
-
-        node->setPosition(ccp(x, y));
-        x += node->getScaledContentWidth();
-        width = std::max<float>(width, x);
+        str2 = str2.substr(5);
+        forceFallback = true;
     }
 
-    widthsForLine.emplace(y, x);
-    lineCount = widthsForLine.size();
+    auto useFallback = useTTFFont();
+    auto lbl = useFallback ? fallbackLabel : regularLabel;
+    auto lbl2 = !useFallback ? fallbackLabel : regularLabel;
 
-    this->setContentSize(ccp(width, height));
+    lbl->setVisible(true);
+    lbl2->setVisible(false);
 
-    for (auto label : visibleLabels)
-    {
-        float al = 0;
-
-        switch (alignment)
-        {
-            case kCCTextAlignmentLeft:
-                break;
-
-            case kCCTextAlignmentCenter:
-                al = 0.5f;
-                break;
-
-            case kCCTextAlignmentRight:
-                al = 1;
-                break;
-        }
-
-        float w = (width - widthsForLine[label->getPositionY()]) * al;
-
-        label->setPosition(ccp(label->getPositionX() + w, height - (label->getPositionY() + lnHeight)));
-    }
-
-    updateLabelQuick();
-}
-
-void AdvLabelBMFont::updateLabelQuick()
-{
-    for (auto label : visibleLabels)
-    {
-        if (label->getUserObject("no-colour"))
-        {
-            label->setColor(colour);
-
-            if (label->getUserObject("use-gold"))
-            {
-                auto c = ccc4FFromccc3B(colour);
-
-                int i = 0;
-                for (auto spr : label->getChildrenExt<CCSprite*>())
-                {
-                    spr->m_sQuad.tl.colors = ccc4(253 * c.r, 161 * c.g, 12 * c.b, 255);
-                    spr->m_sQuad.tr.colors = ccc4(253 * c.r, 161 * c.g, 12 * c.b, 255);
-
-                    spr->m_sQuad.bl.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
-                    spr->m_sQuad.br.colors = ccc4(254 * c.r, 227 * c.g, 71 * c.b, 255);
-
-                    spr->setBatchNode(label);
-                    spr->setAtlasIndex(i);
-                    i++;
-
-                    spr->setDirty(true);
-
-                    spr->updateTransform();
-                }
-            }
-        }
-    }
+    lbl->setBreakWords(wrapByLetters);
+    lbl->setMaxWidth(maxWidth / lbl->getScale());
+    lbl->setLineSpacing(lineSpacing);
+    lbl->setText(str2);
+    lbl->setColor(this->colour);
+    lbl->setOpacity(this->opacity);
+    lbl->setAlignment(alignment);
+    
+    this->setContentSize(lbl->getScaledContentSize());
 }
 
 bool AdvLabelBMFont::useTTFFont()
 {
-    CCBMFontConfiguration* conf;
-    std::set<unsigned int>* charSet;
-    bool ttf;
-
-    if (str.forceTTF)
+    if (forceFallback)
         return true;
 
-    if (str.forceBM)
+    if (forceRegular)
         return false;
 
     switch (ttfUsage)
@@ -383,26 +72,22 @@ bool AdvLabelBMFont::useTTFFont()
         case AdvLabelTTFUsage::None:
             return false;
 
-        case AdvLabelTTFUsage::Auto:
-            conf = getConfiguration();
+        case AdvLabelTTFUsage::Auto: {
+            auto charSet = fallbackLabel->getFont()->getCharDefs();
 
-            charSet = conf->getCharacterSet();
-
-            ttf = false;
-
-            for (auto ch : str.getTotalString())
+            for (auto ch : str)
             {
-                if (ch == '\n')
+                if (ch == (char)10)
                     continue;
-                
-                if (!charSet->contains(ch))
+
+                if (!charSet.contains(ch))
                 {
-                    ttf = true;
-                    break;
+                    return true;
                 }
             }
 
-            return ttf;
+            return false;
+        }
 
         case AdvLabelTTFUsage::Forced:
             return true;
@@ -411,41 +96,93 @@ bool AdvLabelBMFont::useTTFFont()
     return false;
 }
 
-bool AdvLabelBMFont::doesLabelContainNonDisplayableCharacter()
-{
-    auto conf = getConfiguration();
-    auto conf2 = getConfiguration(LocalisationManager::get()->getAltFont());
-    auto charSet = conf2->getCharacterSet();
-
-    for (auto ch : str.getTotalString())
-    {
-        if (ch == '\n')
-            continue;
-
-        if ((int)ch == -29)
-            continue;
-        
-        if (!charSet->contains(ch))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool AdvLabelBMFont::initWithStruct(AdvLabelStruct lblStruct, std::string font)
+bool AdvLabelBMFont::initWithString(std::string str, std::string font)
 {
     if (!CCNode::init())
         return false;
 
     ttfUsage = LocalisationManager::get()->getDefaultTTFUsage();
 
-    this->setAnchorPoint(ccp(0.5f, 0.5f));
-    this->font = font;
+    this->regularLabel = geode::Label::create(font);
+    this->fallbackLabel = geode::Label::create(LocalisationManager::get()->getAltFont());
 
-    setStruct(lblStruct);
+    if (!fallbackLabel)
+    {
+        log::error("Failed to create fallback for '{}'", LocalisationManager::get()->getAltFont());
+        this->fallbackLabel = geode::Label::create(font);
+    }
+
+    regularLabel->setPosition(ccp(0, 0));
+    regularLabel->setAnchorPoint(ccp(0, 0));
+    regularLabel->setRichTextEnabled(true);
+    regularLabel->setID("regular");
+
+    fallbackLabel->setPosition(ccp(0, 0));
+    fallbackLabel->setAnchorPoint(ccp(0, 0));
+    fallbackLabel->setRichTextEnabled(true);
+    fallbackLabel->setID("fallback");
+
+    this->setAnchorPoint(ccp(0.5f, 0.5f));
+    this->str = std::move(str);
+    this->setFntFile(font.c_str());
+
+    this->addChildren(regularLabel, fallbackLabel);
+    updateLabel();
     return true;
+}
+
+cocos2d::CCGLProgram* AdvLabelBMFont::createGoldShader()
+{
+    static const char* vert = R"(
+        attribute vec4 a_position;
+        attribute vec2 a_texCoord;
+        attribute vec4 a_color;
+
+        #ifdef GL_ES
+        varying lowp vec4 v_fragmentColor;
+        varying mediump vec2 v_texCoord;
+        varying mediump vec2 v_position;
+        #else
+        varying vec4 v_fragmentColor;
+        varying vec2 v_texCoord;
+        varying vec2 v_position;
+        #endif
+
+        void main()
+        {
+            gl_Position = CC_MVPMatrix * a_position;
+            v_fragmentColor = a_color;
+            v_texCoord = a_texCoord;
+            v_position = a_position;
+        }
+    )";
+
+    static const char* frag = R"(
+        #ifdef GL_ES
+        precision lowp float;
+        #endif
+
+        varying vec2 v_texCoord;
+        varying vec2 v_position;
+        varying vec4 v_fragmentColor;
+        uniform sampler2D CC_Texture0;
+
+        void main()
+        {
+            gl_FragColor = texture2D(CC_Texture0, v_texCoord) * v_fragmentColor * vec4(mix(vec3(254, 227, 71), vec3(253, 161, 12), v_position.y / 30) / 255.0, 1.0);
+        }
+    )";
+
+    auto prg = new CCGLProgram();
+    prg->initWithVertexShaderByteArray(vert, frag);
+    prg->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
+    prg->addAttribute(kCCAttributeNameColor, kCCVertexAttrib_Color);
+    prg->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+    
+    prg->autorelease();
+    prg->link();
+    prg->updateUniforms();
+    return prg;
 }
 
 void AdvLabelBMFont::limitLabelWidth(float width, float defaultScale, float minScale)
@@ -455,17 +192,28 @@ void AdvLabelBMFont::limitLabelWidth(float width, float defaultScale, float minS
 
 void AdvLabelBMFont::setString(const char *newString)
 {
-    setStruct(structFromString(newString, splitEverySpace, showTags, splitChars));
+    this->str = newString;
+
+    updateLabel();
 }
 
 const char* AdvLabelBMFont::getString(void)
 {
-    return str.getTotalString().c_str();
+    return str.c_str();
 }
 
 void AdvLabelBMFont::setFntFile(const char* fntFile)
 {
     this->font = fntFile;
+    regularLabel->setFont(font);
+
+    auto shC = CCShaderCache::sharedShaderCache();
+
+    if (!shC->programForKey("gold-shader"_spr))
+        shC->addProgram(createGoldShader(), "gold-shader"_spr);
+
+    fallbackLabel->setShaderProgram(shC->programForKey(font == "goldFont.fnt" ? "gold-shader"_spr : kCCShader_PositionTextureColor));
+    fallbackLabel->setScale(regularLabel->getFont()->getCommonHeight() / fallbackLabel->getFont()->getCommonHeight());
 
     updateLabel();
 }
@@ -485,91 +233,55 @@ AdvLabelTTFUsage AdvLabelBMFont::getTTFUsage()
     return ttfUsage;
 }
 
-CCBMFontConfiguration* AdvLabelBMFont::getConfiguration()
-{
-    if (!bmConfigs.contains(font))
-    {
-        auto conf = FallbackLabel::create("", font.c_str());
-        conf->m_uReference = 80085; // so we never lose the config
-
-        bmConfigs.emplace(font, conf);
-    }
-
-    return bmConfigs[font]->getConfiguration();
-}
-
-CCBMFontConfiguration* AdvLabelBMFont::getConfiguration(std::string font)
-{
-    if (!bmConfigs.contains(font))
-    {
-        auto conf = FallbackLabel::create("", font.c_str());
-        conf->m_uReference = 80085; // so we never lose the config
-
-        bmConfigs.emplace(font, conf);
-    }
-
-    return bmConfigs[font]->getConfiguration();
-}
-
-std::vector<FallbackLabel*> AdvLabelBMFont::getVisibleLabels()
-{
-    return visibleLabels;
-}
-
-void AdvLabelBMFont::setAlignment(CCTextAlignment alignment)
-{
-    this->alignment = alignment;
-
-    updateLabel();
-}
-
-bool AdvLabelBMFont::isUsingTTFCurrently()
-{
-    return usingTTFCurrently;
-}
-
 void AdvLabelBMFont::setMaxWidth(float width)
 {
     this->maxWidth = width;
+    updateLabel();
 }
 
-int AdvLabelBMFont::getLineCount()
+float AdvLabelBMFont::getMaxWidth() const
 {
-    return lineCount;
-}
-
-void AdvLabelBMFont::setSplitEverySpace(bool split)
-{
-    this->splitEverySpace = split;
+    return maxWidth;
 }
 
 void AdvLabelBMFont::setLineSpacing(float spacing)
 {
     this->lineSpacing = spacing;
+    updateLabel();
 }
 
-void AdvLabelBMFont::setShowTags(bool show)
+float AdvLabelBMFont::getLineSpacing() const
 {
-    this->showTags = show;
+    return lineSpacing;
 }
 
-void AdvLabelBMFont::setSplitByEveryChar(bool split)
+void AdvLabelBMFont::setWrapByLetters(bool wrap)
 {
-    this->splitChars = split;
+    this->wrapByLetters = wrap;
+    updateLabel();
 }
 
-std::vector<CCNodeRGBA*> AdvLabelBMFont::getCharacterNodes()
+bool AdvLabelBMFont::getWrapByLetters() const
 {
-    std::vector<CCNodeRGBA*> nodes = {};
+    return wrapByLetters;
+}
 
-    for (auto lbl : visibleLabels)
+void AdvLabelBMFont::setAlignment(CCTextAlignment alignment)
+{
+    switch (alignment)
     {
-        for (auto child : CCArrayExt<CCNodeRGBA*>(lbl->getChildren()))
-        {
-            if (child->isVisible())
-                nodes.push_back(child);
-        }
+        case kCCTextAlignmentLeft:
+            this->alignment = Label::Alignment::Left;
+            break;
+
+        case kCCTextAlignmentCenter:
+            this->alignment = Label::Alignment::Center;
+            break;
+
+        case kCCTextAlignmentRight:
+            this->alignment = Label::Alignment::Right;
+            break;
     }
 
-    return nodes;
+    updateLabel();
 }

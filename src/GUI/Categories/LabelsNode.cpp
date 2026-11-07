@@ -21,11 +21,14 @@ bool LabelsNode::init()
 
     instance = this;
 
+    bg->setTargettingNode(nullptr);
+    bg->setLayoutOptions(nullptr);
     bg->setPosition(ccp(0, 0));
     bg->setAnchorPoint(ccp(0, 0));
     bg->setContentSize(ccp((getContentWidth() - PRESETS_SIZE - 5), bg->getContentHeight() - ((TOPBAR_SIZE + 5))));
 
     labelsScroll = qolmod::ScrollLayer::create(bg->getContentSize());
+    labelsScroll->setAnchorPoint(ccp(0, 0));
     labelsScroll->m_peekLimitTop = 15;
     labelsScroll->m_peekLimitBottom = 15;
     labelsScroll->setTouchEnabled(false);

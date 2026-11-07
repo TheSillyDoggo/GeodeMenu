@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "BackgroundSprite.hpp"
 #include "../Client/ModuleShortcutConfig.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include "PopupBase.hpp"
 #include <FloatingButton/FloatingButtonBase.hpp>
 
@@ -26,9 +26,9 @@ class SetupShortcutUI : public PopupBase
         CCMenuItemToggler* visInGamePause = nullptr;
         CCMenuItemToggler* visInEditor = nullptr;
         CCMenuItemToggler* visInEditorPause = nullptr;
-        BetterInputNode* scaleInput = nullptr;
-        BetterInputNode* opacityInput = nullptr;
-        BetterInputNode* groupInput = nullptr;
+        qolmod::InputNode* scaleInput = nullptr;
+        qolmod::InputNode* opacityInput = nullptr;
+        qolmod::InputNode* groupInput = nullptr;
         std::unordered_map<FloatingButtonBase::AnimationType, std::pair<CCMenuItemToggler*, AdvLabelBMFont*>> animBtns = {};
         CCSprite* colSpr = nullptr;
 

@@ -93,11 +93,11 @@ bool SetupColourConfigUI::setup()
     speedSlider->setContentWidth(150);
     bottomLeft->addChild(speedSlider);
 
-    speedInput = BetterInputNode::create(45, "Speed");
-    speedInput->setAlignment(kCCTextAlignmentCenter);
+    speedInput = qolmod::InputNode::create(45, "Speed");
+    // speedInput->setAlignment(kCCTextAlignmentCenter);
     speedInput->setAnchorPoint(ccp(0, 0.5f));
     speedInput->setPosition(ccp(speedSlider->getContentWidth() / 2 + 12, 0));
-    speedInput->setDelegate(this);
+    // speedInput->setDelegate(this);
     bottomLeft->addChild(speedInput);
 
     auto speedTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/effect-speed", "goldFont.fnt");
@@ -107,33 +107,33 @@ bool SetupColourConfigUI::setup()
 
     colArea = CCNode::create();
 
-    rInput = BetterInputNode::create(50, "R");
-    rInput->setAlignment(kCCTextAlignmentCenter);
+    rInput = qolmod::InputNode::create(50, "R");
+    // rInput->setAlignment(kCCTextAlignmentCenter);
     rInput->setTag(1);
     rInput->setScale(0.6f);
     rInput->setPosition(ccp(-38, 20));
-    rInput->setDelegate(this);
+    // rInput->setDelegate(this);
 
-    gInput = BetterInputNode::create(50, "G");
-    gInput->setAlignment(kCCTextAlignmentCenter);
+    gInput = qolmod::InputNode::create(50, "G");
+    // gInput->setAlignment(kCCTextAlignmentCenter);
     gInput->setTag(2);
     gInput->setScale(0.6f);
     gInput->setPosition(ccp(0, 20));
-    gInput->setDelegate(this);
+    // gInput->setDelegate(this);
 
-    bInput = BetterInputNode::create(50, "B");
-    bInput->setAlignment(kCCTextAlignmentCenter);
+    bInput = qolmod::InputNode::create(50, "B");
+    // bInput->setAlignment(kCCTextAlignmentCenter);
     bInput->setTag(3);
     bInput->setScale(0.6f);
     bInput->setPosition(ccp(38, 20));
-    bInput->setDelegate(this);
+    // bInput->setDelegate(this);
 
-    hexInput = BetterInputNode::create(110, "HEX");
-    hexInput->setAlignment(kCCTextAlignmentCenter);
+    hexInput = qolmod::InputNode::create(110, "HEX");
+    // hexInput->setAlignment(kCCTextAlignmentCenter);
     hexInput->setTag(4);
     hexInput->setScale(0.6f);
     hexInput->setPosition(ccp(0, -20));
-    hexInput->setDelegate(this);
+    // hexInput->setDelegate(this);
 
     auto rTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/red", "goldFont.fnt");
     rTitle->setScale(0.5f);
@@ -585,7 +585,7 @@ void SetupColourConfigUI::textChanged(CCTextInputNode* node)
     speedSlider->setValueRanged(currentConfig.chromaSpeed);
 }
 
-void SetupColourConfigUI::updateInputs(BetterInputNode* except)
+void SetupColourConfigUI::updateInputs(qolmod::InputNode* except)
 {
     if (except != rInput)
         rInput->setString(utils::numToString<int>(currentConfig.customColour.r));

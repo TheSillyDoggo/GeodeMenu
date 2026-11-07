@@ -114,8 +114,8 @@ const std::string& CLanguage::getNativeName()
 
 const std::string CLanguage::getFont()
 {
-    if (font.empty() || font == "chatFont.fnt")
-        return "chatFont.fnt";
+    if (font.empty() || font == "bigFont.fnt")
+        return "bigFont.fnt";
     else
         return fmt::format("thesillydoggo.qolmod/{}", font);
 }

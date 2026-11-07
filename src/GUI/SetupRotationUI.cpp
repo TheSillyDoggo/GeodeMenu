@@ -52,7 +52,7 @@ void SetupRotationUI::onClose(CCObject* sender)
 void SetupRotationUI::updateUI()
 {
     input->setString(floatToStringMin2DP(rot));
-    input->setNumHoldValues(true, 1, 5, defaultRot);
+    // input->setNumHoldValues(true, 1, 5, defaultRot);
     control->setAngle(rot);
 }
 
@@ -74,9 +74,9 @@ bool SetupRotationUI::setup()
     auto btn = qolmod::Button::create(spr, this, menu_selector(SetupRotationUI::onClose));
     menu->addChild(btn);
 
-    input = BetterInputNode::create(100, "setup-rotation/input-placeholder");
-    input->setAlignment(kCCTextAlignmentCenter);
-    input->setDelegate(this);
+    input = qolmod::InputNode::create(100, "setup-rotation/input-placeholder");
+    // input->setAlignment(kCCTextAlignmentCenter);
+    // input->setDelegate(this);
     input->setScale(0.8f);
 
     auto lbl = AdvLabelBMFont::createWithLocalisation("setup-rotation/input-title", "bigFont.fnt");

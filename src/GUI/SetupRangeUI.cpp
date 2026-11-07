@@ -56,8 +56,8 @@ bool SetupRangeUI::setup()
     auto dash = CCLabelBMFont::create("-", "bigFont.fnt");
     dash->setPositionY(2.0f);
     dash->setScale(0.8f);
-    min = BetterInputNode::create(60, "min");
-    max = BetterInputNode::create(60, "max");
+    min = qolmod::InputNode::create(60, "min");
+    max = qolmod::InputNode::create(60, "max");
     min->setString("0.00");
     max->setString("0.00");
     min->setPositionX(-42);

@@ -88,25 +88,27 @@ bool LanguageNodeUI::init()
             y++;
         }
     }
-
-    layoutIsDirty = false;
-    scroll->setContentHeight(getContentHeight() - 20 - 2.5f);
-
-    setID("LanguageNodeUI");
+    
     this->addChildAtPosition(clip, Anchor::TopLeft, ccp(2.5f, 0));
     this->addChildAtPosition(missingMenu, Anchor::Top, ccp(0, -10));
     this->addChildAtPosition(optionsMenu, Anchor::TopRight, ccp(-10 - 2.5f, -10));
     return true;
 }
 
-void LanguageNodeUI::updateUI()
+void LanguageNodeUI::updateUILayout()
 {
-    if (!categoryScrolls.contains(getID()))
-        scroll->moveToTop();
-    
-    scroll->setTouchEnabled(true);
-    scrollbar->setVisible(true);
-    scrollbar->setDisabled(false);
+    updateLayout();
+    bool showScrollbar = shouldScrollbarShow();
+    bool canScroll = true;
+
+
+    scroll->setContentHeight(getContentHeight() - 20 - 2.5f);
+    scroll->moveToTop();
+
+    scroll->setTouchEnabled(canScroll);
+    scroll->setMouseEnabled(canScroll);
+    scrollbar->setVisible(showScrollbar);
+    scrollbar->setDisabled(!canScroll);
 }
 
 void LanguageNodeUI::onContribute(CCObject* sender)

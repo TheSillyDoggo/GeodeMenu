@@ -1,7 +1,7 @@
 #include "IconEffectsUI.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../Localisation/LocalisationManager.hpp"
-#include "../GUI/BetterInputNode.hpp"
+#include "../GUI/InputNode.hpp"
 #include <SetupColourConfigUI.hpp>
 #include "IconicManager.hpp"
 #include <BetterButtonSprite.hpp>

@@ -7,13 +7,13 @@ class LanguageNodeUI : public CategoryNode
     protected:
         ~LanguageNodeUI();
 
+        virtual void updateUILayout();
+
     public:
         CREATE_FUNC(LanguageNodeUI)
 
         void onContribute(CCObject* sender);
         void onSettings(CCObject* sender);
-
-        virtual void updateUI();
 
         bool init();
 };

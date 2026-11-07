@@ -2,19 +2,19 @@
 
 #include "ModuleNode.hpp"
 #include "InputModule.hpp"
-#include "../GUI/BetterInputNode.hpp"
+#include "../GUI/InputNode.hpp"
 
-class InputModuleNode : public ModuleNode, public TextInputDelegate
+class InputModuleNode : public ModuleNode
 {
     protected:
         ~InputModuleNode();
-        BetterInputNode* input = nullptr;
+        qolmod::InputNode* input = nullptr;
     
     public:
         static InputModuleNode* create(InputModule* module);
 
         virtual void setup();
-        virtual void textChanged(CCTextInputNode* p0);
+        virtual void textChanged(const std::string& str);
         virtual void update(float dt);
         virtual void updateNode();
 };

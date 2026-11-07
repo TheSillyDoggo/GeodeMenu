@@ -76,17 +76,12 @@ bool BetterAlertLayer::setup()
     m_bgSprite->setVisible(false);
     m_buttonMenu->setVisible(false);
 
-    content = AdvLabelBMFont::createWithStruct({}, "chatFont.fnt");
+    content = AdvLabelBMFont::createWithString("", "chatFont.fnt");
     content->setMaxWidth(width - 60);
-    content->setSplitByEveryChar(LocalisationManager::get()->getCurrentLang()->getSplitEachChar());
-    content->setSplitEverySpace(true);
+    content->setWrapByLetters(LocalisationManager::get()->getCurrentLang()->getSplitEachChar());
     content->setLineSpacing(3.5f);
     content->setAlignment(kCCTextAlignmentCenter);
-
-    if (LocalisationManager::get()->getCurrentLang()->getDontTouchDescriptions())
-        content->setStruct({ false, false, false, desc, { { AdvLabelStruct::AdvPartType::Label, desc } } });
-    else
-        content->setString(desc.c_str());
+    content->setString(desc.c_str());
 
     float desHeight = std::max<float>(140.0, content->getScaledContentHeight() + 100);
 

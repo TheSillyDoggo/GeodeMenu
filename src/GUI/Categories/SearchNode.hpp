@@ -2,7 +2,7 @@
 
 #include "../../Client/CategoryNode.hpp"
 #include <ColourModule.hpp>
-#include "../BetterInputNode.hpp"
+#include "../InputNode.hpp"
 
 class SearchShowOptions : public Module
 {
@@ -26,10 +26,10 @@ class SearchOptionsColour : public ColourModule
         }
 };
 
-class SearchNode : public CategoryNode, public TextInputDelegate
+class SearchNode : public CategoryNode
 {
     protected:
-        BetterInputNode* textInput = nullptr;
+        qolmod::InputNode* textInput = nullptr;
         CCMenu* errorMenu = nullptr;
         CCLabelBMFont* error = nullptr;
         static inline SearchNode* instance = nullptr;
@@ -40,7 +40,7 @@ class SearchNode : public CategoryNode, public TextInputDelegate
         CREATE_FUNC(SearchNode)
         static SearchNode* get();
 
-        virtual void textChanged(CCTextInputNode* input);
+        void updateSearchResults();
         virtual void addModule(Module* module);
 
         void updateColour(float);

@@ -86,6 +86,8 @@ bool CategoryNode::init()
     scroll = qolmod::ScrollLayer::create(this->getContentSize());
     scroll->setAnchorPoint(ccp(0.5f, 0));
 
+    bg->setTargettingNode(scroll);
+
     scrollbar = BetterScrollbar::create(scroll);
     scrollbar->visit();
     scrollbar->setUseDynamicHandle(true);
@@ -101,7 +103,6 @@ bool CategoryNode::init()
 
 void CategoryNode::updateUILayout()
 {
-    bg->setContentSize(getContentSize());
     scroll->setContentSize(getContentSize() + scrollSizeAddition);
     updateLayout();
 

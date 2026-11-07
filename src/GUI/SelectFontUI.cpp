@@ -118,9 +118,9 @@ void SelectFontUI::update(float dt)
                 label.second->setFntFile(label.second->getID().c_str());
                 label.second->setScale(20 / label.second->getContentHeight());
 
-                auto m = getHints(label.second->getConfiguration());
+                // auto m = getHints(label.second->getConfiguration());
 
-                label.second->getParent()->addChildAtPosition(m, Anchor::BottomLeft, ccp(label.second->getScaledContentWidth() + 10 + 10, 0));
+                // label.second->getParent()->addChildAtPosition(m, Anchor::BottomLeft, ccp(label.second->getScaledContentWidth() + 10 + 10, 0));
             }
         }
     }
@@ -217,9 +217,9 @@ CCMenu* SelectFontUI::createFontCell(std::string font, int index, std::string na
             label->setFntFile(font.c_str());
             label->setScale(20 / label->getContentHeight());
 
-            auto m = getHints(label->getConfiguration());
+            // auto m = getHints(label->getConfiguration());
 
-            menu->addChildAtPosition(m, Anchor::BottomLeft, ccp(label->getScaledContentWidth() + 10 + 10, 2));
+            // menu->addChildAtPosition(m, Anchor::BottomLeft, ccp(label->getScaledContentWidth() + 10 + 10, 2));
         }
     }
 

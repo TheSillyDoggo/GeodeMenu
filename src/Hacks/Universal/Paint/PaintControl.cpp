@@ -67,15 +67,16 @@ bool PaintControl::init()
     colourBtn->setPosition(ccp(bg->getContentWidth() - bg->getContentHeight() / 2, 0));
     menu->addChild(colourBtn);
 
-    input = BetterInputNode::create(22, "");
+    input = qolmod::InputNode::create(22, "");
     input->setContentSize(ccp(19, 19));
     input->setPosition(ccp(colourBtn->getPositionX() - 25, 0));
-    input->setCharFilter("1234567890");
-    input->setMaxChars(2);
-    input->setNumHoldValues(true, 1, 20, 0);
-    input->setAlignment(kCCTextAlignmentCenter);
-    input->setDelegate(this);
-    input->useCheckOnClick = false;
+    // input->setFilter("1234567890");
+    input->setMaxCharCount(2);
+    // input->setNumHoldValues(true, 1, 20, 0);
+    // TODO: FIX
+    // input->setAlignment(kCCTextAlignmentCenter);
+    // input->setDelegate(this);
+    // input->useCheckOnClick = false;
     menu->addChild(input);
 
     colour.fromJson(Mod::get()->getSavedValue<matjson::Value>("paintcontrol_colour", colour.toJson()));

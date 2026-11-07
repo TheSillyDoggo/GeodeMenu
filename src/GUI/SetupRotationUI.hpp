@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include "BackgroundSprite.hpp"
 #include "../Client/CategoryNode.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include "BetterRotationControl.hpp"
 #include "PopupBase.hpp"
 
@@ -17,7 +17,7 @@ class SetupRotationUI : public PopupBase, public TextInputDelegate, public GJRot
         float startRot = 0;
         float defaultRot = 0;
         std::function<void(float)> onFinish = nullptr;
-        BetterInputNode* input = nullptr;
+        qolmod::InputNode* input = nullptr;
         BetterRotationControl* control = nullptr;
         bool callbackOnEveryChange = false;
 

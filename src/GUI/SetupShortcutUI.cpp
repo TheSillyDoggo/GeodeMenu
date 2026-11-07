@@ -219,13 +219,13 @@ bool SetupShortcutUI::setup()
     scaleTitle->limitLabelWidth(65, 0.45f, 0);
     opacityTitle->limitLabelWidth(65, 0.45f, 0);
 
-    scaleInput = BetterInputNode::create(70, "Scale");
-    scaleInput->setCharFilter("1234567890.");
-    scaleInput->setNumHoldValues(true, 0.05f, 5, 0.8f);
+    scaleInput = qolmod::InputNode::create(70, "Scale");
+    scaleInput->setFilter("1234567890.");
+    // scaleInput->setNumHoldValues(true, 0.05f, 5, 0.8f);
     scaleInput->setAnchorPoint(ccp(1, 0.5f));
-    opacityInput = BetterInputNode::create(70, "Opacity");
-    opacityInput->setCharFilter("1234567890.");
-    opacityInput->setNumHoldValues(true, 0.05f, 5, 0.8f);
+    opacityInput = qolmod::InputNode::create(70, "Opacity");
+    opacityInput->setFilter("1234567890.");
+    // opacityInput->setNumHoldValues(true, 0.05f, 5, 0.8f);
     opacityInput->setAnchorPoint(ccp(1, 0.5f));
 
     enabledToggle = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.75f);
@@ -299,8 +299,8 @@ bool SetupShortcutUI::setup()
     visMenu->addChild(lblInEditorPause);
 
 
-    groupInput = BetterInputNode::create(70, "Opacity");
-    groupInput->setCharFilter("1234567890");
+    groupInput = qolmod::InputNode::create(70, "Opacity");
+    groupInput->setFilter("1234567890");
     groupInput->setAnchorPoint(ccp(1, 0.5f));
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));

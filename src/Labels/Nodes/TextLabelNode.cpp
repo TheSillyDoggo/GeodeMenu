@@ -7,7 +7,7 @@
 
 void TextLabelNode::setup()
 {
-    label = AdvLabelBMFont::createWithStruct({}, "bigFont.fnt");
+    label = AdvLabelBMFont::createWithString({}, "bigFont.fnt");
     label->setAnchorPoint(ccp(0, 0));
     label->setTTFUsage(AdvLabelTTFUsage::None);
 
@@ -54,13 +54,13 @@ void TextLabelNode::update(float dt)
     label->setString(str.c_str());
     this->setContentSize(label->getScaledContentSize());
 
-    if (label->getVisibleLabels().size() == 1 && str == ".")
+    /*if (label->getVisibleLabels().size() == 1 && str == ".")
     {
         auto anchorX = LabelManager::get()->anchorToPoint(config.anchor).x;
 
         static_cast<CCNode*>(label->getVisibleLabels()[0]->getChildren()->objectAtIndex(0))->setScale(2.25f);
         static_cast<CCNode*>(label->getVisibleLabels()[0]->getChildren()->objectAtIndex(0))->setAnchorPoint(ccp(anchorX == 0 ? 0.2f : (anchorX == 1.0f ? 0.6f : 0.45f), 0.35f));
-    }
+    }*/
 }
 
 void TextLabelNode::onEventTriggered(LabelEventType type)

@@ -8,7 +8,7 @@
 #include "../Utils/ColourConfig.hpp"
 #include "BetterSlider.hpp"
 #include "PopupBase.hpp"
-#include "BetterInputNode.hpp"
+#include "InputNode.hpp"
 #include <Nodes/CCNodeWithShader.hpp>
 #include <Button.hpp>
 
@@ -41,12 +41,12 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         qolmod::Button* gradientAddStepBtn = nullptr;
         qolmod::Button* gradientDelStepBtn = nullptr;
         BetterSlider* speedSlider = nullptr;
-        BetterInputNode* speedInput = nullptr;
+        qolmod::InputNode* speedInput = nullptr;
         CCNode* colArea = nullptr;
-        BetterInputNode* rInput = nullptr;
-        BetterInputNode* gInput = nullptr;
-        BetterInputNode* bInput = nullptr;
-        BetterInputNode* hexInput = nullptr;
+        qolmod::InputNode* rInput = nullptr;
+        qolmod::InputNode* gInput = nullptr;
+        qolmod::InputNode* bInput = nullptr;
+        qolmod::InputNode* hexInput = nullptr;
         qolmod::CCNodeWithShader* shader = nullptr;
         CCMenuItemToggler* invertToggle = nullptr;
         CCMenuItemToggler* loopGradientToggle = nullptr;
@@ -71,7 +71,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         void setStartConfig(ColourConfig config);
         void setDefaultConfig(ColourConfig config);
         void updateUI();
-        void updateInputs(BetterInputNode* except);
+        void updateInputs(qolmod::InputNode* except);
 
         void setPreviewChannel(std::string channel);
 
