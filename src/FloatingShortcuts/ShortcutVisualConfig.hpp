@@ -49,10 +49,10 @@ class ShortcutVisualConfig
         void loadV1(matjson::Value value, bool enabled, std::string moduleID);
         void loadV2(std::span<uint8_t> data);
         std::vector<uint8_t> saveV2();
-        void loadV2(asp::fs::PathView path);
-        void saveV2(asp::fs::PathView path);
+        void loadV2(asp::fs::Path path);
+        void saveV2(asp::fs::Path path);
 
-        void setCustomOverlay(asp::fs::PathView path);
+        void setCustomOverlay(asp::fs::Path path);
 
         std::string getModuleID();
 

@@ -4,6 +4,7 @@
 #include "LanguageContributorsUI.hpp"
 #include <Button.hpp>
 
+using namespace geode::prelude;
 using namespace qolmod;
 
 LanguageNode* LanguageNode::create(std::string lang)
@@ -31,7 +32,7 @@ bool LanguageNode::init(std::string lang)
     
     this->setID(lang);
 
-    bg = CCScale9Sprite::create("square02b_small.png");
+    bg = NineSlice::create("square02b_small.png");
     bg->setScale(0.5f);
     bg->setAnchorPoint(ccp(0, 0));
     bg->setColor(ccc3(0, 0, 0));
@@ -40,7 +41,7 @@ bool LanguageNode::init(std::string lang)
     float percent = getPercentageComplete();
     this->setUserObject(CCFloat::create(lang == "en-AU.json" ? 80085 : percent));
 
-    percentLabel = CCLabelBMFont::create(fmt::format("{:.2f}%", percent * 100).c_str(), "bigFont.fnt");
+    percentLabel = Label::create(fmt::format("{:.2f}%", percent * 100).c_str(), "bigFont.fnt");
     percentLabel->setScale(0.4f);
     percentLabel->setOpacity(175);
 
@@ -71,8 +72,8 @@ bool LanguageNode::init(std::string lang)
 
     creditsMenu->addChild(creditsBtn);
 
-    enName = CCLabelBMFont::create(language->getEnglishName().c_str(), "bigFont.fnt");
-    enName->limitLabelWidth(115, 0.5f, 0);
+    enName = Label::create(language->getEnglishName().c_str(), "bigFont.fnt");
+    enName->setLimitLabelWidth(115, 0.5f, 0);
     enName->setAnchorPoint(ccp(0, 1));
 
     this->addChild(bg);
@@ -154,10 +155,8 @@ void LanguageNode::visit()
         if (name == "Error")
             name = this->lang;
 
-        nativeName = FallbackLabel::create(name.c_str(), "bigFont.fnt");
-        nativeName->setForceFallback(true);
-        nativeName->setTTFFallback(true);
-        nativeName->updateLabel();
+        nativeName = CCLabelTTF::create(name.c_str(), "bigFont.fnt", 16);
+        // nativeName->updateLabel();
         nativeName->setScale(0.5f);
         nativeName->setAnchorPoint(ccp(0, 1));
 

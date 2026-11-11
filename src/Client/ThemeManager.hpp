@@ -51,7 +51,7 @@ namespace qolmod
             BackgroundType getBackground();
             void setBackground(BackgroundType background);
 
-            void setCustomSprite(asp::fs::PathView path);
+            void setCustomSprite(asp::fs::Path path);
             cocos2d::CCSprite* createCustomSprite(bool returnDefault = true);
     };
 };

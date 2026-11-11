@@ -23,10 +23,8 @@ class CLanguage
         std::string displayNameEnglish = "";
         std::string displayNameNative = "";
         std::string font = "";
-        int fontUsageMode = 0;
-        bool useTrueTypeFallback = false;
+        uint8_t fontUsageMode = 0;
         bool splitDescByEveryChar = false;
-        bool dontTouchDescriptions = false;
 
         void loadFromObject(matjson::Value object, std::string stem = "");
 
@@ -38,12 +36,10 @@ class CLanguage
         const std::string& getEnglishName();
         const std::string& getNativeName();
         const std::string getFont();
-        const int& getFontUsageMode();
-        const bool& getTrueTypeFallback();
-        const bool& getSplitEachChar();
-        const bool& getDontTouchDescriptions();
+        const int getFontUsageMode();
+        const bool getSplitEachChar();
 
         int getStringCount();
-        bool containsKey(std::string key);
+        bool containsKey(const std::string& key);
         const std::string& stringForKey(const std::string& key);
 };

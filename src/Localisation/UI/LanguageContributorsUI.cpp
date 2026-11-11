@@ -115,8 +115,7 @@ bool LanguageContributorsUI::setup()
     node->setContentSize(ccp(m_size.width, m_size.height));
     node->setAnchorPoint(ccp(0.5f, 0.5f));
 
-    // TODO: MEGA FIX
-    ground = reinterpret_cast<GJGroundLayer*>(CCSprite::create());// GJGroundLayer::create(1, 0);
+    ground = GJGroundLayer::create(1, 0);
     ground->setAnchorPoint(ccp(0.5f, 0));
     ground->setScale(0.85f);
     ground->setPosition(ccp(m_size.width / 2, 69));

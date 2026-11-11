@@ -9,7 +9,7 @@ using namespace geode::prelude;
 constexpr static std::array<uint8_t, 5> FILE_MAGIC = { 'S','H','P','A','K' };
 #define SHPAK_FILE_VERSION 1
 
-void ShortcutPack::save(asp::fs::PathView path)
+void ShortcutPack::save(asp::fs::Path path)
 {
     dbuf::ByteWriter wr;
     wr.writeBytes(FILE_MAGIC.data(), FILE_MAGIC.size());
@@ -30,7 +30,7 @@ void ShortcutPack::save(asp::fs::PathView path)
         log::error("Failed to write ShortcutPack! {}, path: {}", res.err(), path);
 }
 
-void ShortcutPack::load(asp::fs::PathView path, std::function<void(std::vector<uint8_t>)> readCallback)
+void ShortcutPack::load(asp::fs::Path path, std::function<void(std::vector<uint8_t>)> readCallback)
 {
     auto res = file::readBinary(path);
 

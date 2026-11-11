@@ -645,7 +645,7 @@ void SetupLabelConfigUI::onExportToFile(CCObject* sender)
 
     options.filters.push_back(filter);
 
-    async::spawn(file::pick(file::PickMode::OpenFile, options), [this, dump](Result<std::optional<asp::fs::PathView>> result)
+    async::spawn(file::pick(file::PickMode::OpenFile, options), [this, dump](Result<std::optional<asp::fs::Path>> result)
     {
         if (result.isOk())
         {
@@ -689,7 +689,7 @@ void SetupLabelConfigUI::onSelectImage(CCObject* sender)
         filter.files = { "*.png" };
         options.filters.push_back(filter);
 
-        async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<asp::fs::PathView>> result)
+        async::spawn(file::pick(file::PickMode::OpenFile, options), [this](Result<std::optional<asp::fs::Path>> result)
         {
             if (result.isOk())
             {

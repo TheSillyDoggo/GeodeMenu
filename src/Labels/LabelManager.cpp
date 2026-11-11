@@ -56,7 +56,7 @@ void LabelManager::setSafeZone(CCRect rect)
         LabelsNode::get()->updateUI();
 }
 
-bool LabelManager::addFromFile(asp::fs::PathView path)
+bool LabelManager::addFromFile(asp::fs::Path path)
 {
     auto res = file::readJson(path);
 

@@ -12,8 +12,8 @@ class ShortcutPack
         std::vector<ShortcutVisualConfig*> configs = {};
 
     public:
-        void save(asp::fs::PathView path);
-        void load(asp::fs::PathView path, std::function<void(std::vector<uint8_t>)> readCallback);
+        void save(asp::fs::Path path);
+        void load(asp::fs::Path path, std::function<void(std::vector<uint8_t>)> readCallback);
 
         void addConfig(ShortcutVisualConfig* conf);
 };

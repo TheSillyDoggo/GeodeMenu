@@ -9,9 +9,7 @@ CLanguage* CLanguage::createWithJSON(matjson::Value value)
     pRet->displayNameEnglish = value["display_name_english"].asString().unwrapOr("Error");
     pRet->displayNameNative = value["display_name_native"].asString().unwrapOr("Error");
     pRet->font = value["font"].asString().unwrapOr("notosans.fnt");
-    pRet->useTrueTypeFallback = value["use-true-type-fallback"].asBool().unwrapOr(false);
     pRet->splitDescByEveryChar = value["split-desc-by-every-char"].asBool().unwrapOr(false);
-    pRet->dontTouchDescriptions = value["dont-split-descriptions"].asBool().unwrapOr(false);
 
     std::string usage = value["alt-font-usage"].asString().unwrapOr("Auto");
 
@@ -79,7 +77,7 @@ int CLanguage::getStringCount()
     return strings.size();
 }
 
-bool CLanguage::containsKey(std::string key)
+bool CLanguage::containsKey(const std::string& key)
 {
     return strings.contains(key);
 }
@@ -120,22 +118,12 @@ const std::string CLanguage::getFont()
         return fmt::format("thesillydoggo.qolmod/{}", font);
 }
 
-const int& CLanguage::getFontUsageMode()
+const int CLanguage::getFontUsageMode()
 {
     return fontUsageMode;
 }
 
-const bool& CLanguage::getTrueTypeFallback()
-{
-    return useTrueTypeFallback;
-}
-
-const bool& CLanguage::getSplitEachChar()
+const bool CLanguage::getSplitEachChar()
 {
     return splitDescByEveryChar;
-}
-
-const bool& CLanguage::getDontTouchDescriptions()
-{
-    return dontTouchDescriptions;
 }

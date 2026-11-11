@@ -60,7 +60,7 @@ void ThemeManager::setBackground(BackgroundType background)
     save();
 }
 
-void ThemeManager::setCustomSprite(asp::fs::PathView path)
+void ThemeManager::setCustomSprite(asp::fs::Path path)
 {
     auto oldPath = Mod::get()->getConfigDir() / "ui-background.png";
 

@@ -150,7 +150,7 @@ std::vector<uint8_t> ShortcutVisualConfig::saveV2()
     return wr.writtenVec();
 }
 
-void ShortcutVisualConfig::loadV2(asp::fs::PathView path)
+void ShortcutVisualConfig::loadV2(asp::fs::Path path)
 {
     auto res = file::readBinary(path);
 
@@ -161,7 +161,7 @@ void ShortcutVisualConfig::loadV2(asp::fs::PathView path)
     loadV2(res.unwrap());
 }
 
-void ShortcutVisualConfig::saveV2(asp::fs::PathView path)
+void ShortcutVisualConfig::saveV2(asp::fs::Path path)
 {
     auto res = file::writeBinarySafe(path, saveV2());
     
@@ -219,7 +219,7 @@ bool ShortcutVisualConfig::shouldShow()
     return false;
 }
 
-void ShortcutVisualConfig::setCustomOverlay(asp::fs::PathView path)
+void ShortcutVisualConfig::setCustomOverlay(asp::fs::Path path)
 {
     auto res = file::readBinary(path);
     if (!res.isOk()) return;
@@ -242,18 +242,14 @@ void ShortcutVisualConfig::updateTexture()
     if (Loader::get()->getLoadedMod("prevter.imageplus"))
     {
         if (!img->initWithImageData(customOverlayData.data(), customOverlayData.size()))
-        {
             CC_SAFE_DELETE(img);
-        }
     }
     else
     {
         auto fmt = CCImage::kFmtPng;
 
         if (!img->initWithImageData(customOverlayData.data(), customOverlayData.size(), fmt))
-        {
             CC_SAFE_DELETE(img);
-        }
     }
 
     if (!img)

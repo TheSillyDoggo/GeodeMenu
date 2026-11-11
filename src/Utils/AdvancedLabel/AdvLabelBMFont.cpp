@@ -1,6 +1,5 @@
 #include "AdvLabelBMFont.hpp"
 #include "../../Localisation/LocalisationManager.hpp"
-#include <FastBMFontConfig.hpp>
 #include <Utils.hpp>
 
 AdvLabelBMFont* AdvLabelBMFont::createWithString(std::string label, std::string font)

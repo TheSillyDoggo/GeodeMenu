@@ -1,7 +1,6 @@
 #include "LocalisationManager.hpp"
 #include "../Utils/AdvancedLabel/AdvLabelBMFont.hpp"
 #include "../GUI/AndroidUI.hpp"
-#include <FastBMFontConfig.hpp>
 #include <asp/fs.hpp>
 #include <asp/iter.hpp>
 
@@ -48,7 +47,7 @@ void LocalisationManager::setup()
     }
 }
 
-void LocalisationManager::loadLocalisationFile(asp::fs::PathView path)
+void LocalisationManager::loadLocalisationFile(asp::fs::Path path)
 {
     currentLang = nullptr;
 
@@ -58,7 +57,7 @@ void LocalisationManager::loadLocalisationFile(asp::fs::PathView path)
     currentPath = path;
 }
 
-asp::fs::PathView LocalisationManager::getCurrentLoadedFile()
+asp::fs::Path LocalisationManager::getCurrentLoadedFile()
 {
     return currentPath;
 }
@@ -72,7 +71,7 @@ void LocalisationManager::switchFinished()
     }
 }
 
-void LocalisationManager::switchLocalisationWithUIPath(asp::fs::PathView path)
+void LocalisationManager::switchLocalisationWithUIPath(asp::fs::Path path)
 {
     loadLocalisationFile(path);
     auto font = LocalisationManager::get()->getAltFont();
@@ -81,7 +80,7 @@ void LocalisationManager::switchLocalisationWithUIPath(asp::fs::PathView path)
     {
         auto layer = CCLayerColor::create(ccc4(0, 0, 0, 150));
 
-        auto lbl = CCLabelBMFont::create("Loading language font", "bigFont.fnt");
+        auto lbl = Label::create("Loading language font", "bigFont.fnt");
         lbl->setScale(0.65f);
         lbl->setPosition(layer->getContentSize() / 2);
 
@@ -94,8 +93,6 @@ void LocalisationManager::switchLocalisationWithUIPath(asp::fs::PathView path)
             {
                 Loader::get()->queueInMainThread([this, layer, path, font]
                 {
-                    FastBMFontConfig::quickLoad(font.c_str());
-
                     layer->removeFromParent();
 
                     switchFinished();
@@ -146,7 +143,7 @@ std::string LocalisationManager::getLocalisedString(std::string id)
     return errorStr;
 }
 
-CLanguage* LocalisationManager::languageForPath(asp::fs::PathView path)
+CLanguage* LocalisationManager::languageForPath(asp::fs::Path path)
 {
     if (languages.contains(path))
         return languages[path];
@@ -209,21 +206,9 @@ CLanguage* LocalisationManager::getCurrentLang()
     return currentLang ? currentLang : placeholder;
 }
 
-#include "ShapingEngine.hpp"
 #include <Utils.hpp>
 
-std::string LocalisationManager::reshapeArabicString(std::string str)
-{
-#ifdef GEODE_IS_MOBILE
-    return str; // mobile renders arabic correctly with CCLabelTTF
-#endif
-
-    auto ws = qolmod::utils::toWideString(str);
-    
-    return ShapingEngine::render(ws, true);
-}
-
-void LocalisationManager::switchTempPath(asp::fs::PathView path)
+void LocalisationManager::switchTempPath(asp::fs::Path path)
 {
     if (languages.contains(path))
         CC_SAFE_DELETE(languages[path]);
