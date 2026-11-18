@@ -11,17 +11,13 @@ class NoInvisibleObjects : public Module
             setID("no-invisible-objects");
             setCategory("Cosmetic");
             setSafeModeTrigger(SafeModeTrigger::Attempt);
-
-            #if GEODE_COMP_GD_VERSION <= 22074
-            setDisabledMessage("Unsupported in GD 2.2074");
-            setDisabled(true);
-            #endif
         }
 };
 
 SUBMIT_HACK(NoInvisibleObjects);
 
-#if GEODE_COMP_GD_VERSION >= 22081
+// todo: temp
+#ifndef GEODE_IS_IOS
 
 class $modify (PlayLayer)
 {

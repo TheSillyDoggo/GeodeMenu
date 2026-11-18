@@ -36,5 +36,5 @@ class $modify (PlayLayerUtils, PlayLayer)
     void createObjectsFromSetupFinished();
     virtual void postUpdate(float p0);
 
-    static void onModify(auto& self);
+    // static void onModify(auto& self);
 };
