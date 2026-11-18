@@ -1,5 +1,4 @@
 #include "StartposSwitcherUI.hpp"
-#include "../Hacks/Utils/PlayLayer.hpp"
 #include <Button.hpp>
 #include <RealtimeAction.hpp>
 
@@ -194,7 +193,7 @@ void StartposSwitcherUI::updateUI()
         rightPercent->setString("");
     }
 
-    if (PlayLayerUtils::getUtils()->m_fields->startPositions.size() == 0)
+    if (gameLayer->m_startPosObjects->count() == 0)
         setScale(0);
 }
 
