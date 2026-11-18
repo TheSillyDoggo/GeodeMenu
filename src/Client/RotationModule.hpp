@@ -7,6 +7,7 @@ class RotationModule : public Module
     protected:
         float rotation = 0;
         float defaultValue = 0;
+        cocos2d::CCPoint rotVector;
     
         virtual void save();
         virtual void load();

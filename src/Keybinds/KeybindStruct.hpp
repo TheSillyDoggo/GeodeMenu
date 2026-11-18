@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
-#include "../Client/KeybindModule.hpp"
 #include "KeyState.hpp"
 
 using namespace geode::prelude;
@@ -14,7 +13,6 @@ struct KeyConfigState
     bool cmdRequired = false;
 
     enumKeyCodes code = enumKeyCodes::KEY_None;
-    KeybindModule* mod = nullptr;
     bool activateOnDown = false;
     bool activateOnRepeat = false;
     bool activateOnRelease = false;

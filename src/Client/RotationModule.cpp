@@ -24,6 +24,12 @@ void RotationModule::setDefaultValue(float v)
 void RotationModule::setRotation(float value)
 {
     this->rotation = value;
+    
+    float angleRadians = CC_DEGREES_TO_RADIANS(rotation);
+
+    float dx = std::cos(angleRadians);
+    float dy = std::sin(angleRadians);
+    rotVector = ccp(dx, dy);
 
     save();
 }
@@ -35,12 +41,7 @@ float RotationModule::getRotationDegrees()
 
 CCPoint RotationModule::getRotationVector()
 {
-    float angleRadians = CC_DEGREES_TO_RADIANS(rotation);
-
-    float dx = std::cos(angleRadians);
-    float dy = std::sin(angleRadians);
-
-    return ccp(dx, dy);
+    return rotVector;
 }
 
 float RotationModule::getDefaultValue()

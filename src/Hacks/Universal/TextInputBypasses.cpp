@@ -1,5 +1,6 @@
 #include "../../Client/Module.hpp"
 #include <Geode/modify/CCTextInputNode.hpp>
+#include <Geode/modify/CCIMEDispatcher.hpp>
 
 using namespace geode::prelude;
 
@@ -31,6 +32,27 @@ class CharacterLimitBypass : public Module
 
 SUBMIT_HACK(CharacterFilterBypass)
 SUBMIT_HACK(CharacterLimitBypass)
+
+/*
+what the fucking fuck cocos
+class $modify (BypassIMEDispatcher, CCIMEDispatcher)
+{
+    class IMEImpl
+    {
+        public:
+            std::list<CCIMEDelegate*> m_DelegateList;
+            CCIMEDelegate* m_DelegateWithIme;
+    };
+
+    void dispatchInsertText(const char * pText, int nLen, cocos2d::enumKeyCodes key)
+    {
+        auto delegate = reinterpret_cast<IMEImpl*>(public_cast(,m_pImpl))
+
+
+        
+        CCIMEDispatcher::dispatchInsertText(pText, nLen, key);
+    }
+};*/
 
 class $modify (CCTextInputNode)
 {

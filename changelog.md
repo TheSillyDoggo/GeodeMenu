@@ -16,6 +16,7 @@
 - Improved small part of UI
 - Removed Quests In Pause as it was officially added in 2.209
 - Localisation:
+-- Improved Font Loading times
 -- Added Turkish
 -- Added Argentina Spanish
 -- Updated Mexican Spanish
@@ -24,6 +25,8 @@
 -- Updated Ukrainian
 -- Updated Russian
 -- Updated Brazilian Portuguese
+-- Removed Korean and Arabic
+-- This is because of major changes to the UI code making these languages impossible to render in-game
 
 # 2.8.6
 
