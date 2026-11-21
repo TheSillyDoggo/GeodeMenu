@@ -14,11 +14,6 @@ bool PopupBase::init(float width, float height)
     if (!CCLayerColor::init())
         return false;
 
-    /*customBG = SwelvyBG::create();
-    static_cast<SwelvyBG*>(customBG)->setOpacity(0);
-    static_cast<SwelvyBG*>(customBG)->runAction(CCFadeTo::create(0.5f, 100));
-    this->addChild(customBG);*/
-
     this->ignoreAnchorPointForPosition(false);
     this->setAnchorPoint(ccp(0, 0));
     this->setPosition(ccp(0, 0));
@@ -31,11 +26,9 @@ bool PopupBase::init(float width, float height)
     );
     rt->getSprite()->setAnchorPoint(ccp(0, 1));
     rt->getSprite()->setBlendFunc(this->getBlendFunc());
-    #if GEODE_COMP_GD_VERSION >= 22081
     rt->getSprite()->getTexture()->setAntiAliasTexParameters();
-    #endif
 
-    CCTouchDispatcher::get()->registerForcePrio(this, 2, 1); // TODO: WHAT IS THE THIRD PARAM
+    CCTouchDispatcher::get()->registerForcePrio(this, 2, 0);
     this->setKeypadEnabled(true);
     this->setTouchEnabled(true);
     this->setKeyboardEnabled(true);

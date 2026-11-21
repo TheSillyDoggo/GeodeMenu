@@ -101,7 +101,7 @@ bool ZoomInterceptNode::scrollWheel(float y, float x)
     newPos.y = mouse.y - (mouse.y - oldPos.y) * scaleRatio;
 
     setPreviewPos(newPos);
-    return false; // todo: fix
+    return true;
 }
 
 void ZoomInterceptNode::registerWithTouchDispatcher()

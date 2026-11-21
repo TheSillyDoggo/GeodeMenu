@@ -108,31 +108,40 @@ bool SetupColourConfigUI::setup()
     colArea = CCNode::create();
 
     rInput = qolmod::InputNode::create(50, "R");
-    // rInput->setAlignment(kCCTextAlignmentCenter);
+    rInput->setAlignment(Label::Alignment::Center);
     rInput->setTag(1);
     rInput->setScale(0.6f);
     rInput->setPosition(ccp(-38, 20));
-    // rInput->setDelegate(this);
+    rInput->setCallback([&](auto&){
+        this->textChanged(rInput);
+    });
 
     gInput = qolmod::InputNode::create(50, "G");
-    // gInput->setAlignment(kCCTextAlignmentCenter);
+    gInput->setAlignment(Label::Alignment::Center);
     gInput->setTag(2);
     gInput->setScale(0.6f);
     gInput->setPosition(ccp(0, 20));
-    // gInput->setDelegate(this);
+    gInput->setCallback([&](auto&){
+        this->textChanged(gInput);
+    });
 
     bInput = qolmod::InputNode::create(50, "B");
-    // bInput->setAlignment(kCCTextAlignmentCenter);
+    bInput->setAlignment(Label::Alignment::Center);
     bInput->setTag(3);
     bInput->setScale(0.6f);
     bInput->setPosition(ccp(38, 20));
-    // bInput->setDelegate(this);
+    bInput->setCallback([&](auto&){
+        this->textChanged(bInput);
+    });
 
     hexInput = qolmod::InputNode::create(110, "HEX");
-    // hexInput->setAlignment(kCCTextAlignmentCenter);
+    hexInput->setAlignment(Label::Alignment::Center);
     hexInput->setTag(4);
     hexInput->setScale(0.6f);
     hexInput->setPosition(ccp(0, -20));
+    hexInput->setCallback([&](auto&){
+        this->textChanged(hexInput);
+    });
     // hexInput->setDelegate(this);
 
     auto rTitle = AdvLabelBMFont::createWithLocalisation("colour-setup/red", "goldFont.fnt");
@@ -551,7 +560,7 @@ void SetupColourConfigUI::colorValueChanged(ccColor3B colour)
     ig = false;
 }
 
-void SetupColourConfigUI::textChanged(CCTextInputNode* node)
+void SetupColourConfigUI::textChanged(cocos2d::CCNode* node)
 {
     if (node->getTag() > 0)
     {

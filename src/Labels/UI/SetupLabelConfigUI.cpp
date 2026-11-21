@@ -369,6 +369,7 @@ void SetupLabelConfigUI::createPage3()
     eventsNone->setScale(0.45f);
 
     eventScroll = qolmod::ScrollLayer::create(leftBG->getScaledContentSize());
+    eventScroll->setAnchorPoint(ccp(0, 0));
     eventScroll->m_peekLimitTop = 15;
     eventScroll->m_peekLimitBottom = 15;
 

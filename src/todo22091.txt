@@ -1,0 +1,11 @@
+shrink japanese font to smaller image size
+add support for multiple loaded fonts for languages (for japanese)
+add button to disable shortcuts (temp until full ui)
+rewrite activate in range to have a manager class like new shortcuts
+write ui for activate in range
+- idea is:
+-- scroll layer on left with ranges
+-- two long button sprites under the progress bar to switch between "global" and "per level"
+-- on the right is the two inputs with a "-" seperating them
+-- then a toggler underneath for enabled / disabled
+-- then a button to add range

@@ -51,7 +51,7 @@ class SetupColourConfigUI : public PopupBase, public ColorPickerDelegate, public
         CCMenuItemToggler* invertToggle = nullptr;
         CCMenuItemToggler* loopGradientToggle = nullptr;
 
-        virtual void textChanged(CCTextInputNode* node);
+        virtual void textChanged(cocos2d::CCNode* node);
 
     public:
         static SetupColourConfigUI* create(std::function<void(ColourConfig)> onFinishFunc, bool allowEffects = true);
