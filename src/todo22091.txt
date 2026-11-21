@@ -1,5 +1,3 @@
-shrink japanese font to smaller image size
-add support for multiple loaded fonts for languages (for japanese)
 add button to disable shortcuts (temp until full ui)
 rewrite activate in range to have a manager class like new shortcuts
 write ui for activate in range

@@ -28,6 +28,7 @@ bool VersionInfoNode::init(VersionInfoType type)
     label = AdvLabelBMFont::createWithString("", "lexend.fnt"_spr);
     label->setTTFUsage(AdvLabelTTFUsage::None);
     label->setAnchorPoint(ccp(0, 0));
+    label->setScale(CCDirector::get()->getContentScaleFactor() / 4);
     circle = LoadingCircleSprite::create(1);
     circle->setScale(0.22f);
 

@@ -23,6 +23,7 @@ class CLanguage
         std::string displayNameEnglish = "";
         std::string displayNameNative = "";
         std::string font = "";
+        std::vector<std::string> m_extraFonts;
         uint8_t fontUsageMode = 0;
         bool splitDescByEveryChar = false;
 
@@ -38,6 +39,7 @@ class CLanguage
         const std::string getFont();
         const int getFontUsageMode();
         const bool getSplitEachChar();
+        const std::vector<std::string>& getExtraFonts();
 
         int getStringCount();
         bool containsKey(const std::string& key);

@@ -110,6 +110,14 @@ bool AdvLabelBMFont::initWithString(std::string str, std::string font)
         log::error("Failed to create fallback for '{}'", LocalisationManager::get()->getAltFont());
         this->fallbackLabel = geode::Label::create(font);
     }
+    else
+    {
+        auto lang = LocalisationManager::get()->getCurrentLang();
+        for (auto& font : lang->getExtraFonts())
+        {
+            fallbackLabel->registerFont(font);
+        }
+    }
 
     regularLabel->setPosition(ccp(0, 0));
     regularLabel->setAnchorPoint(ccp(0, 0));

@@ -8,7 +8,32 @@ CLanguage* CLanguage::createWithJSON(matjson::Value value)
 
     pRet->displayNameEnglish = value["display_name_english"].asString().unwrapOr("Error");
     pRet->displayNameNative = value["display_name_native"].asString().unwrapOr("Error");
-    pRet->font = value["font"].asString().unwrapOr("notosans.fnt");
+
+    auto fntValue = value["font"];
+    if (fntValue.isString())
+        pRet->font = fntValue.asString().unwrapOr("notosans.fnt");
+    else if (fntValue.isArray())
+    {
+        auto fntArr = fntValue.asArray().unwrap();
+        bool setDefault = false;
+
+        for (auto& fnt : fntArr)
+        {
+            if (fnt.isString())
+            {
+                auto str = fnt.asString().unwrapOr("notosans.fnt");
+                if (!setDefault)
+                {
+                    setDefault = true;
+                    pRet->font = str;
+                }
+                else
+                {
+                    pRet->m_extraFonts.push_back(fmt::format("{}{}", ""_spr, str));
+                }
+            }
+        }
+    }
     pRet->splitDescByEveryChar = value["split-desc-by-every-char"].asBool().unwrapOr(false);
 
     std::string usage = value["alt-font-usage"].asString().unwrapOr("Auto");
@@ -90,6 +115,11 @@ const std::string& CLanguage::stringForKey(const std::string& key)
     return strings[key];
 }
 
+const std::vector<std::string>& CLanguage::getExtraFonts()
+{
+    return m_extraFonts;
+}
+
 const std::unordered_map<std::string, std::string>& CLanguage::getStrings()
 {
     return strings;
@@ -115,7 +145,7 @@ const std::string CLanguage::getFont()
     if (font.empty() || font == "bigFont.fnt")
         return "bigFont.fnt";
     else
-        return fmt::format("thesillydoggo.qolmod/{}", font);
+        return fmt::format("{}{}", ""_spr, font);
 }
 
 const int CLanguage::getFontUsageMode()

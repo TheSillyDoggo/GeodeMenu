@@ -65,6 +65,18 @@ bool InputNode::initWithSize(CCSize const& size, std::string placeholder, ZStrin
 
 void InputNode::setLanguageFonts()
 {
-    this->getContentLabel()->setFont(LocalisationManager::get()->getAltFont());
-    this->getPlaceholderLabel()->setFont(LocalisationManager::get()->getAltFont());
+    auto lang = LocalisationManager::get()->getCurrentLang();
+
+    if (!lang)
+        return;
+
+    for (auto& label : {getContentLabel(), getPlaceholderLabel()})
+    {
+        label->setFont(lang->getFont());
+        
+        for (auto& extra : lang->getExtraFonts())
+        {
+            label->registerFont(extra);
+        }
+    }
 }
