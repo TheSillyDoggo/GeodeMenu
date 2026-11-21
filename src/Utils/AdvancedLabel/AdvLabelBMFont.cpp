@@ -212,7 +212,7 @@ void AdvLabelBMFont::setFntFile(const char* fntFile)
         shC->addProgram(createGoldShader(), "gold-shader"_spr);
 
     fallbackLabel->setShaderProgram(shC->programForKey(font == "goldFont.fnt" ? "gold-shader"_spr : kCCShader_PositionTextureColor));
-    fallbackLabel->setScale(regularLabel->getFont()->getCommonHeight() / fallbackLabel->getFont()->getCommonHeight());
+    fallbackLabel->setScale(regularLabel->getFont()->getBaseScaled() / fallbackLabel->getFont()->getBaseScaled());
 
     updateLabel();
 }

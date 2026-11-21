@@ -1,5 +1,4 @@
 #include "Utils.hpp"
-#include <codecvt>
 
 using namespace geode::prelude;
 
@@ -33,22 +32,6 @@ GJGameLevel* qolmod::utils::getCurrentLevel(bool requireLevelData)
     }
 
     return nullptr;
-}
-
-std::wstring qolmod::utils::toWideString(std::string str)
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws = converter.from_bytes(str);
-
-    return ws;
-}
-
-std::string qolmod::utils::toUTF8String(std::wstring ws)
-{
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::string str = converter.to_bytes(ws);
-
-    return str;
 }
 
 CCCircleWave* qolmod::utils::addCircleToNode(CCNode* node, float scale)

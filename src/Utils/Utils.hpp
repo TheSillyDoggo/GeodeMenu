@@ -42,8 +42,6 @@ enum kCCTransition
 namespace qolmod::utils
 {
     GJGameLevel* getCurrentLevel(bool requireLevelData = false);
-    std::wstring toWideString(std::string str);
-    std::string toUTF8String(std::wstring ws);
     CCCircleWave* addCircleToNode(cocos2d::CCNode* node, float scale = 1.0f);
     cocos2d::CCScene* createTransitionForEnum(kCCTransition trans, float time, cocos2d::CCScene* scene);
     std::string sizeToPretty(unsigned int size);
