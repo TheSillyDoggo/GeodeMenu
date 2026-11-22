@@ -8,9 +8,9 @@ using namespace qolmod;
 void Ranges::sort()
 {
     return;
-    std::unordered_map<double, uint8_t> commandMap = {};
+    std::unordered_map<float, uint8_t> commandMap = {};
 
-    std::function<bool(double)> canReplace = [&](double v)
+    std::function<bool(float)> canReplace = [&](float v)
     {
         if (commandMap.contains(v) && commandMap[v] == 0)
             return true;
@@ -27,7 +27,7 @@ void Ranges::sort()
             commandMap.emplace(zone.max, 0);
     }
 
-    std::map<double, uint8_t> sorted(commandMap.begin(), commandMap.end());
+    std::map<float, uint8_t> sorted(commandMap.begin(), commandMap.end());
     log::info("BEGIN");
 
     for (auto& sort : sorted)
@@ -36,7 +36,7 @@ void Ranges::sort()
     }
 }
 
-bool Ranges::getEnable(double value, bool def, bool* inAnyRange)
+bool Ranges::getEnable(float value, bool def, bool* inAnyRange)
 {
     *inAnyRange = false;
 
@@ -61,16 +61,12 @@ void Ranges::addRange(qolmod::Range range)
     sort();
 }
 
-void Ranges::addRange(double min, double max, bool enable)
+void Ranges::addRange(float min, float max, bool enable)
 {
     if (fabs(min - max) <= 0.00005f)
         return;
 
-    ranges.insert(ranges.begin(), qolmod::Range({
-        .min = min,
-        .max = max,
-        .enable = enable
-    }));
+    ranges.insert(ranges.begin(), qolmod::Range(min, max, enable));
     sort();
 }
 

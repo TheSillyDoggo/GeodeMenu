@@ -71,9 +71,6 @@ class Module
         KeyConfigStruct keyConfig = {};
         bool showSeperateOptionsInfo = false;
 
-        qolmod::Ranges enableRanges = {};
-        bool lastRetRange = false;
-
         void DLL setName(std::string str);
         void DLL setID(std::string str);
         void DLL setCategory(std::string str);
@@ -127,7 +124,6 @@ class Module
         void removeKeybind();
 
         KeyConfigStruct getKeybind();
-        qolmod::Ranges* getRanges();
 
         Module* getParent();
         std::string getName();
@@ -143,8 +139,6 @@ class Module
         std::function<bool()> getSafeModeCustom();
         int getSortPriority();
         bool isDisabled();
-
-        void onRangeToggleSendNotif(bool en);
 
         float getSearchWeight(std::string query);
 

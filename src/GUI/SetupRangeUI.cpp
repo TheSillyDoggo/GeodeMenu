@@ -25,7 +25,6 @@ SetupRangeUI* SetupRangeUI::create(Module* mod)
     return nullptr;
 }
 
-
 bool SetupRangeUI::setup()
 {
     m_bgSprite->setVisible(false);
@@ -174,7 +173,7 @@ void SetupRangeUI::updateProgress()
     deleteMenu->removeAllChildren();
 
     int i = 0;
-    for (auto& range : module->getRanges()->ranges)
+    /*for (auto& range : module->getRanges()->ranges)
     {
         auto n = CCLayerColor::create(ccc4(255, 255, 255, 255), range.max - range.min, 10);
         n->setAnchorPoint(ccp(0, 0.5f));
@@ -190,7 +189,7 @@ void SetupRangeUI::updateProgress()
         btn->setPosition(ccp(range.min, deleteMenu->getContentHeight() / 2));
         btn->setTag(i++);
         deleteMenu->addChild(btn);
-    }
+    }*/
 }
 
 void SetupRangeUI::onInfo(CCObject* sender)
@@ -208,7 +207,7 @@ void SetupRangeUI::onInfo(CCObject* sender)
 
 void SetupRangeUI::onClear(CCObject* sender)
 {
-    module->getRanges()->clear();
+    // module->getRanges()->clear();
     updateProgress();
     module->genericSave();
 
@@ -217,11 +216,12 @@ void SetupRangeUI::onClear(CCObject* sender)
 
 void SetupRangeUI::onAdd(CCObject* sender)
 {
-    module->getRanges()->addRange(qolmod::Range({
-        .min = geode::utils::numFromString<double>(min->getString()).unwrapOr(0),
-        .max = geode::utils::numFromString<double>(max->getString()).unwrapOr(0),
-        .enable = toggler->isToggled()
-    }));
+    /*
+    module->getRanges()->addRange(qolmod::Range(
+        geode::utils::numFromString<float>(min->getString()).unwrapOr(0),
+        geode::utils::numFromString<float>(max->getString()).unwrapOr(0),
+        toggler->isToggled()
+    ));*/
 
     updateProgress();
     module->genericSave();
@@ -229,7 +229,7 @@ void SetupRangeUI::onAdd(CCObject* sender)
 
 void SetupRangeUI::onRemove(CCObject* sender)
 {
-    module->getRanges()->ranges.erase(module->getRanges()->ranges.begin() + sender->getTag());
+    // module->getRanges()->ranges.erase(module->getRanges()->ranges.begin() + sender->getTag());
     updateProgress();
     module->genericSave();
 }

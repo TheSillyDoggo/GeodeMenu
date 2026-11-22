@@ -8,6 +8,7 @@
 #include "../SafeMode/Modules/DisableCheatsInMenu.hpp"
 #include "../FloatingShortcuts/ShortcutManager.hpp"
 #include <APIManager.hpp>
+#include "../AutoRanges/RangeActivationController.hpp"
 
 using namespace geode::prelude;
 using namespace qolmod;
@@ -50,28 +51,12 @@ bool Module::getRealEnabled()
             return false;
     }
 
-    if (auto pl = PlayLayer::get(); pl && pl->m_started)
+    bool rangeEnable;
+    if (RangeActivationController::get()->isInRange(this, rangeEnable))
     {
-        if (pl->m_isPlatformer || pl->m_player1->m_isDead || (pl->m_player2 && pl->m_player2->m_isDead))
-            return userEnabled;
-
-        bool inRange;
-        bool ret = enableRanges.getEnable(pl->getCurrentPercent(), userEnabled, &inRange);
-
-        if (inRange && ret != userEnabled)
-        {
-            SafeMode::get()->onModuleToggled(this);
-        }
-
-        if (inRange != lastRetRange)
-        {
-            onRangeToggleSendNotif(ret);
-            lastRetRange = inRange;
-        }
-
-        return ret;
+        return rangeEnable;
     }
-    lastRetRange = false;
+
     return userEnabled;
 }
 
@@ -102,12 +87,12 @@ std::string Module::getDisabledMessage()
 
 void Module::genericLoad()
 {
-    enableRanges.load(Mod::get()->getSavedValue<matjson::Value>(fmt::format("{}_enableranges", getID()), {}));
+    
 }
 
 void Module::genericSave()
 {
-    Mod::get()->setSavedValue<matjson::Value>(fmt::format("{}_enableranges", getID()), enableRanges.save());
+    
 }
 
 bool Module::shouldSave()
@@ -398,19 +383,6 @@ std::string Module::getNotificationString()
     auto str = getUserEnabled() ? "ui/notification-mod-enabled" : "ui/notification-mod-disabled";
 
     return utils::string::replace(LocalisationManager::get()->getLocalisedString(str), "%s", getName());
-}
-
-void Module::onRangeToggleSendNotif(bool en)
-{
-    if (en == userEnabled)
-        return;
-
-    log::error("entered range: {}, {}, {}", getID(), lastRetRange, en);
-}
-
-qolmod::Ranges* Module::getRanges()
-{
-    return &enableRanges;
 }
 
 #include <rapidfuzz/fuzz.hpp>

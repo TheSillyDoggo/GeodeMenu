@@ -3,6 +3,8 @@
 using namespace geode::prelude;
 using namespace qolmod;
 
+Range::Range(float _min, float _max, float _enable) : min(_min), max(_max), enable(_enable) { }
+
 bool Range::inRange(float v)
 {
     return v >= min && v <= max;

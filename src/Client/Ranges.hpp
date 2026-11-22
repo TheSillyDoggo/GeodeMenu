@@ -8,9 +8,9 @@ namespace qolmod
     {
         std::vector<Range> ranges = {};
 
-        bool getEnable(double value, bool def, bool* inAnyRange = nullptr);
+        bool getEnable(float value, bool def, bool* inAnyRange = nullptr);
 
-        void addRange(double min, double max, bool enable);
+        void addRange(float min, float max, bool enable);
         void addRange(qolmod::Range range);
 
         void sort();
