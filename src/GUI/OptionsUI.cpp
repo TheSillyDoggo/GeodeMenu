@@ -9,7 +9,7 @@
 #include <EditKeyConfigUI.hpp>
 #include <Button.hpp>
 #include <PulsingCircle.hpp>
-#include <SetupRangeUI.hpp>
+#include <../AutoRanges/SetupRangeUI.hpp>
 
 using namespace qolmod;
 

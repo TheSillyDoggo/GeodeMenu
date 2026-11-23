@@ -5,7 +5,7 @@
 #include <Categories/FavouritesNode.hpp>
 #include <EditShortcutConfigUI.hpp>
 #include <EditKeyConfigUI.hpp>
-#include <SetupRangeUI.hpp>
+#include <../AutoRanges/SetupRangeUI.hpp>
 
 using namespace geode::prelude;
 using namespace qolmod;

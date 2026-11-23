@@ -11,6 +11,7 @@ namespace qolmod
     {
         qolmod::Ranges m_ranges;
         bool m_enabled = true;
+        bool m_practiceOnly = false;
         bool m_notify = true;
     };
 
@@ -33,6 +34,7 @@ namespace qolmod
         public:
             static RangeManager* get();
 
+            void markSave();
             void save();
             void load();
 

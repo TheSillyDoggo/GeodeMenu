@@ -4,12 +4,10 @@
 using namespace qolmod;
 using namespace geode::prelude;
 
-bool RangesBGLHook::init()
+bool RangesPLHook::init(GJGameLevel* level, bool dontCreateObjects)
 {
-    if (!GJBaseGameLayer::init())
+    if (!PlayLayer::init(level, dontCreateObjects))
         return false;
-
-    RangeManager::get()->getConfig("show-hitboxes_global")->m_ranges.addRange(5, 15, true);
 
     RangeActivationController::get()->reset(this);
     return true;

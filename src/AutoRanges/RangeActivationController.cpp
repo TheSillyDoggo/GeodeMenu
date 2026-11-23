@@ -33,10 +33,10 @@ void RangeActivationController::notifyRange(Module* module, float percent)
 void RangeActivationController::updateForPercent(float percent, GJBaseGameLayer* layer)
 {
     auto mgr = RangeManager::get();
-    for (auto& mod : Module::getAll())
+    for (auto& iter : m_data)
     {
-        if (!mod) continue;
-        auto& data = m_data[mod];
+        auto& mod = iter.first;
+        auto& data = iter.second;
 
         data.m_lastFrameWasInRange = data.m_inRange;
         data.m_lastFrameWasEnabled = data.m_rangeEnable;
@@ -53,7 +53,9 @@ void RangeActivationController::updateForPercent(float percent, GJBaseGameLayer*
             case ModRangeMode::Global: {
                 auto conf = mgr->getMode(mod) == ModRangeMode::PerLevel ? data.m_levelConf : data.m_globalConf;
 
-                if (conf)
+                bool pracEnable = (conf && conf->m_practiceOnly) ? layer->m_isPracticeMode : true;
+
+                if (conf && conf->m_enabled && pracEnable)
                 {
                     data.m_rangeEnable = conf->m_ranges.getEnable(percent, false, &data.m_inRange);
 
@@ -62,6 +64,11 @@ void RangeActivationController::updateForPercent(float percent, GJBaseGameLayer*
                         if (mod->getRealEnabled() != beforeEn)
                             notifyRange(mod, percent);
                     }
+                }
+                else
+                {
+                    data.m_inRange = false;
+                    data.m_rangeEnable = false;
                 }
                 break;
             }

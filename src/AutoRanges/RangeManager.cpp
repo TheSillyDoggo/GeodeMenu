@@ -64,15 +64,19 @@ void RangeManager::setMode(Module* module, const ModRangeMode& mode)
     m_needsSave = true;
 }
 
+void RangeManager::markSave()
+{
+    m_needsSave = true;
+}
+
 constexpr static std::array<uint8_t, 5> FILE_MAGIC = { 'R','G','P','A','K' };
-#define RANGEDATA_FILE_VERSION 1
+#define RANGEDATA_FILE_VERSION 2
 
 void RangeManager::save()
 {
     if (!m_needsSave)
         return;
     m_needsSave = false;
-    clearEmpty();
 
     dbuf::ByteWriter wr;
     wr.writeBytes(FILE_MAGIC.data(), FILE_MAGIC.size());
@@ -84,6 +88,7 @@ void RangeManager::save()
         wr.writeStringU16(conf.first);
         wr.writeBool(conf.second.m_enabled);
         wr.writeBool(conf.second.m_notify);
+        wr.writeBool(conf.second.m_practiceOnly);
         wr.writeU16(conf.second.m_ranges.ranges.size());
 
         for (auto& range : conf.second.m_ranges.ranges)
@@ -97,6 +102,9 @@ void RangeManager::save()
     wr.writeU32(m_modes.size());
     for (auto& mode : m_modes)
     {
+        if (!mode.first)
+            log::error("HOW DOESNT THIS EXIST WHAT");
+
         wr.writeStringU8(mode.first->getID());
         wr.writeU8((uint8_t)mode.second);
     }
@@ -133,6 +141,9 @@ void RangeManager::load()
         conf->m_enabled = br.readBool().unwrap();
         conf->m_notify = br.readBool().unwrap();
 
+        if (version >= 2)
+            conf->m_practiceOnly = br.readBool().unwrap();
+
         auto count2 = br.readU16().unwrap();
         for (size_t y = 0; y < count2; y++)
         {
@@ -152,8 +163,11 @@ void RangeManager::load()
         auto mod = br.readStringU8().unwrap();
         auto mode = (ModRangeMode)br.readU8().unwrap();
 
-        m_modes[Module::getByID(mod)] = mode;
+        if (auto mod2 = Module::getByID(mod))
+            m_modes[mod2] = mode;
     }
+
+    clearEmpty();
 }
 
 $on_game(Loaded)
