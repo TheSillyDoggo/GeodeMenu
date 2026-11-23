@@ -19,7 +19,8 @@ void APIManager::addAntiCheatMod(geode::Mod* mod)
 
 void APIManager::removeAntiCheatMod(geode::Mod* mod)
 {
-    anticheatMods.erase(std::find(anticheatMods.begin(), anticheatMods.end(), mod));
+    if (std::find(anticheatMods.begin(), anticheatMods.end(), mod) != anticheatMods.end())
+        anticheatMods.erase(std::find(anticheatMods.begin(), anticheatMods.end(), mod));
 
     enabledAntiCheat = anticheatMods.size() != 0;
 }

@@ -10,6 +10,8 @@
 #include <ModuleInfoAlert.hpp>
 #include <Utils.hpp>
 #include <APIManager.hpp>
+#include "ItemListPopup.hpp"
+#include "LocalisationManager.hpp"
 
 using namespace qolmod;
 
@@ -160,20 +162,27 @@ void ModuleNode::onToggleError(CCObject* sender)
     toggler->m_onButton->stopAllActions();
     toggler->m_offButton->stopAllActions();
 
-    std::string disabledMsg = module->getDisabledMessage();
+    auto popup = ItemListPopup::create(module->getName().c_str(), "OK");
+
+    if (!module->getDisabledMessage().empty())
+        popup->addItem(module->getDisabledMessage());
 
     if (SafeModeDisableCheats::get()->getRealEnabled())
     {
         if (module->getSafeModeTrigger() != SafeModeTrigger::None)
         {
-            disabledMsg = "Cheats are <cr>disabled</c> by safe mode option";
+            popup->addItem("Cheats are <cr>disabled</c> by safe mode option");
         }
     }
 
-    if (qolmod::APIManager::get()->isAntiCheatEnabled())
-        disabledMsg = "ANTICHEAT API POPUP HERE";
+    auto str = LocalisationManager::get()->getLocalisedString("ui/anticheat-api-disabled");
 
-    BetterAlertLayer::create(module->getName().c_str(), disabledMsg, "OK")->show();
+    for (auto& mod : APIManager::get()->getAntiCheatMods())
+    {
+        popup->addItem((dirs::getModRuntimeDir() / mod->getID() / "logo.png").string(), geode::utils::string::replace(str, "{mod}", mod->getName()));
+    }
+    
+    popup->show();
 }
 
 void ModuleNode::onOptions(CCObject* sender)

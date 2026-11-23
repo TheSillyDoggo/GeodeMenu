@@ -30,4 +30,6 @@ class SafeMode
 
         void addMessage(SafeModeTrigger level, std::string message);
         std::string getCombinedMessages();
+
+        void showReasonsAlert();
 };

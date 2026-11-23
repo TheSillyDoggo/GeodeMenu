@@ -2,6 +2,8 @@
 #include "Modules/AutoSafeMode.hpp"
 #include "Modules/SafeMode.hpp"
 #include "../Hacks/Speedhack/Speedhack.hpp"
+#include "../GUI/ItemListPopup.hpp"
+#include "LocalisationManager.hpp"
 
 SafeMode* SafeMode::get()
 {
@@ -146,4 +148,24 @@ std::string SafeMode::getCombinedMessages()
     }
 
     return str;
+}
+
+void SafeMode::showReasonsAlert()
+{
+    auto loc = LocalisationManager::get();
+    auto popup = qolmod::ItemListPopup::create(loc->getLocalisedString("names/safe-mode").c_str(), loc->getLocalisedString("ui/ok-button").c_str());
+
+    if (ForceSafeMode::get()->getRealEnabled())
+        popup->addItem("<co>Progress disabled</c> by <cc>safe mode</c>");
+
+    if (PlayLayer::get() && PlayLayer::get()->m_startPosObject)
+        popup->addItem("<co>Played level</c> from a <cc>start position</c>");
+
+    for (auto reason : levelLoadReasons)
+        popup->addItem(reason);
+
+    for (auto reason : attemptReasons)
+        popup->addItem(reason);
+
+    popup->show();
 }

@@ -11,6 +11,7 @@
 - Added startpos name to startpos switcher ui
 - Removed Accurate Hitboxes as the code was not very good, and there are other mods on geode that do the same thing
 - Made startpos switcher ui disappear after a few seconds
+- Improved Safe Mode View Reasons popup
 - Fixed Button Module keybinds repeating
 - Fixed blue hitbox being the wrong size
 - Improved small part of UI

@@ -173,9 +173,7 @@ void SafeEndLevelLayer::customSetup()
 
 void SafeEndLevelLayer::onViewReasons(CCObject* sender)
 {
-    auto loc = LocalisationManager::get();
-
-    BetterAlertLayer::create(loc->getLocalisedString("names/safe-mode").c_str(), SafeMode::get()->getCombinedMessages(), loc->getLocalisedString("ui/ok-button").c_str())->show();
+    SafeMode::get()->showReasonsAlert();
 }
 
 void SafeEndLevelLayer::updateCheatIndicator(float)
