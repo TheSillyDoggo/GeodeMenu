@@ -6,6 +6,8 @@
 #include "PopupBase.hpp"
 #include <InputNode.hpp>
 #include <PulsingCircle.hpp>
+#include <Button.hpp>
+#include "../AutoRanges/RangeManager.hpp"
 
 namespace qolmod
 {
@@ -14,6 +16,7 @@ namespace qolmod
         protected:
             Module* module = nullptr;
             qolmod::BackgroundSprite* bg;
+            std::unordered_map<qolmod::ModRangeMode, qolmod::Button*> m_modeBtns = {};
             cocos2d::CCClippingNode* redClip = nullptr;
             cocos2d::CCClippingNode* greenClip = nullptr;
             PulsingCircle* pulsing = nullptr;
@@ -22,6 +25,7 @@ namespace qolmod
             qolmod::InputNode* min = nullptr;
             qolmod::InputNode* max = nullptr;
 
+            cocos2d::CCMenu* createModeMenu();
             CCMenu* createInfo();
             CCSprite* createProgress();
             void updateProgress();

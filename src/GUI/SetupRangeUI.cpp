@@ -78,11 +78,24 @@ bool SetupRangeUI::setup()
 
     m_mainLayer->addChildAtPosition(area, Anchor::Center, ccp(50, 0));
     m_mainLayer->addChildAtPosition(createProgress(), Anchor::Top, ccp(0, -75));
+    m_mainLayer->addChildAtPosition(createModeMenu(), Anchor::Top, ccp(0, -75));
     m_mainLayer->addChildAtPosition(trashMenu, Anchor::Top, ccp(135, -75));
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
     m_mainLayer->addChildAtPosition(createInfo(), Anchor::TopRight, ccp(-16, -18));
     return true;
+}
+
+CCMenu* SetupRangeUI::createModeMenu()
+{
+    auto menu = CCMenu::create();
+
+    auto btn = BetterButtonSprite::create(ccp(100, 28), "Disabled", "bigFont.fnt", "GJ_button_05.png");
+    auto btn2 = BetterButtonSprite::create(ccp(100, 28), "Global", "bigFont.fnt", "GJ_button_02.png");
+    auto btn3 = BetterButtonSprite::create(ccp(100, 28), "Per-Level", "bigFont.fnt", "GJ_button_05.png");
+
+    menu->addChildren(btn, btn2, btn3);
+    return menu;
 }
 
 CCMenu* SetupRangeUI::createInfo()

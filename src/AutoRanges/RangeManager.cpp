@@ -1,6 +1,7 @@
 #include "RangeManager.hpp"
 #include <dbuf/ByteReader.hpp>
 #include <dbuf/ByteWriter.hpp>
+#include <EditorIDs.hpp>
 #include "Module.hpp"
 
 using namespace geode::prelude;
@@ -31,12 +32,18 @@ std::string RangeManager::getKey(Module* module, GJGameLevel* level)
 
     switch (level->m_levelType)
     {
+        case GJLevelType::Editor:
+            if (Loader::get()->getLoadedMod("cvolton.level-id-api"))
+                return fmt::format("{}_editor2{}", module->getID(), EditorIDs::getID(level));
+
+            return fmt::format("{}_editor{}", module->getID(), level->m_levelName);
+
         case GJLevelType::Main:
             return fmt::format("{}_main{}", module->getID(), level->m_levelID);
-        case GJLevelType::Editor:
-            return fmt::format("{}_editor{}", module->getID(), level->m_levelName);
+        
         case GJLevelType::Saved:
             return fmt::format("{}_saved{}", module->getID(), level->m_levelID);
+        
         case GJLevelType::Default:
         default:
             return fmt::format("{}_def{}", module->getID(), level->m_levelID);
