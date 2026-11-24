@@ -10,7 +10,7 @@ ItemListPopup* ItemListPopup::create(char const* title, const char* btn)
     auto pRet = new ItemListPopup();
     pRet->m_title = title;
     pRet->m_button = btn;
-    if (pRet && pRet->initAnchored(330, 140))
+    if (pRet && pRet->initAnchored(340, 100))
     {
         pRet->autorelease();
         return pRet;
@@ -85,7 +85,7 @@ void ItemListPopup::updateSize()
     m_contentMenu->updateLayout();
     m_scrollLayer->m_contentLayer->setContentSize(m_contentMenu->getContentSize());
 
-    m_mainLayer->setContentHeight(std::clamp<float>(m_scrollLayer->m_contentLayer->getContentHeight() + 100, 140, 220));
+    m_mainLayer->setContentHeight(std::min<float>(m_scrollLayer->m_contentLayer->getContentHeight() + 100, 230));
     m_mainLayer->updateLayout();
 
     m_scrollLayer->setContentHeight(m_mainLayer->getContentHeight() - 100);

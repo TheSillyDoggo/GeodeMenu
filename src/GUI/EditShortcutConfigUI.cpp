@@ -44,11 +44,32 @@ bool EditShortcutConfigUI::setup()
     auto btn = qolmod::Button::create(spr, this, menu_selector(EditShortcutConfigUI::onClose));
     menu->addChild(btn);
 
+    auto toggle = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(EditShortcutConfigUI::onTestToggle), 0.75f);
+    toggle->setPosition(ccp(0, 110));
+    toggle->toggle(config->isEnabled());
+
+    auto label = CCLabelBMFont::create("Enabled", "bigFont.fnt");
+    label->setPosition(ccp(25, 110));
+    label->setAnchorPoint(ccp(0, 0.5f));
+    label->setScale(0.5f);
+
+    auto label2 = CCLabelBMFont::create("Customizing shortcuts are temporarily broken, sorry :(", "bigFont.fnt");
+    label2->setPosition(ccp(0, 70));
+    label2->setScale(0.5f);
+
     this->scheduleUpdate();
+
+    menu->addChildren(toggle, label, label2);
 
     m_mainLayer->addChildAtPosition(title, Anchor::Top, ccp(0, -18));
     m_mainLayer->addChildAtPosition(menu, Anchor::Bottom, ccp(0, 24.5f));
     return true;
+}
+
+void EditShortcutConfigUI::onTestToggle(CCObject* sender)
+{
+    config->setEnabled(!config->isEnabled());
+    ShortcutManager::get()->updateConfig(mod);
 }
 
 void EditShortcutConfigUI::update(float dt)

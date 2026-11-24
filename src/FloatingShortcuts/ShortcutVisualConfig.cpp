@@ -277,6 +277,10 @@ CCTexture2D* ShortcutVisualConfig::getCustomTexture()
         return CCTextureCache::get()->addImage("sog.png"_spr, false);
 }
 
+void ShortcutVisualConfig::setEnabled(bool enabled) {
+    flags[8] = enabled;
+}
+
 // getters
 bool ShortcutVisualConfig::isMovable() {
     return flags[5];

@@ -82,4 +82,6 @@ class ShortcutVisualConfig
         cocos2d::ccColor3B getOverlayColour();
 
         cocos2d::CCTexture2D* getCustomTexture();
+
+        void setEnabled(bool enabled);
 };

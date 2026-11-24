@@ -22,6 +22,7 @@ class EditShortcutConfigUI : public PopupBase
         static EditShortcutConfigUI* create(Module* mod);
 
         void onClose(CCObject* sender);
+        void onTestToggle(CCObject* sender);
 
         virtual bool setup();
         virtual void update(float dt);
