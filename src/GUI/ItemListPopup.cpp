@@ -1,7 +1,6 @@
 #include "../Localisation/LocalisationManager.hpp"
 #include "BetterButtonSprite.hpp"
 #include "EasyBG.hpp"
-#include <Button.hpp>
 #include "ItemListPopup.hpp"
 
 using namespace qolmod;
@@ -25,7 +24,7 @@ void ItemListPopup::addItem(const std::string& text)
     addItem("", text);
 }
 
-void ItemListPopup::addItem(const std::string& sprite, const std::string& text, bool frame)
+void ItemListPopup::addItem(const std::string& sprite, const std::string& text, bool frame, std::function<void()> callback)
 {
     constexpr float CELL_HEIGHT = 35;
     constexpr float CELL_INSET = 4.5f;
@@ -37,10 +36,11 @@ void ItemListPopup::addItem(const std::string& sprite, const std::string& text, 
     bg->setTargettingNode(container);
     container->addChildAtPosition(bg, Anchor::Center);
 
+    CCSprite* spr = nullptr;
     float xInset = CELL_INSET;
     if (!sprite.empty())
     {
-        auto spr = frame ? CCSprite::createWithSpriteFrameName(sprite.c_str()) : CCSprite::create(sprite.c_str());
+        spr = frame ? CCSprite::createWithSpriteFrameName(sprite.c_str()) : CCSprite::create(sprite.c_str());
         spr->setScale((CELL_HEIGHT - (CELL_INSET * 2)) / spr->getContentHeight());
         spr->setPosition(ccp(xInset + spr->getScaledContentWidth() / 2, CELL_HEIGHT / 2));
         container->addChild(spr);
@@ -57,21 +57,33 @@ void ItemListPopup::addItem(const std::string& sprite, const std::string& text, 
         container->setContentHeight(lbl->getScaledContentHeight() + CELL_INSET * 2);
 
     container->addChildAtPosition(lbl, Anchor::Left, ccp(xInset, 0));
-
     container->updateLayout();
-    m_scrollLayer->m_contentLayer->addChild(container);
+
+    if (callback)
+    {
+        auto btn = qolmod::Button::create(container, this, menu_selector(ItemListPopup::onItemClicked));
+        btn->setCallbacks(
+            [this, container]{selectColour(container);},
+            [this, container]{deselectColour(container);},
+            [this, container]{deselectColour(container);}
+        );
+        m_callbacks[btn] = std::move(callback);
+        btn->m_scaleMultiplier = 1.0f;
+
+        m_contentMenu->addChild(btn);
+    }
+    else
+    {
+        m_contentMenu->addChild(container);
+    }
 
     updateSize();
 }
 
-void ItemListPopup::onClose(CCObject* sender)
-{
-    PopupBase::onClose(sender);
-}
-
 void ItemListPopup::updateSize()
 {
-    m_scrollLayer->m_contentLayer->updateLayout();
+    m_contentMenu->updateLayout();
+    m_scrollLayer->m_contentLayer->setContentSize(m_contentMenu->getContentSize());
 
     m_mainLayer->setContentHeight(std::clamp<float>(m_scrollLayer->m_contentLayer->getContentHeight() + 100, 140, 220));
     m_mainLayer->updateLayout();
@@ -83,6 +95,32 @@ void ItemListPopup::updateSize()
 
     m_scrollBar->setVisible(m_scrollLayer->m_contentLayer->getContentHeight() > m_scrollLayer->getContentHeight());
     m_scrollLayer->setTouchEnabled(m_scrollBar->isVisible());
+}
+
+void ItemListPopup::onClose(CCObject* sender)
+{
+    PopupBase::onClose(sender);
+}
+
+void ItemListPopup::onItemClicked(cocos2d::CCObject* sender)
+{
+    m_callbacks[static_cast<qolmod::Button*>(sender)]();
+}
+
+void ItemListPopup::selectColour(cocos2d::CCNode* container)
+{
+    if (auto spr = container->getChildByType<CCSprite>())
+        spr->setColor(ccc3(150, 150, 150));
+        
+    container->getChildByType<AdvLabelBMFont>()->setColor(ccc3(150, 150, 150));
+}
+
+void ItemListPopup::deselectColour(cocos2d::CCNode* container)
+{
+    if (auto spr = container->getChildByType<CCSprite>())
+        spr->setColor(ccWHITE);
+
+    container->getChildByType<AdvLabelBMFont>()->setColor(ccWHITE);
 }
 
 bool ItemListPopup::setup()
@@ -97,8 +135,15 @@ bool ItemListPopup::setup()
     m_titleLabel->setAnchorPoint(ccp(0.5f, 1));
     m_titleLabel->limitLabelWidth(m_bg->getContentWidth() - 60, 0.9f, 0);
 
+    m_contentMenu = CCMenu::create();
+    m_contentMenu->setAnchorPoint(ccp(0, 0));
+    m_contentMenu->setPosition(ccp(0, 0));
+    m_contentMenu->ignoreAnchorPointForPosition(false);
+    m_contentMenu->setLayout(m_scrollLayer->createDefaultListLayout());
+
     m_scrollLayer = qolmod::ScrollLayer::create(ccp(m_bg->getContentWidth() - 35, m_bg->getContentHeight() - 60));
-    m_scrollLayer->m_contentLayer->setLayout(m_scrollLayer->createDefaultListLayout());
+    m_scrollLayer->m_contentLayer->addChild(m_contentMenu);
+    m_contentMenu->setContentWidth(m_scrollLayer->getContentWidth());
 
     m_scrollBar = Scrollbar::create(m_scrollLayer, Scrollbar::Style::GDScrollbar);
     m_scrollBar->setAnchorPoint(ccp(1, 0));

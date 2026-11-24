@@ -179,7 +179,9 @@ void ModuleNode::onToggleError(CCObject* sender)
 
     for (auto& mod : APIManager::get()->getAntiCheatMods())
     {
-        popup->addItem((dirs::getModRuntimeDir() / mod->getID() / "logo.png").string(), geode::utils::string::replace(str, "{mod}", mod->getName()));
+        popup->addItem((dirs::getModRuntimeDir() / mod->getID() / "logo.png").string(), geode::utils::string::replace(str, "{mod}", mod->getName()), false, [mod]{
+            geode::openInfoPopup(mod);
+        });
     }
     
     popup->show();

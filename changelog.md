@@ -1,11 +1,14 @@
-# 3.0.0
-
+# to come in future non beta:
 - Improved **Floating Shortcuts**
 -- Better Performance
 -- Better Customization
 -- Option to be visible only in practice mode
 -- More Supported shapes and colours
+
+# 3.0.0
+
 - Added **Auto Activate** in range
+- Added API for other mods to disable enabling cheats
 - Added info button for mods that have per player options
 - Added movable startpos switcher button
 - Added startpos name to startpos switcher ui
@@ -18,8 +21,11 @@
 - Removed Quests In Pause as it was officially added in 2.209
 - Localisation:
 -- Improved Font Loading times
+-- Added Italian
+-- Added Hungarian
 -- Added Turkish
 -- Added Argentina Spanish
+-- Updated Japanese
 -- Updated Mexican Spanish
 -- Updated Latin American Spanish
 -- Updated Vietnamese

@@ -149,3 +149,11 @@ void ModuleShortcutButton::updateSettings()
     auto font = CCFileUtils::sharedFileUtils()->isFileExist(CCFileUtils::sharedFileUtils()->fullPathForFilename(conf->getOverlayFont().c_str(), false)) ? conf->getOverlayFont() : "bigFont.fnt";
     overlayLabel->setFntFile(font.c_str());
 }
+
+void ModuleShortcutButton::ccTouchEnded(qolmod::Touch* touch)
+{
+    FloatingButtonBase::ccTouchEnded(touch);
+
+    Mod::get()->setSavedValue<float>(fmt::format("{}_shortcutpos.x", mod->getID()), position.x);
+    Mod::get()->setSavedValue<float>(fmt::format("{}_shortcutpos.y", mod->getID()), position.y);
+}

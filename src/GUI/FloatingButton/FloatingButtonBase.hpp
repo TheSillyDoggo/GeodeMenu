@@ -17,7 +17,7 @@ class FloatingButtonBase : public cocos2d::CCNode
             Square = 1,
         };
 
-    private:
+    protected:
         // used for internal button actions, do not use
         bool isMoving = false;
         float _opacity = 0.8f;

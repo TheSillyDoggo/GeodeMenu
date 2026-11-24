@@ -210,9 +210,6 @@ void PlayerState::saveState(PlayerObject* player)
     SAVE_PL_MEMBER(m_unk838);
     SAVE_PL_MEMBER(m_stateOnGround);
     SAVE_PL_MEMBER(m_stateUnk);
-    SAVE_PL_MEMBER(m_stateNoStickX);
-    SAVE_PL_MEMBER(m_stateNoStickY);
-    SAVE_PL_MEMBER(m_stateUnk2);
     SAVE_PL_MEMBER(m_stateBoostX);
     SAVE_PL_MEMBER(m_stateBoostY);
     SAVE_PL_MEMBER(m_maybeStateForce2);
@@ -659,9 +656,6 @@ void PlayerState::loadState(PlayerObject* player)
     LOAD_PL_MEMBER(m_unk838);
     LOAD_PL_MEMBER(m_stateOnGround);
     LOAD_PL_MEMBER(m_stateUnk);
-    LOAD_PL_MEMBER(m_stateNoStickX);
-    LOAD_PL_MEMBER(m_stateNoStickY);
-    LOAD_PL_MEMBER(m_stateUnk2);
     LOAD_PL_MEMBER(m_stateBoostX);
     LOAD_PL_MEMBER(m_stateBoostY);
     LOAD_PL_MEMBER(m_maybeStateForce2);

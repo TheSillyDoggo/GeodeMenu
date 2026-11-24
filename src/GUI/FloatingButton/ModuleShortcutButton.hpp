@@ -22,6 +22,7 @@ class ModuleShortcutButton : public FloatingButtonBase
         cocos2d::CCSprite* overlayCustom = nullptr;
         cocos2d::ccColor3B lastColour = cocos2d::ccWHITE;
 
+        virtual void ccTouchEnded(qolmod::Touch* touch);
         virtual void updateVisuals(float opacity);
         virtual void onClick();
 
