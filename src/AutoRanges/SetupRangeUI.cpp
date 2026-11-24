@@ -48,35 +48,37 @@ bool SetupRangeUI::setup()
     auto trashSpr = CCSprite::createWithSpriteFrameName("GJ_trashBtn_001.png");
     trashSpr->setScale(0.75f);
 
-    auto trashBtn = Button::create(trashSpr, this, menu_selector(SetupRangeUI::onClear));
+    m_trashButton = Button::create(trashSpr, this, menu_selector(SetupRangeUI::onClear));
     auto trashMenu = CCMenu::create();
-    trashMenu->addChild(trashBtn);
+    trashMenu->addChild(m_trashButton);
 
-    auto area = CCMenu::create();
+    m_editMenu = CCMenu::create();
 
-    auto dash = CCLabelBMFont::create("-", "bigFont.fnt");
-    dash->setPositionY(2.0f);
-    dash->setScale(0.8f);
+    m_dashLabel = Label::create("-", "bigFont.fnt");
+    m_dashLabel->setPositionY(2.0f);
+    m_dashLabel->setScale(0.8f);
+
     min = qolmod::InputNode::create(60, "min");
     max = qolmod::InputNode::create(60, "max");
+
     min->setString("0.00");
     max->setString("0.00");
+
+    min->setCommonFilter(CommonFilter::UFloat);
+    max->setCommonFilter(CommonFilter::UFloat);
+
     min->setPositionX(-42);
     max->setPositionX(42);
 
     toggler = CCMenuItemToggler::createWithStandardSprites(this, nullptr, 0.8f);
     toggler->toggle(true);
-    toggler->setPosition(ccp(0, -50));
+    toggler->setPosition(ccp(35, -40));
+    m_editMenu->addChildren(min, m_dashLabel, max, toggler);
 
-    area->addChild(min);
-    area->addChild(dash);
-    area->addChild(max);
-    area->addChild(toggler);
+    m_addButton = Button::create(BetterButtonSprite::createWithLocalisation(ccp(67, 30), "edit-range-ui/add-button", "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(SetupRangeUI::onAdd));
+    m_addButton->setPosition(ccp(-20, -40));
 
-    auto add = Button::create(BetterButtonSprite::createWithLocalisation(ccp(67, 30), "edit-range-ui/add-button", "goldFont.fnt", "GJ_button_01.png"), this, menu_selector(SetupRangeUI::onAdd));
-
-    menu->addChild(add);
-    add->setPositionY(75);
+    m_editMenu->addChild(m_addButton);
 
     m_enabledToggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SetupRangeUI::onEnabled), 0.65f);
     m_practiceToggler = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(SetupRangeUI::onPractice), 0.65f);
@@ -108,7 +110,7 @@ bool SetupRangeUI::setup()
     m_perLevelError->setMaxWidth(200 / 0.4f);
     m_perLevelError->setAlignment(kCCTextAlignmentCenter);
 
-    m_mainLayer->addChildAtPosition(area, Anchor::Center, ccp(0, 0));
+    m_mainLayer->addChildAtPosition(m_editMenu, Anchor::Center, ccp(0, 15));
     m_mainLayer->addChildAtPosition(createProgress(), Anchor::Top, ccp(0, -75));
     m_mainLayer->addChildAtPosition(createModeMenu(), Anchor::Top, ccp(0, -45));
     m_mainLayer->addChildAtPosition(trashMenu, Anchor::Top, ccp(135, -75));
@@ -167,7 +169,7 @@ CCSprite* SetupRangeUI::createProgress()
 
     auto progressBG = EasyBG::create();
     progressBG->setTargettingNode(m_outlineSprite);
-    progressBG->setTargettingOffset(ccp(5, 5));
+    progressBG->setTargettingOffset(ccp(10, 5));
     progressBG->setPosition(m_outlineSprite->getContentSize() / 2);
     m_outlineSprite->addChild(progressBG, -3);
 
@@ -226,6 +228,13 @@ void SetupRangeUI::updateProgress()
     redClip->getStencil()->removeAllChildren();
     greenClip->getStencil()->removeAllChildren();
     deleteMenu->removeAllChildren();
+
+    auto en = m_trashButton->isEnabled();
+    m_trashButton->setEnabled(m_config && m_config->m_ranges.ranges.size() > 0);
+    static_cast<CCSprite*>(m_trashButton->getNormalImage())->setColor(m_trashButton->isEnabled() ? ccWHITE : offColour);
+
+    if (!en && m_trashButton->isEnabled())
+        qolmod::utils::addCircleToNode(m_trashButton);
 
     if (!m_config)
         return;
@@ -296,9 +305,6 @@ void SetupRangeUI::onInfo(CCObject* sender)
 
 void SetupRangeUI::onClear(CCObject* sender)
 {
-    if (!m_config)
-        return;
-
     m_config->m_ranges.ranges.clear();
     updateProgress();
     RangeManager::get()->markSave();
@@ -335,6 +341,7 @@ void SetupRangeUI::updateButtons()
     }
 
     m_perLevelError->setVisible(!m_config && mode == ModRangeMode::PerLevel);
+    m_editMenu->setVisible(!m_perLevelError->isVisible());
 
     m_enabledToggler->setEnabled(m_config);
     m_practiceToggler->setEnabled(m_config);
@@ -351,6 +358,11 @@ void SetupRangeUI::updateButtons()
     m_enabledLabel->setColor(m_config ? ccWHITE : offColour);
     m_practiceLabel->setColor(m_config ? ccWHITE : offColour);
     m_notifyLabel->setColor(m_config ? ccWHITE : offColour);
+
+    min->setEnabled(m_config);
+    max->setEnabled(m_config);
+    m_dashLabel->setColor(m_config ? ccWHITE : offColour);
+    m_editMenu->setTouchEnabled(m_config);
 }
 
 void SetupRangeUI::updateConfig()

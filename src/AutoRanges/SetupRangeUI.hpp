@@ -27,6 +27,10 @@ namespace qolmod
             cocos2d::CCSprite* m_greenSprite;
             cocos2d::CCSprite* m_whiteSprite;
             cocos2d::CCSprite* m_outlineSprite;
+            qolmod::Button* m_trashButton;
+            qolmod::Button* m_addButton;
+            cocos2d::CCMenu* m_editMenu;
+            geode::Label* m_dashLabel;
             AdvLabelBMFont* m_perLevelError = nullptr;
             qolmod::BackgroundSprite* bg;
             cocos2d::CCClippingNode* redClip = nullptr;
