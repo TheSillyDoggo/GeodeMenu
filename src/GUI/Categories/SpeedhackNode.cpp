@@ -20,6 +20,9 @@ bool SpeedhackNode::init()
 
     input = qolmod::InputNode::create(100, "Value");
     input->setString(Speedhack::get()->getText());
+    input->setCallback([&](auto& str){
+        textChanged(str);
+    });
     // input->setDelegate(this);
     input->setFilter("1234567890.");
     input->setPosition(getContentSize() / 2 + ccp(38, 75));
@@ -266,7 +269,7 @@ void SpeedhackNode::onTrash(CCObject* sender)
     input->setString("");
 }
 
-void SpeedhackNode::textChanged(CCTextInputNode* node)
+void SpeedhackNode::textChanged(const std::string& str)
 {
     Speedhack::get()->setText(input->getString());
     slider->setValueRanged(Speedhack::get()->getValue());

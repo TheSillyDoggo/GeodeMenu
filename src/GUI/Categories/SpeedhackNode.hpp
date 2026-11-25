@@ -45,7 +45,7 @@ class SpeedhackNode : public CategoryNode, public TextInputDelegate
         void updatePresets();
 
         void updateUI();
-        virtual void textChanged(CCTextInputNode* node);
+        virtual void textChanged(const std::string& str);
 
         bool init();
 };

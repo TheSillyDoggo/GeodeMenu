@@ -5,7 +5,15 @@
 -- Option to be visible only in practice mode
 -- More Supported shapes and colours
 
-# 3.0.0
+# 3.0.0-beta.2
+
+- Fixed Menu Snow using an infinite amount of memory on m1 macOS
+- Fixed Speedhack input not working
+- Fixed Icon Kit in Pause not hiding when the vanilla hide pause button is used
+- Fixed Solid Wave Trail preserve center option always being on
+- Fixed Broken Italian language
+
+# 3.0.0-beta.1
 
 - Added **Auto Activate** in range
 - Added API for other mods to disable enabling cheats

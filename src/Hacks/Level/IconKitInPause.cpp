@@ -50,7 +50,7 @@ class $modify (PauseLayer)
             menu->addChild(btn);
             clip->addChild(menu);
 
-            this->addChild(clip, 420);
+            m_mainLayer->addChild(clip, 420);
         }
     }
 };
