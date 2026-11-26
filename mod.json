@@ -16,6 +16,9 @@
 		"source": "https://github.com/TheSillyDoggo/GeodeMenu",
 		"community": "https://discord.gg/8CFcZNh4CW"
 	},
+    "api": {
+        "include": [ "api/*.hpp" ]
+    },
 	"resources": {
         "files": [
             "resources/fonts/kosugimaru/*.fnt",
