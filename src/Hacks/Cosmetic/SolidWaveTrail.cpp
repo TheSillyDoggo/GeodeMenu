@@ -30,8 +30,11 @@ class $modify (HardStreak)
 {
     void appendQuad(cocos2d::CCPoint const* vertices, cocos2d::ccColor4F const& color)
     {
-        if (color.a != getOpacity() && !SolidWaveTrailPreserveCenter::get()->getRealEnabled())
-            return;
+        if (SolidWaveTrail::get()->getRealEnabled())
+        {
+            if (color.a * 255.0f < getOpacity() && !SolidWaveTrailPreserveCenter::get()->getRealEnabled())
+                return;
+        }
 
         HardStreak::appendQuad(vertices, color);
     }
