@@ -28,10 +28,7 @@ bool FavouritesNode::init()
     info = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     info->setScale(0.425f);
 
-    for (auto mod : Module::getAllFavourited())
-    {
-        this->addModule(mod);
-    }
+    refresh();
 
     this->addChildAtPosition(text, Anchor::Center);
     this->addChildAtPosition(star, Anchor::Center, ccp(-10, -12.5f));
@@ -41,28 +38,12 @@ bool FavouritesNode::init()
 
 void FavouritesNode::refresh()
 {
-    auto mods = Module::getAllFavourited();
+    removeAll();
 
-    for (auto mod : mods)
+    for (auto mod : Module::getAllFavourited())
     {
-        if (!modules.contains(mod))
-        {
-            addModule(mod);
-        }
+        this->addModule(mod);
     }
-
-    for (auto mod : modules)
-    {
-        if (std::find(mods.begin(), mods.end(), mod.first) == mods.end())
-        {
-            removeModule(mod.first);
-        }
-    }
-}
-
-void FavouritesNode::updateUI()
-{
-    // CategoryNode::updateUI();
 
     text->setVisible(modules.size() == 0);
     star->setVisible(modules.size() == 0);

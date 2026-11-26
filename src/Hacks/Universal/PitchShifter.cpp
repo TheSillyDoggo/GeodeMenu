@@ -83,7 +83,8 @@ SUBMIT_OPTION(PitchShifter, PitchShifterHighQuality);
 
 void PitchShifter::onToggle()
 {
-    return;
+    if (!FMODAudioEngine::get()->m_system)
+        return;
 
     auto masterGroup = Speedhack::get()->getMasterChannel();
     auto musicChannel = FMODAudioEngine::get()->m_backgroundMusicChannel;

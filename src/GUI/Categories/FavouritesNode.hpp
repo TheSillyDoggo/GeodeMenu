@@ -17,7 +17,6 @@ class FavouritesNode : public CategoryNode
         static FavouritesNode* get();
 
         void refresh();
-        virtual void updateUI();
         bool init();
 };
 

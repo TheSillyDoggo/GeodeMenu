@@ -105,8 +105,21 @@ void ShortcutManager::updateConfig(Module* module)
 {
     saveAll();
 
-    if (nodes.contains(module))
-        nodes[module]->updateSettings();
+    if (getConfig(module)->isEnabled())
+    {
+        if (nodes.contains(module))
+            nodes[module]->updateSettings();
+        else
+            nodes[module] = ModuleShortcutButton::create(module);
+    }
+    else
+    {
+        if (nodes.contains(module))
+        {
+            FloatingUIManager::get()->removeButton(nodes[module]);
+            nodes.erase(module);
+        }
+    }        
 }
 
 void ShortcutManager::updateGroup(Module* module)

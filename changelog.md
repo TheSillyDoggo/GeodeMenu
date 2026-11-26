@@ -12,6 +12,9 @@
 - Fixed Icon Kit in Pause not hiding when the vanilla hide pause button is used
 - Fixed Solid Wave Trail preserve center option always being on
 - Fixed Broken Italian language
+- Fixed Shortcut toggling not working
+- Fixed Pitch Shifter not working
+- Fixed Broken Favourites Page
 
 # 3.0.0-beta.1
 
