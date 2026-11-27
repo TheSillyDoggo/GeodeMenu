@@ -5,6 +5,14 @@
 -- Option to be visible only in practice mode
 -- More Supported shapes and colours
 
+# 3.0.0-beta.3
+
+- Added Best In Percentage hide from startpos
+- Fixed incorrectly exported mod api
+- Fixed Level Edit hiding the view comments in pause button
+- Fixed Rainbow Trail being incorrectly coloured
+- Fixed Missing Translations in English
+
 # 3.0.0-beta.2
 
 - Fixed Menu Snow using an infinite amount of memory on m1 macOS

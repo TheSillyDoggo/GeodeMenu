@@ -17,5 +17,15 @@ class BestInPercentage : public Module
         }
 };
 
+class BestInPercentageHideStartpos : public Module
+{
+    public:
+        MODULE_SETUP(BestInPercentageHideStartpos)
+        {
+            setID("best-in-percentage/hide-from-startpos");
+        }
+};
+
 SUBMIT_HACK(BestInPercentage);
+SUBMIT_OPTION(BestInPercentage, BestInPercentageHideStartpos);
 

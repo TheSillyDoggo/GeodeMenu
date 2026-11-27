@@ -41,7 +41,7 @@ class $modify (PlayLayer)
 
             m_percentageLabel->setString(fmt::format("{}{}%", fromInfo, str).c_str());
 
-            if (BestInPercentage::get()->getRealEnabled())
+            if (BestInPercentage::get()->getRealEnabled() && (BestInPercentageHideStartpos::get()->getRealEnabled() ? !m_startPosObject : true))
                 m_percentageLabel->setString(fmt::format("{} / {}%", m_percentageLabel->getString(), m_isPracticeMode ? m_level->m_practicePercent : m_level->m_normalPercent.value()).c_str());
         }
     }
